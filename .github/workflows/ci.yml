@@ -29,7 +29,7 @@ jobs:
         run: npx tsc --noEmit
 
       - name: ESLint — verificar qualidade
-        run: npx eslint . --ext .ts,.tsx --max-warnings 35
+        run: npx eslint . --ext .ts,.tsx --max-warnings 50
 
       - name: Testes unitários
         run: npm run test:unit

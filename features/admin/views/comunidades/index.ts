@@ -1,0 +1,1 @@
+export { ComunidadesView } from './ComunidadesView';

@@ -1,0 +1,85 @@
+name: CI — Guardião
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Qualidade & Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: TypeScript — verificar erros
+        run: npx tsc --noEmit
+
+      - name: ESLint — verificar qualidade
+        run: npx eslint . --ext .ts,.tsx --max-warnings 35
+
+      - name: Testes unitários
+        run: npm run test:unit
+
+      - name: Build — construir app
+        run: npm run build
+        env:
+          VITE_SUPABASE_URL: https://placeholder.supabase.co
+          VITE_SUPABASE_ANON_KEY: placeholder
+
+  security:
+    name: Segurança
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: npm audit — vulnerabilidades
+        run: npm audit --audit-level=high || true
+
+      - name: Secrets — verificar senhas no código
+        run: |
+          # Procura padrões de secrets no código (excluindo node_modules, .env*, dist)
+          if grep -rn --include="*.ts" --include="*.tsx" --include="*.js" \
+            -e "sk_live_" -e "sk_test_" -e "AKIA" -e "AIzaSy" \
+            -e "ghp_" -e "gho_" -e "glpat-" \
+            --exclude-dir=node_modules --exclude-dir=dist --exclude-dir=.git --exclude-dir=public --exclude-dir=tests \
+            . ; then
+            echo "::error::Possíveis secrets encontrados no código!"
+            exit 1
+          fi
+          echo "Nenhum secret encontrado."
+
+      - name: VITE_ prefix — verificar keys sensíveis
+        run: |
+          # Verifica se algum VITE_ expõe keys sensíveis no bundle
+          if grep -rn "VITE_.*SECRET\|VITE_.*SERVICE_ROLE\|VITE_.*PRIVATE" \
+            --include="*.ts" --include="*.tsx" --include="*.env.example" \
+            --exclude-dir=node_modules --exclude-dir=dist \
+            . ; then
+            echo "::error::Keys sensíveis com prefixo VITE_ expostas no bundle!"
+            exit 1
+          fi
+          echo "Nenhuma key sensível com VITE_ prefix."

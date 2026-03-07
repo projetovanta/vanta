@@ -1,0 +1,192 @@
+import { create } from 'zustand';
+import { Membro, Notificacao } from '../types';
+import { DEFAULT_AVATARS } from '../data/avatars';
+import { authService, enrichInstagramFollowers } from '../services/authService';
+import { notificationsService } from '../features/admin/services/notificationsService';
+import { clearAllCache } from '../services/cache';
+import { realtimeManager } from '../services/realtimeManager';
+import { comprovanteService } from '../features/admin/services/comprovanteService';
+import { getAccessNodes } from '../features/admin/permissoes';
+import { rbacService } from '../features/admin/services/rbacService';
+import { useExtrasStore } from './extrasStore';
+
+const GUEST_PLACEHOLDER: Membro = {
+  id: '',
+  nome: 'Visitante',
+  email: '',
+  biografia: '',
+  foto: DEFAULT_AVATARS.FEMININO,
+  genero: 'FEMININO',
+  interesses: [],
+  role: 'vanta_guest',
+};
+
+export { GUEST_PLACEHOLDER };
+
+interface AuthState {
+  // estado
+  currentAccount: Membro;
+  profile: Membro;
+  authLoading: boolean;
+  selectedCity: string;
+  notifications: Notificacao[];
+  unreadNotifications: number;
+
+  // ações
+  loginWithMembro: (m: Membro) => void;
+  logout: () => Promise<void>;
+  updateProfile: (data: Partial<Membro>) => boolean;
+  registerUser: (m: Membro) => void;
+  setSelectedCity: (city: string) => void;
+  setNotifications: (n: Notificacao[]) => void;
+  setUnreadNotifications: (n: number) => void;
+  addNotification: (notif: Omit<Notificacao, 'id'>) => void;
+  markAllNotificationsAsRead: () => void;
+  handleNotificationAction: (n: Notificacao) => void;
+
+  // computado
+  accessNodes: ReturnType<typeof getAccessNodes>;
+
+  // init (chamado 1x)
+  init: () => () => void;
+}
+
+export const useAuthStore = create<AuthState>((set, get) => ({
+  currentAccount: GUEST_PLACEHOLDER,
+  profile: GUEST_PLACEHOLDER,
+  authLoading: true,
+  selectedCity: localStorage.getItem('vanta_selected_city') || '',
+  notifications: [],
+  unreadNotifications: 0,
+  accessNodes: [],
+
+  loginWithMembro: m => set({ currentAccount: m, profile: m }),
+
+  logout: async () => {
+    await authService.signOut();
+    clearAllCache();
+    realtimeManager.unsubscribeAll();
+    set({ currentAccount: GUEST_PLACEHOLDER, profile: GUEST_PLACEHOLDER });
+  },
+
+  updateProfile: data => {
+    set(s => ({ profile: { ...s.profile, ...data } }));
+    return true;
+  },
+
+  registerUser: m => {
+    set({ currentAccount: { ...m, role: 'vanta_member' }, profile: m });
+  },
+
+  setSelectedCity: city => {
+    localStorage.setItem('vanta_selected_city', city);
+    set({ selectedCity: city });
+  },
+
+  setNotifications: n => set({ notifications: n }),
+  setUnreadNotifications: n => set({ unreadNotifications: n }),
+
+  addNotification: notif => {
+    void notificationsService.add(notif).then(() => {
+      set({
+        notifications: notificationsService.getAll(),
+        unreadNotifications: notificationsService.getUnreadCount(),
+      });
+    });
+  },
+
+  markAllNotificationsAsRead: () => {
+    void notificationsService.markAllAsRead().then(() => {
+      set({ notifications: notificationsService.getAll(), unreadNotifications: 0 });
+    });
+  },
+
+  handleNotificationAction: (n: Notificacao) => {
+    if (n.id && !n.lida) {
+      void notificationsService.markAsRead(n.id);
+    }
+    set(s => ({
+      notifications: s.notifications.map(notif => (notif.id === n.id ? { ...notif, lida: true } : notif)),
+      unreadNotifications: Math.max(0, s.unreadNotifications - 1),
+    }));
+  },
+
+  init: () => {
+    let resolved = false;
+
+    const applySession = (membro: Membro | null) => {
+      if (membro) {
+        set({ currentAccount: membro, profile: membro, authLoading: false });
+        enrichInstagramFollowers(membro.id, membro.instagram);
+        notificationsService.setUserId(membro.id);
+        void notificationsService.refresh().then(() => {
+          set({
+            notifications: notificationsService.getAll(),
+            unreadNotifications: notificationsService.getUnreadCount(),
+          });
+        });
+
+        // Realtime: escuta novas notificações (via RealtimeManager)
+        realtimeManager.unsubscribe(`notif:${membro.id}`);
+        realtimeManager.subscribe(`notif:${membro.id}`, channel => {
+          channel.on(
+            'postgres_changes',
+            { event: 'INSERT', schema: 'public', table: 'notifications', filter: `user_id=eq.${membro.id}` },
+            () => {
+              void notificationsService.refresh().then(() => {
+                set({
+                  notifications: notificationsService.getAll(),
+                  unreadNotifications: notificationsService.getUnreadCount(),
+                });
+              });
+            },
+          );
+        });
+
+        void comprovanteService.refresh(membro.id);
+        useExtrasStore.getState().initClubeData();
+
+        // compute accessNodes — só vanta_member precisa (derivar portais via RBAC)
+        // Roles com portal direto (ROLES_COM_PORTAL_DIRETO) já acessam sem nodes.
+        const role = membro.role;
+        if (role === 'vanta_member') {
+          // Refresh RBAC antes de calcular accessNodes (garante que atribuições recentes apareçam)
+          void rbacService.refresh().then(() => {
+            const nodes = getAccessNodes(membro.id);
+            set({ accessNodes: nodes });
+          });
+        } else {
+          set({ accessNodes: [] });
+        }
+      } else {
+        set({
+          currentAccount: GUEST_PLACEHOLDER,
+          profile: GUEST_PLACEHOLDER,
+          authLoading: false,
+          accessNodes: [],
+        });
+        notificationsService.setUserId(null);
+        realtimeManager.unsubscribeAll();
+        set({ notifications: [], unreadNotifications: 0 });
+      }
+    };
+
+    const unsubscribe = authService.onAuthStateChange(membro => {
+      resolved = true;
+      applySession(membro);
+    });
+
+    const fallbackTimer = setTimeout(async () => {
+      if (!resolved) {
+        const session = await authService.getSession();
+        resolved = true;
+        applySession(session);
+      }
+    }, 2000);
+
+    return () => {
+      clearTimeout(fallbackTimer);
+      unsubscribe();
+    };
+  },
+}));

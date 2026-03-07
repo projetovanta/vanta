@@ -1,0 +1,8 @@
+{
+  "name": "Noite Premium - Eventos e Vida Noturna",
+  "description": "Descubra os melhores eventos e gerencie sua vida noturna com elegância e facilidade.",
+  "requestFramePermissions": [
+    "camera",
+    "geolocation"
+  ]
+}

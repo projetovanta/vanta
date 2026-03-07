@@ -1,0 +1,408 @@
+import React, { useState, useMemo, useEffect, useRef } from 'react';
+import { Evento, Membro } from '../../types';
+import { Building2, MapPin, ChevronRight } from 'lucide-react';
+import { sortEvents, isEventExpired } from '../../utils';
+import { SearchHeader } from './components/SearchHeader';
+import { SearchResults } from './components/SearchResults';
+import { PeopleResults } from './components/PeopleResults';
+import { CityFilterModal } from './components/CityFilterModal';
+import { VibeFilterModal } from './components/VibeFilterModal';
+import { TimeFilterModal } from './components/TimeFilterModal';
+import { PriceFilterModal } from './components/PriceFilterModal';
+import { getMinPrice } from '../../utils';
+import { authService } from '../../services/authService';
+import { supabase } from '../../services/supabaseClient';
+import { useAuthStore } from '../../stores/authStore';
+import { useExtrasStore } from '../../stores/extrasStore';
+import { useDebounce } from '../../hooks/useDebounce';
+
+interface SearchViewProps {
+  onEventClick: (evento: Evento) => void;
+  onMemberClick: (membro: Membro) => void;
+  onComunidadeClick: (id: string) => void;
+}
+
+const ITEMS_PER_PAGE = 10;
+
+export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberClick, onComunidadeClick }) => {
+  const currentCity = useAuthStore(s => s.selectedCity);
+  const EVENTOS = useExtrasStore(s => s.allEvents);
+  const searchEventsServerSide = useExtrasStore(s => s.searchEventsServerSide);
+  const [query, setQuery] = useState('');
+  const debouncedQuery = useDebounce(query, 300);
+  const [serverSearchResults, setServerSearchResults] = useState<Evento[] | null>(null);
+  const [activeTab, setActiveTab] = useState<'EVENTS' | 'PEOPLE'>('EVENTS');
+  const [selectedCities, setSelectedCities] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedTimeFilter, setSelectedTimeFilter] = useState<string | null>(null);
+  const [maxPrice, setMaxPrice] = useState<number | null>(null);
+  const [isCityFilterOpen, setIsCityFilterOpen] = useState(false);
+  const [isEstiloFilterOpen, setIsEstiloFilterOpen] = useState(false);
+  const [isTimeFilterOpen, setIsTimeFilterOpen] = useState(false);
+  const [isPriceFilterOpen, setIsPriceFilterOpen] = useState(false);
+  const [beneficiosFilter, setBeneficiosFilter] = useState(false);
+  const [displayLimit, setDisplayLimit] = useState(ITEMS_PER_PAGE);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    contentRef.current?.scrollTo(0, 0);
+  }, []);
+
+  // Server-side search quando query tem 2+ chars
+  useEffect(() => {
+    if (!debouncedQuery || debouncedQuery.length < 2) {
+      setServerSearchResults(null);
+      return;
+    }
+    let cancelled = false;
+    void searchEventsServerSide(debouncedQuery).then(results => {
+      if (!cancelled) setServerSearchResults(results);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [debouncedQuery, searchEventsServerSide]);
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const el = e.currentTarget;
+    if (el.scrollHeight - el.scrollTop - el.clientHeight < 500 && activeTab === 'EVENTS') {
+      setDisplayLimit(prev => prev + ITEMS_PER_PAGE);
+    }
+  };
+
+  const cities = useMemo(() => Array.from(new Set(EVENTOS.map(e => e.cidade))).sort(), [EVENTOS]);
+  const toggleCity = (city: string) => {
+    setSelectedCities(prev => (prev.includes(city) ? prev.filter(c => c !== city) : [...prev, city]));
+    setDisplayLimit(ITEMS_PER_PAGE);
+  };
+  const toggleCategory = (catId: string) => {
+    setSelectedCategories(prev => (prev.includes(catId) ? prev.filter(c => c !== catId) : [...prev, catId]));
+    setDisplayLimit(ITEMS_PER_PAGE);
+  };
+  const clearAllFilters = () => {
+    setQuery('');
+    setSelectedCities([]);
+    setSelectedCategories([]);
+    setSelectedTimeFilter(null);
+    setMaxPrice(null);
+    setBeneficiosFilter(false);
+    setDisplayLimit(ITEMS_PER_PAGE);
+  };
+
+  const { visibleEvents, totalResults } = useMemo(() => {
+    // Se busca server-side retornou resultados, usar esses como base
+    let data = serverSearchResults ?? EVENTOS.filter(e => !isEventExpired(e));
+    if (selectedCities.length > 0) data = data.filter(e => selectedCities.includes(e.cidade));
+    if (selectedCategories.length > 0)
+      data = data.filter(e => {
+        const fmt = e.formato || e.categoria;
+        return (
+          selectedCategories.includes(fmt) ||
+          (e.estilos ?? []).some(s => selectedCategories.includes(s)) ||
+          (e.experiencias ?? []).some(s => selectedCategories.includes(s)) ||
+          (e.subcategorias ?? []).some(s => selectedCategories.includes(s))
+        );
+      });
+    if (selectedTimeFilter) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+
+      // Essa Semana: segunda a domingo da semana atual
+      const dayOfWeek = today.getDay(); // 0=dom
+      const mondayOffset = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+      const startOfWeek = new Date(today);
+      startOfWeek.setDate(today.getDate() + mondayOffset);
+      const endOfWeek = new Date(startOfWeek);
+      endOfWeek.setDate(startOfWeek.getDate() + 6);
+
+      // Esse Fim de Semana: sábado e domingo da semana atual
+      const saturday = new Date(startOfWeek);
+      saturday.setDate(startOfWeek.getDate() + 5);
+      const sunday = new Date(startOfWeek);
+      sunday.setDate(startOfWeek.getDate() + 6);
+
+      // Esse Mês: primeiro ao último dia do mês atual
+      const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+      const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
+      data = data.filter(e => {
+        const eventDate = new Date(e.dataReal);
+        eventDate.setHours(0, 0, 0, 0);
+
+        if (selectedTimeFilter === 'Hoje') return eventDate.getTime() === today.getTime();
+        if (selectedTimeFilter === 'Amanhã') return eventDate.getTime() === tomorrow.getTime();
+        if (selectedTimeFilter === 'Essa Semana') return eventDate >= startOfWeek && eventDate <= endOfWeek;
+        if (selectedTimeFilter === 'Esse Fim de Semana') {
+          return eventDate.getTime() === saturday.getTime() || eventDate.getTime() === sunday.getTime();
+        }
+        if (selectedTimeFilter === 'Esse Mês') return eventDate >= startOfMonth && eventDate <= endOfMonth;
+
+        // Range personalizado: RANGE:YYYY-MM-DD:YYYY-MM-DD
+        if (selectedTimeFilter.startsWith('RANGE:')) {
+          const [, startStr, endStr] = selectedTimeFilter.split(':');
+          const rangeStart = new Date(startStr + 'T00:00:00');
+          rangeStart.setHours(0, 0, 0, 0);
+          const rangeEnd = new Date(endStr + 'T00:00:00');
+          rangeEnd.setHours(0, 0, 0, 0);
+          return eventDate >= rangeStart && eventDate <= rangeEnd;
+        }
+
+        return true;
+      });
+    }
+    if (maxPrice !== null) {
+      data = data.filter(e => getMinPrice(e) <= maxPrice);
+    }
+    if (beneficiosFilter) {
+      data = data.filter(e => e.temBeneficioMaisVanta);
+    }
+    // Filtro client-side por texto só quando NÃO temos resultado server-side
+    if (debouncedQuery && !serverSearchResults) {
+      const lowerQuery = debouncedQuery.toLowerCase();
+      data = data.filter(
+        e =>
+          e.titulo.toLowerCase().includes(lowerQuery) ||
+          e.local.toLowerCase().includes(lowerQuery) ||
+          e.cidade.toLowerCase().includes(lowerQuery),
+      );
+    }
+    const sortedData = sortEvents(data);
+    return { visibleEvents: sortedData.slice(0, displayLimit), totalResults: sortedData.length };
+  }, [
+    EVENTOS,
+    serverSearchResults,
+    debouncedQuery,
+    selectedCategories,
+    selectedCities,
+    selectedTimeFilter,
+    maxPrice,
+    beneficiosFilter,
+    displayLimit,
+  ]);
+
+  // ── Busca de pessoas via Supabase ──────────────────────────────────────────
+  const [peopleResults, setPeopleResults] = useState<Membro[]>([]);
+  const [peopleLoading, setPeopleLoading] = useState(false);
+  useEffect(() => {
+    if (activeTab !== 'PEOPLE' || debouncedQuery.length < 2) {
+      setPeopleResults([]);
+      setPeopleLoading(false);
+      return;
+    }
+    let cancelled = false;
+    setPeopleLoading(true);
+    void (async () => {
+      try {
+        const r = await authService.buscarMembros(debouncedQuery, 20);
+        if (cancelled) return;
+        setPeopleResults(r);
+      } catch (err) {
+        console.error('[SearchView] busca pessoas:', err);
+      } finally {
+        if (!cancelled) setPeopleLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [debouncedQuery, activeTab]);
+
+  // ── Spotlight de comunidade na busca de eventos (query direta Supabase) ───
+  const [comunidadeSpotlight, setComunidadeSpotlight] = useState<{
+    comunidade: { id: string; nome: string; foto: string; cidade: string };
+    eventos: Evento[];
+  } | null>(null);
+
+  useEffect(() => {
+    if (!debouncedQuery || debouncedQuery.length < 2 || activeTab !== 'EVENTS') {
+      setComunidadeSpotlight(null);
+      return;
+    }
+    let cancelled = false;
+    supabase
+      .from('comunidades')
+      .select('id, nome, foto, cidade')
+      .eq('ativa', true)
+      .ilike('nome', `%${debouncedQuery}%`)
+      .limit(1)
+      .then(({ data }) => {
+        if (cancelled || !data || data.length === 0) {
+          if (!cancelled) setComunidadeSpotlight(null);
+          return;
+        }
+        const match = data[0] as { id: string; nome: string; foto: string; cidade: string };
+        const eventosComun = EVENTOS.filter(e => !isEventExpired(e) && e.comunidade?.id === match.id)
+          .sort((a, b) => new Date(a.dataReal).getTime() - new Date(b.dataReal).getTime())
+          .slice(0, 3);
+        setComunidadeSpotlight({ comunidade: match, eventos: eventosComun });
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [debouncedQuery, activeTab, EVENTOS]);
+
+  const isDefaultView =
+    !query &&
+    selectedCategories.length === 0 &&
+    selectedCities.length === 0 &&
+    !selectedTimeFilter &&
+    maxPrice === null &&
+    !beneficiosFilter;
+
+  return (
+    <div className="absolute inset-0 flex flex-col bg-[#0a0a0a] animate-in fade-in duration-300">
+      <SearchHeader
+        currentCity={currentCity}
+        query={query}
+        setQuery={setQuery}
+        onClearSearch={clearAllFilters}
+        activeTab={activeTab}
+        onTabChange={tab => {
+          setActiveTab(tab);
+          clearAllFilters();
+        }}
+        selectedCities={selectedCities}
+        onOpenCityFilter={() => setIsCityFilterOpen(true)}
+        selectedCategories={selectedCategories}
+        onOpenEstiloFilter={() => setIsEstiloFilterOpen(true)}
+        selectedTimeFilter={selectedTimeFilter}
+        onOpenTimeFilter={() => setIsTimeFilterOpen(true)}
+        maxPrice={maxPrice}
+        onOpenPriceFilter={() => setIsPriceFilterOpen(true)}
+        beneficiosFilter={beneficiosFilter}
+        onToggleBeneficios={() => {
+          setBeneficiosFilter(p => !p);
+          setDisplayLimit(ITEMS_PER_PAGE);
+        }}
+      />
+      <div ref={contentRef} onScroll={handleScroll} className="flex-1 overflow-y-auto no-scrollbar px-6 pt-6 pb-32">
+        {activeTab === 'EVENTS' ? (
+          <>
+            {comunidadeSpotlight && (
+              <div className="mb-6 animate-in fade-in duration-300">
+                <p className="text-[8px] font-black uppercase tracking-widest text-[#FFD300]/70 mb-3">
+                  Comunidade encontrada
+                </p>
+                <button
+                  onClick={() => onComunidadeClick(comunidadeSpotlight.comunidade.id)}
+                  className="w-full flex items-center gap-4 bg-[#FFD300]/5 border border-[#FFD300]/20 rounded-2xl p-5 mb-4 active:scale-[0.98] transition-all text-left"
+                >
+                  <div className="w-14 h-14 rounded-xl overflow-hidden bg-zinc-800 shrink-0 border border-white/10">
+                    {comunidadeSpotlight.comunidade.foto ? (
+                      <img
+                        loading="lazy"
+                        src={comunidadeSpotlight.comunidade.foto}
+                        className="w-full h-full object-cover"
+                        alt=""
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <Building2 size={20} className="text-zinc-600" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-[7px] font-black uppercase tracking-widest bg-[#FFD300]/15 text-[#FFD300] px-2 py-0.5 rounded">
+                        Comunidade
+                      </span>
+                    </div>
+                    <p className="text-white font-bold text-sm truncate">{comunidadeSpotlight.comunidade.nome}</p>
+                    <p className="text-zinc-500 text-[10px] mt-0.5">Entre para ver todos os eventos</p>
+                    {comunidadeSpotlight.comunidade.cidade && (
+                      <div className="flex items-center gap-1 mt-1">
+                        <MapPin size={9} className="text-zinc-600" />
+                        <p className="text-zinc-600 text-[10px] truncate">{comunidadeSpotlight.comunidade.cidade}</p>
+                      </div>
+                    )}
+                  </div>
+                  <ChevronRight size={16} className="text-[#FFD300] shrink-0" />
+                </button>
+                {comunidadeSpotlight.eventos.length > 0 && (
+                  <>
+                    <p className="text-[8px] font-black uppercase tracking-widest text-zinc-600 mb-3">
+                      Próximos eventos neste local
+                    </p>
+                    <div className="space-y-3 mb-6">
+                      {comunidadeSpotlight.eventos.map(e => (
+                        <button
+                          key={e.id}
+                          onClick={() => onEventClick(e)}
+                          className="w-full flex items-center gap-3 bg-zinc-900/50 border border-white/5 rounded-xl p-3 text-left active:scale-[0.98] transition-all"
+                        >
+                          <div className="w-10 h-10 rounded-lg overflow-hidden shrink-0 bg-zinc-800">
+                            <img loading="lazy" src={e.imagem} className="w-full h-full object-cover" alt={e.titulo} />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-white text-sm font-bold truncate">{e.titulo}</p>
+                            <p className="text-zinc-500 text-[10px] mt-0.5">
+                              {e.data} · {e.horario}
+                            </p>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                    <div className="h-px bg-white/5 mb-6" />
+                  </>
+                )}
+              </div>
+            )}
+            <SearchResults
+              results={visibleEvents}
+              currentCity={currentCity}
+              isDefaultView={isDefaultView}
+              onEventClick={onEventClick}
+              onClearSearch={clearAllFilters}
+            />
+            {visibleEvents.length < totalResults && (
+              <div className="py-10 flex justify-center">
+                <div className="w-6 h-6 border-2 border-[#FFD300] border-t-transparent rounded-full animate-spin"></div>
+              </div>
+            )}
+          </>
+        ) : peopleLoading ? (
+          <div className="flex items-center justify-center py-16">
+            <div className="w-6 h-6 border-2 border-[#FFD300] border-t-transparent rounded-full animate-spin" />
+          </div>
+        ) : (
+          <PeopleResults results={peopleResults} onMemberClick={onMemberClick} />
+        )}
+      </div>
+      <CityFilterModal
+        isOpen={isCityFilterOpen}
+        onClose={() => setIsCityFilterOpen(false)}
+        allCities={cities}
+        selectedCities={selectedCities}
+        onToggleCity={toggleCity}
+        onClear={() => setSelectedCities([])}
+      />
+      <VibeFilterModal
+        isOpen={isEstiloFilterOpen}
+        onClose={() => setIsEstiloFilterOpen(false)}
+        selectedCategories={selectedCategories}
+        onToggleCategory={toggleCategory}
+        onClear={() => setSelectedCategories([])}
+      />
+      <TimeFilterModal
+        isOpen={isTimeFilterOpen}
+        onClose={() => setIsTimeFilterOpen(false)}
+        selectedTimeFilter={selectedTimeFilter}
+        onSelectTimeFilter={filter => {
+          setSelectedTimeFilter(filter);
+          setDisplayLimit(ITEMS_PER_PAGE);
+        }}
+      />
+      <PriceFilterModal
+        isOpen={isPriceFilterOpen}
+        onClose={() => setIsPriceFilterOpen(false)}
+        maxPrice={maxPrice}
+        onSelectMaxPrice={price => {
+          setMaxPrice(price);
+          setDisplayLimit(ITEMS_PER_PAGE);
+        }}
+      />
+    </div>
+  );
+};

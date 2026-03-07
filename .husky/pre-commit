@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+# ─── 1. Lint-staged (Prettier + ESLint) ───
+npx lint-staged
+
+# ─── 2. Security: Gitleaks on staged files ───
+if command -v gitleaks &>/dev/null; then
+  gitleaks protect --staged --config .gitleaks.toml --verbose 2>/dev/null
+  if [ $? -ne 0 ]; then
+    echo "❌ BLOCKED: Secrets detectados nos arquivos staged!"
+    echo "   Remova secrets antes de commitar."
+    exit 1
+  fi
+fi
+
+# ─── 3. TypeScript check ───
+NODE_OPTIONS="--max-old-space-size=4096" npx tsc --noEmit --pretty 2>&1 | head -30
+if [ ${PIPESTATUS[0]} -ne 0 ]; then
+  echo "❌ BLOCKED: Erros TypeScript detectados!"
+  exit 1
+fi

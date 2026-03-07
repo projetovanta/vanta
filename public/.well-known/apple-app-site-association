@@ -1,0 +1,20 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "TEAMID.com.maisvanta.app",
+        "paths": [
+          "/event/*",
+          "/community/*",
+          "/checkout/*"
+        ]
+      }
+    ]
+  },
+  "webcredentials": {
+    "apps": [
+      "TEAMID.com.maisvanta.app"
+    ]
+  }
+}

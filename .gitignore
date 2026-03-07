@@ -1,0 +1,30 @@
+node_modules/
+dist/
+.env
+.env.local
+.env.*.local
+*.DS_Store
+.vercel
+
+.vercel/
+supabase/.temp/
+.cert/
+lighthouse-report.html
+stats.html
+
+# Playwright
+test-results/
+playwright-report/
+blob-report/
+
+# Capacitor
+ios/
+android/
+
+# Audit reports
+audit-reports/
+
+# Screenshots e planilhas soltas
+*.png
+*.xlsx
+!public/**/*.png

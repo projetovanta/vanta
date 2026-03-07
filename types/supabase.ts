@@ -1,0 +1,3978 @@
+export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
+
+export type Database = {
+  // Allows to automatically instantiate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  __InternalSupabase: {
+    PostgrestVersion: '14.1';
+  };
+  public: {
+    Tables: {
+      analytics_events: {
+        Row: {
+          created_at: string | null;
+          event_id: string | null;
+          event_type: string;
+          id: string;
+          metadata: Json | null;
+          user_id: string | null;
+        };
+        Insert: {
+          created_at?: string | null;
+          event_id?: string | null;
+          event_type: string;
+          id?: string;
+          metadata?: Json | null;
+          user_id?: string | null;
+        };
+        Update: {
+          created_at?: string | null;
+          event_id?: string | null;
+          event_type?: string;
+          id?: string;
+          metadata?: Json | null;
+          user_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'analytics_events_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      assinaturas_mais_vanta: {
+        Row: {
+          comunidade_id: string;
+          criado_em: string;
+          criado_por: string;
+          eventos_mv_usados: number | null;
+          fim: string | null;
+          id: string;
+          inicio: string | null;
+          plano: string;
+          plano_id: string | null;
+          plano_snapshot: Json | null;
+          status: string;
+          stripe_customer_id: string | null;
+          stripe_subscription_id: string | null;
+          valor_mensal: number;
+        };
+        Insert: {
+          comunidade_id: string;
+          criado_em?: string;
+          criado_por: string;
+          eventos_mv_usados?: number | null;
+          fim?: string | null;
+          id?: string;
+          inicio?: string | null;
+          plano: string;
+          plano_id?: string | null;
+          plano_snapshot?: Json | null;
+          status?: string;
+          stripe_customer_id?: string | null;
+          stripe_subscription_id?: string | null;
+          valor_mensal?: number;
+        };
+        Update: {
+          comunidade_id?: string;
+          criado_em?: string;
+          criado_por?: string;
+          eventos_mv_usados?: number | null;
+          fim?: string | null;
+          id?: string;
+          inicio?: string | null;
+          plano?: string;
+          plano_id?: string | null;
+          plano_snapshot?: Json | null;
+          status?: string;
+          stripe_customer_id?: string | null;
+          stripe_subscription_id?: string | null;
+          valor_mensal?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'assinaturas_mais_vanta_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: true;
+            referencedRelation: 'comunidades';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'assinaturas_mais_vanta_plano_id_fkey';
+            columns: ['plano_id'];
+            isOneToOne: false;
+            referencedRelation: 'planos_mais_vanta';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      atribuicoes_rbac: {
+        Row: {
+          ativo: boolean;
+          atribuido_em: string;
+          atribuido_por: string | null;
+          cargo: string;
+          id: string;
+          permissoes: string[];
+          tenant_id: string;
+          tenant_type: string;
+          updated_at: string;
+          user_id: string;
+        };
+        Insert: {
+          ativo?: boolean;
+          atribuido_em?: string;
+          atribuido_por?: string | null;
+          cargo: string;
+          id?: string;
+          permissoes?: string[];
+          tenant_id: string;
+          tenant_type: string;
+          updated_at?: string;
+          user_id: string;
+        };
+        Update: {
+          ativo?: boolean;
+          atribuido_em?: string;
+          atribuido_por?: string | null;
+          cargo?: string;
+          id?: string;
+          permissoes?: string[];
+          tenant_id?: string;
+          tenant_type?: string;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
+      audit_logs: {
+        Row: {
+          action: string;
+          actor_name: string | null;
+          created_at: string;
+          entity_id: string | null;
+          entity_type: string;
+          id: string;
+          new_value: Json | null;
+          old_value: Json | null;
+          user_id: string | null;
+        };
+        Insert: {
+          action: string;
+          actor_name?: string | null;
+          created_at?: string;
+          entity_id?: string | null;
+          entity_type: string;
+          id?: string;
+          new_value?: Json | null;
+          old_value?: Json | null;
+          user_id?: string | null;
+        };
+        Update: {
+          action?: string;
+          actor_name?: string | null;
+          created_at?: string;
+          entity_id?: string | null;
+          entity_type?: string;
+          id?: string;
+          new_value?: Json | null;
+          old_value?: Json | null;
+          user_id?: string | null;
+        };
+        Relationships: [];
+      };
+      cargos: {
+        Row: {
+          atribuido_em: string;
+          atribuido_por: string | null;
+          comunidade_id: string;
+          id: string;
+          membro_id: string;
+          tipo: string;
+        };
+        Insert: {
+          atribuido_em?: string;
+          atribuido_por?: string | null;
+          comunidade_id: string;
+          id?: string;
+          membro_id: string;
+          tipo: string;
+        };
+        Update: {
+          atribuido_em?: string;
+          atribuido_por?: string | null;
+          comunidade_id?: string;
+          id?: string;
+          membro_id?: string;
+          tipo?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'cargos_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      categorias_evento: {
+        Row: {
+          ativo: boolean | null;
+          created_at: string | null;
+          id: string;
+          label: string;
+          ordem: number | null;
+          parent_id: string | null;
+        };
+        Insert: {
+          ativo?: boolean | null;
+          created_at?: string | null;
+          id?: string;
+          label: string;
+          ordem?: number | null;
+          parent_id?: string | null;
+        };
+        Update: {
+          ativo?: boolean | null;
+          created_at?: string | null;
+          id?: string;
+          label?: string;
+          ordem?: number | null;
+          parent_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'categorias_evento_parent_id_fkey';
+            columns: ['parent_id'];
+            isOneToOne: false;
+            referencedRelation: 'categorias_evento';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      chargebacks: {
+        Row: {
+          criado_em: string;
+          evento_id: string;
+          gateway_ref: string;
+          id: string;
+          motivo: string | null;
+          status: string;
+          ticket_id: string;
+          valor: number;
+        };
+        Insert: {
+          criado_em?: string;
+          evento_id: string;
+          gateway_ref?: string;
+          id?: string;
+          motivo?: string | null;
+          status?: string;
+          ticket_id: string;
+          valor?: number;
+        };
+        Update: {
+          criado_em?: string;
+          evento_id?: string;
+          gateway_ref?: string;
+          id?: string;
+          motivo?: string | null;
+          status?: string;
+          ticket_id?: string;
+          valor?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'chargebacks_evento_id_fkey';
+            columns: ['evento_id'];
+            isOneToOne: false;
+            referencedRelation: 'eventos_admin';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'chargebacks_ticket_id_fkey';
+            columns: ['ticket_id'];
+            isOneToOne: false;
+            referencedRelation: 'tickets_caixa';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      clube_config: {
+        Row: {
+          atualizado_em: string | null;
+          beneficios_bronze: string[] | null;
+          beneficios_diamante: string[] | null;
+          beneficios_ouro: string[] | null;
+          beneficios_prata: string[] | null;
+          bloqueio1_dias: number | null;
+          bloqueio2_dias: number | null;
+          comunidade_id: string;
+          dias_castigo: number | null;
+          id: string;
+          infracoes_limite: number | null;
+          limite_bronze: number | null;
+          limite_diamante: number | null;
+          limite_ouro: number | null;
+          limite_prata: number | null;
+          prazo_post_horas: number | null;
+        };
+        Insert: {
+          atualizado_em?: string | null;
+          beneficios_bronze?: string[] | null;
+          beneficios_diamante?: string[] | null;
+          beneficios_ouro?: string[] | null;
+          beneficios_prata?: string[] | null;
+          bloqueio1_dias?: number | null;
+          bloqueio2_dias?: number | null;
+          comunidade_id: string;
+          dias_castigo?: number | null;
+          id?: string;
+          infracoes_limite?: number | null;
+          limite_bronze?: number | null;
+          limite_diamante?: number | null;
+          limite_ouro?: number | null;
+          limite_prata?: number | null;
+          prazo_post_horas?: number | null;
+        };
+        Update: {
+          atualizado_em?: string | null;
+          beneficios_bronze?: string[] | null;
+          beneficios_diamante?: string[] | null;
+          beneficios_ouro?: string[] | null;
+          beneficios_prata?: string[] | null;
+          bloqueio1_dias?: number | null;
+          bloqueio2_dias?: number | null;
+          comunidade_id?: string;
+          dias_castigo?: number | null;
+          id?: string;
+          infracoes_limite?: number | null;
+          limite_bronze?: number | null;
+          limite_diamante?: number | null;
+          limite_ouro?: number | null;
+          limite_prata?: number | null;
+          prazo_post_horas?: number | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'clube_config_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: true;
+            referencedRelation: 'comunidades';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      comemoracoes: {
+        Row: {
+          avaliado_em: string | null;
+          avaliado_por: string | null;
+          celular: string;
+          comunidade_id: string;
+          created_at: string;
+          data_aniversario: string | null;
+          data_comemoracao: string;
+          em_analise_em: string | null;
+          evento_id: string | null;
+          id: string;
+          instagram: string;
+          mensagem_gerente: string | null;
+          motivo: string;
+          motivo_outro: string | null;
+          motivo_recusa: string | null;
+          nome_completo: string;
+          ref_code: string | null;
+          solicitante_id: string;
+          status: string;
+          updated_at: string;
+          vendas_count: number;
+          visualizado_em: string | null;
+        };
+        Insert: {
+          avaliado_em?: string | null;
+          avaliado_por?: string | null;
+          celular: string;
+          comunidade_id: string;
+          created_at?: string;
+          data_aniversario?: string | null;
+          data_comemoracao: string;
+          em_analise_em?: string | null;
+          evento_id?: string | null;
+          id?: string;
+          instagram: string;
+          mensagem_gerente?: string | null;
+          motivo: string;
+          motivo_outro?: string | null;
+          motivo_recusa?: string | null;
+          nome_completo: string;
+          ref_code?: string | null;
+          solicitante_id: string;
+          status?: string;
+          updated_at?: string;
+          vendas_count?: number;
+          visualizado_em?: string | null;
+        };
+        Update: {
+          avaliado_em?: string | null;
+          avaliado_por?: string | null;
+          celular?: string;
+          comunidade_id?: string;
+          created_at?: string;
+          data_aniversario?: string | null;
+          data_comemoracao?: string;
+          em_analise_em?: string | null;
+          evento_id?: string | null;
+          id?: string;
+          instagram?: string;
+          mensagem_gerente?: string | null;
+          motivo?: string;
+          motivo_outro?: string | null;
+          motivo_recusa?: string | null;
+          nome_completo?: string;
+          ref_code?: string | null;
+          solicitante_id?: string;
+          status?: string;
+          updated_at?: string;
+          vendas_count?: number;
+          visualizado_em?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'comemoracoes_avaliado_por_fkey';
+            columns: ['avaliado_por'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'comemoracoes_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'comemoracoes_evento_id_fkey';
+            columns: ['evento_id'];
+            isOneToOne: false;
+            referencedRelation: 'eventos_admin';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'comemoracoes_solicitante_id_fkey';
+            columns: ['solicitante_id'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      comemoracoes_config: {
+        Row: {
+          comunidade_id: string;
+          created_at: string;
+          datas_bloqueadas: Json | null;
+          deadline_hora: string | null;
+          evento_id: string | null;
+          habilitado: boolean;
+          id: string;
+          limite_comemoracoes: number | null;
+          updated_at: string;
+        };
+        Insert: {
+          comunidade_id: string;
+          created_at?: string;
+          datas_bloqueadas?: Json | null;
+          deadline_hora?: string | null;
+          evento_id?: string | null;
+          habilitado?: boolean;
+          id?: string;
+          limite_comemoracoes?: number | null;
+          updated_at?: string;
+        };
+        Update: {
+          comunidade_id?: string;
+          created_at?: string;
+          datas_bloqueadas?: Json | null;
+          deadline_hora?: string | null;
+          evento_id?: string | null;
+          habilitado?: boolean;
+          id?: string;
+          limite_comemoracoes?: number | null;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'comemoracoes_config_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'comemoracoes_config_evento_id_fkey';
+            columns: ['evento_id'];
+            isOneToOne: true;
+            referencedRelation: 'eventos_admin';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      comemoracoes_cortesias: {
+        Row: {
+          celular_convidado: string | null;
+          comemoracao_id: string;
+          created_at: string;
+          faixa_id: string;
+          id: string;
+          nome_convidado: string | null;
+          resgatado: boolean;
+        };
+        Insert: {
+          celular_convidado?: string | null;
+          comemoracao_id: string;
+          created_at?: string;
+          faixa_id: string;
+          id?: string;
+          nome_convidado?: string | null;
+          resgatado?: boolean;
+        };
+        Update: {
+          celular_convidado?: string | null;
+          comemoracao_id?: string;
+          created_at?: string;
+          faixa_id?: string;
+          id?: string;
+          nome_convidado?: string | null;
+          resgatado?: boolean;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'comemoracoes_cortesias_comemoracao_id_fkey';
+            columns: ['comemoracao_id'];
+            isOneToOne: false;
+            referencedRelation: 'comemoracoes';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'comemoracoes_cortesias_faixa_id_fkey';
+            columns: ['faixa_id'];
+            isOneToOne: false;
+            referencedRelation: 'comemoracoes_faixas';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      comemoracoes_faixas: {
+        Row: {
+          beneficio_consumo: string | null;
+          config_id: string;
+          cortesias: number;
+          created_at: string;
+          id: string;
+          min_vendas: number;
+          ordem: number;
+        };
+        Insert: {
+          beneficio_consumo?: string | null;
+          config_id: string;
+          cortesias?: number;
+          created_at?: string;
+          id?: string;
+          min_vendas: number;
+          ordem?: number;
+        };
+        Update: {
+          beneficio_consumo?: string | null;
+          config_id?: string;
+          cortesias?: number;
+          created_at?: string;
+          id?: string;
+          min_vendas?: number;
+          ordem?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'comemoracoes_faixas_config_id_fkey';
+            columns: ['config_id'];
+            isOneToOne: false;
+            referencedRelation: 'comemoracoes_config';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      community_follows: {
+        Row: {
+          comunidade_id: string;
+          created_at: string | null;
+          id: string;
+          user_id: string;
+        };
+        Insert: {
+          comunidade_id: string;
+          created_at?: string | null;
+          id?: string;
+          user_id: string;
+        };
+        Update: {
+          comunidade_id?: string;
+          created_at?: string | null;
+          id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'community_follows_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      comprovantes_meia: {
+        Row: {
+          aprovado_em: string | null;
+          aprovado_por: string | null;
+          atualizado_em: string;
+          criado_em: string;
+          foto_url: string;
+          fotos: Json | null;
+          id: string;
+          motivo_rejeicao: string | null;
+          status: string;
+          tipo: string;
+          user_id: string;
+          validade_ate: string | null;
+        };
+        Insert: {
+          aprovado_em?: string | null;
+          aprovado_por?: string | null;
+          atualizado_em?: string;
+          criado_em?: string;
+          foto_url: string;
+          fotos?: Json | null;
+          id?: string;
+          motivo_rejeicao?: string | null;
+          status?: string;
+          tipo: string;
+          user_id: string;
+          validade_ate?: string | null;
+        };
+        Update: {
+          aprovado_em?: string | null;
+          aprovado_por?: string | null;
+          atualizado_em?: string;
+          criado_em?: string;
+          foto_url?: string;
+          fotos?: Json | null;
+          id?: string;
+          motivo_rejeicao?: string | null;
+          status?: string;
+          tipo?: string;
+          user_id?: string;
+          validade_ate?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'comprovantes_meia_aprovado_por_fkey';
+            columns: ['aprovado_por'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'comprovantes_meia_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: true;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      comunidades: {
+        Row: {
+          ativa: boolean;
+          capacidade_max: number | null;
+          cargos_customizados: Json;
+          cep: string | null;
+          cidade: string;
+          cnpj: string | null;
+          coords: Json | null;
+          cota_cortesias: number | null;
+          cota_nomes_lista: number | null;
+          created_at: string;
+          created_by: string | null;
+          descricao: string;
+          dono_id: string | null;
+          endereco: string | null;
+          estado: string | null;
+          evento_privado_ativo: boolean | null;
+          evento_privado_atracoes: Json | null;
+          evento_privado_faixas_capacidade: Json | null;
+          evento_privado_formatos: Json | null;
+          evento_privado_fotos: Json | null;
+          evento_privado_texto: string | null;
+          foto: string | null;
+          foto_capa: string | null;
+          gateway_fee_mode: string;
+          horario_funcionamento: Json;
+          horario_overrides: Json;
+          id: string;
+          nome: string;
+          razao_social: string | null;
+          slug: string | null;
+          taxa_cortesia_excedente_pct: number | null;
+          taxa_minima: number | null;
+          taxa_nome_excedente: number | null;
+          taxa_porta_percent: number | null;
+          taxa_processamento_percent: number | null;
+          telefone: string | null;
+          tier_minimo_mais_vanta: string | null;
+          tipo_comunidade: string | null;
+          updated_at: string;
+          vanta_fee_fixed: number;
+          vanta_fee_percent: number | null;
+          vanta_fee_repasse_percent: number | null;
+        };
+        Insert: {
+          ativa?: boolean;
+          capacidade_max?: number | null;
+          cargos_customizados?: Json;
+          cep?: string | null;
+          cidade?: string;
+          cnpj?: string | null;
+          coords?: Json | null;
+          cota_cortesias?: number | null;
+          cota_nomes_lista?: number | null;
+          created_at?: string;
+          created_by?: string | null;
+          descricao?: string;
+          dono_id?: string | null;
+          endereco?: string | null;
+          estado?: string | null;
+          evento_privado_ativo?: boolean | null;
+          evento_privado_atracoes?: Json | null;
+          evento_privado_faixas_capacidade?: Json | null;
+          evento_privado_formatos?: Json | null;
+          evento_privado_fotos?: Json | null;
+          evento_privado_texto?: string | null;
+          foto?: string | null;
+          foto_capa?: string | null;
+          gateway_fee_mode?: string;
+          horario_funcionamento?: Json;
+          horario_overrides?: Json;
+          id?: string;
+          nome: string;
+          razao_social?: string | null;
+          slug?: string | null;
+          taxa_cortesia_excedente_pct?: number | null;
+          taxa_minima?: number | null;
+          taxa_nome_excedente?: number | null;
+          taxa_porta_percent?: number | null;
+          taxa_processamento_percent?: number | null;
+          telefone?: string | null;
+          tier_minimo_mais_vanta?: string | null;
+          tipo_comunidade?: string | null;
+          updated_at?: string;
+          vanta_fee_fixed?: number;
+          vanta_fee_percent?: number | null;
+          vanta_fee_repasse_percent?: number | null;
+        };
+        Update: {
+          ativa?: boolean;
+          capacidade_max?: number | null;
+          cargos_customizados?: Json;
+          cep?: string | null;
+          cidade?: string;
+          cnpj?: string | null;
+          coords?: Json | null;
+          cota_cortesias?: number | null;
+          cota_nomes_lista?: number | null;
+          created_at?: string;
+          created_by?: string | null;
+          descricao?: string;
+          dono_id?: string | null;
+          endereco?: string | null;
+          estado?: string | null;
+          evento_privado_ativo?: boolean | null;
+          evento_privado_atracoes?: Json | null;
+          evento_privado_faixas_capacidade?: Json | null;
+          evento_privado_formatos?: Json | null;
+          evento_privado_fotos?: Json | null;
+          evento_privado_texto?: string | null;
+          foto?: string | null;
+          foto_capa?: string | null;
+          gateway_fee_mode?: string;
+          horario_funcionamento?: Json;
+          horario_overrides?: Json;
+          id?: string;
+          nome?: string;
+          razao_social?: string | null;
+          slug?: string | null;
+          taxa_cortesia_excedente_pct?: number | null;
+          taxa_minima?: number | null;
+          taxa_nome_excedente?: number | null;
+          taxa_porta_percent?: number | null;
+          taxa_processamento_percent?: number | null;
+          telefone?: string | null;
+          tier_minimo_mais_vanta?: string | null;
+          tipo_comunidade?: string | null;
+          updated_at?: string;
+          vanta_fee_fixed?: number;
+          vanta_fee_percent?: number | null;
+          vanta_fee_repasse_percent?: number | null;
+        };
+        Relationships: [];
+      };
+      convidados_lista: {
+        Row: {
+          checked_in: boolean;
+          checked_in_em: string | null;
+          checked_in_por_nome: string | null;
+          created_at: string;
+          id: string;
+          inserido_por: string | null;
+          inserido_por_nome: string | null;
+          lista_id: string;
+          nome: string;
+          regra_id: string;
+          telefone: string | null;
+        };
+        Insert: {
+          checked_in?: boolean;
+          checked_in_em?: string | null;
+          checked_in_por_nome?: string | null;
+          created_at?: string;
+          id?: string;
+          inserido_por?: string | null;
+          inserido_por_nome?: string | null;
+          lista_id: string;
+          nome: string;
+          regra_id: string;
+          telefone?: string | null;
+        };
+        Update: {
+          checked_in?: boolean;
+          checked_in_em?: string | null;
+          checked_in_por_nome?: string | null;
+          created_at?: string;
+          id?: string;
+          inserido_por?: string | null;
+          inserido_por_nome?: string | null;
+          lista_id?: string;
+          nome?: string;
+          regra_id?: string;
+          telefone?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'convidados_lista_lista_id_fkey';
+            columns: ['lista_id'];
+            isOneToOne: false;
+            referencedRelation: 'listas_evento';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'convidados_lista_regra_id_fkey';
+            columns: ['regra_id'];
+            isOneToOne: false;
+            referencedRelation: 'regras_lista';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      cortesias_config: {
+        Row: {
+          created_at: string;
+          evento_id: string;
+          id: string;
+          limite: number;
+          limites_por_tipo: Json | null;
+          lista_id: string | null;
+          variacoes: string[];
+        };
+        Insert: {
+          created_at?: string;
+          evento_id: string;
+          id?: string;
+          limite?: number;
+          limites_por_tipo?: Json | null;
+          lista_id?: string | null;
+          variacoes?: string[];
+        };
+        Update: {
+          created_at?: string;
+          evento_id?: string;
+          id?: string;
+          limite?: number;
+          limites_por_tipo?: Json | null;
+          lista_id?: string | null;
+          variacoes?: string[];
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'cortesias_config_evento_id_fkey';
+            columns: ['evento_id'];
+            isOneToOne: true;
+            referencedRelation: 'eventos_admin';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      cortesias_log: {
+        Row: {
+          created_at: string;
+          destinatario_nome: string;
+          evento_id: string;
+          id: string;
+          quantidade: number;
+          remetente_nome: string;
+          variacao_label: string;
+        };
+        Insert: {
+          created_at?: string;
+          destinatario_nome?: string;
+          evento_id: string;
+          id?: string;
+          quantidade?: number;
+          remetente_nome?: string;
+          variacao_label?: string;
+        };
+        Update: {
+          created_at?: string;
+          destinatario_nome?: string;
+          evento_id?: string;
+          id?: string;
+          quantidade?: number;
+          remetente_nome?: string;
+          variacao_label?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'cortesias_log_evento_id_fkey';
+            columns: ['evento_id'];
+            isOneToOne: false;
+            referencedRelation: 'eventos_admin';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      cortesias_pendentes: {
+        Row: {
+          created_at: string | null;
+          delegado_por: string | null;
+          destinatario_id: string;
+          evento_data: string | null;
+          evento_id: string;
+          evento_nome: string | null;
+          id: string;
+          nome_convidado: string | null;
+          quantidade: number | null;
+          remetente_nome: string | null;
+          status: string | null;
+          variacao_label: string | null;
+        };
+        Insert: {
+          created_at?: string | null;
+          delegado_por?: string | null;
+          destinatario_id: string;
+          evento_data?: string | null;
+          evento_id: string;
+          evento_nome?: string | null;
+          id?: string;
+          nome_convidado?: string | null;
+          quantidade?: number | null;
+          remetente_nome?: string | null;
+          status?: string | null;
+          variacao_label?: string | null;
+        };
+        Update: {
+          created_at?: string | null;
+          delegado_por?: string | null;
+          destinatario_id?: string;
+          evento_data?: string | null;
+          evento_id?: string;
+          evento_nome?: string | null;
+          id?: string;
+          nome_convidado?: string | null;
+          quantidade?: number | null;
+          remetente_nome?: string | null;
+          status?: string | null;
+          variacao_label?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'cortesias_pendentes_delegado_por_fkey';
+            columns: ['delegado_por'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      cotas_promoter: {
+        Row: {
+          alocado: number;
+          comissao_tipo: string | null;
+          comissao_valor: number | null;
+          created_at: string;
+          id: string;
+          lista_id: string;
+          promoter_id: string;
+          regra_id: string;
+          usado: number;
+        };
+        Insert: {
+          alocado?: number;
+          comissao_tipo?: string | null;
+          comissao_valor?: number | null;
+          created_at?: string;
+          id?: string;
+          lista_id: string;
+          promoter_id: string;
+          regra_id: string;
+          usado?: number;
+        };
+        Update: {
+          alocado?: number;
+          comissao_tipo?: string | null;
+          comissao_valor?: number | null;
+          created_at?: string;
+          id?: string;
+          lista_id?: string;
+          promoter_id?: string;
+          regra_id?: string;
+          usado?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'cotas_promoter_lista_id_fkey';
+            columns: ['lista_id'];
+            isOneToOne: false;
+            referencedRelation: 'listas_evento';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'cotas_promoter_regra_id_fkey';
+            columns: ['regra_id'];
+            isOneToOne: false;
+            referencedRelation: 'regras_lista';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      cupons: {
+        Row: {
+          ativo: boolean;
+          codigo: string;
+          comunidade_id: string | null;
+          criado_em: string;
+          criado_por: string;
+          evento_id: string | null;
+          id: string;
+          limite_usos: number | null;
+          tipo: string;
+          usos: number;
+          valido_ate: string | null;
+          valor: number;
+        };
+        Insert: {
+          ativo?: boolean;
+          codigo: string;
+          comunidade_id?: string | null;
+          criado_em?: string;
+          criado_por: string;
+          evento_id?: string | null;
+          id?: string;
+          limite_usos?: number | null;
+          tipo?: string;
+          usos?: number;
+          valido_ate?: string | null;
+          valor?: number;
+        };
+        Update: {
+          ativo?: boolean;
+          codigo?: string;
+          comunidade_id?: string | null;
+          criado_em?: string;
+          criado_por?: string;
+          evento_id?: string | null;
+          id?: string;
+          limite_usos?: number | null;
+          tipo?: string;
+          usos?: number;
+          valido_ate?: string | null;
+          valor?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'cupons_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'cupons_evento_id_fkey';
+            columns: ['evento_id'];
+            isOneToOne: false;
+            referencedRelation: 'eventos_admin';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      equipe_evento: {
+        Row: {
+          created_at: string;
+          evento_id: string;
+          id: string;
+          liberar_lista: boolean;
+          membro_id: string;
+          papel: string;
+          permissoes: string[] | null;
+        };
+        Insert: {
+          created_at?: string;
+          evento_id: string;
+          id?: string;
+          liberar_lista?: boolean;
+          membro_id: string;
+          papel: string;
+          permissoes?: string[] | null;
+        };
+        Update: {
+          created_at?: string;
+          evento_id?: string;
+          id?: string;
+          liberar_lista?: boolean;
+          membro_id?: string;
+          papel?: string;
+          permissoes?: string[] | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'equipe_evento_evento_id_fkey';
+            columns: ['evento_id'];
+            isOneToOne: false;
+            referencedRelation: 'eventos_admin';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      estilos: {
+        Row: {
+          ativo: boolean | null;
+          created_at: string | null;
+          id: string;
+          label: string;
+          ordem: number | null;
+        };
+        Insert: {
+          ativo?: boolean | null;
+          created_at?: string | null;
+          id?: string;
+          label: string;
+          ordem?: number | null;
+        };
+        Update: {
+          ativo?: boolean | null;
+          created_at?: string | null;
+          id?: string;
+          label?: string;
+          ordem?: number | null;
+        };
+        Relationships: [];
+      };
+      evento_favoritos: {
+        Row: {
+          created_at: string | null;
+          evento_id: string;
+          id: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string | null;
+          evento_id: string;
+          id?: string;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string | null;
+          evento_id?: string;
+          id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'evento_favoritos_evento_id_fkey';
+            columns: ['evento_id'];
+            isOneToOne: false;
+            referencedRelation: 'eventos_admin';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      eventos_admin: {
+        Row: {
+          caixa_ativo: boolean;
+          cancelamento_etapa: string | null;
+          cancelamento_motivo: string | null;
+          cancelamento_solicitado_por: string | null;
+          categoria: string | null;
+          cidade: string | null;
+          codigo_afiliado: string | null;
+          comissao_vanta: number | null;
+          comunidade_id: string | null;
+          coords: Json | null;
+          cota_cortesias: number | null;
+          cota_nomes_lista: number | null;
+          created_at: string;
+          created_by: string | null;
+          data_fim: string | null;
+          data_inicio: string;
+          descricao: string;
+          edicao_motivo: string | null;
+          edicao_pendente: Json | null;
+          edicao_status: string | null;
+          endereco: string | null;
+          estilos: string[] | null;
+          evento_origem_id: string | null;
+          experiencias: string[] | null;
+          formato: string | null;
+          foto: string | null;
+          gateway_fee_mode: string;
+          id: string;
+          link_externo: string | null;
+          local: string;
+          mesas_ativo: boolean | null;
+          motivo_rejeicao: string | null;
+          nome: string;
+          permissoes_produtor: string[] | null;
+          planta_mesas: string | null;
+          plataforma_externa: string | null;
+          politica_reembolso: string | null;
+          prazo_pagamento_dias: number | null;
+          prazo_reembolso_dias: number | null;
+          proposta_mensagem: string | null;
+          proposta_rodada: number | null;
+          proposta_status: string | null;
+          publicado: boolean;
+          quem_paga_servico: string | null;
+          recorrencia: string;
+          recorrencia_ate: string | null;
+          rejeicao_campos: Json | null;
+          rodada_negociacao: number | null;
+          rodada_rejeicao: number | null;
+          slug: string | null;
+          socio_convidado_id: string | null;
+          split_produtor: number | null;
+          split_socio: number | null;
+          status_evento: string | null;
+          subcategorias: string[] | null;
+          taxa_cortesia_excedente_pct: number | null;
+          taxa_fixa_evento: number | null;
+          taxa_minima: number | null;
+          taxa_nome_excedente: number | null;
+          taxa_override: number | null;
+          taxa_porta_percent: number | null;
+          taxa_processamento_percent: number | null;
+          tipo_fluxo: string | null;
+          updated_at: string;
+          vanta_fee_fixed: number;
+          vanta_fee_percent: number | null;
+          venda_vanta: boolean | null;
+        };
+        Insert: {
+          caixa_ativo?: boolean;
+          cancelamento_etapa?: string | null;
+          cancelamento_motivo?: string | null;
+          cancelamento_solicitado_por?: string | null;
+          categoria?: string | null;
+          cidade?: string | null;
+          codigo_afiliado?: string | null;
+          comissao_vanta?: number | null;
+          comunidade_id?: string | null;
+          coords?: Json | null;
+          cota_cortesias?: number | null;
+          cota_nomes_lista?: number | null;
+          created_at?: string;
+          created_by?: string | null;
+          data_fim?: string | null;
+          data_inicio: string;
+          descricao?: string;
+          edicao_motivo?: string | null;
+          edicao_pendente?: Json | null;
+          edicao_status?: string | null;
+          endereco?: string | null;
+          estilos?: string[] | null;
+          evento_origem_id?: string | null;
+          experiencias?: string[] | null;
+          formato?: string | null;
+          foto?: string | null;
+          gateway_fee_mode?: string;
+          id?: string;
+          link_externo?: string | null;
+          local?: string;
+          mesas_ativo?: boolean | null;
+          motivo_rejeicao?: string | null;
+          nome: string;
+          permissoes_produtor?: string[] | null;
+          planta_mesas?: string | null;
+          plataforma_externa?: string | null;
+          politica_reembolso?: string | null;
+          prazo_pagamento_dias?: number | null;
+          prazo_reembolso_dias?: number | null;
+          proposta_mensagem?: string | null;
+          proposta_rodada?: number | null;
+          proposta_status?: string | null;
+          publicado?: boolean;
+          quem_paga_servico?: string | null;
+          recorrencia?: string;
+          recorrencia_ate?: string | null;
+          rejeicao_campos?: Json | null;
+          rodada_negociacao?: number | null;
+          rodada_rejeicao?: number | null;
+          slug?: string | null;
+          socio_convidado_id?: string | null;
+          split_produtor?: number | null;
+          split_socio?: number | null;
+          status_evento?: string | null;
+          subcategorias?: string[] | null;
+          taxa_cortesia_excedente_pct?: number | null;
+          taxa_fixa_evento?: number | null;
+          taxa_minima?: number | null;
+          taxa_nome_excedente?: number | null;
+          taxa_override?: number | null;
+          taxa_porta_percent?: number | null;
+          taxa_processamento_percent?: number | null;
+          tipo_fluxo?: string | null;
+          updated_at?: string;
+          vanta_fee_fixed?: number;
+          vanta_fee_percent?: number | null;
+          venda_vanta?: boolean | null;
+        };
+        Update: {
+          caixa_ativo?: boolean;
+          cancelamento_etapa?: string | null;
+          cancelamento_motivo?: string | null;
+          cancelamento_solicitado_por?: string | null;
+          categoria?: string | null;
+          cidade?: string | null;
+          codigo_afiliado?: string | null;
+          comissao_vanta?: number | null;
+          comunidade_id?: string | null;
+          coords?: Json | null;
+          cota_cortesias?: number | null;
+          cota_nomes_lista?: number | null;
+          created_at?: string;
+          created_by?: string | null;
+          data_fim?: string | null;
+          data_inicio?: string;
+          descricao?: string;
+          edicao_motivo?: string | null;
+          edicao_pendente?: Json | null;
+          edicao_status?: string | null;
+          endereco?: string | null;
+          estilos?: string[] | null;
+          evento_origem_id?: string | null;
+          experiencias?: string[] | null;
+          formato?: string | null;
+          foto?: string | null;
+          gateway_fee_mode?: string;
+          id?: string;
+          link_externo?: string | null;
+          local?: string;
+          mesas_ativo?: boolean | null;
+          motivo_rejeicao?: string | null;
+          nome?: string;
+          permissoes_produtor?: string[] | null;
+          planta_mesas?: string | null;
+          plataforma_externa?: string | null;
+          politica_reembolso?: string | null;
+          prazo_pagamento_dias?: number | null;
+          prazo_reembolso_dias?: number | null;
+          proposta_mensagem?: string | null;
+          proposta_rodada?: number | null;
+          proposta_status?: string | null;
+          publicado?: boolean;
+          quem_paga_servico?: string | null;
+          recorrencia?: string;
+          recorrencia_ate?: string | null;
+          rejeicao_campos?: Json | null;
+          rodada_negociacao?: number | null;
+          rodada_rejeicao?: number | null;
+          slug?: string | null;
+          socio_convidado_id?: string | null;
+          split_produtor?: number | null;
+          split_socio?: number | null;
+          status_evento?: string | null;
+          subcategorias?: string[] | null;
+          taxa_cortesia_excedente_pct?: number | null;
+          taxa_fixa_evento?: number | null;
+          taxa_minima?: number | null;
+          taxa_nome_excedente?: number | null;
+          taxa_override?: number | null;
+          taxa_porta_percent?: number | null;
+          taxa_processamento_percent?: number | null;
+          tipo_fluxo?: string | null;
+          updated_at?: string;
+          vanta_fee_fixed?: number;
+          vanta_fee_percent?: number | null;
+          venda_vanta?: boolean | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'eventos_admin_cancelamento_solicitado_por_fkey';
+            columns: ['cancelamento_solicitado_por'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'eventos_admin_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'eventos_admin_evento_origem_id_fkey';
+            columns: ['evento_origem_id'];
+            isOneToOne: false;
+            referencedRelation: 'eventos_admin';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      eventos_privados: {
+        Row: {
+          atracoes: Json;
+          avaliado_em: string | null;
+          avaliado_por: string | null;
+          comunidade_id: string;
+          created_at: string;
+          data_estimativa: string | null;
+          data_evento: string | null;
+          descricao: string;
+          em_analise_em: string | null;
+          email: string;
+          empresa: string;
+          evento_id: string | null;
+          faixa_capacidade: string;
+          formatos: Json;
+          horario: string;
+          id: string;
+          instagram: string;
+          mensagem_gerente: string | null;
+          motivo_recusa: string | null;
+          nome_completo: string;
+          solicitante_id: string;
+          status: string;
+          telefone: string;
+          updated_at: string;
+          visualizado_em: string | null;
+        };
+        Insert: {
+          atracoes?: Json;
+          avaliado_em?: string | null;
+          avaliado_por?: string | null;
+          comunidade_id: string;
+          created_at?: string;
+          data_estimativa?: string | null;
+          data_evento?: string | null;
+          descricao: string;
+          em_analise_em?: string | null;
+          email: string;
+          empresa: string;
+          evento_id?: string | null;
+          faixa_capacidade: string;
+          formatos?: Json;
+          horario: string;
+          id?: string;
+          instagram: string;
+          mensagem_gerente?: string | null;
+          motivo_recusa?: string | null;
+          nome_completo: string;
+          solicitante_id: string;
+          status?: string;
+          telefone: string;
+          updated_at?: string;
+          visualizado_em?: string | null;
+        };
+        Update: {
+          atracoes?: Json;
+          avaliado_em?: string | null;
+          avaliado_por?: string | null;
+          comunidade_id?: string;
+          created_at?: string;
+          data_estimativa?: string | null;
+          data_evento?: string | null;
+          descricao?: string;
+          em_analise_em?: string | null;
+          email?: string;
+          empresa?: string;
+          evento_id?: string | null;
+          faixa_capacidade?: string;
+          formatos?: Json;
+          horario?: string;
+          id?: string;
+          instagram?: string;
+          mensagem_gerente?: string | null;
+          motivo_recusa?: string | null;
+          nome_completo?: string;
+          solicitante_id?: string;
+          status?: string;
+          telefone?: string;
+          updated_at?: string;
+          visualizado_em?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'eventos_privados_avaliado_por_fkey';
+            columns: ['avaliado_por'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'eventos_privados_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'eventos_privados_evento_id_fkey';
+            columns: ['evento_id'];
+            isOneToOne: false;
+            referencedRelation: 'eventos_admin';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'eventos_privados_solicitante_id_fkey';
+            columns: ['solicitante_id'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      experiencias: {
+        Row: {
+          ativo: boolean | null;
+          created_at: string | null;
+          id: string;
+          label: string;
+          ordem: number | null;
+        };
+        Insert: {
+          ativo?: boolean | null;
+          created_at?: string | null;
+          id?: string;
+          label: string;
+          ordem?: number | null;
+        };
+        Update: {
+          ativo?: boolean | null;
+          created_at?: string | null;
+          id?: string;
+          label?: string;
+          ordem?: number | null;
+        };
+        Relationships: [];
+      };
+      formatos: {
+        Row: {
+          ativo: boolean | null;
+          created_at: string | null;
+          id: string;
+          label: string;
+          ordem: number | null;
+        };
+        Insert: {
+          ativo?: boolean | null;
+          created_at?: string | null;
+          id?: string;
+          label: string;
+          ordem?: number | null;
+        };
+        Update: {
+          ativo?: boolean | null;
+          created_at?: string | null;
+          id?: string;
+          label?: string;
+          ordem?: number | null;
+        };
+        Relationships: [];
+      };
+      friendships: {
+        Row: {
+          addressee_id: string;
+          created_at: string;
+          id: string;
+          requester_id: string;
+          status: string;
+          updated_at: string;
+        };
+        Insert: {
+          addressee_id: string;
+          created_at?: string;
+          id?: string;
+          requester_id: string;
+          status?: string;
+          updated_at?: string;
+        };
+        Update: {
+          addressee_id?: string;
+          created_at?: string;
+          id?: string;
+          requester_id?: string;
+          status?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      infracoes_mais_vanta: {
+        Row: {
+          criado_em: string | null;
+          criado_por: string | null;
+          evento_id: string | null;
+          evento_nome: string | null;
+          id: string;
+          tipo: string;
+          user_id: string;
+        };
+        Insert: {
+          criado_em?: string | null;
+          criado_por?: string | null;
+          evento_id?: string | null;
+          evento_nome?: string | null;
+          id?: string;
+          tipo: string;
+          user_id: string;
+        };
+        Update: {
+          criado_em?: string | null;
+          criado_por?: string | null;
+          evento_id?: string | null;
+          evento_nome?: string | null;
+          id?: string;
+          tipo?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
+      interesses: {
+        Row: {
+          ativo: boolean;
+          created_at: string | null;
+          icone: string;
+          id: string;
+          label: string;
+          ordem: number;
+        };
+        Insert: {
+          ativo?: boolean;
+          created_at?: string | null;
+          icone?: string;
+          id?: string;
+          label: string;
+          ordem?: number;
+        };
+        Update: {
+          ativo?: boolean;
+          created_at?: string | null;
+          icone?: string;
+          id?: string;
+          label?: string;
+          ordem?: number;
+        };
+        Relationships: [];
+      };
+      listas_evento: {
+        Row: {
+          created_at: string;
+          evento_id: string;
+          id: string;
+          teto_global_total: number;
+        };
+        Insert: {
+          created_at?: string;
+          evento_id: string;
+          id?: string;
+          teto_global_total?: number;
+        };
+        Update: {
+          created_at?: string;
+          evento_id?: string;
+          id?: string;
+          teto_global_total?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'listas_evento_evento_id_fkey';
+            columns: ['evento_id'];
+            isOneToOne: false;
+            referencedRelation: 'eventos_admin';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      lotes: {
+        Row: {
+          ativo: boolean;
+          created_at: string;
+          data_validade: string | null;
+          evento_id: string;
+          id: string;
+          nome: string;
+          ordem: number;
+          virar_pct: number | null;
+        };
+        Insert: {
+          ativo?: boolean;
+          created_at?: string;
+          data_validade?: string | null;
+          evento_id: string;
+          id?: string;
+          nome: string;
+          ordem?: number;
+          virar_pct?: number | null;
+        };
+        Update: {
+          ativo?: boolean;
+          created_at?: string;
+          data_validade?: string | null;
+          evento_id?: string;
+          id?: string;
+          nome?: string;
+          ordem?: number;
+          virar_pct?: number | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'lotes_evento_id_fkey';
+            columns: ['evento_id'];
+            isOneToOne: false;
+            referencedRelation: 'eventos_admin';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      lotes_mais_vanta: {
+        Row: {
+          acompanhantes: number | null;
+          com_acompanhante: boolean;
+          descricao: string | null;
+          evento_id: string;
+          id: string;
+          prazo: string | null;
+          quantidade: number;
+          reservados: number;
+          tier_id: string | null;
+          tier_minimo: string;
+          tipo_acesso: string | null;
+        };
+        Insert: {
+          acompanhantes?: number | null;
+          com_acompanhante?: boolean;
+          descricao?: string | null;
+          evento_id: string;
+          id?: string;
+          prazo?: string | null;
+          quantidade?: number;
+          reservados?: number;
+          tier_id?: string | null;
+          tier_minimo: string;
+          tipo_acesso?: string | null;
+        };
+        Update: {
+          acompanhantes?: number | null;
+          com_acompanhante?: boolean;
+          descricao?: string | null;
+          evento_id?: string;
+          id?: string;
+          prazo?: string | null;
+          quantidade?: number;
+          reservados?: number;
+          tier_id?: string | null;
+          tier_minimo?: string;
+          tipo_acesso?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'lotes_mais_vanta_evento_id_fkey';
+            columns: ['evento_id'];
+            isOneToOne: false;
+            referencedRelation: 'eventos_admin';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      mais_vanta_config: {
+        Row: {
+          atualizado_em: string | null;
+          atualizado_por: string | null;
+          beneficios_disponiveis: Json;
+          bloqueio1_dias: number;
+          bloqueio2_dias: number;
+          descricao_programa: string;
+          email_contato: string;
+          hashtags_obrigatorias: string[];
+          id: string;
+          infracoes_limite: number;
+          mencoes_obrigatorias: string[];
+          nome_programa: string;
+          prazo_post_horas: number;
+          termos_customizados: string | null;
+          vantagens_membro: Json;
+          vantagens_venue: Json;
+        };
+        Insert: {
+          atualizado_em?: string | null;
+          atualizado_por?: string | null;
+          beneficios_disponiveis?: Json;
+          bloqueio1_dias?: number;
+          bloqueio2_dias?: number;
+          descricao_programa?: string;
+          email_contato?: string;
+          hashtags_obrigatorias?: string[];
+          id?: string;
+          infracoes_limite?: number;
+          mencoes_obrigatorias?: string[];
+          nome_programa?: string;
+          prazo_post_horas?: number;
+          termos_customizados?: string | null;
+          vantagens_membro?: Json;
+          vantagens_venue?: Json;
+        };
+        Update: {
+          atualizado_em?: string | null;
+          atualizado_por?: string | null;
+          beneficios_disponiveis?: Json;
+          bloqueio1_dias?: number;
+          bloqueio2_dias?: number;
+          descricao_programa?: string;
+          email_contato?: string;
+          hashtags_obrigatorias?: string[];
+          id?: string;
+          infracoes_limite?: number;
+          mencoes_obrigatorias?: string[];
+          nome_programa?: string;
+          prazo_post_horas?: number;
+          termos_customizados?: string | null;
+          vantagens_membro?: Json;
+          vantagens_venue?: Json;
+        };
+        Relationships: [];
+      };
+      membros_clube: {
+        Row: {
+          aprovado_em: string;
+          aprovado_por: string;
+          ativo: boolean;
+          banido_em: string | null;
+          banido_permanente: boolean | null;
+          bloqueio_ate: string | null;
+          bloqueio_nivel: number | null;
+          castigo_ate: string | null;
+          castigo_motivo: string | null;
+          comunidade_origem: string | null;
+          convidado_por: string | null;
+          id: string;
+          instagram_handle: string | null;
+          instagram_seguidores: number | null;
+          instagram_verificado: boolean | null;
+          instagram_verificado_em: string | null;
+          meta_user_id: string | null;
+          tier: string;
+          user_id: string;
+        };
+        Insert: {
+          aprovado_em?: string;
+          aprovado_por: string;
+          ativo?: boolean;
+          banido_em?: string | null;
+          banido_permanente?: boolean | null;
+          bloqueio_ate?: string | null;
+          bloqueio_nivel?: number | null;
+          castigo_ate?: string | null;
+          castigo_motivo?: string | null;
+          comunidade_origem?: string | null;
+          convidado_por?: string | null;
+          id?: string;
+          instagram_handle?: string | null;
+          instagram_seguidores?: number | null;
+          instagram_verificado?: boolean | null;
+          instagram_verificado_em?: string | null;
+          meta_user_id?: string | null;
+          tier: string;
+          user_id: string;
+        };
+        Update: {
+          aprovado_em?: string;
+          aprovado_por?: string;
+          ativo?: boolean;
+          banido_em?: string | null;
+          banido_permanente?: boolean | null;
+          bloqueio_ate?: string | null;
+          bloqueio_nivel?: number | null;
+          castigo_ate?: string | null;
+          castigo_motivo?: string | null;
+          comunidade_origem?: string | null;
+          convidado_por?: string | null;
+          id?: string;
+          instagram_handle?: string | null;
+          instagram_seguidores?: number | null;
+          instagram_verificado?: boolean | null;
+          instagram_verificado_em?: string | null;
+          meta_user_id?: string | null;
+          tier?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'membros_clube_comunidade_origem_fkey';
+            columns: ['comunidade_origem'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      mesas: {
+        Row: {
+          capacidade: number;
+          created_at: string;
+          evento_id: string;
+          id: string;
+          label: string;
+          reservado_por: string | null;
+          status: string;
+          valor: number;
+          x: number;
+          y: number;
+        };
+        Insert: {
+          capacidade?: number;
+          created_at?: string;
+          evento_id: string;
+          id?: string;
+          label?: string;
+          reservado_por?: string | null;
+          status?: string;
+          valor?: number;
+          x?: number;
+          y?: number;
+        };
+        Update: {
+          capacidade?: number;
+          created_at?: string;
+          evento_id?: string;
+          id?: string;
+          label?: string;
+          reservado_por?: string | null;
+          status?: string;
+          valor?: number;
+          x?: number;
+          y?: number;
+        };
+        Relationships: [];
+      };
+      messages: {
+        Row: {
+          created_at: string;
+          deleted_at: string | null;
+          id: string;
+          is_read: boolean;
+          reactions: Json;
+          read_at: string | null;
+          recipient_id: string;
+          sender_id: string;
+          text: string;
+        };
+        Insert: {
+          created_at?: string;
+          deleted_at?: string | null;
+          id?: string;
+          is_read?: boolean;
+          reactions?: Json;
+          read_at?: string | null;
+          recipient_id: string;
+          sender_id: string;
+          text: string;
+        };
+        Update: {
+          created_at?: string;
+          deleted_at?: string | null;
+          id?: string;
+          is_read?: boolean;
+          reactions?: Json;
+          read_at?: string | null;
+          recipient_id?: string;
+          sender_id?: string;
+          text?: string;
+        };
+        Relationships: [];
+      };
+      niveis_prestigio: {
+        Row: {
+          cor: string;
+          created_at: string;
+          icone: string | null;
+          id: string;
+          nome: string;
+        };
+        Insert: {
+          cor?: string;
+          created_at?: string;
+          icone?: string | null;
+          id?: string;
+          nome: string;
+        };
+        Update: {
+          cor?: string;
+          created_at?: string;
+          icone?: string | null;
+          id?: string;
+          nome?: string;
+        };
+        Relationships: [];
+      };
+      notificacoes_posevento: {
+        Row: {
+          canal: string;
+          corpo_mensagem: string | null;
+          enviada_em: string;
+          evento_id: string;
+          id: string;
+          lida_em: string | null;
+          link_contexto: string | null;
+          membro_id: string;
+          status: string;
+          tipo: string;
+        };
+        Insert: {
+          canal?: string;
+          corpo_mensagem?: string | null;
+          enviada_em?: string;
+          evento_id: string;
+          id?: string;
+          lida_em?: string | null;
+          link_contexto?: string | null;
+          membro_id: string;
+          status?: string;
+          tipo: string;
+        };
+        Update: {
+          canal?: string;
+          corpo_mensagem?: string | null;
+          enviada_em?: string;
+          evento_id?: string;
+          id?: string;
+          lida_em?: string | null;
+          link_contexto?: string | null;
+          membro_id?: string;
+          status?: string;
+          tipo?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'notificacoes_posevento_evento_id_fkey';
+            columns: ['evento_id'];
+            isOneToOne: false;
+            referencedRelation: 'eventos_admin';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'notificacoes_posevento_membro_id_fkey';
+            columns: ['membro_id'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      notifications: {
+        Row: {
+          created_at: string | null;
+          id: string;
+          lida: boolean | null;
+          link: string | null;
+          mensagem: string;
+          tipo: string | null;
+          titulo: string;
+          user_id: string | null;
+        };
+        Insert: {
+          created_at?: string | null;
+          id?: string;
+          lida?: boolean | null;
+          link?: string | null;
+          mensagem: string;
+          tipo?: string | null;
+          titulo: string;
+          user_id?: string | null;
+        };
+        Update: {
+          created_at?: string | null;
+          id?: string;
+          lida?: boolean | null;
+          link?: string | null;
+          mensagem?: string;
+          tipo?: string | null;
+          titulo?: string;
+          user_id?: string | null;
+        };
+        Relationships: [];
+      };
+      pagamentos_promoter: {
+        Row: {
+          cota_id: string;
+          criado_em: string;
+          data: string;
+          evento_id: string;
+          id: string;
+          observacao: string | null;
+          promoter_id: string;
+          registrado_por: string;
+          valor: number;
+        };
+        Insert: {
+          cota_id: string;
+          criado_em?: string;
+          data?: string;
+          evento_id: string;
+          id?: string;
+          observacao?: string | null;
+          promoter_id: string;
+          registrado_por: string;
+          valor: number;
+        };
+        Update: {
+          cota_id?: string;
+          criado_em?: string;
+          data?: string;
+          evento_id?: string;
+          id?: string;
+          observacao?: string | null;
+          promoter_id?: string;
+          registrado_por?: string;
+          valor?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'pagamentos_promoter_cota_id_fkey';
+            columns: ['cota_id'];
+            isOneToOne: false;
+            referencedRelation: 'cotas_promoter';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'pagamentos_promoter_evento_id_fkey';
+            columns: ['evento_id'];
+            isOneToOne: false;
+            referencedRelation: 'eventos_admin';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      passport_aprovacoes: {
+        Row: {
+          cidade: string | null;
+          comunidade_id: string | null;
+          id: string;
+          resolvido_em: string | null;
+          resolvido_por: string | null;
+          solicitado_em: string;
+          status: string;
+          user_id: string;
+        };
+        Insert: {
+          cidade?: string | null;
+          comunidade_id?: string | null;
+          id?: string;
+          resolvido_em?: string | null;
+          resolvido_por?: string | null;
+          solicitado_em?: string;
+          status?: string;
+          user_id: string;
+        };
+        Update: {
+          cidade?: string | null;
+          comunidade_id?: string | null;
+          id?: string;
+          resolvido_em?: string | null;
+          resolvido_por?: string | null;
+          solicitado_em?: string;
+          status?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'passport_aprovacoes_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      planos_mais_vanta: {
+        Row: {
+          acompanhante: boolean;
+          ativo: boolean;
+          atualizado_em: string | null;
+          criado_em: string | null;
+          descricao: string | null;
+          destaque: boolean;
+          dias_castigo: number;
+          id: string;
+          limite_eventos_mv: number;
+          limite_membros: number;
+          limite_vagas_evento: number;
+          nome: string;
+          ordem: number;
+          prazo_post_horas: number;
+          preco_avulso: number;
+          preco_mensal: number;
+          tier_minimo: string;
+        };
+        Insert: {
+          acompanhante?: boolean;
+          ativo?: boolean;
+          atualizado_em?: string | null;
+          criado_em?: string | null;
+          descricao?: string | null;
+          destaque?: boolean;
+          dias_castigo?: number;
+          id?: string;
+          limite_eventos_mv?: number;
+          limite_membros?: number;
+          limite_vagas_evento?: number;
+          nome: string;
+          ordem?: number;
+          prazo_post_horas?: number;
+          preco_avulso?: number;
+          preco_mensal?: number;
+          tier_minimo?: string;
+        };
+        Update: {
+          acompanhante?: boolean;
+          ativo?: boolean;
+          atualizado_em?: string | null;
+          criado_em?: string | null;
+          descricao?: string | null;
+          destaque?: boolean;
+          dias_castigo?: number;
+          id?: string;
+          limite_eventos_mv?: number;
+          limite_membros?: number;
+          limite_vagas_evento?: number;
+          nome?: string;
+          ordem?: number;
+          prazo_post_horas?: number;
+          preco_avulso?: number;
+          preco_mensal?: number;
+          tier_minimo?: string;
+        };
+        Relationships: [];
+      };
+      pmf_responses: {
+        Row: {
+          created_at: string | null;
+          id: string;
+          response: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string | null;
+          id?: string;
+          response: string;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string | null;
+          id?: string;
+          response?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'pmf_responses_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: true;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      profiles: {
+        Row: {
+          album_urls: string[];
+          avatar_url: string | null;
+          biografia: string;
+          biometria_captured: boolean;
+          biometria_url: string | null;
+          birth_date: string | null;
+          cidade: string | null;
+          city: string | null;
+          created_at: string | null;
+          curadoria_concluida: boolean;
+          data_nascimento: string | null;
+          destaque_curadoria: boolean | null;
+          email: string | null;
+          estado: string | null;
+          excluido: boolean | null;
+          excluido_em: string | null;
+          foto: string | null;
+          foto_perfil: string | null;
+          full_name: string;
+          genero: string | null;
+          id: string;
+          instagram: string | null;
+          instagram_followers: number | null;
+          interesses: string[];
+          last_seen: string | null;
+          mood_emoji: string | null;
+          mood_expires_at: string | null;
+          mood_text: string | null;
+          nascimento: string | null;
+          nome: string | null;
+          notas_admin: string | null;
+          pix_chave: string | null;
+          pix_tipo: string | null;
+          prestigio_id: string | null;
+          privacidade: Json;
+          role: string | null;
+          state: string | null;
+          status: string | null;
+          tags_curadoria: string[];
+          telefone: string | null;
+          telefone_ddd: string;
+          telefone_numero: string;
+          tos_accepted_at: string | null;
+          tos_ip: string | null;
+          tos_version: string | null;
+          updated_at: string | null;
+          wallet_pin_hash: string | null;
+        };
+        Insert: {
+          album_urls?: string[];
+          avatar_url?: string | null;
+          biografia?: string;
+          biometria_captured?: boolean;
+          biometria_url?: string | null;
+          birth_date?: string | null;
+          cidade?: string | null;
+          city?: string | null;
+          created_at?: string | null;
+          curadoria_concluida?: boolean;
+          data_nascimento?: string | null;
+          destaque_curadoria?: boolean | null;
+          email?: string | null;
+          estado?: string | null;
+          excluido?: boolean | null;
+          excluido_em?: string | null;
+          foto?: string | null;
+          foto_perfil?: string | null;
+          full_name?: string;
+          genero?: string | null;
+          id: string;
+          instagram?: string | null;
+          instagram_followers?: number | null;
+          interesses?: string[];
+          last_seen?: string | null;
+          mood_emoji?: string | null;
+          mood_expires_at?: string | null;
+          mood_text?: string | null;
+          nascimento?: string | null;
+          nome?: string | null;
+          notas_admin?: string | null;
+          pix_chave?: string | null;
+          pix_tipo?: string | null;
+          prestigio_id?: string | null;
+          privacidade?: Json;
+          role?: string | null;
+          state?: string | null;
+          status?: string | null;
+          tags_curadoria?: string[];
+          telefone?: string | null;
+          telefone_ddd?: string;
+          telefone_numero?: string;
+          tos_accepted_at?: string | null;
+          tos_ip?: string | null;
+          tos_version?: string | null;
+          updated_at?: string | null;
+          wallet_pin_hash?: string | null;
+        };
+        Update: {
+          album_urls?: string[];
+          avatar_url?: string | null;
+          biografia?: string;
+          biometria_captured?: boolean;
+          biometria_url?: string | null;
+          birth_date?: string | null;
+          cidade?: string | null;
+          city?: string | null;
+          created_at?: string | null;
+          curadoria_concluida?: boolean;
+          data_nascimento?: string | null;
+          destaque_curadoria?: boolean | null;
+          email?: string | null;
+          estado?: string | null;
+          excluido?: boolean | null;
+          excluido_em?: string | null;
+          foto?: string | null;
+          foto_perfil?: string | null;
+          full_name?: string;
+          genero?: string | null;
+          id?: string;
+          instagram?: string | null;
+          instagram_followers?: number | null;
+          interesses?: string[];
+          last_seen?: string | null;
+          mood_emoji?: string | null;
+          mood_expires_at?: string | null;
+          mood_text?: string | null;
+          nascimento?: string | null;
+          nome?: string | null;
+          notas_admin?: string | null;
+          pix_chave?: string | null;
+          pix_tipo?: string | null;
+          prestigio_id?: string | null;
+          privacidade?: Json;
+          role?: string | null;
+          state?: string | null;
+          status?: string | null;
+          tags_curadoria?: string[];
+          telefone?: string | null;
+          telefone_ddd?: string;
+          telefone_numero?: string;
+          tos_accepted_at?: string | null;
+          tos_ip?: string | null;
+          tos_version?: string | null;
+          updated_at?: string | null;
+          wallet_pin_hash?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'fk_profiles_prestigio';
+            columns: ['prestigio_id'];
+            isOneToOne: false;
+            referencedRelation: 'niveis_prestigio';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      push_subscriptions: {
+        Row: {
+          created_at: string;
+          device_info: string | null;
+          fcm_token: string;
+          id: string;
+          last_used_at: string | null;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          device_info?: string | null;
+          fcm_token: string;
+          id?: string;
+          last_used_at?: string | null;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          device_info?: string | null;
+          fcm_token?: string;
+          id?: string;
+          last_used_at?: string | null;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
+      reembolsos: {
+        Row: {
+          aprovado_por: string | null;
+          comprador_nome: string | null;
+          created_at: string;
+          etapa: string | null;
+          evento_id: string;
+          gerente_decisao: string | null;
+          gerente_decisao_em: string | null;
+          gerente_id: string | null;
+          id: string;
+          motivo: string;
+          notificado_em: string | null;
+          processado_em: string | null;
+          rejeitado_em: string | null;
+          rejeitado_motivo: string | null;
+          rejeitado_por: string | null;
+          socio_decisao: string | null;
+          socio_decisao_em: string | null;
+          socio_id: string | null;
+          solicitado_em: string;
+          solicitado_por: string;
+          status: string;
+          ticket_id: string;
+          tipo: string;
+          updated_at: string;
+          valor: number;
+        };
+        Insert: {
+          aprovado_por?: string | null;
+          comprador_nome?: string | null;
+          created_at?: string;
+          etapa?: string | null;
+          evento_id: string;
+          gerente_decisao?: string | null;
+          gerente_decisao_em?: string | null;
+          gerente_id?: string | null;
+          id?: string;
+          motivo: string;
+          notificado_em?: string | null;
+          processado_em?: string | null;
+          rejeitado_em?: string | null;
+          rejeitado_motivo?: string | null;
+          rejeitado_por?: string | null;
+          socio_decisao?: string | null;
+          socio_decisao_em?: string | null;
+          socio_id?: string | null;
+          solicitado_em?: string;
+          solicitado_por: string;
+          status?: string;
+          ticket_id: string;
+          tipo: string;
+          updated_at?: string;
+          valor: number;
+        };
+        Update: {
+          aprovado_por?: string | null;
+          comprador_nome?: string | null;
+          created_at?: string;
+          etapa?: string | null;
+          evento_id?: string;
+          gerente_decisao?: string | null;
+          gerente_decisao_em?: string | null;
+          gerente_id?: string | null;
+          id?: string;
+          motivo?: string;
+          notificado_em?: string | null;
+          processado_em?: string | null;
+          rejeitado_em?: string | null;
+          rejeitado_motivo?: string | null;
+          rejeitado_por?: string | null;
+          socio_decisao?: string | null;
+          socio_decisao_em?: string | null;
+          socio_id?: string | null;
+          solicitado_em?: string;
+          solicitado_por?: string;
+          status?: string;
+          ticket_id?: string;
+          tipo?: string;
+          updated_at?: string;
+          valor?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'fk_aprovado_por';
+            columns: ['aprovado_por'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'fk_evento_id';
+            columns: ['evento_id'];
+            isOneToOne: false;
+            referencedRelation: 'eventos_admin';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'fk_rejeitado_por';
+            columns: ['rejeitado_por'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'fk_solicitado_por';
+            columns: ['solicitado_por'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'fk_ticket_id';
+            columns: ['ticket_id'];
+            isOneToOne: true;
+            referencedRelation: 'tickets_caixa';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'reembolsos_gerente_id_fkey';
+            columns: ['gerente_id'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'reembolsos_socio_id_fkey';
+            columns: ['socio_id'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      regras_lista: {
+        Row: {
+          abobora_regra_id: string | null;
+          area: string | null;
+          cor: string | null;
+          created_at: string;
+          genero: string;
+          hora_corte: string | null;
+          id: string;
+          label: string;
+          lista_id: string;
+          saldo_banco: number;
+          teto_global: number;
+          tipo: string | null;
+          valor: number | null;
+        };
+        Insert: {
+          abobora_regra_id?: string | null;
+          area?: string | null;
+          cor?: string | null;
+          created_at?: string;
+          genero?: string;
+          hora_corte?: string | null;
+          id?: string;
+          label: string;
+          lista_id: string;
+          saldo_banco?: number;
+          teto_global?: number;
+          tipo?: string | null;
+          valor?: number | null;
+        };
+        Update: {
+          abobora_regra_id?: string | null;
+          area?: string | null;
+          cor?: string | null;
+          created_at?: string;
+          genero?: string;
+          hora_corte?: string | null;
+          id?: string;
+          label?: string;
+          lista_id?: string;
+          saldo_banco?: number;
+          teto_global?: number;
+          tipo?: string | null;
+          valor?: number | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'regras_lista_abobora_regra_id_fkey';
+            columns: ['abobora_regra_id'];
+            isOneToOne: false;
+            referencedRelation: 'regras_lista';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'regras_lista_lista_id_fkey';
+            columns: ['lista_id'];
+            isOneToOne: false;
+            referencedRelation: 'listas_evento';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      reservas_mais_vanta: {
+        Row: {
+          evento_id: string;
+          id: string;
+          infraction_registered_em: string | null;
+          lote_mais_vanta_id: string;
+          post_aviso_24h_enviado: boolean | null;
+          post_deadline_em: string | null;
+          post_url: string | null;
+          post_verificado: boolean;
+          reservado_em: string;
+          status: string;
+          user_id: string;
+        };
+        Insert: {
+          evento_id: string;
+          id?: string;
+          infraction_registered_em?: string | null;
+          lote_mais_vanta_id: string;
+          post_aviso_24h_enviado?: boolean | null;
+          post_deadline_em?: string | null;
+          post_url?: string | null;
+          post_verificado?: boolean;
+          reservado_em?: string;
+          status?: string;
+          user_id: string;
+        };
+        Update: {
+          evento_id?: string;
+          id?: string;
+          infraction_registered_em?: string | null;
+          lote_mais_vanta_id?: string;
+          post_aviso_24h_enviado?: boolean | null;
+          post_deadline_em?: string | null;
+          post_url?: string | null;
+          post_verificado?: boolean;
+          reservado_em?: string;
+          status?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'reservas_mais_vanta_evento_id_fkey';
+            columns: ['evento_id'];
+            isOneToOne: false;
+            referencedRelation: 'eventos_admin';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'reservas_mais_vanta_lote_mais_vanta_id_fkey';
+            columns: ['lote_mais_vanta_id'];
+            isOneToOne: false;
+            referencedRelation: 'lotes_mais_vanta';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      reviews_evento: {
+        Row: {
+          comentario: string | null;
+          created_at: string;
+          evento_id: string;
+          id: string;
+          rating: number;
+          user_id: string;
+        };
+        Insert: {
+          comentario?: string | null;
+          created_at?: string;
+          evento_id: string;
+          id?: string;
+          rating: number;
+          user_id: string;
+        };
+        Update: {
+          comentario?: string | null;
+          created_at?: string;
+          evento_id?: string;
+          id?: string;
+          rating?: number;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'reviews_evento_evento_id_fkey';
+            columns: ['evento_id'];
+            isOneToOne: false;
+            referencedRelation: 'eventos_admin';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      soberania_acesso: {
+        Row: {
+          decidido_em: string | null;
+          evento_id: string;
+          id: string;
+          solicitado_em: string;
+          solicitante_id: string;
+          status: string;
+        };
+        Insert: {
+          decidido_em?: string | null;
+          evento_id: string;
+          id?: string;
+          solicitado_em?: string;
+          solicitante_id: string;
+          status?: string;
+        };
+        Update: {
+          decidido_em?: string | null;
+          evento_id?: string;
+          id?: string;
+          solicitado_em?: string;
+          solicitante_id?: string;
+          status?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'soberania_acesso_evento_id_fkey';
+            columns: ['evento_id'];
+            isOneToOne: false;
+            referencedRelation: 'eventos_admin';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      socios_evento: {
+        Row: {
+          created_at: string | null;
+          evento_id: string;
+          historico_propostas: Json | null;
+          id: string;
+          mensagem_negociacao: string | null;
+          motivo_rejeicao: string | null;
+          permissoes: string[] | null;
+          prazo_resposta: string | null;
+          rodada_negociacao: number | null;
+          socio_id: string;
+          split_percentual: number;
+          status: string;
+          ultimo_turno: string | null;
+          updated_at: string | null;
+        };
+        Insert: {
+          created_at?: string | null;
+          evento_id: string;
+          historico_propostas?: Json | null;
+          id?: string;
+          mensagem_negociacao?: string | null;
+          motivo_rejeicao?: string | null;
+          permissoes?: string[] | null;
+          prazo_resposta?: string | null;
+          rodada_negociacao?: number | null;
+          socio_id: string;
+          split_percentual?: number;
+          status?: string;
+          ultimo_turno?: string | null;
+          updated_at?: string | null;
+        };
+        Update: {
+          created_at?: string | null;
+          evento_id?: string;
+          historico_propostas?: Json | null;
+          id?: string;
+          mensagem_negociacao?: string | null;
+          motivo_rejeicao?: string | null;
+          permissoes?: string[] | null;
+          prazo_resposta?: string | null;
+          rodada_negociacao?: number | null;
+          socio_id?: string;
+          split_percentual?: number;
+          status?: string;
+          ultimo_turno?: string | null;
+          updated_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'socios_evento_evento_id_fkey';
+            columns: ['evento_id'];
+            isOneToOne: false;
+            referencedRelation: 'eventos_admin';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'socios_evento_socio_id_fkey';
+            columns: ['socio_id'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      solicitacoes_clube: {
+        Row: {
+          codigo_verificacao: string | null;
+          convidado_por: string | null;
+          criado_em: string;
+          id: string;
+          instagram_handle: string;
+          instagram_seguidores: number | null;
+          instagram_verificado: boolean | null;
+          instagram_verificado_em: string | null;
+          resolvido_em: string | null;
+          resolvido_por: string | null;
+          status: string;
+          tier_atribuido: string | null;
+          tier_pre_atribuido: string | null;
+          user_id: string;
+        };
+        Insert: {
+          codigo_verificacao?: string | null;
+          convidado_por?: string | null;
+          criado_em?: string;
+          id?: string;
+          instagram_handle: string;
+          instagram_seguidores?: number | null;
+          instagram_verificado?: boolean | null;
+          instagram_verificado_em?: string | null;
+          resolvido_em?: string | null;
+          resolvido_por?: string | null;
+          status?: string;
+          tier_atribuido?: string | null;
+          tier_pre_atribuido?: string | null;
+          user_id: string;
+        };
+        Update: {
+          codigo_verificacao?: string | null;
+          convidado_por?: string | null;
+          criado_em?: string;
+          id?: string;
+          instagram_handle?: string;
+          instagram_seguidores?: number | null;
+          instagram_verificado?: boolean | null;
+          instagram_verificado_em?: string | null;
+          resolvido_em?: string | null;
+          resolvido_por?: string | null;
+          status?: string;
+          tier_atribuido?: string | null;
+          tier_pre_atribuido?: string | null;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
+      solicitacoes_parceria: {
+        Row: {
+          aceite_termos: boolean;
+          aceite_termos_em: string | null;
+          analisado_em: string | null;
+          analisado_por: string | null;
+          capacidade_media: string | null;
+          categoria: string;
+          cidade: string;
+          comunidade_criada_id: string | null;
+          criado_em: string;
+          email_contato: string | null;
+          estilos: string[] | null;
+          fotos: string[] | null;
+          frequencia: string | null;
+          google_maps: string | null;
+          id: string;
+          instagram: string;
+          intencoes: string[];
+          media_publico: string | null;
+          motivo_rejeicao: string | null;
+          nome: string;
+          publico_alvo: string[] | null;
+          site: string | null;
+          status: string;
+          telefone: string | null;
+          tempo_mercado: string | null;
+          tipo: string;
+          user_id: string;
+        };
+        Insert: {
+          aceite_termos?: boolean;
+          aceite_termos_em?: string | null;
+          analisado_em?: string | null;
+          analisado_por?: string | null;
+          capacidade_media?: string | null;
+          categoria: string;
+          cidade: string;
+          comunidade_criada_id?: string | null;
+          criado_em?: string;
+          email_contato?: string | null;
+          estilos?: string[] | null;
+          fotos?: string[] | null;
+          frequencia?: string | null;
+          google_maps?: string | null;
+          id?: string;
+          instagram: string;
+          intencoes?: string[];
+          media_publico?: string | null;
+          motivo_rejeicao?: string | null;
+          nome: string;
+          publico_alvo?: string[] | null;
+          site?: string | null;
+          status?: string;
+          telefone?: string | null;
+          tempo_mercado?: string | null;
+          tipo: string;
+          user_id: string;
+        };
+        Update: {
+          aceite_termos?: boolean;
+          aceite_termos_em?: string | null;
+          analisado_em?: string | null;
+          analisado_por?: string | null;
+          capacidade_media?: string | null;
+          categoria?: string;
+          cidade?: string;
+          comunidade_criada_id?: string | null;
+          criado_em?: string;
+          email_contato?: string | null;
+          estilos?: string[] | null;
+          fotos?: string[] | null;
+          frequencia?: string | null;
+          google_maps?: string | null;
+          id?: string;
+          instagram?: string;
+          intencoes?: string[];
+          media_publico?: string | null;
+          motivo_rejeicao?: string | null;
+          nome?: string;
+          publico_alvo?: string[] | null;
+          site?: string | null;
+          status?: string;
+          telefone?: string | null;
+          tempo_mercado?: string | null;
+          tipo?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'solicitacoes_parceria_analisado_por_fkey';
+            columns: ['analisado_por'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'solicitacoes_parceria_comunidade_criada_id_fkey';
+            columns: ['comunidade_criada_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'solicitacoes_parceria_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      solicitacoes_saque: {
+        Row: {
+          criado_em: string | null;
+          etapa: string | null;
+          evento_id: string;
+          gerente_aprovado_em: string | null;
+          gerente_aprovado_por: string | null;
+          id: string;
+          motivo_recusa: string | null;
+          pix_chave: string;
+          pix_tipo: string;
+          processado_em: string | null;
+          processado_por: string | null;
+          produtor_id: string;
+          solicitado_em: string;
+          status: string;
+          valor: number;
+          valor_bruto: number | null;
+          valor_liquido: number;
+          valor_taxa: number;
+        };
+        Insert: {
+          criado_em?: string | null;
+          etapa?: string | null;
+          evento_id: string;
+          gerente_aprovado_em?: string | null;
+          gerente_aprovado_por?: string | null;
+          id?: string;
+          motivo_recusa?: string | null;
+          pix_chave: string;
+          pix_tipo?: string;
+          processado_em?: string | null;
+          processado_por?: string | null;
+          produtor_id: string;
+          solicitado_em?: string;
+          status?: string;
+          valor: number;
+          valor_bruto?: number | null;
+          valor_liquido: number;
+          valor_taxa: number;
+        };
+        Update: {
+          criado_em?: string | null;
+          etapa?: string | null;
+          evento_id?: string;
+          gerente_aprovado_em?: string | null;
+          gerente_aprovado_por?: string | null;
+          id?: string;
+          motivo_recusa?: string | null;
+          pix_chave?: string;
+          pix_tipo?: string;
+          processado_em?: string | null;
+          processado_por?: string | null;
+          produtor_id?: string;
+          solicitado_em?: string;
+          status?: string;
+          valor?: number;
+          valor_bruto?: number | null;
+          valor_liquido?: number;
+          valor_taxa?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'solicitacoes_saque_evento_id_fkey';
+            columns: ['evento_id'];
+            isOneToOne: false;
+            referencedRelation: 'eventos_admin';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'solicitacoes_saque_gerente_aprovado_por_fkey';
+            columns: ['gerente_aprovado_por'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      tickets_caixa: {
+        Row: {
+          comprovante_id: string | null;
+          cpf: string;
+          criado_em: string;
+          criado_por: string | null;
+          email: string;
+          emitido_em: string | null;
+          evento_id: string;
+          id: string;
+          lote_id: string | null;
+          metodo_pagamento: string;
+          nome_titular: string;
+          origem: string;
+          owner_id: string | null;
+          selfie_url: string | null;
+          status: string;
+          usado_em: string | null;
+          usado_por: string | null;
+          valor: number;
+          variacao_id: string | null;
+          variacao_label: string | null;
+        };
+        Insert: {
+          comprovante_id?: string | null;
+          cpf?: string;
+          criado_em?: string;
+          criado_por?: string | null;
+          email: string;
+          emitido_em?: string | null;
+          evento_id: string;
+          id?: string;
+          lote_id?: string | null;
+          metodo_pagamento?: string;
+          nome_titular?: string;
+          origem?: string;
+          owner_id?: string | null;
+          selfie_url?: string | null;
+          status?: string;
+          usado_em?: string | null;
+          usado_por?: string | null;
+          valor?: number;
+          variacao_id?: string | null;
+          variacao_label?: string | null;
+        };
+        Update: {
+          comprovante_id?: string | null;
+          cpf?: string;
+          criado_em?: string;
+          criado_por?: string | null;
+          email?: string;
+          emitido_em?: string | null;
+          evento_id?: string;
+          id?: string;
+          lote_id?: string | null;
+          metodo_pagamento?: string;
+          nome_titular?: string;
+          origem?: string;
+          owner_id?: string | null;
+          selfie_url?: string | null;
+          status?: string;
+          usado_em?: string | null;
+          usado_por?: string | null;
+          valor?: number;
+          variacao_id?: string | null;
+          variacao_label?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'tickets_caixa_comprovante_id_fkey';
+            columns: ['comprovante_id'];
+            isOneToOne: false;
+            referencedRelation: 'comprovantes_meia';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'tickets_caixa_evento_id_fkey';
+            columns: ['evento_id'];
+            isOneToOne: false;
+            referencedRelation: 'eventos_admin';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'tickets_caixa_lote_id_fkey';
+            columns: ['lote_id'];
+            isOneToOne: false;
+            referencedRelation: 'lotes';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'tickets_caixa_variacao_id_fkey';
+            columns: ['variacao_id'];
+            isOneToOne: false;
+            referencedRelation: 'variacoes_ingresso';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      tiers_mais_vanta: {
+        Row: {
+          ativo: boolean;
+          beneficios: string[];
+          cor: string;
+          criado_em: string | null;
+          id: string;
+          limite_mensal: number;
+          nome: string;
+          ordem: number;
+        };
+        Insert: {
+          ativo?: boolean;
+          beneficios?: string[];
+          cor?: string;
+          criado_em?: string | null;
+          id: string;
+          limite_mensal?: number;
+          nome: string;
+          ordem?: number;
+        };
+        Update: {
+          ativo?: boolean;
+          beneficios?: string[];
+          cor?: string;
+          criado_em?: string | null;
+          id?: string;
+          limite_mensal?: number;
+          nome?: string;
+          ordem?: number;
+        };
+        Relationships: [];
+      };
+      transactions: {
+        Row: {
+          comprador_id: string | null;
+          created_at: string;
+          email: string;
+          evento_id: string;
+          id: string;
+          status: string;
+          taxa_aplicada: number;
+          ticket_id: string | null;
+          tipo: string;
+          valor_bruto: number;
+          valor_liquido: number;
+        };
+        Insert: {
+          comprador_id?: string | null;
+          created_at?: string;
+          email: string;
+          evento_id: string;
+          id?: string;
+          status?: string;
+          taxa_aplicada?: number;
+          ticket_id?: string | null;
+          tipo?: string;
+          valor_bruto: number;
+          valor_liquido: number;
+        };
+        Update: {
+          comprador_id?: string | null;
+          created_at?: string;
+          email?: string;
+          evento_id?: string;
+          id?: string;
+          status?: string;
+          taxa_aplicada?: number;
+          ticket_id?: string | null;
+          tipo?: string;
+          valor_bruto?: number;
+          valor_liquido?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'transactions_evento_id_fkey';
+            columns: ['evento_id'];
+            isOneToOne: false;
+            referencedRelation: 'eventos_admin';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'transactions_ticket_id_fkey';
+            columns: ['ticket_id'];
+            isOneToOne: false;
+            referencedRelation: 'tickets_caixa';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      transferencias_ingresso: {
+        Row: {
+          criado_em: string;
+          data_evento: string | null;
+          destinatario_id: string;
+          destinatario_nome: string;
+          evento_id: string;
+          evento_imagem: string | null;
+          evento_local: string | null;
+          id: string;
+          remetente_id: string;
+          remetente_nome: string;
+          status: string;
+          ticket_id: string;
+          titulo_evento: string | null;
+          variacao_label: string | null;
+        };
+        Insert: {
+          criado_em?: string;
+          data_evento?: string | null;
+          destinatario_id: string;
+          destinatario_nome: string;
+          evento_id: string;
+          evento_imagem?: string | null;
+          evento_local?: string | null;
+          id?: string;
+          remetente_id: string;
+          remetente_nome: string;
+          status?: string;
+          ticket_id: string;
+          titulo_evento?: string | null;
+          variacao_label?: string | null;
+        };
+        Update: {
+          criado_em?: string;
+          data_evento?: string | null;
+          destinatario_id?: string;
+          destinatario_nome?: string;
+          evento_id?: string;
+          evento_imagem?: string | null;
+          evento_local?: string | null;
+          id?: string;
+          remetente_id?: string;
+          remetente_nome?: string;
+          status?: string;
+          ticket_id?: string;
+          titulo_evento?: string | null;
+          variacao_label?: string | null;
+        };
+        Relationships: [];
+      };
+      vanta_indica: {
+        Row: {
+          acao: Json | null;
+          acao_link: string;
+          alvo_localidades: string[];
+          ativo: boolean;
+          badge: string;
+          criado_em: string;
+          criado_por: string | null;
+          id: string;
+          imagem: string | null;
+          img_position: string | null;
+          layout_config: Json | null;
+          subtitulo: string;
+          text_align: string | null;
+          tipo: string;
+          titulo: string;
+        };
+        Insert: {
+          acao?: Json | null;
+          acao_link?: string;
+          alvo_localidades?: string[];
+          ativo?: boolean;
+          badge?: string;
+          criado_em?: string;
+          criado_por?: string | null;
+          id?: string;
+          imagem?: string | null;
+          img_position?: string | null;
+          layout_config?: Json | null;
+          subtitulo?: string;
+          text_align?: string | null;
+          tipo?: string;
+          titulo: string;
+        };
+        Update: {
+          acao?: Json | null;
+          acao_link?: string;
+          alvo_localidades?: string[];
+          ativo?: boolean;
+          badge?: string;
+          criado_em?: string;
+          criado_por?: string | null;
+          id?: string;
+          imagem?: string | null;
+          img_position?: string | null;
+          layout_config?: Json | null;
+          subtitulo?: string;
+          text_align?: string | null;
+          tipo?: string;
+          titulo?: string;
+        };
+        Relationships: [];
+      };
+      variacoes_ingresso: {
+        Row: {
+          area: string;
+          area_custom: string | null;
+          created_at: string;
+          genero: string;
+          id: string;
+          limite: number;
+          lote_id: string;
+          requer_comprovante: boolean;
+          tipo_comprovante: string | null;
+          valor: number;
+          vendidos: number;
+        };
+        Insert: {
+          area?: string;
+          area_custom?: string | null;
+          created_at?: string;
+          genero?: string;
+          id?: string;
+          limite?: number;
+          lote_id: string;
+          requer_comprovante?: boolean;
+          tipo_comprovante?: string | null;
+          valor?: number;
+          vendidos?: number;
+        };
+        Update: {
+          area?: string;
+          area_custom?: string | null;
+          created_at?: string;
+          genero?: string;
+          id?: string;
+          limite?: number;
+          lote_id?: string;
+          requer_comprovante?: boolean;
+          tipo_comprovante?: string | null;
+          valor?: number;
+          vendidos?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'variacoes_ingresso_lote_id_fkey';
+            columns: ['lote_id'];
+            isOneToOne: false;
+            referencedRelation: 'lotes';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      vendas_log: {
+        Row: {
+          criado_em: string | null;
+          evento_id: string;
+          id: string;
+          origem: string;
+          produtor_id: string | null;
+          ts: string;
+          valor: number;
+          variacao_id: string | null;
+          variacao_label: string;
+        };
+        Insert: {
+          criado_em?: string | null;
+          evento_id: string;
+          id?: string;
+          origem?: string;
+          produtor_id?: string | null;
+          ts?: string;
+          valor: number;
+          variacao_id?: string | null;
+          variacao_label: string;
+        };
+        Update: {
+          criado_em?: string | null;
+          evento_id?: string;
+          id?: string;
+          origem?: string;
+          produtor_id?: string | null;
+          ts?: string;
+          valor?: number;
+          variacao_id?: string | null;
+          variacao_label?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'vendas_log_evento_id_fkey';
+            columns: ['evento_id'];
+            isOneToOne: false;
+            referencedRelation: 'eventos_admin';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'vendas_log_variacao_id_fkey';
+            columns: ['variacao_id'];
+            isOneToOne: false;
+            referencedRelation: 'variacoes_ingresso';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      waitlist: {
+        Row: {
+          created_at: string | null;
+          email: string;
+          evento_id: string;
+          id: string;
+          notificado_em: string | null;
+          user_id: string | null;
+          variacao_id: string;
+        };
+        Insert: {
+          created_at?: string | null;
+          email: string;
+          evento_id: string;
+          id?: string;
+          notificado_em?: string | null;
+          user_id?: string | null;
+          variacao_id: string;
+        };
+        Update: {
+          created_at?: string | null;
+          email?: string;
+          evento_id?: string;
+          id?: string;
+          notificado_em?: string | null;
+          user_id?: string | null;
+          variacao_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'waitlist_evento_id_fkey';
+            columns: ['evento_id'];
+            isOneToOne: false;
+            referencedRelation: 'eventos_admin';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'waitlist_variacao_id_fkey';
+            columns: ['variacao_id'];
+            isOneToOne: false;
+            referencedRelation: 'variacoes_ingresso';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+    };
+    Views: {
+      [_ in never]: never;
+    };
+    Functions: {
+      aceitar_convite_socio: { Args: { p_evento_id: string }; Returns: Json };
+      aceitar_cortesia_rpc: { Args: { p_cortesia_id: string }; Returns: Json };
+      aceitar_proposta_produtor: {
+        Args: { p_evento_id: string; p_socio_id: string };
+        Returns: Json;
+      };
+      buscar_membros: {
+        Args: { max_results?: number; search_query: string };
+        Returns: {
+          cidade: string;
+          email: string;
+          foto: string;
+          full_name: string;
+          id: string;
+          instagram: string;
+          nome: string;
+          role: string;
+        }[];
+      };
+      cancelar_convite_produtor: {
+        Args: { p_evento_id: string; p_motivo?: string; p_socio_id: string };
+        Returns: Json;
+      };
+      contraproposta_convite_socio: {
+        Args: {
+          p_evento_id: string;
+          p_mensagem?: string;
+          p_permissoes_produtor?: string[];
+          p_split_produtor: number;
+          p_split_socio: number;
+        };
+        Returns: Json;
+      };
+      contraproposta_produtor: {
+        Args: {
+          p_evento_id: string;
+          p_mensagem?: string;
+          p_socio_id: string;
+          p_split_socio: number;
+        };
+        Returns: Json;
+      };
+      expirar_negociacoes_vencidas: { Args: never; Returns: number };
+      finalizar_eventos_expirados: { Args: never; Returns: undefined };
+      gerar_cortesias_comemoracao: {
+        Args: { p_comemoracao_id: string };
+        Returns: undefined;
+      };
+      gerar_ocorrencias_recorrente: {
+        Args: { p_evento_id: string };
+        Returns: number;
+      };
+      get_admin_access: { Args: { p_user_id: string }; Returns: Json };
+      get_convite_socio: { Args: { p_evento_id: string }; Returns: Json };
+      get_evento_from_lista: { Args: { p_lista_id: string }; Returns: string };
+      get_evento_from_lote: { Args: { p_lote_id: string }; Returns: string };
+      get_eventos_por_regiao: {
+        Args: { p_lat: number; p_lng: number; p_raio_km?: number };
+        Returns: {
+          caixa_ativo: boolean;
+          cancelamento_etapa: string | null;
+          cancelamento_motivo: string | null;
+          cancelamento_solicitado_por: string | null;
+          categoria: string | null;
+          cidade: string | null;
+          codigo_afiliado: string | null;
+          comissao_vanta: number | null;
+          comunidade_id: string | null;
+          coords: Json | null;
+          cota_cortesias: number | null;
+          cota_nomes_lista: number | null;
+          created_at: string;
+          created_by: string | null;
+          data_fim: string | null;
+          data_inicio: string;
+          descricao: string;
+          edicao_motivo: string | null;
+          edicao_pendente: Json | null;
+          edicao_status: string | null;
+          endereco: string | null;
+          estilos: string[] | null;
+          evento_origem_id: string | null;
+          experiencias: string[] | null;
+          formato: string | null;
+          foto: string | null;
+          gateway_fee_mode: string;
+          id: string;
+          link_externo: string | null;
+          local: string;
+          mesas_ativo: boolean | null;
+          motivo_rejeicao: string | null;
+          nome: string;
+          permissoes_produtor: string[] | null;
+          planta_mesas: string | null;
+          plataforma_externa: string | null;
+          politica_reembolso: string | null;
+          prazo_pagamento_dias: number | null;
+          prazo_reembolso_dias: number | null;
+          proposta_mensagem: string | null;
+          proposta_rodada: number | null;
+          proposta_status: string | null;
+          publicado: boolean;
+          quem_paga_servico: string | null;
+          recorrencia: string;
+          recorrencia_ate: string | null;
+          rejeicao_campos: Json | null;
+          rodada_negociacao: number | null;
+          rodada_rejeicao: number | null;
+          slug: string | null;
+          socio_convidado_id: string | null;
+          split_produtor: number | null;
+          split_socio: number | null;
+          status_evento: string | null;
+          subcategorias: string[] | null;
+          taxa_cortesia_excedente_pct: number | null;
+          taxa_fixa_evento: number | null;
+          taxa_minima: number | null;
+          taxa_nome_excedente: number | null;
+          taxa_override: number | null;
+          taxa_porta_percent: number | null;
+          taxa_processamento_percent: number | null;
+          tipo_fluxo: string | null;
+          updated_at: string;
+          vanta_fee_fixed: number;
+          vanta_fee_percent: number | null;
+          venda_vanta: boolean | null;
+        }[];
+        SetofOptions: {
+          from: '*';
+          to: 'eventos_admin';
+          isOneToOne: false;
+          isSetofReturn: true;
+        };
+      };
+      has_evento_access: { Args: { p_evento_id: string }; Returns: boolean };
+      incrementar_usos_cupom: { Args: { cupom_id: string }; Returns: undefined };
+      inserir_notificacao: {
+        Args: {
+          p_link?: string;
+          p_mensagem: string;
+          p_tipo: string;
+          p_titulo: string;
+          p_user_id: string;
+        };
+        Returns: string;
+      };
+      is_event_manager_or_admin: {
+        Args: { p_evento_id: string };
+        Returns: boolean;
+      };
+      is_event_team_member: { Args: { p_evento_id: string }; Returns: boolean };
+      is_masteradm: { Args: never; Returns: boolean };
+      is_membro_clube: { Args: { check_user_id: string }; Returns: boolean };
+      is_produtor_evento: { Args: { p_evento_id: string }; Returns: boolean };
+      is_tenant_member: {
+        Args: { p_cargos: string[]; p_tenant_id: string; p_tenant_type: string };
+        Returns: boolean;
+      };
+      is_vanta_admin: { Args: never; Returns: boolean };
+      is_vanta_admin_or_gerente: { Args: never; Returns: boolean };
+      processar_compra_checkout:
+        | {
+            Args: {
+              p_comprador_id?: string;
+              p_email: string;
+              p_evento_id: string;
+              p_lote_id: string;
+              p_quantidade?: number;
+              p_taxa?: number;
+              p_valor_unit: number;
+              p_variacao_id: string;
+            };
+            Returns: Json;
+          }
+        | {
+            Args: {
+              p_comprador_id?: string;
+              p_email: string;
+              p_evento_id: string;
+              p_lote_id: string;
+              p_quantidade?: number;
+              p_ref_code?: string;
+              p_taxa?: number;
+              p_valor_unit: number;
+              p_variacao_id: string;
+            };
+            Returns: Json;
+          };
+      processar_venda_caixa: {
+        Args: {
+          p_email: string;
+          p_evento_id: string;
+          p_lote_id: string;
+          p_taxa?: number;
+          p_valor_unit: number;
+          p_variacao_id: string;
+        };
+        Returns: Json;
+      };
+      queimar_ingresso:
+        | {
+            Args: {
+              p_event_id: string;
+              p_operador_id: string;
+              p_ticket_id: string;
+            };
+            Returns: Json;
+          }
+        | {
+            Args: {
+              p_event_id: string;
+              p_operador_id?: string;
+              p_ticket_id: string;
+            };
+            Returns: Json;
+          };
+      recusar_convite_socio: {
+        Args: { p_evento_id: string; p_motivo?: string };
+        Returns: Json;
+      };
+      reiniciar_negociacao: {
+        Args: {
+          p_evento_id: string;
+          p_mensagem?: string;
+          p_socio_id: string;
+          p_split_socio: number;
+        };
+        Returns: Json;
+      };
+      show_limit: { Args: never; Returns: number };
+      show_trgm: { Args: { '': string }; Returns: string[] };
+      sign_ticket_token: { Args: { p_ticket_id: string }; Returns: string };
+      verificar_virada_lote: {
+        Args: { p_evento_id: string };
+        Returns: undefined;
+      };
+      verify_ticket_token: { Args: { p_token: string }; Returns: string };
+    };
+    Enums: {
+      area_ingresso: 'VIP' | 'PISTA' | 'CAMAROTE' | 'BACKSTAGE' | 'OUTRO';
+      conta_vanta:
+        | 'vanta_guest'
+        | 'vanta_member'
+        | 'vanta_masteradm'
+        | 'vanta_produtor'
+        | 'vanta_socio'
+        | 'vanta_portaria'
+        | 'vanta_caixa'
+        | 'vanta_financeiro'
+        | 'vanta_gerente'
+        | 'vanta_promoter';
+      genero_ingresso: 'MASCULINO' | 'FEMININO' | 'UNISEX';
+      membro_status: 'PENDENTE' | 'APROVADO' | 'REJEITADO';
+      papel_equipe: 'SOCIO' | 'PROMOTER' | 'PORTARIA' | 'HOST' | 'STAFF' | 'CAIXA';
+      pix_tipo: 'CPF' | 'CNPJ' | 'EMAIL' | 'TELEFONE' | 'CHAVE_ALEATORIA';
+      saque_status: 'PENDENTE' | 'CONCLUIDO' | 'ESTORNADO';
+      ticket_status: 'DISPONIVEL' | 'USADO' | 'CANCELADO';
+      tipo_cargo: 'PRODUTOR' | 'HOST' | 'PORTARIA' | 'STAFF' | 'CAIXA';
+      transaction_status: 'PENDENTE' | 'CONCLUIDO' | 'ESTORNADO';
+      transaction_tipo: 'VENDA_CAIXA' | 'VENDA_CHECKOUT' | 'CORTESIA';
+    };
+    CompositeTypes: {
+      [_ in never]: never;
+    };
+  };
+};
+
+type DatabaseWithoutInternals = Omit<Database, '__InternalSupabase'>;
+
+type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, 'public'>];
+
+export type Tables<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof (DefaultSchema['Tables'] & DefaultSchema['Views'])
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals;
+  }
+    ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables'] &
+        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Views'])
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals;
+}
+  ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables'] &
+      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Views'])[TableName] extends {
+      Row: infer R;
+    }
+    ? R
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema['Tables'] & DefaultSchema['Views'])
+    ? (DefaultSchema['Tables'] & DefaultSchema['Views'])[DefaultSchemaTableNameOrOptions] extends {
+        Row: infer R;
+      }
+      ? R
+      : never
+    : never;
+
+export type TablesInsert<
+  DefaultSchemaTableNameOrOptions extends keyof DefaultSchema['Tables'] | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals;
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables']
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals;
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables'][TableName] extends {
+      Insert: infer I;
+    }
+    ? I
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema['Tables']
+    ? DefaultSchema['Tables'][DefaultSchemaTableNameOrOptions] extends {
+        Insert: infer I;
+      }
+      ? I
+      : never
+    : never;
+
+export type TablesUpdate<
+  DefaultSchemaTableNameOrOptions extends keyof DefaultSchema['Tables'] | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals;
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables']
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals;
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables'][TableName] extends {
+      Update: infer U;
+    }
+    ? U
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema['Tables']
+    ? DefaultSchema['Tables'][DefaultSchemaTableNameOrOptions] extends {
+        Update: infer U;
+      }
+      ? U
+      : never
+    : never;
+
+export type Enums<
+  DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema['Enums'] | { schema: keyof DatabaseWithoutInternals },
+  EnumName extends DefaultSchemaEnumNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals;
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions['schema']]['Enums']
+    : never = never,
+> = DefaultSchemaEnumNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals;
+}
+  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions['schema']]['Enums'][EnumName]
+  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema['Enums']
+    ? DefaultSchema['Enums'][DefaultSchemaEnumNameOrOptions]
+    : never;
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof DefaultSchema['CompositeTypes']
+    | { schema: keyof DatabaseWithoutInternals },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals;
+  }
+    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions['schema']]['CompositeTypes']
+    : never = never,
+> = PublicCompositeTypeNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals;
+}
+  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions['schema']]['CompositeTypes'][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema['CompositeTypes']
+    ? DefaultSchema['CompositeTypes'][PublicCompositeTypeNameOrOptions]
+    : never;
+
+export const Constants = {
+  public: {
+    Enums: {
+      area_ingresso: ['VIP', 'PISTA', 'CAMAROTE', 'BACKSTAGE', 'OUTRO'],
+      conta_vanta: [
+        'vanta_guest',
+        'vanta_member',
+        'vanta_masteradm',
+        'vanta_produtor',
+        'vanta_socio',
+        'vanta_portaria',
+        'vanta_caixa',
+        'vanta_financeiro',
+        'vanta_gerente',
+        'vanta_promoter',
+      ],
+      genero_ingresso: ['MASCULINO', 'FEMININO', 'UNISEX'],
+      membro_status: ['PENDENTE', 'APROVADO', 'REJEITADO'],
+      papel_equipe: ['SOCIO', 'PROMOTER', 'PORTARIA', 'HOST', 'STAFF', 'CAIXA'],
+      pix_tipo: ['CPF', 'CNPJ', 'EMAIL', 'TELEFONE', 'CHAVE_ALEATORIA'],
+      saque_status: ['PENDENTE', 'CONCLUIDO', 'ESTORNADO'],
+      ticket_status: ['DISPONIVEL', 'USADO', 'CANCELADO'],
+      tipo_cargo: ['PRODUTOR', 'HOST', 'PORTARIA', 'STAFF', 'CAIXA'],
+      transaction_status: ['PENDENTE', 'CONCLUIDO', 'ESTORNADO'],
+      transaction_tipo: ['VENDA_CAIXA', 'VENDA_CHECKOUT', 'CORTESIA'],
+    },
+  },
+} as const;

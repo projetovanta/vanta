@@ -1,0 +1,71 @@
+# Criado: 2026-03-06 01:48 | Ultima edicao: 2026-03-06 01:48
+
+# Sub-modulo: Notificacoes (3 canais)
+
+## Pertence a: infraestrutura (cross-modulo)
+
+## 3 Canais
+1. **In-app** (sync): notificationsService.add → useAuthStore.notifications
+   - Cross-user: via RPC `inserir_notificacao` SECURITY DEFINER (bypassa RLS)
+2. **Push** (FCM): pushNotificationService → Edge Function send-push
+3. **Email** (Resend): Edge Functions send-*-email
+
+## Service principal: notifyService (services/notifyService.ts)
+Funcao `notify()` dispara nos 3 canais simultaneamente.
+Parametros: userId, tipo, titulo, mensagem, link
+
+## Cross-user notifications
+- notificationsService.add detecta se targetUserId != userId logado
+- Se cross-user: usa RPC `inserir_notificacao` (SECURITY DEFINER) em vez de INSERT direto
+- Migration: `20260307120000_notif_insert_rpc.sql`
+
+## 30 tipos de notificacao (confirmados em types/auth.ts)
+| Tipo | Quando | Modulo |
+|---|---|---|
+| COMPRA_CONFIRMADA | Apos compra checkout | compra |
+| TRANSFERENCIA_PENDENTE | Ao receber transferencia | carteira |
+| CORTESIA_PENDENTE | Ao receber cortesia | carteira |
+| EVENTO_APROVADO | Master aprova evento | evento |
+| SAQUE_APROVADO | Master aprova saque | financeiro |
+| REEMBOLSO_APROVADO | Reembolso aprovado | financeiro |
+| AMIZADE_PEDIDO | Pedido de amizade | social |
+| AMIZADE_ACEITA | Amizade aceita | social |
+| MENSAGEM_NOVA | Nova mensagem chat | social |
+| MV_APROVADO | Entrada no clube aprovada | clube |
+| MV_INFRACAO | Infracao registrada | clube |
+| PARCERIA_NOVA | Nova solicitacao de parceria | parceria → master |
+| PARCERIA_APROVADA | Solicitacao aprovada | parceria → solicitante |
+| PARCERIA_REJEITADA | Solicitacao rejeitada | parceria → solicitante |
+| (+ mais 16 tipos) | Ver types/auth.ts | diversos |
+
+## Edge Functions de notificacao
+| Funcao | Canal | Descricao |
+|---|---|---|
+| send-push | Push FCM | Envia push notification |
+| send-reembolso-email | Email Resend | Notifica reembolso |
+| notif-infraccao-registrada | In-app + Push | Infracao MV |
+| send-welcome-email | Email Resend | Boas-vindas |
+
+## Handler: useAppHandlers.ts
+Recebe notificacoes e navega para a tela correta baseado no `tipo` e `link`:
+- CONVITE_SOCIO → NegociacaoSocioView (detecta papel socio/produtor via created_by)
+- WALLET → carteira
+- FINANCEIRO → financeiro
+- /admin/evento/{id} → painel admin (deep link)
+- /admin/comunidade/{id} → painel admin (deep link)
+- EVENT:{id} → detalhe do evento
+
+## Checklist
+| # | Item | Status | Detalhe |
+|---|---|---|---|
+| 1 | In-app sync | OK | notificationsService |
+| 2 | Push FCM | OK | pushNotificationService + Edge Function |
+| 3 | Email Resend | OK | Edge Functions send-*-email |
+| 4 | 30 tipos | OK | types/auth.ts (PARCERIA_NOVA/APROVADA/REJEITADA adicionados) |
+| 5 | Handler navegacao | OK | useAppHandlers.ts |
+| 6 | Campanhas em massa | OK | campanhasService.ts 297L (IN_APP + PUSH + EMAIL, segmentos: TODOS/CIDADE/COMUNIDADE/EVENTO/MV) |
+| 7 | Tabelas Supabase | OK | notifications (19 rows), push_subscriptions (2 rows), notificacoes_posevento |
+| 8 | Cron jobs | OK | 6 jobs ativos (cleanup tokens/tickets, finalizar eventos, limpar notifs, update IG, expirar negociacoes) |
+| 9 | Toggle push por tipo | NAO EXISTE | Sem preferencias de notificacao |
+| 8 | Historico de notificacoes | NAO EXISTE | Sem tela dedicada de historico |
+| 9 | Unsubscribe email | NAO EXISTE | Sem link de unsubscribe nos emails |

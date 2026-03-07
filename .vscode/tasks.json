@@ -1,0 +1,112 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Audit All",
+      "type": "shell",
+      "command": "npm run full-audit",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": [],
+      "group": "test"
+    },
+    {
+      "label": "Preflight",
+      "type": "shell",
+      "command": "npm run preflight",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": ["$tsc"],
+      "group": { "kind": "test", "isDefault": true }
+    },
+    {
+      "label": "Security Scan",
+      "type": "shell",
+      "command": "npm run security-scan",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Semgrep Scan",
+      "type": "shell",
+      "command": "semgrep --config=auto --lang=ts --lang=tsx --exclude=node_modules --exclude=dist --exclude=android --exclude=ios --json . | jq '.results | length' ",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
+      "label": "E2E Tests",
+      "type": "shell",
+      "command": "npx playwright test --reporter=list",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Unit Tests",
+      "type": "shell",
+      "command": "npx vitest run",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
+      "label": "k6 Smoke",
+      "type": "shell",
+      "command": "SUPABASE_ANON_KEY=$(grep VITE_SUPABASE_ANON_KEY .env.local | cut -d= -f2) k6 run tests/load/k6-smoke.js",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
+      "label": "k6 Stress",
+      "type": "shell",
+      "command": "SUPABASE_ANON_KEY=$(grep VITE_SUPABASE_ANON_KEY .env.local | cut -d= -f2) k6 run tests/load/k6-stress.js",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
+      "label": "TypeCheck",
+      "type": "shell",
+      "command": "npx tsc --noEmit",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": ["$tsc"]
+    },
+    {
+      "label": "Bundle Audit",
+      "type": "shell",
+      "command": "npm run bundle-audit",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Depcheck",
+      "type": "shell",
+      "command": "npm run depcheck",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Type Coverage",
+      "type": "shell",
+      "command": "npm run type-coverage",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Deps Outdated",
+      "type": "shell",
+      "command": "npm run ncu",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Accessibility Audit",
+      "type": "shell",
+      "command": "npm run a11y",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
+      "label": "DB Schema Diff",
+      "type": "shell",
+      "command": "npm run db:diff",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    }
+  ]
+}

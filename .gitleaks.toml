@@ -1,0 +1,15 @@
+# Gitleaks config — Vanta Project
+title = "vanta-gitleaks-config"
+
+[allowlist]
+  description = "Allowlisted files and paths"
+  paths = [
+    '''\.env\.example''',
+    '''\.env\.local\.template''',
+    '''node_modules''',
+    '''dist''',
+    '''\.git''',
+    '''supabase/\.temp''',
+    '''android/''',
+    '''ios/''',
+  ]

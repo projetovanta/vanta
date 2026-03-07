@@ -1,0 +1,23 @@
+-- Migra benefícios de TEXT (textarea) → TEXT[] (array de IDs selecionáveis)
+-- Remove acompanhante_padrao (é config por lote/tier, não regra geral)
+
+-- Drop defaults antigos (TEXT) para permitir cast para TEXT[]
+ALTER TABLE clube_config
+  ALTER COLUMN beneficios_bronze DROP DEFAULT,
+  ALTER COLUMN beneficios_prata DROP DEFAULT,
+  ALTER COLUMN beneficios_ouro DROP DEFAULT,
+  ALTER COLUMN beneficios_diamante DROP DEFAULT;
+
+ALTER TABLE clube_config
+  ALTER COLUMN beneficios_bronze TYPE TEXT[] USING CASE WHEN beneficios_bronze IS NULL THEN '{}'::TEXT[] ELSE ARRAY['INGRESSO_CORTESIA'] END,
+  ALTER COLUMN beneficios_prata TYPE TEXT[] USING CASE WHEN beneficios_prata IS NULL THEN '{}'::TEXT[] ELSE ARRAY['INGRESSO_CORTESIA','ACOMPANHANTE'] END,
+  ALTER COLUMN beneficios_ouro TYPE TEXT[] USING CASE WHEN beneficios_ouro IS NULL THEN '{}'::TEXT[] ELSE ARRAY['INGRESSO_CORTESIA','ACOMPANHANTE','PRIORIDADE','RESERVA_ANTECIPADA'] END,
+  ALTER COLUMN beneficios_diamante TYPE TEXT[] USING CASE WHEN beneficios_diamante IS NULL THEN '{}'::TEXT[] ELSE ARRAY['INGRESSO_CORTESIA','ACOMPANHANTE','PRIORIDADE','RESERVA_ANTECIPADA','PASSPORT_GLOBAL'] END;
+
+ALTER TABLE clube_config
+  ALTER COLUMN beneficios_bronze SET DEFAULT '{INGRESSO_CORTESIA}'::TEXT[],
+  ALTER COLUMN beneficios_prata SET DEFAULT '{INGRESSO_CORTESIA,ACOMPANHANTE}'::TEXT[],
+  ALTER COLUMN beneficios_ouro SET DEFAULT '{INGRESSO_CORTESIA,ACOMPANHANTE,PRIORIDADE,RESERVA_ANTECIPADA}'::TEXT[],
+  ALTER COLUMN beneficios_diamante SET DEFAULT '{INGRESSO_CORTESIA,ACOMPANHANTE,PRIORIDADE,RESERVA_ANTECIPADA,PASSPORT_GLOBAL}'::TEXT[];
+
+ALTER TABLE clube_config DROP COLUMN IF EXISTS acompanhante_padrao;

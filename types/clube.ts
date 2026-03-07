@@ -1,0 +1,183 @@
+// ── Clube de Influência (MAIS VANTA) ─────────────────────────────────────
+export type TierMaisVanta = 'BRONZE' | 'PRATA' | 'OURO' | 'DIAMANTE';
+
+export interface MembroClubeVanta {
+  userId: string;
+  tier: TierMaisVanta;
+  instagramHandle?: string;
+  instagramSeguidores?: number;
+  instagramVerificado: boolean; // bio check passou na solicitação
+  instagramVerificadoEm?: string; // ISO 8601 -03:00
+  aprovadoPor: string; // masteradm userId
+  aprovadoEm: string; // ISO 8601 -03:00
+  convidadoPor?: string; // userId de quem convidou
+  ativo: boolean;
+  comunidadeOrigem?: string; // MV4: comunidade onde foi aprovado originalmente
+  metaUserId?: string; // MV3: Instagram Business Account ID (Graph API)
+  castigoAte?: string; // @deprecated — usar bloqueioAte
+  castigoMotivo?: string; // @deprecated — usar infrações
+  bloqueioNivel: number; // 0=limpo, 1=1º bloqueio, 2=2º bloqueio, 3=banido
+  bloqueioAte?: string; // ISO — se set e > now, bloqueado
+  banidoPermanente: boolean; // true = excluído definitivamente do MAIS VANTA
+  banidoEm?: string; // ISO — quando foi banido
+}
+
+export interface LoteMaisVanta {
+  id: string;
+  eventoId: string;
+  tierMinimo: TierMaisVanta; // @deprecated: legado — usar tierId
+  tierId?: string; // tier específico deste lote (ex: 'BRONZE')
+  quantidade: number; // total de vagas
+  reservados: number; // já reservados
+  prazo?: string; // deadline para reserva (ISO)
+  descricao?: string; // ex: "2 ingressos VIP + mesa"
+  comAcompanhante?: boolean; // @deprecated: legado — usar acompanhantes
+  acompanhantes: number; // número de acompanhantes permitidos (0, 1, 2, 3...)
+  tipoAcesso: string; // 'Pista', 'VIP', 'Camarote', etc.
+}
+
+export interface ReservaMaisVanta {
+  id: string;
+  loteMaisVantaId: string;
+  eventoId: string;
+  userId: string;
+  reservadoEm: string; // ISO 8601 -03:00
+  status: 'RESERVADO' | 'USADO' | 'CANCELADO' | 'PENDENTE_POST';
+  postVerificado: boolean; // masteradm confirmou que membro postou
+  postUrl?: string; // link/evidência do post
+  postDeadlineEm?: string; // ISO 8601 -03:00 — T+24h quando infração será registrada
+  postAviso24hEnviado?: boolean; // flag para não reenviar lembrete em T+12h
+  infractionRegisteredEm?: string; // ISO 8601 -03:00 — quando infração foi registrada
+}
+
+export interface NotificacaoClubePayload {
+  userId: string;
+  tipo: 'CONFIRMACAO_PRESENCA' | 'EVENTO_INICIOU' | 'EVENTO_TERMINOU' | 'AVISO_FINAL_12H' | 'INFRACACAO_REGISTRADA';
+  eventoId: string;
+  eventoNome: string;
+  reservaId: string;
+  titulo: string;
+  corpo: string;
+  data?: Record<string, string>; // metadados opcionais
+}
+
+export interface SolicitacaoClube {
+  id: string;
+  userId: string;
+  instagramHandle: string;
+  instagramSeguidores?: number;
+  instagramVerificado: boolean; // bio check passou
+  instagramVerificadoEm?: string; // ISO 8601 -03:00
+  codigoVerificacao?: string; // ex: 'VANTA-K8M2' (para auditoria)
+  convidadoPor?: string;
+  status: 'PENDENTE' | 'APROVADO' | 'REJEITADO' | 'CONVIDADO';
+  criadoEm: string; // ISO 8601 -03:00
+  resolvidoEm?: string;
+  resolvidoPor?: string;
+  tierAtribuido?: TierMaisVanta;
+  tierPreAtribuido?: TierMaisVanta; // tier escolhido pelo master ao convidar
+}
+
+// ── MV2: Assinatura SaaS MAIS VANTA ────────────────────────────────────────
+export type PlanoMaisVanta = 'BASICO' | 'PRO' | 'ENTERPRISE'; // legado, manter para compat
+export type StatusAssinatura = 'PENDENTE' | 'ATIVA' | 'CANCELADA' | 'EXPIRADA';
+
+/** Plano dinâmico criado/editado pelo master */
+export interface PlanoMaisVantaDef {
+  id: string;
+  nome: string;
+  descricao: string;
+  precoMensal: number;
+  limiteEventosMV: number; // -1 = ilimitado
+  limiteMembros: number; // -1 = ilimitado
+  limiteVagasEvento: number;
+  tierMinimo: string; // id do tier mínimo (ex: 'BRONZE')
+  acompanhante: boolean;
+  prazoPostHoras: number;
+  precoAvulso: number;
+  ativo: boolean;
+  destaque: boolean;
+  ordem: number;
+  criadoEm: string;
+  atualizadoEm: string;
+}
+
+/** Tier dinâmico criado/editado pelo master */
+export interface TierMaisVantaDef {
+  id: string;
+  nome: string;
+  cor: string;
+  ordem: number;
+  beneficios: BeneficioId[];
+  limiteMensal: number; // -1 = ilimitado
+  ativo: boolean;
+  criadoEm: string;
+}
+
+export interface AssinaturaMaisVanta {
+  id: string;
+  comunidadeId: string;
+  planoId?: string; // referência ao plano dinâmico
+  plano: PlanoMaisVanta; // legado (derivado do snapshot)
+  planoSnapshot?: PlanoMaisVantaDef;
+  status: StatusAssinatura;
+  stripeCustomerId?: string;
+  stripeSubscriptionId?: string;
+  valorMensal: number;
+  eventosMVUsados: number;
+  inicio?: string;
+  fim?: string;
+  criadoEm: string;
+  criadoPor: string;
+}
+
+// ── MV4: Passaporte Regional por Cidade ────────────────────────────────────
+export interface PassportAprovacao {
+  id: string;
+  userId: string;
+  /** @deprecated Use `cidade` — passaportes agora são regionais por cidade */
+  comunidadeId?: string;
+  /** Cidade do passaporte regional (campo principal pós-migração) */
+  cidade?: string;
+  status: 'PENDENTE' | 'APROVADO' | 'REJEITADO';
+  solicitadoEm: string;
+  resolvidoEm?: string;
+  resolvidoPor?: string;
+}
+
+// ── Configuração do Clube MAIS VANTA ──────────────────────────────────────
+/** IDs de benefícios selecionáveis por tier */
+export type BeneficioId =
+  | 'INGRESSO_CORTESIA'
+  | 'ACOMPANHANTE'
+  | 'PRIORIDADE'
+  | 'RESERVA_ANTECIPADA'
+  | 'PASSPORT_GLOBAL';
+
+export interface ClubeConfig {
+  id: string;
+  comunidadeId: string;
+  beneficiosBronze: BeneficioId[];
+  beneficiosPrata: BeneficioId[];
+  beneficiosOuro: BeneficioId[];
+  beneficiosDiamante: BeneficioId[];
+  limiteBronze: number;
+  limitePrata: number;
+  limiteOuro: number;
+  limiteDiamante: number;
+  prazoPostHoras: number;
+  infracoesLimite: number; // quantas infrações até próximo bloqueio (default 3)
+  bloqueio1Dias: number; // dias do 1º bloqueio (default 30)
+  bloqueio2Dias: number; // dias do 2º bloqueio/reincidência (default 60)
+}
+
+// ── Infrações MAIS VANTA ──────────────────────────────────────────────────
+export interface InfracaoMaisVanta {
+  id: string;
+  userId: string;
+  tipo: 'NO_SHOW' | 'NAO_POSTOU';
+  eventoId?: string;
+  eventoNome?: string;
+  criadoEm: string;
+  criadoPor?: string;
+}

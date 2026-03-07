@@ -60,6 +60,7 @@ export const ProductAnalyticsView: React.FC<{ onBack: () => void }> = ({ onBack 
 
   useEffect(() => {
     loadAll();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function loadAll() {

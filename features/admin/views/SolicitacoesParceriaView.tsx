@@ -36,6 +36,7 @@ export const SolicitacoesParceriaView: React.FC<{
 
   useEffect(() => {
     carregar();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [aba]);
 
   const handleRejeitar = async () => {

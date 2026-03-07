@@ -94,6 +94,7 @@ export const EventSocialProof: React.FC<EventSocialProofProps> = ({ eventoId, to
       }
       setLoading(false);
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isListOpen, eventoId, friendIds]);
 
   const filteredMembers = useMemo(() => {

@@ -120,6 +120,7 @@ export function DevQuickLogin() {
   useEffect(() => {
     if (!open || users.length > 0) return;
     fetchUsers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   async function fetchUsers() {

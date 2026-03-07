@@ -139,6 +139,7 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
       }
       setLoadingFollowers(false);
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFollowerListOpen, comunidadeId]);
 
   const filteredFollowers = useMemo(() => {

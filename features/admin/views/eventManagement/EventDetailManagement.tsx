@@ -104,6 +104,7 @@ export const EventDetailManagement: React.FC<{
       .catch(() => {
         /* audit-ok */
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sovPendentes.join()]);
 
   const handleAutorizarSov = async (requesterId: string) => {

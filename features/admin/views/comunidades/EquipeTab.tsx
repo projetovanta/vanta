@@ -30,7 +30,8 @@ export const EquipeTab: React.FC<{
       label: CARGO_LABELS[a.cargo] ?? CARGO_LABEL[a.cargo as TipoCargo] ?? a.cargo,
       atribuicaoId: a.id,
     }));
-  }, [atribuicoes.length, comunidade.id]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [comunidade.id]);
 
   // Lookup de profiles (legado + V2 userIds)
   const allUserIds = useMemo(() => [...new Set(equipeUnificada.map(e => e.userId))], [equipeUnificada]);
@@ -59,6 +60,7 @@ export const EquipeTab: React.FC<{
       .catch(() => {
         /* audit-ok */
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allUserIds.join(',')]);
 
   const handleRemover = async (item: EquipeItem) => {

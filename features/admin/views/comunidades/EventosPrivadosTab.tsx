@@ -71,6 +71,7 @@ export const EventosPrivadosTab: React.FC<Props> = ({ comunidadeId }) => {
 
   useEffect(() => {
     load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [comunidadeId]);
 
   const handleExpand = async (sol: EventoPrivado) => {

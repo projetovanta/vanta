@@ -18,7 +18,8 @@ export const Highlights: React.FC<HighlightsProps> = React.memo(({ currentCity, 
       setAllCards(cards);
       // Primeiro card usa loading="eager" — preload manual não é necessário
     });
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+     
+  }, []);
 
   const slides = allCards.filter(
     c => c.ativo && (!currentCity || c.alvoLocalidades.includes('GLOBAL') || c.alvoLocalidades.includes(currentCity)),

@@ -101,7 +101,8 @@ export const StaffRecrutamento: React.FC<{
       setProfiles(map);
       setLoading(false);
     });
-  }, [tick, eventoAdminId, comunidadeId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [eventoAdminId, comunidadeId]);
 
   const handleRecrutar = useCallback(
     async (userId: string, cargo: CargoUnificado) => {
@@ -122,6 +123,7 @@ export const StaffRecrutamento: React.FC<{
       }
       setActionLoading(null);
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [eventoAdminId, comunidadeId, currentUserId],
   );
 
@@ -138,6 +140,7 @@ export const StaffRecrutamento: React.FC<{
       }
       setActionLoading(null);
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [eventoAdminId],
   );
 

@@ -29,6 +29,7 @@ export const CuponsSubView: React.FC<{
 
   useEffect(() => {
     void loadCupons();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventoId]);
 
   const handleCriar = async () => {

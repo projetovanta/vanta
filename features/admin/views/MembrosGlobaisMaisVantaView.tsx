@@ -34,7 +34,8 @@ export const MembrosGlobaisMaisVantaView: React.FC<{
     count: number;
   } | null>(null);
 
-  const membros = useMemo(() => clubeService.getAllMembros(), [tick]);
+   
+  const membros = useMemo(() => clubeService.getAllMembros(), []);
   const comunidades = useMemo(() => comunidadesService.getAll(), []);
 
   // Carregar perfis

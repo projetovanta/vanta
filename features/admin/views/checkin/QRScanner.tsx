@@ -28,6 +28,7 @@ export const QRScanner: React.FC<{
         stopCamera();
       }, 60_000);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [continuous]);
 
   const stopCamera = useCallback(async () => {

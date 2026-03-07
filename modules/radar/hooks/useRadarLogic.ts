@@ -41,6 +41,7 @@ export const useRadarLogic = () => {
       .then(data => setEvents(data))
       .catch(() => {})
       .finally(() => setLoading(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userLocation]);
 
   const activeEvent = activeEventId ? events.find(e => e.id === activeEventId) : null;

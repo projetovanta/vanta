@@ -105,6 +105,7 @@ const useDragElement = (
 
   useEffect(() => {
     posRef.current = initial;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initial.x, initial.y]);
 
   const getClientXY = (e: React.TouchEvent | React.MouseEvent): [number, number] => {

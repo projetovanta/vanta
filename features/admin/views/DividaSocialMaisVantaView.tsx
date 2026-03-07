@@ -26,7 +26,8 @@ export const DividaSocialMaisVantaView: React.FC<{
     return todas as any;
   };
 
-  const reservasPendentes = useMemo(() => getReservasPendentes(), [tick]);
+   
+  const reservasPendentes = useMemo(() => getReservasPendentes(), []);
 
   // Enriquecer com perfis e eventos
   useEffect(() => {

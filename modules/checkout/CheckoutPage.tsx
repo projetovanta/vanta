@@ -185,6 +185,7 @@ export const CheckoutPage: React.FC = () => {
     };
 
     void loadEvento();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // qtd[variacaoId | 'lote-N'] = quantidade selecionada
@@ -228,6 +229,7 @@ export const CheckoutPage: React.FC = () => {
           /* audit-ok */
         },
       );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [evento?.mesasAtivo]);
 
   const mesaSelecionada = mesas.find(m => m.id === selectedMesa);
@@ -308,6 +310,7 @@ export const CheckoutPage: React.FC = () => {
         setCupomCode(result.cupom.codigo);
       }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cupomUrl, eventoId]);
 
   const handleLogin = async () => {

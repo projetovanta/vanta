@@ -403,8 +403,10 @@ export const PlanosMaisVantaView: React.FC<{
   const [msg, setMsg] = useState('');
   const [confirmarDesativar, setConfirmarDesativar] = useState<string | null>(null);
 
-  const planos = useMemo(() => assinaturaService.getTodosPlanos(), [tick]);
-  const tiers = useMemo(() => clubeService.getTodosTiers(), [tick]);
+   
+  const planos = useMemo(() => assinaturaService.getTodosPlanos(), []);
+   
+  const tiers = useMemo(() => clubeService.getTodosTiers(), []);
 
   const flash = (text: string) => {
     setMsg(text);

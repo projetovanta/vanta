@@ -39,7 +39,8 @@ export const EventosGlobaisMaisVantaView: React.FC<{
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const eventos = useMemo(() => eventosAdminService.getEventos(), [tick]);
+   
+  const eventos = useMemo(() => eventosAdminService.getEventos(), []);
   const comunidades = useMemo(() => comunidadesService.getAll(), []);
 
   const getLotesEvento = (eventoId: string) => clubeService.getLotesEvento(eventoId);

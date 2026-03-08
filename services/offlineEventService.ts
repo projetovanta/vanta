@@ -152,7 +152,15 @@ class OfflineEventService {
     convidadoId: string,
     eventoId: string,
     porteiroNome?: string,
-  ): Promise<{ ok: boolean; pendente?: boolean; bloqueado?: boolean; horaCorte?: string; valorAbobora?: number; convidadoId?: string; listaId?: string }> {
+  ): Promise<{
+    ok: boolean;
+    pendente?: boolean;
+    bloqueado?: boolean;
+    horaCorte?: string;
+    valorAbobora?: number;
+    convidadoId?: string;
+    listaId?: string;
+  }> {
     const logCheckin = (offline: boolean) =>
       void import('../features/admin/services/auditService')
         .then(({ auditService }) =>
@@ -171,7 +179,15 @@ class OfflineEventService {
       const { listasService } = await import('../features/admin/services/listasService');
       const result = await listasService.checkIn(listaId, convidadoId, porteiroNome);
       if (result.bloqueado) return { ok: false, bloqueado: true, horaCorte: result.horaCorte };
-      if (result.pendente) return { ok: false, pendente: true, horaCorte: result.horaCorte, valorAbobora: result.valorAbobora, convidadoId, listaId };
+      if (result.pendente)
+        return {
+          ok: false,
+          pendente: true,
+          horaCorte: result.horaCorte,
+          valorAbobora: result.valorAbobora,
+          convidadoId,
+          listaId,
+        };
       if (result.ok) {
         await markConvidadoCheckedIn(convidadoId, eventoId, listaId, porteiroNome);
         logCheckin(offline);

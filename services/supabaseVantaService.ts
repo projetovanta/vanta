@@ -381,7 +381,10 @@ export class SupabaseVantaService implements IVantaService {
   }
 
   // ── checkinLista ────────────────────────────────────────────────────────────
-  async checkinLista(convidadoId: string, porteiroNome?: string): Promise<{ ok: boolean; checkedInEm?: string; abobora?: boolean; bloqueado?: boolean; horaCorte?: string }> {
+  async checkinLista(
+    convidadoId: string,
+    porteiroNome?: string,
+  ): Promise<{ ok: boolean; checkedInEm?: string; abobora?: boolean; bloqueado?: boolean; horaCorte?: string }> {
     const svc = await getListasService();
     return svc.checkInGlobal(convidadoId, porteiroNome);
   }

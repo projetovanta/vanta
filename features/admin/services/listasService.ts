@@ -102,14 +102,14 @@ const buildListas = (
 export interface CheckInResult {
   ok: boolean;
   checkedInEm?: string;
-  abobora?: boolean;         // true se migrou para regra pagante (após confirmação)
-  bloqueado?: boolean;       // true se passou do hora_corte sem abóbora → check-in negado
-  horaCorte?: string;        // 'HH:MM' para exibir no aviso ao porteiro
-  pendente?: boolean;        // true se precisa de confirmação do porteiro (abóbora)
-  valorAbobora?: number;     // valor a cobrar se confirmar
+  abobora?: boolean; // true se migrou para regra pagante (após confirmação)
+  bloqueado?: boolean; // true se passou do hora_corte sem abóbora → check-in negado
+  horaCorte?: string; // 'HH:MM' para exibir no aviso ao porteiro
+  pendente?: boolean; // true se precisa de confirmação do porteiro (abóbora)
+  valorAbobora?: number; // valor a cobrar se confirmar
   regraDestinoLabel?: string; // label da regra pagante destino
-  convidadoId?: string;      // ID do convidado para confirmar depois
-  listaId?: string;          // ID da lista para confirmar depois
+  convidadoId?: string; // ID do convidado para confirmar depois
+  listaId?: string; // ID da lista para confirmar depois
 }
 
 // ── Hora de corte — verifica se passou do horário limite da regra ─────────────
@@ -513,7 +513,11 @@ export const listasService = {
   },
 
   /** Confirma check-in com abóbora — porteiro já confirmou que cobrou o valor */
-  confirmarCheckInAbobora: async (listaId: string, convidadoId: string, porteiroNome?: string): Promise<CheckInResult> => {
+  confirmarCheckInAbobora: async (
+    listaId: string,
+    convidadoId: string,
+    porteiroNome?: string,
+  ): Promise<CheckInResult> => {
     const lista = LISTAS.find(l => l.id === listaId);
     if (!lista) return { ok: false };
     const c = lista.convidados.find(c => c.id === convidadoId);
@@ -538,10 +542,7 @@ export const listasService = {
     };
     if (novaRegraId) update.regra_id = novaRegraId;
 
-    const { error } = await supabase
-      .from('convidados_lista')
-      .update(update)
-      .eq('id', convidadoId);
+    const { error } = await supabase.from('convidados_lista').update(update).eq('id', convidadoId);
 
     if (error) {
       console.error('[listasService] confirmarCheckInAbobora falhou:', error);

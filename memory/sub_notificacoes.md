@@ -45,6 +45,8 @@ Parametros: userId, tipo, titulo, mensagem, link
 | MV_DEAL_REJEITADO | Deal sugerido foi rejeitado | clube → parceiro |
 | MV_PARCEIRO_BEM_VINDO | Boas-vindas ao parceiro | clube → parceiro |
 | MV_RESGATE_PARCEIRO | Membro resgatou no parceiro | clube → parceiro |
+| MV_NOSHOW_REGISTRADO | Infração NO_SHOW registrada automaticamente | trigger → membro |
+| MV_LEMBRETE_RESERVA | Lembrete 12h antes do evento (cancele se não puder ir) | cron 30min → membro |
 | PARCERIA_NOVA | Nova solicitacao de parceria | parceria → master |
 | PARCERIA_APROVADA | Solicitacao aprovada | parceria → solicitante |
 | PARCERIA_REJEITADA | Solicitacao rejeitada | parceria → solicitante |

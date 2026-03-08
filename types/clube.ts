@@ -42,7 +42,7 @@ export interface ReservaMaisVanta {
   eventoId: string;
   userId: string;
   reservadoEm: string; // ISO 8601 -03:00
-  status: 'RESERVADO' | 'USADO' | 'CANCELADO' | 'PENDENTE_POST';
+  status: 'RESERVADO' | 'USADO' | 'CANCELADO' | 'PENDENTE_POST' | 'NO_SHOW';
   postVerificado: boolean; // masteradm confirmou que membro postou
   postUrl?: string; // link/evidência do post
   postDeadlineEm?: string; // ISO 8601 -03:00 — T+24h quando infração será registrada

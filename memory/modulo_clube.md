@@ -271,8 +271,8 @@ Tiers: BRONZE, PRATA, OURO, DIAMANTE. Cada tier desbloqueia lotes exclusivos.
 | 14 | Config global MV | OK | mais_vanta_config (1 row) + clube_config |
 | 15 | Stripe assinaturas | CÓDIGO OK, SECRETS FALTAM | create-checkout (133L) + stripe-webhook (163L) implementados. Falta configurar STRIPE_SECRET_KEY + STRIPE_WEBHOOK_SECRET no Supabase Dashboard |
 | 16 | Instagram API verificacao | CÓDIGO OK, SECRETS FALTAM | verify-instagram-post (132L) + verify-instagram-bio (124L) + update-instagram-followers (179L) implementados. Falta configurar META_ACCESS_TOKEN no Supabase Dashboard |
-| 17 | Downgrade automatico de tier | NAO EXISTE | Sem cron/trigger para rebaixar tier por inatividade ou infrações |
-| 18 | Dashboard do membro MV | PARCIAL | ClubeOptInView (793L) mostra tier, reservas, passaportes + DealsMembroSection (392L) deals/QR. Falta: seção infrações do membro, histórico de presença |
+| 17 | NO_SHOW automatico | OK | Trigger `trg_evento_finalizado_noshow` + função `registrar_noshow_evento_finalizado()` — quando evento muda pra FINALIZADO, marca reservas RESERVADO como NO_SHOW + insere infração + bloqueio progressivo + notificação. Cron `lembrete-reserva-mv` (30min) notifica 12h antes. Migration: 20260308130000 |
+| 18 | Dashboard do membro MV | OK | ClubeOptInView mostra tier, reservas, passaportes, deals. Inclui: botão cancelar reserva (>12h antes), badge NO_SHOW, modal confirmação cancelamento |
 | 19 | Curadoria v2 campos | OK | membros_clube: categoria, alcance, genero, cidade_base, interesses, nota_engajamento |
 | 20 | Cidades MV | OK | cidades_mais_vanta + clubeCidadesService |
 | 21 | Parceiros MV | OK | parceiros_mais_vanta + clubeParceirosService |

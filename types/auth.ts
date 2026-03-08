@@ -162,7 +162,9 @@ export interface Notificacao {
     | 'MV_DEAL_APROVADO'
     | 'MV_DEAL_REJEITADO'
     | 'MV_PARCEIRO_BEM_VINDO'
-    | 'MV_RESGATE_PARCEIRO';
+    | 'MV_RESGATE_PARCEIRO'
+    | 'MV_NOSHOW_REGISTRADO'
+    | 'MV_LEMBRETE_RESERVA';
   lida: boolean;
   link: string; // ID do evento, membro ou ação
   timestamp: string; // ISO 8601

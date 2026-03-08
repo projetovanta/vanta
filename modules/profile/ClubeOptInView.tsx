@@ -70,6 +70,7 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
   const [minhasReservas, setMinhasReservas] = useState<ReservaMaisVanta[]>([]);
   const [postUrl, setPostUrl] = useState('');
   const [activeTab, setActiveTab] = useState<'ATIVOS' | 'PASSADOS'>('ATIVOS');
+  const [cancelTarget, setCancelTarget] = useState<string | null>(null);
   const [optInFase, setOptInFase] = useState<1 | 2>(conviteId ? 2 : 1);
   const [aceitouTermos, setAceitouTermos] = useState(false);
   const [mostrarTermos, setMostrarTermos] = useState(false);
@@ -235,6 +236,29 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
     }
   };
 
+  // ── Cancelar reserva (sem infração se faltam >12h pro evento) ──
+  const podeCancelar = (r: ReservaMaisVanta) => {
+    if (r.status !== 'RESERVADO') return false;
+    const ev = allEvents.find(e => e.id === r.eventoId);
+    if (!ev) return true; // sem evento = pode cancelar por segurança
+    const inicio = ev.dataReal?.split('T')[0] ?? ev.data?.split('T')[0] ?? '';
+    if (!inicio) return true;
+    const evTs = new Date(inicio + 'T' + (ev.horario ?? '23:59') + ':00-03:00').getTime();
+    return evTs - Date.now() > 12 * 3600000; // mais de 12h antes
+  };
+
+  const handleCancelarReserva = async () => {
+    if (!cancelTarget) return;
+    try {
+      await clubeService.cancelarReserva(cancelTarget);
+      setMinhasReservas(clubeService.getReservasUsuario(profile.id));
+      onSuccess?.('Reserva cancelada com sucesso');
+    } catch {
+      onSuccess?.('Erro ao cancelar reserva');
+    }
+    setCancelTarget(null);
+  };
+
   // ── Separar reservas em Ativos/Passados ──
   const today = todayBR();
   const reservasAtivas = useMemo(
@@ -348,22 +372,46 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
                             ? 'bg-emerald-500/15 text-emerald-400'
                             : r.status === 'CANCELADO'
                               ? 'bg-red-500/15 text-red-400'
-                              : r.postVerificado
-                                ? 'bg-emerald-500/15 text-emerald-400'
-                                : 'bg-amber-500/15 text-amber-400'
+                              : r.status === 'NO_SHOW'
+                                ? 'bg-red-500/15 text-red-400'
+                                : r.postVerificado
+                                  ? 'bg-emerald-500/15 text-emerald-400'
+                                  : 'bg-amber-500/15 text-amber-400'
                         }`}
                       >
                         {r.status === 'USADO'
                           ? 'Utilizado'
                           : r.status === 'CANCELADO'
                             ? 'Cancelado'
-                            : r.postVerificado
-                              ? 'Post verificado'
-                              : r.postUrl
-                                ? 'Aguardando verificação'
-                                : 'Post pendente'}
+                            : r.status === 'NO_SHOW'
+                              ? 'Não compareceu'
+                              : r.postVerificado
+                                ? 'Post verificado'
+                                : r.postUrl
+                                  ? 'Aguardando verificação'
+                                  : 'Post pendente'}
                       </span>
                     </div>
+
+                    {/* Cancelar reserva — somente aba Ativos, se faltam >12h */}
+                    {activeTab === 'ATIVOS' && r.status === 'RESERVADO' && podeCancelar(r) && (
+                      <button
+                        onClick={() => setCancelTarget(r.id)}
+                        className="mt-2 w-full py-2 bg-zinc-800 border border-white/10 rounded-xl text-zinc-400 text-[10px] font-bold uppercase tracking-wider active:scale-95 transition-transform"
+                      >
+                        Cancelar reserva
+                      </button>
+                    )}
+
+                    {/* Aviso: sem tempo pra cancelar */}
+                    {activeTab === 'ATIVOS' && r.status === 'RESERVADO' && !podeCancelar(r) && (
+                      <div className="mt-2 flex items-center gap-1.5">
+                        <Clock size={10} className="text-amber-400" />
+                        <span className="text-amber-400 text-[9px]">
+                          Faltam menos de 12h — cancelamento indisponível
+                        </span>
+                      </div>
+                    )}
 
                     {/* Enviar comprovação se pendente — somente na aba Ativos */}
                     {activeTab === 'ATIVOS' && isPendingPost && !r.postUrl && (
@@ -479,6 +527,33 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
             <p className="text-zinc-400 text-[9px] italic">Em breve: busca de amigos por nome</p>
           </div>
         </div>
+
+        {/* Modal confirmar cancelamento de reserva */}
+        {cancelTarget && (
+          <div className="absolute inset-0 z-[400] bg-black/70 backdrop-blur-sm flex items-center justify-center p-6 animate-in fade-in duration-200">
+            <div className="bg-zinc-900 border border-white/10 rounded-3xl p-6 w-full max-w-sm">
+              <h3 className="text-white font-bold text-base mb-2">Cancelar reserva?</h3>
+              <p className="text-zinc-400 text-sm mb-6">
+                Sua vaga será liberada para outro membro. Você poderá reservar novamente se ainda houver
+                disponibilidade.
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setCancelTarget(null)}
+                  className="flex-1 py-3 bg-zinc-800 border border-white/10 rounded-2xl text-zinc-300 text-sm font-bold active:scale-95 transition-transform"
+                >
+                  Manter
+                </button>
+                <button
+                  onClick={handleCancelarReserva}
+                  className="flex-1 py-3 bg-red-600 rounded-2xl text-white text-sm font-bold active:scale-95 transition-transform"
+                >
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     );
   }

@@ -22,7 +22,11 @@ export const TabCheckin: React.FC<{
 
   const [avisoCorte, setAvisoCorte] = useState<{ nome: string; hora: string } | null>(null);
   const [avisoAbobora, setAvisoAbobora] = useState<{
-    nome: string; hora: string; valor: number; convidadoId: string; listaId: string;
+    nome: string;
+    hora: string;
+    valor: number;
+    convidadoId: string;
+    listaId: string;
   } | null>(null);
 
   const handleCheckin = async (convidadoId: string) => {
@@ -147,8 +151,8 @@ export const TabCheckin: React.FC<{
             <div className="text-red-400 text-sm font-bold">Check-in bloqueado</div>
             <p className="text-zinc-300 text-xs">
               <span className="font-semibold text-white">{avisoCorte.nome}</span> está na lista VIP até às{' '}
-              <span className="font-semibold text-[#FFD300]">{avisoCorte.hora}</span>.
-              O horário já passou e esta lista não tem valor após o corte.
+              <span className="font-semibold text-[#FFD300]">{avisoCorte.hora}</span>. O horário já passou e esta lista
+              não tem valor após o corte.
             </p>
             <button
               onClick={() => setAvisoCorte(null)}
@@ -167,8 +171,7 @@ export const TabCheckin: React.FC<{
             <div className="text-[#FFD300] text-sm font-bold">VIP até às {avisoAbobora.hora} encerrado</div>
             <p className="text-zinc-300 text-xs">
               <span className="font-semibold text-white">{avisoAbobora.nome}</span> precisa pagar{' '}
-              <span className="font-black text-[#FFD300] text-base">R${avisoAbobora.valor}</span>{' '}
-              para entrar.
+              <span className="font-black text-[#FFD300] text-base">R${avisoAbobora.valor}</span> para entrar.
             </p>
             <div className="flex gap-2">
               <button

@@ -5,13 +5,20 @@ import { EventoAdmin, ListaEvento, ConvidadoLista } from '../../../../types';
 
 const fmt = (v: number) => v.toLocaleString('pt-BR');
 const fmtR$ = (v: number) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-const pct = (v: number, total: number) => total > 0 ? Math.round((v / total) * 100) : 0;
+const pct = (v: number, total: number) => (total > 0 ? Math.round((v / total) * 100) : 0);
 
 // Cores por origem
 const PALETTE = [
-  '#FFD300', '#F59E0B', '#10B981', '#3B82F6',
-  '#A855F7', '#EC4899', '#EF4444', '#8B5CF6',
-  '#06B6D4', '#84CC16',
+  '#FFD300',
+  '#F59E0B',
+  '#10B981',
+  '#3B82F6',
+  '#A855F7',
+  '#EC4899',
+  '#EF4444',
+  '#8B5CF6',
+  '#06B6D4',
+  '#84CC16',
 ];
 const CORES_MAP: Record<string, string> = {
   'Ingressos App': '#FFD300',
@@ -63,8 +70,7 @@ export interface CortesiaLogItem {
 }
 
 const varLabel = (v: { area: string; areaCustom?: string; genero: string }) => `${v.areaCustom || v.area} ${v.genero}`;
-const generoLabel = (g: string) =>
-  g === 'MASCULINO' ? 'Masculino' : g === 'FEMININO' ? 'Feminino' : 'Unissex';
+const generoLabel = (g: string) => (g === 'MASCULINO' ? 'Masculino' : g === 'FEMININO' ? 'Feminino' : 'Unissex');
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -82,7 +88,11 @@ const groupBy = <T,>(arr: T[], key: (t: T) => string): Record<string, T[]> => {
 
 // ─── Nível 4: Promoter (listas) ─────────────────────────────────────────────
 
-function buildPromoterDrill(convidados: ConvidadoLista[], regraMap: Map<string, { label: string; valor?: number; genero: string }>, titulo: string): DrillLevel {
+function buildPromoterDrill(
+  convidados: ConvidadoLista[],
+  regraMap: Map<string, { label: string; valor?: number; genero: string }>,
+  titulo: string,
+): DrillLevel {
   const byPromoter = groupBy(convidados, c => c.inseridoPor || '_sem_promoter');
   const entries = Object.entries(byPromoter)
     .map(([pid, cs]) => {
@@ -122,7 +132,11 @@ function buildPromoterDrill(convidados: ConvidadoLista[], regraMap: Map<string, 
 
 // ─── Nível 3: Gênero (listas) ───────────────────────────────────────────────
 
-function buildGeneroListaDrill(convidados: ConvidadoLista[], regraMap: Map<string, { label: string; valor?: number; genero: string }>, titulo: string): DrillLevel {
+function buildGeneroListaDrill(
+  convidados: ConvidadoLista[],
+  regraMap: Map<string, { label: string; valor?: number; genero: string }>,
+  titulo: string,
+): DrillLevel {
   const byGenero = groupBy(convidados, c => {
     const regra = regraMap.get(c.regraId);
     return generoLabel(regra?.genero ?? 'UNISSEX');
@@ -238,11 +252,13 @@ function buildGeneroIngressosDrill(
     people(sliceName: string): PersonRow[] {
       const entry = entries.find(e => e.genero === sliceName);
       if (!entry) return [];
-      return entry.vars.filter(v => v.vendidos > 0).map(v => ({
-        nome: `${varLabel(v)}: ${fmt(v.vendidos)} vendidos`,
-        sub: `${fmtR$(v.valor)} cada — Total: ${fmtR$(v.vendidos * v.valor)}`,
-        extra: generoLabel(v.genero),
-      }));
+      return entry.vars
+        .filter(v => v.vendidos > 0)
+        .map(v => ({
+          nome: `${varLabel(v)}: ${fmt(v.vendidos)} vendidos`,
+          sub: `${fmtR$(v.valor)} cada — Total: ${fmtR$(v.vendidos * v.valor)}`,
+          extra: generoLabel(v.genero),
+        }));
     },
   };
 }
@@ -299,8 +315,7 @@ function buildVariacaoAgrupada(evento: EventoAdmin): DrillLevel {
 
 function buildVariacaoPorLote(evento: EventoAdmin): DrillLevel {
   const lotes = evento.lotes.filter(l => l.vendidos > 0);
-  const totalReceita = lotes.reduce((a, l) =>
-    a + l.variacoes.reduce((b, v) => b + v.vendidos * v.valor, 0), 0);
+  const totalReceita = lotes.reduce((a, l) => a + l.variacoes.reduce((b, v) => b + v.vendidos * v.valor, 0), 0);
 
   const slices: RichSlice[] = lotes.map((l, i) => ({
     name: l.nome,
@@ -342,22 +357,26 @@ function buildVariacaoPorLote(evento: EventoAdmin): DrillLevel {
         people(varName: string): PersonRow[] {
           const v = vars.find(x => varLabel(x) === varName);
           if (!v) return [];
-          return [{
-            nome: `${fmt(v.vendidos)} ingressos vendidos`,
-            sub: `${fmtR$(v.valor)} cada — Total: ${fmtR$(v.vendidos * v.valor)}`,
-            extra: generoLabel(v.genero),
-          }];
+          return [
+            {
+              nome: `${fmt(v.vendidos)} ingressos vendidos`,
+              sub: `${fmtR$(v.valor)} cada — Total: ${fmtR$(v.vendidos * v.valor)}`,
+              extra: generoLabel(v.genero),
+            },
+          ];
         },
       };
     },
     people(sliceName: string): PersonRow[] {
       const lote = lotes.find(l => l.nome === sliceName);
       if (!lote) return [];
-      return lote.variacoes.filter(v => v.vendidos > 0).map(v => ({
-        nome: `${varLabel(v)}: ${fmt(v.vendidos)} vendidos`,
-        sub: `${fmtR$(v.valor)} cada — ${fmtR$(v.vendidos * v.valor)}`,
-        extra: generoLabel(v.genero),
-      }));
+      return lote.variacoes
+        .filter(v => v.vendidos > 0)
+        .map(v => ({
+          nome: `${varLabel(v)}: ${fmt(v.vendidos)} vendidos`,
+          sub: `${fmtR$(v.valor)} cada — ${fmtR$(v.vendidos * v.valor)}`,
+          extra: generoLabel(v.genero),
+        }));
     },
   };
 }
@@ -503,11 +522,13 @@ function buildTipoIngressoDrill(evento: EventoAdmin, cortesiasLog: CortesiaLogIt
         }));
       }
       if (sliceName === 'Pagos') {
-        return allVar.filter(v => v.vendidos > 0).map(v => ({
-          nome: `${varLabel(v)}: ${fmt(v.vendidos)} vendidos`,
-          sub: `${fmtR$(v.valor)} cada — ${fmtR$(v.vendidos * v.valor)}`,
-          extra: generoLabel(v.genero),
-        }));
+        return allVar
+          .filter(v => v.vendidos > 0)
+          .map(v => ({
+            nome: `${varLabel(v)}: ${fmt(v.vendidos)} vendidos`,
+            sub: `${fmtR$(v.valor)} cada — ${fmtR$(v.vendidos * v.valor)}`,
+            extra: generoLabel(v.genero),
+          }));
       }
       return [];
     },
@@ -551,7 +572,11 @@ function buildTipoListaDrill(
 
 // ─── Raiz: Público por Origem (2 fatias: Ingresso + Lista) ──────────────────
 
-export function buildPublicoTree(evento: EventoAdmin, lista?: ListaEvento, cortesiasLog: CortesiaLogItem[] = []): DrillLevel {
+export function buildPublicoTree(
+  evento: EventoAdmin,
+  lista?: ListaEvento,
+  cortesiasLog: CortesiaLogItem[] = [],
+): DrillLevel {
   const regraMap = buildRegraMap(lista);
   const allVar = evento.lotes.flatMap(l => l.variacoes);
   const totalIngressos = allVar.reduce((a, v) => a + v.vendidos, 0);
@@ -588,10 +613,12 @@ export function buildPublicoTree(evento: EventoAdmin, lista?: ListaEvento, corte
     },
     people(sliceName: string): PersonRow[] {
       if (sliceName === 'Ingresso') {
-        return allVar.filter(v => v.vendidos > 0).map(v => ({
-          nome: `${varLabel(v)}: ${fmt(v.vendidos)}`,
-          sub: `${fmtR$(v.valor)} cada — ${fmtR$(v.vendidos * v.valor)}`,
-        }));
+        return allVar
+          .filter(v => v.vendidos > 0)
+          .map(v => ({
+            nome: `${varLabel(v)}: ${fmt(v.vendidos)}`,
+            sub: `${fmtR$(v.valor)} cada — ${fmtR$(v.vendidos * v.valor)}`,
+          }));
       }
       if (sliceName === 'Lista') {
         return convidados.map(c => ({
@@ -628,7 +655,7 @@ export const PublicoDrilldown: React.FC<{
     }
   }, [rootLevel, breadcrumb.length]);
 
-  const activeLevel = (showByLote && currentLevel.loteAlternative) ? currentLevel.loteAlternative : currentLevel;
+  const activeLevel = showByLote && currentLevel.loteAlternative ? currentLevel.loteAlternative : currentLevel;
 
   const handleSliceClick = (name: string) => {
     setSelectedSlice(prev => (prev === name ? null : name));

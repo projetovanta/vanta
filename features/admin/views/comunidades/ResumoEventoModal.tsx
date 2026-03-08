@@ -1,5 +1,19 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { ArrowLeft, ArrowUpDown, TrendingUp, Users, Ticket, ListChecks, DollarSign, PieChart as PieIcon, Clock, BarChart3, Activity, Gift, ChevronDown } from 'lucide-react';
+import {
+  ArrowLeft,
+  ArrowUpDown,
+  TrendingUp,
+  Users,
+  Ticket,
+  ListChecks,
+  DollarSign,
+  PieChart as PieIcon,
+  Clock,
+  BarChart3,
+  Activity,
+  Gift,
+  ChevronDown,
+} from 'lucide-react';
 import { TYPOGRAPHY } from '../../../../constants';
 import { EventoAdmin, ListaEvento } from '../../../../types';
 import { getContractedFees } from '../../services/eventosAdminFinanceiro';
@@ -32,17 +46,17 @@ const Section: React.FC<{ icon: React.ReactNode; title: string; children: React.
 }) => {
   const [open, setOpen] = useState(defaultOpen);
   return (
-  <div>
-    <button
-      onClick={() => setOpen(prev => !prev)}
-      className="w-full flex items-center gap-1.5 mb-2.5 active:opacity-70 transition-opacity"
-    >
-      {icon}
-      <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest flex-1 text-left">{title}</p>
-      <ChevronDown size={12} className={`text-zinc-600 transition-transform ${open ? 'rotate-180' : ''}`} />
-    </button>
-    {open && children}
-  </div>
+    <div>
+      <button
+        onClick={() => setOpen(prev => !prev)}
+        className="w-full flex items-center gap-1.5 mb-2.5 active:opacity-70 transition-opacity"
+      >
+        {icon}
+        <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest flex-1 text-left">{title}</p>
+        <ChevronDown size={12} className={`text-zinc-600 transition-transform ${open ? 'rotate-180' : ''}`} />
+      </button>
+      {open && children}
+    </div>
   );
 };
 
@@ -182,7 +196,9 @@ export const ResumoEventoView: React.FC<{
 
   // ── Cortesias detalhadas (async) ──
   const [cortesiasDetalhe, setCortesiasDetalhe] = useState<{ pendentes: number; aceitas: number; recusadas: number }>({
-    pendentes: 0, aceitas: 0, recusadas: 0,
+    pendentes: 0,
+    aceitas: 0,
+    recusadas: 0,
   });
   const [cortesiasTotal, setCortesiasTotal] = useState(cortesiasEnviadas);
 
@@ -220,11 +236,13 @@ export const ResumoEventoView: React.FC<{
       .then(({ data }) => {
         if (!ctrl.signal.aborted && data && data.length > 0) {
           setCortesiasTotal(data.length);
-          setCortesiasLogItems(data.map(d => ({
-            variacaoLabel: d.variacao_label ?? '',
-            remetente: d.remetente_nome ?? '',
-            destinatario: d.destinatario_nome ?? '',
-          })));
+          setCortesiasLogItems(
+            data.map(d => ({
+              variacaoLabel: d.variacao_label ?? '',
+              remetente: d.remetente_nome ?? '',
+              destinatario: d.destinatario_nome ?? '',
+            })),
+          );
         }
       });
     return () => ctrl.abort();
@@ -271,7 +289,16 @@ export const ResumoEventoView: React.FC<{
     return Object.entries(canais)
       .filter(([, d]) => d.total > 0)
       .map(([canal, d]) => ({
-        canal: canal === 'ANTECIPADO' ? 'App' : canal === 'PORTA' ? 'Porta' : canal === 'LISTA' ? 'Lista' : canal === 'CORTESIA' ? 'Cortesia' : canal,
+        canal:
+          canal === 'ANTECIPADO'
+            ? 'App'
+            : canal === 'PORTA'
+              ? 'Porta'
+              : canal === 'LISTA'
+                ? 'Lista'
+                : canal === 'CORTESIA'
+                  ? 'Cortesia'
+                  : canal,
         ticketMedio: d.receita / d.total,
         total: d.total,
         receita: d.receita,
@@ -294,9 +321,10 @@ export const ResumoEventoView: React.FC<{
   }, [allVar]);
 
   // ── Check-in geral ──
-  const checkinIngressos = vendasLog.length > 0
-    ? vendasLog.filter(v => v.origem === 'ANTECIPADO' || v.origem === 'PORTA').length
-    : totalVendidos;
+  const checkinIngressos =
+    vendasLog.length > 0
+      ? vendasLog.filter(v => v.origem === 'ANTECIPADO' || v.origem === 'PORTA').length
+      : totalVendidos;
   const totalPresencas = totalCheckedIn + cortesiasDetalhe.aceitas; // lista checkins + cortesias aceitas
   const totalEsperado = totalVendidos + totalLista + cortesiasTotal;
   const checkinGeralPct = totalEsperado > 0 ? Math.round((totalPresencas / totalEsperado) * 100) : 0;
@@ -308,7 +336,10 @@ export const ResumoEventoView: React.FC<{
 
   const handleLoteSort = (key: LoteSort) => {
     if (loteSortKey === key) setLoteSortAsc(prev => !prev);
-    else { setLoteSortKey(key); setLoteSortAsc(false); }
+    else {
+      setLoteSortKey(key);
+      setLoteSortAsc(false);
+    }
   };
 
   const lotesOrdenadosFiltrado = useMemo(() => {
@@ -383,7 +414,10 @@ export const ResumoEventoView: React.FC<{
                   <span className="text-[#FFD300] font-bold">{totalVendidos + cortesiasTotal}</span>
                   <span className="text-zinc-500"> por ingresso</span>
                   {cortesiasTotal > 0 && (
-                    <span className="text-zinc-600"> ({totalVendidos} pagos · {cortesiasTotal} cortesia)</span>
+                    <span className="text-zinc-600">
+                      {' '}
+                      ({totalVendidos} pagos · {cortesiasTotal} cortesia)
+                    </span>
                   )}
                 </p>
               </div>
@@ -393,7 +427,10 @@ export const ResumoEventoView: React.FC<{
                   <p className="text-zinc-300 text-[10px]">
                     <span className="text-emerald-400 font-bold">{totalCheckedIn}</span>
                     <span className="text-zinc-500"> por lista</span>
-                    <span className="text-zinc-600"> ({totalCheckedIn}/{totalLista} — {freqPct}%)</span>
+                    <span className="text-zinc-600">
+                      {' '}
+                      ({totalCheckedIn}/{totalLista} — {freqPct}%)
+                    </span>
                   </p>
                 </div>
               )}
@@ -412,9 +449,13 @@ export const ResumoEventoView: React.FC<{
               </div>
             )}
             <div className="p-2 bg-zinc-900/40 border border-white/5 rounded-lg flex items-center gap-2">
-              <div className={`w-1 h-6 rounded-full shrink-0 ${checkinGeralPct >= 70 ? 'bg-emerald-400' : checkinGeralPct >= 40 ? 'bg-amber-400' : 'bg-red-400'}`} />
+              <div
+                className={`w-1 h-6 rounded-full shrink-0 ${checkinGeralPct >= 70 ? 'bg-emerald-400' : checkinGeralPct >= 40 ? 'bg-amber-400' : 'bg-red-400'}`}
+              />
               <div>
-                <p className={`text-[10px] font-bold ${checkinGeralPct >= 70 ? 'text-emerald-400' : checkinGeralPct >= 40 ? 'text-amber-400' : 'text-red-400'}`}>
+                <p
+                  className={`text-[10px] font-bold ${checkinGeralPct >= 70 ? 'text-emerald-400' : checkinGeralPct >= 40 ? 'text-amber-400' : 'text-red-400'}`}
+                >
                   {checkinGeralPct}%
                 </p>
                 <p className="text-zinc-600 text-[7px]">Check-in geral</p>
@@ -554,7 +595,9 @@ export const ResumoEventoView: React.FC<{
                 <div key={i} className="p-3 bg-zinc-900/40 border border-white/5 rounded-xl">
                   <p className="text-zinc-400 text-[8px] font-bold uppercase tracking-wider">{c.canal}</p>
                   <p className="text-[#FFD300] font-black text-base mt-1">{fmt(c.ticketMedio)}</p>
-                  <p className="text-zinc-500 text-[8px]">{c.total} vendas · {fmt(c.receita)}</p>
+                  <p className="text-zinc-500 text-[8px]">
+                    {c.total} vendas · {fmt(c.receita)}
+                  </p>
                 </div>
               ))}
             </div>
@@ -563,7 +606,11 @@ export const ResumoEventoView: React.FC<{
 
         {/* ══ PUBLICO — DRILL-DOWN ══ */}
         <Section icon={<PieIcon size={10} className="text-zinc-400" />} title="Publico — De onde veio?">
-          <PublicoDrilldown evento={{ ...evento, cortesiasEnviadas: cortesiasTotal }} lista={lista} cortesiasLog={cortesiasLogItems} />
+          <PublicoDrilldown
+            evento={{ ...evento, cortesiasEnviadas: cortesiasTotal }}
+            lista={lista}
+            cortesiasLog={cortesiasLogItems}
+          />
         </Section>
 
         {/* ══ INGRESSOS ══ */}
@@ -639,7 +686,9 @@ export const ResumoEventoView: React.FC<{
                 <div key={i} className="p-2.5 bg-zinc-900/40 border border-white/5 rounded-xl">
                   <div className="flex justify-between items-center mb-1">
                     <p className="text-white text-[10px] font-bold truncate flex-1 min-w-0">{v.label}</p>
-                    <p className={`font-black text-sm shrink-0 ml-2 ${v.pct >= 80 ? 'text-red-400' : v.pct >= 50 ? 'text-amber-400' : 'text-emerald-400'}`}>
+                    <p
+                      className={`font-black text-sm shrink-0 ml-2 ${v.pct >= 80 ? 'text-red-400' : v.pct >= 50 ? 'text-amber-400' : 'text-emerald-400'}`}
+                    >
                       {v.pct}%
                     </p>
                   </div>
@@ -650,7 +699,9 @@ export const ResumoEventoView: React.FC<{
                     />
                   </div>
                   <div className="flex justify-between mt-1">
-                    <p className="text-zinc-500 text-[8px]">{v.vendidos}/{v.limite}</p>
+                    <p className="text-zinc-500 text-[8px]">
+                      {v.vendidos}/{v.limite}
+                    </p>
                     <p className="text-zinc-500 text-[8px]">{fmt(v.receita)}</p>
                   </div>
                 </div>
@@ -664,7 +715,9 @@ export const ResumoEventoView: React.FC<{
           <div className="p-4 bg-zinc-900/40 border border-white/5 rounded-2xl">
             <div className="flex justify-between items-center mb-2">
               <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider">Presença confirmada</p>
-              <p className={`font-black text-lg ${checkinGeralPct >= 70 ? 'text-emerald-400' : checkinGeralPct >= 40 ? 'text-amber-400' : 'text-red-400'}`}>
+              <p
+                className={`font-black text-lg ${checkinGeralPct >= 70 ? 'text-emerald-400' : checkinGeralPct >= 40 ? 'text-amber-400' : 'text-red-400'}`}
+              >
                 {checkinGeralPct}%
               </p>
             </div>
@@ -736,11 +789,11 @@ export const ResumoEventoView: React.FC<{
           <Section icon={<Users size={10} className="text-zinc-400" />} title="Ranking de Promoters">
             {/* Filtros */}
             <div className="flex gap-1.5 mb-3 overflow-x-auto no-scrollbar">
-              {([
+              {[
                 { key: 'total' as PromoterSort, label: 'Nomes' },
                 { key: 'checkins' as PromoterSort, label: 'Entraram' },
                 { key: 'conversao' as PromoterSort, label: 'Conversão' },
-              ]).map(opt => {
+              ].map(opt => {
                 const active = promoterSortKey === opt.key;
                 return (
                   <button
@@ -773,9 +826,7 @@ export const ResumoEventoView: React.FC<{
                     </span>
                     <div className="flex-1 min-w-0">
                       <p className="text-white text-sm font-bold truncate">{p.nome}</p>
-                      <p className="text-zinc-400 text-[9px]">
-                        {convPct}% de conversão
-                      </p>
+                      <p className="text-zinc-400 text-[9px]">{convPct}% de conversão</p>
                     </div>
                     <p className="font-black text-sm shrink-0">
                       <span className="text-emerald-400">{p.checkins}</span>
@@ -793,11 +844,11 @@ export const ResumoEventoView: React.FC<{
         <Section icon={<Ticket size={10} className="text-zinc-400" />} title="Ranking de Lotes">
           {/* Filtros */}
           <div className="flex gap-1.5 mb-3 overflow-x-auto no-scrollbar">
-            {([
+            {[
               { key: 'vendidos' as LoteSort, label: 'Vendidos' },
               { key: 'faturamento' as LoteSort, label: 'Faturamento' },
               { key: 'ocupacao' as LoteSort, label: 'Ocupação' },
-            ]).map(opt => {
+            ].map(opt => {
               const active = loteSortKey === opt.key;
               return (
                 <button

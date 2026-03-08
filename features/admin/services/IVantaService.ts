@@ -197,7 +197,7 @@ export interface IVantaService {
    * Marca um convidado como presente (check-in).
    * Supabase: UPDATE convidados_lista SET checked_in=true, checked_in_em=now() WHERE id=convidadoId.
    */
-  checkinLista(convidadoId: string, porteiroNome?: string): Promise<{ ok: boolean; checkedInEm?: string }>;
+  checkinLista(convidadoId: string, porteiroNome?: string): Promise<{ ok: boolean; checkedInEm?: string; abobora?: boolean; bloqueado?: boolean; horaCorte?: string }>;
 
   /**
    * Atualiza nome e CPF do titular de um ingresso.

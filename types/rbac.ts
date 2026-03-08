@@ -80,6 +80,7 @@ export interface RegraLista {
   cor?: string; // hex para identificação visual no check-in
   valor?: number; // preço da regra (0 = gratuito/VIP sem valor)
   horaCorte?: string; // 'HH:MM' — regra expira a partir deste horário (Efeito Abóbora)
+  aboboraRegraId?: string; // ID da regra pagante vinculada (Efeito Abóbora)
   genero: 'M' | 'F' | 'U'; // Masculino, Feminino, Unisex — convidado herda da regra
   area?: string; // PISTA, CAMAROTE, AREA_VIP, BACKSTAGE ou valor personalizado
 }

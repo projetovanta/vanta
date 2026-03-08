@@ -50,6 +50,8 @@ const buildListas = (
         saldoBanco: Number(r.saldo_banco ?? 0),
         cor: r.cor ?? undefined,
         valor: r.valor != null ? Number(r.valor) : undefined,
+        horaCorte: r.hora_corte ?? undefined,
+        aboboraRegraId: r.abobora_regra_id ?? undefined,
         genero: (r.genero as 'M' | 'F' | 'U') ?? 'U',
         area: r.area ?? undefined,
       }));
@@ -93,6 +95,78 @@ const buildListas = (
       convidados,
     };
   });
+};
+
+// ── Tipos de resultado do check-in ───────────────────────────────────────────
+
+export interface CheckInResult {
+  ok: boolean;
+  checkedInEm?: string;
+  abobora?: boolean;         // true se migrou para regra pagante (após confirmação)
+  bloqueado?: boolean;       // true se passou do hora_corte sem abóbora → check-in negado
+  horaCorte?: string;        // 'HH:MM' para exibir no aviso ao porteiro
+  pendente?: boolean;        // true se precisa de confirmação do porteiro (abóbora)
+  valorAbobora?: number;     // valor a cobrar se confirmar
+  regraDestinoLabel?: string; // label da regra pagante destino
+  convidadoId?: string;      // ID do convidado para confirmar depois
+  listaId?: string;          // ID da lista para confirmar depois
+}
+
+// ── Hora de corte — verifica se passou do horário limite da regra ─────────────
+
+const toMin = (s: string) => {
+  const [h, m] = s.split(':').map(Number);
+  return h * 60 + m;
+};
+
+/**
+ * Verifica se o horário do check-in já passou do hora_corte da regra.
+ * Trata eventos noturnos: madrugada (00:00-05:59) conta como "passou"
+ * quando hora_corte >= 12:00.
+ */
+const passouDoCorte = (horaCorte: string, checkedInEm: string): boolean => {
+  const hhmm = checkedInEm.slice(11, 16); // 'HH:MM' do ISO string
+  const checkinMin = toMin(hhmm);
+  const corteMin = toMin(horaCorte);
+
+  if (corteMin >= 720) {
+    // Evento noturno: passou se check-in >= corte OU madrugada (< 06:00)
+    return checkinMin >= corteMin || checkinMin < 360;
+  }
+  // Evento diurno: passou se check-in >= corte
+  return checkinMin >= corteMin;
+};
+
+/**
+ * Resultado da verificação de hora_corte no check-in.
+ * - 'ok': sem restrição, check-in normal
+ * - 'abobora': passou do corte, migrar para regra pagante (retorna novo regraId)
+ * - 'bloqueado': passou do corte, SEM regra pagante → check-in BLOQUEADO
+ */
+type ResultadoCorte =
+  | { tipo: 'ok' }
+  | { tipo: 'abobora'; novaRegraId: string }
+  | { tipo: 'bloqueado'; horaCorte: string };
+
+const verificarHoraCorte = (lista: ListaEvento, regraId: string, checkedInEm: string): ResultadoCorte => {
+  const regra = lista.regras.find(r => r.id === regraId);
+
+  // Sem hora_corte ou hora_corte = '02:00' (convenção para "noite toda") → ok
+  if (!regra?.horaCorte || regra.horaCorte === '02:00') return { tipo: 'ok' };
+
+  // Regra já é pagante (valor > 0) → não se aplica corte
+  if (regra.valor && regra.valor > 0) return { tipo: 'ok' };
+
+  if (!passouDoCorte(regra.horaCorte, checkedInEm)) return { tipo: 'ok' };
+
+  // Passou do corte — tem abóbora?
+  if (regra.aboboraRegraId) {
+    const regraAbobora = lista.regras.find(r => r.id === regra.aboboraRegraId);
+    if (regraAbobora) return { tipo: 'abobora', novaRegraId: regra.aboboraRegraId };
+  }
+
+  // Passou do corte SEM abóbora → BLOQUEADO
+  return { tipo: 'bloqueado', horaCorte: regra.horaCorte };
 };
 
 // ── Serviço público ───────────────────────────────────────────────────────────
@@ -393,20 +467,39 @@ export const listasService = {
     return true;
   },
 
-  checkIn: async (listaId: string, convidadoId: string, porteiroNome?: string): Promise<boolean> => {
+  checkIn: async (listaId: string, convidadoId: string, porteiroNome?: string): Promise<CheckInResult> => {
     const lista = LISTAS.find(l => l.id === listaId);
-    if (!lista) return false;
+    if (!lista) return { ok: false };
     const c = lista.convidados.find(c => c.id === convidadoId);
-    if (!c || c.checkedIn) return false;
+    if (!c || c.checkedIn) return { ok: false };
 
     const checkedInEm = new Date(Date.now() - 3 * 3600000).toISOString().replace('Z', '-03:00');
+    const corte = verificarHoraCorte(lista, c.regraId, checkedInEm);
 
-    // Optimistic: atualiza cache local ANTES do Supabase (portaria não espera)
+    if (corte.tipo === 'bloqueado') {
+      return { ok: false, bloqueado: true, horaCorte: corte.horaCorte };
+    }
+
+    // Abóbora: NÃO faz check-in — retorna pendente para porteiro confirmar
+    if (corte.tipo === 'abobora') {
+      const regraDestino = lista.regras.find(r => r.id === corte.novaRegraId);
+      const regra = lista.regras.find(r => r.id === c.regraId);
+      return {
+        ok: false,
+        pendente: true,
+        horaCorte: regra?.horaCorte,
+        valorAbobora: regraDestino?.valor ?? 0,
+        regraDestinoLabel: regraDestino?.label,
+        convidadoId,
+        listaId,
+      };
+    }
+
+    // Check-in normal (sem restrição)
     c.checkedIn = true;
     c.checkedInEm = checkedInEm;
     c.checkedInPorNome = porteiroNome;
 
-    // Grava no Supabase em paralelo — se falhar, cache local já protege contra duplicata
     const { error } = await supabase
       .from('convidados_lista')
       .update({ checked_in: true, checked_in_em: checkedInEm, checked_in_por_nome: porteiroNome ?? null })
@@ -416,20 +509,83 @@ export const listasService = {
       console.error('[listasService] checkIn falhou no Supabase — cache local mantém check-in:', error);
     }
 
-    return true;
+    return { ok: true, checkedInEm };
   },
 
-  checkInGlobal: async (convidadoId: string, porteiroNome?: string): Promise<{ ok: boolean; checkedInEm?: string }> => {
+  /** Confirma check-in com abóbora — porteiro já confirmou que cobrou o valor */
+  confirmarCheckInAbobora: async (listaId: string, convidadoId: string, porteiroNome?: string): Promise<CheckInResult> => {
+    const lista = LISTAS.find(l => l.id === listaId);
+    if (!lista) return { ok: false };
+    const c = lista.convidados.find(c => c.id === convidadoId);
+    if (!c || c.checkedIn) return { ok: false };
+
+    const checkedInEm = new Date(Date.now() - 3 * 3600000).toISOString().replace('Z', '-03:00');
+    const corte = verificarHoraCorte(lista, c.regraId, checkedInEm);
+    const novaRegraId = corte.tipo === 'abobora' ? corte.novaRegraId : undefined;
+
+    c.checkedIn = true;
+    c.checkedInEm = checkedInEm;
+    c.checkedInPorNome = porteiroNome;
+    if (novaRegraId) {
+      c.regraId = novaRegraId;
+      c.regraLabel = lista.regras.find(r => r.id === novaRegraId)?.label ?? c.regraLabel;
+    }
+
+    const update: Database['public']['Tables']['convidados_lista']['Update'] = {
+      checked_in: true,
+      checked_in_em: checkedInEm,
+      checked_in_por_nome: porteiroNome ?? null,
+    };
+    if (novaRegraId) update.regra_id = novaRegraId;
+
+    const { error } = await supabase
+      .from('convidados_lista')
+      .update(update)
+      .eq('id', convidadoId);
+
+    if (error) {
+      console.error('[listasService] confirmarCheckInAbobora falhou:', error);
+    }
+
+    return { ok: true, checkedInEm, abobora: true };
+  },
+
+  checkInGlobal: async (convidadoId: string, porteiroNome?: string): Promise<CheckInResult> => {
     for (const lista of LISTAS) {
       const c = lista.convidados.find(cv => cv.id === convidadoId);
       if (c) {
         if (c.checkedIn) return { ok: false };
         const checkedInEm = new Date(Date.now() - 3 * 3600000).toISOString().replace('Z', '-03:00');
+        const corte = verificarHoraCorte(lista, c.regraId, checkedInEm);
 
-        await supabase
+        if (corte.tipo === 'bloqueado') {
+          return { ok: false, bloqueado: true, horaCorte: corte.horaCorte };
+        }
+
+        // Abóbora: retorna pendente para porteiro confirmar
+        if (corte.tipo === 'abobora') {
+          const regraDestino = lista.regras.find(r => r.id === corte.novaRegraId);
+          const regra = lista.regras.find(r => r.id === c.regraId);
+          return {
+            ok: false,
+            pendente: true,
+            horaCorte: regra?.horaCorte,
+            valorAbobora: regraDestino?.valor ?? 0,
+            regraDestinoLabel: regraDestino?.label,
+            convidadoId,
+            listaId: lista.id,
+          };
+        }
+
+        // Check-in normal
+        const { error } = await supabase
           .from('convidados_lista')
           .update({ checked_in: true, checked_in_em: checkedInEm, checked_in_por_nome: porteiroNome ?? null })
           .eq('id', convidadoId);
+
+        if (error) {
+          console.error('[listasService] checkInGlobal falhou:', error);
+        }
 
         c.checkedIn = true;
         c.checkedInEm = checkedInEm;
@@ -570,6 +726,7 @@ export const listasService = {
             saldoBanco: r.tetoGlobal,
             cor: r.cor,
             valor: r.valor,
+            horaCorte: r.horaCorte,
             genero: 'U',
           });
         }
@@ -654,19 +811,46 @@ export const listasService = {
           genero: regra.genero ?? 'U',
           area: regra.area,
         });
-      }
-    }
 
-    lista.regras.push({
-      id: regraId,
-      label: regra.label,
-      tetoGlobal: regra.tetoGlobal,
-      saldoBanco: regra.tetoGlobal,
-      cor: regra.cor,
-      valor: regra.valor,
-      genero: regra.genero ?? 'U',
-      area: regra.area,
-    });
+        // Atualizar cache: regra VIP agora aponta para abóbora
+        lista.regras.push({
+          id: regraId,
+          label: regra.label,
+          tetoGlobal: regra.tetoGlobal,
+          saldoBanco: regra.tetoGlobal,
+          cor: regra.cor,
+          valor: regra.valor,
+          horaCorte: regra.horaCorte,
+          aboboraRegraId: abIns.id as string,
+          genero: regra.genero ?? 'U',
+          area: regra.area,
+        });
+      } else {
+        lista.regras.push({
+          id: regraId,
+          label: regra.label,
+          tetoGlobal: regra.tetoGlobal,
+          saldoBanco: regra.tetoGlobal,
+          cor: regra.cor,
+          valor: regra.valor,
+          horaCorte: regra.horaCorte,
+          genero: regra.genero ?? 'U',
+          area: regra.area,
+        });
+      }
+    } else {
+      lista.regras.push({
+        id: regraId,
+        label: regra.label,
+        tetoGlobal: regra.tetoGlobal,
+        saldoBanco: regra.tetoGlobal,
+        cor: regra.cor,
+        valor: regra.valor,
+        horaCorte: regra.horaCorte,
+        genero: regra.genero ?? 'U',
+        area: regra.area,
+      });
+    }
     lista.tetoGlobalTotal = lista.regras.reduce((s, r) => s + r.tetoGlobal, 0);
 
     return regraId;

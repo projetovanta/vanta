@@ -152,7 +152,7 @@ class OfflineEventService {
     convidadoId: string,
     eventoId: string,
     porteiroNome?: string,
-  ): Promise<{ ok: boolean }> {
+  ): Promise<{ ok: boolean; pendente?: boolean; bloqueado?: boolean; horaCorte?: string; valorAbobora?: number; convidadoId?: string; listaId?: string }> {
     const logCheckin = (offline: boolean) =>
       void import('../features/admin/services/auditService')
         .then(({ auditService }) =>
@@ -167,25 +167,40 @@ class OfflineEventService {
         )
         .catch(() => {});
 
+    const doCheckIn = async (offline: boolean) => {
+      const { listasService } = await import('../features/admin/services/listasService');
+      const result = await listasService.checkIn(listaId, convidadoId, porteiroNome);
+      if (result.bloqueado) return { ok: false, bloqueado: true, horaCorte: result.horaCorte };
+      if (result.pendente) return { ok: false, pendente: true, horaCorte: result.horaCorte, valorAbobora: result.valorAbobora, convidadoId, listaId };
+      if (result.ok) {
+        await markConvidadoCheckedIn(convidadoId, eventoId, listaId, porteiroNome);
+        logCheckin(offline);
+      }
+      return { ok: result.ok };
+    };
+
     if (navigator.onLine) {
       try {
-        const { listasService } = await import('../features/admin/services/listasService');
-        const ok = await listasService.checkIn(listaId, convidadoId, porteiroNome);
-        if (ok) {
-          await markConvidadoCheckedIn(convidadoId, eventoId, listaId, porteiroNome);
-          logCheckin(false);
-        }
-        return { ok };
+        return await doCheckIn(false);
       } catch {
-        // Rede caiu durante request → trata como offline
-        await markConvidadoCheckedIn(convidadoId, eventoId, listaId, porteiroNome);
-        logCheckin(true);
-        return { ok: true };
+        return await doCheckIn(true);
       }
     }
-    await markConvidadoCheckedIn(convidadoId, eventoId, listaId, porteiroNome);
-    logCheckin(true);
-    return { ok: true };
+    return await doCheckIn(true);
+  }
+
+  async confirmarCheckInAbobora(
+    listaId: string,
+    convidadoId: string,
+    eventoId: string,
+    porteiroNome?: string,
+  ): Promise<{ ok: boolean }> {
+    const { listasService } = await import('../features/admin/services/listasService');
+    const result = await listasService.confirmarCheckInAbobora(listaId, convidadoId, porteiroNome);
+    if (result.ok) {
+      await markConvidadoCheckedIn(convidadoId, eventoId, listaId, porteiroNome);
+    }
+    return { ok: result.ok };
   }
 
   // ═══════════════════════════════════════════════════════════════════════════

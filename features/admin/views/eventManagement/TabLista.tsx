@@ -58,10 +58,39 @@ export const TabLista: React.FC<{
     refresh();
   };
 
+  const [avisoCorte, setAvisoCorte] = useState<{ nome: string; hora: string } | null>(null);
+  const [avisoAbobora, setAvisoAbobora] = useState<{
+    nome: string; hora: string; valor: number; convidadoId: string; listaId: string;
+  } | null>(null);
+
   const handleCheckin = async (convidadoId: string) => {
     const eventoId = lista.eventoId ?? '';
-    const { ok } = await offlineEventService.checkInConvidado(lista.id, convidadoId, eventoId, currentUserNome);
-    if (ok) setCheckinIds(prev => new Set(prev).add(convidadoId));
+    const convidado = lista.convidados.find(c => c.id === convidadoId);
+    const result = await offlineEventService.checkInConvidado(lista.id, convidadoId, eventoId, currentUserNome);
+    if (result.bloqueado) {
+      setAvisoCorte({ nome: convidado?.nome ?? '', hora: result.horaCorte ?? '' });
+      return;
+    }
+    if (result.pendente) {
+      setAvisoAbobora({
+        nome: convidado?.nome ?? '',
+        hora: result.horaCorte ?? '',
+        valor: result.valorAbobora ?? 0,
+        convidadoId,
+        listaId: lista.id,
+      });
+      return;
+    }
+    if (result.ok) setCheckinIds(prev => new Set(prev).add(convidadoId));
+    refresh();
+  };
+
+  const confirmarAbobora = async () => {
+    if (!avisoAbobora) return;
+    const eventoId = lista.eventoId ?? '';
+    await offlineEventService.confirmarCheckInAbobora(avisoAbobora.listaId, avisoAbobora.convidadoId, eventoId, currentUserNome);
+    setCheckinIds(prev => new Set(prev).add(avisoAbobora.convidadoId));
+    setAvisoAbobora(null);
     refresh();
   };
 
@@ -312,6 +341,54 @@ export const TabLista: React.FC<{
           );
         })}
       </div>
+
+      {/* Aviso de hora de corte — check-in bloqueado */}
+      {avisoCorte && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
+          <div className="bg-zinc-900 border border-red-500/30 rounded-2xl p-5 max-w-xs w-full text-center space-y-3">
+            <div className="text-red-400 text-sm font-bold">Check-in bloqueado</div>
+            <p className="text-zinc-300 text-xs">
+              <span className="font-semibold text-white">{avisoCorte.nome}</span> está na lista VIP até às{' '}
+              <span className="font-semibold text-[#FFD300]">{avisoCorte.hora}</span>.
+              O horário já passou e esta lista não tem valor após o corte.
+            </p>
+            <button
+              onClick={() => setAvisoCorte(null)}
+              className="w-full py-2.5 bg-zinc-800 border border-white/10 rounded-xl text-zinc-300 text-xs font-bold uppercase tracking-wider"
+            >
+              Entendi
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Aviso abóbora — VIP encerrado, cobrar valor */}
+      {avisoAbobora && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
+          <div className="bg-zinc-900 border border-[#FFD300]/30 rounded-2xl p-5 max-w-xs w-full text-center space-y-4">
+            <div className="text-[#FFD300] text-sm font-bold">VIP até às {avisoAbobora.hora} encerrado</div>
+            <p className="text-zinc-300 text-xs">
+              <span className="font-semibold text-white">{avisoAbobora.nome}</span> precisa pagar{' '}
+              <span className="font-black text-[#FFD300] text-base">R${avisoAbobora.valor}</span>{' '}
+              para entrar.
+            </p>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setAvisoAbobora(null)}
+                className="flex-1 py-2.5 bg-zinc-800 border border-white/10 rounded-xl text-zinc-400 text-xs font-bold uppercase tracking-wider"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={confirmarAbobora}
+                className="flex-1 py-2.5 bg-[#FFD300]/10 border border-[#FFD300]/30 rounded-xl text-[#FFD300] text-xs font-bold uppercase tracking-wider"
+              >
+                Confirmar R${avisoAbobora.valor}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

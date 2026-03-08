@@ -87,29 +87,34 @@ const PlanoModal: React.FC<{
           <ArrowLeft size={18} className="text-zinc-400" />
         </button>
         <h2 style={TYPOGRAPHY.cardTitle} className="text-white text-sm">
-          {plano ? 'Editar Plano' : 'Novo Plano'}
+          {plano ? 'Editar Plano' : 'Novo Plano de Assinatura'}
         </h2>
       </div>
 
       {/* Form */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         <div>
-          <p className={labelCls}>Nome *</p>
-          <input className={inputCls} value={nome} onChange={e => setNome(e.target.value)} placeholder="Ex: Pro" />
+          <p className={labelCls}>Nome do plano *</p>
+          <input
+            className={inputCls}
+            value={nome}
+            onChange={e => setNome(e.target.value)}
+            placeholder="Ex: Ouro, Prata, Diamante"
+          />
         </div>
         <div>
-          <p className={labelCls}>Descrição</p>
+          <p className={labelCls}>Descrição curta</p>
           <input
             className={inputCls}
             value={descricao}
             onChange={e => setDescricao(e.target.value)}
-            placeholder="Ex: Mais eventos e membros"
+            placeholder="Ex: Acesso completo + acompanhante"
           />
         </div>
 
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <p className={labelCls}>Preço Mensal (R$)</p>
+            <p className={labelCls}>Valor mensal (R$)</p>
             <input
               type="number"
               className={inputCls}
@@ -118,52 +123,71 @@ const PlanoModal: React.FC<{
             />
           </div>
           <div>
-            <p className={labelCls}>Preço Avulso (R$)</p>
+            <p className={labelCls}>Valor avulso (R$)</p>
             <input
               type="number"
               className={inputCls}
               value={precoAvulso}
               onChange={e => setPrecoAvulso(Number(e.target.value))}
             />
-            <p className="text-[10px] text-zinc-600 mt-0.5">0 = gratuito</p>
+            <p className="text-[10px] text-zinc-600 mt-0.5">0 = entrada gratuita</p>
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-3">
+        <div className="space-y-3">
           <div>
-            <p className={labelCls}>Eventos MV</p>
-            <input
-              type="number"
-              className={inputCls}
-              value={limiteEventosMV}
-              onChange={e => setLimiteEventosMV(Number(e.target.value))}
-            />
-            <p className="text-[10px] text-zinc-600 mt-0.5">-1 = ilimitado</p>
+            <p className={labelCls}>Eventos inclusos por mês</p>
+            <div className="flex items-center gap-2">
+              <input
+                type="number"
+                className={`${inputCls} ${limiteEventosMV === -1 ? 'opacity-40' : ''}`}
+                value={limiteEventosMV === -1 ? '' : limiteEventosMV}
+                onChange={e => setLimiteEventosMV(Number(e.target.value) || 1)}
+                disabled={limiteEventosMV === -1}
+                placeholder="5"
+              />
+              <button
+                onClick={() => setLimiteEventosMV(limiteEventosMV === -1 ? 5 : -1)}
+                className={`shrink-0 px-3 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-wider border transition-all ${limiteEventosMV === -1 ? 'bg-[#FFD300] text-black border-transparent' : 'bg-zinc-800 text-zinc-500 border-zinc-700'}`}
+              >
+                Ilimitado
+              </button>
+            </div>
           </div>
           <div>
-            <p className={labelCls}>Membros</p>
-            <input
-              type="number"
-              className={inputCls}
-              value={limiteMembros}
-              onChange={e => setLimiteMembros(Number(e.target.value))}
-            />
-            <p className="text-[10px] text-zinc-600 mt-0.5">-1 = ilimitado</p>
+            <p className={labelCls}>Vagas de membros</p>
+            <div className="flex items-center gap-2">
+              <input
+                type="number"
+                className={`${inputCls} ${limiteMembros === -1 ? 'opacity-40' : ''}`}
+                value={limiteMembros === -1 ? '' : limiteMembros}
+                onChange={e => setLimiteMembros(Number(e.target.value) || 1)}
+                disabled={limiteMembros === -1}
+                placeholder="50"
+              />
+              <button
+                onClick={() => setLimiteMembros(limiteMembros === -1 ? 50 : -1)}
+                className={`shrink-0 px-3 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-wider border transition-all ${limiteMembros === -1 ? 'bg-[#FFD300] text-black border-transparent' : 'bg-zinc-800 text-zinc-500 border-zinc-700'}`}
+              >
+                Ilimitado
+              </button>
+            </div>
           </div>
           <div>
-            <p className={labelCls}>Vagas/Evento</p>
+            <p className={labelCls}>Vagas por evento</p>
             <input
               type="number"
               className={inputCls}
               value={limiteVagasEvento}
               onChange={e => setLimiteVagasEvento(Number(e.target.value))}
+              placeholder="10"
             />
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <p className={labelCls}>Tier Mínimo</p>
+            <p className={labelCls}>Nível mínimo exigido</p>
             <VantaDropdown
               value={tierMinimo}
               onChange={setTierMinimo}
@@ -171,25 +195,27 @@ const PlanoModal: React.FC<{
             />
           </div>
           <div>
-            <p className={labelCls}>Ordem</p>
+            <p className={labelCls}>Posição na vitrine</p>
             <input
               type="number"
-              aria-label="Ordem"
+              aria-label="Posição na vitrine"
               className={inputCls}
               value={ordem}
               onChange={e => setOrdem(Number(e.target.value))}
             />
+            <p className="text-[10px] text-zinc-600 mt-0.5">Menor = aparece primeiro</p>
           </div>
         </div>
 
         <div>
-          <p className={labelCls}>Prazo Post (horas)</p>
+          <p className={labelCls}>Prazo para postar (horas)</p>
           <input
             type="number"
             className={inputCls}
             value={prazoPostHoras}
             onChange={e => setPrazoPostHoras(Number(e.target.value))}
           />
+          <p className="text-[10px] text-zinc-600 mt-0.5">Tempo que o membro tem para postar após o evento</p>
         </div>
 
         {/* Toggles */}
@@ -203,7 +229,7 @@ const PlanoModal: React.FC<{
             ) : (
               <ToggleLeft size={20} className="text-zinc-600" />
             )}
-            <span className="text-sm text-zinc-300">Permite Acompanhante (+1)</span>
+            <span className="text-sm text-zinc-300">Permite acompanhante (+1)</span>
           </button>
           <button
             onClick={() => setDestaque(!destaque)}
@@ -214,7 +240,7 @@ const PlanoModal: React.FC<{
             ) : (
               <ToggleLeft size={20} className="text-zinc-600" />
             )}
-            <span className="text-sm text-zinc-300">Plano Destaque (borda dourada)</span>
+            <span className="text-sm text-zinc-300">Destacar na vitrine (borda dourada)</span>
           </button>
           <button
             onClick={() => setAtivo(!ativo)}
@@ -225,7 +251,7 @@ const PlanoModal: React.FC<{
             ) : (
               <ToggleLeft size={20} className="text-zinc-600" />
             )}
-            <span className="text-sm text-zinc-300">Ativo (visível para assinatura)</span>
+            <span className="text-sm text-zinc-300">Disponível para assinatura</span>
           </button>
         </div>
       </div>
@@ -253,7 +279,6 @@ const TierModal: React.FC<{
   onSave: (data: Omit<TierMaisVantaDef, 'criadoEm'>) => void;
   onClose: () => void;
 }> = ({ tier, onSave, onClose }) => {
-  const [id, setId] = useState(tier?.id ?? '');
   const [nome, setNome] = useState(tier?.nome ?? '');
   const [cor, setCor] = useState(tier?.cor ?? '#CD7F32');
   const [ordem, setOrdem] = useState(tier?.ordem ?? 1);
@@ -261,13 +286,23 @@ const TierModal: React.FC<{
   const [limiteMensal, setLimiteMensal] = useState(tier?.limiteMensal ?? 5);
   const [ativo, setAtivo] = useState(tier?.ativo ?? true);
 
+  // ID gerado automaticamente a partir do nome
+  const generatedId =
+    tier?.id ??
+    nome
+      .trim()
+      .toUpperCase()
+      .replace(/[^A-Z0-9]/g, '_')
+      .replace(/_+/g, '_')
+      .replace(/^_|_$/g, '');
+
   const toggleBeneficio = (b: BeneficioId) => {
     setBeneficios(prev => (prev.includes(b) ? prev.filter(x => x !== b) : [...prev, b]));
   };
 
   const handleSubmit = () => {
-    if (!id.trim() || !nome.trim()) return;
-    onSave({ id: id.trim().toUpperCase(), nome: nome.trim(), cor, ordem, beneficios, limiteMensal, ativo });
+    if (!nome.trim() || !generatedId) return;
+    onSave({ id: generatedId, nome: nome.trim(), cor, ordem, beneficios, limiteMensal, ativo });
   };
 
   const inputCls =
@@ -284,24 +319,14 @@ const TierModal: React.FC<{
           <ArrowLeft size={18} className="text-zinc-400" />
         </button>
         <h2 style={TYPOGRAPHY.cardTitle} className="text-white text-sm">
-          {tier ? 'Editar Tier' : 'Novo Tier'}
+          {tier ? 'Editar Nível' : 'Novo Nível'}
         </h2>
       </div>
 
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         <div className="grid grid-cols-2 gap-3">
-          <div>
-            <p className={labelCls}>ID (ex: PLATINA) *</p>
-            <input
-              className={inputCls}
-              value={id}
-              onChange={e => setId(e.target.value)}
-              disabled={!!tier}
-              placeholder="PLATINA"
-            />
-          </div>
-          <div>
-            <p className={labelCls}>Nome *</p>
+          <div className="col-span-2">
+            <p className={labelCls}>Nome do nível *</p>
             <input className={inputCls} value={nome} onChange={e => setNome(e.target.value)} placeholder="Platina" />
           </div>
         </div>
@@ -325,24 +350,32 @@ const TierModal: React.FC<{
             </div>
           </div>
           <div>
-            <p className={labelCls}>Ordem</p>
+            <p className={labelCls}>Posição</p>
             <input
               type="number"
-              aria-label="Ordem"
+              aria-label="Posição"
               className={inputCls}
               value={ordem}
               onChange={e => setOrdem(Number(e.target.value))}
             />
+            <p className="text-[10px] text-zinc-600 mt-0.5">Menor = mais baixo</p>
           </div>
           <div>
-            <p className={labelCls}>Limite/Mês</p>
+            <p className={labelCls}>Resgates/mês</p>
             <input
               type="number"
               className={inputCls}
               value={limiteMensal}
               onChange={e => setLimiteMensal(Number(e.target.value))}
             />
-            <p className="text-[10px] text-zinc-600 mt-0.5">-1 = ilimitado</p>
+            <div className="mt-1">
+              <button
+                onClick={() => setLimiteMensal(limiteMensal === -1 ? 5 : -1)}
+                className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-lg transition-all ${limiteMensal === -1 ? 'bg-[#FFD300] text-black' : 'bg-zinc-800 text-zinc-500'}`}
+              >
+                {limiteMensal === -1 ? 'Ilimitado' : 'Sem limite?'}
+              </button>
+            </div>
           </div>
         </div>
 
@@ -380,10 +413,10 @@ const TierModal: React.FC<{
       <div className="shrink-0 p-4 border-t border-zinc-800/50">
         <button
           onClick={handleSubmit}
-          disabled={!id.trim() || !nome.trim()}
+          disabled={!nome.trim()}
           className="w-full py-3 rounded-xl bg-[#FFD300] text-black font-bold text-sm uppercase tracking-wider disabled:opacity-40"
         >
-          {tier ? 'Salvar Alterações' : 'Criar Tier'}
+          {tier ? 'Salvar Alterações' : 'Criar Nível'}
         </button>
       </div>
     </div>
@@ -403,9 +436,8 @@ export const PlanosMaisVantaView: React.FC<{
   const [msg, setMsg] = useState('');
   const [confirmarDesativar, setConfirmarDesativar] = useState<string | null>(null);
 
-   
   const planos = useMemo(() => assinaturaService.getTodosPlanos(), []);
-   
+
   const tiers = useMemo(() => clubeService.getTodosTiers(), []);
 
   const flash = (text: string) => {
@@ -451,10 +483,10 @@ export const PlanosMaisVantaView: React.FC<{
     try {
       if (modal?.tipo === 'tier' && modal.tier) {
         await clubeService.editarTier(modal.tier.id, data);
-        flash('Tier atualizado');
+        flash('Nível atualizado');
       } else {
         await clubeService.criarTier(data);
-        flash('Tier criado');
+        flash('Nível criado');
       }
       setModal(null);
       setTick(t => t + 1);
@@ -474,7 +506,7 @@ export const PlanosMaisVantaView: React.FC<{
         </button>
         <Crown size={18} className="text-[#FFD300]" />
         <h2 style={TYPOGRAPHY.cardTitle} className="text-white text-sm">
-          Planos & Tiers
+          Planos & Níveis
         </h2>
       </div>
 
@@ -492,7 +524,7 @@ export const PlanosMaisVantaView: React.FC<{
           className={`flex-1 py-2.5 text-xs font-bold uppercase tracking-wider text-center transition-colors ${aba === 'tiers' ? 'text-[#FFD300] border-b-2 border-[#FFD300]' : 'text-zinc-500'}`}
         >
           <Layers size={14} className="inline mr-1" />
-          Tiers
+          Níveis
         </button>
       </div>
 
@@ -545,11 +577,11 @@ export const PlanosMaisVantaView: React.FC<{
                   <div className="flex flex-wrap gap-2 mt-3">
                     <span className="text-[10px] text-zinc-400 bg-zinc-800/50 px-2 py-1 rounded-full flex items-center gap-1">
                       <Calendar size={10} />
-                      {p.limiteEventosMV === -1 ? '∞' : p.limiteEventosMV} eventos
+                      {p.limiteEventosMV === -1 ? 'Ilimitado' : p.limiteEventosMV} eventos
                     </span>
                     <span className="text-[10px] text-zinc-400 bg-zinc-800/50 px-2 py-1 rounded-full flex items-center gap-1">
                       <Users size={10} />
-                      {p.limiteMembros === -1 ? '∞' : p.limiteMembros} membros
+                      {p.limiteMembros === -1 ? 'Ilimitado' : p.limiteMembros} membros
                     </span>
                     <span className="text-[10px] text-zinc-400 bg-zinc-800/50 px-2 py-1 rounded-full">
                       {p.limiteVagasEvento} vagas/evento
@@ -619,7 +651,7 @@ export const PlanosMaisVantaView: React.FC<{
               onClick={() => setModal({ tipo: 'tier' })}
               className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-dashed border-zinc-700 text-zinc-400 hover:border-[#FFD300]/40 hover:text-[#FFD300] transition-colors text-sm"
             >
-              <Plus size={16} /> Criar Tier
+              <Plus size={16} /> Criar Nível
             </button>
 
             {tiers.map((t, idx) => (
@@ -631,7 +663,7 @@ export const PlanosMaisVantaView: React.FC<{
                   <div className="flex items-center gap-2 min-w-0">
                     <div className="w-4 h-4 rounded-full shrink-0" style={{ backgroundColor: t.cor }} />
                     <h3 className="text-white font-bold text-sm truncate">{t.nome}</h3>
-                    <span className="text-[10px] text-zinc-600">#{t.ordem}</span>
+                    <span className="text-[10px] text-zinc-600">Pos. {t.ordem}</span>
                     {!t.ativo && (
                       <span className="text-[10px] text-red-400 bg-red-500/10 px-1.5 py-0.5 rounded-full shrink-0">
                         Inativo
@@ -679,7 +711,7 @@ export const PlanosMaisVantaView: React.FC<{
 
                 <div className="flex items-center gap-3 mt-2">
                   <span className="text-[10px] text-zinc-500">
-                    Limite/mês: {t.limiteMensal === -1 ? '∞' : t.limiteMensal}
+                    Resgates/mês: {t.limiteMensal === -1 ? 'Ilimitado' : t.limiteMensal}
                   </span>
                 </div>
 
@@ -696,7 +728,7 @@ export const PlanosMaisVantaView: React.FC<{
                         setLoading(true);
                         try {
                           await clubeService.editarTier(t.id, { ativo: false });
-                          flash('Tier desativado');
+                          flash('Nível desativado');
                           setTick(x => x + 1);
                         } catch (e) {
                           flash(`Erro: ${(e as Error).message}`);
@@ -715,7 +747,7 @@ export const PlanosMaisVantaView: React.FC<{
                         setLoading(true);
                         try {
                           await clubeService.editarTier(t.id, { ativo: true });
-                          flash('Tier reativado');
+                          flash('Nível reativado');
                           setTick(x => x + 1);
                         } catch (e) {
                           flash(`Erro: ${(e as Error).message}`);
@@ -733,7 +765,7 @@ export const PlanosMaisVantaView: React.FC<{
               </div>
             ))}
 
-            {tiers.length === 0 && <p className="text-center text-zinc-600 text-sm py-8">Nenhum tier cadastrado</p>}
+            {tiers.length === 0 && <p className="text-center text-zinc-600 text-sm py-8">Nenhum nível cadastrado</p>}
           </>
         )}
       </div>

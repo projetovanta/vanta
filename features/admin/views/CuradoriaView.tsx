@@ -146,7 +146,6 @@ export const CuradoriaView: React.FC<{
       if (m.ativo) set.add(m.userId);
     }
     return set;
-     
   }, []);
 
   const mvPendingIds = useMemo(() => {
@@ -155,7 +154,6 @@ export const CuradoriaView: React.FC<{
       if (s.status === 'PENDENTE' || s.status === 'CONVIDADO') set.add(s.userId);
     }
     return set;
-     
   }, []);
 
   const loadMembrosM = useCallback(async () => {

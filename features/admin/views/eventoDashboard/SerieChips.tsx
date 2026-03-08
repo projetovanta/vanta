@@ -43,19 +43,19 @@ export const SerieChips: React.FC<SerieChipsProps> = ({
       return;
     }
     let cancelled = false;
-    supabase
-      .rpc('get_ocorrencias_serie', { p_evento_origem_id: serieRaizId })
-      .then(({ data, error }) => {
-        if (cancelled) return;
-        if (error) {
-          console.error('[SerieChips] erro:', error);
-          setOcorrencias([]);
-        } else {
-          setOcorrencias((data ?? []) as Ocorrencia[]);
-        }
-        setLoading(false);
-      });
-    return () => { cancelled = true; };
+    supabase.rpc('get_ocorrencias_serie', { p_evento_origem_id: serieRaizId }).then(({ data, error }) => {
+      if (cancelled) return;
+      if (error) {
+        console.error('[SerieChips] erro:', error);
+        setOcorrencias([]);
+      } else {
+        setOcorrencias((data ?? []) as Ocorrencia[]);
+      }
+      setLoading(false);
+    });
+    return () => {
+      cancelled = true;
+    };
   }, [serieRaizId, isSerie]);
 
   if (!isSerie || (ocorrencias.length <= 1 && !loading)) return null;
@@ -77,22 +77,22 @@ export const SerieChips: React.FC<SerieChipsProps> = ({
   };
 
   const labelRecorrencia =
-    recorrencia === 'SEMANAL' ? 'Semanal' :
-    recorrencia === 'QUINZENAL' ? 'Quinzenal' :
-    recorrencia === 'MENSAL' ? 'Mensal' : '';
+    recorrencia === 'SEMANAL'
+      ? 'Semanal'
+      : recorrencia === 'QUINZENAL'
+        ? 'Quinzenal'
+        : recorrencia === 'MENSAL'
+          ? 'Mensal'
+          : '';
 
-  const futurasSemPublicar = ocorrencias.filter(
-    o => !o.publicado && new Date(o.data_inicio) > new Date(),
-  ).length;
+  const futurasSemPublicar = ocorrencias.filter(o => !o.publicado && new Date(o.data_inicio) > new Date()).length;
 
   return (
     <>
       <div className="flex items-center gap-2 mb-3 -mt-1">
         <div className="flex items-center gap-1.5 shrink-0">
           <Repeat size={11} className="text-[#FFD300]" />
-          <span className="text-[9px] font-black uppercase tracking-wider text-[#FFD300]">
-            {labelRecorrencia}
-          </span>
+          <span className="text-[9px] font-black uppercase tracking-wider text-[#FFD300]">{labelRecorrencia}</span>
         </div>
 
         {loading ? (
@@ -143,8 +143,8 @@ export const SerieChips: React.FC<SerieChipsProps> = ({
             <h3 className="text-white font-bold text-sm mb-2">Cancelar datas futuras?</h3>
             <p className="text-zinc-400 text-xs leading-relaxed mb-4">
               {futurasSemPublicar} data{futurasSemPublicar > 1 ? 's' : ''} futura{futurasSemPublicar > 1 ? 's' : ''} não
-              publicada{futurasSemPublicar > 1 ? 's' : ''} será{futurasSemPublicar > 1 ? 'ão' : ''} removida{futurasSemPublicar > 1 ? 's' : ''}.
-              Datas já publicadas ou com vendas não são afetadas.
+              publicada{futurasSemPublicar > 1 ? 's' : ''} será{futurasSemPublicar > 1 ? 'ão' : ''} removida
+              {futurasSemPublicar > 1 ? 's' : ''}. Datas já publicadas ou com vendas não são afetadas.
             </p>
             <div className="flex gap-3">
               <button

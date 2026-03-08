@@ -90,7 +90,7 @@ export const MeusEventosView: React.FC<{
         onBack={() => setEventoAberto(null)}
         currentUserId={currentUserId}
         currentUserRole={currentUserRole}
-        onNavigateEvento={(id) => setEventoAberto(id)}
+        onNavigateEvento={id => setEventoAberto(id)}
       />
     );
   }

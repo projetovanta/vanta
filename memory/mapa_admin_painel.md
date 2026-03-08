@@ -23,9 +23,21 @@
 - `comunidades.length === 0 && !isMaster` → "Sem atribuições"
 - Services Fase 2 (cortesias, eventos, listas, clube, assinatura, config) carregam em background APÓS gate
 
-## Sidebar — Seções por Role
-- Master: Dashboard, Curadoria, Comunidades, Indica, Notificações, etc
-- Gerente/Sócio: seções de comunidade (Pedidos, Cupons, Equipe, Participantes, etc)
+## Sidebar — Seções Colapsáveis (chevron ▸/▾, estado localStorage)
+**Master global (SIDEBAR_SECTIONS):**
+- GERAL: Dashboard, Pendências (vermelho), Convites
+- GESTÃO: Comunidades, Eventos Pendentes, Categorias, Parcerias, Cargos
+- FINANCEIRO: Financeiro, Comprovantes, Relatórios
+- MAIS VANTA: Curadoria, Membros, Cidades, Parceiros, Deals, Assinaturas, Passaportes, Infrações, Monitoramento, Config MV
+- MARKETING: Vanta Indica, Notificações
+- SISTEMA: Analytics, Diagnóstico
+
+**Comunidade (COMMUNITY_SIDEBAR_SECTIONS):**
+- GERAL: Dashboard, Pendências, Eventos
+- OPERAÇÃO DIA: Scanner QR, Check-in Lista, Caixa, Listas, Cotas
+- FINANCEIRO: Financeiro, Relatórios
+- MAIS VANTA: Config MV (master) / MAIS VANTA (sócio)
+- ADMINISTRAÇÃO: Editar Comunidade, Audit Log
 
 ## SubViews
 Definidas em `AdminSubView` type no AdminSidebar.tsx

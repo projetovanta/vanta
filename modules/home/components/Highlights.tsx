@@ -18,7 +18,6 @@ export const Highlights: React.FC<HighlightsProps> = React.memo(({ currentCity, 
       setAllCards(cards);
       // Primeiro card usa loading="eager" — preload manual não é necessário
     });
-     
   }, []);
 
   const slides = allCards.filter(

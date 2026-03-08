@@ -163,7 +163,9 @@ export const MinhasSolicitacoesView: React.FC<Props> = ({ onBack }) => {
         setLoading(false);
       },
     );
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const copyRefLink = (refCode: string) => {

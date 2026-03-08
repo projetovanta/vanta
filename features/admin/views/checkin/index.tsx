@@ -21,7 +21,6 @@ export const CheckInView: React.FC<{ onBack: () => void; comunidadeId?: string; 
   const eventos = useMemo(() => {
     const all = eventosAdminService.getEventos();
     return comunidadeId ? all.filter(e => e.comunidadeId === comunidadeId) : all;
-     
   }, [comunidadeId]);
 
   const eventoSelecionado = selectedId ? eventos.find(e => e.id === selectedId) : null;

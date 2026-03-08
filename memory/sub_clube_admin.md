@@ -89,3 +89,11 @@ Admin configura beneficios por tier
 | 11 | Passaportes view | OK | PassaportesMaisVantaView 274L |
 | 12 | Infracoes globais | OK | InfracoesGlobaisMaisVantaView |
 | 13 | Membros globais | OK | MembrosGlobaisMaisVantaView |
+| 14 | Cidades MV view | OK | CidadesMaisVantaView (CRUD cidades) |
+| 15 | Parceiros MV view | OK | ParceirosMaisVantaView (CRUD parceiros + plano) |
+| 16 | Deals MV view | OK | DealsMaisVantaView (CRUD deals + resgates) |
+| 17 | MaisVantaHubView | OK | Config MV reduzido (Planos, Assinaturas, Passaportes, Clube, Config) — Cidades/Parceiros/Deals são views diretas no sidebar |
+| 18 | Sidebar colapsavel | OK | Seções ▸/▾ com localStorage, auto-expand ativa, pendências vermelho |
+| 19 | Sidebar reorganizado | OK | GESTÃO (comunidade+eventos+etc), MAIS VANTA explodido (10 itens), OPERAÇÃO DIA (community) |
+| 20 | Planos linguagem humana | OK | "Nível" em vez de "Tier", ID auto, toggle Ilimitado, labels descritivos |
+| 21 | Views diretas sidebar | OK | CIDADES_MV, PARCEIROS_MV, DEALS_MV, CURADORIA_MV, MEMBROS_GLOBAIS_MV, INFRACOES_GLOBAIS_MV |

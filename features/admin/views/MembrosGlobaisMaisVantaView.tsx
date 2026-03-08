@@ -34,7 +34,6 @@ export const MembrosGlobaisMaisVantaView: React.FC<{
     count: number;
   } | null>(null);
 
-   
   const membros = useMemo(() => clubeService.getAllMembros(), []);
   const comunidades = useMemo(() => comunidadesService.getAll(), []);
 
@@ -59,7 +58,9 @@ export const MembrosGlobaisMaisVantaView: React.FC<{
           /* audit-ok */
         },
       );
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [membros.length]);
 

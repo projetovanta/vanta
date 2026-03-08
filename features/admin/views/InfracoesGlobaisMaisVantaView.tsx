@@ -69,7 +69,9 @@ export const InfracoesGlobaisMaisVantaView: React.FC<{
     load().catch(() => {
       /* audit-ok */
     });
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [tick]);
 
   const filtradas = infracoes.filter(inf => {

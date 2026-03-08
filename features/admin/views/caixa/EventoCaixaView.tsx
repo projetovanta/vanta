@@ -273,7 +273,13 @@ const EventoCaixaView: React.FC<{
               {/* QR Code real com JWT */}
               <div className="relative w-36 h-36 bg-zinc-900 rounded-2xl flex items-center justify-center border border-white/5 mb-3 overflow-hidden">
                 {qrToken ? (
-                  <QRCodeSVG value={qrToken} size={112} fgColor="#e4e4e7" bgColor="#09090b" style={{ borderRadius: 4 }} />
+                  <QRCodeSVG
+                    value={qrToken}
+                    size={112}
+                    fgColor="#e4e4e7"
+                    bgColor="#09090b"
+                    style={{ borderRadius: 4 }}
+                  />
                 ) : (
                   <div className="w-28 h-28 animate-pulse bg-zinc-800 rounded-lg" />
                 )}

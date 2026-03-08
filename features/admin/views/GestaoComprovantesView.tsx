@@ -52,8 +52,12 @@ export const GestaoComprovantesView: React.FC<Props> = ({ onBack, masterId }) =>
 
   useEffect(() => {
     let cancelled = false;
-    fetchData().then(() => { if (cancelled) return; });
-    return () => { cancelled = true; };
+    fetchData().then(() => {
+      if (cancelled) return;
+    });
+    return () => {
+      cancelled = true;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

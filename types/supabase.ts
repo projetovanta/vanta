@@ -308,6 +308,47 @@ export type Database = {
           },
         ]
       }
+      cidades_mais_vanta: {
+        Row: {
+          ativo: boolean
+          criado_em: string
+          criado_por: string
+          estado: string | null
+          gerente_id: string | null
+          id: string
+          nome: string
+          pais: string
+        }
+        Insert: {
+          ativo?: boolean
+          criado_em?: string
+          criado_por: string
+          estado?: string | null
+          gerente_id?: string | null
+          id?: string
+          nome: string
+          pais?: string
+        }
+        Update: {
+          ativo?: boolean
+          criado_em?: string
+          criado_por?: string
+          estado?: string | null
+          gerente_id?: string | null
+          id?: string
+          nome?: string
+          pais?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cidades_mais_vanta_gerente_id_fkey"
+            columns: ["gerente_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       clube_config: {
         Row: {
           atualizado_em: string | null
@@ -1132,6 +1173,90 @@ export type Database = {
           },
         ]
       }
+      deals_mais_vanta: {
+        Row: {
+          atualizado_em: string | null
+          cidade_id: string
+          criado_em: string
+          desconto_percentual: number | null
+          desconto_valor: number | null
+          descricao: string | null
+          filtro_alcance: string[] | null
+          filtro_categoria: string[] | null
+          filtro_genero: string | null
+          fim: string | null
+          foto_url: string | null
+          id: string
+          inicio: string
+          obrigacao_barter: string | null
+          parceiro_id: string
+          status: string
+          tipo: string
+          titulo: string
+          vagas: number
+          vagas_preenchidas: number
+        }
+        Insert: {
+          atualizado_em?: string | null
+          cidade_id: string
+          criado_em?: string
+          desconto_percentual?: number | null
+          desconto_valor?: number | null
+          descricao?: string | null
+          filtro_alcance?: string[] | null
+          filtro_categoria?: string[] | null
+          filtro_genero?: string | null
+          fim?: string | null
+          foto_url?: string | null
+          id?: string
+          inicio?: string
+          obrigacao_barter?: string | null
+          parceiro_id: string
+          status?: string
+          tipo: string
+          titulo: string
+          vagas?: number
+          vagas_preenchidas?: number
+        }
+        Update: {
+          atualizado_em?: string | null
+          cidade_id?: string
+          criado_em?: string
+          desconto_percentual?: number | null
+          desconto_valor?: number | null
+          descricao?: string | null
+          filtro_alcance?: string[] | null
+          filtro_categoria?: string[] | null
+          filtro_genero?: string | null
+          fim?: string | null
+          foto_url?: string | null
+          id?: string
+          inicio?: string
+          obrigacao_barter?: string | null
+          parceiro_id?: string
+          status?: string
+          tipo?: string
+          titulo?: string
+          vagas?: number
+          vagas_preenchidas?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deals_mais_vanta_cidade_id_fkey"
+            columns: ["cidade_id"]
+            isOneToOne: false
+            referencedRelation: "cidades_mais_vanta"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "deals_mais_vanta_parceiro_id_fkey"
+            columns: ["parceiro_id"]
+            isOneToOne: false
+            referencedRelation: "parceiros_mais_vanta"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       equipe_evento: {
         Row: {
           created_at: string
@@ -1879,6 +2004,7 @@ export type Database = {
       }
       membros_clube: {
         Row: {
+          alcance: string | null
           aprovado_em: string
           aprovado_por: string
           ativo: boolean
@@ -1888,18 +2014,24 @@ export type Database = {
           bloqueio_nivel: number | null
           castigo_ate: string | null
           castigo_motivo: string | null
+          categoria: string | null
+          cidade_base: string | null
           comunidade_origem: string | null
           convidado_por: string | null
+          genero: string | null
           id: string
           instagram_handle: string | null
           instagram_seguidores: number | null
           instagram_verificado: boolean | null
           instagram_verificado_em: string | null
+          interesses: string[] | null
           meta_user_id: string | null
+          nota_engajamento: number | null
           tier: string
           user_id: string
         }
         Insert: {
+          alcance?: string | null
           aprovado_em?: string
           aprovado_por: string
           ativo?: boolean
@@ -1909,18 +2041,24 @@ export type Database = {
           bloqueio_nivel?: number | null
           castigo_ate?: string | null
           castigo_motivo?: string | null
+          categoria?: string | null
+          cidade_base?: string | null
           comunidade_origem?: string | null
           convidado_por?: string | null
+          genero?: string | null
           id?: string
           instagram_handle?: string | null
           instagram_seguidores?: number | null
           instagram_verificado?: boolean | null
           instagram_verificado_em?: string | null
+          interesses?: string[] | null
           meta_user_id?: string | null
+          nota_engajamento?: number | null
           tier: string
           user_id: string
         }
         Update: {
+          alcance?: string | null
           aprovado_em?: string
           aprovado_por?: string
           ativo?: boolean
@@ -1930,14 +2068,19 @@ export type Database = {
           bloqueio_nivel?: number | null
           castigo_ate?: string | null
           castigo_motivo?: string | null
+          categoria?: string | null
+          cidade_base?: string | null
           comunidade_origem?: string | null
           convidado_por?: string | null
+          genero?: string | null
           id?: string
           instagram_handle?: string | null
           instagram_seguidores?: number | null
           instagram_verificado?: boolean | null
           instagram_verificado_em?: string | null
+          interesses?: string[] | null
           meta_user_id?: string | null
+          nota_engajamento?: number | null
           tier?: string
           user_id?: string
         }
@@ -2184,6 +2327,93 @@ export type Database = {
             columns: ["evento_id"]
             isOneToOne: false
             referencedRelation: "eventos_admin"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      parceiros_mais_vanta: {
+        Row: {
+          ativo: boolean
+          cidade_id: string
+          contato_email: string | null
+          contato_nome: string | null
+          contato_telefone: string | null
+          criado_em: string
+          criado_por: string
+          descricao: string | null
+          endereco: string | null
+          foto_url: string | null
+          id: string
+          instagram_handle: string | null
+          nome: string
+          plano: string
+          plano_fim: string | null
+          plano_inicio: string | null
+          resgates_mes_limite: number
+          resgates_mes_usados: number
+          tipo: string
+          trial_ativo: boolean
+          user_id: string | null
+        }
+        Insert: {
+          ativo?: boolean
+          cidade_id: string
+          contato_email?: string | null
+          contato_nome?: string | null
+          contato_telefone?: string | null
+          criado_em?: string
+          criado_por: string
+          descricao?: string | null
+          endereco?: string | null
+          foto_url?: string | null
+          id?: string
+          instagram_handle?: string | null
+          nome: string
+          plano?: string
+          plano_fim?: string | null
+          plano_inicio?: string | null
+          resgates_mes_limite?: number
+          resgates_mes_usados?: number
+          tipo: string
+          trial_ativo?: boolean
+          user_id?: string | null
+        }
+        Update: {
+          ativo?: boolean
+          cidade_id?: string
+          contato_email?: string | null
+          contato_nome?: string | null
+          contato_telefone?: string | null
+          criado_em?: string
+          criado_por?: string
+          descricao?: string | null
+          endereco?: string | null
+          foto_url?: string | null
+          id?: string
+          instagram_handle?: string | null
+          nome?: string
+          plano?: string
+          plano_fim?: string | null
+          plano_inicio?: string | null
+          resgates_mes_limite?: number
+          resgates_mes_usados?: number
+          tipo?: string
+          trial_ativo?: boolean
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "parceiros_mais_vanta_cidade_id_fkey"
+            columns: ["cidade_id"]
+            isOneToOne: false
+            referencedRelation: "cidades_mais_vanta"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "parceiros_mais_vanta_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -2753,6 +2983,79 @@ export type Database = {
             columns: ["lote_mais_vanta_id"]
             isOneToOne: false
             referencedRelation: "lotes_mais_vanta"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      resgates_mais_vanta: {
+        Row: {
+          aplicado_em: string
+          checkin_em: string | null
+          concluido_em: string | null
+          deal_id: string
+          id: string
+          parceiro_id: string
+          post_url: string | null
+          post_verificado: boolean
+          post_verificado_em: string | null
+          qr_token: string | null
+          selecionado_em: string | null
+          selecionado_por: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          aplicado_em?: string
+          checkin_em?: string | null
+          concluido_em?: string | null
+          deal_id: string
+          id?: string
+          parceiro_id: string
+          post_url?: string | null
+          post_verificado?: boolean
+          post_verificado_em?: string | null
+          qr_token?: string | null
+          selecionado_em?: string | null
+          selecionado_por?: string | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          aplicado_em?: string
+          checkin_em?: string | null
+          concluido_em?: string | null
+          deal_id?: string
+          id?: string
+          parceiro_id?: string
+          post_url?: string | null
+          post_verificado?: boolean
+          post_verificado_em?: string | null
+          qr_token?: string | null
+          selecionado_em?: string | null
+          selecionado_por?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "resgates_mais_vanta_deal_id_fkey"
+            columns: ["deal_id"]
+            isOneToOne: false
+            referencedRelation: "deals_mais_vanta"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "resgates_mais_vanta_parceiro_id_fkey"
+            columns: ["parceiro_id"]
+            isOneToOne: false
+            referencedRelation: "parceiros_mais_vanta"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "resgates_mais_vanta_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]

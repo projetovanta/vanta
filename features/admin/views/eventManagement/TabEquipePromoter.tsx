@@ -57,7 +57,7 @@ export const TabEquipePromoter: React.FC<{
       cancelled = true;
     };
   }, [pagModal, eventoId]);
-   
+
   const promoterIds = useMemo(() => [...new Set(lista.cotas.map(c => c.promoterId))], [lista.cotas]);
 
   // Ranking de promoters por nomes inseridos na lista

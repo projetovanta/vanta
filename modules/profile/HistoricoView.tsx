@@ -61,7 +61,9 @@ export const HistoricoView: React.FC<HistoricoViewProps> = ({
         setLoading(false);
       },
     );
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [userId]);
 
   const statusInativos = useMemo(() => new Set(['CANCELADO', 'TRANSFERIDO', 'REEMBOLSADO']), []);

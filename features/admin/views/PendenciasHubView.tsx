@@ -1,5 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Loader2, AlertCircle, CheckCircle2, ClipboardList, Star, FileEdit, Banknote, Handshake, PartyPopper, Mail, Megaphone, Calendar } from 'lucide-react';
+import {
+  ArrowLeft,
+  Loader2,
+  AlertCircle,
+  CheckCircle2,
+  ClipboardList,
+  Star,
+  FileEdit,
+  Banknote,
+  Handshake,
+  PartyPopper,
+  Mail,
+  Megaphone,
+  Calendar,
+} from 'lucide-react';
 import { getPendencias, type PendenciaItem, type PendenciaTipo } from '../services/pendenciasService';
 import type { ContaVanta } from '../../../types';
 import type { AdminSubView } from '../components/AdminSidebar';
@@ -39,7 +53,9 @@ export const PendenciasHubView: React.FC<Props> = ({ userId, role, comunidadeIds
         setLoading(false);
       }
     });
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [userId, role, comunidadeIds, eventoIds]);
 
   return (
@@ -72,31 +88,32 @@ export const PendenciasHubView: React.FC<Props> = ({ userId, role, comunidadeIds
           </div>
         )}
 
-        {!loading && items.map(item => {
-          const cfg = TIPO_CONFIG[item.tipo] ?? { icon: AlertCircle, color: '#71717a' };
-          const Icon = cfg.icon;
-          return (
-            <button
-              key={item.id}
-              onClick={() => onNavigate(item.destino as AdminSubView)}
-              className="w-full flex items-center gap-3 p-3 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-600 transition-colors text-left"
-            >
-              <div
-                className="shrink-0 w-10 h-10 rounded-lg flex items-center justify-center"
-                style={{ backgroundColor: cfg.color + '20' }}
+        {!loading &&
+          items.map(item => {
+            const cfg = TIPO_CONFIG[item.tipo] ?? { icon: AlertCircle, color: '#71717a' };
+            const Icon = cfg.icon;
+            return (
+              <button
+                key={item.id}
+                onClick={() => onNavigate(item.destino as AdminSubView)}
+                className="w-full flex items-center gap-3 p-3 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-600 transition-colors text-left"
               >
-                <Icon size={20} style={{ color: cfg.color }} />
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="text-white text-sm font-medium truncate">{item.titulo}</p>
-                <p className="text-zinc-500 text-xs truncate">{item.descricao}</p>
-              </div>
-              <div className="shrink-0 text-zinc-600">
-                <ArrowLeft size={16} className="rotate-180" />
-              </div>
-            </button>
-          );
-        })}
+                <div
+                  className="shrink-0 w-10 h-10 rounded-lg flex items-center justify-center"
+                  style={{ backgroundColor: cfg.color + '20' }}
+                >
+                  <Icon size={20} style={{ color: cfg.color }} />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-white text-sm font-medium truncate">{item.titulo}</p>
+                  <p className="text-zinc-500 text-xs truncate">{item.descricao}</p>
+                </div>
+                <div className="shrink-0 text-zinc-600">
+                  <ArrowLeft size={16} className="rotate-180" />
+                </div>
+              </button>
+            );
+          })}
       </div>
     </div>
   );

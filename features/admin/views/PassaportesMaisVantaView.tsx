@@ -16,7 +16,6 @@ export const PassaportesMaisVantaView: React.FC<{
   const [perfis, setPerfis] = useState<Record<string, { nome: string; foto: string }>>({});
   const [confirmar, setConfirmar] = useState<{ id: string; nome: string } | null>(null);
 
-   
   const allPassports = useMemo(() => clubeService.getAllPassports(), []);
   const passports = useMemo(() => {
     if (filtro === 'TODOS') return allPassports;
@@ -48,7 +47,9 @@ export const PassaportesMaisVantaView: React.FC<{
           /* audit-ok */
         },
       );
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allPassports.length]);
 

@@ -51,7 +51,6 @@ export const TabLogs: React.FC<{ listaId: string; eventoAdminId?: string }> = ({
 
     // Ordenar por timestamp (mais recente primeiro)
     return fromAudit.sort((a, b) => new Date(b.ts).getTime() - new Date(a.ts).getTime());
-     
   }, [eventoAdminId]);
 
   if (logs.length === 0) {

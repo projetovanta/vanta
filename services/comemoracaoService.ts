@@ -119,7 +119,10 @@ export const comemoracaoService = {
         .in('cargo', ['MASTER', 'SOCIO'])
         .eq('ativo', true);
       if (equipeEvento?.length) {
-        notifyMany(equipeEvento.map(g => g.user_id), notifPayload);
+        notifyMany(
+          equipeEvento.map(g => g.user_id),
+          notifPayload,
+        );
       }
     } else {
       // Solicitação na comunidade → notifica GERENTE + MASTER da comunidade
@@ -131,7 +134,10 @@ export const comemoracaoService = {
         .in('cargo', ['MASTER', 'GERENTE'])
         .eq('ativo', true);
       if (gerentesCom?.length) {
-        notifyMany(gerentesCom.map(g => g.user_id), notifPayload);
+        notifyMany(
+          gerentesCom.map(g => g.user_id),
+          notifPayload,
+        );
       }
     }
 

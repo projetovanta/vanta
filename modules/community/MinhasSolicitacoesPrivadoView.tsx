@@ -84,7 +84,9 @@ export const MinhasSolicitacoesPrivadoView: React.FC<Props> = ({ onBack }) => {
       setSolicitacoes(data);
       setLoading(false);
     });
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   return (

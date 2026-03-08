@@ -25,6 +25,7 @@ import { Membro, ReservaMaisVanta, Evento } from '../../types';
 import { clubeService } from '../../features/admin/services/clubeService';
 import { maisVantaConfigService } from '../../features/admin/services/maisVantaConfigService';
 import { tsBR, todayBR } from '../../utils';
+import { DealsMembroSection } from './DealsMembroSection';
 
 // ── Termos de uso LGPD (fallback se config.termosCustomizados for null) ────────
 const TERMOS_PADRAO = `TERMOS DE USO — CLUBE MAIS VANTA
@@ -461,6 +462,9 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
               );
             })()}
           </div>
+
+          {/* Deals disponíveis */}
+          <DealsMembroSection userId={profile.id} onSuccess={onSuccess} />
 
           {/* Convidar Amigo */}
           <div className="mt-6 bg-zinc-900/30 border border-white/5 rounded-2xl p-4">

@@ -81,7 +81,9 @@ export const PublicProfilePreviewView: React.FC<{
         setBadges(bdg);
       },
     );
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [profile.id]);
 
   const currentViewFriendshipStatus = isOwner
@@ -109,7 +111,9 @@ export const PublicProfilePreviewView: React.FC<{
     moodService.getMany([profile.id]).then(moods => {
       if (!cancelled) setMood(moods[profile.id] ?? null);
     });
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [profile.id]);
   const privacy = profile.privacidade;
 

@@ -103,11 +103,17 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
     });
 
     // Carrega estado de follow + preview de seguidores (3 primeiros)
-    void communityFollowService.getFollowCount(comunidadeId).then(c => { if (!cancelled) setFollowCount(c); });
+    void communityFollowService.getFollowCount(comunidadeId).then(c => {
+      if (!cancelled) setFollowCount(c);
+    });
     if (userId) {
-      void communityFollowService.isFollowing(userId, comunidadeId).then(v => { if (!cancelled) setIsFollowing(v); });
+      void communityFollowService.isFollowing(userId, comunidadeId).then(v => {
+        if (!cancelled) setIsFollowing(v);
+      });
     }
-    void reviewsService.getMediaComunidade(comunidadeId).then(r => { if (!cancelled) setRatingData(r); });
+    void reviewsService.getMediaComunidade(comunidadeId).then(r => {
+      if (!cancelled) setRatingData(r);
+    });
     // Preview: pegar 3 primeiros seguidores com profile
     (async () => {
       const ids = await communityFollowService.getFollowers(comunidadeId);
@@ -118,7 +124,9 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
         .in('id', ids.slice(0, 3));
       if (!cancelled && profiles) setPreviewFollowers(profiles.map((r: any) => profileToMembro(r)));
     })();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [comunidadeId, userId]);
 
   // Carregar todos os seguidores ao abrir a lista
@@ -143,7 +151,9 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
       }
       if (!cancelled) setLoadingFollowers(false);
     })();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFollowerListOpen, comunidadeId]);
 

@@ -181,3 +181,98 @@ export interface InfracaoMaisVanta {
   criadoEm: string;
   criadoPor?: string;
 }
+
+// ── MAIS VANTA v2 — Deals Marketplace ─────────────────────────────────────
+
+export type CategoriaMembro = 'LIFESTYLE' | 'INFLUENCER' | 'CREATOR' | 'VIP';
+export type AlcanceMembro = 'NANO' | 'MICRO' | 'MACRO' | 'MEGA';
+export type GeneroMembro = 'M' | 'F' | 'NB';
+export type TipoParceiro = 'RESTAURANTE' | 'BAR' | 'CLUB' | 'GYM' | 'SALAO' | 'HOTEL' | 'LOJA' | 'OUTRO';
+export type PlanoParceiro = 'STARTER' | 'PRO' | 'ELITE';
+export type TipoDeal = 'BARTER' | 'DESCONTO';
+export type StatusDeal = 'RASCUNHO' | 'ATIVO' | 'PAUSADO' | 'ENCERRADO' | 'EXPIRADO';
+export type StatusResgate = 'APLICADO' | 'SELECIONADO' | 'RECUSADO' | 'CHECK_IN' | 'PENDENTE_POST' | 'CONCLUIDO' | 'NO_SHOW' | 'EXPIRADO' | 'CANCELADO';
+
+export interface CidadeMaisVanta {
+  id: string;
+  nome: string;
+  estado?: string;
+  pais: string;
+  ativo: boolean;
+  gerenteId?: string;
+  criadoEm: string;
+  criadoPor: string;
+}
+
+export interface ParceiroMaisVanta {
+  id: string;
+  nome: string;
+  tipo: TipoParceiro;
+  descricao?: string;
+  fotoUrl?: string;
+  endereco?: string;
+  cidadeId: string;
+  instagramHandle?: string;
+  contatoNome?: string;
+  contatoTelefone?: string;
+  contatoEmail?: string;
+  plano: PlanoParceiro;
+  planoInicio?: string;
+  planoFim?: string;
+  resgatesMesLimite: number;
+  resgatesMesUsados: number;
+  trialAtivo: boolean;
+  userId?: string;
+  ativo: boolean;
+  criadoEm: string;
+  criadoPor: string;
+}
+
+export interface DealMaisVanta {
+  id: string;
+  parceiroId: string;
+  cidadeId: string;
+  titulo: string;
+  descricao?: string;
+  fotoUrl?: string;
+  tipo: TipoDeal;
+  obrigacaoBarter?: string;
+  descontoPercentual?: number;
+  descontoValor?: number;
+  filtroGenero?: GeneroMembro;
+  filtroAlcance: string[];
+  filtroCategoria: string[];
+  vagas: number;
+  vagasPreenchidas: number;
+  inicio: string;
+  fim?: string;
+  status: StatusDeal;
+  criadoEm: string;
+  atualizadoEm?: string;
+  // Joined
+  parceiroNome?: string;
+  parceiroFotoUrl?: string;
+  cidadeNome?: string;
+}
+
+export interface ResgateMaisVanta {
+  id: string;
+  dealId: string;
+  userId: string;
+  parceiroId: string;
+  status: StatusResgate;
+  qrToken: string;
+  aplicadoEm: string;
+  selecionadoEm?: string;
+  selecionadoPor?: string;
+  checkinEm?: string;
+  postUrl?: string;
+  postVerificado: boolean;
+  postVerificadoEm?: string;
+  concluidoEm?: string;
+  // Joined
+  dealTitulo?: string;
+  parceiroNome?: string;
+  userName?: string;
+  userInstagram?: string;
+}

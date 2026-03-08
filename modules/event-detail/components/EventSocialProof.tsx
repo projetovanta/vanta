@@ -60,7 +60,9 @@ export const EventSocialProof: React.FC<EventSocialProofProps> = ({ eventoId, to
         /* silencioso */
       }
     })();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [eventoId, currentAccount?.id, friendIds, previewLoaded]);
 
   // Carregar lista completa ao abrir modal
@@ -100,7 +102,9 @@ export const EventSocialProof: React.FC<EventSocialProofProps> = ({ eventoId, to
       }
       if (!cancelled) setLoading(false);
     })();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isListOpen, eventoId, friendIds]);
 

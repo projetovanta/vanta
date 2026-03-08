@@ -550,7 +550,7 @@ export const EventoDashboard: React.FC<{
             eventoId={eventoId}
             eventoOrigemId={evento.eventoOrigemId}
             recorrencia={evento.recorrencia}
-            onSelectOcorrencia={(id) => onNavigateEvento?.(id)}
+            onSelectOcorrencia={id => onNavigateEvento?.(id)}
           />
         </div>
       )}

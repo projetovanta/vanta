@@ -79,6 +79,15 @@ const CategoriasAdminView = lazy(() =>
 );
 const ConvitesSocioView = lazy(() => import('./views/ConvitesSocioView').then(m => ({ default: m.ConvitesSocioView })));
 const MaisVantaHubView = lazy(() => import('./views/MaisVantaHubView').then(m => ({ default: m.MaisVantaHubView })));
+const CidadesMaisVantaView = lazy(() =>
+  import('./views/CidadesMaisVantaView').then(m => ({ default: m.CidadesMaisVantaView })),
+);
+const ParceirosMaisVantaView = lazy(() =>
+  import('./views/ParceirosMaisVantaView').then(m => ({ default: m.ParceirosMaisVantaView })),
+);
+const DealsMaisVantaView = lazy(() =>
+  import('./views/DealsMaisVantaView').then(m => ({ default: m.DealsMaisVantaView })),
+);
 const MonitoramentoMaisVantaView = lazy(() =>
   import('./views/MonitoramentoMaisVantaView').then(m => ({ default: m.MonitoramentoMaisVantaView })),
 );
@@ -111,9 +120,7 @@ const GestaoComprovantesView = lazy(() =>
 const ProductAnalyticsView = lazy(() =>
   import('./views/ProductAnalyticsView').then(m => ({ default: m.ProductAnalyticsView })),
 );
-const PendenciasHubView = lazy(() =>
-  import('./views/PendenciasHubView').then(m => ({ default: m.PendenciasHubView })),
-);
+const PendenciasHubView = lazy(() => import('./views/PendenciasHubView').then(m => ({ default: m.PendenciasHubView })));
 export const AdminDashboardView: React.FC<{
   onClose: () => void;
   adminNome: string;
@@ -214,10 +221,7 @@ export const AdminDashboardView: React.FC<{
     () => accessNodes.filter(n => n.tipo === 'COMUNIDADE').map(n => n.contextId),
     [accessNodes],
   );
-  const eventoIds = useMemo(
-    () => accessNodes.filter(n => n.tipo === 'EVENTO').map(n => n.contextId),
-    [accessNodes],
-  );
+  const eventoIds = useMemo(() => accessNodes.filter(n => n.tipo === 'EVENTO').map(n => n.contextId), [accessNodes]);
 
   // Badge de pendências do hub
   const [pendenciasHubCount, setPendenciasHubCount] = useState(0);
@@ -227,7 +231,9 @@ export const AdminDashboardView: React.FC<{
     countPendencias(currentUserId, adminRole, comunidadeIds, eventoIds).then(count => {
       if (!cancelled) setPendenciasHubCount(count);
     });
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [currentUserId, adminRole, comunidadeIds, eventoIds, subView]);
 
   // Nome do tenant contextual (comunidade ou evento) passado pelo Gateway
@@ -636,6 +642,22 @@ export const AdminDashboardView: React.FC<{
       if (adminRole !== 'vanta_masteradm') return guardBlock(back);
       return <InfracoesGlobaisMaisVantaView onBack={back} />;
     }
+    if (subView === 'CIDADES_MV') {
+      if (adminRole !== 'vanta_masteradm') return guardBlock(back);
+      return <CidadesMaisVantaView />;
+    }
+    if (subView === 'PARCEIROS_MV') {
+      if (adminRole !== 'vanta_masteradm') return guardBlock(back);
+      return <ParceirosMaisVantaView />;
+    }
+    if (subView === 'DEALS_MV') {
+      if (adminRole !== 'vanta_masteradm') return guardBlock(back);
+      return <DealsMaisVantaView />;
+    }
+    if (subView === 'CURADORIA_MV') {
+      if (adminRole !== 'vanta_masteradm') return guardBlock(back);
+      return <CuradoriaView onBack={back} />;
+    }
     if (subView === 'RELATORIO_MASTER') {
       if (adminRole === 'vanta_gerente' && comunidadeId) {
         const comNome = comunidadesService.get(comunidadeId)?.nome ?? 'Comunidade';
@@ -719,9 +741,7 @@ export const AdminDashboardView: React.FC<{
               // Sub-views internas que não aparecem no sidebar
               const INTERNAL_CRUMBS: Partial<Record<AdminSubView, { section: string; label: string }>> = {
                 DIVIDA_SOCIAL_MV: { section: 'MAIS VANTA', label: 'Dívida Social' },
-                MEMBROS_GLOBAIS_MV: { section: 'MAIS VANTA', label: 'Membros' },
                 EVENTOS_GLOBAIS_MV: { section: 'MAIS VANTA', label: 'Eventos' },
-                INFRACOES_GLOBAIS_MV: { section: 'MAIS VANTA', label: 'Infrações' },
                 PORTARIA_SCANNER: { section: 'OPERAÇÃO', label: 'Scanner QR' },
               };
               const crumb =

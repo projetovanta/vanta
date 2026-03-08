@@ -101,6 +101,69 @@ Tiers: BRONZE, PRATA, OURO, DIAMANTE. Cada tier desbloqueia lotes exclusivos.
 | criado_em | TIMESTAMPTZ | auto |
 | criado_por | UUID | Quem registrou |
 
+### cidades_mais_vanta
+| Coluna | Tipo | Descricao |
+|---|---|---|
+| id | UUID PK | auto |
+| nome | TEXT UNIQUE | Nome da cidade |
+| estado | TEXT | Estado (nullable) |
+| pais | TEXT | Default 'BR' |
+| ativo | BOOLEAN | Default true |
+| gerente_id | UUID FK profiles | Gerente da cidade (nullable) |
+| criado_em | TIMESTAMPTZ | auto |
+| criado_por | UUID | Quem criou |
+
+### parceiros_mais_vanta
+| Coluna | Tipo | Descricao |
+|---|---|---|
+| id | UUID PK | auto |
+| nome | TEXT | Nome do venue |
+| tipo | TEXT | RESTAURANTE/BAR/CLUB/GYM/SALAO/HOTEL/LOJA/OUTRO |
+| descricao | TEXT | Descricao |
+| foto_url | TEXT | Foto do parceiro |
+| endereco | TEXT | Endereco |
+| cidade_id | UUID FK cidades_mais_vanta | Cidade |
+| instagram_handle | TEXT | @ do Instagram |
+| contato_nome/telefone/email | TEXT | Contato |
+| plano | TEXT | STARTER/PRO/ELITE |
+| resgates_mes_limite | INT | Default 5 |
+| resgates_mes_usados | INT | Default 0 |
+| trial_ativo | BOOLEAN | Default false |
+| user_id | UUID FK profiles | Acesso ao painel (nullable) |
+| ativo | BOOLEAN | Default true |
+
+### deals_mais_vanta
+| Coluna | Tipo | Descricao |
+|---|---|---|
+| id | UUID PK | auto |
+| parceiro_id | UUID FK parceiros_mais_vanta | Parceiro |
+| cidade_id | UUID FK cidades_mais_vanta | Cidade |
+| titulo | TEXT | Titulo do deal |
+| tipo | TEXT | BARTER ou DESCONTO |
+| obrigacao_barter | TEXT | Ex: 1 story + 1 post |
+| desconto_percentual/valor | NUMERIC | Se desconto |
+| filtro_genero/alcance/categoria | TEXT/TEXT[] | Curadoria interna |
+| vagas | INT | Total de vagas |
+| vagas_preenchidas | INT | Vagas ja preenchidas |
+| inicio/fim | TIMESTAMPTZ | Vigencia |
+| status | TEXT | RASCUNHO/ATIVO/PAUSADO/ENCERRADO/EXPIRADO |
+
+### resgates_mais_vanta
+| Coluna | Tipo | Descricao |
+|---|---|---|
+| id | UUID PK | auto |
+| deal_id | UUID FK deals_mais_vanta | Deal |
+| user_id | UUID FK profiles | Membro |
+| parceiro_id | UUID FK parceiros_mais_vanta | Parceiro |
+| status | TEXT | APLICADO/SELECIONADO/RECUSADO/CHECK_IN/PENDENTE_POST/CONCLUIDO/NO_SHOW/EXPIRADO/CANCELADO |
+| qr_token | TEXT UNIQUE | Token QR VIP (auto hex 16 bytes) |
+| aplicado_em | TIMESTAMPTZ | auto |
+| selecionado_em/por | TIMESTAMPTZ/UUID | Quando/quem selecionou |
+| checkin_em | TIMESTAMPTZ | Check-in via QR |
+| post_url/verificado/verificado_em | TEXT/BOOL/TIMESTAMPTZ | Post Instagram |
+| concluido_em | TIMESTAMPTZ | Conclusao |
+| UNIQUE(deal_id, user_id) | | 1 aplicacao por membro por deal |
+
 ## Fluxos
 
 ### SOLICITAR ENTRADA NO CLUBE
@@ -175,3 +238,12 @@ Tiers: BRONZE, PRATA, OURO, DIAMANTE. Cada tier desbloqueia lotes exclusivos.
 | 16 | Instagram API verificacao | NAO ATIVO | Edge Function verify-instagram-post retorna placeholder sem META_ACCESS_TOKEN |
 | 17 | Downgrade automatico de tier | NAO EXISTE | Sem mecanismo automatico |
 | 18 | Dashboard do membro MV | NAO EXISTE | Membro nao tem painel proprio |
+| 19 | Curadoria v2 campos | OK | membros_clube: categoria, alcance, genero, cidade_base, interesses, nota_engajamento |
+| 20 | Cidades MV | OK | cidades_mais_vanta + clubeCidadesService |
+| 21 | Parceiros MV | OK | parceiros_mais_vanta + clubeParceirosService |
+| 22 | Deals MV | OK | deals_mais_vanta + clubeDealsService |
+| 23 | Resgates MV | OK | resgates_mais_vanta + clubeResgatesService |
+| 24 | Trigger 1 deal ativo | OK | check_deal_ativo_unico (banco) |
+| 25 | Trigger vagas deal | OK | update_vagas_deal (banco) |
+| 26 | Trigger resgates parceiro | OK | update_resgates_parceiro (banco) |
+| 27 | Feed deals membro | OK | DealsMembroSection no ClubeOptInView |

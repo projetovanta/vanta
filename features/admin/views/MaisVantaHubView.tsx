@@ -4,15 +4,18 @@
  */
 
 import React, { useState } from 'react';
-import { ArrowLeft, Settings, Crown, Compass, Sparkles, SlidersHorizontal } from 'lucide-react';
+import { ArrowLeft, Settings, Crown, Compass, Sparkles, SlidersHorizontal, MapPin, Store, Ticket } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
 import { PlanosMaisVantaView } from './PlanosMaisVantaView';
 import { AssinaturasMaisVantaView } from './AssinaturasMaisVantaView';
 import { PassaportesMaisVantaView } from './PassaportesMaisVantaView';
 import { ConfigMaisVantaView } from './ConfigMaisVantaView';
+import { CidadesMaisVantaView } from './CidadesMaisVantaView';
+import { ParceirosMaisVantaView } from './ParceirosMaisVantaView';
+import { DealsMaisVantaView } from './DealsMaisVantaView';
 import { TabClube } from './curadoria/tabClube';
 
-type AbaHub = 'PLANOS' | 'ASSINATURAS' | 'PASSAPORTES' | 'CLUBE' | 'CONFIG';
+type AbaHub = 'PLANOS' | 'ASSINATURAS' | 'PASSAPORTES' | 'CLUBE' | 'CIDADES' | 'PARCEIROS' | 'DEALS' | 'CONFIG';
 
 export const MaisVantaHubView: React.FC<{ onBack: () => void; masterId: string; comunidadeId?: string }> = ({
   onBack,
@@ -23,6 +26,9 @@ export const MaisVantaHubView: React.FC<{ onBack: () => void; masterId: string; 
 
   const abas: { id: AbaHub; label: string; icon: typeof Settings }[] = [
     { id: 'PLANOS', label: 'Planos & Tiers', icon: Settings },
+    { id: 'CIDADES', label: 'Cidades', icon: MapPin },
+    { id: 'PARCEIROS', label: 'Parceiros', icon: Store },
+    { id: 'DEALS', label: 'Deals', icon: Ticket },
     { id: 'ASSINATURAS', label: 'Assinaturas', icon: Crown },
     { id: 'PASSAPORTES', label: 'Passaportes', icon: Compass },
     { id: 'CLUBE', label: 'Clube', icon: Sparkles },
@@ -76,6 +82,9 @@ export const MaisVantaHubView: React.FC<{ onBack: () => void; masterId: string; 
       {/* Conteúdo das abas */}
       <div className="flex-1 overflow-hidden flex flex-col">
         {aba === 'PLANOS' && <PlanosMaisVantaView onBack={() => {}} />}
+        {aba === 'CIDADES' && <CidadesMaisVantaView />}
+        {aba === 'PARCEIROS' && <ParceirosMaisVantaView />}
+        {aba === 'DEALS' && <DealsMaisVantaView />}
         {aba === 'ASSINATURAS' && <AssinaturasMaisVantaView onBack={() => {}} />}
         {aba === 'PASSAPORTES' && <PassaportesMaisVantaView onBack={() => {}} masterId={masterId} />}
         {aba === 'CLUBE' && <TabClube adminId={masterId} toastFn={() => {}} comunidadeId={comunidadeId} />}

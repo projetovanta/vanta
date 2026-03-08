@@ -37,7 +37,11 @@ export const PreferencesView: React.FC<{ onBack: () => void; onSave: (d: any) =>
         className="shrink-0 bg-[#0a0a0a] border-b border-white/5 px-6 pb-4 flex items-center justify-between"
         style={{ paddingTop: '1rem' }}
       >
-        <button aria-label="Voltar" onClick={onBack} className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center">
+        <button
+          aria-label="Voltar"
+          onClick={onBack}
+          className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center"
+        >
           <ArrowLeft size={18} />
         </button>
         <h1 style={TYPOGRAPHY.screenTitle} className="text-lg italic">

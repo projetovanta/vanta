@@ -245,7 +245,8 @@ export const CuradoriaView: React.FC<{
                 <span className="text-[#FFD300] text-[10px] font-black uppercase tracking-wider">Convidar</span>
               </button>
             )}
-            <button aria-label="Voltar"
+            <button
+              aria-label="Voltar"
               onClick={onBack}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
             >

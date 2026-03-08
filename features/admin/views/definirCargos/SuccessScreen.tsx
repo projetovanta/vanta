@@ -19,7 +19,8 @@ export const SuccessScreen: React.FC<SuccessScreenProps> = ({
 }) => (
   <div className="absolute inset-0 bg-[#0A0A0A] flex flex-col overflow-hidden">
     <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-6 pt-10 pb-6 shrink-0">
-      <button aria-label="Voltar"
+      <button
+        aria-label="Voltar"
         onClick={onBack}
         className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
       >

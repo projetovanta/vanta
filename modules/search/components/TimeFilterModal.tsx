@@ -69,14 +69,16 @@ const MiniCalendar: React.FC<{
     <div className="space-y-3">
       {/* Header mês */}
       <div className="flex items-center justify-between">
-        <button aria-label="Voltar"
+        <button
+          aria-label="Voltar"
           onClick={prevMonth}
           className="w-8 h-8 flex items-center justify-center rounded-lg bg-black/40 border border-white/5 active:scale-90 transition-all"
         >
           <ChevronLeft size={14} className="text-zinc-400" />
         </button>
         <p className="text-white text-xs font-bold">{monthLabel}</p>
-        <button aria-label="Avançar"
+        <button
+          aria-label="Avançar"
           onClick={nextMonth}
           className="w-8 h-8 flex items-center justify-center rounded-lg bg-black/40 border border-white/5 active:scale-90 transition-all"
         >

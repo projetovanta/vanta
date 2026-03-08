@@ -933,6 +933,73 @@ export type Database = {
           },
         ]
       }
+      convites_mais_vanta: {
+        Row: {
+          aceito_em: string | null
+          aceito_por: string | null
+          cidade_id: string | null
+          criado_em: string
+          criado_por: string
+          expira_em: string
+          id: string
+          parceiro_nome: string | null
+          status: string
+          tier: string | null
+          tipo: string
+          token: string
+        }
+        Insert: {
+          aceito_em?: string | null
+          aceito_por?: string | null
+          cidade_id?: string | null
+          criado_em?: string
+          criado_por: string
+          expira_em: string
+          id?: string
+          parceiro_nome?: string | null
+          status?: string
+          tier?: string | null
+          tipo: string
+          token?: string
+        }
+        Update: {
+          aceito_em?: string | null
+          aceito_por?: string | null
+          cidade_id?: string | null
+          criado_em?: string
+          criado_por?: string
+          expira_em?: string
+          id?: string
+          parceiro_nome?: string | null
+          status?: string
+          tier?: string | null
+          tipo?: string
+          token?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "convites_mais_vanta_aceito_por_fkey"
+            columns: ["aceito_por"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "convites_mais_vanta_cidade_id_fkey"
+            columns: ["cidade_id"]
+            isOneToOne: false
+            referencedRelation: "cidades_mais_vanta"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "convites_mais_vanta_criado_por_fkey"
+            columns: ["criado_por"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cortesias_config: {
         Row: {
           created_at: string
@@ -3881,6 +3948,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      aceitar_convite_mv: { Args: { p_token: string }; Returns: Json }
       aceitar_convite_socio: { Args: { p_evento_id: string }; Returns: Json }
       aceitar_cortesia_rpc: { Args: { p_cortesia_id: string }; Returns: Json }
       aceitar_proposta_produtor: {
@@ -4321,3 +4389,4 @@ export const Constants = {
     },
   },
 } as const
+

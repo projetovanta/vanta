@@ -509,7 +509,8 @@ const CardModal: React.FC<{
               {initial.id ? 'Editar Card' : 'Novo Card'}
             </h1>
           </div>
-          <button aria-label="Voltar"
+          <button
+            aria-label="Voltar"
             onClick={safeClose}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
           >
@@ -994,7 +995,8 @@ export const VantaIndicaView: React.FC<{ onBack: () => void; userId?: string }> 
               <Plus size={14} className="text-[#FFD300]" />
               <span className="text-[#FFD300] text-[10px] font-black uppercase tracking-wider">Novo</span>
             </button>
-            <button aria-label="Voltar"
+            <button
+              aria-label="Voltar"
               onClick={onBack}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
             >

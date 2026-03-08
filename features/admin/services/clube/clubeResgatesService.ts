@@ -90,9 +90,13 @@ export const clubeResgatesService = {
 
   /** Portaria escaneia QR → registra check-in */
   async checkin(qrToken: string): Promise<{ ok: boolean; resgate?: ResgateMaisVanta; erro?: string }> {
-    const { data } = await supabase.from('resgates_mais_vanta').select('*').eq('qr_token', qrToken).single();
+    const { data } = await supabase
+      .from('resgates_mais_vanta')
+      .select('*, deals_mais_vanta(titulo), parceiros_mais_vanta(nome), profiles(nome_completo, instagram_handle)')
+      .eq('qr_token', qrToken)
+      .single();
     if (!data) return { ok: false, erro: 'QR inválido' };
-    const resgate = rowToResgate(data as Record<string, unknown>);
+    const resgate = rowWithJoinToResgate(data as Record<string, unknown>);
     if (resgate.status !== 'SELECIONADO') {
       return { ok: false, erro: `Status atual: ${resgate.status}. Esperado: SELECIONADO.`, resgate };
     }

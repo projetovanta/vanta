@@ -34,6 +34,14 @@
 | MonitoramentoMaisVantaView.tsx | ? | Monitoramento geral MV |
 | MembrosGlobaisMaisVantaView.tsx | ? | Membros globais |
 | InfracoesGlobaisMaisVantaView.tsx | ? | Infracoes globais |
+| ConvitesMaisVantaView.tsx | ~300 | Convites master→membro/parceiro (criar, listar, copiar link) |
+| AnalyticsMaisVantaView.tsx | ~300 | Analytics MV (membros, resgates, parceiros, receita, engajamento) |
+
+## Páginas standalone (fora do admin)
+| Arquivo | Rota | Funcao |
+|---|---|---|
+| AceitarConviteMVPage.tsx | /convite-mv/:token | Aceite convite MV (AuthModal inline, RPC aceitar_convite_mv) |
+| ParceiroDashboardPage.tsx | /parceiro | Painel parceiro (deals, resgates, QR scan, sugerir deal) |
 
 ## Fluxos
 
@@ -97,3 +105,9 @@ Admin configura beneficios por tier
 | 19 | Sidebar reorganizado | OK | GESTÃO (comunidade+eventos+etc), MAIS VANTA explodido (10 itens), OPERAÇÃO DIA (community) |
 | 20 | Planos linguagem humana | OK | "Nível" em vez de "Tier", ID auto, toggle Ilimitado, labels descritivos |
 | 21 | Views diretas sidebar | OK | CIDADES_MV, PARCEIROS_MV, DEALS_MV, CURADORIA_MV, MEMBROS_GLOBAIS_MV, INFRACOES_GLOBAIS_MV |
+| 22 | Convites MV | OK | ConvitesMaisVantaView (criar, listar, cancelar, copiar link) + AceitarConviteMVPage (/convite-mv/:token) |
+| 23 | Analytics MV | OK | AnalyticsMaisVantaView (membros, resgates, parceiros, receita, engajamento) |
+| 24 | Painel parceiro | OK | ParceiroDashboardPage (/parceiro) — deals, resgates, QR scan, sugerir deal |
+| 25 | QR VIP dourado | OK | DealsMembroSection modal QR + ParceiroDashboardPage tab QR Scan + checkin com joins |
+| 26 | Notificações MV v2 | OK | 13 tipos (MV_APROVADO até MV_RESGATE_PARCEIRO) + trigger trg_deal_sugerido |
+| 27 | Gerente por cidade | OK | Sidebar roles expandidas (vanta_gerente vê MEMBROS/PARCEIROS/DEALS/CONVITES_MV) |

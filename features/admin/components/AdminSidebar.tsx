@@ -36,6 +36,7 @@ import {
   Ticket,
   Sparkles,
   Eye,
+  Send,
   type LucideIcon,
 } from 'lucide-react';
 import type { ContaVanta } from '../../../types';
@@ -78,7 +79,9 @@ export type AdminSubView =
   | 'CIDADES_MV'
   | 'PARCEIROS_MV'
   | 'DEALS_MV'
-  | 'CURADORIA_MV';
+  | 'CURADORIA_MV'
+  | 'CONVITES_MV'
+  | 'ANALYTICS_MV';
 
 export interface SidebarSectionItem {
   id: AdminSubView;
@@ -186,10 +189,28 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
     label: 'MAIS VANTA',
     items: [
       { id: 'CURADORIA_MV', label: 'Curadoria', icon: Star, color: COR.MAIS_VANTA, roles: ['vanta_masteradm'] },
-      { id: 'MEMBROS_GLOBAIS_MV', label: 'Membros', icon: Users, color: COR.MAIS_VANTA, roles: ['vanta_masteradm'] },
+      {
+        id: 'MEMBROS_GLOBAIS_MV',
+        label: 'Membros',
+        icon: Users,
+        color: COR.MAIS_VANTA,
+        roles: ['vanta_masteradm', 'vanta_gerente'],
+      },
       { id: 'CIDADES_MV', label: 'Cidades', icon: MapPin, color: COR.MAIS_VANTA, roles: ['vanta_masteradm'] },
-      { id: 'PARCEIROS_MV', label: 'Parceiros', icon: Store, color: COR.MAIS_VANTA, roles: ['vanta_masteradm'] },
-      { id: 'DEALS_MV', label: 'Deals', icon: Ticket, color: COR.MAIS_VANTA, roles: ['vanta_masteradm'] },
+      {
+        id: 'PARCEIROS_MV',
+        label: 'Parceiros',
+        icon: Store,
+        color: COR.MAIS_VANTA,
+        roles: ['vanta_masteradm', 'vanta_gerente'],
+      },
+      {
+        id: 'DEALS_MV',
+        label: 'Deals',
+        icon: Ticket,
+        color: COR.MAIS_VANTA,
+        roles: ['vanta_masteradm', 'vanta_gerente'],
+      },
       { id: 'ASSINATURAS_MV', label: 'Assinaturas', icon: Gift, color: COR.MAIS_VANTA, roles: ['vanta_masteradm'] },
       { id: 'PASSAPORTES_MV', label: 'Passaportes', icon: Compass, color: COR.MAIS_VANTA, roles: ['vanta_masteradm'] },
       {
@@ -199,6 +220,14 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
         color: COR.MAIS_VANTA,
         roles: ['vanta_masteradm'],
       },
+      {
+        id: 'CONVITES_MV',
+        label: 'Convites',
+        icon: Send,
+        color: COR.MAIS_VANTA,
+        roles: ['vanta_masteradm', 'vanta_gerente'],
+      },
+      { id: 'ANALYTICS_MV', label: 'Analytics MV', icon: BarChart3, color: COR.MAIS_VANTA, roles: ['vanta_masteradm'] },
       { id: 'MONITORAMENTO_MV', label: 'Monitoramento', icon: Eye, color: COR.MAIS_VANTA, roles: ['vanta_masteradm'] },
       { id: 'MAIS_VANTA_HUB', label: 'Config MV', icon: Settings, color: COR.MAIS_VANTA, roles: ['vanta_masteradm'] },
     ],
@@ -423,7 +452,8 @@ export const AdminSidebar: React.FC<{
               </span>
             )}
             {!isDesktop && (
-              <button aria-label="Voltar"
+              <button
+                aria-label="Voltar"
                 onClick={onToggle}
                 className="flex items-center justify-center w-8 h-8 rounded-lg active:bg-white/5 transition-all"
               >
@@ -433,7 +463,8 @@ export const AdminSidebar: React.FC<{
           </div>
         ) : (
           <div className="flex items-center justify-center w-full">
-            <button aria-label="Abrir menu"
+            <button
+              aria-label="Abrir menu"
               onClick={onToggle}
               className="flex items-center justify-center w-10 h-10 rounded-lg active:bg-white/5 transition-all"
             >

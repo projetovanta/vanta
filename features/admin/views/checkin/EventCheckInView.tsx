@@ -132,7 +132,8 @@ export const EventCheckInView: React.FC<{
 
       <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-6 pt-8 pb-4 shrink-0">
         <div className="flex items-center gap-3 mb-4">
-          <button aria-label="Voltar"
+          <button
+            aria-label="Voltar"
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
           >

@@ -484,7 +484,8 @@ export const EventTicketsCarousel: React.FC<Props> = ({
       {/* Header */}
       <div className="px-6 pt-8 pb-5 border-b border-white/5 bg-[#0A0A0A] shrink-0">
         <div className="flex items-center gap-3">
-          <button aria-label="Voltar"
+          <button
+            aria-label="Voltar"
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
           >

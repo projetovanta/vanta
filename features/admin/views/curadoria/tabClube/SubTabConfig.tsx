@@ -413,7 +413,8 @@ export const SubTabConfig: React.FC<Props> = ({
 
       {/* Botão salvar regras gerais */}
       {hasDraftChanges && (
-        <button aria-label="Salvar"
+        <button
+          aria-label="Salvar"
           onClick={handleSaveConfig}
           disabled={salvandoConfig}
           className="w-full flex items-center justify-center gap-2 py-3 bg-[#FFD300] text-black font-bold text-xs rounded-xl active:scale-95 transition-all disabled:opacity-40"

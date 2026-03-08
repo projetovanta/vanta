@@ -504,7 +504,8 @@ export const EventoDashboard: React.FC<{
           }}
         />
 
-        <button aria-label="Voltar"
+        <button
+          aria-label="Voltar"
           onClick={onBack}
           className="absolute top-4 left-4 w-9 h-9 bg-black/50 backdrop-blur-md rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
         >

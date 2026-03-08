@@ -110,7 +110,8 @@ export const RelatorioComunidadeView: React.FC<Props> = ({ comunidadeId, comunid
       {/* Header */}
       <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-5 pt-8 pb-4 shrink-0">
         <div className="flex items-start gap-3">
-          <button aria-label="Voltar"
+          <button
+            aria-label="Voltar"
             onClick={onBack}
             className="w-9 h-9 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0 mt-0.5"
           >
@@ -130,7 +131,8 @@ export const RelatorioComunidadeView: React.FC<Props> = ({ comunidadeId, comunid
             >
               <Download size={9} /> Excel
             </button>
-            <button aria-label="Atualizar"
+            <button
+              aria-label="Atualizar"
               onClick={refresh}
               className="flex items-center gap-1 px-2 py-1 bg-zinc-900 border border-white/10 rounded-lg active:scale-90 transition-all"
             >

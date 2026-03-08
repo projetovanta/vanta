@@ -200,7 +200,8 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
           background: 'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, transparent 100%)',
         }}
       >
-        <button aria-label="Voltar"
+        <button
+          aria-label="Voltar"
           onClick={onBack}
           className="w-10 h-10 bg-black/40 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 active:scale-90 transition-all"
         >

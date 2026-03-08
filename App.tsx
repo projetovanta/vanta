@@ -55,6 +55,12 @@ const NegociacaoSocioView = lazy(() =>
   import('./features/admin/views/NegociacaoSocioView').then(m => ({ default: m.NegociacaoSocioView })),
 );
 const CheckoutPage = lazy(() => import('./modules/checkout/CheckoutPage').then(m => ({ default: m.CheckoutPage })));
+const AceitarConviteMVPage = lazy(() =>
+  import('./modules/convite/AceitarConviteMVPage').then(m => ({ default: m.AceitarConviteMVPage })),
+);
+const ParceiroDashboardPage = lazy(() =>
+  import('./modules/parceiro/ParceiroDashboardPage').then(m => ({ default: m.ParceiroDashboardPage })),
+);
 const EventLandingPage = lazy(() =>
   import('./modules/landing/EventLandingPage').then(m => ({ default: m.EventLandingPage })),
 );
@@ -380,6 +386,8 @@ export default function App() {
             {/* ── Standalone pages (sem tab bar) ─────────────────────── */}
             <Route path="/checkout/:slug" element={<CheckoutPage />} />
             <Route path="/evento/:slug" element={<EventLandingPage />} />
+            <Route path="/convite-mv/:token" element={<AceitarConviteMVPage />} />
+            <Route path="/parceiro" element={<ParceiroDashboardPage />} />
 
             {/* ── App shell (com tab bar) ────────────────────────────── */}
             <Route

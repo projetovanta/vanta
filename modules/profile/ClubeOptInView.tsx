@@ -266,7 +266,8 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
     return (
       <div className="absolute inset-0 bg-[#0a0a0a] flex flex-col overflow-hidden animate-in fade-in duration-300">
         <div className="flex-1 overflow-y-auto no-scrollbar pt-4 px-6 pb-32">
-          <button aria-label="Voltar"
+          <button
+            aria-label="Voltar"
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-transform mb-6"
           >
@@ -487,7 +488,8 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
     return (
       <div className="absolute inset-0 bg-[#0a0a0a] flex flex-col overflow-hidden animate-in fade-in duration-300">
         <div className="flex-1 overflow-y-auto no-scrollbar pt-4 px-6 pb-32">
-          <button aria-label="Voltar"
+          <button
+            aria-label="Voltar"
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-transform mb-6"
           >
@@ -513,7 +515,8 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
     return (
       <div className="absolute inset-0 bg-[#0a0a0a] flex flex-col overflow-hidden animate-in fade-in duration-300">
         <div className="flex-1 overflow-y-auto no-scrollbar pt-4 px-6 pb-32">
-          <button aria-label="Voltar"
+          <button
+            aria-label="Voltar"
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-transform mb-6"
           >
@@ -666,7 +669,8 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
                 <div className="flex-1 bg-black/40 border border-[#FFD300]/20 rounded-lg px-4 py-3 font-mono text-[#FFD300] text-sm font-bold tracking-widest text-center">
                   {verificationCode}
                 </div>
-                <button aria-label="Copiar"
+                <button
+                  aria-label="Copiar"
                   onClick={handleCopiarCodigo}
                   className="shrink-0 w-10 h-10 bg-zinc-800 rounded-lg border border-white/10 flex items-center justify-center active:scale-90 transition-all"
                 >

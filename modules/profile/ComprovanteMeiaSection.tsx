@@ -174,7 +174,11 @@ export const ComprovanteMeiaSection: React.FC<Props> = ({ userId, onSuccess, onB
       <div className="shrink-0 px-4 pb-3 border-b border-white/5" style={{ paddingTop: '1rem' }}>
         <div className="flex items-center gap-3">
           {onBack && (
-            <button aria-label="Voltar" onClick={onBack} className="p-1.5 hover:bg-white/5 rounded-lg transition-colors">
+            <button
+              aria-label="Voltar"
+              onClick={onBack}
+              className="p-1.5 hover:bg-white/5 rounded-lg transition-colors"
+            >
               <ArrowLeft size={18} className="text-zinc-400" />
             </button>
           )}

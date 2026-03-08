@@ -91,6 +91,12 @@ const DealsMaisVantaView = lazy(() =>
 const MonitoramentoMaisVantaView = lazy(() =>
   import('./views/MonitoramentoMaisVantaView').then(m => ({ default: m.MonitoramentoMaisVantaView })),
 );
+const ConvitesMaisVantaView = lazy(() =>
+  import('./views/ConvitesMaisVantaView').then(m => ({ default: m.ConvitesMaisVantaView })),
+);
+const AnalyticsMaisVantaView = lazy(() =>
+  import('./views/AnalyticsMaisVantaView').then(m => ({ default: m.AnalyticsMaisVantaView })),
+);
 const DiagnosticoView = lazy(() => import('./views/DiagnosticoView').then(m => ({ default: m.DiagnosticoView })));
 const AssinaturasMaisVantaView = lazy(() =>
   import('./views/AssinaturasMaisVantaView').then(m => ({ default: m.AssinaturasMaisVantaView })),
@@ -371,7 +377,8 @@ export const AdminDashboardView: React.FC<{
               </h1>
               <p className="text-zinc-400 text-xs mt-2">Olá, {adminNome}</p>
             </div>
-            <button aria-label="Voltar"
+            <button
+              aria-label="Voltar"
               onClick={onClose}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
             >
@@ -631,7 +638,7 @@ export const AdminDashboardView: React.FC<{
       return <DividaSocialMaisVantaView onBack={back} />;
     }
     if (subView === 'MEMBROS_GLOBAIS_MV') {
-      if (adminRole !== 'vanta_masteradm') return guardBlock(back);
+      if (adminRole !== 'vanta_masteradm' && adminRole !== 'vanta_gerente') return guardBlock(back);
       return <MembrosGlobaisMaisVantaView onBack={back} />;
     }
     if (subView === 'EVENTOS_GLOBAIS_MV') {
@@ -647,16 +654,24 @@ export const AdminDashboardView: React.FC<{
       return <CidadesMaisVantaView />;
     }
     if (subView === 'PARCEIROS_MV') {
-      if (adminRole !== 'vanta_masteradm') return guardBlock(back);
+      if (adminRole !== 'vanta_masteradm' && adminRole !== 'vanta_gerente') return guardBlock(back);
       return <ParceirosMaisVantaView />;
     }
     if (subView === 'DEALS_MV') {
-      if (adminRole !== 'vanta_masteradm') return guardBlock(back);
+      if (adminRole !== 'vanta_masteradm' && adminRole !== 'vanta_gerente') return guardBlock(back);
       return <DealsMaisVantaView />;
     }
     if (subView === 'CURADORIA_MV') {
       if (adminRole !== 'vanta_masteradm') return guardBlock(back);
       return <CuradoriaView onBack={back} />;
+    }
+    if (subView === 'CONVITES_MV') {
+      if (adminRole !== 'vanta_masteradm' && adminRole !== 'vanta_gerente') return guardBlock(back);
+      return <ConvitesMaisVantaView onBack={back} toastFn={toast} />;
+    }
+    if (subView === 'ANALYTICS_MV') {
+      if (adminRole !== 'vanta_masteradm') return guardBlock(back);
+      return <AnalyticsMaisVantaView onBack={back} />;
     }
     if (subView === 'RELATORIO_MASTER') {
       if (adminRole === 'vanta_gerente' && comunidadeId) {

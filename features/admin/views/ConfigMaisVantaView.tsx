@@ -125,7 +125,8 @@ const ChipsField: React.FC<{
           onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), add())}
           className="flex-1 bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-white text-xs focus:border-[#FFD300]/40 focus:outline-none transition-all"
         />
-        <button aria-label="Adicionar"
+        <button
+          aria-label="Adicionar"
           onClick={add}
           disabled={!input.trim()}
           className="px-3 py-2 bg-[#FFD300]/10 border border-[#FFD300]/20 rounded-xl text-[#FFD300] text-[9px] font-black uppercase disabled:opacity-30"

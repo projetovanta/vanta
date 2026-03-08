@@ -31,12 +31,24 @@ Parametros: userId, tipo, titulo, mensagem, link
 | AMIZADE_PEDIDO | Pedido de amizade | social |
 | AMIZADE_ACEITA | Amizade aceita | social |
 | MENSAGEM_NOVA | Nova mensagem chat | social |
-| MV_APROVADO | Entrada no clube aprovada | clube |
+| MV_APROVADO | Entrada no clube aprovada | clube → membro |
 | MV_INFRACAO | Infracao registrada | clube |
+| MV_DEAL_NOVO | Novo deal disponível | clube → membro |
+| MV_RESGATE_CONFIRMADO | Resgate confirmado | clube → membro |
+| MV_ASSINATURA_VENCENDO | Assinatura próxima do vencimento | clube → master |
+| MV_ASSINATURA_VENCIDA | Assinatura expirada | clube → master |
+| MV_DEAL_EXPIROU | Deal expirou sem resgates | clube → master |
+| MV_LIMITE_ATINGIDO | Parceiro atingiu limite de resgates | clube → parceiro |
+| MV_BEM_VINDO | Boas-vindas ao clube | clube → membro |
+| MV_DEAL_SUGERIDO | Parceiro sugeriu novo deal | clube → master (trigger trg_deal_sugerido) |
+| MV_DEAL_APROVADO | Deal sugerido foi aprovado | clube → parceiro |
+| MV_DEAL_REJEITADO | Deal sugerido foi rejeitado | clube → parceiro |
+| MV_PARCEIRO_BEM_VINDO | Boas-vindas ao parceiro | clube → parceiro |
+| MV_RESGATE_PARCEIRO | Membro resgatou no parceiro | clube → parceiro |
 | PARCERIA_NOVA | Nova solicitacao de parceria | parceria → master |
 | PARCERIA_APROVADA | Solicitacao aprovada | parceria → solicitante |
 | PARCERIA_REJEITADA | Solicitacao rejeitada | parceria → solicitante |
-| (+ mais 16 tipos) | Ver types/auth.ts | diversos |
+| (+ mais tipos) | Ver types/auth.ts para lista completa | diversos |
 
 ## Edge Functions de notificacao
 | Funcao | Canal | Descricao |

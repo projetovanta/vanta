@@ -149,7 +149,20 @@ export interface Notificacao {
     | 'COMEMORACAO_NOVA'
     | 'COMEMORACAO_APROVADA'
     | 'COMEMORACAO_RECUSADA'
-    | 'COMEMORACAO_FAIXA_ATINGIDA';
+    | 'COMEMORACAO_FAIXA_ATINGIDA'
+    | 'MV_APROVADO'
+    | 'MV_DEAL_NOVO'
+    | 'MV_RESGATE_CONFIRMADO'
+    | 'MV_ASSINATURA_VENCENDO'
+    | 'MV_ASSINATURA_VENCIDA'
+    | 'MV_DEAL_EXPIROU'
+    | 'MV_LIMITE_ATINGIDO'
+    | 'MV_BEM_VINDO'
+    | 'MV_DEAL_SUGERIDO'
+    | 'MV_DEAL_APROVADO'
+    | 'MV_DEAL_REJEITADO'
+    | 'MV_PARCEIRO_BEM_VINDO'
+    | 'MV_RESGATE_PARCEIRO';
   lida: boolean;
   link: string; // ID do evento, membro ou ação
   timestamp: string; // ISO 8601

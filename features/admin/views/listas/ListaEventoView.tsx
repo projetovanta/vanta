@@ -44,7 +44,8 @@ export const ListaEventoView: React.FC<{
     <div className="absolute inset-0 flex flex-col bg-[#0A0A0A]">
       <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-5 pt-8 pb-0 shrink-0">
         <div className="flex items-start gap-3 mb-4">
-          <button aria-label="Voltar"
+          <button
+            aria-label="Voltar"
             onClick={onBack}
             className="w-9 h-9 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0 mt-0.5"
           >

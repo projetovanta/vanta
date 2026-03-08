@@ -4,7 +4,8 @@
  * Membro pode aplicar (1 deal ativo por vez, enforced por trigger no banco).
  */
 import React, { useEffect, useState, useCallback } from 'react';
-import { Ticket, MapPin, Clock, Users, CheckCircle2, XCircle, AlertTriangle, Send, Eye } from 'lucide-react';
+import { Ticket, MapPin, Clock, Users, CheckCircle2, XCircle, AlertTriangle, Send, Eye, QrCode, X } from 'lucide-react';
+import { QRCodeSVG } from 'qrcode.react';
 import { clubeDealsService } from '../../features/admin/services/clube/clubeDealsService';
 import { clubeResgatesService } from '../../features/admin/services/clube/clubeResgatesService';
 import { clubeCidadesService } from '../../features/admin/services/clube/clubeCidadesService';
@@ -23,6 +24,7 @@ export const DealsMembroSection: React.FC<Props> = ({ userId, onSuccess }) => {
   const [loading, setLoading] = useState(true);
   const [aplicando, setAplicando] = useState(false);
   const [postUrl, setPostUrl] = useState('');
+  const [showQr, setShowQr] = useState(false);
   const [cidadesMap, setCidadesMap] = useState<Record<string, string>>({});
 
   const load = useCallback(async () => {
@@ -198,10 +200,16 @@ export const DealsMembroSection: React.FC<Props> = ({ userId, onSuccess }) => {
           )}
 
           {meuResgate.status === 'SELECIONADO' && (
-            <div className="mt-3 bg-[#FFD300]/10 border border-[#FFD300]/30 rounded-xl p-3 text-center">
-              <p className="text-[#FFD300] text-[10px] font-bold">Apresente seu QR VIP no local</p>
-              <p className="text-zinc-400 text-[9px] mt-1">O QR está na aba "QR VIP" do seu perfil</p>
-            </div>
+            <button
+              onClick={() => setShowQr(true)}
+              className="mt-3 w-full bg-[#FFD300]/10 border border-[#FFD300]/30 rounded-xl p-3 text-center active:scale-95 transition-all"
+            >
+              <div className="flex items-center justify-center gap-2">
+                <QrCode size={14} className="text-[#FFD300]" />
+                <p className="text-[#FFD300] text-[10px] font-bold">Abrir QR VIP</p>
+              </div>
+              <p className="text-zinc-400 text-[9px] mt-1">Apresente ao parceiro no local</p>
+            </button>
           )}
         </div>
       )}
@@ -344,6 +352,37 @@ export const DealsMembroSection: React.FC<Props> = ({ userId, onSuccess }) => {
                   </div>
                 );
               })}
+          </div>
+        </div>
+      )}
+
+      {/* Modal QR VIP Dourado */}
+      {showQr && meuResgate?.qrToken && (
+        <div className="absolute inset-0 z-50 bg-black/90 flex flex-col items-center justify-center p-6">
+          <div className="w-full max-w-xs space-y-5">
+            <div className="flex items-center justify-between">
+              <h3 className="text-[#FFD300] font-bold text-sm">QR VIP MAIS VANTA</h3>
+              <button onClick={() => setShowQr(false)} className="active:scale-90 transition-all">
+                <X size={18} className="text-zinc-400" />
+              </button>
+            </div>
+
+            <div className="bg-gradient-to-b from-[#FFD300]/20 to-[#FFD300]/5 border-2 border-[#FFD300]/40 rounded-2xl p-6 flex flex-col items-center gap-4">
+              <div className="bg-white rounded-xl p-4">
+                <QRCodeSVG value={`vanta://mv/${meuResgate.qrToken}`} size={180} fgColor="#1a1a1a" bgColor="#ffffff" />
+              </div>
+              <div className="text-center space-y-1">
+                <p className="text-white font-bold text-sm truncate">{meuResgate.dealTitulo ?? 'Deal'}</p>
+                <p className="text-zinc-400 text-[10px]">{meuResgate.parceiroNome}</p>
+                <p className="text-[#FFD300]/60 text-[8px] font-mono uppercase tracking-widest mt-2">
+                  {meuResgate.qrToken.slice(0, 8)}...{meuResgate.qrToken.slice(-8)}
+                </p>
+              </div>
+            </div>
+
+            <p className="text-zinc-500 text-[9px] text-center">
+              Mostre este QR ao parceiro para registrar seu check-in
+            </p>
           </div>
         </div>
       )}

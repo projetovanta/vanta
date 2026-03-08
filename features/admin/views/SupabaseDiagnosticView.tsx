@@ -362,7 +362,8 @@ export const SupabaseDiagnosticView: React.FC<{ onBack: () => void }> = ({ onBac
       {/* Header */}
       <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-6 pt-8 pb-5 shrink-0">
         <div className="flex items-center gap-3 mb-4">
-          <button aria-label="Voltar"
+          <button
+            aria-label="Voltar"
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
           >
@@ -407,7 +408,8 @@ export const SupabaseDiagnosticView: React.FC<{ onBack: () => void }> = ({ onBac
         </div>
 
         {/* Botão scan */}
-        <button aria-label="Carregando"
+        <button
+          aria-label="Carregando"
           onClick={runDiagnostic}
           disabled={scanning || !pat || !projectRef}
           className="w-full py-3.5 bg-[#FFD300] text-black font-black text-[10px] uppercase tracking-[0.2em] rounded-xl flex items-center justify-center gap-2 active:scale-[0.97] transition-all disabled:opacity-50"

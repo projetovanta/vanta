@@ -37,7 +37,8 @@ export const ProfilePanel: React.FC<{
     <div className="absolute inset-0 z-50 bg-[#0A0A0A] flex flex-col overflow-hidden animate-in slide-in-from-right duration-300">
       <div className="shrink-0 border-b border-white/5 px-5 pt-8 pb-4">
         <div className="flex items-center gap-3 mb-4">
-          <button aria-label="Voltar"
+          <button
+            aria-label="Voltar"
             onClick={onClose}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
           >

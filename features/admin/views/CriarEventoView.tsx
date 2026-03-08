@@ -642,7 +642,8 @@ export const CriarEventoView: React.FC<{
                 Tipo de Evento
               </h1>
             </div>
-            <button aria-label="Voltar"
+            <button
+              aria-label="Voltar"
               onClick={onBack}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0 mt-1"
             >
@@ -763,7 +764,8 @@ export const CriarEventoView: React.FC<{
               {stepTitle}
             </h1>
           </div>
-          <button aria-label="Voltar"
+          <button
+            aria-label="Voltar"
             onClick={safeBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0 mt-1"
           >

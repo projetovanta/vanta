@@ -179,7 +179,8 @@ export const PublicProfilePreviewView: React.FC<{
           style={{ paddingTop: '1rem' }}
         >
           <div className="flex items-center justify-between">
-            <button aria-label="Voltar"
+            <button
+              aria-label="Voltar"
               onClick={onBack}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
             >
@@ -200,7 +201,8 @@ export const PublicProfilePreviewView: React.FC<{
 
       {(!isOwner || (isOwner && !setProfilePreviewStatus)) && (
         <div className="shrink-0 p-6 flex items-center" style={{ paddingTop: '1.5rem' }}>
-          <button aria-label="Voltar"
+          <button
+            aria-label="Voltar"
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
           >
@@ -218,7 +220,8 @@ export const PublicProfilePreviewView: React.FC<{
               className="w-36 h-36 rounded-full p-[2px] bg-zinc-800 shadow-2xl active:scale-95 transition-transform"
             >
               <div className="w-full h-full rounded-full border-4 border-[#050505] overflow-hidden bg-black">
-                <img alt=""
+                <img
+                  alt=""
                   loading="lazy"
                   src={profile.foto}
                   className="w-full h-full object-cover"
@@ -751,7 +754,8 @@ const PhotoLightbox: React.FC<{
         onTouchEnd={onTouchEnd}
         onClick={handleTap}
       >
-        <img alt=""
+        <img
+          alt=""
           src={photos[index]}
           className="max-w-full max-h-full object-contain select-none transition-transform duration-100"
           style={{ transform: `translate(${translate.x}px, ${translate.y}px) scale(${scale})` }}

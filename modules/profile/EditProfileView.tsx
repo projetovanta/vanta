@@ -613,7 +613,8 @@ export const EditProfileView: React.FC<{
 
           {/* ── Botão Salvar ──────────────────────────────────────── */}
           <div className="pt-2" style={{ paddingBottom: 'calc(1.5rem + env(safe-area-inset-bottom, 0px))' }}>
-            <button aria-label="Carregando"
+            <button
+              aria-label="Carregando"
               type="submit"
               disabled={isSaving}
               className="w-full py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-[0.3em] rounded-xl shadow-xl flex items-center justify-center gap-3 disabled:opacity-50 active:scale-95 transition-all"

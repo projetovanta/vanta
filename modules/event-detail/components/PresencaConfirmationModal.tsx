@@ -45,7 +45,8 @@ export const PresencaConfirmationModal: React.FC<PresencaConfirmationModalProps>
         </p>
 
         <div className="space-y-3">
-          <button aria-label="Copiar link"
+          <button
+            aria-label="Copiar link"
             onClick={handleCopyLink}
             className="w-full py-4 bg-zinc-900 border border-white/5 text-white font-bold text-[10px] uppercase tracking-[0.2em] rounded-xl active:bg-zinc-800 transition-all flex items-center justify-center gap-2"
           >

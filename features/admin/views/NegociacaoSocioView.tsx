@@ -519,7 +519,8 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
       {/* ── Header ──────────────────────────────────────────────────────────── */}
       <div className="shrink-0 border-b border-white/5" style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}>
         <div className="flex items-center gap-3 px-4 py-3">
-          <button aria-label="Voltar"
+          <button
+            aria-label="Voltar"
             onClick={onClose}
             className="w-9 h-9 rounded-full bg-zinc-900 border border-white/10 flex items-center justify-center active:scale-90 transition-all"
           >
@@ -903,7 +904,8 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
               >
                 Voltar
               </button>
-              <button aria-label="Carregando"
+              <button
+                aria-label="Carregando"
                 onClick={handleRecusar}
                 disabled={enviando}
                 className="flex-1 py-3 bg-red-500/20 border border-red-500/30 text-red-400 font-bold text-[10px] uppercase tracking-widest rounded-xl flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all disabled:opacity-40"

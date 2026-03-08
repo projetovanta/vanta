@@ -143,7 +143,8 @@ export const PedidosSubView: React.FC<{
         className="shrink-0 flex items-center gap-3 px-4 pb-3 border-b border-white/5"
         style={{ paddingTop: '0.75rem' }}
       >
-        <button aria-label="Voltar"
+        <button
+          aria-label="Voltar"
           onClick={onBack}
           className="w-9 h-9 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
         >
@@ -154,7 +155,8 @@ export const PedidosSubView: React.FC<{
           <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-widest truncate">{eventoNome}</p>
         </div>
         {filtered.length > 0 && (
-          <button aria-label="Baixar"
+          <button
+            aria-label="Baixar"
             onClick={exportCSV}
             className="w-9 h-9 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
           >

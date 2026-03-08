@@ -151,7 +151,8 @@ export const ResumoEventoView: React.FC<{
       {/* Header */}
       <div className="shrink-0 px-5 pt-[max(0.75rem,env(safe-area-inset-top))] pb-3 border-b border-white/5">
         <div className="flex items-center gap-3">
-          <button aria-label="Voltar"
+          <button
+            aria-label="Voltar"
             onClick={onClose}
             className="w-9 h-9 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 shrink-0 active:scale-90 transition-all"
           >

@@ -134,7 +134,8 @@ export const EditarListaSubView: React.FC<Props> = ({ eventoId, onBack }) => {
               Ativar Lista
             </h1>
           </div>
-          <button aria-label="Voltar"
+          <button
+            aria-label="Voltar"
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0 mt-1"
           >
@@ -152,7 +153,8 @@ export const EditarListaSubView: React.FC<Props> = ({ eventoId, onBack }) => {
         {erro && <p className="mt-4 text-red-400 text-[10px] font-black uppercase tracking-widest">{erro}</p>}
       </div>
       <div className="px-6 pb-8 safe-bottom pt-3 border-t border-white/5 shrink-0">
-        <button aria-label="Carregando"
+        <button
+          aria-label="Carregando"
           onClick={handleSalvar}
           disabled={saving}
           className="w-full py-3.5 bg-[#FFD300] text-black rounded-xl text-[10px] font-black uppercase tracking-widest active:scale-95 transition-all font-bold disabled:opacity-50 flex items-center justify-center gap-2"

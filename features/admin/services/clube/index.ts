@@ -30,6 +30,7 @@ import * as infracoes from './clubeInfracoesService';
 import * as passport from './clubePassportService';
 import * as instagram from './clubeInstagramService';
 import * as config from './clubeConfigService';
+import { clubeConvitesService } from './clubeConvitesService';
 
 // ── Service ──────────────────────────────────────────────────────────────────
 export const clubeService = {
@@ -216,4 +217,7 @@ export const clubeService = {
       console.warn('[clubeService] Erro ao enviar notificação:', e);
     }
   },
+
+  // ── Convites (link externo) ────────────────────────────────────────────────
+  convites: clubeConvitesService,
 };

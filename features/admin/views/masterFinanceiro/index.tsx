@@ -221,21 +221,24 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification 
             </h1>
           </div>
           <div className="flex items-center gap-2">
-            <button aria-label="Baixar"
+            <button
+              aria-label="Baixar"
               onClick={handleExportCSV}
               title="CSV"
               className="w-9 h-9 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
             >
               <Download size={14} className="text-zinc-400" />
             </button>
-            <button aria-label="Documento"
+            <button
+              aria-label="Documento"
               onClick={handleExportPDF}
               title="PDF"
               className="w-9 h-9 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
             >
               <FileText size={14} className="text-zinc-400" />
             </button>
-            <button aria-label="Voltar"
+            <button
+              aria-label="Voltar"
               onClick={onBack}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
             >

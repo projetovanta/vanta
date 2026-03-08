@@ -130,7 +130,8 @@ export const ChatRoomView: React.FC<ChatRoomViewProps> = ({ chat, onBack }) => {
       {/* Header */}
       <div className="shrink-0 bg-[#0A0A0A] border-b border-white/5 px-4 pb-4 pt-3 flex items-center justify-between relative z-10">
         <div className="flex items-center gap-3">
-          <button aria-label="Voltar"
+          <button
+            aria-label="Voltar"
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center active:scale-90 transition-transform"
           >
@@ -276,7 +277,8 @@ export const ChatRoomView: React.FC<ChatRoomViewProps> = ({ chat, onBack }) => {
               placeholder="Mensagem..."
               className="flex-1 bg-zinc-900/80 border border-white/5 text-white rounded-2xl px-5 py-4 text-sm focus:outline-none focus:border-[#FFD300]/50 shadow-inner"
             />
-            <button aria-label="Enviar"
+            <button
+              aria-label="Enviar"
               onClick={handleSend}
               disabled={!inputText.trim()}
               className="w-14 h-14 bg-[#FFD300] rounded-2xl flex items-center justify-center text-black shadow-lg shadow-[#FFD300]/10 disabled:opacity-40"

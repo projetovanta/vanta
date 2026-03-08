@@ -629,7 +629,8 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
               />
               {passwordError && <p className="text-red-400 text-[11px] font-medium">{passwordError}</p>}
             </div>
-            <button aria-label="Carregando"
+            <button
+              aria-label="Carregando"
               onClick={handleChangePassword}
               disabled={passwordLoading || !passwordForm.current || !passwordForm.next}
               className="w-full py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-[0.2em] rounded-xl shadow-xl active:scale-95 transition-all disabled:opacity-40 flex items-center justify-center gap-2"
@@ -672,7 +673,8 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
               className="w-full bg-zinc-900 border border-red-500/20 rounded-xl px-4 py-3 text-white text-sm text-center placeholder:text-zinc-700 focus:outline-none focus:border-red-500/40 mb-6"
             />
             <div className="space-y-3">
-              <button aria-label="Carregando"
+              <button
+                aria-label="Carregando"
                 onClick={handleDeleteAccount}
                 disabled={deleteConfirmText !== 'EXCLUIR' || isDeleting}
                 className="w-full py-4 bg-red-600 text-white font-bold text-[10px] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all disabled:opacity-30 flex items-center justify-center gap-2"

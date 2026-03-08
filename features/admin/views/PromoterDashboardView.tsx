@@ -80,7 +80,8 @@ export const PromoterDashboardView: React.FC<{
               {listas.length} evento{listas.length !== 1 ? 's' : ''}
             </p>
           </div>
-          <button aria-label="Voltar"
+          <button
+            aria-label="Voltar"
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all mt-1"
           >

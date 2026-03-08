@@ -134,10 +134,18 @@ const VarCard: React.FC<{
         </button>
 
         <div className="flex items-center gap-0.5 shrink-0">
-          <button aria-label="Copiar" onClick={onDuplicate} className="p-1.5 text-zinc-400 active:text-blue-400 transition-colors">
+          <button
+            aria-label="Copiar"
+            onClick={onDuplicate}
+            className="p-1.5 text-zinc-400 active:text-blue-400 transition-colors"
+          >
             <Copy size={11} />
           </button>
-          <button aria-label="Excluir" onClick={onRemove} className="p-1.5 text-zinc-700 active:text-red-400 transition-colors">
+          <button
+            aria-label="Excluir"
+            onClick={onRemove}
+            className="p-1.5 text-zinc-700 active:text-red-400 transition-colors"
+          >
             <Trash2 size={11} />
           </button>
         </div>
@@ -298,10 +306,18 @@ const VarCard: React.FC<{
         >
           <Check size={11} /> Salvar
         </button>
-        <button aria-label="Copiar" onClick={onDuplicate} className="p-2 text-zinc-400 active:text-blue-400 transition-colors">
+        <button
+          aria-label="Copiar"
+          onClick={onDuplicate}
+          className="p-2 text-zinc-400 active:text-blue-400 transition-colors"
+        >
           <Copy size={12} />
         </button>
-        <button aria-label="Excluir" onClick={onRemove} className="p-2 text-zinc-700 active:text-red-400 transition-colors">
+        <button
+          aria-label="Excluir"
+          onClick={onRemove}
+          className="p-2 text-zinc-700 active:text-red-400 transition-colors"
+        >
           <Trash2 size={12} />
         </button>
       </div>

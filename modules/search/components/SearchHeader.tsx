@@ -111,7 +111,8 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
             <Sparkles size={10} />
             Estilo
           </button>
-          <button aria-label="Calendário"
+          <button
+            aria-label="Calendário"
             onClick={onOpenTimeFilter}
             className={`px-3 py-2 rounded-xl text-[9px] font-bold uppercase border flex items-center gap-2 ${selectedTimeFilter ? 'bg-[#FFD300] text-black' : 'bg-zinc-900 text-zinc-400 border-white/5'}`}
           >

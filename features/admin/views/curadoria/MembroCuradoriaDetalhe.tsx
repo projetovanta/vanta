@@ -56,7 +56,8 @@ export const MembroCuradoriaDetalhe: React.FC<{
       {/* Header */}
       <div className="shrink-0 border-b border-white/5 px-5 pt-8 pb-4">
         <div className="flex items-center gap-3 mb-4">
-          <button aria-label="Voltar"
+          <button
+            aria-label="Voltar"
             onClick={onClose}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
           >
@@ -156,7 +157,8 @@ export const MembroCuradoriaDetalhe: React.FC<{
               placeholder="Digite uma tag e Enter..."
               className="flex-1 min-w-0 bg-zinc-900 border border-white/10 rounded-xl px-3 py-2.5 text-white text-sm outline-none focus:border-[#FFD300]/30 placeholder-zinc-700"
             />
-            <button aria-label="Adicionar"
+            <button
+              aria-label="Adicionar"
               onClick={addTag}
               disabled={!tagInput.trim()}
               className="w-10 h-10 bg-[#FFD300]/10 border border-[#FFD300]/20 rounded-xl flex items-center justify-center active:scale-90 transition-all disabled:opacity-40 shrink-0"

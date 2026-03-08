@@ -33,7 +33,8 @@ export const DiagnosticoView: React.FC<{ onBack: () => void }> = ({ onBack }) =>
               Diagnóstico
             </h1>
           </div>
-          <button aria-label="Voltar"
+          <button
+            aria-label="Voltar"
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
           >

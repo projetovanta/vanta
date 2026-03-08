@@ -164,6 +164,22 @@ Tiers: BRONZE, PRATA, OURO, DIAMANTE. Cada tier desbloqueia lotes exclusivos.
 | concluido_em | TIMESTAMPTZ | Conclusao |
 | UNIQUE(deal_id, user_id) | | 1 aplicacao por membro por deal |
 
+### convites_mais_vanta
+| Coluna | Tipo | Descricao |
+|---|---|---|
+| id | UUID PK | auto |
+| token | TEXT UNIQUE | hex 16 bytes, auto |
+| tipo | TEXT | MEMBRO ou PARCEIRO |
+| tier | TEXT | Nivel se tipo=MEMBRO |
+| cidade_id | UUID FK cidades_mais_vanta | Cidade (nullable) |
+| parceiro_nome | TEXT | Nome sugerido se tipo=PARCEIRO |
+| criado_por | UUID FK profiles | Master/gerente que criou |
+| aceito_por | UUID FK profiles | Quem aceitou (nullable) |
+| aceito_em | TIMESTAMPTZ | Quando aceitou |
+| expira_em | TIMESTAMPTZ | Expira em 7 dias |
+| status | TEXT | PENDENTE/ACEITO/EXPIRADO/CANCELADO |
+| criado_em | TIMESTAMPTZ | auto |
+
 ## Fluxos
 
 ### SOLICITAR ENTRADA NO CLUBE
@@ -199,6 +215,20 @@ Tiers: BRONZE, PRATA, OURO, DIAMANTE. Cada tier desbloqueia lotes exclusivos.
 **O que acontece**: INSERT infracoes_mais_vanta
 **Consequencia**: infracoes progressivas podem gerar castigo (castigo_motivo no membros_clube)
 
+### CONVITE VIA LINK
+**Quem**: Master/gerente
+**Navegacao**: Painel Admin -> MAIS VANTA -> Convites -> Novo Convite
+**O que acontece**:
+1. Master escolhe tipo (MEMBRO/PARCEIRO), nivel, cidade
+2. INSERT convites_mais_vanta (token unico, expira 7 dias, uso unico)
+3. Master copia link e envia por WhatsApp/email
+4. Convidado abre link → /convite-mv/:token → AceitarConviteMVPage
+5. Se nao logado: abre AuthModal inline → cria conta ou loga
+6. Clica "Aceitar" → RPC aceitar_convite_mv (SECURITY DEFINER)
+7. Se MEMBRO: INSERT/UPSERT membros_clube com tier definido
+8. Se PARCEIRO: retorna dados pra master linkar ao parceiro
+9. Notificacao de boas-vindas (MV_APROVADO ou PARCERIA_APROVADA)
+
 ### PASSAPORTE (aprovacao por cidade)
 **Quem**: Membro com passaporte aprovado
 **O que acontece**: passport_aprovacoes define em quais cidades o membro pode usar beneficios
@@ -216,6 +246,11 @@ Tiers: BRONZE, PRATA, OURO, DIAMANTE. Cada tier desbloqueia lotes exclusivos.
 | AdminDashboardView | Secao MAIS VANTA |
 | AssinaturasMaisVantaView | Gerenciar assinaturas |
 | PassaportesMaisVantaView | Gerenciar passaportes |
+| ConvitesMaisVantaView | Convites master → membro/parceiro |
+| AnalyticsMaisVantaView | Analytics completo MV |
+| AceitarConviteMVPage | Standalone /convite-mv/:token |
+| ParceiroDashboardPage | Standalone /parceiro (deals, resgates, QR scan) |
+| DealsMembroSection | Feed deals + QR VIP dourado modal |
 
 ## Checklist de status
 | # | Item | Status | Detalhe |
@@ -247,3 +282,10 @@ Tiers: BRONZE, PRATA, OURO, DIAMANTE. Cada tier desbloqueia lotes exclusivos.
 | 25 | Trigger vagas deal | OK | update_vagas_deal (banco) |
 | 26 | Trigger resgates parceiro | OK | update_resgates_parceiro (banco) |
 | 27 | Feed deals membro | OK | DealsMembroSection no ClubeOptInView |
+| 28 | Convite via link | OK | convites_mais_vanta + RPC aceitar_convite_mv + ConvitesMaisVantaView + AceitarConviteMVPage |
+| 29 | Painel do parceiro | OK | /parceiro + ParceiroDashboardPage + parceiroService + RLS parceiro_own/deals/resgates |
+| 30 | Sugerir deal (parceiro) | OK | INSERT status=RASCUNHO + trigger notifica master (MV_DEAL_SUGERIDO) |
+| 31 | Analytics MV | OK | AnalyticsMaisVantaView (membros, resgates, parceiros, receita, engajamento) |
+| 32 | Notificacoes MV v2 | OK | 13 tipos novos (MV_APROVADO ate MV_RESGATE_PARCEIRO) |
+| 33 | Gerente por cidade | OK | Sidebar + guards expandidos para vanta_gerente |
+| 34 | QR VIP dourado | OK | DealsMembroSection modal QR + ParceiroDashboardPage tab QR Scan + checkin com joins |

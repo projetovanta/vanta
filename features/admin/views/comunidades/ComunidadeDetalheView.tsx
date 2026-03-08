@@ -70,7 +70,8 @@ export const ComunidadeDetalheView: React.FC<{
           style={{ background: 'linear-gradient(to top, #0A0A0A 0%, rgba(10,10,10,0.2) 55%, transparent 100%)' }}
         />
 
-        <button aria-label="Voltar"
+        <button
+          aria-label="Voltar"
           onClick={onBack}
           className="absolute left-6 w-10 h-10 bg-black/40 backdrop-blur-md rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
           style={{ top: '2.5rem' }}

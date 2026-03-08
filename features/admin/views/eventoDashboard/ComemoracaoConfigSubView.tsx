@@ -105,7 +105,8 @@ export const ComemoracaoConfigSubView: React.FC<Props> = ({ eventoId, onBack }) 
     <div className="absolute inset-0 flex flex-col bg-[#050505] overflow-hidden">
       {/* Header */}
       <div className="shrink-0 flex items-center gap-3 px-4 pt-[calc(env(safe-area-inset-top)+12px)] pb-3 border-b border-white/5">
-        <button aria-label="Voltar"
+        <button
+          aria-label="Voltar"
           onClick={onBack}
           className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
         >

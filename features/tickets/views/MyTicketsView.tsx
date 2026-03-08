@@ -321,13 +321,15 @@ export const MyTicketsView: React.FC<{
           </h1>
         </div>
         <div className="flex items-center gap-2 mt-1">
-          <button aria-label="Atualizar"
+          <button
+            aria-label="Atualizar"
             onClick={load}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
           >
             <RefreshCw size={15} className={`text-zinc-400 ${loading ? 'animate-spin' : ''}`} />
           </button>
-          <button aria-label="Voltar"
+          <button
+            aria-label="Voltar"
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
           >

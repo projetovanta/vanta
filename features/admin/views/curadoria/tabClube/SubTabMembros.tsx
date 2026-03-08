@@ -53,7 +53,8 @@ export const SubTabMembros: React.FC<Props> = ({
         placeholder="Todos"
         className="w-28"
       />
-      <button aria-label="Atualizar"
+      <button
+        aria-label="Atualizar"
         onClick={onAtualizarSeguidores}
         disabled={atualizandoSeg}
         className="flex items-center gap-1 px-3 py-2 bg-zinc-900 border border-white/10 rounded-xl text-zinc-400 text-[9px] font-bold shrink-0 active:scale-90 transition-all disabled:opacity-40"

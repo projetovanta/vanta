@@ -126,14 +126,16 @@ export const DividaSocialMaisVantaView: React.FC<{
             </h1>
           </div>
           <div className="flex gap-2 shrink-0">
-            <button aria-label="Atualizar"
+            <button
+              aria-label="Atualizar"
               onClick={handleRefresh}
               disabled={loading}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all disabled:opacity-40"
             >
               <RefreshCw size={16} className={`text-zinc-400 ${loading ? 'animate-spin' : ''}`} />
             </button>
-            <button aria-label="Voltar"
+            <button
+              aria-label="Voltar"
               onClick={onBack}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
             >

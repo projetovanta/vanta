@@ -142,7 +142,8 @@ export const WalletView: React.FC<WalletViewProps> = ({
           style={isSubView ? { paddingTop: '2rem' } : undefined}
         >
           {isSubView && (
-            <button aria-label="Voltar"
+            <button
+              aria-label="Voltar"
               onClick={onGoToHome}
               className="ml-6 mb-4 w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-transform shrink-0"
             >
@@ -181,7 +182,8 @@ export const WalletView: React.FC<WalletViewProps> = ({
     >
       <div className="flex items-center justify-between mb-8">
         {isSubView && (
-          <button aria-label="Voltar"
+          <button
+            aria-label="Voltar"
             onClick={onGoToHome}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-transform"
           >

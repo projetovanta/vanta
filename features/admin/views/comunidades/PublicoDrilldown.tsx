@@ -307,7 +307,8 @@ export const PublicoDrilldown: React.FC<{
       {/* Breadcrumb */}
       {breadcrumb.length > 1 && (
         <div className="flex items-center gap-1 flex-wrap">
-          <button aria-label="Voltar"
+          <button
+            aria-label="Voltar"
             onClick={goBack}
             className="w-6 h-6 rounded-full bg-zinc-800 flex items-center justify-center shrink-0 active:scale-90 transition-all"
           >

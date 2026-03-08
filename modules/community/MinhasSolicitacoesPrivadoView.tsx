@@ -78,10 +78,13 @@ export const MinhasSolicitacoesPrivadoView: React.FC<Props> = ({ onBack }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let cancelled = false;
     eventoPrivadoService.minhasSolicitacoes().then(data => {
+      if (cancelled) return;
       setSolicitacoes(data);
       setLoading(false);
     });
+    return () => { cancelled = true; };
   }, []);
 
   return (

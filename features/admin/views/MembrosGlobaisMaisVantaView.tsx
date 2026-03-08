@@ -42,13 +42,14 @@ export const MembrosGlobaisMaisVantaView: React.FC<{
   useEffect(() => {
     const ids = [...new Set(membros.map(m => m.userId))].filter(id => !perfis[id]);
     if (ids.length === 0) return;
+    let cancelled = false;
     supabase
       .from('profiles')
       .select('id, nome, avatar_url')
       .in('id', ids.slice(0, 100) as string[])
       .then(
         ({ data }) => {
-          if (!data) return;
+          if (cancelled || !data) return;
           const next = { ...perfis };
           for (const r of data)
             next[r.id as string] = { nome: (r.nome as string) ?? '', foto: (r.avatar_url as string) ?? '' };
@@ -58,6 +59,7 @@ export const MembrosGlobaisMaisVantaView: React.FC<{
           /* audit-ok */
         },
       );
+    return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [membros.length]);
 

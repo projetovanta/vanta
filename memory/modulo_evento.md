@@ -1,4 +1,4 @@
-# Criado: 2026-03-06 01:26 | Ultima edicao: 2026-03-06 01:26
+# Criado: 2026-03-06 01:26 | Ultima edicao: 2026-03-07
 
 # Modulo: Evento (Admin)
 
@@ -65,6 +65,22 @@ E o segundo bloco fundamental — depende de comunidade, alimenta todo o resto.
 | cancelamento_motivo | TEXT | nao | migration | Motivo do cancelamento |
 | cancelamento_etapa | TEXT | nao | migration | Etapa do fluxo de cancelamento |
 | slug | TEXT UNIQUE | nao | migration | URL amigavel /evento/:slug |
+| recorrencia | TEXT | nao | migration | UNICO (default), SEMANAL, QUINZENAL, MENSAL |
+| recorrencia_ate | DATE | nao | migration | Data limite para gerar ocorrencias |
+| evento_origem_id | UUID FK eventos_admin | nao | migration | Evento raiz da serie recorrente |
+
+### RPCs de Evento Recorrente (migration evento_recorrente_v2)
+| RPC | Parametros | Funcao |
+|---|---|---|
+| `gerar_ocorrencias_recorrente` | p_evento_id | Gera ocorrencias futuras copiando lotes/variacoes/equipe |
+| `cancelar_serie_recorrente` | p_evento_origem_id | Cancela datas futuras nao publicadas |
+| `get_ocorrencias_serie` | p_evento_origem_id | Lista todas ocorrencias da serie com vendidos |
+
+### UI: SerieChips (features/admin/views/eventoDashboard/SerieChips.tsx)
+- Chips horizontais com datas da serie
+- Navegacao entre ocorrencias via `onSelectOcorrencia`
+- Modal para cancelar datas futuras nao publicadas
+- Integrado no EventoDashboard entre Hero e KPIs
 
 ### socios_evento (NOVO — multi-socio)
 | Coluna | Tipo | Descricao |

@@ -73,12 +73,15 @@ export const PublicProfilePreviewView: React.FC<{
 
   useEffect(() => {
     if (!profile.id) return;
+    let cancelled = false;
     Promise.all([achievementsService.getAchievements(profile.id), achievementsService.getBadges(profile.id)]).then(
       ([ach, bdg]) => {
+        if (cancelled) return;
         setAchievements(ach);
         setBadges(bdg);
       },
     );
+    return () => { cancelled = true; };
   }, [profile.id]);
 
   const currentViewFriendshipStatus = isOwner
@@ -102,9 +105,11 @@ export const PublicProfilePreviewView: React.FC<{
   // Carregar mood do perfil
   useEffect(() => {
     if (!profile.id) return;
+    let cancelled = false;
     moodService.getMany([profile.id]).then(moods => {
-      setMood(moods[profile.id] ?? null);
+      if (!cancelled) setMood(moods[profile.id] ?? null);
     });
+    return () => { cancelled = true; };
   }, [profile.id]);
   const privacy = profile.privacidade;
 

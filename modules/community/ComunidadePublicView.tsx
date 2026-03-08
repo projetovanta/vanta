@@ -78,6 +78,7 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
   const [showComemoracao, setShowComemoracao] = useState(false);
 
   useEffect(() => {
+    let cancelled = false;
     setLoading(true);
     supabase
       .from('comunidades')
@@ -88,6 +89,7 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
       .single()
       .then(
         ({ data }) => {
+          if (cancelled) return;
           if (data) setComunidade(data as unknown as ComunidadePublicData);
           setLoading(false);
         },
@@ -97,48 +99,51 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
       );
 
     vantaService.getEventos().then(all => {
-      setProximosEventos(all.filter(e => e.comunidade?.id === comunidadeId));
+      if (!cancelled) setProximosEventos(all.filter(e => e.comunidade?.id === comunidadeId));
     });
 
     // Carrega estado de follow + preview de seguidores (3 primeiros)
-    void communityFollowService.getFollowCount(comunidadeId).then(setFollowCount);
+    void communityFollowService.getFollowCount(comunidadeId).then(c => { if (!cancelled) setFollowCount(c); });
     if (userId) {
-      void communityFollowService.isFollowing(userId, comunidadeId).then(setIsFollowing);
+      void communityFollowService.isFollowing(userId, comunidadeId).then(v => { if (!cancelled) setIsFollowing(v); });
     }
-    void reviewsService.getMediaComunidade(comunidadeId).then(setRatingData);
+    void reviewsService.getMediaComunidade(comunidadeId).then(r => { if (!cancelled) setRatingData(r); });
     // Preview: pegar 3 primeiros seguidores com profile
     (async () => {
       const ids = await communityFollowService.getFollowers(comunidadeId);
-      if (ids.length === 0) return;
+      if (cancelled || ids.length === 0) return;
       const { data: profiles } = await supabase
         .from('profiles')
         .select('id, nome, avatar_url, instagram, cidade')
         .in('id', ids.slice(0, 3));
-      if (profiles) setPreviewFollowers(profiles.map((r: any) => profileToMembro(r)));
+      if (!cancelled && profiles) setPreviewFollowers(profiles.map((r: any) => profileToMembro(r)));
     })();
+    return () => { cancelled = true; };
   }, [comunidadeId, userId]);
 
   // Carregar todos os seguidores ao abrir a lista
   useEffect(() => {
     if (!isFollowerListOpen || allFollowers.length > 0) return;
+    let cancelled = false;
     setLoadingFollowers(true);
     (async () => {
       try {
         const ids = await communityFollowService.getFollowers(comunidadeId);
-        if (ids.length === 0) {
-          setLoadingFollowers(false);
+        if (cancelled || ids.length === 0) {
+          if (!cancelled) setLoadingFollowers(false);
           return;
         }
         const { data: profiles } = await supabase
           .from('profiles')
           .select('id, nome, avatar_url, instagram, cidade')
           .in('id', ids.slice(0, 50));
-        setAllFollowers((profiles ?? []).map((r: any) => profileToMembro(r)));
+        if (!cancelled) setAllFollowers((profiles ?? []).map((r: any) => profileToMembro(r)));
       } catch {
         /* silencioso */
       }
-      setLoadingFollowers(false);
+      if (!cancelled) setLoadingFollowers(false);
     })();
+    return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFollowerListOpen, comunidadeId]);
 

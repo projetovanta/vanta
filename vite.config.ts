@@ -100,7 +100,7 @@ export default defineConfig(({ mode }) => {
       }),
     ],
     build: {
-      sourcemap: true,
+      sourcemap: 'hidden',
       minify: 'terser',
       terserOptions: {
         compress: {
@@ -114,7 +114,7 @@ export default defineConfig(({ mode }) => {
             'vendor-supabase': ['@supabase/supabase-js'],
             'vendor-leaflet': ['leaflet', 'react-leaflet'],
             'vendor-recharts': ['recharts'],
-            'vendor-qr': ['react-qr-code', 'qrcode.react'],
+            'vendor-qr': ['qrcode.react'],
             'vendor-sentry': ['@sentry/react'],
           },
         },

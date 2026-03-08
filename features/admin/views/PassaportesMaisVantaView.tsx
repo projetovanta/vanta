@@ -31,13 +31,14 @@ export const PassaportesMaisVantaView: React.FC<{
   useEffect(() => {
     const ids = [...new Set(allPassports.map(p => p.userId))].filter(id => !perfis[id]);
     if (ids.length === 0) return;
+    let cancelled = false;
     supabase
       .from('profiles')
       .select('id, nome, avatar_url')
       .in('id', ids.slice(0, 50) as string[])
       .then(
         ({ data }) => {
-          if (!data) return;
+          if (cancelled || !data) return;
           const next = { ...perfis };
           for (const r of data)
             next[r.id as string] = { nome: (r.nome as string) ?? '', foto: (r.avatar_url as string) ?? '' };
@@ -47,6 +48,7 @@ export const PassaportesMaisVantaView: React.FC<{
           /* audit-ok */
         },
       );
+    return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allPassports.length]);
 

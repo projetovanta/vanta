@@ -37,6 +37,7 @@ export const EventSocialProof: React.FC<EventSocialProofProps> = ({ eventoId, to
   useEffect(() => {
     if (previewLoaded || !currentAccount?.id || friendIds.length === 0) return;
     setPreviewLoaded(true);
+    let cancelled = false;
     (async () => {
       try {
         const { data: tickets } = await supabase
@@ -45,6 +46,7 @@ export const EventSocialProof: React.FC<EventSocialProofProps> = ({ eventoId, to
           .eq('evento_id', eventoId)
           .in('status', ['DISPONIVEL', 'USADO'])
           .in('owner_id', friendIds);
+        if (cancelled) return;
         const ids = [
           ...new Set((tickets ?? []).map((t: Record<string, unknown>) => t.owner_id as string).filter(Boolean)),
         ];
@@ -53,16 +55,18 @@ export const EventSocialProof: React.FC<EventSocialProofProps> = ({ eventoId, to
           .from('profiles')
           .select('id, nome, avatar_url')
           .in('id', ids.slice(0, 10));
-        setFriendMembers((profiles ?? []).map((r: Record<string, unknown>) => profileToMembro(r)));
+        if (!cancelled) setFriendMembers((profiles ?? []).map((r: Record<string, unknown>) => profileToMembro(r)));
       } catch {
         /* silencioso */
       }
     })();
+    return () => { cancelled = true; };
   }, [eventoId, currentAccount?.id, friendIds, previewLoaded]);
 
   // Carregar lista completa ao abrir modal
   useEffect(() => {
     if (!isListOpen || confirmedMembers.length > 0) return;
+    let cancelled = false;
     setLoading(true);
     (async () => {
       try {
@@ -72,6 +76,7 @@ export const EventSocialProof: React.FC<EventSocialProofProps> = ({ eventoId, to
           .eq('evento_id', eventoId)
           .in('status', ['DISPONIVEL', 'USADO'])
           .not('owner_id', 'is', null);
+        if (cancelled) return;
         const ownerIds = [
           ...new Set((tickets ?? []).map((t: Record<string, unknown>) => t.owner_id as string).filter(Boolean)),
         ];
@@ -83,6 +88,7 @@ export const EventSocialProof: React.FC<EventSocialProofProps> = ({ eventoId, to
           .from('profiles')
           .select('id, nome, avatar_url')
           .in('id', ownerIds.slice(0, 50));
+        if (cancelled) return;
         const all = (profiles ?? []).map((r: Record<string, unknown>) => profileToMembro(r));
         // Amigos primeiro
         const friendSet = new Set(friendIds);
@@ -92,8 +98,9 @@ export const EventSocialProof: React.FC<EventSocialProofProps> = ({ eventoId, to
       } catch {
         /* silencioso */
       }
-      setLoading(false);
+      if (!cancelled) setLoading(false);
     })();
+    return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isListOpen, eventoId, friendIds]);
 

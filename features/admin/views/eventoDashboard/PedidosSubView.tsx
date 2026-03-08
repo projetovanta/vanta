@@ -35,6 +35,8 @@ export const PedidosSubView: React.FC<{
   const [showVarDrop, setShowVarDrop] = useState(false);
   const [detalheTicket, setDetalheTicket] = useState<TicketCaixa | null>(null);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
+  const [confirmarCancelarId, setConfirmarCancelarId] = useState<string | null>(null);
+  const [feedback, setFeedback] = useState('');
 
   const fetchTickets = useCallback(async () => {
     setLoading(true);
@@ -82,7 +84,7 @@ export const PedidosSubView: React.FC<{
   );
 
   const handleCancelar = async (ticketId: string) => {
-    if (!confirm('Cancelar este ingresso?')) return;
+    setConfirmarCancelarId(null);
     setActionLoading(ticketId);
     try {
       await eventosAdminService.cancelarIngresso(ticketId);
@@ -98,7 +100,8 @@ export const PedidosSubView: React.FC<{
     setActionLoading(ticketId);
     try {
       await eventosAdminService.reenviarIngresso(ticketId);
-      alert('Ingresso reenviado (em breve: email/push)');
+      setFeedback('Ingresso reenviado!');
+      setTimeout(() => setFeedback(''), 3000);
     } catch (err) {
       console.error('[Pedidos] reenviar erro:', err);
     } finally {
@@ -336,7 +339,7 @@ export const PedidosSubView: React.FC<{
                         Reenviar
                       </button>
                       <button
-                        onClick={() => handleCancelar(t.id)}
+                        onClick={() => setConfirmarCancelarId(t.id)}
                         disabled={actionLoading === t.id}
                         className="flex items-center gap-1 text-[9px] text-zinc-500 hover:text-red-400 transition-colors disabled:opacity-50"
                       >
@@ -399,6 +402,37 @@ export const PedidosSubView: React.FC<{
               </div>
             )}
           </div>
+        </div>
+      )}
+
+      {confirmarCancelarId && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-6">
+          <div className="w-full max-w-sm bg-[#121212] border border-white/10 rounded-2xl p-6">
+            <h3 className="text-white font-bold text-sm mb-2">Cancelar ingresso?</h3>
+            <p className="text-zinc-400 text-xs leading-relaxed mb-4">
+              Esta ação não pode ser desfeita. O ingresso será marcado como cancelado.
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setConfirmarCancelarId(null)}
+                className="flex-1 py-2.5 rounded-xl bg-zinc-800 text-zinc-300 text-xs font-bold active:scale-95"
+              >
+                Voltar
+              </button>
+              <button
+                onClick={() => handleCancelar(confirmarCancelarId)}
+                className="flex-1 py-2.5 rounded-xl bg-red-500/20 border border-red-500/30 text-red-400 text-xs font-bold active:scale-95"
+              >
+                Confirmar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {feedback && (
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-50 bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-xs font-bold px-4 py-2.5 rounded-xl animate-pulse">
+          {feedback}
         </div>
       )}
     </div>

@@ -277,6 +277,9 @@ allEvents, savedEvents
 | cancelar_convite_produtor | NegociacaoSocioView.tsx | AE |
 | reiniciar_negociacao | NegociacaoSocioView.tsx | AE |
 | expirar_negociacoes_vencidas | pg_cron (hourly) | AE |
+| gerar_ocorrencias_recorrente | eventosAdminService.ts | AE |
+| cancelar_serie_recorrente | SerieChips.tsx | AE |
+| get_ocorrencias_serie | SerieChips.tsx | AE |
 | inserir_notificacao | notificationsService.ts | IN |
 | has_evento_access | RLS: eventos_admin, lotes, variacoes_ingresso, equipe_evento | IN |
 

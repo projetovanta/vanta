@@ -1,16 +1,17 @@
-# Criado: 2026-03-06 01:45 | Ultima edicao: 2026-03-06 01:45
+# Criado: 2026-03-06 01:45 | Ultima edicao: 2026-03-07
 
-# Sub-modulo: Dashboard do Evento (8 sub-views)
+# Sub-modulo: Dashboard do Evento (9 sub-views + SerieChips)
 
 ## Pertence a: modulo_evento.md
 
-## Arquivos (8 arquivos, 2441L total)
+## Arquivos (10 arquivos)
 | Arquivo | Linhas | Funcao |
 |---|---|---|
-| index.tsx | 889 | EventoDashboard — hub principal com tabs/sub-views |
+| index.tsx | ~900 | EventoDashboard — hub principal com tabs/sub-views + SerieChips |
+| SerieChips.tsx | 170 | Chips de navegacao entre ocorrencias de evento recorrente |
 | AnalyticsSubView.tsx | 196 | Graficos de vendas (Recharts) |
 | CuponsSubView.tsx | 214 | CRUD de cupons de desconto |
-| PedidosSubView.tsx | 407 | Lista de tickets vendidos + cancelar + CSV export |
+| PedidosSubView.tsx | ~430 | Lista de tickets + cancelar (modal Vanta) + reenviar (toast) + CSV |
 | EditarLotesSubView.tsx | 250 | Editar lotes + variacoes inline |
 | EditarListaSubView.tsx | 165 | Editar regras de lista |
 | ComemoracaoConfigSubView.tsx | 250 | Config faixas comemoracao por evento |
@@ -31,7 +32,11 @@
 - Participantes: ParticipantesView
 - Relatorio: navegacao para relatorios
 
-**Imports criticos**: eventosAdminService, listasService, cortesiasService, eventosAdminFinanceiro, permissoes
+**Props extras**: `onNavigateEvento?: (eventoId: string) => void` — para SerieChips navegar entre ocorrencias
+
+**SerieChips**: renderizado entre Hero e scroll area. Busca ocorrencias via RPC `get_ocorrencias_serie`. Permite cancelar datas futuras nao publicadas.
+
+**Imports criticos**: eventosAdminService, listasService, cortesiasService, eventosAdminFinanceiro, permissoes, SerieChips
 
 ## Sub-views detalhadas
 
@@ -52,12 +57,13 @@
 - Remover cupom
 **Service**: cuponsService
 
-### PedidosSubView (407L)
+### PedidosSubView (~430L)
 **Funcionalidades**:
 - Lista todos tickets vendidos do evento
 - Filtros: status, tipo, busca por nome/email
 - Export CSV
-- Cancelar ingresso individual
+- Cancelar ingresso: modal de confirmacao Vanta (sem `confirm()` nativo)
+- Reenviar ingresso: toast feedback (sem `alert()` nativo)
 - Ver detalhes do ticket
 **Service**: eventosAdminService (getTicketsCaixaByEvento, cancelarIngresso)
 
@@ -109,3 +115,5 @@ Drill-down interativo de publico por origem. Usado no ResumoEventoModal.
 | 13 | Loading/skeleton states | NAO EXISTE | Sem skeleton no dashboard |
 | 14 | Tempo real (realtime) | NAO EXISTE | Dashboard nao atualiza em tempo real |
 | 15 | Drill-down publico | OK | PublicoDrilldown 356L — donut interativo por origem |
+| 16 | SerieChips recorrente | OK | Navegacao entre ocorrencias + cancelar futuras |
+| 17 | Modal confirmacao cancelar | OK | Substituiu confirm() nativo |

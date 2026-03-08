@@ -46,10 +46,13 @@ export const EventoPrivadoFormView: React.FC<Props> = ({ comunidadeId, comunidad
   const [descricao, setDescricao] = useState('');
 
   useEffect(() => {
+    let cancelled = false;
     eventoPrivadoService.getConfigComunidade(comunidadeId).then(c => {
+      if (cancelled) return;
       setConfig(c);
       setLoading(false);
     });
+    return () => { cancelled = true; };
   }, [comunidadeId]);
 
   const toggleItem = (list: string[], item: string, setter: (v: string[]) => void) => {

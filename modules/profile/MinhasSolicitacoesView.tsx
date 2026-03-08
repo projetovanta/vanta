@@ -129,8 +129,10 @@ export const MinhasSolicitacoesView: React.FC<Props> = ({ onBack }) => {
   const [qrCortesia, setQrCortesia] = useState<{ id: string; nome: string } | null>(null);
 
   useEffect(() => {
+    let cancelled = false;
     Promise.all([eventoPrivadoService.minhasSolicitacoes(), comemoracaoService.minhasComemoracoes()]).then(
       async ([ep, com]) => {
+        if (cancelled) return;
         setPrivados(ep);
         setComemoracoes(com);
         // Carregar faixas para comemoracoes aprovadas com evento
@@ -143,6 +145,7 @@ export const MinhasSolicitacoesView: React.FC<Props> = ({ onBack }) => {
             if (cfg?.faixas) map[eid] = cfg.faixas;
           }),
         );
+        if (cancelled) return;
         setFaixasMap(map);
         // Carregar cortesias
         const cMap: Record<
@@ -155,10 +158,12 @@ export const MinhasSolicitacoesView: React.FC<Props> = ({ onBack }) => {
             if (cortesias.length > 0) cMap[c.id] = cortesias;
           }),
         );
+        if (cancelled) return;
         setCortesiasMap(cMap);
         setLoading(false);
       },
     );
+    return () => { cancelled = true; };
   }, []);
 
   const copyRefLink = (refCode: string) => {

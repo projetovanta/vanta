@@ -76,7 +76,6 @@
     "react-easy-crop": "^5.5.6",
     "react-helmet-async": "^3.0.0",
     "react-leaflet": "^5.0.0",
-    "react-qr-code": "^2.0.18",
     "react-router-dom": "^7.13.1",
     "recharts": "^3.7.0",
     "terser": "^5.46.0",

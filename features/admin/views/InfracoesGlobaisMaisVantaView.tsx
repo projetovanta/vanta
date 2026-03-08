@@ -34,12 +34,13 @@ export const InfracoesGlobaisMaisVantaView: React.FC<{
 
   // Carregar infrações do Supabase + batch de perfis
   useEffect(() => {
+    let cancelled = false;
     const load = async () => {
       const { data, error } = await supabase
         .from('infracoes_mais_vanta')
         .select('*')
         .order('criado_em', { ascending: false });
-      if (error || !data) return;
+      if (cancelled || error || !data) return;
 
       // Batch: buscar nomes dos perfis
       const userIds = [...new Set(data.map((r: any) => r.user_id as string))];
@@ -50,6 +51,7 @@ export const InfracoesGlobaisMaisVantaView: React.FC<{
           for (const p of profiles) perfis[p.id as string] = (p.nome as string) || (p.id as string).slice(0, 8);
       }
 
+      if (cancelled) return;
       setInfracoes(
         data.map((r: any) => ({
           id: r.id,
@@ -67,6 +69,7 @@ export const InfracoesGlobaisMaisVantaView: React.FC<{
     load().catch(() => {
       /* audit-ok */
     });
+    return () => { cancelled = true; };
   }, [tick]);
 
   const filtradas = infracoes.filter(inf => {

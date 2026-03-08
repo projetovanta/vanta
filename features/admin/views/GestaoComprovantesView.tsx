@@ -51,7 +51,10 @@ export const GestaoComprovantesView: React.FC<Props> = ({ onBack, masterId }) =>
   };
 
   useEffect(() => {
-    fetchData();
+    let cancelled = false;
+    fetchData().then(() => { if (cancelled) return; });
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const filtered = comprovantes.filter(c => {

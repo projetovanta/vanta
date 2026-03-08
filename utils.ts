@@ -81,9 +81,6 @@ export const isEventEndingSoon = (evento: Evento): boolean => {
  * Verifica se um evento está acontecendo EXATAMENTE AGORA
  */
 export const isEventHappeningNow = (evento: Evento): boolean => {
-  // Caso especial para garantir o destaque do evento de teste solicitado
-  if (evento.id === 'rj-agora') return true;
-
   const now = new Date();
   const { start, end } = getEventBounds(evento);
   return now >= start && now <= end;

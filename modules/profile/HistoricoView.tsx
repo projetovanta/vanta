@@ -52,13 +52,16 @@ export const HistoricoView: React.FC<HistoricoViewProps> = ({
 
   useEffect(() => {
     if (!userId) return;
+    let cancelled = false;
     Promise.all([achievementsService.getAchievements(userId), achievementsService.getBadges(userId)]).then(
       ([ach, bdg]) => {
+        if (cancelled) return;
         setAchievements(ach);
         setBadges(bdg);
         setLoading(false);
       },
     );
+    return () => { cancelled = true; };
   }, [userId]);
 
   const statusInativos = useMemo(() => new Set(['CANCELADO', 'TRANSFERIDO', 'REEMBOLSADO']), []);

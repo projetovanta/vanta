@@ -36,11 +36,14 @@ Portaria abre EventCheckInView -> Modo LISTA
 -> Busca por nome (index GIN trgm, busca fuzzy)
 -> Seleciona convidado
 -> listasService.checkIn → retorna CheckInResult:
-   ok=true → check-in normal
-   pendente=true → Efeito Abóbora (modal amarelo: "VIP até Xh encerrado, cobrar R$Y")
+   ok=true → check-in normal (regra gratuita)
+   pendentePagamento=true → regra com valor > 0 (modal: "Como vai pagar? Dinheiro/Cartão/Pix")
+   pendente=true → Efeito Abóbora (modal: "VIP até Xh encerrado, cobrar R$Y — Como vai pagar?")
    bloqueado=true → Corte Seco (modal vermelho: "Check-in bloqueado após Xh")
--> Se pendente: porteiro confirma → confirmarCheckInAbobora() migra para regra paga
+-> Se pendentePagamento: porteiro seleciona forma → confirmarCheckInPago(forma) faz check-in
+-> Se pendente: porteiro seleciona forma → confirmarCheckInAbobora(forma) migra regra + check-in
 -> Se bloqueado: porteiro vê aviso, não pode fazer check-in
+-> forma_pagamento (DINHEIRO/CARTAO/PIX) salvo em convidados_lista
 ```
 
 ### Efeito Abóbora (hora_corte)
@@ -59,8 +62,9 @@ Portaria abre EventCheckInView -> Modo LISTA
 Convenção: hora_corte='02:00' = noite toda (sem corte)
 Madrugada: 00:00-05:59 tratada como "passou" quando corte >= 12:00
 
-Funções: verificarHoraCorte(), passouDoCorte(), confirmarCheckInAbobora()
+Funções: verificarHoraCorte(), passouDoCorte(), confirmarCheckInAbobora(), confirmarCheckInPago()
 Arquivos: listasService.ts, offlineEventService.ts, TabCheckin.tsx, TabLista.tsx
+Coluna: convidados_lista.forma_pagamento (DINHEIRO|CARTAO|PIX|NULL)
 ```
 
 ### Offline

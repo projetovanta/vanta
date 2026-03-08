@@ -155,9 +155,13 @@ class OfflineEventService {
   ): Promise<{
     ok: boolean;
     pendente?: boolean;
+    pendentePagamento?: boolean;
     bloqueado?: boolean;
     horaCorte?: string;
     valorAbobora?: number;
+    valorRegra?: number;
+    regraLabel?: string;
+    regraDestinoLabel?: string;
     convidadoId?: string;
     listaId?: string;
   }> {
@@ -185,6 +189,16 @@ class OfflineEventService {
           pendente: true,
           horaCorte: result.horaCorte,
           valorAbobora: result.valorAbobora,
+          regraDestinoLabel: result.regraDestinoLabel,
+          convidadoId,
+          listaId,
+        };
+      if (result.pendentePagamento)
+        return {
+          ok: false,
+          pendentePagamento: true,
+          valorRegra: result.valorRegra,
+          regraLabel: result.regraLabel,
           convidadoId,
           listaId,
         };
@@ -209,10 +223,26 @@ class OfflineEventService {
     listaId: string,
     convidadoId: string,
     eventoId: string,
+    formaPagamento: 'DINHEIRO' | 'CARTAO' | 'PIX',
     porteiroNome?: string,
   ): Promise<{ ok: boolean }> {
     const { listasService } = await import('../features/admin/services/listasService');
-    const result = await listasService.confirmarCheckInAbobora(listaId, convidadoId, porteiroNome);
+    const result = await listasService.confirmarCheckInAbobora(listaId, convidadoId, formaPagamento, porteiroNome);
+    if (result.ok) {
+      await markConvidadoCheckedIn(convidadoId, eventoId, listaId, porteiroNome);
+    }
+    return { ok: result.ok };
+  }
+
+  async confirmarCheckInPago(
+    listaId: string,
+    convidadoId: string,
+    eventoId: string,
+    formaPagamento: 'DINHEIRO' | 'CARTAO' | 'PIX',
+    porteiroNome?: string,
+  ): Promise<{ ok: boolean }> {
+    const { listasService } = await import('../features/admin/services/listasService');
+    const result = await listasService.confirmarCheckInPago(listaId, convidadoId, formaPagamento, porteiroNome);
     if (result.ok) {
       await markConvidadoCheckedIn(convidadoId, eventoId, listaId, porteiroNome);
     }

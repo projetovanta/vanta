@@ -183,6 +183,13 @@ export const TabResumoCaixa: React.FC<{ lista: ListaEvento; toastFn?: (t: 'suces
           const liquido = fees.gatewayMode === 'ABSORVER' ? Math.round((bruto - custoGw) * 100) / 100 : bruto;
           const receitaAntecipado = vendaLogAll.filter(v => v.origem === 'ANTECIPADO').reduce((s, v) => s + v.valor, 0);
           const receitaPorta = vendaLogAll.filter(v => v.origem === 'PORTA').reduce((s, v) => s + v.valor, 0);
+          // Receita de listas pagas (check-in com regra de valor > 0)
+          const receitaListaPaga = lista.regras
+            .filter(r => (r.valor ?? 0) > 0)
+            .reduce((rAcc, r) => {
+              const ci = lista.convidados.filter(c => c.regraId === r.id && c.checkedIn).length;
+              return rAcc + ci * (r.valor ?? 0);
+            }, 0);
           return (
             <div className="bg-zinc-900/40 border border-white/5 rounded-2xl p-4 space-y-3">
               <div className="flex items-center gap-2 mb-1">
@@ -208,7 +215,7 @@ export const TabResumoCaixa: React.FC<{ lista: ListaEvento; toastFn?: (t: 'suces
               ))}
               <div className="border-t border-white/5 pt-2 mt-2">
                 <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">Por Origem</p>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-3 gap-2">
                   <div className="flex items-center justify-between">
                     <span className="text-[9px] text-zinc-400">Antecipado</span>
                     <span className="text-[9px] text-[#FFD300] font-bold">{fmtBRL(receitaAntecipado)}</span>
@@ -217,6 +224,12 @@ export const TabResumoCaixa: React.FC<{ lista: ListaEvento; toastFn?: (t: 'suces
                     <span className="text-[9px] text-zinc-400">Porta</span>
                     <span className="text-[9px] text-emerald-400 font-bold">{fmtBRL(receitaPorta)}</span>
                   </div>
+                  {receitaListaPaga > 0 && (
+                    <div className="flex items-center justify-between">
+                      <span className="text-[9px] text-zinc-400">Lista</span>
+                      <span className="text-[9px] text-blue-400 font-bold">{fmtBRL(receitaListaPaga)}</span>
+                    </div>
+                  )}
                 </div>
               </div>
               <p className="text-[8px] text-zinc-700 italic">

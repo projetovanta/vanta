@@ -80,6 +80,7 @@ const buildListas = (
         checkedIn: c.checked_in ?? false,
         checkedInEm: c.checked_in_em ?? undefined,
         checkedInPorNome: c.checked_in_por_nome ?? undefined,
+        formaPagamento: (c.forma_pagamento as ConvidadoLista['formaPagamento']) ?? undefined,
       }));
 
     return {
@@ -106,7 +107,10 @@ export interface CheckInResult {
   bloqueado?: boolean; // true se passou do hora_corte sem abóbora → check-in negado
   horaCorte?: string; // 'HH:MM' para exibir no aviso ao porteiro
   pendente?: boolean; // true se precisa de confirmação do porteiro (abóbora)
-  valorAbobora?: number; // valor a cobrar se confirmar
+  pendentePagamento?: boolean; // true se regra tem valor > 0 (porteiro deve confirmar forma de pgto)
+  valorAbobora?: number; // valor a cobrar se confirmar (abóbora)
+  valorRegra?: number; // valor da regra original (lista paga)
+  regraLabel?: string; // label da regra para exibir
   regraDestinoLabel?: string; // label da regra pagante destino
   convidadoId?: string; // ID do convidado para confirmar depois
   listaId?: string; // ID da lista para confirmar depois
@@ -495,7 +499,20 @@ export const listasService = {
       };
     }
 
-    // Check-in normal (sem restrição)
+    // Regra com valor > 0: pedir forma de pagamento antes de confirmar
+    const regra = lista.regras.find(r => r.id === c.regraId);
+    if (regra?.valor && regra.valor > 0) {
+      return {
+        ok: false,
+        pendentePagamento: true,
+        valorRegra: regra.valor,
+        regraLabel: regra.label,
+        convidadoId,
+        listaId,
+      };
+    }
+
+    // Check-in normal (regra gratuita, sem restrição)
     c.checkedIn = true;
     c.checkedInEm = checkedInEm;
     c.checkedInPorNome = porteiroNome;
@@ -512,10 +529,47 @@ export const listasService = {
     return { ok: true, checkedInEm };
   },
 
+  /** Confirma check-in de lista paga — porteiro selecionou forma de pagamento */
+  confirmarCheckInPago: async (
+    listaId: string,
+    convidadoId: string,
+    formaPagamento: 'DINHEIRO' | 'CARTAO' | 'PIX',
+    porteiroNome?: string,
+  ): Promise<CheckInResult> => {
+    const lista = LISTAS.find(l => l.id === listaId);
+    if (!lista) return { ok: false };
+    const c = lista.convidados.find(c => c.id === convidadoId);
+    if (!c || c.checkedIn) return { ok: false };
+
+    const checkedInEm = new Date(Date.now() - 3 * 3600000).toISOString().replace('Z', '-03:00');
+
+    c.checkedIn = true;
+    c.checkedInEm = checkedInEm;
+    c.checkedInPorNome = porteiroNome;
+    c.formaPagamento = formaPagamento;
+
+    const { error } = await supabase
+      .from('convidados_lista')
+      .update({
+        checked_in: true,
+        checked_in_em: checkedInEm,
+        checked_in_por_nome: porteiroNome ?? null,
+        forma_pagamento: formaPagamento,
+      })
+      .eq('id', convidadoId);
+
+    if (error) {
+      console.error('[listasService] confirmarCheckInPago falhou:', error);
+    }
+
+    return { ok: true, checkedInEm };
+  },
+
   /** Confirma check-in com abóbora — porteiro já confirmou que cobrou o valor */
   confirmarCheckInAbobora: async (
     listaId: string,
     convidadoId: string,
+    formaPagamento: 'DINHEIRO' | 'CARTAO' | 'PIX',
     porteiroNome?: string,
   ): Promise<CheckInResult> => {
     const lista = LISTAS.find(l => l.id === listaId);
@@ -535,10 +589,12 @@ export const listasService = {
       c.regraLabel = lista.regras.find(r => r.id === novaRegraId)?.label ?? c.regraLabel;
     }
 
+    c.formaPagamento = formaPagamento;
     const update: Database['public']['Tables']['convidados_lista']['Update'] = {
       checked_in: true,
       checked_in_em: checkedInEm,
       checked_in_por_nome: porteiroNome ?? null,
+      forma_pagamento: formaPagamento,
     };
     if (novaRegraId) update.regra_id = novaRegraId;
 

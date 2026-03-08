@@ -828,7 +828,14 @@ const CardModal: React.FC<{
             {form.badge.trim() && (
               <div
                 {...badgeDrag}
-                style={{ position: 'absolute', left: `${badgePos.x}%`, top: `${badgePos.y}%`, cursor: 'grab', transform: `scale(${badgeScale})`, transformOrigin: 'top left' }}
+                style={{
+                  position: 'absolute',
+                  left: `${badgePos.x}%`,
+                  top: `${badgePos.y}%`,
+                  cursor: 'grab',
+                  transform: `scale(${badgeScale})`,
+                  transformOrigin: 'top left',
+                }}
                 className="active:cursor-grabbing z-10"
               >
                 <span className="bg-[#FFD300] text-black text-[8px] font-black px-2.5 py-1 rounded-full uppercase tracking-widest shadow-[0_0_15px_rgba(255,211,0,0.4)] whitespace-nowrap">
@@ -840,7 +847,14 @@ const CardModal: React.FC<{
             {form.titulo.trim() && (
               <div
                 {...tituloDrag}
-                style={{ position: 'absolute', left: `${tituloPos.x}%`, top: `${tituloPos.y}%`, cursor: 'grab', transform: `scale(${tituloScale})`, transformOrigin: 'top left' }}
+                style={{
+                  position: 'absolute',
+                  left: `${tituloPos.x}%`,
+                  top: `${tituloPos.y}%`,
+                  cursor: 'grab',
+                  transform: `scale(${tituloScale})`,
+                  transformOrigin: 'top left',
+                }}
                 className="active:cursor-grabbing z-10 max-w-[90%]"
               >
                 <h2
@@ -878,21 +892,45 @@ const CardModal: React.FC<{
             {form.badge.trim() && (
               <div className="flex items-center gap-3">
                 <span className="text-[9px] text-zinc-400 w-16 shrink-0">Selo</span>
-                <input type="range" min="0.5" max="2.5" step="0.1" value={badgeScale} onChange={e => setBadgeScale(Number(e.target.value))} className="flex-1 accent-[#FFD300] h-1" />
+                <input
+                  type="range"
+                  min="0.5"
+                  max="2.5"
+                  step="0.1"
+                  value={badgeScale}
+                  onChange={e => setBadgeScale(Number(e.target.value))}
+                  className="flex-1 accent-[#FFD300] h-1"
+                />
                 <span className="text-[9px] text-zinc-500 w-8 text-right">{Math.round(badgeScale * 100)}%</span>
               </div>
             )}
             {form.titulo.trim() && (
               <div className="flex items-center gap-3">
                 <span className="text-[9px] text-zinc-400 w-16 shrink-0">Título</span>
-                <input type="range" min="0.5" max="2.5" step="0.1" value={tituloScale} onChange={e => setTituloScale(Number(e.target.value))} className="flex-1 accent-[#FFD300] h-1" />
+                <input
+                  type="range"
+                  min="0.5"
+                  max="2.5"
+                  step="0.1"
+                  value={tituloScale}
+                  onChange={e => setTituloScale(Number(e.target.value))}
+                  className="flex-1 accent-[#FFD300] h-1"
+                />
                 <span className="text-[9px] text-zinc-500 w-8 text-right">{Math.round(tituloScale * 100)}%</span>
               </div>
             )}
             {form.subtitulo.trim() && (
               <div className="flex items-center gap-3">
                 <span className="text-[9px] text-zinc-400 w-16 shrink-0">Subtítulo</span>
-                <input type="range" min="0.5" max="2.5" step="0.1" value={subtituloScale} onChange={e => setSubtituloScale(Number(e.target.value))} className="flex-1 accent-[#FFD300] h-1" />
+                <input
+                  type="range"
+                  min="0.5"
+                  max="2.5"
+                  step="0.1"
+                  value={subtituloScale}
+                  onChange={e => setSubtituloScale(Number(e.target.value))}
+                  className="flex-1 accent-[#FFD300] h-1"
+                />
                 <span className="text-[9px] text-zinc-500 w-8 text-right">{Math.round(subtituloScale * 100)}%</span>
               </div>
             )}
@@ -902,7 +940,15 @@ const CardModal: React.FC<{
         <button
           onClick={() =>
             canSave &&
-            onSave({ ...form, _layoutBadge: badgePos, _layoutTitulo: tituloPos, _layoutSubtitulo: subtituloPos, _scaleBadge: badgeScale, _scaleTitulo: tituloScale, _scaleSubtitulo: subtituloScale })
+            onSave({
+              ...form,
+              _layoutBadge: badgePos,
+              _layoutTitulo: tituloPos,
+              _layoutSubtitulo: subtituloPos,
+              _scaleBadge: badgeScale,
+              _scaleTitulo: tituloScale,
+              _scaleSubtitulo: subtituloScale,
+            })
           }
           disabled={!canSave || isSaving || uploadingImg}
           className="w-full py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-[0.3em] rounded-xl flex items-center justify-center gap-2 disabled:opacity-40 active:scale-[0.98] transition-all"

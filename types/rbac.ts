@@ -105,6 +105,7 @@ export interface ConvidadoLista {
   checkedIn: boolean;
   checkedInEm?: string; // ISO 8601 -03:00 — preenchido ao fazer check-in
   checkedInPorNome?: string; // nome do porteiro que fez check-in
+  formaPagamento?: 'DINHEIRO' | 'CARTAO' | 'PIX'; // como pagou na entrada (regras com valor)
 }
 
 export interface ListaEvento {

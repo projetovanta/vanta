@@ -882,6 +882,7 @@ export type Database = {
           checked_in_em: string | null
           checked_in_por_nome: string | null
           created_at: string
+          forma_pagamento: string | null
           id: string
           inserido_por: string | null
           inserido_por_nome: string | null
@@ -895,6 +896,7 @@ export type Database = {
           checked_in_em?: string | null
           checked_in_por_nome?: string | null
           created_at?: string
+          forma_pagamento?: string | null
           id?: string
           inserido_por?: string | null
           inserido_por_nome?: string | null
@@ -908,6 +910,7 @@ export type Database = {
           checked_in_em?: string | null
           checked_in_por_nome?: string | null
           created_at?: string
+          forma_pagamento?: string | null
           id?: string
           inserido_por?: string | null
           inserido_por_nome?: string | null

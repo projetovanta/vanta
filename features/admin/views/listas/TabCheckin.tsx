@@ -21,12 +21,14 @@ export const TabCheckin: React.FC<{
   }, [lista.convidados, busca]);
 
   const [avisoCorte, setAvisoCorte] = useState<{ nome: string; hora: string } | null>(null);
-  const [avisoAbobora, setAvisoAbobora] = useState<{
+  const [avisoPagamento, setAvisoPagamento] = useState<{
     nome: string;
-    hora: string;
     valor: number;
+    regraLabel: string;
     convidadoId: string;
     listaId: string;
+    isAbobora?: boolean;
+    horaCorte?: string;
   } | null>(null);
 
   const handleCheckin = async (convidadoId: string) => {
@@ -37,10 +39,22 @@ export const TabCheckin: React.FC<{
       return;
     }
     if (result.pendente) {
-      setAvisoAbobora({
+      setAvisoPagamento({
         nome: convidado?.nome ?? '',
-        hora: result.horaCorte ?? '',
         valor: result.valorAbobora ?? 0,
+        regraLabel: result.regraDestinoLabel ?? '',
+        convidadoId,
+        listaId: lista.id,
+        isAbobora: true,
+        horaCorte: result.horaCorte,
+      });
+      return;
+    }
+    if (result.pendentePagamento) {
+      setAvisoPagamento({
+        nome: convidado?.nome ?? '',
+        valor: result.valorRegra ?? 0,
+        regraLabel: result.regraLabel ?? '',
         convidadoId,
         listaId: lista.id,
       });
@@ -49,10 +63,14 @@ export const TabCheckin: React.FC<{
     onRefresh();
   };
 
-  const confirmarAbobora = async () => {
-    if (!avisoAbobora) return;
-    await listasService.confirmarCheckInAbobora(avisoAbobora.listaId, avisoAbobora.convidadoId, userNome);
-    setAvisoAbobora(null);
+  const confirmarPagamento = async (forma: 'DINHEIRO' | 'CARTAO' | 'PIX') => {
+    if (!avisoPagamento) return;
+    if (avisoPagamento.isAbobora) {
+      await listasService.confirmarCheckInAbobora(avisoPagamento.listaId, avisoPagamento.convidadoId, forma, userNome);
+    } else {
+      await listasService.confirmarCheckInPago(avisoPagamento.listaId, avisoPagamento.convidadoId, forma, userNome);
+    }
+    setAvisoPagamento(null);
     onRefresh();
   };
 
@@ -164,29 +182,38 @@ export const TabCheckin: React.FC<{
         </div>
       )}
 
-      {/* Aviso abóbora — VIP encerrado, cobrar valor */}
-      {avisoAbobora && (
+      {/* Modal de pagamento — lista paga ou abóbora */}
+      {avisoPagamento && (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
           <div className="bg-zinc-900 border border-[#FFD300]/30 rounded-2xl p-5 max-w-xs w-full text-center space-y-4">
-            <div className="text-[#FFD300] text-sm font-bold">VIP até às {avisoAbobora.hora} encerrado</div>
+            {avisoPagamento.isAbobora && (
+              <div className="text-[#FFD300] text-sm font-bold">VIP até às {avisoPagamento.horaCorte} encerrado</div>
+            )}
             <p className="text-zinc-300 text-xs">
-              <span className="font-semibold text-white">{avisoAbobora.nome}</span> precisa pagar{' '}
-              <span className="font-black text-[#FFD300] text-base">R${avisoAbobora.valor}</span> para entrar.
+              <span className="font-semibold text-white">{avisoPagamento.nome}</span>
+              {avisoPagamento.regraLabel ? ` (${avisoPagamento.regraLabel})` : ''} — cobrar{' '}
+              <span className="font-black text-[#FFD300] text-base">
+                R${avisoPagamento.valor.toFixed(2).replace('.', ',')}
+              </span>
             </p>
+            <p className="text-[9px] text-zinc-500 font-black uppercase tracking-widest">Como vai pagar?</p>
             <div className="flex gap-2">
-              <button
-                onClick={() => setAvisoAbobora(null)}
-                className="flex-1 py-2.5 bg-zinc-800 border border-white/10 rounded-xl text-zinc-400 text-xs font-bold uppercase tracking-wider"
-              >
-                Cancelar
-              </button>
-              <button
-                onClick={confirmarAbobora}
-                className="flex-1 py-2.5 bg-[#FFD300]/10 border border-[#FFD300]/30 rounded-xl text-[#FFD300] text-xs font-bold uppercase tracking-wider"
-              >
-                Confirmar R${avisoAbobora.valor}
-              </button>
+              {(['DINHEIRO', 'CARTAO', 'PIX'] as const).map(forma => (
+                <button
+                  key={forma}
+                  onClick={() => confirmarPagamento(forma)}
+                  className="flex-1 py-3 bg-[#FFD300]/10 border border-[#FFD300]/30 rounded-xl text-[#FFD300] text-[10px] font-bold uppercase tracking-wider active:scale-95 transition-transform"
+                >
+                  {forma === 'DINHEIRO' ? 'Dinheiro' : forma === 'CARTAO' ? 'Cartão' : 'Pix'}
+                </button>
+              ))}
             </div>
+            <button
+              onClick={() => setAvisoPagamento(null)}
+              className="w-full py-2 bg-zinc-800 border border-white/10 rounded-xl text-zinc-400 text-[10px] font-bold uppercase tracking-wider"
+            >
+              Cancelar
+            </button>
           </div>
         </div>
       )}

@@ -35,8 +35,32 @@ Portaria abre CheckInView -> seleciona evento -> EventCheckInView
 Portaria abre EventCheckInView -> Modo LISTA
 -> Busca por nome (index GIN trgm, busca fuzzy)
 -> Seleciona convidado
--> listasService.checkIn → UPDATE checked_in=true, checked_in_em, checked_in_por_nome
--> Se regra tem valor: portaria cobra na entrada
+-> listasService.checkIn → retorna CheckInResult:
+   ok=true → check-in normal
+   pendente=true → Efeito Abóbora (modal amarelo: "VIP até Xh encerrado, cobrar R$Y")
+   bloqueado=true → Corte Seco (modal vermelho: "Check-in bloqueado após Xh")
+-> Se pendente: porteiro confirma → confirmarCheckInAbobora() migra para regra paga
+-> Se bloqueado: porteiro vê aviso, não pode fazer check-in
+```
+
+### Efeito Abóbora (hora_corte)
+```
+3 comportamentos baseados em regras_lista.hora_corte + abobora_regra_id:
+
+1. VIP puro: sem hora_corte → check-in livre
+2. Abóbora: hora_corte + abobora_regra_id → após horário, porteiro confirma pagamento
+   - listasService.checkIn retorna {pendente:true, valorAbobora, horaCorte}
+   - Modal amarelo: "VIP até Xh encerrado. Cobrar R$Y. Confirmar/Cancelar"
+   - confirmarCheckInAbobora() → migra convidado para regra paga, faz check-in
+3. Corte seco: hora_corte sem abobora_regra_id → após horário, bloqueado
+   - listasService.checkIn retorna {bloqueado:true, horaCorte}
+   - Modal vermelho: "Check-in bloqueado após Xh"
+
+Convenção: hora_corte='02:00' = noite toda (sem corte)
+Madrugada: 00:00-05:59 tratada como "passou" quando corte >= 12:00
+
+Funções: verificarHoraCorte(), passouDoCorte(), confirmarCheckInAbobora()
+Arquivos: listasService.ts, offlineEventService.ts, TabCheckin.tsx, TabLista.tsx
 ```
 
 ### Offline
@@ -76,7 +100,7 @@ Caixa abre CaixaView -> seleciona evento -> EventoCaixaView
 | # | Item | Status | Detalhe |
 |---|---|---|---|
 | 1 | Check-in QR | OK | QRScanner 303L + validarEQueimarIngresso |
-| 2 | Check-in Lista | OK | listasService.checkIn + busca fuzzy |
+| 2 | Check-in Lista | OK | listasService.checkIn + busca fuzzy + Efeito Abóbora |
 | 3 | Feedback visual | OK | FeedbackOverlay (3 cores) |
 | 4 | Selecao de evento | OK | EventoCheckInCard + CheckInView |
 | 5 | Offline check-in | OK | offlineEventService + offlineDB |
@@ -84,5 +108,7 @@ Caixa abre CaixaView -> seleciona evento -> EventoCaixaView
 | 7 | Gerar QR na hora | OK | jwtService |
 | 8 | Offline venda | OK | offlineEventService |
 | 9 | Camera permission | OK | usePermission hook |
-| 10 | Selfie check-in | NAO EXISTE | Sem captura de selfie na entrada |
-| 11 | Lotacao em tempo real | NAO EXISTE | Sem contador ao vivo |
+| 10 | Efeito Abóbora | OK | verificarHoraCorte + confirmarCheckInAbobora + modais portaria |
+| 11 | Corte Seco | OK | bloqueado=true + modal vermelho |
+| 12 | Selfie check-in | NAO EXISTE | Sem captura de selfie na entrada |
+| 13 | Lotacao em tempo real | NAO EXISTE | Sem contador ao vivo |

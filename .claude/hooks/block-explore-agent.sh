@@ -27,9 +27,18 @@ if [ "$AGENT_TYPE" = "Explore" ]; then
   exit 0
 fi
 
-# BLOQUEAR: qualquer Agent cujo prompt/description indique leitura/busca de código
+# BLOQUEAR: qualquer Agent cujo prompt/description indique leitura/busca de CÓDIGO DO PROJETO
+# NÃO bloquear: buscas web, tarefas genéricas, agentes utilitários
 COMBINED="$PROMPT $DESCRIPTION"
-BLOCK_PATTERNS="search.*code|find.*file|read.*file|look.*for.*in.*code|grep.*code|explore.*code|buscar.*código|ler.*arquivo|procurar.*arquivo|search.*symbol|find.*symbol|find.*real.*name|search.*codebase|find.*function|search.*component|find.*current.*name|find.*where|search.*for.*in"
+BLOCK_PATTERNS="search.*code|find.*file|read.*file|look.*for.*in.*code|grep.*code|explore.*code|buscar.*código|ler.*arquivo|procurar.*arquivo|search.*symbol|find.*symbol|search.*codebase|find.*function|search.*component|investigar.*estado|investig.*codebase"
+
+# Padrões que PERMITEM (buscas web, tarefas não-código)
+ALLOW_PATTERNS="web.*search|websearch|webfetch|fetch.*url|search.*internet|buscar.*na.*web|buscar.*online|google|stackoverflow"
+
+# Se contém padrão de permissão, liberar
+if echo "$COMBINED" | grep -qiE "$ALLOW_PATTERNS"; then
+  exit 0
+fi
 
 if echo "$COMBINED" | grep -qiE "$BLOCK_PATTERNS"; then
   jq -n '{

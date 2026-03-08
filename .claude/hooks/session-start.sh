@@ -49,6 +49,12 @@ CONTEXT="${CONTEXT}
 - Atualizar memórias ANTES de entregar cada ação
 - Divergência memória vs código = PARAR e reportar ao usuário
 - Atualizar sessao_atual.md ao final da sessão
+- PERGUNTAS: SEMPRE usar AskUserQuestion — NUNCA perguntar como texto normal
+  - Mínimo 4 opções (3 sugestões + 'Outra coisa')
+  - Primeira opção = recomendada com '(Recomendado)'
+  - Linguagem de produto, ZERO termos técnicos (sem nomes de arquivos/componentes/funções)
+  - Granularidade máxima: 1 decisão = 1 pergunta
+  - Perguntas independentes = enviar JUNTAS no mesmo AskUserQuestion
 "
 
 # Injetar como contexto

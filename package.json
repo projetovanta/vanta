@@ -14,7 +14,7 @@
     "lint:eslint": "eslint src/ modules/ features/ hooks/ services/ --quiet",
     "lint:layout": "node scripts/lint-layout.mjs",
     "lint:all": "tsc --noEmit && eslint src/ modules/ features/ hooks/ services/ --quiet && node scripts/lint-layout.mjs",
-    "preflight": "node scripts/preflight.mjs",
+    "preflight": "node scripts/preflight.mjs && touch /tmp/vanta_preflight_passed",
     "explore": "node scripts/explore.mjs",
     "audit": "node scripts/audit.mjs",
     "deep-audit": "node scripts/deep-audit.mjs",

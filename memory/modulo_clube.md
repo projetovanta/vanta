@@ -269,10 +269,10 @@ Tiers: BRONZE, PRATA, OURO, DIAMANTE. Cada tier desbloqueia lotes exclusivos.
 | 12 | Tiers config | OK | tiers_mais_vanta (4 tiers no banco) |
 | 13 | Planos MV | OK | planos_mais_vanta (3 planos no banco) |
 | 14 | Config global MV | OK | mais_vanta_config (1 row) + clube_config |
-| 15 | Stripe assinaturas | NAO ATIVO | Edge Function create-checkout retorna placeholder sem STRIPE_SECRET_KEY |
-| 16 | Instagram API verificacao | NAO ATIVO | Edge Function verify-instagram-post retorna placeholder sem META_ACCESS_TOKEN |
-| 17 | Downgrade automatico de tier | NAO EXISTE | Sem mecanismo automatico |
-| 18 | Dashboard do membro MV | NAO EXISTE | Membro nao tem painel proprio |
+| 15 | Stripe assinaturas | CÓDIGO OK, SECRETS FALTAM | create-checkout (133L) + stripe-webhook (163L) implementados. Falta configurar STRIPE_SECRET_KEY + STRIPE_WEBHOOK_SECRET no Supabase Dashboard |
+| 16 | Instagram API verificacao | CÓDIGO OK, SECRETS FALTAM | verify-instagram-post (132L) + verify-instagram-bio (124L) + update-instagram-followers (179L) implementados. Falta configurar META_ACCESS_TOKEN no Supabase Dashboard |
+| 17 | Downgrade automatico de tier | NAO EXISTE | Sem cron/trigger para rebaixar tier por inatividade ou infrações |
+| 18 | Dashboard do membro MV | PARCIAL | ClubeOptInView (793L) mostra tier, reservas, passaportes + DealsMembroSection (392L) deals/QR. Falta: seção infrações do membro, histórico de presença |
 | 19 | Curadoria v2 campos | OK | membros_clube: categoria, alcance, genero, cidade_base, interesses, nota_engajamento |
 | 20 | Cidades MV | OK | cidades_mais_vanta + clubeCidadesService |
 | 21 | Parceiros MV | OK | parceiros_mais_vanta + clubeParceirosService |

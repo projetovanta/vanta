@@ -25,6 +25,7 @@ if [ "$SESSAO_DIFF" -le 600 ]; then
   exit 0
 fi
 
-# Mais de 10 min sem atualizar — apenas sugerir (NÃO bloquear)
-echo ""
+# Mais de 10 min sem atualizar — sugerir (NÃO bloquear)
+echo "⚠️ SESSÃO: sessao_atual.md não foi atualizada há mais de 10 minutos. Atualizar ANTES de encerrar."
+echo "⚠️ PERGUNTAS: Toda decisão DEVE usar AskUserQuestion — NUNCA perguntar como texto normal. Mínimo 4 opções. Linguagem de produto, zero termos técnicos."
 exit 0

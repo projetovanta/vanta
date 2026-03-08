@@ -39,7 +39,7 @@ fi
 
 # Se arquivo tem menos de 80 linhas, permite ler inteiro
 LINE_COUNT=$(wc -l < "$FILE_PATH" 2>/dev/null | tr -d ' ')
-if [ -z "$LINE_COUNT" ] || [ "$LINE_COUNT" -le 80 ]; then
+if [ -z "$LINE_COUNT" ] || [ "$LINE_COUNT" -le 150 ]; then
   exit 0
 fi
 

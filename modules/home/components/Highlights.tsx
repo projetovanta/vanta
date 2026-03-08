@@ -105,7 +105,8 @@ export const Highlights: React.FC<HighlightsProps> = React.memo(({ currentCity, 
               onClick={() => handleCardClick(item)}
             >
               <div
-                className={`relative h-60 w-full rounded-[2rem] overflow-hidden glass-card shadow-lg transition-transform duration-200 ${item.acaoLink ? 'active:scale-[0.98] cursor-pointer' : ''}`}
+                className={`relative w-full rounded-[2rem] overflow-hidden glass-card shadow-lg transition-transform duration-200 ${item.acaoLink ? 'active:scale-[0.98] cursor-pointer' : ''}`}
+                style={{ aspectRatio: '5 / 3' }}
               >
                 {item.imagem ? (
                   <OptimizedImage

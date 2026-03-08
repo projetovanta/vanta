@@ -766,10 +766,11 @@ const CardModal: React.FC<{
             </span>
           </div>
 
-          {/* Card preview — drag-and-drop livre */}
+          {/* Card preview — réplica exata do Highlights.tsx da home */}
           <div
             ref={previewRef}
-            className="relative h-44 w-full rounded-[1.5rem] overflow-hidden border border-white/10 shadow-lg select-none touch-none"
+            className="relative w-full rounded-[2rem] overflow-hidden border border-white/10 shadow-lg select-none touch-none"
+            style={{ aspectRatio: '5 / 3' }}
           >
             {form.imagem ? (
               <img
@@ -789,7 +790,7 @@ const CardModal: React.FC<{
                 style={{ position: 'absolute', left: `${badgePos.x}%`, top: `${badgePos.y}%`, cursor: 'grab' }}
                 className="active:cursor-grabbing z-10"
               >
-                <span className="bg-[#FFD300] text-black text-[7px] font-black px-2 py-0.5 rounded-full uppercase tracking-widest shadow-[0_0_15px_rgba(255,211,0,0.4)] whitespace-nowrap">
+                <span className="bg-[#FFD300] text-black text-[8px] font-black px-2.5 py-1 rounded-full uppercase tracking-widest shadow-[0_0_15px_rgba(255,211,0,0.4)] whitespace-nowrap">
                   {form.badge}
                 </span>
               </div>
@@ -803,7 +804,7 @@ const CardModal: React.FC<{
               >
                 <h2
                   style={TYPOGRAPHY.screenTitle}
-                  className="text-base italic drop-shadow-lg text-white whitespace-nowrap"
+                  className="text-xl italic drop-shadow-lg text-white whitespace-nowrap"
                 >
                   {form.titulo}
                 </h2>
@@ -821,7 +822,7 @@ const CardModal: React.FC<{
                 }}
                 className="active:cursor-grabbing z-10 max-w-[90%]"
               >
-                <p className="text-[9px] text-[#FFD300] font-semibold italic leading-relaxed drop-shadow-md whitespace-nowrap">
+                <p className="text-[10px] text-[#FFD300] font-semibold italic leading-relaxed drop-shadow-md whitespace-nowrap">
                   {form.subtitulo}
                 </p>
               </div>

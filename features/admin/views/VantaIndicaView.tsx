@@ -100,11 +100,37 @@ const EMPTY: ModalForm = {
   _scaleSubtitulo: 1,
 };
 
-/** Hook for drag-to-position on touch/mouse */
+/** Snap points for magnetic alignment (percentages) */
+const SNAP_LINES_X = [5, 33.33, 50, 66.66, 95]; // margins, thirds, center
+const SNAP_LINES_Y = [5, 33.33, 50, 66.66, 95];
+const SNAP_THRESHOLD = 2.5; // % distance to trigger snap
+
+function snapToGuides(
+  val: number,
+  guides: number[],
+  otherElements: number[],
+): { snapped: number; guide: number | null } {
+  const all = [...guides, ...otherElements];
+  let closest: number | null = null;
+  let minDist = SNAP_THRESHOLD;
+  for (const g of all) {
+    const d = Math.abs(val - g);
+    if (d < minDist) {
+      minDist = d;
+      closest = g;
+    }
+  }
+  return closest !== null ? { snapped: closest, guide: closest } : { snapped: val, guide: null };
+}
+
+/** Hook for drag-to-position on touch/mouse with magnetic snap */
 const useDragElement = (
   initial: LayoutPos,
   containerRef: React.RefObject<HTMLDivElement | null>,
   onChange: (pos: LayoutPos) => void,
+  snapEnabled: boolean,
+  otherPositions: LayoutPos[],
+  onSnapChange?: (snap: { x: number | null; y: number | null }) => void,
 ) => {
   const posRef = useRef(initial);
   const startRef = useRef({ px: 0, py: 0, ox: 0, oy: 0 });
@@ -130,16 +156,30 @@ const useDragElement = (
       if (!rect) return;
       const dx = ((mx - startRef.current.px) / rect.width) * 100;
       const dy = ((my - startRef.current.py) / rect.height) * 100;
-      const nx = Math.max(-50, Math.min(90, startRef.current.ox + dx));
-      const ny = Math.max(-50, Math.min(90, startRef.current.oy + dy));
+      let nx = Math.max(-50, Math.min(90, startRef.current.ox + dx));
+      let ny = Math.max(-50, Math.min(90, startRef.current.oy + dy));
+      let snapX: number | null = null;
+      let snapY: number | null = null;
+      if (snapEnabled) {
+        const otherXs = otherPositions.map(p => p.x);
+        const otherYs = otherPositions.map(p => p.y);
+        const sx = snapToGuides(nx, SNAP_LINES_X, otherXs);
+        const sy = snapToGuides(ny, SNAP_LINES_Y, otherYs);
+        nx = sx.snapped;
+        ny = sy.snapped;
+        snapX = sx.guide;
+        snapY = sy.guide;
+      }
       posRef.current = { x: nx, y: ny };
       onChange({ x: nx, y: ny });
+      onSnapChange?.({ x: snapX, y: snapY });
     };
     const onEnd = () => {
       document.removeEventListener('touchmove', onMove);
       document.removeEventListener('mousemove', onMove);
       document.removeEventListener('touchend', onEnd);
       document.removeEventListener('mouseup', onEnd);
+      onSnapChange?.({ x: null, y: null });
     };
     document.addEventListener('touchmove', onMove, { passive: false });
     document.addEventListener('mousemove', onMove);
@@ -330,6 +370,7 @@ const CardModal: React.FC<{
   const [tituloScale, setTituloScale] = useState(initial._scaleTitulo ?? 1);
   const [subtituloScale, setSubtituloScale] = useState(initial._scaleSubtitulo ?? 1);
   const [showGuides, setShowGuides] = useState(false);
+  const [activeSnap, setActiveSnap] = useState<{ x: number | null; y: number | null }>({ x: null, y: null });
   const [eventQuery, setEventQuery] = useState('');
   const [eventResults, setEventResults] = useState<EventoSearchResult[]>([]);
   const [searchingEvents, setSearchingEvents] = useState(false);
@@ -422,9 +463,30 @@ const CardModal: React.FC<{
     })();
   }, []);
 
-  const badgeDrag = useDragElement(badgePos, previewRef, setBadgePos);
-  const tituloDrag = useDragElement(tituloPos, previewRef, setTituloPos);
-  const subtituloDrag = useDragElement(subtituloPos, previewRef, setSubtituloPos);
+  const badgeDrag = useDragElement(
+    badgePos,
+    previewRef,
+    setBadgePos,
+    showGuides,
+    [tituloPos, subtituloPos],
+    setActiveSnap,
+  );
+  const tituloDrag = useDragElement(
+    tituloPos,
+    previewRef,
+    setTituloPos,
+    showGuides,
+    [badgePos, subtituloPos],
+    setActiveSnap,
+  );
+  const subtituloDrag = useDragElement(
+    subtituloPos,
+    previewRef,
+    setSubtituloPos,
+    showGuides,
+    [badgePos, tituloPos],
+    setActiveSnap,
+  );
 
   const hasChanges = useMemo(() => JSON.stringify(form) !== JSON.stringify(initial), [form, initial]);
   const safeClose = () => {
@@ -807,21 +869,50 @@ const CardModal: React.FC<{
             {showGuides && (
               <>
                 {/* Centro vertical */}
-                <div className="absolute left-1/2 top-0 bottom-0 w-px bg-[#FFD300]/30 pointer-events-none z-20" />
+                <div
+                  className={`absolute left-1/2 top-0 bottom-0 pointer-events-none z-20 transition-all duration-150 ${activeSnap.x === 50 ? 'w-[2px] bg-[#FFD300]/80 shadow-[0_0_8px_rgba(255,211,0,0.5)]' : 'w-px bg-[#FFD300]/30'}`}
+                />
                 {/* Centro horizontal */}
-                <div className="absolute top-1/2 left-0 right-0 h-px bg-[#FFD300]/30 pointer-events-none z-20" />
+                <div
+                  className={`absolute top-1/2 left-0 right-0 pointer-events-none z-20 transition-all duration-150 ${activeSnap.y === 50 ? 'h-[2px] bg-[#FFD300]/80 shadow-[0_0_8px_rgba(255,211,0,0.5)]' : 'h-px bg-[#FFD300]/30'}`}
+                />
                 {/* Terços verticais */}
-                <div className="absolute left-[33.33%] top-0 bottom-0 w-px bg-white/10 pointer-events-none z-20" />
-                <div className="absolute left-[66.66%] top-0 bottom-0 w-px bg-white/10 pointer-events-none z-20" />
+                <div
+                  className={`absolute left-[33.33%] top-0 bottom-0 pointer-events-none z-20 transition-all duration-150 ${activeSnap.x !== null && Math.abs(activeSnap.x - 33.33) < 0.1 ? 'w-[2px] bg-[#FFD300]/60' : 'w-px bg-white/10'}`}
+                />
+                <div
+                  className={`absolute left-[66.66%] top-0 bottom-0 pointer-events-none z-20 transition-all duration-150 ${activeSnap.x !== null && Math.abs(activeSnap.x - 66.66) < 0.1 ? 'w-[2px] bg-[#FFD300]/60' : 'w-px bg-white/10'}`}
+                />
                 {/* Terços horizontais */}
-                <div className="absolute top-[33.33%] left-0 right-0 h-px bg-white/10 pointer-events-none z-20" />
-                <div className="absolute top-[66.66%] left-0 right-0 h-px bg-white/10 pointer-events-none z-20" />
+                <div
+                  className={`absolute top-[33.33%] left-0 right-0 pointer-events-none z-20 transition-all duration-150 ${activeSnap.y !== null && Math.abs(activeSnap.y - 33.33) < 0.1 ? 'h-[2px] bg-[#FFD300]/60' : 'h-px bg-white/10'}`}
+                />
+                <div
+                  className={`absolute top-[66.66%] left-0 right-0 pointer-events-none z-20 transition-all duration-150 ${activeSnap.y !== null && Math.abs(activeSnap.y - 66.66) < 0.1 ? 'h-[2px] bg-[#FFD300]/60' : 'h-px bg-white/10'}`}
+                />
                 {/* Margens seguras (5%) */}
-                <div className="absolute inset-[5%] border border-dashed border-white/10 rounded-xl pointer-events-none z-20" />
+                <div
+                  className={`absolute inset-[5%] border border-dashed rounded-xl pointer-events-none z-20 transition-all duration-150 ${activeSnap.x === 5 || activeSnap.x === 95 || activeSnap.y === 5 || activeSnap.y === 95 ? 'border-[#FFD300]/40' : 'border-white/10'}`}
+                />
                 {/* Label central */}
                 <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-20">
-                  <div className="w-2 h-2 rounded-full bg-[#FFD300]/50" />
+                  <div
+                    className={`rounded-full transition-all duration-150 ${activeSnap.x === 50 && activeSnap.y === 50 ? 'w-3 h-3 bg-[#FFD300]/80 shadow-[0_0_10px_rgba(255,211,0,0.6)]' : 'w-2 h-2 bg-[#FFD300]/50'}`}
+                  />
                 </div>
+                {/* Guias dinâmicas de alinhamento com outros elementos */}
+                {activeSnap.x !== null && !SNAP_LINES_X.some(s => Math.abs(s - activeSnap.x!) < 0.1) && (
+                  <div
+                    className="absolute top-0 bottom-0 w-[2px] bg-cyan-400/60 pointer-events-none z-20 shadow-[0_0_6px_rgba(34,211,238,0.4)]"
+                    style={{ left: `${activeSnap.x}%` }}
+                  />
+                )}
+                {activeSnap.y !== null && !SNAP_LINES_Y.some(s => Math.abs(s - activeSnap.y!) < 0.1) && (
+                  <div
+                    className="absolute left-0 right-0 h-[2px] bg-cyan-400/60 pointer-events-none z-20 shadow-[0_0_6px_rgba(34,211,238,0.4)]"
+                    style={{ top: `${activeSnap.y}%` }}
+                  />
+                )}
               </>
             )}
 
@@ -838,7 +929,10 @@ const CardModal: React.FC<{
                 }}
                 className="active:cursor-grabbing z-10"
               >
-                <span className="bg-[#FFD300] text-black text-[8px] font-black px-2.5 py-1 rounded-full uppercase tracking-widest shadow-[0_0_15px_rgba(255,211,0,0.4)] whitespace-nowrap">
+                <span
+                  style={{ fontSize: '8px', lineHeight: 1 }}
+                  className="bg-[#FFD300] text-black font-black px-2.5 py-1 rounded-full uppercase tracking-widest shadow-[0_0_15px_rgba(255,211,0,0.4)] whitespace-nowrap"
+                >
                   {form.badge}
                 </span>
               </div>
@@ -858,8 +952,8 @@ const CardModal: React.FC<{
                 className="active:cursor-grabbing z-10 max-w-[90%]"
               >
                 <h2
-                  style={TYPOGRAPHY.screenTitle}
-                  className="text-xl italic drop-shadow-lg text-white whitespace-nowrap"
+                  style={{ ...TYPOGRAPHY.screenTitle, fontSize: '20px', lineHeight: '28px', fontStyle: 'italic' }}
+                  className="drop-shadow-lg text-white whitespace-nowrap"
                 >
                   {form.titulo}
                 </h2>
@@ -879,7 +973,10 @@ const CardModal: React.FC<{
                 }}
                 className="active:cursor-grabbing z-10 max-w-[90%]"
               >
-                <p className="text-[10px] text-[#FFD300] font-semibold italic leading-relaxed drop-shadow-md whitespace-nowrap">
+                <p
+                  style={{ fontSize: '10px', lineHeight: '16px', fontStyle: 'italic' }}
+                  className="text-[#FFD300] font-semibold leading-relaxed drop-shadow-md whitespace-nowrap"
+                >
                   {form.subtitulo}
                 </p>
               </div>

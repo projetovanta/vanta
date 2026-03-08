@@ -128,6 +128,8 @@ export const Highlights: React.FC<HighlightsProps> = React.memo(({ currentCity, 
                             position: 'absolute',
                             left: `${item.layoutConfig.badge.x}%`,
                             top: `${item.layoutConfig.badge.y}%`,
+                            transform: `scale(${item.layoutConfig?.badgeScale ?? 1})`,
+                            transformOrigin: 'top left',
                           }
                         : {
                             position: 'absolute',
@@ -150,6 +152,8 @@ export const Highlights: React.FC<HighlightsProps> = React.memo(({ currentCity, 
                             position: 'absolute',
                             left: `${item.layoutConfig.titulo.x}%`,
                             top: `${item.layoutConfig.titulo.y}%`,
+                            transform: `scale(${item.layoutConfig?.tituloScale ?? 1})`,
+                            transformOrigin: 'top left',
                           }
                         : {
                             position: 'absolute',
@@ -173,6 +177,8 @@ export const Highlights: React.FC<HighlightsProps> = React.memo(({ currentCity, 
                             position: 'absolute',
                             left: `${item.layoutConfig.subtitulo.x}%`,
                             top: `${item.layoutConfig.subtitulo.y}%`,
+                            transform: `scale(${item.layoutConfig?.subtituloScale ?? 1})`,
+                            transformOrigin: 'top left',
                           }
                         : {
                             position: 'absolute',

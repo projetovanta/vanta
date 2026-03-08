@@ -60,7 +60,43 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   unreadNotifications: 0,
   accessNodes: [],
 
-  loginWithMembro: m => set({ currentAccount: m, profile: m }),
+  loginWithMembro: m => {
+    set({ currentAccount: m, profile: m, authLoading: false });
+    // Disparar inicializações imediatamente (sem esperar onAuthStateChange)
+    enrichInstagramFollowers(m.id, m.instagram);
+    notificationsService.setUserId(m.id);
+    void notificationsService.refresh().then(() => {
+      set({
+        notifications: notificationsService.getAll(),
+        unreadNotifications: notificationsService.getUnreadCount(),
+      });
+    });
+    realtimeManager.unsubscribe(`notif:${m.id}`);
+    realtimeManager.subscribe(`notif:${m.id}`, channel => {
+      channel.on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'notifications', filter: `user_id=eq.${m.id}` },
+        () => {
+          void notificationsService.refresh().then(() => {
+            set({
+              notifications: notificationsService.getAll(),
+              unreadNotifications: notificationsService.getUnreadCount(),
+            });
+          });
+        },
+      );
+    });
+    void comprovanteService.refresh(m.id);
+    useExtrasStore.getState().initClubeData();
+    if (m.role === 'vanta_member') {
+      void rbacService.refresh().then(() => {
+        const nodes = getAccessNodes(m.id);
+        set({ accessNodes: nodes });
+      });
+    } else {
+      set({ accessNodes: [] });
+    }
+  },
 
   logout: async () => {
     await authService.signOut();

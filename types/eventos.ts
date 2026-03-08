@@ -96,6 +96,10 @@ export interface VantaIndicaCard {
     badge?: { x: number; y: number };
     titulo?: { x: number; y: number };
     subtitulo?: { x: number; y: number };
+    // escala de cada elemento (1 = padrão, 0.5 = metade, 2 = dobro)
+    badgeScale?: number;
+    tituloScale?: number;
+    subtituloScale?: number;
     /** @deprecated — legado, usar badge/titulo/subtitulo com x/y */
     badgeY?: number;
     tituloY?: number;

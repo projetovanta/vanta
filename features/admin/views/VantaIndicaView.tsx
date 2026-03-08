@@ -73,6 +73,9 @@ type ModalForm = {
   _layoutBadge: LayoutPos;
   _layoutTitulo: LayoutPos;
   _layoutSubtitulo: LayoutPos;
+  _scaleBadge: number;
+  _scaleTitulo: number;
+  _scaleSubtitulo: number;
 };
 
 const EMPTY: ModalForm = {
@@ -92,6 +95,9 @@ const EMPTY: ModalForm = {
   _layoutBadge: { x: 0, y: 0 },
   _layoutTitulo: { x: 0, y: 0 },
   _layoutSubtitulo: { x: 0, y: 0 },
+  _scaleBadge: 1,
+  _scaleTitulo: 1,
+  _scaleSubtitulo: 1,
 };
 
 /** Hook for drag-to-position on touch/mouse */
@@ -320,6 +326,10 @@ const CardModal: React.FC<{
   const [badgePos, setBadgePos] = useState<LayoutPos>(initial._layoutBadge ?? { x: 0, y: 0 });
   const [tituloPos, setTituloPos] = useState<LayoutPos>(initial._layoutTitulo ?? { x: 0, y: 0 });
   const [subtituloPos, setSubtituloPos] = useState<LayoutPos>(initial._layoutSubtitulo ?? { x: 0, y: 0 });
+  const [badgeScale, setBadgeScale] = useState(initial._scaleBadge ?? 1);
+  const [tituloScale, setTituloScale] = useState(initial._scaleTitulo ?? 1);
+  const [subtituloScale, setSubtituloScale] = useState(initial._scaleSubtitulo ?? 1);
+  const [showGuides, setShowGuides] = useState(false);
   const [eventQuery, setEventQuery] = useState('');
   const [eventResults, setEventResults] = useState<EventoSearchResult[]>([]);
   const [searchingEvents, setSearchingEvents] = useState(false);
@@ -759,11 +769,20 @@ const CardModal: React.FC<{
 
         {/* ── Preview Live — Drag to position ── */}
         <div className="space-y-3 pt-2">
-          <div className="flex items-center gap-2">
-            <Eye size={12} className="text-[#FFD300]" />
-            <span className="text-[9px] text-zinc-400 font-black uppercase tracking-widest">
-              Preview — arraste os textos para posicionar
-            </span>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Eye size={12} className="text-[#FFD300]" />
+              <span className="text-[9px] text-zinc-400 font-black uppercase tracking-widest">
+                Preview — arraste os textos para posicionar
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={() => setShowGuides(g => !g)}
+              className={`text-[8px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border transition-colors ${showGuides ? 'bg-[#FFD300]/20 border-[#FFD300]/40 text-[#FFD300]' : 'bg-zinc-900 border-white/10 text-zinc-500'}`}
+            >
+              Guias
+            </button>
           </div>
 
           {/* Card preview — réplica exata do Highlights.tsx da home */}
@@ -784,10 +803,32 @@ const CardModal: React.FC<{
             )}
             <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/60 via-transparent to-transparent" />
 
+            {/* Guias de alinhamento */}
+            {showGuides && (
+              <>
+                {/* Centro vertical */}
+                <div className="absolute left-1/2 top-0 bottom-0 w-px bg-[#FFD300]/30 pointer-events-none z-20" />
+                {/* Centro horizontal */}
+                <div className="absolute top-1/2 left-0 right-0 h-px bg-[#FFD300]/30 pointer-events-none z-20" />
+                {/* Terços verticais */}
+                <div className="absolute left-[33.33%] top-0 bottom-0 w-px bg-white/10 pointer-events-none z-20" />
+                <div className="absolute left-[66.66%] top-0 bottom-0 w-px bg-white/10 pointer-events-none z-20" />
+                {/* Terços horizontais */}
+                <div className="absolute top-[33.33%] left-0 right-0 h-px bg-white/10 pointer-events-none z-20" />
+                <div className="absolute top-[66.66%] left-0 right-0 h-px bg-white/10 pointer-events-none z-20" />
+                {/* Margens seguras (5%) */}
+                <div className="absolute inset-[5%] border border-dashed border-white/10 rounded-xl pointer-events-none z-20" />
+                {/* Label central */}
+                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-20">
+                  <div className="w-2 h-2 rounded-full bg-[#FFD300]/50" />
+                </div>
+              </>
+            )}
+
             {form.badge.trim() && (
               <div
                 {...badgeDrag}
-                style={{ position: 'absolute', left: `${badgePos.x}%`, top: `${badgePos.y}%`, cursor: 'grab' }}
+                style={{ position: 'absolute', left: `${badgePos.x}%`, top: `${badgePos.y}%`, cursor: 'grab', transform: `scale(${badgeScale})`, transformOrigin: 'top left' }}
                 className="active:cursor-grabbing z-10"
               >
                 <span className="bg-[#FFD300] text-black text-[8px] font-black px-2.5 py-1 rounded-full uppercase tracking-widest shadow-[0_0_15px_rgba(255,211,0,0.4)] whitespace-nowrap">
@@ -799,7 +840,7 @@ const CardModal: React.FC<{
             {form.titulo.trim() && (
               <div
                 {...tituloDrag}
-                style={{ position: 'absolute', left: `${tituloPos.x}%`, top: `${tituloPos.y}%`, cursor: 'grab' }}
+                style={{ position: 'absolute', left: `${tituloPos.x}%`, top: `${tituloPos.y}%`, cursor: 'grab', transform: `scale(${tituloScale})`, transformOrigin: 'top left' }}
                 className="active:cursor-grabbing z-10 max-w-[90%]"
               >
                 <h2
@@ -819,6 +860,8 @@ const CardModal: React.FC<{
                   left: `${subtituloPos.x}%`,
                   top: `${subtituloPos.y}%`,
                   cursor: 'grab',
+                  transform: `scale(${subtituloScale})`,
+                  transformOrigin: 'top left',
                 }}
                 className="active:cursor-grabbing z-10 max-w-[90%]"
               >
@@ -828,12 +871,38 @@ const CardModal: React.FC<{
               </div>
             )}
           </div>
+
+          {/* Sliders de tamanho */}
+          <div className="space-y-2 pt-1">
+            <p className="text-[9px] text-zinc-500 font-black uppercase tracking-widest">Tamanho dos elementos</p>
+            {form.badge.trim() && (
+              <div className="flex items-center gap-3">
+                <span className="text-[9px] text-zinc-400 w-16 shrink-0">Selo</span>
+                <input type="range" min="0.5" max="2.5" step="0.1" value={badgeScale} onChange={e => setBadgeScale(Number(e.target.value))} className="flex-1 accent-[#FFD300] h-1" />
+                <span className="text-[9px] text-zinc-500 w-8 text-right">{Math.round(badgeScale * 100)}%</span>
+              </div>
+            )}
+            {form.titulo.trim() && (
+              <div className="flex items-center gap-3">
+                <span className="text-[9px] text-zinc-400 w-16 shrink-0">Título</span>
+                <input type="range" min="0.5" max="2.5" step="0.1" value={tituloScale} onChange={e => setTituloScale(Number(e.target.value))} className="flex-1 accent-[#FFD300] h-1" />
+                <span className="text-[9px] text-zinc-500 w-8 text-right">{Math.round(tituloScale * 100)}%</span>
+              </div>
+            )}
+            {form.subtitulo.trim() && (
+              <div className="flex items-center gap-3">
+                <span className="text-[9px] text-zinc-400 w-16 shrink-0">Subtítulo</span>
+                <input type="range" min="0.5" max="2.5" step="0.1" value={subtituloScale} onChange={e => setSubtituloScale(Number(e.target.value))} className="flex-1 accent-[#FFD300] h-1" />
+                <span className="text-[9px] text-zinc-500 w-8 text-right">{Math.round(subtituloScale * 100)}%</span>
+              </div>
+            )}
+          </div>
         </div>
 
         <button
           onClick={() =>
             canSave &&
-            onSave({ ...form, _layoutBadge: badgePos, _layoutTitulo: tituloPos, _layoutSubtitulo: subtituloPos })
+            onSave({ ...form, _layoutBadge: badgePos, _layoutTitulo: tituloPos, _layoutSubtitulo: subtituloPos, _scaleBadge: badgeScale, _scaleTitulo: tituloScale, _scaleSubtitulo: subtituloScale })
           }
           disabled={!canSave || isSaving || uploadingImg}
           className="w-full py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-[0.3em] rounded-xl flex items-center justify-center gap-2 disabled:opacity-40 active:scale-[0.98] transition-all"
@@ -918,6 +987,9 @@ export const VantaIndicaView: React.FC<{ onBack: () => void; userId?: string }> 
         _layoutBadge: card.layoutConfig?.badge ?? { x: 0, y: 0 },
         _layoutTitulo: card.layoutConfig?.titulo ?? { x: 0, y: 0 },
         _layoutSubtitulo: card.layoutConfig?.subtitulo ?? { x: 0, y: 0 },
+        _scaleBadge: card.layoutConfig?.badgeScale ?? 1,
+        _scaleTitulo: card.layoutConfig?.tituloScale ?? 1,
+        _scaleSubtitulo: card.layoutConfig?.subtituloScale ?? 1,
       },
       eventName: card.tipo === 'DESTAQUE_EVENTO' ? card.titulo : '',
     });
@@ -949,7 +1021,14 @@ export const VantaIndicaView: React.FC<{ onBack: () => void; userId?: string }> 
           : undefined,
       imgPosition: form.imgPosition,
       textAlign: form.textAlign,
-      layoutConfig: { badge: form._layoutBadge, titulo: form._layoutTitulo, subtitulo: form._layoutSubtitulo },
+      layoutConfig: {
+        badge: form._layoutBadge,
+        titulo: form._layoutTitulo,
+        subtitulo: form._layoutSubtitulo,
+        badgeScale: form._scaleBadge,
+        tituloScale: form._scaleTitulo,
+        subtituloScale: form._scaleSubtitulo,
+      },
       criadoPor: userId || 'sistema',
     };
     try {

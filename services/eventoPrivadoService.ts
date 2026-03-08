@@ -86,7 +86,7 @@ export const eventoPrivadoService = {
       .select('user_id')
       .eq('tenant_id', form.comunidade_id)
       .eq('tenant_type', 'COMUNIDADE')
-      .in('cargo', ['MASTER', 'DONO', 'GERENTE'])
+      .in('cargo', ['MASTER', 'GERENTE'])
       .eq('ativo', true);
     if (gerentes?.length) {
       notifyMany(

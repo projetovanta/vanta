@@ -67,7 +67,8 @@ export type AdminSubView =
   | 'RELATORIO_MASTER'
   | 'PRODUCT_ANALYTICS'
   | 'MAIS_VANTA'
-  | 'SOLICITACOES_PARCERIA';
+  | 'SOLICITACOES_PARCERIA'
+  | 'PENDENCIAS_HUB';
 
 export interface SidebarSectionItem {
   id: AdminSubView;
@@ -96,11 +97,18 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
         color: '#FFD300',
         roles: ['vanta_masteradm', 'vanta_socio', 'vanta_gerente'],
       },
+      {
+        id: 'PENDENCIAS_HUB',
+        label: 'Pendências',
+        icon: AlertCircle,
+        color: '#ef4444',
+        roles: ['vanta_masteradm', 'vanta_socio', 'vanta_gerente'],
+      },
       { id: 'CONVITES_SOCIO', label: 'Convites', icon: Mail, color: '#f59e0b', roles: ['vanta_socio'] },
     ],
   },
   {
-    label: 'MEMBROS',
+    label: 'PESSOAS',
     items: [
       { id: 'CURADORIA', label: 'Curadoria', icon: Star, color: '#a78bfa', roles: ['vanta_masteradm'] },
       {
@@ -110,6 +118,7 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
         color: '#22d3ee',
         roles: ['vanta_masteradm'],
       },
+      { id: 'CARGOS', label: 'Cargos', icon: ShieldPlus, color: '#f472b6', roles: ['vanta_masteradm'] },
     ],
   },
   {
@@ -117,31 +126,17 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
     items: [
       {
         id: 'PENDENTES',
-        label: 'Eventos Pendentes',
+        label: 'Pendentes',
         icon: ClipboardList,
         color: '#f59e0b',
         roles: ['vanta_masteradm'],
       },
+      { id: 'CATEGORIAS', label: 'Categorias', icon: Tag, color: '#f97316', roles: ['vanta_masteradm'] },
       {
         id: 'SOLICITACOES_PARCERIA',
-        label: 'Solicitações Parceria',
+        label: 'Parcerias',
         icon: Handshake,
         color: '#22d3ee',
-        roles: ['vanta_masteradm'],
-      },
-      { id: 'CATEGORIAS', label: 'Categorias & Interesses', icon: Tag, color: '#f97316', roles: ['vanta_masteradm'] },
-      {
-        id: 'RELATORIO_MASTER',
-        label: 'Relatório Master',
-        icon: BarChart3,
-        color: '#FFD300',
-        roles: ['vanta_masteradm'],
-      },
-      {
-        id: 'PRODUCT_ANALYTICS',
-        label: 'Product Analytics',
-        icon: TrendingUp,
-        color: '#8b5cf6',
         roles: ['vanta_masteradm'],
       },
     ],
@@ -150,6 +145,13 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
     label: 'FINANCEIRO',
     items: [
       { id: 'FINANCEIRO_MASTER', label: 'Financeiro', icon: Banknote, color: '#10b981', roles: ['vanta_masteradm'] },
+      {
+        id: 'RELATORIO_MASTER',
+        label: 'Relatórios',
+        icon: BarChart3,
+        color: '#FFD300',
+        roles: ['vanta_masteradm'],
+      },
     ],
   },
   {
@@ -169,7 +171,7 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
     ],
   },
   {
-    label: 'CONFIGURAÇÕES',
+    label: 'SISTEMA',
     items: [
       {
         id: 'COMUNIDADES',
@@ -178,7 +180,13 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
         color: '#60a5fa',
         roles: ['vanta_masteradm', 'vanta_gerente', 'vanta_socio'],
       },
-      { id: 'CARGOS', label: 'Cargos', icon: ShieldPlus, color: '#f472b6', roles: ['vanta_masteradm'] },
+      {
+        id: 'PRODUCT_ANALYTICS',
+        label: 'Analytics',
+        icon: TrendingUp,
+        color: '#8b5cf6',
+        roles: ['vanta_masteradm'],
+      },
       { id: 'DIAGNOSTICO', label: 'Diagnóstico', icon: Activity, color: '#22d3ee', roles: ['vanta_masteradm'] },
     ],
   },
@@ -194,6 +202,23 @@ export const COMMUNITY_SIDEBAR_SECTIONS: SidebarSection[] = [
         label: 'Início',
         icon: LayoutDashboard,
         color: '#FFD300',
+        roles: [
+          'vanta_masteradm',
+          'vanta_socio',
+          'vanta_gerente',
+          'vanta_promoter',
+          'vanta_ger_portaria_lista',
+          'vanta_portaria_lista',
+          'vanta_ger_portaria_antecipado',
+          'vanta_portaria_antecipado',
+          'vanta_caixa',
+        ],
+      },
+      {
+        id: 'PENDENCIAS_HUB',
+        label: 'Pendências',
+        icon: AlertCircle,
+        color: '#ef4444',
         roles: [
           'vanta_masteradm',
           'vanta_socio',
@@ -301,6 +326,7 @@ export const AdminSidebar: React.FC<{
   visibleSections: SidebarSection[];
   pendentesCount?: number;
   convitesCount?: number;
+  pendenciasHubCount?: number;
   totalPendencias?: number;
   tenantNome?: string;
   tenantFoto?: string;
@@ -314,6 +340,7 @@ export const AdminSidebar: React.FC<{
   visibleSections,
   pendentesCount = 0,
   convitesCount = 0,
+  pendenciasHubCount = 0,
   totalPendencias = 0,
   tenantNome,
   tenantFoto,
@@ -393,7 +420,9 @@ export const AdminSidebar: React.FC<{
                   ? pendentesCount
                   : item.id === 'CONVITES_SOCIO'
                     ? convitesCount
-                    : (item.badge ?? 0);
+                    : item.id === 'PENDENCIAS_HUB'
+                      ? pendenciasHubCount
+                      : (item.badge ?? 0);
               return (
                 <button
                   key={item.id}

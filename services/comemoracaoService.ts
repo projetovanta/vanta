@@ -101,24 +101,38 @@ export const comemoracaoService = {
 
     if (error) throw error;
 
-    // Notificar gerentes da comunidade
-    const { data: gerentes } = await supabase
-      .from('atribuicoes_rbac')
-      .select('user_id')
-      .eq('tenant_id', form.comunidade_id)
-      .eq('tenant_type', 'COMUNIDADE')
-      .in('cargo', ['MASTER', 'DONO', 'GERENTE'])
-      .eq('ativo', true);
-    if (gerentes?.length) {
-      notifyMany(
-        gerentes.map(g => g.user_id),
-        {
-          titulo: 'Nova comemoração solicitada',
-          mensagem: `${form.nome_completo} quer comemorar ${form.motivo === 'ANIVERSARIO' ? 'aniversário' : form.motivo === 'DESPEDIDA' ? 'despedida' : (form.motivo_outro ?? 'evento')}`,
-          tipo: 'COMEMORACAO_NOVA',
-          link: data.id,
-        },
-      );
+    // Notificar responsáveis conforme origem da solicitação
+    const notifPayload = {
+      titulo: 'Nova comemoração solicitada',
+      mensagem: `${form.nome_completo} quer comemorar ${form.motivo === 'ANIVERSARIO' ? 'aniversário' : form.motivo === 'DESPEDIDA' ? 'despedida' : (form.motivo_outro ?? 'evento')}`,
+      tipo: 'COMEMORACAO_NOVA' as const,
+      link: data.id,
+    };
+
+    if (form.evento_id) {
+      // Solicitação no evento → notifica SOCIO + MASTER do evento
+      const { data: equipeEvento } = await supabase
+        .from('atribuicoes_rbac')
+        .select('user_id')
+        .eq('tenant_id', form.evento_id)
+        .eq('tenant_type', 'EVENTO')
+        .in('cargo', ['MASTER', 'SOCIO'])
+        .eq('ativo', true);
+      if (equipeEvento?.length) {
+        notifyMany(equipeEvento.map(g => g.user_id), notifPayload);
+      }
+    } else {
+      // Solicitação na comunidade → notifica GERENTE + MASTER da comunidade
+      const { data: gerentesCom } = await supabase
+        .from('atribuicoes_rbac')
+        .select('user_id')
+        .eq('tenant_id', form.comunidade_id)
+        .eq('tenant_type', 'COMUNIDADE')
+        .in('cargo', ['MASTER', 'GERENTE'])
+        .eq('ativo', true);
+      if (gerentesCom?.length) {
+        notifyMany(gerentesCom.map(g => g.user_id), notifPayload);
+      }
     }
 
     return data.id;

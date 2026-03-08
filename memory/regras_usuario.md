@@ -6,6 +6,8 @@
 - Respostas curtas, sem enrolacao
 - Zero suposicoes, zero alucinacoes
 - O USUARIO e o unico decisor
+- Quando usuario falar "dono" → interpretar como SOCIO do evento
+- Quando usuario falar "dono da comunidade" → interpretar como GERENTE
 
 ## Fluxo Obrigatorio
 1. Ler CLAUDE.md

@@ -5,6 +5,7 @@ import { eventosAdminService, SolicitacaoSaque } from './services/eventosAdminSe
 import { clubeService } from './services/clubeService';
 import { comunidadesService } from './services/comunidadesService';
 import { getReembolsosPendentes } from './services/reembolsoService';
+import { countPendencias } from './services/pendenciasService';
 import { TYPOGRAPHY } from '../../constants';
 import { ContaVanta, Notificacao, AccessNode } from '../../types';
 import {
@@ -110,6 +111,9 @@ const GestaoComprovantesView = lazy(() =>
 const ProductAnalyticsView = lazy(() =>
   import('./views/ProductAnalyticsView').then(m => ({ default: m.ProductAnalyticsView })),
 );
+const PendenciasHubView = lazy(() =>
+  import('./views/PendenciasHubView').then(m => ({ default: m.PendenciasHubView })),
+);
 export const AdminDashboardView: React.FC<{
   onClose: () => void;
   adminNome: string;
@@ -204,6 +208,27 @@ export const AdminDashboardView: React.FC<{
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [adminRole, currentUserId, subView],
   );
+
+  // IDs de comunidades e eventos do usuário (para pendências)
+  const comunidadeIds = useMemo(
+    () => accessNodes.filter(n => n.tipo === 'COMUNIDADE').map(n => n.contextId),
+    [accessNodes],
+  );
+  const eventoIds = useMemo(
+    () => accessNodes.filter(n => n.tipo === 'EVENTO').map(n => n.contextId),
+    [accessNodes],
+  );
+
+  // Badge de pendências do hub
+  const [pendenciasHubCount, setPendenciasHubCount] = useState(0);
+  useEffect(() => {
+    if (!currentUserId || !adminRole) return;
+    let cancelled = false;
+    countPendencias(currentUserId, adminRole, comunidadeIds, eventoIds).then(count => {
+      if (!cancelled) setPendenciasHubCount(count);
+    });
+    return () => { cancelled = true; };
+  }, [currentUserId, adminRole, comunidadeIds, eventoIds, subView]);
 
   // Nome do tenant contextual (comunidade ou evento) passado pelo Gateway
   const tenantNome = useMemo(
@@ -542,6 +567,18 @@ export const AdminDashboardView: React.FC<{
       if (!isMasterOnly(currentUserId, adminRole)) return guardBlock(back);
       return <NotificacoesAdminView onBack={back} />;
     }
+    if (subView === 'PENDENCIAS_HUB') {
+      return (
+        <PendenciasHubView
+          userId={currentUserId}
+          role={adminRole}
+          comunidadeIds={comunidadeIds}
+          eventoIds={eventoIds}
+          onBack={back}
+          onNavigate={setSubView}
+        />
+      );
+    }
     if (subView === 'PENDENTES') {
       if (!isMasterOnly(currentUserId, adminRole)) return guardBlock(back);
       return <EventosPendentesView onBack={back} masterUserId={currentUserId} />;
@@ -670,6 +707,7 @@ export const AdminDashboardView: React.FC<{
           visibleSections={visibleSections}
           pendentesCount={pendentesCount}
           convitesCount={convitesCount}
+          pendenciasHubCount={pendenciasHubCount}
           totalPendencias={(Object.values(dashPendencias) as number[]).reduce((a, b) => a + b, 0)}
           tenantNome={tenantNome}
           tenantFoto={tenantFoto}

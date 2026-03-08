@@ -211,7 +211,7 @@ export const EditarLotesSubView: React.FC<Props> = ({ eventoId, onBack, currentU
               Lotes e Cortesias
             </h1>
           </div>
-          <button
+          <button aria-label="Voltar"
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0 mt-1"
           >

@@ -214,12 +214,12 @@ export const QRScanner: React.FC<{
                 <p className="text-red-400/80 text-[9px] font-black uppercase tracking-widest text-center px-4">
                   Câmera bloqueada
                 </p>
-                <p className="text-zinc-600 text-[8px] text-center px-3">Libere nas configurações do navegador</p>
+                <p className="text-zinc-400 text-[8px] text-center px-3">Libere nas configurações do navegador</p>
               </>
             ) : (
               <>
                 <Camera size={48} className="text-zinc-700" />
-                <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest text-center px-4">
+                <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest text-center px-4">
                   Toque para ativar a câmera
                 </p>
               </>
@@ -259,10 +259,10 @@ export const QRScanner: React.FC<{
         {continuous ? (
           <ToggleRight size={22} className="text-[#FFD300]" />
         ) : (
-          <ToggleLeft size={22} className="text-zinc-600" />
+          <ToggleLeft size={22} className="text-zinc-400" />
         )}
         <span
-          className={`text-[9px] font-black uppercase tracking-widest ${continuous ? 'text-[#FFD300]' : 'text-zinc-600'}`}
+          className={`text-[9px] font-black uppercase tracking-widest ${continuous ? 'text-[#FFD300]' : 'text-zinc-400'}`}
         >
           Modo contínuo
         </span>
@@ -277,8 +277,8 @@ export const QRScanner: React.FC<{
       {(manualMode || camState === 'denied') && (
         <div className="w-full mt-2 mb-4">
           <div className="flex items-center gap-2 mb-2">
-            <Keyboard size={12} className="text-zinc-600 shrink-0" />
-            <p className="text-zinc-500 text-[9px] font-black uppercase tracking-widest">Digitar código do ingresso</p>
+            <Keyboard size={12} className="text-zinc-400 shrink-0" />
+            <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">Digitar código do ingresso</p>
           </div>
           <div className="flex gap-2">
             <input
@@ -302,7 +302,7 @@ export const QRScanner: React.FC<{
       {!manualMode && camState !== 'denied' && (
         <button
           onClick={() => setManualMode(true)}
-          className="text-zinc-700 text-[9px] font-black uppercase tracking-widest hover:text-zinc-500 transition-colors"
+          className="text-zinc-700 text-[9px] font-black uppercase tracking-widest hover:text-zinc-400 transition-colors"
         >
           Sem câmera? Digitar código manualmente
         </button>
@@ -311,7 +311,7 @@ export const QRScanner: React.FC<{
       {processing && (
         <div className="mt-4 flex items-center gap-2">
           <div className="w-3 h-3 rounded-full border-2 border-[#FFD300] border-t-transparent animate-spin" />
-          <p className="text-zinc-500 text-[9px] font-black uppercase tracking-widest">Validando...</p>
+          <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">Validando...</p>
         </div>
       )}
     </div>

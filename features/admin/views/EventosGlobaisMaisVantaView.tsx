@@ -102,7 +102,7 @@ export const EventosGlobaisMaisVantaView: React.FC<{
                 {selectedEvento.nome}
               </h1>
             </div>
-            <button
+            <button aria-label="Atualizar"
               onClick={handleRefresh}
               disabled={loading}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all disabled:opacity-40"
@@ -113,14 +113,14 @@ export const EventosGlobaisMaisVantaView: React.FC<{
 
           <div className="space-y-2 text-xs text-zinc-400">
             <p>
-              <span className="text-zinc-500 font-bold">Data:</span> {fmtDate(selectedEvento.dataInicio)} •{' '}
+              <span className="text-zinc-400 font-bold">Data:</span> {fmtDate(selectedEvento.dataInicio)} •{' '}
               {fmtHora(selectedEvento.dataInicio)}
             </p>
             <p>
-              <span className="text-zinc-500 font-bold">Local:</span> {selectedEvento.local}
+              <span className="text-zinc-400 font-bold">Local:</span> {selectedEvento.local}
             </p>
             <p>
-              <span className="text-zinc-500 font-bold">Comunidade:</span> {getComunidadeNome(selectedEventId)}
+              <span className="text-zinc-400 font-bold">Comunidade:</span> {getComunidadeNome(selectedEventId)}
             </p>
           </div>
         </div>
@@ -136,7 +136,7 @@ export const EventosGlobaisMaisVantaView: React.FC<{
                     <div className="flex items-start justify-between mb-2">
                       <div>
                         <p className="text-white font-bold text-sm">{lote.tierId || lote.tierMinimo}</p>
-                        <p className="text-zinc-500 text-[10px]">{lote.tipoAcesso}</p>
+                        <p className="text-zinc-400 text-[10px]">{lote.tipoAcesso}</p>
                       </div>
                       <p className="text-[#FFD300] font-bold text-sm">
                         {lote.reservados}/{lote.quantidade}
@@ -145,7 +145,7 @@ export const EventosGlobaisMaisVantaView: React.FC<{
                     <div className="w-full h-1.5 bg-zinc-800 rounded-full overflow-hidden">
                       <div className="h-full bg-[#FFD300]" style={{ width: `${ocupacao}%` }} />
                     </div>
-                    <p className="text-zinc-600 text-[9px] mt-1">
+                    <p className="text-zinc-400 text-[9px] mt-1">
                       Acompanhantes: {lote.acompanhantes} | {ocupacao.toFixed(0)}% ocupado
                     </p>
                   </div>
@@ -158,18 +158,18 @@ export const EventosGlobaisMaisVantaView: React.FC<{
             <p className="text-white font-bold text-sm mb-3">Reservas ({selectedReservas.length})</p>
             <div className="space-y-2">
               {selectedReservas.length === 0 && (
-                <p className="text-zinc-600 text-[10px] py-4 text-center">Nenhuma reserva ainda</p>
+                <p className="text-zinc-400 text-[10px] py-4 text-center">Nenhuma reserva ainda</p>
               )}
               {selectedReservas.map(res => (
                 <div key={res.id} className="bg-zinc-900/40 border border-white/5 rounded-lg p-3 text-[10px]">
                   <div className="flex items-center justify-between">
                     <div className="min-w-0">
                       <p className="text-white font-bold truncate">{res.userId.slice(0, 12)}</p>
-                      <p className={`text-[9px] ${res.status === 'USADO' ? 'text-emerald-400' : 'text-zinc-500'}`}>
+                      <p className={`text-[9px] ${res.status === 'USADO' ? 'text-emerald-400' : 'text-zinc-400'}`}>
                         {res.status}
                       </p>
                     </div>
-                    <p className="text-zinc-600">
+                    <p className="text-zinc-400">
                       {new Date(res.reservadoEm).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })}
                     </p>
                   </div>
@@ -195,14 +195,14 @@ export const EventosGlobaisMaisVantaView: React.FC<{
             </h1>
           </div>
           <div className="flex gap-2 shrink-0">
-            <button
+            <button aria-label="Atualizar"
               onClick={handleRefresh}
               disabled={loading}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all disabled:opacity-40"
             >
               <RefreshCw size={16} className={`text-zinc-400 ${loading ? 'animate-spin' : ''}`} />
             </button>
-            <button
+            <button aria-label="Voltar"
               onClick={onBack}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
             >
@@ -214,11 +214,11 @@ export const EventosGlobaisMaisVantaView: React.FC<{
         <div className="grid grid-cols-2 gap-2 mb-4">
           <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center">
             <p className="text-emerald-400 font-black text-2xl leading-none">{totais.ativos}</p>
-            <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest mt-1">Ativos</p>
+            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mt-1">Ativos</p>
           </div>
           <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center">
             <p className="text-amber-400 font-black text-2xl leading-none">{totais.inativos}</p>
-            <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest mt-1">Inativos</p>
+            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mt-1">Inativos</p>
           </div>
         </div>
 
@@ -230,7 +230,7 @@ export const EventosGlobaisMaisVantaView: React.FC<{
               className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider shrink-0 border transition-all ${
                 filtro === f.id
                   ? 'bg-[#FFD300] text-black border-transparent'
-                  : 'bg-zinc-900/60 text-zinc-500 border-white/5 active:bg-zinc-800'
+                  : 'bg-zinc-900/60 text-zinc-400 border-white/5 active:bg-zinc-800'
               }`}
             >
               {f.label} ({f.count})
@@ -245,7 +245,7 @@ export const EventosGlobaisMaisVantaView: React.FC<{
             <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center">
               <Calendar size={28} className="text-zinc-700" />
             </div>
-            <p className="text-zinc-600 text-[10px] font-black uppercase tracking-widest">Nenhum evento encontrado</p>
+            <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">Nenhum evento encontrado</p>
           </div>
         )}
 
@@ -265,7 +265,7 @@ export const EventosGlobaisMaisVantaView: React.FC<{
               <div className="flex items-start justify-between mb-2">
                 <div className="flex-1 min-w-0">
                   <p className="text-white font-bold truncate">{e.nome}</p>
-                  <p className="text-zinc-500 text-[10px] mt-0.5">
+                  <p className="text-zinc-400 text-[10px] mt-0.5">
                     {getComunidadeNome(e.id)} • {fmtDate(e.dataInicio)}
                   </p>
                 </div>
@@ -282,7 +282,7 @@ export const EventosGlobaisMaisVantaView: React.FC<{
               </div>
 
               {eventLotes.length > 0 && (
-                <p className="text-[9px] text-zinc-600 mt-2">
+                <p className="text-[9px] text-zinc-400 mt-2">
                   {eventLotes.length} tier{eventLotes.length > 1 ? 's' : ''} • <Zap size={10} className="inline" />{' '}
                   {eventReservas.filter(r => r.postVerificado).length} posts verificados
                 </p>

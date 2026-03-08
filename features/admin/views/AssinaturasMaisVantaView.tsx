@@ -77,13 +77,13 @@ export const AssinaturasMaisVantaView: React.FC<{
             </h1>
           </div>
           <div className="flex gap-2 shrink-0">
-            <button
+            <button aria-label="Atualizar"
               onClick={handleRefresh}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
             >
               <RefreshCw size={16} className="text-zinc-400" />
             </button>
-            <button
+            <button aria-label="Voltar"
               onClick={onBack}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
             >
@@ -96,15 +96,15 @@ export const AssinaturasMaisVantaView: React.FC<{
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5 mb-4">
           <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center">
             <p className="text-emerald-400 font-black text-2xl leading-none">{totais.ativas}</p>
-            <p className="text-zinc-500 text-[9px] font-bold uppercase tracking-wider mt-1">Ativas</p>
+            <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider mt-1">Ativas</p>
           </div>
           <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center">
             <p className="text-amber-400 font-black text-2xl leading-none">{totais.pendentes}</p>
-            <p className="text-zinc-500 text-[9px] font-bold uppercase tracking-wider mt-1">Pendentes</p>
+            <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider mt-1">Pendentes</p>
           </div>
           <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center">
             <p className="text-[#FFD300] font-black text-xl leading-none">{fmtBRL(totais.mrr)}</p>
-            <p className="text-zinc-500 text-[9px] font-bold uppercase tracking-wider mt-1">MRR</p>
+            <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider mt-1">MRR</p>
           </div>
         </div>
 
@@ -117,7 +117,7 @@ export const AssinaturasMaisVantaView: React.FC<{
               className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider shrink-0 border transition-all ${
                 filtro === f.id
                   ? 'bg-[#FFD300] text-black border-transparent'
-                  : 'bg-zinc-900/60 text-zinc-500 border-white/5 active:bg-zinc-800'
+                  : 'bg-zinc-900/60 text-zinc-400 border-white/5 active:bg-zinc-800'
               }`}
             >
               {f.label} ({f.count})
@@ -133,7 +133,7 @@ export const AssinaturasMaisVantaView: React.FC<{
             <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center">
               <Crown size={28} className="text-zinc-700" />
             </div>
-            <p className="text-zinc-600 text-[10px] font-black uppercase tracking-widest">
+            <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">
               {filtro === 'TODAS' ? 'Nenhuma assinatura encontrada' : `Nenhuma assinatura ${filtro.toLowerCase()}`}
             </p>
           </div>
@@ -152,7 +152,7 @@ export const AssinaturasMaisVantaView: React.FC<{
                   <img loading="lazy" src={foto} alt="" className="w-12 h-12 rounded-xl object-cover shrink-0" />
                 ) : (
                   <div className="w-12 h-12 rounded-xl bg-zinc-800 border border-white/5 flex items-center justify-center shrink-0">
-                    <Building2 size={20} className="text-zinc-600" />
+                    <Building2 size={20} className="text-zinc-400" />
                   </div>
                 )}
                 <div className="flex-1 min-w-0">
@@ -168,19 +168,19 @@ export const AssinaturasMaisVantaView: React.FC<{
                 </div>
                 <div className="text-right shrink-0">
                   <p className="text-white font-black text-sm">R${a.valorMensal}</p>
-                  <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest">/mês</p>
+                  <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">/mês</p>
                 </div>
               </div>
 
               {/* Detalhes + Ações */}
               <div className="mt-3 pt-3 border-t border-white/5">
                 <div className="flex flex-wrap gap-x-4 gap-y-1 mb-3">
-                  <p className="text-zinc-600 text-[9px]">
-                    <span className="text-zinc-500 font-bold">Membros:</span> {plano.membros}
+                  <p className="text-zinc-400 text-[9px]">
+                    <span className="text-zinc-400 font-bold">Membros:</span> {plano.membros}
                   </p>
                   {a.inicio && (
-                    <p className="text-zinc-600 text-[9px]">
-                      <span className="text-zinc-500 font-bold">Início:</span>{' '}
+                    <p className="text-zinc-400 text-[9px]">
+                      <span className="text-zinc-400 font-bold">Início:</span>{' '}
                       {new Date(a.inicio).toLocaleDateString('pt-BR', {
                         day: '2-digit',
                         month: 'short',
@@ -189,8 +189,8 @@ export const AssinaturasMaisVantaView: React.FC<{
                     </p>
                   )}
                   {a.fim && (
-                    <p className="text-zinc-600 text-[9px]">
-                      <span className="text-zinc-500 font-bold">Fim:</span>{' '}
+                    <p className="text-zinc-400 text-[9px]">
+                      <span className="text-zinc-400 font-bold">Fim:</span>{' '}
                       {new Date(a.fim).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' })}
                     </p>
                   )}
@@ -244,7 +244,7 @@ export const AssinaturasMaisVantaView: React.FC<{
             <p className="text-white font-bold text-sm text-center">
               {confirmar.acao === 'ATIVAR' ? 'Ativar assinatura?' : 'Cancelar assinatura?'}
             </p>
-            <p className="text-zinc-500 text-[10px] text-center leading-relaxed">
+            <p className="text-zinc-400 text-[10px] text-center leading-relaxed">
               {confirmar.acao === 'ATIVAR'
                 ? `A assinatura de "${confirmar.nome}" será ativada imediatamente.`
                 : `A assinatura de "${confirmar.nome}" será cancelada. O módulo MAIS VANTA será desativado.`}

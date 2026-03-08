@@ -36,18 +36,18 @@ export const ModalFechamento: React.FC<Props> = ({
           <Flag size={16} className="text-white/40" />
         </div>
         <div>
-          <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest">Relatório Final</p>
+          <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">Relatório Final</p>
           <p className="text-white font-bold text-base mt-0.5 truncate">{eventoNome}</p>
         </div>
       </div>
 
       <div className="rounded-2xl bg-zinc-900/60 border border-white/5 divide-y divide-white/5">
         <div className="flex justify-between items-center px-4 py-3">
-          <p className="text-zinc-500 text-[10px] font-black uppercase tracking-wider">Check-ins realizados</p>
+          <p className="text-zinc-400 text-[10px] font-black uppercase tracking-wider">Check-ins realizados</p>
           <p className="text-white font-black text-sm">{checkinsEvento}</p>
         </div>
         <div className="flex justify-between items-center px-4 py-3">
-          <p className="text-zinc-500 text-[10px] font-black uppercase tracking-wider">Receita Bruta</p>
+          <p className="text-zinc-400 text-[10px] font-black uppercase tracking-wider">Receita Bruta</p>
           <p className="text-zinc-300 font-black text-sm">{fmtBRL(receitaBrutaEvento)}</p>
         </div>
         <div className="flex justify-between items-center px-4 py-3">
@@ -61,7 +61,7 @@ export const ModalFechamento: React.FC<Props> = ({
           onClick={onClose}
           className="w-12 h-12 bg-zinc-900 border border-white/10 rounded-xl flex items-center justify-center active:scale-90 transition-all shrink-0"
         >
-          <X size={16} className="text-zinc-500" />
+          <X size={16} className="text-zinc-400" />
         </button>
         <button
           onClick={onEncerrar}

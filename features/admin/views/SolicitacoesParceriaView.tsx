@@ -63,7 +63,7 @@ export const SolicitacoesParceriaView: React.FC<{
             <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic truncate">
               {detalhe.nome}
             </h1>
-            <p className="text-zinc-500 text-[10px] mt-1">
+            <p className="text-zinc-400 text-[10px] mt-1">
               {detalhe.userName ?? 'Usuário'} · {new Date(detalhe.criadoEm).toLocaleDateString('pt-BR')}
             </p>
           </div>
@@ -173,12 +173,12 @@ export const SolicitacoesParceriaView: React.FC<{
                 <img src={detalhe.userFoto} alt="" className="w-10 h-10 rounded-full object-cover" />
               ) : (
                 <div className="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center">
-                  <Users size={16} className="text-zinc-600" />
+                  <Users size={16} className="text-zinc-400" />
                 </div>
               )}
               <div>
                 <p className="text-white text-sm font-bold">{detalhe.userName ?? '—'}</p>
-                {detalhe.userInstagram && <p className="text-zinc-500 text-[10px]">{detalhe.userInstagram}</p>}
+                {detalhe.userInstagram && <p className="text-zinc-400 text-[10px]">{detalhe.userInstagram}</p>}
               </div>
             </div>
           </Section>
@@ -246,7 +246,7 @@ export const SolicitacoesParceriaView: React.FC<{
             Solicitações de Parceria
           </h1>
         </div>
-        <button
+        <button aria-label="Voltar"
           onClick={onBack}
           className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all mt-1"
         >
@@ -267,7 +267,7 @@ export const SolicitacoesParceriaView: React.FC<{
             className={`flex-1 py-3 text-center text-[10px] font-black uppercase tracking-widest transition-all ${
               aba === t.id
                 ? 'text-[#FFD300] border-b-2 border-[#FFD300]'
-                : 'text-zinc-600 border-b-2 border-transparent'
+                : 'text-zinc-400 border-b-2 border-transparent'
             }`}
           >
             {t.label}
@@ -305,7 +305,7 @@ export const SolicitacoesParceriaView: React.FC<{
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-white font-bold text-sm truncate">{s.nome}</p>
-                <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest mt-0.5">
+                <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mt-0.5">
                   {s.cidade} · {s.categoria}
                 </p>
                 <p className="text-zinc-700 text-[9px] mt-0.5">
@@ -347,7 +347,7 @@ const Section: React.FC<{ title: string; children: React.ReactNode }> = ({ title
 
 const InfoRow: React.FC<{ label: string; value: string }> = ({ label, value }) => (
   <div className="flex items-start gap-2">
-    <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest w-24 shrink-0 pt-0.5">{label}</p>
+    <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest w-24 shrink-0 pt-0.5">{label}</p>
     <p className="text-zinc-300 text-xs">{value}</p>
   </div>
 );

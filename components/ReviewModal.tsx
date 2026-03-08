@@ -52,7 +52,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ eventoId, eventoNome, userId,
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-white font-bold text-base truncate flex-1 mr-2">Avaliar Evento</h3>
-          <button onClick={onClose} className="text-zinc-500 active:text-white p-1">
+          <button onClick={onClose} className="text-zinc-400 active:text-white p-1">
             <X size={20} />
           </button>
         </div>
@@ -62,7 +62,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ eventoId, eventoNome, userId,
         {sent ? (
           <div className="text-center py-8">
             <p className="text-emerald-400 font-bold text-lg">Avaliação enviada!</p>
-            <p className="text-zinc-500 text-sm mt-1">Obrigado pelo feedback</p>
+            <p className="text-zinc-400 text-sm mt-1">Obrigado pelo feedback</p>
           </div>
         ) : (
           <>
@@ -87,7 +87,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ eventoId, eventoNome, userId,
             </div>
 
             {rating > 0 && (
-              <p className="text-center text-zinc-500 text-xs mb-4">
+              <p className="text-center text-zinc-400 text-xs mb-4">
                 {rating === 1 && 'Péssimo'}
                 {rating === 2 && 'Ruim'}
                 {rating === 3 && 'Regular'}
@@ -103,11 +103,11 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ eventoId, eventoNome, userId,
               placeholder="Deixe um comentário (opcional)"
               rows={3}
               maxLength={500}
-              className="w-full bg-zinc-800 border border-zinc-700 rounded-xl p-3 text-white text-sm placeholder:text-zinc-600 resize-none focus:outline-none focus:border-zinc-500 mb-4"
+              className="w-full bg-zinc-800 border border-zinc-700 rounded-xl p-3 text-white text-sm placeholder:text-zinc-400 resize-none focus:outline-none focus:border-zinc-500 mb-4"
             />
 
             {/* Botão enviar */}
-            <button
+            <button aria-label="Enviar"
               onClick={handleSubmit}
               disabled={rating === 0 || sending}
               className="w-full flex items-center justify-center gap-2 bg-white text-black font-bold py-3 rounded-xl disabled:opacity-30 active:bg-zinc-200 transition-all shrink-0"

@@ -298,12 +298,12 @@ export default function App() {
           return (
             <div className="absolute inset-0 bg-[#0A0A0A] z-[150] flex flex-col items-center justify-center p-8 text-center">
               <div className="w-16 h-16 bg-zinc-900 rounded-full flex items-center justify-center mb-6 border border-white/10">
-                <Shield size={28} className="text-zinc-600" />
+                <Shield size={28} className="text-zinc-400" />
               </div>
               <h2 style={TYPOGRAPHY.screenTitle} className="text-xl italic mb-3">
                 Sem Acesso
               </h2>
-              <p className="text-zinc-600 text-[10px] font-black uppercase tracking-widest mb-8">
+              <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest mb-8">
                 Você não possui cargos ativos em nenhum evento ou comunidade.
               </p>
               <button
@@ -337,7 +337,7 @@ export default function App() {
             className="w-20 h-20 rounded-2xl animate-spin"
             style={{ animationDuration: '2s' }}
           />
-          <span className="text-[8px] font-black uppercase tracking-[0.3em] text-zinc-600">Carregando</span>
+          <span className="text-[8px] font-black uppercase tracking-[0.3em] text-zinc-400">Carregando</span>
         </div>
       </div>
     );

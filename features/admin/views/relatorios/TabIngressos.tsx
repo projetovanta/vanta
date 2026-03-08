@@ -40,16 +40,16 @@ export const TabIngressos: React.FC<Props> = ({ evento, tickets }) => {
       {/* KPIs ingressos */}
       <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5">
         <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center">
-          <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider">Vendidos</p>
+          <p className="text-[9px] text-zinc-400 font-bold uppercase tracking-wider">Vendidos</p>
           <p className="text-white font-black text-lg mt-1">{totalVendidos}</p>
-          <p className="text-zinc-600 text-[9px]">/ {totalLimite}</p>
+          <p className="text-zinc-400 text-[9px]">/ {totalLimite}</p>
         </div>
         <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center">
-          <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider">GMV</p>
+          <p className="text-[9px] text-zinc-400 font-bold uppercase tracking-wider">GMV</p>
           <p className="text-[#FFD300] font-black text-lg mt-1">{fmtBRL(gmvTotal)}</p>
         </div>
         <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center">
-          <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider">Ticket Médio</p>
+          <p className="text-[9px] text-zinc-400 font-bold uppercase tracking-wider">Ticket Médio</p>
           <p className="text-white font-black text-lg mt-1">{fmtBRL(ticketMedio)}</p>
         </div>
       </div>
@@ -59,7 +59,7 @@ export const TabIngressos: React.FC<Props> = ({ evento, tickets }) => {
         <div className="bg-zinc-900/40 border border-white/5 rounded-2xl p-5 space-y-4">
           <div className="flex items-center gap-2">
             <TrendingUp size={13} className="text-[#FFD300]" />
-            <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Timeline de Vendas</p>
+            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Timeline de Vendas</p>
           </div>
 
           <div className="space-y-1.5">
@@ -72,8 +72,8 @@ export const TabIngressos: React.FC<Props> = ({ evento, tickets }) => {
               return (
                 <div key={d.dia} className="space-y-1">
                   <div className="flex items-center justify-between">
-                    <p className="text-zinc-500 text-[9px] font-bold shrink-0">{diaFmt}</p>
-                    <p className="text-zinc-600 text-[9px] shrink-0 ml-2">
+                    <p className="text-zinc-400 text-[9px] font-bold shrink-0">{diaFmt}</p>
+                    <p className="text-zinc-400 text-[9px] shrink-0 ml-2">
                       {d.count} · {fmtBRL(d.gmv)}
                     </p>
                   </div>
@@ -91,7 +91,7 @@ export const TabIngressos: React.FC<Props> = ({ evento, tickets }) => {
       <div className="bg-zinc-900/40 border border-white/5 rounded-2xl p-5 space-y-4">
         <div className="flex items-center gap-2">
           <Ticket size={13} className="text-[#FFD300]" />
-          <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Vendas por Lote</p>
+          <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Vendas por Lote</p>
         </div>
 
         <div className="space-y-3">
@@ -105,7 +105,7 @@ export const TabIngressos: React.FC<Props> = ({ evento, tickets }) => {
               <div key={lote.id} className="space-y-2">
                 <div className="flex items-center justify-between">
                   <p className="text-zinc-400 text-[10px] font-bold truncate flex-1 min-w-0">{lote.nome}</p>
-                  <p className="text-zinc-500 text-[9px] shrink-0 ml-2">
+                  <p className="text-zinc-400 text-[9px] shrink-0 ml-2">
                     {loteVendidos}/{loteLimite} · {fmtBRL(loteGmv)}
                   </p>
                 </div>
@@ -123,14 +123,14 @@ export const TabIngressos: React.FC<Props> = ({ evento, tickets }) => {
                     return (
                       <div key={v.id} className="flex items-center justify-between">
                         <div className="flex items-center gap-1.5 flex-1 min-w-0">
-                          <span className="text-[7px] text-zinc-600 font-black uppercase tracking-wider px-1 py-0.5 bg-zinc-800 rounded shrink-0">
+                          <span className="text-[7px] text-zinc-400 font-black uppercase tracking-wider px-1 py-0.5 bg-zinc-800 rounded shrink-0">
                             {genLabel}
                           </span>
-                          <p className="text-zinc-500 text-[9px] truncate">
+                          <p className="text-zinc-400 text-[9px] truncate">
                             {v.area === 'OUTRO' ? v.areaCustom || 'Outro' : v.area}
                           </p>
                         </div>
-                        <p className="text-zinc-600 text-[9px] shrink-0 ml-2">
+                        <p className="text-zinc-400 text-[9px] shrink-0 ml-2">
                           {v.vendidos}/{v.limite} · {fmtBRL(v.valor)}
                         </p>
                       </div>
@@ -145,7 +145,7 @@ export const TabIngressos: React.FC<Props> = ({ evento, tickets }) => {
 
       {/* Ticket médio por variação */}
       <div className="bg-zinc-900/40 border border-white/5 rounded-2xl p-5 space-y-4">
-        <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Ticket Médio por Variação</p>
+        <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Ticket Médio por Variação</p>
         <div className="space-y-1.5">
           {variacoes
             .filter(v => v.vendidos > 0)
@@ -158,7 +158,7 @@ export const TabIngressos: React.FC<Props> = ({ evento, tickets }) => {
                 <p className="text-zinc-400 text-[10px] font-bold truncate flex-1 min-w-0">
                   {v.area === 'OUTRO' ? v.areaCustom || 'Outro' : v.area}
                 </p>
-                <p className="text-zinc-500 text-[10px] shrink-0 ml-2">{v.vendidos} vendidos</p>
+                <p className="text-zinc-400 text-[10px] shrink-0 ml-2">{v.vendidos} vendidos</p>
                 <p className="text-[#FFD300] text-xs font-bold shrink-0 ml-2">{fmtBRL(v.valor)}</p>
               </div>
             ))}
@@ -168,7 +168,7 @@ export const TabIngressos: React.FC<Props> = ({ evento, tickets }) => {
       {/* Lista de compradores (lote + valor, sem nome) */}
       {tickets.length > 0 && (
         <div className="bg-zinc-900/40 border border-white/5 rounded-2xl p-5 space-y-4">
-          <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">
+          <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">
             Compradores — {tickets.filter(t => t.status === 'DISPONIVEL' || t.status === 'USADO').length} ingressos
           </p>
           <div className="space-y-1.5">
@@ -192,14 +192,14 @@ export const TabIngressos: React.FC<Props> = ({ evento, tickets }) => {
                     />
                     <div className="flex-1 min-w-0">
                       <p className="text-zinc-300 text-[11px] font-bold truncate">{t.variacaoLabel}</p>
-                      <p className="text-zinc-600 text-[8px]">{dataFmt}</p>
+                      <p className="text-zinc-400 text-[8px]">{dataFmt}</p>
                     </div>
                     <p className="text-[#FFD300] text-xs font-bold shrink-0">{fmtBRL(t.valor)}</p>
                   </div>
                 );
               })}
             {tickets.filter(t => t.status === 'DISPONIVEL' || t.status === 'USADO').length > 100 && (
-              <p className="text-zinc-600 text-[9px] text-center py-2">
+              <p className="text-zinc-400 text-[9px] text-center py-2">
                 + {tickets.filter(t => t.status === 'DISPONIVEL' || t.status === 'USADO').length - 100} ingressos...
               </p>
             )}

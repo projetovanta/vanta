@@ -101,7 +101,7 @@ export const PainelCargoCustom: React.FC<PainelCustomProps> = ({ estado, setEsta
                   onClick={() => removeCota(idx)}
                   className="w-8 h-8 flex items-center justify-center rounded-lg bg-zinc-800 border border-white/5 active:scale-90 transition-all shrink-0"
                 >
-                  <X size={13} className="text-zinc-500" />
+                  <X size={13} className="text-zinc-400" />
                 </button>
               </div>
             ))}

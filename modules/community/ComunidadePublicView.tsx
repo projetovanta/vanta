@@ -200,7 +200,7 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
           background: 'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, transparent 100%)',
         }}
       >
-        <button
+        <button aria-label="Voltar"
           onClick={onBack}
           className="w-10 h-10 bg-black/40 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 active:scale-90 transition-all"
         >
@@ -245,7 +245,7 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
                 <MapPin size={11} className="text-[#FFD300] shrink-0" />
                 <div className="min-w-0">
                   {comunidade.endereco && <p className="text-zinc-300 text-[11px] truncate">{comunidade.endereco}</p>}
-                  <p className="text-zinc-500 text-[10px] truncate">
+                  <p className="text-zinc-400 text-[10px] truncate">
                     {comunidade.cidade}
                     {comunidade.estado ? `, ${comunidade.estado}` : ''}
                   </p>
@@ -359,7 +359,7 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
                 )}
               </div>
               <div className="text-left flex-1 min-w-0">
-                <p className="text-[10px] text-zinc-500">
+                <p className="text-[10px] text-zinc-400">
                   <span className="text-zinc-200 font-semibold">
                     {previewFollowers[0]?.nome.split(' ')[0] || 'Alguém'}
                   </span>{' '}
@@ -372,7 +372,7 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
               </div>
               <ChevronRight
                 size={14}
-                className="ml-auto text-zinc-500 group-active:text-[#FFD300] transition-colors shrink-0"
+                className="ml-auto text-zinc-400 group-active:text-[#FFD300] transition-colors shrink-0"
               />
             </button>
           )}
@@ -393,7 +393,7 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
               ))}
             </div>
             <span className="text-zinc-200 text-sm font-bold">{ratingData.media}</span>
-            <span className="text-zinc-600 text-[10px]">
+            <span className="text-zinc-400 text-[10px]">
               ({ratingData.count} avaliação{ratingData.count !== 1 ? 'ões' : ''})
             </span>
           </div>
@@ -409,7 +409,7 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
               <div className="w-10 h-10 bg-zinc-900 rounded-xl border border-white/5 flex items-center justify-center">
                 <Calendar size={18} className="text-zinc-700" />
               </div>
-              <p className="text-zinc-600 text-[11px] text-center">Próximos eventos em breve</p>
+              <p className="text-zinc-400 text-[11px] text-center">Próximos eventos em breve</p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -429,13 +429,13 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-white font-bold text-sm truncate">{evento.titulo}</p>
-                    <p className="text-zinc-500 text-[11px] mt-0.5">
+                    <p className="text-zinc-400 text-[11px] mt-0.5">
                       {evento.data} · {evento.horario}
                     </p>
                   </div>
                   <div className="text-right shrink-0">
                     {evento.ocultarValor ? (
-                      <p className="text-zinc-500 text-[10px]">Sob consulta</p>
+                      <p className="text-zinc-400 text-[10px]">Sob consulta</p>
                     ) : evento.lotes[0] ? (
                       <p className="text-[#FFD300] font-bold text-sm">
                         R$ {evento.lotes[0].preco.toFixed(2).replace('.', ',')}
@@ -458,7 +458,7 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
                 <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white">
                   Seguidores
                 </h2>
-                <p className="text-zinc-500 text-[10px] font-bold uppercase tracking-widest mt-1">
+                <p className="text-zinc-400 text-[10px] font-bold uppercase tracking-widest mt-1">
                   {followCount} pessoa{followCount !== 1 ? 's' : ''} seguem esta comunidade
                 </p>
               </div>
@@ -473,13 +473,13 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
               </button>
             </div>
             <div className="relative">
-              <Search size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" />
+              <Search size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
               <input
                 type="text"
                 placeholder="Buscar por nome ou email..."
                 value={followerSearch}
                 onChange={e => setFollowerSearch(e.target.value)}
-                className="w-full bg-zinc-900/50 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-xs text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#FFD300]/50 transition-colors"
+                className="w-full bg-zinc-900/50 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-xs text-white placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/50 transition-colors"
               />
             </div>
           </div>
@@ -506,19 +506,19 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
                   </div>
                   <div className="flex-1 text-left min-w-0">
                     <h4 className="text-sm font-bold text-zinc-200 truncate">{member.nome}</h4>
-                    <p className="text-[10px] text-zinc-500 truncate">{member.biografia || 'Membro da comunidade'}</p>
+                    <p className="text-[10px] text-zinc-400 truncate">{member.biografia || 'Membro da comunidade'}</p>
                   </div>
                   <UserCheck size={16} className="text-zinc-700 shrink-0" />
                 </button>
               ))
             ) : (
               <div className="py-12 text-center opacity-50">
-                <p className="text-xs text-zinc-500">Nenhum seguidor encontrado.</p>
+                <p className="text-xs text-zinc-400">Nenhum seguidor encontrado.</p>
               </div>
             )}
             {!followerSearch && filteredFollowers.length > 0 && (
               <div className="py-8 text-center">
-                <p className="text-[10px] text-zinc-600 italic">
+                <p className="text-[10px] text-zinc-400 italic">
                   Exibindo {filteredFollowers.length} de {followCount}
                 </p>
               </div>

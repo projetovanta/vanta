@@ -61,7 +61,7 @@ export const PromoterCotasView: React.FC<{
   if (!lista) {
     return (
       <div className="absolute inset-0 bg-[#0A0A0A] flex flex-col items-center justify-center gap-3">
-        <p className="text-zinc-500 text-sm">Lista não encontrada.</p>
+        <p className="text-zinc-400 text-sm">Lista não encontrada.</p>
         <button onClick={onBack} className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">
           Voltar
         </button>
@@ -81,24 +81,24 @@ export const PromoterCotasView: React.FC<{
             <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic truncate">
               {lista.eventoNome}
             </h1>
-            <p className="text-zinc-600 text-[10px] mt-1 truncate">{lista.eventoLocal}</p>
+            <p className="text-zinc-400 text-[10px] mt-1 truncate">{lista.eventoLocal}</p>
           </div>
           <div className="flex items-center gap-2 shrink-0 ml-2">
-            <button
+            <button aria-label="Baixar"
               onClick={handleExportCSV}
               className="w-9 h-9 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
               title="CSV"
             >
               <Download size={14} className="text-zinc-400" />
             </button>
-            <button
+            <button aria-label="Documento"
               onClick={handleExportPDF}
               className="w-9 h-9 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
               title="PDF"
             >
               <FileText size={14} className="text-zinc-400" />
             </button>
-            <button
+            <button aria-label="Voltar"
               onClick={onBack}
               className="w-9 h-9 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
             >
@@ -111,7 +111,7 @@ export const PromoterCotasView: React.FC<{
       <div className="flex-1 overflow-y-auto no-scrollbar p-5 space-y-4">
         {/* Tabela de cotas por regra */}
         <div>
-          <p className="text-[9px] text-zinc-500 font-black uppercase tracking-widest mb-2">Cotas por Regra</p>
+          <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest mb-2">Cotas por Regra</p>
           <div className="bg-zinc-900/50 border border-white/5 rounded-xl overflow-hidden">
             <div className="grid grid-cols-[1fr_auto_auto_auto] gap-x-3 px-4 py-2 border-b border-white/5">
               <p className="text-[7px] text-zinc-700 font-black uppercase tracking-widest">Regra</p>
@@ -131,10 +131,10 @@ export const PromoterCotasView: React.FC<{
                     className="grid grid-cols-[1fr_auto_auto_auto] gap-x-3 px-4 py-2.5 border-b border-white/[0.02] last:border-0"
                   >
                     <p className="text-zinc-300 text-xs truncate">{regra?.label ?? cota.regraId}</p>
-                    <p className="text-zinc-500 text-xs text-right tabular-nums w-10">{cota.alocado}</p>
+                    <p className="text-zinc-400 text-xs text-right tabular-nums w-10">{cota.alocado}</p>
                     <p className="text-white text-xs font-bold text-right tabular-nums w-10">{cota.usado}</p>
                     <p
-                      className={`text-xs font-bold text-right tabular-nums w-10 ${saldo > 0 ? 'text-emerald-400' : 'text-zinc-600'}`}
+                      className={`text-xs font-bold text-right tabular-nums w-10 ${saldo > 0 ? 'text-emerald-400' : 'text-zinc-400'}`}
                     >
                       {saldo}
                     </p>
@@ -147,7 +147,7 @@ export const PromoterCotasView: React.FC<{
 
         {/* Lista de convidados */}
         <div>
-          <p className="text-[9px] text-zinc-500 font-black uppercase tracking-widest mb-2">
+          <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest mb-2">
             Convidados ({meusConvidados.length})
           </p>
           {meusConvidados.length === 0 ? (
@@ -161,11 +161,11 @@ export const PromoterCotasView: React.FC<{
                 >
                   <div className="flex-1 min-w-0">
                     <p className="text-white text-xs font-bold truncate">{c.nome}</p>
-                    <p className="text-zinc-600 text-[9px] truncate">{c.regraLabel}</p>
+                    <p className="text-zinc-400 text-[9px] truncate">{c.regraLabel}</p>
                   </div>
                   <span
                     className={`text-[7px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full shrink-0 ${
-                      c.checkedIn ? 'bg-emerald-500/15 text-emerald-400' : 'bg-zinc-800 text-zinc-600'
+                      c.checkedIn ? 'bg-emerald-500/15 text-emerald-400' : 'bg-zinc-800 text-zinc-400'
                     }`}
                   >
                     {c.checkedIn ? 'Entrou' : 'Pendente'}

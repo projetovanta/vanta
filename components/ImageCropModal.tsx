@@ -184,7 +184,7 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
           style={{ paddingTop: '2.5rem' }}
         >
           <div>
-            <p className="text-[9px] text-zinc-600 font-black uppercase tracking-widest mb-0.5">Ajustar {label}</p>
+            <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest mb-0.5">Ajustar {label}</p>
             {dimLabel && (
               <p className="text-[9px] text-[#FFD300]/80 font-black uppercase tracking-widest">{dimLabel}</p>
             )}
@@ -255,7 +255,7 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
           </div>
 
           {perfectFit && (
-            <button
+            <button aria-label="Confirmar"
               onClick={handleUseOriginal}
               disabled={confirming}
               className="w-full py-4 bg-emerald-600 text-white font-bold text-[10px] uppercase tracking-[0.25em] rounded-xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all disabled:opacity-40 mb-2"
@@ -265,7 +265,7 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
             </button>
           )}
 
-          <button
+          <button aria-label="Confirmar"
             onClick={handleConfirm}
             disabled={confirming || !croppedArea}
             className="w-full py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-[0.25em] rounded-xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all disabled:opacity-40"

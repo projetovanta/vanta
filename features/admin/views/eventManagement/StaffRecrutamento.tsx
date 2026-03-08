@@ -42,7 +42,7 @@ const StaffCard: React.FC<{
       {profile.foto ? (
         <img loading="lazy" src={profile.foto} alt={profile.nome} className="w-full h-full object-cover" />
       ) : (
-        <div className="w-full h-full flex items-center justify-center text-zinc-500 text-xs font-bold">
+        <div className="w-full h-full flex items-center justify-center text-zinc-400 text-xs font-bold">
           {profile.nome.charAt(0)}
         </div>
       )}
@@ -154,7 +154,7 @@ export const StaffRecrutamento: React.FC<{
   if (loading) {
     return (
       <div className="flex items-center justify-center py-10 gap-2">
-        <Loader2 size={16} className="animate-spin text-zinc-600" />
+        <Loader2 size={16} className="animate-spin text-zinc-400" />
         <p className="text-zinc-700 text-[10px] font-black uppercase tracking-widest">Carregando staff...</p>
       </div>
     );
@@ -184,8 +184,8 @@ export const StaffRecrutamento: React.FC<{
         return (
           <div key={cargo}>
             <div className="flex items-center gap-2 mb-3">
-              <Icon size={13} className="text-zinc-500" />
-              <p className="text-[9px] text-zinc-500 font-black uppercase tracking-widest">{label}</p>
+              <Icon size={13} className="text-zinc-400" />
+              <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest">{label}</p>
             </div>
 
             {/* Recrutados */}
@@ -209,7 +209,7 @@ export const StaffRecrutamento: React.FC<{
             {/* Elegíveis */}
             {elegiveis.length > 0 && (
               <div className="space-y-2">
-                <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest ml-1">
+                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest ml-1">
                   Elegíveis ({elegiveis.length})
                 </p>
                 {elegiveis.map(a => (

@@ -27,7 +27,7 @@ export const TabRelatorio: React.FC<{ eventoAdminId: string }> = ({ eventoAdminI
     return (
       <div className="flex flex-col items-center justify-center py-20 gap-3">
         <div className="w-6 h-6 border-2 border-[#FFD300] border-t-transparent rounded-full animate-spin" />
-        <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest">Gerando relatório...</p>
+        <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">Gerando relatório...</p>
       </div>
     );
   }
@@ -76,14 +76,14 @@ export const TabRelatorio: React.FC<{ eventoAdminId: string }> = ({ eventoAdminI
       {/* Header */}
       <div className="flex items-center gap-2">
         <FileText size={14} className="text-[#FFD300] print:text-black" />
-        <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest print:text-gray-600">
+        <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest print:text-gray-600">
           Relatório Pós-Evento
         </p>
       </div>
 
       <div className="p-4 bg-zinc-900/40 border border-white/5 rounded-2xl print:bg-gray-50 print:border-gray-200">
         <h2 className="text-white font-bold text-lg truncate print:text-black">{rel.eventoNome}</h2>
-        <p className="text-zinc-500 text-[10px] mt-1 print:text-gray-500">
+        <p className="text-zinc-400 text-[10px] mt-1 print:text-gray-500">
           {new Date(rel.dataInicio).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}
           {' · '}
           {rel.local}
@@ -102,7 +102,7 @@ export const TabRelatorio: React.FC<{ eventoAdminId: string }> = ({ eventoAdminI
             key={k.label}
             className="p-4 bg-zinc-900/40 border border-white/5 rounded-2xl print:bg-gray-50 print:border-gray-200"
           >
-            <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest print:text-gray-500">
+            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest print:text-gray-500">
               {k.label}
             </p>
             <p className={`font-black text-xl leading-none mt-2 ${k.cor}`}>{k.valor}</p>
@@ -112,7 +112,7 @@ export const TabRelatorio: React.FC<{ eventoAdminId: string }> = ({ eventoAdminI
 
       {/* Ticket Médio */}
       <div className="p-4 bg-zinc-900/40 border border-white/5 rounded-2xl flex items-center justify-between print:bg-gray-50 print:border-gray-200">
-        <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest print:text-gray-500">
+        <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest print:text-gray-500">
           Ticket Médio
         </p>
         <p className="text-[#FFD300] font-black text-lg print:text-black">{fmtBRL(rel.ticketMedio)}</p>
@@ -128,7 +128,7 @@ export const TabRelatorio: React.FC<{ eventoAdminId: string }> = ({ eventoAdminI
             key={o.label}
             className="p-3 bg-zinc-900/40 border border-white/5 rounded-2xl space-y-1.5 print:bg-gray-50 print:border-gray-200"
           >
-            <p className="text-zinc-500 text-[9px] font-bold uppercase tracking-wider print:text-gray-500">{o.label}</p>
+            <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider print:text-gray-500">{o.label}</p>
             <p className="text-white font-black text-lg leading-none print:text-black">{o.vendas}</p>
             <div className="w-full h-1 bg-zinc-800 rounded-full overflow-hidden print:bg-gray-300">
               <div
@@ -144,7 +144,7 @@ export const TabRelatorio: React.FC<{ eventoAdminId: string }> = ({ eventoAdminI
       {/* Gráfico de Pizza — Receita por Variação */}
       {fatiasVariacao.length > 0 && (
         <div className="p-5 bg-zinc-900/40 border border-white/5 rounded-2xl print:bg-gray-50 print:border-gray-200">
-          <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest mb-4 print:text-gray-500">
+          <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mb-4 print:text-gray-500">
             Distribuição de Receita
           </p>
           <VantaPieChart
@@ -157,7 +157,7 @@ export const TabRelatorio: React.FC<{ eventoAdminId: string }> = ({ eventoAdminI
 
       {/* Check-ins */}
       <div className="p-5 bg-zinc-900/40 border border-white/5 rounded-2xl print:bg-gray-50 print:border-gray-200">
-        <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest mb-3 print:text-gray-500">
+        <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mb-3 print:text-gray-500">
           Check-ins
         </p>
         <div className="flex items-end justify-between mb-3">
@@ -165,7 +165,7 @@ export const TabRelatorio: React.FC<{ eventoAdminId: string }> = ({ eventoAdminI
             <span className="text-emerald-400 font-black text-4xl leading-none print:text-green-600">
               {rel.totalCheckins}
             </span>
-            <span className="text-zinc-600 text-xl font-light print:text-gray-400">/{rel.totalVendidos}</span>
+            <span className="text-zinc-400 text-xl font-light print:text-gray-400">/{rel.totalVendidos}</span>
           </div>
           <span className="text-white font-black text-2xl leading-none print:text-black">{rel.taxaConversao}%</span>
         </div>
@@ -178,13 +178,13 @@ export const TabRelatorio: React.FC<{ eventoAdminId: string }> = ({ eventoAdminI
         <div className="flex gap-5">
           <div className="flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-emerald-500" />
-            <span className="text-zinc-500 text-[9px] font-black uppercase tracking-widest print:text-gray-500">
+            <span className="text-zinc-400 text-[9px] font-black uppercase tracking-widest print:text-gray-500">
               Entraram · {rel.totalCheckins}
             </span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-zinc-700 print:bg-gray-400" />
-            <span className="text-zinc-500 text-[9px] font-black uppercase tracking-widest print:text-gray-500">
+            <span className="text-zinc-400 text-[9px] font-black uppercase tracking-widest print:text-gray-500">
               Não foram · {rel.totalVendidos - rel.totalCheckins}
             </span>
           </div>
@@ -194,7 +194,7 @@ export const TabRelatorio: React.FC<{ eventoAdminId: string }> = ({ eventoAdminI
       {/* Cortesias */}
       {rel.cortesiasEnviadas > 0 && (
         <div className="p-4 bg-zinc-900/40 border border-white/5 rounded-2xl flex items-center justify-between print:bg-gray-50 print:border-gray-200">
-          <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest print:text-gray-500">
+          <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest print:text-gray-500">
             Cortesias Enviadas
           </p>
           <p className="text-pink-400 font-black text-lg print:text-pink-600">{rel.cortesiasEnviadas}</p>
@@ -205,7 +205,7 @@ export const TabRelatorio: React.FC<{ eventoAdminId: string }> = ({ eventoAdminI
       {rel.totalReembolsos > 0 && (
         <div className="grid grid-cols-2 gap-2">
           <div className="p-4 bg-zinc-900/40 border border-white/5 rounded-2xl print:bg-gray-50 print:border-gray-200">
-            <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest print:text-gray-500">
+            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest print:text-gray-500">
               Reembolsos Solicitados
             </p>
             <p className="font-black text-xl leading-none mt-2 text-orange-400 print:text-orange-600">
@@ -213,7 +213,7 @@ export const TabRelatorio: React.FC<{ eventoAdminId: string }> = ({ eventoAdminI
             </p>
           </div>
           <div className="p-4 bg-zinc-900/40 border border-white/5 rounded-2xl print:bg-gray-50 print:border-gray-200">
-            <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest print:text-gray-500">
+            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest print:text-gray-500">
               Aprovados
             </p>
             <p className="font-black text-xl leading-none mt-2 text-emerald-400 print:text-green-600">
@@ -225,7 +225,7 @@ export const TabRelatorio: React.FC<{ eventoAdminId: string }> = ({ eventoAdminI
 
       {/* Reviews */}
       <div className="p-5 bg-zinc-900/40 border border-white/5 rounded-2xl print:bg-gray-50 print:border-gray-200">
-        <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest mb-3 print:text-gray-500">
+        <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mb-3 print:text-gray-500">
           Avaliações
         </p>
         {rel.reviewCount > 0 ? (
@@ -240,7 +240,7 @@ export const TabRelatorio: React.FC<{ eventoAdminId: string }> = ({ eventoAdminI
               ))}
             </div>
             <span className="text-white font-black text-lg print:text-black">{rel.reviewMedia}</span>
-            <span className="text-zinc-600 text-[9px] font-black print:text-gray-500">
+            <span className="text-zinc-400 text-[9px] font-black print:text-gray-500">
               ({rel.reviewCount} avaliações)
             </span>
           </div>
@@ -253,7 +253,7 @@ export const TabRelatorio: React.FC<{ eventoAdminId: string }> = ({ eventoAdminI
 
       {/* Financeiro */}
       <div className="p-5 bg-zinc-900/40 border border-white/5 rounded-2xl space-y-2 print:bg-gray-50 print:border-gray-200">
-        <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest mb-2 print:text-gray-500">
+        <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mb-2 print:text-gray-500">
           Resumo Financeiro
         </p>
         <div className="flex justify-between items-center">

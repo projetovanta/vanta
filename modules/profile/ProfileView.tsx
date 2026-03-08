@@ -296,7 +296,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
           </h1>
 
           {/* Membro desde (ou fallback) */}
-          <p className="text-zinc-500 text-[9px] font-black uppercase tracking-[0.3em] mb-2 opacity-60">
+          <p className="text-zinc-400 text-[9px] font-black uppercase tracking-[0.3em] mb-2 opacity-60">
             {membroDesde ? `Membro desde ${membroDesde}` : 'Membro Confirmado'}
           </p>
 
@@ -314,7 +314,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                 {moodEmoji} <span className="text-zinc-300 text-[10px]">{moodText || ''}</span>
               </span>
             ) : (
-              <span className="text-zinc-600 text-[10px]">+ Definir mood</span>
+              <span className="text-zinc-400 text-[10px]">+ Definir mood</span>
             )}
           </button>
 
@@ -360,7 +360,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                 </div>
                 <div className="text-left min-w-0 w-full">
                   <span className="block text-sm font-bold text-white leading-none mb-1 truncate">Minha Carteira</span>
-                  <span className="text-[9px] text-zinc-500 font-black uppercase tracking-widest opacity-80">
+                  <span className="text-[9px] text-zinc-400 font-black uppercase tracking-widest opacity-80">
                     {totalAccess === 0 ? 'Nenhum item' : `${totalAccess} Acessos`}
                   </span>
                 </div>
@@ -412,14 +412,14 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
             </div>
             <button
               onClick={() => setSubView('HISTORICO')}
-              className="w-full bg-black/40 border border-white/5 rounded-xl py-3 flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-[0.25em] text-zinc-600 hover:text-white transition-all active:scale-95 shadow-inner"
+              className="w-full bg-black/40 border border-white/5 rounded-xl py-3 flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-[0.25em] text-zinc-400 hover:text-white transition-all active:scale-95 shadow-inner"
             >
               <Clock size={12} className="text-[#FFD300]" />
               Meu Histórico
             </button>
             <button
               onClick={() => setSubView('MINHAS_SOLICITACOES')}
-              className="w-full bg-black/40 border border-white/5 rounded-xl py-3 flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-[0.25em] text-zinc-600 hover:text-white transition-all active:scale-95 shadow-inner"
+              className="w-full bg-black/40 border border-white/5 rounded-xl py-3 flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-[0.25em] text-zinc-400 hover:text-white transition-all active:scale-95 shadow-inner"
             >
               <ScrollText size={12} className="text-purple-400" />
               Minhas Solicitações
@@ -431,7 +431,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                     onAdminClick();
                     onClearAdminGuide?.();
                   }}
-                  className="w-full bg-black/40 border border-purple-500/20 rounded-xl py-3 flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-[0.25em] text-zinc-600 active:text-white transition-all active:scale-95 shadow-inner"
+                  className="w-full bg-black/40 border border-purple-500/20 rounded-xl py-3 flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-[0.25em] text-zinc-400 active:text-white transition-all active:scale-95 shadow-inner"
                 >
                   <Building2 size={12} className="text-purple-400" />
                   {role === 'vanta_masteradm'
@@ -484,7 +484,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                 <span className="text-sm text-white/90 truncate">{item.label}</span>
               </div>
               <div className="flex items-center gap-2 shrink-0">
-                {item.value && <span className="text-[10px] text-zinc-600 max-w-[120px] truncate">{item.value}</span>}
+                {item.value && <span className="text-[10px] text-zinc-400 max-w-[120px] truncate">{item.value}</span>}
                 <ChevronRight size={14} className="text-zinc-700" />
               </div>
             </button>
@@ -503,7 +503,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
               </div>
               <div className="min-w-0">
                 <p className="text-[#FFD300] text-xs font-bold">Quero ser parceiro VANTA</p>
-                <p className="text-zinc-500 text-[10px] mt-0.5">É dono de um espaço ou produtora?</p>
+                <p className="text-zinc-400 text-[10px] mt-0.5">É dono de um espaço ou produtora?</p>
               </div>
               <ChevronRight size={14} className="text-[#FFD300]/50 shrink-0" />
             </div>
@@ -544,7 +544,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
           >
             <button
               onClick={() => setShowPinReset(false)}
-              className="absolute top-5 right-5 p-1.5 text-zinc-600 active:text-white"
+              className="absolute top-5 right-5 p-1.5 text-zinc-400 active:text-white"
             >
               <X size={16} />
             </button>
@@ -594,7 +594,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                 setShowChangePassword(false);
                 setPasswordError('');
               }}
-              className="absolute top-5 right-5 p-1.5 text-zinc-600 active:text-white"
+              className="absolute top-5 right-5 p-1.5 text-zinc-400 active:text-white"
             >
               <X size={16} />
             </button>
@@ -611,25 +611,25 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                 placeholder="Senha atual"
                 value={passwordForm.current}
                 onChange={e => setPasswordForm(p => ({ ...p, current: e.target.value }))}
-                className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-[#FFD300]/30"
+                className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/30"
               />
               <input
                 type="password"
                 placeholder="Nova senha (mín. 6 caracteres)"
                 value={passwordForm.next}
                 onChange={e => setPasswordForm(p => ({ ...p, next: e.target.value }))}
-                className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-[#FFD300]/30"
+                className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/30"
               />
               <input
                 type="password"
                 placeholder="Confirmar nova senha"
                 value={passwordForm.confirm}
                 onChange={e => setPasswordForm(p => ({ ...p, confirm: e.target.value }))}
-                className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-[#FFD300]/30"
+                className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/30"
               />
               {passwordError && <p className="text-red-400 text-[11px] font-medium">{passwordError}</p>}
             </div>
-            <button
+            <button aria-label="Carregando"
               onClick={handleChangePassword}
               disabled={passwordLoading || !passwordForm.current || !passwordForm.next}
               className="w-full py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-[0.2em] rounded-xl shadow-xl active:scale-95 transition-all disabled:opacity-40 flex items-center justify-center gap-2"
@@ -661,7 +661,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
               Esta ação é <strong className="text-red-400">permanente e irreversível</strong>. Todos os seus dados,
               ingressos, histórico e benefícios serão perdidos.
             </p>
-            <p className="text-zinc-500 text-[11px] mb-6">
+            <p className="text-zinc-400 text-[11px] mb-6">
               Digite <strong className="text-white">EXCLUIR</strong> para confirmar.
             </p>
             <input
@@ -672,7 +672,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
               className="w-full bg-zinc-900 border border-red-500/20 rounded-xl px-4 py-3 text-white text-sm text-center placeholder:text-zinc-700 focus:outline-none focus:border-red-500/40 mb-6"
             />
             <div className="space-y-3">
-              <button
+              <button aria-label="Carregando"
                 onClick={handleDeleteAccount}
                 disabled={deleteConfirmText !== 'EXCLUIR' || isDeleting}
                 className="w-full py-4 bg-red-600 text-white font-bold text-[10px] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all disabled:opacity-30 flex items-center justify-center gap-2"

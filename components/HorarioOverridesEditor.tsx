@@ -4,7 +4,7 @@ import type { HorarioOverride } from '../types';
 
 const inputCls =
   'w-full bg-zinc-900/60 border border-white/5 rounded-lg px-2 py-1.5 text-white text-xs outline-none focus:border-[#FFD300]/30';
-const labelCls = 'text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1.5 block';
+const labelCls = 'text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block';
 
 export const HorarioOverridesEditor: React.FC<{
   overrides: HorarioOverride[];
@@ -72,7 +72,7 @@ export const HorarioOverridesEditor: React.FC<{
                   onChange={e => update(idx, 'abertura', e.target.value)}
                   className={inputCls + ' flex-1 min-w-0 text-center'}
                 />
-                <span className="text-zinc-600 text-[10px] shrink-0">às</span>
+                <span className="text-zinc-400 text-[10px] shrink-0">às</span>
                 <input
                   type="time"
                   value={o.fechamento ?? '02:00'}
@@ -96,7 +96,7 @@ export const HorarioOverridesEditor: React.FC<{
       <button
         type="button"
         onClick={add}
-        className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-dashed border-white/10 text-zinc-500 text-[10px] font-bold uppercase tracking-wider hover:border-[#FFD300]/30 hover:text-[#FFD300]/70 transition-colors"
+        className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-dashed border-white/10 text-zinc-400 text-[10px] font-bold uppercase tracking-wider hover:border-[#FFD300]/30 hover:text-[#FFD300]/70 transition-colors"
       >
         <Plus size={12} /> Adicionar exceção
       </button>

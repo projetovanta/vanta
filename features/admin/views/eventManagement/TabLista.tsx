@@ -101,17 +101,17 @@ export const TabLista: React.FC<{
         <div className="flex items-center p-4 bg-zinc-900/80 border border-white/5 rounded-2xl backdrop-blur-sm gap-3">
           <div className="text-center flex-1">
             <p className="text-white font-black text-2xl leading-none">{filtrados.length}</p>
-            <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest mt-0.5">na lista</p>
+            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mt-0.5">na lista</p>
           </div>
           <div className="w-px h-8 bg-white/5 shrink-0" />
           <div className="text-center flex-1">
             <p className="text-emerald-400 font-black text-2xl leading-none">{dentroCount}</p>
-            <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest mt-0.5">dentro</p>
+            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mt-0.5">dentro</p>
           </div>
           <div className="w-px h-8 bg-white/5 shrink-0" />
           <div className="text-center flex-1">
             <p className="text-zinc-400 font-black text-2xl leading-none">{filtrados.length - dentroCount}</p>
-            <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest mt-0.5">aguardando</p>
+            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mt-0.5">aguardando</p>
           </div>
         </div>
         {/* Badge de conectividade */}
@@ -141,7 +141,7 @@ export const TabLista: React.FC<{
 
       {/* Search Bar */}
       <div className="relative">
-        <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-600 pointer-events-none" />
+        <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none" />
         <input
           value={search}
           onChange={e => setSearch(e.target.value)}
@@ -151,7 +151,7 @@ export const TabLista: React.FC<{
         {search && (
           <button
             onClick={() => setSearch('')}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-600 active:text-white transition-all"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 active:text-white transition-all"
           >
             <X size={13} />
           </button>
@@ -160,7 +160,7 @@ export const TabLista: React.FC<{
 
       {/* Formulário de inserção */}
       <div className="p-4 bg-zinc-900/40 border border-white/5 rounded-2xl space-y-3">
-        <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest">Inserir convidado</p>
+        <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">Inserir convidado</p>
 
         {/* Pills de categoria */}
         <div className="flex gap-1.5 flex-wrap">
@@ -183,7 +183,7 @@ export const TabLista: React.FC<{
                     R${r.valor}
                   </span>
                 )}
-                <span className={`text-[8px] font-black ${ativo ? 'text-black/60' : 'text-zinc-600'}`}>·{saldo}</span>
+                <span className={`text-[8px] font-black ${ativo ? 'text-black/60' : 'text-zinc-400'}`}>·{saldo}</span>
               </button>
             );
           })}
@@ -222,9 +222,9 @@ export const TabLista: React.FC<{
           <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">Meus Convidados</p>
           <p className="text-white text-[10px] font-black">
             <span className="text-emerald-400">{meusEntrar}</span>
-            <span className="text-zinc-600"> de </span>
+            <span className="text-zinc-400"> de </span>
             <span>{meusTotais.length}</span>
-            <span className="text-zinc-600"> entraram</span>
+            <span className="text-zinc-400"> entraram</span>
           </p>
         </div>
       )}
@@ -260,7 +260,7 @@ export const TabLista: React.FC<{
               {/* Avatar inicial */}
               <div
                 className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 font-black text-base transition-all ${
-                  dentro ? 'bg-zinc-800/50 text-zinc-600' : 'bg-zinc-800 text-zinc-300'
+                  dentro ? 'bg-zinc-800/50 text-zinc-400' : 'bg-zinc-800 text-zinc-300'
                 }`}
               >
                 {c.nome.charAt(0).toUpperCase()}
@@ -268,17 +268,17 @@ export const TabLista: React.FC<{
 
               {/* Dados */}
               <div className="flex-1 min-w-0 space-y-0.5">
-                <p className={`font-bold text-sm leading-none truncate ${dentro ? 'text-zinc-500' : 'text-white'}`}>
+                <p className={`font-bold text-sm leading-none truncate ${dentro ? 'text-zinc-400' : 'text-white'}`}>
                   {c.nome}
                 </p>
                 <div className="flex items-center gap-1.5 flex-wrap">
                   {/* Inserido por */}
-                  <p className="text-zinc-600 text-[9px] truncate">via {c.inseridoPorNome}</p>
+                  <p className="text-zinc-400 text-[9px] truncate">via {c.inseridoPorNome}</p>
                   {/* Variação / regra */}
                   <span
                     style={cor ? { backgroundColor: cor + '15', borderColor: cor + '30', color: cor } : {}}
                     className={`text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full border ${
-                      cor ? '' : 'bg-zinc-900 text-zinc-500 border-white/5'
+                      cor ? '' : 'bg-zinc-900 text-zinc-400 border-white/5'
                     }`}
                   >
                     {c.regraLabel}

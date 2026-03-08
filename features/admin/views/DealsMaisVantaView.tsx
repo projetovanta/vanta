@@ -119,7 +119,7 @@ export const DealsMaisVantaView: React.FC = () => {
       RASCUNHO: { bg: 'bg-zinc-700/50', text: 'text-zinc-400' },
       PAUSADO: { bg: 'bg-yellow-500/20', text: 'text-yellow-400' },
       ENCERRADO: { bg: 'bg-red-500/20', text: 'text-red-400' },
-      EXPIRADO: { bg: 'bg-zinc-700/50', text: 'text-zinc-500' },
+      EXPIRADO: { bg: 'bg-zinc-700/50', text: 'text-zinc-400' },
       APLICADO: { bg: 'bg-blue-500/20', text: 'text-blue-400' },
       SELECIONADO: { bg: 'bg-[#FFD300]/20', text: 'text-[#FFD300]' },
       RECUSADO: { bg: 'bg-red-500/20', text: 'text-red-400' },
@@ -127,7 +127,7 @@ export const DealsMaisVantaView: React.FC = () => {
       PENDENTE_POST: { bg: 'bg-orange-500/20', text: 'text-orange-400' },
       CONCLUIDO: { bg: 'bg-green-500/20', text: 'text-green-400' },
       NO_SHOW: { bg: 'bg-red-500/20', text: 'text-red-400' },
-      CANCELADO: { bg: 'bg-zinc-700/50', text: 'text-zinc-500' },
+      CANCELADO: { bg: 'bg-zinc-700/50', text: 'text-zinc-400' },
     };
     const s = map[status] ?? { bg: 'bg-zinc-700/50', text: 'text-zinc-400' };
     return (
@@ -151,7 +151,7 @@ export const DealsMaisVantaView: React.FC = () => {
           </button>
           <div className="flex-1 min-w-0">
             <p className="text-white text-sm font-bold truncate">{deal?.titulo ?? 'Deal'}</p>
-            <p className="text-zinc-500 text-[10px]">
+            <p className="text-zinc-400 text-[10px]">
               {deal?.parceiroNome} · {deal?.cidadeNome}
             </p>
           </div>
@@ -165,15 +165,15 @@ export const DealsMaisVantaView: React.FC = () => {
               <p className="text-white text-lg font-bold">
                 {deal.vagasPreenchidas}/{deal.vagas}
               </p>
-              <p className="text-zinc-500 text-[9px] uppercase">Vagas</p>
+              <p className="text-zinc-400 text-[9px] uppercase">Vagas</p>
             </div>
             <div className="flex-1 bg-zinc-900/60 border border-white/5 rounded-xl p-3 text-center">
               <p className="text-white text-lg font-bold">{resgates.length}</p>
-              <p className="text-zinc-500 text-[9px] uppercase">Candidatos</p>
+              <p className="text-zinc-400 text-[9px] uppercase">Candidatos</p>
             </div>
             <div className="flex-1 bg-zinc-900/60 border border-white/5 rounded-xl p-3 text-center">
               <p className="text-[#FFD300] text-lg font-bold">{deal.tipo}</p>
-              <p className="text-zinc-500 text-[9px] uppercase">Tipo</p>
+              <p className="text-zinc-400 text-[9px] uppercase">Tipo</p>
             </div>
           </div>
         )}
@@ -186,7 +186,7 @@ export const DealsMaisVantaView: React.FC = () => {
         ) : resgates.length === 0 ? (
           <div className="text-center py-8">
             <Users size={24} className="text-zinc-700 mx-auto mb-2" />
-            <p className="text-zinc-500 text-xs">Nenhum candidato ainda</p>
+            <p className="text-zinc-400 text-xs">Nenhum candidato ainda</p>
           </div>
         ) : (
           <div className="space-y-2">
@@ -198,7 +198,7 @@ export const DealsMaisVantaView: React.FC = () => {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-white text-sm font-semibold truncate">{r.userName ?? 'Membro'}</p>
-                    {r.userInstagram && <p className="text-zinc-500 text-[10px]">@{r.userInstagram}</p>}
+                    {r.userInstagram && <p className="text-zinc-400 text-[10px]">@{r.userInstagram}</p>}
                   </div>
                   {statusBadge(r.status)}
                 </div>
@@ -273,7 +273,7 @@ export const DealsMaisVantaView: React.FC = () => {
             key={t}
             onClick={() => setTab(t)}
             className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider border transition-all ${
-              tab === t ? 'bg-[#FFD300] text-black border-transparent' : 'bg-zinc-900/60 text-zinc-500 border-white/5'
+              tab === t ? 'bg-[#FFD300] text-black border-transparent' : 'bg-zinc-900/60 text-zinc-400 border-white/5'
             }`}
           >
             {t}
@@ -302,19 +302,19 @@ export const DealsMaisVantaView: React.FC = () => {
             value={titulo}
             onChange={e => setTitulo(e.target.value)}
             placeholder="Título (ex: VIP + Open Bar)"
-            className="w-full bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-[#FFD300]/50"
+            className="w-full bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/50"
           />
 
           <textarea
             value={descricao}
             onChange={e => setDescricao(e.target.value)}
             placeholder="Descrição do deal"
-            className="w-full bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-[#FFD300]/50 min-h-[60px] resize-none"
+            className="w-full bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/50 min-h-[60px] resize-none"
           />
 
           {/* Parceiro */}
           <div>
-            <p className="text-zinc-500 text-[10px] font-bold uppercase tracking-wider mb-1">Parceiro</p>
+            <p className="text-zinc-400 text-[10px] font-bold uppercase tracking-wider mb-1">Parceiro</p>
             <div className="flex flex-wrap gap-1.5">
               {parceiros.map(p => (
                 <button
@@ -326,7 +326,7 @@ export const DealsMaisVantaView: React.FC = () => {
                   className={`px-2.5 py-1 rounded-lg text-[9px] font-bold border transition-all ${
                     parceiroId === p.id
                       ? 'bg-[#FFD300] text-black border-transparent'
-                      : 'bg-zinc-800 text-zinc-500 border-white/5'
+                      : 'bg-zinc-800 text-zinc-400 border-white/5'
                   }`}
                 >
                   {p.nome}
@@ -342,7 +342,7 @@ export const DealsMaisVantaView: React.FC = () => {
                 key={t}
                 onClick={() => setTipo(t)}
                 className={`flex-1 py-2 rounded-lg text-[10px] font-black uppercase tracking-wider border transition-all ${
-                  tipo === t ? 'bg-[#FFD300] text-black border-transparent' : 'bg-zinc-800 text-zinc-500 border-white/5'
+                  tipo === t ? 'bg-[#FFD300] text-black border-transparent' : 'bg-zinc-800 text-zinc-400 border-white/5'
                 }`}
               >
                 {t}
@@ -355,7 +355,7 @@ export const DealsMaisVantaView: React.FC = () => {
               value={obrigacao}
               onChange={e => setObrigacao(e.target.value)}
               placeholder="Obrigação (ex: 1 story + 1 post)"
-              className="w-full bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-[#FFD300]/50"
+              className="w-full bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/50"
             />
           )}
           {tipo === 'DESCONTO' && (
@@ -366,7 +366,7 @@ export const DealsMaisVantaView: React.FC = () => {
               type="number"
               min="1"
               max="100"
-              className="w-full bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-[#FFD300]/50"
+              className="w-full bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/50"
             />
           )}
 
@@ -376,7 +376,7 @@ export const DealsMaisVantaView: React.FC = () => {
             placeholder="Vagas"
             type="number"
             min="1"
-            className="w-full bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-[#FFD300]/50"
+            className="w-full bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/50"
           />
 
           <div className="flex gap-2">
@@ -407,7 +407,7 @@ export const DealsMaisVantaView: React.FC = () => {
       ) : deals.length === 0 ? (
         <div className="text-center py-12">
           <Ticket size={32} className="text-zinc-700 mx-auto mb-2" />
-          <p className="text-zinc-500 text-xs">Nenhum deal cadastrado</p>
+          <p className="text-zinc-400 text-xs">Nenhum deal cadastrado</p>
         </div>
       ) : (
         <div className="space-y-2">
@@ -423,7 +423,7 @@ export const DealsMaisVantaView: React.FC = () => {
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-white text-sm font-semibold truncate">{d.titulo}</p>
-                  <div className="flex items-center gap-2 text-[10px] text-zinc-500 mt-0.5">
+                  <div className="flex items-center gap-2 text-[10px] text-zinc-400 mt-0.5">
                     <span>{d.parceiroNome}</span>
                     <span className="flex items-center gap-0.5">
                       <MapPin size={9} />
@@ -434,14 +434,14 @@ export const DealsMaisVantaView: React.FC = () => {
                 </div>
                 <div className="flex flex-col items-end gap-1 shrink-0">
                   {statusBadge(d.status)}
-                  <div className="flex items-center gap-1 text-[10px] text-zinc-500">
+                  <div className="flex items-center gap-1 text-[10px] text-zinc-400">
                     <Users size={10} />
                     {d.vagasPreenchidas}/{d.vagas}
                   </div>
                 </div>
               </div>
               {d.obrigacaoBarter && (
-                <p className="text-zinc-600 text-[10px] mt-1.5 truncate">
+                <p className="text-zinc-400 text-[10px] mt-1.5 truncate">
                   <Clock size={9} className="inline mr-1" />
                   {d.obrigacaoBarter}
                 </p>

@@ -217,7 +217,7 @@ export const MinhasSolicitacoesView: React.FC<Props> = ({ onBack }) => {
               {step.key === 'APROVADA' && <CheckCircle size={10} />}
               {step.key === 'RECUSADA' && <XCircle size={10} />}
             </div>
-            <span className="text-[7px] text-zinc-500 text-center leading-tight w-12 truncate">
+            <span className="text-[7px] text-zinc-400 text-center leading-tight w-12 truncate">
               {step.reached && step.timestamp ? formatDate(step.timestamp) : step.label}
             </span>
           </div>
@@ -243,7 +243,7 @@ export const MinhasSolicitacoesView: React.FC<Props> = ({ onBack }) => {
         <div className="flex items-start justify-between gap-3">
           <div className="flex-1 min-w-0">
             <p className="text-white font-bold text-sm truncate">{sol.empresa}</p>
-            <p className="text-zinc-500 text-[10px] mt-0.5 truncate">
+            <p className="text-zinc-400 text-[10px] mt-0.5 truncate">
               {sol.data_evento || sol.data_estimativa || 'Data a definir'} · {sol.faixa_capacidade}
             </p>
           </div>
@@ -257,7 +257,7 @@ export const MinhasSolicitacoesView: React.FC<Props> = ({ onBack }) => {
         {renderTimeline(timeline)}
         {sol.mensagem_gerente && (
           <div className="flex items-start gap-2 bg-zinc-800/50 border border-white/5 rounded-xl p-3">
-            <MessageSquare size={12} className="text-zinc-500 shrink-0 mt-0.5" />
+            <MessageSquare size={12} className="text-zinc-400 shrink-0 mt-0.5" />
             <p className="text-zinc-300 text-xs leading-relaxed">{sol.mensagem_gerente}</p>
           </div>
         )}
@@ -289,7 +289,7 @@ export const MinhasSolicitacoesView: React.FC<Props> = ({ onBack }) => {
               {MOTIVO_LABEL[sol.motivo] ?? sol.motivo}
               {sol.motivo_outro ? `: ${sol.motivo_outro}` : ''}
             </p>
-            <p className="text-zinc-500 text-[10px] mt-0.5 truncate">{formatSimpleDate(sol.data_comemoracao)}</p>
+            <p className="text-zinc-400 text-[10px] mt-0.5 truncate">{formatSimpleDate(sol.data_comemoracao)}</p>
           </div>
           <div className="flex items-center gap-2 shrink-0">
             {sol.status === 'APROVADA' && (
@@ -311,7 +311,7 @@ export const MinhasSolicitacoesView: React.FC<Props> = ({ onBack }) => {
           <div className="flex items-center gap-2 bg-[#FFD300]/5 border border-[#FFD300]/20 rounded-xl p-3">
             <Link2 size={14} className="text-[#FFD300] shrink-0" />
             <div className="flex-1 min-w-0">
-              <p className="text-[9px] text-zinc-500 uppercase tracking-wider font-bold">Link de vendas</p>
+              <p className="text-[9px] text-zinc-400 uppercase tracking-wider font-bold">Link de vendas</p>
               <p className="text-xs text-[#FFD300] font-bold truncate">{sol.ref_code}</p>
             </div>
             <button
@@ -370,7 +370,7 @@ export const MinhasSolicitacoesView: React.FC<Props> = ({ onBack }) => {
                         className={`text-[8px] px-2 py-0.5 rounded-full font-bold ${
                           unlocked
                             ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/20'
-                            : 'bg-zinc-800 text-zinc-600 border border-white/5'
+                            : 'bg-zinc-800 text-zinc-400 border border-white/5'
                         }`}
                       >
                         {f.min_vendas}+ vendas → {f.cortesias} cortesia{f.cortesias !== 1 ? 's' : ''}
@@ -396,7 +396,7 @@ export const MinhasSolicitacoesView: React.FC<Props> = ({ onBack }) => {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-white text-xs font-bold">{c.nome_convidado}</p>
-                      {c.celular_convidado && <p className="text-zinc-500 text-[10px]">{c.celular_convidado}</p>}
+                      {c.celular_convidado && <p className="text-zinc-400 text-[10px]">{c.celular_convidado}</p>}
                     </div>
                     <div className="flex items-center gap-2">
                       {!c.resgatado && (
@@ -416,7 +416,7 @@ export const MinhasSolicitacoesView: React.FC<Props> = ({ onBack }) => {
                   </div>
                 ) : (
                   <div className="space-y-1.5">
-                    <p className="text-[9px] text-zinc-500">Insira o nome do convidado</p>
+                    <p className="text-[9px] text-zinc-400">Insira o nome do convidado</p>
                     <input
                       type="text"
                       value={cortesiaEdits[c.id]?.nome ?? ''}
@@ -427,7 +427,7 @@ export const MinhasSolicitacoesView: React.FC<Props> = ({ onBack }) => {
                         }))
                       }
                       placeholder="Nome"
-                      className="w-full bg-zinc-800/50 border border-white/10 rounded-lg py-2 px-2.5 text-xs text-white placeholder:text-zinc-600 focus:outline-none focus:border-emerald-500/50"
+                      className="w-full bg-zinc-800/50 border border-white/10 rounded-lg py-2 px-2.5 text-xs text-white placeholder:text-zinc-400 focus:outline-none focus:border-emerald-500/50"
                     />
                     <input
                       type="tel"
@@ -439,7 +439,7 @@ export const MinhasSolicitacoesView: React.FC<Props> = ({ onBack }) => {
                         }))
                       }
                       placeholder="Celular (opcional)"
-                      className="w-full bg-zinc-800/50 border border-white/10 rounded-lg py-2 px-2.5 text-xs text-white placeholder:text-zinc-600 focus:outline-none focus:border-emerald-500/50"
+                      className="w-full bg-zinc-800/50 border border-white/10 rounded-lg py-2 px-2.5 text-xs text-white placeholder:text-zinc-400 focus:outline-none focus:border-emerald-500/50"
                     />
                     <button
                       onClick={() => handleSaveCortesia(c.id, sol.id)}
@@ -457,7 +457,7 @@ export const MinhasSolicitacoesView: React.FC<Props> = ({ onBack }) => {
         )}
         {sol.mensagem_gerente && (
           <div className="flex items-start gap-2 bg-zinc-800/50 border border-white/5 rounded-xl p-3">
-            <MessageSquare size={12} className="text-zinc-500 shrink-0 mt-0.5" />
+            <MessageSquare size={12} className="text-zinc-400 shrink-0 mt-0.5" />
             <p className="text-zinc-300 text-xs leading-relaxed">{sol.mensagem_gerente}</p>
           </div>
         )}
@@ -477,7 +477,7 @@ export const MinhasSolicitacoesView: React.FC<Props> = ({ onBack }) => {
     <div className="absolute inset-0 flex flex-col bg-[#050505] overflow-hidden">
       {/* Header */}
       <div className="shrink-0 flex items-center gap-3 px-4 pt-[calc(env(safe-area-inset-top)+12px)] pb-3 border-b border-white/5">
-        <button
+        <button aria-label="Voltar"
           onClick={onBack}
           className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
         >
@@ -497,7 +497,7 @@ export const MinhasSolicitacoesView: React.FC<Props> = ({ onBack }) => {
             className={`shrink-0 flex items-center gap-1.5 px-3.5 py-2 rounded-full text-[10px] font-bold uppercase tracking-wider transition-all ${
               tab === t.id
                 ? 'bg-[#FFD300]/15 text-[#FFD300] border border-[#FFD300]/30'
-                : 'bg-zinc-900/50 text-zinc-500 border border-white/5'
+                : 'bg-zinc-900/50 text-zinc-400 border border-white/5'
             }`}
           >
             {t.icon}
@@ -505,7 +505,7 @@ export const MinhasSolicitacoesView: React.FC<Props> = ({ onBack }) => {
             {t.count > 0 && (
               <span
                 className={`ml-1 px-1.5 py-0.5 rounded-full text-[8px] font-black ${
-                  tab === t.id ? 'bg-[#FFD300]/20 text-[#FFD300]' : 'bg-zinc-800 text-zinc-500'
+                  tab === t.id ? 'bg-[#FFD300]/20 text-[#FFD300]' : 'bg-zinc-800 text-zinc-400'
                 }`}
               >
                 {t.count}
@@ -519,7 +519,7 @@ export const MinhasSolicitacoesView: React.FC<Props> = ({ onBack }) => {
       <div className="flex-1 overflow-y-auto no-scrollbar px-5 py-3 space-y-3">
         {loading ? (
           <div className="flex items-center justify-center py-16">
-            <Loader2 size={20} className="text-zinc-600 animate-spin" />
+            <Loader2 size={20} className="text-zinc-400 animate-spin" />
           </div>
         ) : items.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 gap-3">
@@ -530,7 +530,7 @@ export const MinhasSolicitacoesView: React.FC<Props> = ({ onBack }) => {
                 <Cake size={24} className="text-zinc-700" />
               )}
             </div>
-            <p className="text-zinc-500 text-sm">Nenhuma solicitação ainda</p>
+            <p className="text-zinc-400 text-sm">Nenhuma solicitação ainda</p>
           </div>
         ) : tab === 'PRIVADOS' ? (
           privados.map(renderPrivadoCard)
@@ -552,7 +552,7 @@ export const MinhasSolicitacoesView: React.FC<Props> = ({ onBack }) => {
             <div className="flex items-center justify-between">
               <h3 className="text-white font-bold text-sm">Voucher Cortesia</h3>
               <button onClick={() => setQrCortesia(null)} className="active:scale-90 transition-all">
-                <X size={18} className="text-zinc-500" />
+                <X size={18} className="text-zinc-400" />
               </button>
             </div>
             <div className="flex justify-center bg-white rounded-xl p-4">
@@ -560,7 +560,7 @@ export const MinhasSolicitacoesView: React.FC<Props> = ({ onBack }) => {
             </div>
             <div className="text-center">
               <p className="text-white font-bold text-sm">{qrCortesia.nome}</p>
-              <p className="text-zinc-500 text-[10px] mt-1">Apresente este QR na portaria</p>
+              <p className="text-zinc-400 text-[10px] mt-1">Apresente este QR na portaria</p>
             </div>
           </div>
         </div>

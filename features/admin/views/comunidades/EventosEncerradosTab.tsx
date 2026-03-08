@@ -45,7 +45,7 @@ export const EventosEncerradosTab: React.FC<{ comunidadeId: string }> = ({ comun
             >
               <div className="flex justify-between items-start mb-3">
                 <div className="flex-1 min-w-0 mr-3">
-                  <p className="text-zinc-500 text-[8px] font-black uppercase tracking-widest mb-0.5">
+                  <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mb-0.5">
                     {dataLabel} · Encerrado
                   </p>
                   <p className="text-zinc-300 font-bold text-sm leading-tight truncate">{e.nome}</p>
@@ -57,15 +57,15 @@ export const EventosEncerradosTab: React.FC<{ comunidadeId: string }> = ({ comun
               <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5">
                 <div className="bg-zinc-900 border border-white/5 rounded-xl p-3 text-center">
                   <p className="text-zinc-300 font-black text-lg leading-none">{totalVendidos}</p>
-                  <p className="text-zinc-500 text-[9px] font-bold uppercase tracking-wider mt-1">Ingressos</p>
+                  <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider mt-1">Ingressos</p>
                 </div>
                 <div className="bg-zinc-900 border border-white/5 rounded-xl p-3 text-center">
                   <p className="text-zinc-300 font-black text-lg leading-none">{totalLista}</p>
-                  <p className="text-zinc-500 text-[9px] font-bold uppercase tracking-wider mt-1">Na Lista</p>
+                  <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider mt-1">Na Lista</p>
                 </div>
                 <div className="bg-emerald-500/5 border border-emerald-500/10 rounded-xl p-3 text-center">
                   <p className="text-emerald-400 font-black text-lg leading-none">{totalCheckedIn}</p>
-                  <p className="text-zinc-500 text-[9px] font-bold uppercase tracking-wider mt-1">Entraram</p>
+                  <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider mt-1">Entraram</p>
                 </div>
               </div>
             </button>

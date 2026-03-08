@@ -131,7 +131,7 @@ export const ParceirosMaisVantaView: React.FC = () => {
         <div className="flex items-center gap-2">
           <Store size={18} className="text-[#FFD300]" />
           <h2 className="text-white font-bold text-sm">Parceiros</h2>
-          <span className="text-zinc-500 text-xs">({parceiros.length})</span>
+          <span className="text-zinc-400 text-xs">({parceiros.length})</span>
         </div>
         <button
           onClick={() => {
@@ -154,7 +154,7 @@ export const ParceirosMaisVantaView: React.FC = () => {
             value={nome}
             onChange={e => setNome(e.target.value)}
             placeholder="Nome do parceiro"
-            className="w-full bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-[#FFD300]/50"
+            className="w-full bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/50"
           />
 
           {/* Tipo */}
@@ -166,7 +166,7 @@ export const ParceirosMaisVantaView: React.FC = () => {
                 className={`px-2.5 py-1 rounded-lg text-[9px] font-bold uppercase tracking-wider border transition-all ${
                   tipo === t.value
                     ? 'bg-[#FFD300] text-black border-transparent'
-                    : 'bg-zinc-800 text-zinc-500 border-white/5'
+                    : 'bg-zinc-800 text-zinc-400 border-white/5'
                 }`}
               >
                 {t.label}
@@ -183,7 +183,7 @@ export const ParceirosMaisVantaView: React.FC = () => {
                 className={`px-2.5 py-1 rounded-lg text-[9px] font-bold uppercase tracking-wider border transition-all flex items-center gap-1 ${
                   cidadeId === c.id
                     ? 'bg-[#FFD300] text-black border-transparent'
-                    : 'bg-zinc-800 text-zinc-500 border-white/5'
+                    : 'bg-zinc-800 text-zinc-400 border-white/5'
                 }`}
               >
                 <MapPin size={10} />
@@ -196,7 +196,7 @@ export const ParceirosMaisVantaView: React.FC = () => {
             value={endereco}
             onChange={e => setEndereco(e.target.value)}
             placeholder="Endereço"
-            className="w-full bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-[#FFD300]/50"
+            className="w-full bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/50"
           />
 
           <div className="grid grid-cols-2 gap-2">
@@ -204,13 +204,13 @@ export const ParceirosMaisVantaView: React.FC = () => {
               value={instagram}
               onChange={e => setInstagram(e.target.value)}
               placeholder="@instagram"
-              className="bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-[#FFD300]/50"
+              className="bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/50"
             />
             <input
               value={contatoNome}
               onChange={e => setContatoNome(e.target.value)}
               placeholder="Nome do contato"
-              className="bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-[#FFD300]/50"
+              className="bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/50"
             />
           </div>
 
@@ -219,27 +219,27 @@ export const ParceirosMaisVantaView: React.FC = () => {
               value={contatoTelefone}
               onChange={e => setContatoTelefone(e.target.value)}
               placeholder="Telefone"
-              className="bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-[#FFD300]/50"
+              className="bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/50"
             />
             <input
               value={contatoEmail}
               onChange={e => setContatoEmail(e.target.value)}
               placeholder="Email"
-              className="bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-[#FFD300]/50"
+              className="bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/50"
             />
           </div>
 
           {/* Plano (só no edit) */}
           {editId && (
             <div>
-              <p className="text-zinc-500 text-[10px] font-bold uppercase tracking-wider mb-1.5">Plano</p>
+              <p className="text-zinc-400 text-[10px] font-bold uppercase tracking-wider mb-1.5">Plano</p>
               <div className="flex gap-1.5">
                 {PLANOS_PARCEIRO.map(p => (
                   <button
                     key={p.value}
                     onClick={() => setPlano(p.value)}
                     className={`flex-1 py-2 rounded-lg text-[10px] font-black uppercase tracking-wider border transition-all ${
-                      plano === p.value ? 'border-transparent text-black' : 'bg-zinc-800 text-zinc-500 border-white/5'
+                      plano === p.value ? 'border-transparent text-black' : 'bg-zinc-800 text-zinc-400 border-white/5'
                     }`}
                     style={plano === p.value ? { backgroundColor: p.cor } : {}}
                   >
@@ -279,7 +279,7 @@ export const ParceirosMaisVantaView: React.FC = () => {
       ) : parceiros.length === 0 ? (
         <div className="text-center py-12">
           <Store size={32} className="text-zinc-700 mx-auto mb-2" />
-          <p className="text-zinc-500 text-xs">Nenhum parceiro cadastrado</p>
+          <p className="text-zinc-400 text-xs">Nenhum parceiro cadastrado</p>
         </div>
       ) : (
         <div className="space-y-2">
@@ -298,7 +298,7 @@ export const ParceirosMaisVantaView: React.FC = () => {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-white text-sm font-semibold truncate">{p.nome}</p>
-                    <div className="flex items-center gap-2 text-[10px] text-zinc-500 mt-0.5">
+                    <div className="flex items-center gap-2 text-[10px] text-zinc-400 mt-0.5">
                       <span>{TIPOS_PARCEIRO.find(t => t.value === p.tipo)?.label ?? p.tipo}</span>
                       <span className="flex items-center gap-0.5">
                         <MapPin size={9} />
@@ -325,14 +325,14 @@ export const ParceirosMaisVantaView: React.FC = () => {
                       {p.ativo ? (
                         <ToggleRight size={14} className="text-green-400" />
                       ) : (
-                        <ToggleLeft size={14} className="text-zinc-500" />
+                        <ToggleLeft size={14} className="text-zinc-400" />
                       )}
                     </button>
                   </div>
                 </div>
 
                 {/* Stats */}
-                <div className="flex items-center gap-3 mt-2 text-[10px] text-zinc-600">
+                <div className="flex items-center gap-3 mt-2 text-[10px] text-zinc-400">
                   {p.instagramHandle && (
                     <span className="flex items-center gap-0.5">
                       <Instagram size={10} />
@@ -351,7 +351,7 @@ export const ParceirosMaisVantaView: React.FC = () => {
                       <span className="truncate">{p.contatoEmail}</span>
                     </span>
                   )}
-                  <span className="ml-auto text-zinc-500">
+                  <span className="ml-auto text-zinc-400">
                     {p.resgatesMesUsados}/{p.resgatesMesLimite === -1 ? '∞' : p.resgatesMesLimite} resgates
                   </span>
                 </div>

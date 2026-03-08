@@ -369,9 +369,9 @@ export const AdminDashboardView: React.FC<{
               <h1 style={TYPOGRAPHY.screenTitle} className="text-2xl italic leading-none text-white">
                 Escolha seu Portal
               </h1>
-              <p className="text-zinc-600 text-xs mt-2">Olá, {adminNome}</p>
+              <p className="text-zinc-400 text-xs mt-2">Olá, {adminNome}</p>
             </div>
-            <button
+            <button aria-label="Voltar"
               onClick={onClose}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
             >
@@ -389,7 +389,7 @@ export const AdminDashboardView: React.FC<{
             }, {}),
           ).map(([cargoLabel, nodes]) => (
             <div key={cargoLabel}>
-              <p className="text-[9px] text-zinc-500 font-black uppercase tracking-wider mb-2">{cargoLabel}</p>
+              <p className="text-[9px] text-zinc-400 font-black uppercase tracking-wider mb-2">{cargoLabel}</p>
               <div className="space-y-2">
                 {nodes.map(node => (
                   <button
@@ -434,7 +434,7 @@ export const AdminDashboardView: React.FC<{
   const guardBlock = (goBack: () => void) => (
     <div className="flex-1 flex flex-col items-center justify-center gap-3 p-8 text-center">
       <div className="w-2 h-2 rounded-full bg-red-500/40" />
-      <p className="text-zinc-500 text-xs font-medium">Acesso negado</p>
+      <p className="text-zinc-400 text-xs font-medium">Acesso negado</p>
       <p className="text-zinc-700 text-[10px]">Você não tem permissão para acessar este módulo.</p>
       <button
         onClick={goBack}
@@ -756,12 +756,12 @@ export const AdminDashboardView: React.FC<{
                 <div className="shrink-0 flex items-center gap-1 px-4 py-2 border-b border-white/5 bg-[#080808]">
                   <button
                     onClick={() => setSubView('DASHBOARD')}
-                    className="text-zinc-500 text-[10px] font-semibold hover:text-zinc-300 transition-colors"
+                    className="text-zinc-400 text-[10px] font-semibold hover:text-zinc-300 transition-colors"
                   >
                     Painel
                   </button>
                   <ChevronRight size={10} className="text-zinc-700" />
-                  <span className="text-zinc-500 text-[10px] font-semibold">{crumb.section}</span>
+                  <span className="text-zinc-400 text-[10px] font-semibold">{crumb.section}</span>
                   <ChevronRight size={10} className="text-zinc-700" />
                   <span className="text-[#FFD300] text-[10px] font-bold">{crumb.label}</span>
                 </div>

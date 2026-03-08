@@ -35,9 +35,9 @@ export const WaitlistModal: React.FC<Props> = ({ eventoId, variacaoId, onClose, 
       >
         <div className="w-10 h-1 bg-zinc-700 rounded-full mx-auto" />
         <div>
-          <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest">Lista de Espera</p>
+          <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">Lista de Espera</p>
           <p className="text-white font-bold text-lg mt-0.5">Entrar na fila</p>
-          <p className="text-zinc-500 text-xs mt-1">Você será notificado quando uma vaga abrir.</p>
+          <p className="text-zinc-400 text-xs mt-1">Você será notificado quando uma vaga abrir.</p>
         </div>
         <input
           type="email"

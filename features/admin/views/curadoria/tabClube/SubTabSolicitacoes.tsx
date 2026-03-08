@@ -30,7 +30,7 @@ export const SubTabSolicitacoes: React.FC<Props> = ({
 }) => (
   <div className="space-y-3">
     {solicitacoes.length === 0 ? (
-      <p className="text-zinc-600 text-xs text-center py-10">Nenhuma solicitação pendente</p>
+      <p className="text-zinc-400 text-xs text-center py-10">Nenhuma solicitação pendente</p>
     ) : (
       solicitacoes.map(sol => {
         const p = perfis[sol.userId];
@@ -49,7 +49,7 @@ export const SubTabSolicitacoes: React.FC<Props> = ({
                   <img loading="lazy" src={p.foto} alt="Perfil" className="w-full h-full object-cover" />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center">
-                    <User size={20} className="text-zinc-600" />
+                    <User size={20} className="text-zinc-400" />
                   </div>
                 )}
               </div>
@@ -57,14 +57,14 @@ export const SubTabSolicitacoes: React.FC<Props> = ({
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
                   <p className="text-white font-bold text-sm truncate">{p?.nome || sol.userId.slice(0, 8)}</p>
-                  <ChevronRight size={12} className="text-zinc-600 shrink-0" />
+                  <ChevronRight size={12} className="text-zinc-400 shrink-0" />
                 </div>
-                {p?.email && <p className="text-zinc-500 text-[10px] truncate">{p.email}</p>}
+                {p?.email && <p className="text-zinc-400 text-[10px] truncate">{p.email}</p>}
                 <div className="flex items-center gap-2 mt-1 flex-wrap">
-                  <Instagram size={10} className="text-zinc-500" />
+                  <Instagram size={10} className="text-zinc-400" />
                   <span className="text-zinc-400 text-[10px]">@{sol.instagramHandle}</span>
                   {sol.instagramSeguidores && (
-                    <span className="text-zinc-600 text-[9px]">
+                    <span className="text-zinc-400 text-[9px]">
                       · {sol.instagramSeguidores.toLocaleString('pt-BR')} seg.
                     </span>
                   )}
@@ -73,21 +73,21 @@ export const SubTabSolicitacoes: React.FC<Props> = ({
                       Verificado ✓
                     </span>
                   ) : (
-                    <span className="text-[8px] font-black uppercase tracking-wider text-zinc-500 bg-zinc-800 border border-white/5 px-1.5 py-0.5 rounded-full">
+                    <span className="text-[8px] font-black uppercase tracking-wider text-zinc-400 bg-zinc-800 border border-white/5 px-1.5 py-0.5 rounded-full">
                       Não verificado
                     </span>
                   )}
                 </div>
                 <div className="flex items-center gap-3 mt-1">
                   {(p?.cidade || p?.estado) && (
-                    <span className="text-zinc-600 text-[9px] flex items-center gap-1">
+                    <span className="text-zinc-400 text-[9px] flex items-center gap-1">
                       <MapPin size={8} /> {[p?.cidade, p?.estado].filter(Boolean).join(', ')}
                     </span>
                   )}
                   <span className="text-zinc-700 text-[8px]">{formatDate(sol.criadoEm)}</span>
                 </div>
                 {sol.convidadoPor && (
-                  <p className="text-zinc-600 text-[9px] mt-0.5">
+                  <p className="text-zinc-400 text-[9px] mt-0.5">
                     Convidado por: {perfis[sol.convidadoPor]?.nome || sol.convidadoPor.slice(0, 8)}
                   </p>
                 )}

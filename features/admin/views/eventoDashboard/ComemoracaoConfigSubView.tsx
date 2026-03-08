@@ -95,7 +95,7 @@ export const ComemoracaoConfigSubView: React.FC<Props> = ({ eventoId, onBack }) 
     return (
       <div className="absolute inset-0 flex flex-col bg-[#050505] overflow-hidden">
         <div className="flex items-center justify-center flex-1">
-          <Loader2 size={20} className="text-zinc-600 animate-spin" />
+          <Loader2 size={20} className="text-zinc-400 animate-spin" />
         </div>
       </div>
     );
@@ -105,7 +105,7 @@ export const ComemoracaoConfigSubView: React.FC<Props> = ({ eventoId, onBack }) 
     <div className="absolute inset-0 flex flex-col bg-[#050505] overflow-hidden">
       {/* Header */}
       <div className="shrink-0 flex items-center gap-3 px-4 pt-[calc(env(safe-area-inset-top)+12px)] pb-3 border-b border-white/5">
-        <button
+        <button aria-label="Voltar"
           onClick={onBack}
           className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
         >
@@ -115,7 +115,7 @@ export const ComemoracaoConfigSubView: React.FC<Props> = ({ eventoId, onBack }) 
           <h1 style={TYPOGRAPHY.screenTitle} className="text-base text-white truncate">
             Comemoração
           </h1>
-          <p className="text-zinc-500 text-[10px] truncate">{evento?.nome ?? 'Evento'}</p>
+          <p className="text-zinc-400 text-[10px] truncate">{evento?.nome ?? 'Evento'}</p>
         </div>
       </div>
 
@@ -141,7 +141,7 @@ export const ComemoracaoConfigSubView: React.FC<Props> = ({ eventoId, onBack }) 
           <>
             {/* Limite */}
             <div className="space-y-1">
-              <label className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">
+              <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">
                 Limite de comemoracões (vazio = sem limite)
               </label>
               <input
@@ -156,7 +156,7 @@ export const ComemoracaoConfigSubView: React.FC<Props> = ({ eventoId, onBack }) 
 
             {/* Deadline */}
             <div className="space-y-1">
-              <label className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">
+              <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">
                 Horário limite para vendas contarem (vazio = até início do evento)
               </label>
               <input
@@ -169,7 +169,7 @@ export const ComemoracaoConfigSubView: React.FC<Props> = ({ eventoId, onBack }) 
 
             {/* Datas bloqueadas */}
             <div className="space-y-2">
-              <label className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">
+              <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">
                 Datas bloqueadas (não aceitar comemoração)
               </label>
               <div className="flex gap-2">
@@ -214,7 +214,7 @@ export const ComemoracaoConfigSubView: React.FC<Props> = ({ eventoId, onBack }) 
             {/* Faixas de benefícios */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <label className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">
+                <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">
                   Faixas de Benefícios
                 </label>
                 <button
@@ -226,13 +226,13 @@ export const ComemoracaoConfigSubView: React.FC<Props> = ({ eventoId, onBack }) 
                 </button>
               </div>
 
-              <p className="text-zinc-600 text-[10px] leading-relaxed">
+              <p className="text-zinc-400 text-[10px] leading-relaxed">
                 Defina quantas vendas o aniversariante precisa para ganhar cortesias e benefícios de consumo.
               </p>
 
               {faixas.length === 0 && (
                 <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-4 text-center">
-                  <p className="text-zinc-600 text-xs">Nenhuma faixa configurada</p>
+                  <p className="text-zinc-400 text-xs">Nenhuma faixa configurada</p>
                   <p className="text-zinc-700 text-[10px] mt-1">Adicione faixas para premiar aniversariantes</p>
                 </div>
               )}
@@ -252,7 +252,7 @@ export const ComemoracaoConfigSubView: React.FC<Props> = ({ eventoId, onBack }) 
                   </div>
                   <div className="grid grid-cols-2 gap-2">
                     <div className="space-y-0.5">
-                      <label className="text-[7px] text-zinc-600 font-black uppercase tracking-widest">
+                      <label className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">
                         Mín. Vendas
                       </label>
                       <input
@@ -265,7 +265,7 @@ export const ComemoracaoConfigSubView: React.FC<Props> = ({ eventoId, onBack }) 
                       />
                     </div>
                     <div className="space-y-0.5">
-                      <label className="text-[7px] text-zinc-600 font-black uppercase tracking-widest">Cortesias</label>
+                      <label className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">Cortesias</label>
                       <input
                         type="number"
                         min="0"
@@ -277,7 +277,7 @@ export const ComemoracaoConfigSubView: React.FC<Props> = ({ eventoId, onBack }) 
                     </div>
                   </div>
                   <div className="space-y-0.5">
-                    <label className="text-[7px] text-zinc-600 font-black uppercase tracking-widest">
+                    <label className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">
                       Benefício Consumo (opcional)
                     </label>
                     <input

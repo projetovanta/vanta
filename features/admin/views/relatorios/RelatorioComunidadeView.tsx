@@ -110,7 +110,7 @@ export const RelatorioComunidadeView: React.FC<Props> = ({ comunidadeId, comunid
       {/* Header */}
       <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-5 pt-8 pb-4 shrink-0">
         <div className="flex items-start gap-3">
-          <button
+          <button aria-label="Voltar"
             onClick={onBack}
             className="w-9 h-9 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0 mt-0.5"
           >
@@ -119,7 +119,7 @@ export const RelatorioComunidadeView: React.FC<Props> = ({ comunidadeId, comunid
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
               <BarChart3 size={12} className="text-[#FFD300] shrink-0" />
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Relatório Comunidade</p>
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Relatório Comunidade</p>
             </div>
             <p className="text-white text-sm font-bold truncate mt-0.5">{comunidadeNome}</p>
           </div>
@@ -130,12 +130,12 @@ export const RelatorioComunidadeView: React.FC<Props> = ({ comunidadeId, comunid
             >
               <Download size={9} /> Excel
             </button>
-            <button
+            <button aria-label="Atualizar"
               onClick={refresh}
               className="flex items-center gap-1 px-2 py-1 bg-zinc-900 border border-white/10 rounded-lg active:scale-90 transition-all"
             >
-              <RefreshCw size={10} className="text-zinc-500" />
-              <p className="text-zinc-600 text-[8px]">{tempoStr}</p>
+              <RefreshCw size={10} className="text-zinc-400" />
+              <p className="text-zinc-400 text-[8px]">{tempoStr}</p>
             </button>
           </div>
         </div>
@@ -146,22 +146,22 @@ export const RelatorioComunidadeView: React.FC<Props> = ({ comunidadeId, comunid
         {/* KPIs */}
         <div className="grid grid-cols-2 gap-3">
           <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-4">
-            <p className="text-[7px] text-zinc-600 font-black uppercase tracking-widest">Eventos</p>
+            <p className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">Eventos</p>
             <p className="text-white font-black text-xl mt-1">{eventos.length}</p>
           </div>
           <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-4">
-            <p className="text-[7px] text-zinc-600 font-black uppercase tracking-widest">GMV Total</p>
+            <p className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">GMV Total</p>
             <p className="text-[#FFD300] font-black text-xl mt-1">{fmtBRL(stats.totalGmv)}</p>
           </div>
           <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-4">
-            <p className="text-[7px] text-zinc-600 font-black uppercase tracking-widest">Convidados Lista</p>
+            <p className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">Convidados Lista</p>
             <p className="text-white font-black text-xl mt-1">{stats.totalConvidados}</p>
-            <p className="text-zinc-600 text-[8px] mt-0.5">{pctCheckin}% check-in</p>
+            <p className="text-zinc-400 text-[8px] mt-0.5">{pctCheckin}% check-in</p>
           </div>
           <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-4">
-            <p className="text-[7px] text-zinc-600 font-black uppercase tracking-widest">Ticket Médio</p>
+            <p className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">Ticket Médio</p>
             <p className="text-white font-black text-xl mt-1">{fmtBRL(ticketMedio)}</p>
-            <p className="text-zinc-600 text-[8px] mt-0.5">{stats.totalVendidos} vendidos</p>
+            <p className="text-zinc-400 text-[8px] mt-0.5">{stats.totalVendidos} vendidos</p>
           </div>
         </div>
 
@@ -170,7 +170,7 @@ export const RelatorioComunidadeView: React.FC<Props> = ({ comunidadeId, comunid
           <div className="bg-zinc-900/40 border border-white/5 rounded-2xl p-5 space-y-3">
             <div className="flex items-center gap-2">
               <Trophy size={13} className="text-[#FFD300]" />
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Top Promoters</p>
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Top Promoters</p>
             </div>
             <div className="space-y-2">
               {stats.topPromoters.map(([id, p], i) => (
@@ -178,7 +178,7 @@ export const RelatorioComunidadeView: React.FC<Props> = ({ comunidadeId, comunid
                   <p className="text-[#FFD300] font-black text-sm w-5 text-center shrink-0">{i + 1}</p>
                   <div className="flex-1 min-w-0">
                     <p className="text-zinc-300 text-xs font-bold truncate">{p.nome}</p>
-                    <p className="text-zinc-600 text-[9px]">
+                    <p className="text-zinc-400 text-[9px]">
                       {p.checkins}/{p.total} check-ins
                     </p>
                   </div>
@@ -194,7 +194,7 @@ export const RelatorioComunidadeView: React.FC<Props> = ({ comunidadeId, comunid
           <div className="bg-zinc-900/40 border border-white/5 rounded-2xl p-5 space-y-3">
             <div className="flex items-center gap-2">
               <TrendingUp size={13} className="text-[#FFD300]" />
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Evolução por Evento</p>
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Evolução por Evento</p>
             </div>
             <div className="space-y-2">
               {stats.eventosOrdenados.map(ev => {
@@ -205,16 +205,16 @@ export const RelatorioComunidadeView: React.FC<Props> = ({ comunidadeId, comunid
                   <div key={ev.id} className="space-y-1">
                     <div className="flex items-center justify-between">
                       <p className="text-zinc-400 text-[9px] font-bold truncate flex-1 min-w-0">{ev.nome}</p>
-                      <p className="text-zinc-600 text-[8px] shrink-0 ml-2">{dataFmt}</p>
+                      <p className="text-zinc-400 text-[8px] shrink-0 ml-2">{dataFmt}</p>
                     </div>
                     <div className="h-1.5 w-full bg-zinc-800 rounded-full overflow-hidden">
                       <div className="h-full bg-[#FFD300] rounded-full transition-all" style={{ width: `${pct}%` }} />
                     </div>
                     <div className="flex gap-3">
-                      <p className="text-zinc-600 text-[8px]">
+                      <p className="text-zinc-400 text-[8px]">
                         {ev.convidados} lista · {ev.vendidos} ingressos
                       </p>
-                      <p className="text-zinc-600 text-[8px]">{fmtBRL(ev.gmv)}</p>
+                      <p className="text-zinc-400 text-[8px]">{fmtBRL(ev.gmv)}</p>
                     </div>
                   </div>
                 );
@@ -228,7 +228,7 @@ export const RelatorioComunidadeView: React.FC<Props> = ({ comunidadeId, comunid
           <div className="bg-zinc-900/40 border border-white/5 rounded-2xl p-5 space-y-3">
             <div className="flex items-center gap-2">
               <BarChart2 size={13} className="text-[#FFD300]" />
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Comparativo</p>
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Comparativo</p>
             </div>
             <div className="overflow-x-auto no-scrollbar">
               <table className="w-full min-w-0">
@@ -237,7 +237,7 @@ export const RelatorioComunidadeView: React.FC<Props> = ({ comunidadeId, comunid
                     {['Evento', 'Lista', 'Check-in', 'Ingressos', 'GMV'].map(h => (
                       <th
                         key={h}
-                        className="text-[7px] text-zinc-600 font-black uppercase tracking-widest text-left py-2 px-1"
+                        className="text-[7px] text-zinc-400 font-black uppercase tracking-widest text-left py-2 px-1"
                       >
                         {h}
                       </th>
@@ -252,11 +252,11 @@ export const RelatorioComunidadeView: React.FC<Props> = ({ comunidadeId, comunid
                         <td className="text-zinc-300 text-[10px] font-bold py-2 px-1 truncate max-w-[120px]">
                           {ev.nome}
                         </td>
-                        <td className="text-zinc-500 text-[10px] py-2 px-1">{ev.convidados}</td>
-                        <td className="text-zinc-500 text-[10px] py-2 px-1">
+                        <td className="text-zinc-400 text-[10px] py-2 px-1">{ev.convidados}</td>
+                        <td className="text-zinc-400 text-[10px] py-2 px-1">
                           {ev.checkins} ({convPct}%)
                         </td>
-                        <td className="text-zinc-500 text-[10px] py-2 px-1">{ev.vendidos}</td>
+                        <td className="text-zinc-400 text-[10px] py-2 px-1">{ev.vendidos}</td>
                         <td className="text-[#FFD300] text-[10px] font-bold py-2 px-1">{fmtBRL(ev.gmv)}</td>
                       </tr>
                     );

@@ -39,13 +39,13 @@ export const PresencaConfirmationModal: React.FC<PresencaConfirmationModalProps>
         <h2 style={TYPOGRAPHY.screenTitle} className="text-2xl text-white mb-3 italic">
           Eu vou!
         </h2>
-        <p className="text-zinc-500 text-xs leading-relaxed mb-8 px-2">
+        <p className="text-zinc-400 text-xs leading-relaxed mb-8 px-2">
           Você confirmou presença no evento <span className="text-white font-bold">{evento.titulo}</span>. Que tal
           chamar seus amigos para irem também?
         </p>
 
         <div className="space-y-3">
-          <button
+          <button aria-label="Copiar link"
             onClick={handleCopyLink}
             className="w-full py-4 bg-zinc-900 border border-white/5 text-white font-bold text-[10px] uppercase tracking-[0.2em] rounded-xl active:bg-zinc-800 transition-all flex items-center justify-center gap-2"
           >
@@ -63,7 +63,7 @@ export const PresencaConfirmationModal: React.FC<PresencaConfirmationModalProps>
 
           <button
             onClick={onClose}
-            className="w-full py-4 bg-transparent text-zinc-600 font-bold text-[10px] uppercase tracking-[0.2em] active:text-zinc-400 transition-colors"
+            className="w-full py-4 bg-transparent text-zinc-400 font-bold text-[10px] uppercase tracking-[0.2em] active:text-zinc-400 transition-colors"
           >
             Sair
           </button>
@@ -71,7 +71,7 @@ export const PresencaConfirmationModal: React.FC<PresencaConfirmationModalProps>
 
         <button
           onClick={onClose}
-          className="absolute top-6 right-6 p-2 text-zinc-600 hover:text-white transition-colors"
+          className="absolute top-6 right-6 p-2 text-zinc-400 hover:text-white transition-colors"
         >
           <X size={18} />
         </button>

@@ -44,7 +44,7 @@ export const ListaEventoView: React.FC<{
     <div className="absolute inset-0 flex flex-col bg-[#0A0A0A]">
       <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-5 pt-8 pb-0 shrink-0">
         <div className="flex items-start gap-3 mb-4">
-          <button
+          <button aria-label="Voltar"
             onClick={onBack}
             className="w-9 h-9 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0 mt-0.5"
           >
@@ -57,7 +57,7 @@ export const ListaEventoView: React.FC<{
             <h1 style={TYPOGRAPHY.screenTitle} className="text-lg italic leading-snug line-clamp-2">
               {lista.eventoNome}
             </h1>
-            <p className="text-zinc-600 text-[10px] font-black uppercase tracking-widest mt-1 truncate">
+            <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest mt-1 truncate">
               {formatData(lista.eventoData)} · {lista.eventoLocal}
             </p>
           </div>
@@ -69,7 +69,7 @@ export const ListaEventoView: React.FC<{
               key={t}
               onClick={() => setTab(t)}
               className={`py-3 px-4 text-[11px] font-black uppercase tracking-widest border-b-2 transition-all ${
-                tab === t ? 'border-[#FFD300] text-[#FFD300]' : 'border-transparent text-zinc-600 active:text-zinc-400'
+                tab === t ? 'border-[#FFD300] text-[#FFD300]' : 'border-transparent text-zinc-400 active:text-zinc-400'
               }`}
             >
               {TAB_LABELS[t]}

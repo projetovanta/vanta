@@ -595,7 +595,7 @@ export const EditarEventoView: React.FC<{
   if (loading) {
     return (
       <div className="absolute inset-0 bg-[#0A0A0A] flex items-center justify-center">
-        <Loader2 size={24} className="text-zinc-600 animate-spin" />
+        <Loader2 size={24} className="text-zinc-400 animate-spin" />
       </div>
     );
   }
@@ -610,7 +610,7 @@ export const EditarEventoView: React.FC<{
           <h2 style={TYPOGRAPHY.screenTitle} className="text-2xl italic mb-2">
             {nome}
           </h2>
-          <p className="text-zinc-500 text-sm leading-relaxed">{salvoMsg}</p>
+          <p className="text-zinc-400 text-sm leading-relaxed">{salvoMsg}</p>
         </div>
         <button
           onClick={onBack}
@@ -651,7 +651,7 @@ export const EditarEventoView: React.FC<{
               {stepTitle}
             </h1>
           </div>
-          <button
+          <button aria-label="Voltar"
             onClick={safeBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0 mt-1"
           >
@@ -669,7 +669,7 @@ export const EditarEventoView: React.FC<{
                     ? 'bg-[#FFD300] border-[#FFD300] text-black'
                     : step > s
                       ? 'bg-[#FFD300]/15 border-[#FFD300]/30 text-[#FFD300]'
-                      : 'bg-zinc-900 border-white/10 text-zinc-600'
+                      : 'bg-zinc-900 border-white/10 text-zinc-400'
                 }`}
               >
                 {step > s ? <Check size={10} /> : s}
@@ -723,9 +723,9 @@ export const EditarEventoView: React.FC<{
             />
             {/* Campos extras — Slug + Reembolso (só no editar) */}
             <div className="mt-6 space-y-4">
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Link Público</p>
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Link Público</p>
               <div>
-                <label className="text-zinc-500 text-[10px] font-bold mb-1 block">
+                <label className="text-zinc-400 text-[10px] font-bold mb-1 block">
                   Slug (URL pública: /evento/slug)
                 </label>
                 <input
@@ -738,16 +738,16 @@ export const EditarEventoView: React.FC<{
                   className="w-full px-4 py-3 bg-zinc-900 border border-white/5 rounded-xl text-white text-sm placeholder:text-zinc-700 outline-none focus:border-[#FFD300]/30"
                 />
                 {slug && (
-                  <p className="text-zinc-600 text-[9px] mt-1">
+                  <p className="text-zinc-400 text-[9px] mt-1">
                     {window.location.origin}/evento/{slug}
                   </p>
                 )}
               </div>
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mt-4">
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mt-4">
                 Política de Reembolso
               </p>
               <div>
-                <label className="text-zinc-500 text-[10px] font-bold mb-1 block">Prazo (dias)</label>
+                <label className="text-zinc-400 text-[10px] font-bold mb-1 block">Prazo (dias)</label>
                 <input
                   value={prazoReembolsoDias}
                   onChange={e => {
@@ -760,7 +760,7 @@ export const EditarEventoView: React.FC<{
                 />
               </div>
               <div>
-                <label className="text-zinc-500 text-[10px] font-bold mb-1 block">Condições (texto livre)</label>
+                <label className="text-zinc-400 text-[10px] font-bold mb-1 block">Condições (texto livre)</label>
                 <textarea
                   value={politicaReembolso}
                   onChange={e => {

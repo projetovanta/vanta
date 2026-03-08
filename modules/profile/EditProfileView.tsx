@@ -32,7 +32,7 @@ const PRIVACY_CYCLE: PrivacidadeOpcao[] = ['TODOS', 'AMIGOS', 'NINGUEM'];
 const PRIVACY_DISPLAY: Record<string, { icon: typeof Globe; label: string; color: string }> = {
   TODOS: { icon: Globe, label: 'Todos', color: 'text-emerald-400' },
   AMIGOS: { icon: Users, label: 'Amigos', color: 'text-blue-400' },
-  NINGUEM: { icon: Lock, label: 'Só eu', color: 'text-zinc-500' },
+  NINGUEM: { icon: Lock, label: 'Só eu', color: 'text-zinc-400' },
 };
 
 const PrivacyToggle: React.FC<{ value: PrivacidadeOpcao; onChange: (v: PrivacidadeOpcao) => void }> = ({
@@ -309,7 +309,7 @@ export const EditProfileView: React.FC<{
 
   const sectionCls = 'bg-zinc-900/40 rounded-2xl p-5 space-y-5 border border-white/5';
   const sectionTitleCls = 'flex items-center gap-2';
-  const labelCls = 'text-[10px] text-zinc-500 font-black uppercase tracking-widest ml-1';
+  const labelCls = 'text-[10px] text-zinc-400 font-black uppercase tracking-widest ml-1';
   const inputCls =
     'w-full bg-black/30 border border-white/5 rounded-xl p-4 text-white text-sm focus:border-[#FFD300]/40 outline-none';
 
@@ -361,7 +361,7 @@ export const EditProfileView: React.FC<{
                     DEFAULT_AVATARS[formData.genero as keyof typeof DEFAULT_AVATARS] || DEFAULT_AVATARS.MASCULINO;
                   setFormData(p => ({ ...p, foto: defaultAvatar }));
                 }}
-                className="mt-3 text-[9px] text-zinc-500 font-bold uppercase active:text-red-400 transition-colors"
+                className="mt-3 text-[9px] text-zinc-400 font-bold uppercase active:text-red-400 transition-colors"
               >
                 Remover foto
               </button>
@@ -402,7 +402,7 @@ export const EditProfileView: React.FC<{
                 className={`${inputCls} resize-none h-24`}
                 placeholder="Conte um pouco sobre você..."
               />
-              <p className="text-[9px] text-zinc-600 text-right font-bold">
+              <p className="text-[9px] text-zinc-400 text-right font-bold">
                 {formData.biografia.length}/{BIO_MAX}
               </p>
             </div>
@@ -420,7 +420,7 @@ export const EditProfileView: React.FC<{
                       type="button"
                       onClick={() => setFormData(p => ({ ...p, genero: g }))}
                       className={`flex-1 py-3 rounded-lg text-[9px] font-black uppercase transition-all flex items-center justify-center gap-1 ${
-                        formData.genero === g ? 'bg-[#FFD300] text-black shadow-lg' : 'text-zinc-600'
+                        formData.genero === g ? 'bg-[#FFD300] text-black shadow-lg' : 'text-zinc-400'
                       }`}
                     >
                       {g === 'MASCULINO' ? 'Masc' : 'Fem'}
@@ -489,7 +489,7 @@ export const EditProfileView: React.FC<{
                 <PrivacyToggle value={privacy.verInstagram} onChange={v => updatePrivacy('verInstagram', v)} />
               </div>
               <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 text-sm">@</span>
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 text-sm">@</span>
                 <input
                   type="text"
                   value={formData.instagram.replace(/^@/, '')}
@@ -566,7 +566,7 @@ export const EditProfileView: React.FC<{
                 </h3>
                 <PrivacyToggle value={privacy.verAlbum} onChange={v => updatePrivacy('verAlbum', v)} />
               </div>
-              <span className="text-[9px] font-black uppercase tracking-widest text-zinc-600">
+              <span className="text-[9px] font-black uppercase tracking-widest text-zinc-400">
                 {formData.fotos?.length || 0}/{MAX_PHOTOS}
               </span>
             </div>
@@ -613,7 +613,7 @@ export const EditProfileView: React.FC<{
 
           {/* ── Botão Salvar ──────────────────────────────────────── */}
           <div className="pt-2" style={{ paddingBottom: 'calc(1.5rem + env(safe-area-inset-bottom, 0px))' }}>
-            <button
+            <button aria-label="Carregando"
               type="submit"
               disabled={isSaving}
               className="w-full py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-[0.3em] rounded-xl shadow-xl flex items-center justify-center gap-3 disabled:opacity-50 active:scale-95 transition-all"
@@ -646,7 +646,7 @@ export const EditProfileView: React.FC<{
           <div className="relative w-full max-w-[85%] bg-[#0A0A0A] border border-[#FFD300]/20 rounded-[2.5rem] p-8 text-center shadow-[0_0_50px_rgba(255,211,0,0.08)] animate-in zoom-in-95 duration-300">
             <button
               onClick={() => setShowExitConfirm(false)}
-              className="absolute top-6 right-6 p-2 text-zinc-600 active:text-white transition-colors"
+              className="absolute top-6 right-6 p-2 text-zinc-400 active:text-white transition-colors"
             >
               <X size={18} />
             </button>
@@ -656,7 +656,7 @@ export const EditProfileView: React.FC<{
             <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-3 italic">
               Sair sem salvar?
             </h2>
-            <p className="text-zinc-500 text-xs leading-relaxed mb-8 px-4">
+            <p className="text-zinc-400 text-xs leading-relaxed mb-8 px-4">
               Suas alterações serão perdidas se você sair agora.
             </p>
             <div className="space-y-3">
@@ -668,7 +668,7 @@ export const EditProfileView: React.FC<{
               </button>
               <button
                 onClick={onBack}
-                className="w-full py-4 text-zinc-500 font-bold text-[10px] uppercase active:opacity-60 transition-all"
+                className="w-full py-4 text-zinc-400 font-bold text-[10px] uppercase active:opacity-60 transition-all"
               >
                 Sair sem salvar
               </button>

@@ -126,14 +126,14 @@ export const DividaSocialMaisVantaView: React.FC<{
             </h1>
           </div>
           <div className="flex gap-2 shrink-0">
-            <button
+            <button aria-label="Atualizar"
               onClick={handleRefresh}
               disabled={loading}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all disabled:opacity-40"
             >
               <RefreshCw size={16} className={`text-zinc-400 ${loading ? 'animate-spin' : ''}`} />
             </button>
-            <button
+            <button aria-label="Voltar"
               onClick={onBack}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
             >
@@ -146,16 +146,16 @@ export const DividaSocialMaisVantaView: React.FC<{
         <div className="grid grid-cols-2 gap-2 mb-4">
           <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center">
             <p className="text-amber-400 font-black text-2xl leading-none">{totais.pendentes}</p>
-            <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest mt-1">Pendentes</p>
+            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mt-1">Pendentes</p>
           </div>
           <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center">
             <p className="text-red-400 font-black text-2xl leading-none">{totais.vencidas}</p>
-            <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest mt-1">Vencidas</p>
+            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mt-1">Vencidas</p>
           </div>
         </div>
 
         {/* Info */}
-        <p className="text-zinc-500 text-[10px] mb-3">
+        <p className="text-zinc-400 text-[10px] mb-3">
           Membros que reservaram mas ainda não postaram com #publi/@venue/@maisvanta
         </p>
 
@@ -168,7 +168,7 @@ export const DividaSocialMaisVantaView: React.FC<{
               className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider shrink-0 border transition-all ${
                 filtro === f.id
                   ? 'bg-[#FFD300] text-black border-transparent'
-                  : 'bg-zinc-900/60 text-zinc-500 border-white/5 active:bg-zinc-800'
+                  : 'bg-zinc-900/60 text-zinc-400 border-white/5 active:bg-zinc-800'
               }`}
             >
               {f.label} ({f.count})
@@ -184,7 +184,7 @@ export const DividaSocialMaisVantaView: React.FC<{
             <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center">
               <Gift size={28} className="text-zinc-700" />
             </div>
-            <p className="text-zinc-600 text-[10px] font-black uppercase tracking-widest">
+            <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">
               {filtro === 'PENDENTES' ? 'Nenhuma dívida pendente' : 'Nenhuma dívida vencida'}
             </p>
           </div>
@@ -207,12 +207,12 @@ export const DividaSocialMaisVantaView: React.FC<{
                   />
                 ) : (
                   <div className="w-12 h-12 rounded-full bg-zinc-800 border border-white/5 flex items-center justify-center shrink-0">
-                    <User size={20} className="text-zinc-600" />
+                    <User size={20} className="text-zinc-400" />
                   </div>
                 )}
                 <div className="flex-1 min-w-0">
                   <p className="text-white font-bold text-sm truncate">{r.perfil?.nome || r.userId.slice(0, 8)}</p>
-                  <p className="text-zinc-600 text-[10px] mt-1">
+                  <p className="text-zinc-400 text-[10px] mt-1">
                     Reserva há {r.diasPassados} dia{r.diasPassados !== 1 ? 's' : ''}
                   </p>
                 </div>
@@ -241,7 +241,7 @@ export const DividaSocialMaisVantaView: React.FC<{
               </div>
 
               {/* Detalhes */}
-              <div className="text-[9px] text-zinc-500 mb-3 space-y-1">
+              <div className="text-[9px] text-zinc-400 mb-3 space-y-1">
                 <p>
                   <span className="text-zinc-400 font-bold">Evento ID:</span> {r.eventoId}
                 </p>
@@ -285,7 +285,7 @@ export const DividaSocialMaisVantaView: React.FC<{
             onClick={e => e.stopPropagation()}
           >
             <p className="text-white font-bold text-sm text-center">Resolver dívida social?</p>
-            <p className="text-zinc-500 text-[10px] text-center leading-relaxed">
+            <p className="text-zinc-400 text-[10px] text-center leading-relaxed">
               A dívida social de "{confirmar.nomeMembro}" será resolvida. O post será marcado como verificado e o membro
               será desbloqueado.
             </p>

@@ -240,9 +240,9 @@ export const RadarView: React.FC<RadarViewProps> = ({ onEventSelect }) => {
 
       {/* Botões laterais — zoom + recenter */}
       <div className="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col gap-3 pointer-events-auto z-[1000]">
-        <button
+        <button aria-label="Centralizar"
           onClick={radar.handleRecenter}
-          className={`w-10 h-10 backdrop-blur border rounded-full flex items-center justify-center shadow-lg transition-all active:scale-95 ${radar.userLocation ? 'bg-zinc-900/90 border-[#FFD300]/30 text-[#FFD300] shadow-[#FFD300]/10' : 'bg-zinc-800/50 border-white/5 text-zinc-500'}`}
+          className={`w-10 h-10 backdrop-blur border rounded-full flex items-center justify-center shadow-lg transition-all active:scale-95 ${radar.userLocation ? 'bg-zinc-900/90 border-[#FFD300]/30 text-[#FFD300] shadow-[#FFD300]/10' : 'bg-zinc-800/50 border-white/5 text-zinc-400'}`}
         >
           <Crosshair size={18} />
         </button>

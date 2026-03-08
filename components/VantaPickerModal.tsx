@@ -41,7 +41,7 @@ const PickerModal: React.FC<{
       <div className="relative w-full max-w-md bg-[#0A0A0A] border-t border-white/10 rounded-t-[2rem] animate-in slide-in-from-bottom duration-300 flex flex-col max-h-[70vh]">
         {/* Header */}
         <div className="shrink-0 flex items-center justify-between px-6 pt-6 pb-3">
-          <h3 className="text-[10px] text-zinc-500 font-black uppercase tracking-widest">{title}</h3>
+          <h3 className="text-[10px] text-zinc-400 font-black uppercase tracking-widest">{title}</h3>
           <button
             onClick={onClose}
             className="w-8 h-8 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
@@ -54,7 +54,7 @@ const PickerModal: React.FC<{
         {searchable && (
           <div className="shrink-0 px-6 pb-3">
             <div className="relative">
-              <Search size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-600" />
+              <Search size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
               <input
                 ref={searchRef}
                 value={search}
@@ -72,7 +72,7 @@ const PickerModal: React.FC<{
           className="flex-1 overflow-y-auto no-scrollbar px-3 pb-6"
           style={{ paddingBottom: 'calc(1.5rem + env(safe-area-inset-bottom, 0px))' }}
         >
-          {filtered.length === 0 && <p className="text-zinc-600 text-xs text-center py-8">Nenhum resultado</p>}
+          {filtered.length === 0 && <p className="text-zinc-400 text-xs text-center py-8">Nenhum resultado</p>}
           {filtered.map(item => {
             const selected = item.value === value;
             return (
@@ -123,10 +123,10 @@ export const VantaPickerModal: React.FC<VantaPickerModalProps> = ({
           error ? 'border-red-500/40' : 'border-white/5'
         } ${disabled ? 'opacity-40 cursor-not-allowed' : ''}`}
       >
-        <span className={`text-sm ${selected ? 'text-white font-medium' : 'text-zinc-600'}`}>
+        <span className={`text-sm ${selected ? 'text-white font-medium' : 'text-zinc-400'}`}>
           {selected ? selected.label : placeholder}
         </span>
-        <svg width="12" height="12" viewBox="0 0 12 12" className="text-zinc-600 shrink-0">
+        <svg width="12" height="12" viewBox="0 0 12 12" className="text-zinc-400 shrink-0">
           <path
             d="M3 4.5L6 7.5L9 4.5"
             stroke="currentColor"

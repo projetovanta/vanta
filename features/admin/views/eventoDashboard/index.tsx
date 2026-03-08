@@ -392,7 +392,7 @@ export const EventoDashboard: React.FC<{
   if (!evento) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center gap-3 p-8">
-        <p className="text-zinc-500 text-xs">Evento não encontrado</p>
+        <p className="text-zinc-400 text-xs">Evento não encontrado</p>
         <button onClick={onBack} className="text-zinc-400 text-xs underline">
           Voltar
         </button>
@@ -431,7 +431,7 @@ export const EventoDashboard: React.FC<{
       ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30'
       : status === 'futuro'
         ? 'bg-[#FFD300]/10 text-[#FFD300] border-[#FFD300]/20'
-        : 'bg-zinc-800/60 text-zinc-500 border-white/5';
+        : 'bg-zinc-800/60 text-zinc-400 border-white/5';
 
   // ── KPI card helper ──────────────────────────────────────────────────────
   const KpiCard = ({
@@ -451,8 +451,8 @@ export const EventoDashboard: React.FC<{
   }) => (
     <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-3 flex flex-col gap-1.5 min-w-0">
       <div className="flex items-center gap-1.5">
-        <Icon size={12} className={`shrink-0 ${accent ? 'text-[#FFD300]' : 'text-zinc-600'}`} />
-        <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider truncate">{label}</p>
+        <Icon size={12} className={`shrink-0 ${accent ? 'text-[#FFD300]' : 'text-zinc-400'}`} />
+        <p className="text-[9px] text-zinc-400 font-bold uppercase tracking-wider truncate">{label}</p>
       </div>
       <p className={`text-xl font-bold leading-none truncate ${accent ? 'text-[#FFD300]' : 'text-white'}`}>{value}</p>
       {badges && badges.length > 0 && (
@@ -476,7 +476,7 @@ export const EventoDashboard: React.FC<{
               style={{ width: `${Math.min(Math.round((progress.current / progress.max) * 100), 100)}%` }}
             />
           </div>
-          <p className="text-[7px] text-zinc-600 mt-0.5">
+          <p className="text-[7px] text-zinc-400 mt-0.5">
             {progress.current}/{progress.max}
           </p>
         </div>
@@ -504,7 +504,7 @@ export const EventoDashboard: React.FC<{
           }}
         />
 
-        <button
+        <button aria-label="Voltar"
           onClick={onBack}
           className="absolute top-4 left-4 w-9 h-9 bg-black/50 backdrop-blur-md rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
         >
@@ -535,8 +535,8 @@ export const EventoDashboard: React.FC<{
             </div>
             {evento.local && (
               <div className="flex items-center gap-1">
-                <MapPin size={10} className="text-zinc-600" />
-                <span className="text-zinc-500 text-[10px] truncate max-w-[150px]">{evento.local}</span>
+                <MapPin size={10} className="text-zinc-400" />
+                <span className="text-zinc-400 text-[10px] truncate max-w-[150px]">{evento.local}</span>
               </div>
             )}
           </div>
@@ -559,7 +559,7 @@ export const EventoDashboard: React.FC<{
         {/* ── 6 KPIs ──────────────────────────────────────────────────────── */}
         {dataLoading ? (
           <div className="flex items-center justify-center py-6">
-            <Loader2 size={20} className="text-zinc-600 animate-spin" />
+            <Loader2 size={20} className="text-zinc-400 animate-spin" />
           </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2.5 mb-5 -mt-1">
@@ -602,8 +602,8 @@ export const EventoDashboard: React.FC<{
         {!dataLoading && kpis.capacidade > 0 && (
           <div className="mb-5">
             <div className="flex items-center justify-between mb-1">
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Ocupação</p>
-              <p className="text-[10px] text-zinc-500 font-semibold">{kpis.ocupacao}%</p>
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Ocupação</p>
+              <p className="text-[10px] text-zinc-400 font-semibold">{kpis.ocupacao}%</p>
             </div>
             <div className="h-2 bg-zinc-800 rounded-full overflow-hidden">
               <div
@@ -639,7 +639,7 @@ export const EventoDashboard: React.FC<{
             {/* Vendas por Dia */}
             {chartVendasDia.length > 1 && (
               <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-4">
-                <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-3">Vendas por Dia</p>
+                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-3">Vendas por Dia</p>
                 <ResponsiveContainer width="100%" height={140}>
                   <BarChart data={chartVendasDia}>
                     <XAxis dataKey="dia" tick={{ fill: '#52525b', fontSize: 9 }} axisLine={false} tickLine={false} />
@@ -663,7 +663,7 @@ export const EventoDashboard: React.FC<{
             {/* Origem dos Ingressos */}
             {chartOrigem.length > 0 && (
               <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-4">
-                <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-3">Origem</p>
+                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-3">Origem</p>
                 <VantaPieChart data={chartOrigem} height={140} />
               </div>
             )}
@@ -671,13 +671,13 @@ export const EventoDashboard: React.FC<{
             {/* Vendas por Variação */}
             {chartVariacao.length > 0 && (
               <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-4">
-                <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-3">Por Variação</p>
+                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-3">Por Variação</p>
                 <div className="space-y-2">
                   {chartVariacao.map(v => (
                     <div key={v.label}>
                       <div className="flex items-center justify-between mb-0.5">
                         <span className="text-[10px] text-zinc-400 font-semibold truncate">{v.label}</span>
-                        <span className="text-[10px] text-zinc-500 font-bold shrink-0 ml-2">{v.qtd}</span>
+                        <span className="text-[10px] text-zinc-400 font-bold shrink-0 ml-2">{v.qtd}</span>
                       </div>
                       <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
                         <div className="h-full bg-[#FFD300] rounded-full" style={{ width: `${v.pct}%` }} />
@@ -691,7 +691,7 @@ export const EventoDashboard: React.FC<{
             {/* Vendas Acumuladas (linha) */}
             {chartAcumulado.length > 1 && (
               <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-4">
-                <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-3">Vendas Acumuladas</p>
+                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-3">Vendas Acumuladas</p>
                 <ResponsiveContainer width="100%" height={140}>
                   <LineChart data={chartAcumulado}>
                     <XAxis dataKey="dia" tick={{ fill: '#52525b', fontSize: 9 }} axisLine={false} tickLine={false} />
@@ -715,7 +715,7 @@ export const EventoDashboard: React.FC<{
             {/* Check-in ao Vivo + Pico de Vendas */}
             <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-4">
               <div className="flex items-center gap-2 mb-3">
-                <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Check-in</p>
+                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Check-in</p>
                 {status === 'ao_vivo' && (
                   <span className="flex items-center gap-1 text-[7px] font-black uppercase text-emerald-400">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
@@ -726,11 +726,11 @@ export const EventoDashboard: React.FC<{
               <div className="flex items-end gap-4">
                 <div>
                   <p className="text-3xl font-bold text-white leading-none">{kpis.totalCheckins}</p>
-                  <p className="text-[9px] text-zinc-600 mt-1">presentes</p>
+                  <p className="text-[9px] text-zinc-400 mt-1">presentes</p>
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-[9px] text-zinc-500 font-semibold">Ocupação</span>
+                    <span className="text-[9px] text-zinc-400 font-semibold">Ocupação</span>
                     <span className="text-[9px] text-zinc-400 font-bold">{kpis.ocupacao}%</span>
                   </div>
                   <div className="h-2.5 bg-zinc-800 rounded-full overflow-hidden">
@@ -744,7 +744,7 @@ export const EventoDashboard: React.FC<{
               {picoVendas && (
                 <div className="mt-3 pt-3 border-t border-white/5 flex items-center gap-2">
                   <Zap size={12} className="text-amber-400 shrink-0" />
-                  <p className="text-[9px] text-zinc-500">
+                  <p className="text-[9px] text-zinc-400">
                     Pico: <span className="text-white font-bold">{picoVendas.hora}</span> — {picoVendas.quantidade}{' '}
                     vendas
                   </p>
@@ -755,7 +755,7 @@ export const EventoDashboard: React.FC<{
         )}
 
         {/* ── Editar Evento — atalhos rápidos ────────────────────────────── */}
-        <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-3">Editar Evento</p>
+        <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-3">Editar Evento</p>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-5">
           <button
             onClick={() => setSubView('EDITAR')}
@@ -795,7 +795,7 @@ export const EventoDashboard: React.FC<{
         </div>
 
         {/* ── Módulos — Vendas e Ingressos ────────────────────────────── */}
-        <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-3">Vendas e Ingressos</p>
+        <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-3">Vendas e Ingressos</p>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5 mb-5">
           {(
             [
@@ -843,17 +843,17 @@ export const EventoDashboard: React.FC<{
                 >
                   <m.icon size={14} style={{ color: m.color }} />
                 </div>
-                <p className={`text-xs font-bold leading-tight mb-0.5 ${ativo ? 'text-white' : 'text-zinc-600'}`}>
+                <p className={`text-xs font-bold leading-tight mb-0.5 ${ativo ? 'text-white' : 'text-zinc-400'}`}>
                   {m.label}
                 </p>
-                <p className="text-zinc-600 text-[9px] font-medium">{m.sub}</p>
+                <p className="text-zinc-400 text-[9px] font-medium">{m.sub}</p>
               </button>
             );
           })}
         </div>
 
         {/* ── Módulos — Operacional ──────────────────────────────────── */}
-        <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-3">Operacional</p>
+        <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-3">Operacional</p>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5 mb-5">
           {(
             [
@@ -917,17 +917,17 @@ export const EventoDashboard: React.FC<{
                 >
                   <m.icon size={14} style={{ color: m.color }} />
                 </div>
-                <p className={`text-xs font-bold leading-tight mb-0.5 ${ativo ? 'text-white' : 'text-zinc-600'}`}>
+                <p className={`text-xs font-bold leading-tight mb-0.5 ${ativo ? 'text-white' : 'text-zinc-400'}`}>
                   {m.label}
                 </p>
-                <p className="text-zinc-600 text-[9px] font-medium">{m.sub}</p>
+                <p className="text-zinc-400 text-[9px] font-medium">{m.sub}</p>
               </button>
             );
           })}
         </div>
 
         {/* ── Módulos — Financeiro ───────────────────────────────────── */}
-        <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-3">Financeiro</p>
+        <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-3">Financeiro</p>
         <div className="grid grid-cols-2 gap-2.5 mb-5">
           {(
             [
@@ -967,17 +967,17 @@ export const EventoDashboard: React.FC<{
                 >
                   <m.icon size={14} style={{ color: m.color }} />
                 </div>
-                <p className={`text-xs font-bold leading-tight mb-0.5 ${ativo ? 'text-white' : 'text-zinc-600'}`}>
+                <p className={`text-xs font-bold leading-tight mb-0.5 ${ativo ? 'text-white' : 'text-zinc-400'}`}>
                   {m.label}
                 </p>
-                <p className="text-zinc-600 text-[9px] font-medium">{m.sub}</p>
+                <p className="text-zinc-400 text-[9px] font-medium">{m.sub}</p>
               </button>
             );
           })}
         </div>
 
         {/* ── Módulos — Analytics ────────────────────────────────────── */}
-        <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-3">Analytics</p>
+        <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-3">Analytics</p>
         <div className="grid grid-cols-2 gap-2.5">
           {(
             [
@@ -1017,10 +1017,10 @@ export const EventoDashboard: React.FC<{
                 >
                   <m.icon size={14} style={{ color: m.color }} />
                 </div>
-                <p className={`text-xs font-bold leading-tight mb-0.5 ${ativo ? 'text-white' : 'text-zinc-600'}`}>
+                <p className={`text-xs font-bold leading-tight mb-0.5 ${ativo ? 'text-white' : 'text-zinc-400'}`}>
                   {m.label}
                 </p>
-                <p className="text-zinc-600 text-[9px] font-medium">{m.sub}</p>
+                <p className="text-zinc-400 text-[9px] font-medium">{m.sub}</p>
               </button>
             );
           })}
@@ -1029,7 +1029,7 @@ export const EventoDashboard: React.FC<{
         {/* ── Reviews (só para eventos encerrados) ───────────────── */}
         {status === 'encerrado' && reviewsMedia.count > 0 && (
           <div className="mt-5">
-            <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-3">Reviews do Público</p>
+            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-3">Reviews do Público</p>
             <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-4 mb-3">
               <div className="flex items-center gap-3">
                 <div className="flex items-center gap-1">
@@ -1044,7 +1044,7 @@ export const EventoDashboard: React.FC<{
                   ))}
                 </div>
                 <p className="text-white font-bold text-lg leading-none">{reviewsMedia.media.toFixed(1)}</p>
-                <p className="text-zinc-500 text-[10px] font-semibold">({reviewsMedia.count} avaliações)</p>
+                <p className="text-zinc-400 text-[10px] font-semibold">({reviewsMedia.count} avaliações)</p>
               </div>
             </div>
             {reviews.length > 0 && (
@@ -1061,7 +1061,7 @@ export const EventoDashboard: React.FC<{
                           />
                         ))}
                       </div>
-                      <p className="text-zinc-600 text-[9px]">
+                      <p className="text-zinc-400 text-[9px]">
                         {new Date(r.criadoEm).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })}
                       </p>
                     </div>
@@ -1077,7 +1077,7 @@ export const EventoDashboard: React.FC<{
 
         {evento.descricao && (
           <div className="mt-5 bg-zinc-900/40 border border-white/5 rounded-xl p-4">
-            <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-2">Descrição</p>
+            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">Descrição</p>
             <p className="text-zinc-400 text-xs leading-relaxed line-clamp-4">{evento.descricao}</p>
           </div>
         )}

@@ -410,7 +410,7 @@ export const LegalView: React.FC<{
         className="shrink-0 bg-[#0a0a0a]/90 backdrop-blur-xl border-b border-white/5 px-6 pb-4 flex items-center justify-between"
         style={{ paddingTop: '1rem' }}
       >
-        <button
+        <button aria-label="Voltar"
           onClick={onBack}
           className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
         >
@@ -451,7 +451,7 @@ export const LegalView: React.FC<{
             }
             if (line.startsWith('*') && line.endsWith('*')) {
               return (
-                <p key={i} className="text-zinc-600 text-[10px] italic mt-4">
+                <p key={i} className="text-zinc-400 text-[10px] italic mt-4">
                   {line.replace(/^\*/, '').replace(/\*$/, '')}
                 </p>
               );

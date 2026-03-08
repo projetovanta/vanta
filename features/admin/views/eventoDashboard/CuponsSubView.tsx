@@ -77,7 +77,7 @@ export const CuponsSubView: React.FC<{
     <div className="flex-1 flex flex-col overflow-hidden">
       <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-6 pt-8 pb-4 shrink-0">
         <div className="flex items-center justify-between mb-2">
-          <button
+          <button aria-label="Voltar"
             onClick={onBack}
             className="w-9 h-9 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
           >
@@ -90,19 +90,19 @@ export const CuponsSubView: React.FC<{
             <Plus size={12} /> Novo Cupom
           </button>
         </div>
-        <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1">Gestão</p>
+        <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1">Gestão</p>
         <h1 className="font-serif italic text-xl text-white">Cupons</h1>
       </div>
 
       <div className="flex-1 overflow-y-auto no-scrollbar p-6 max-w-3xl mx-auto w-full space-y-3">
         {loading ? (
           <div className="flex items-center justify-center py-12">
-            <Loader2 size={20} className="text-zinc-600 animate-spin" />
+            <Loader2 size={20} className="text-zinc-400 animate-spin" />
           </div>
         ) : cupons.length === 0 ? (
           <div className="text-center py-12">
             <Tag size={24} className="text-zinc-800 mx-auto mb-3" />
-            <p className="text-zinc-600 text-xs">Nenhum cupom criado</p>
+            <p className="text-zinc-400 text-xs">Nenhum cupom criado</p>
           </div>
         ) : (
           cupons.map(c => (
@@ -115,26 +115,26 @@ export const CuponsSubView: React.FC<{
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => copyLink(c)}
-                    className="p-1 text-zinc-500 active:text-[#FFD300] transition-colors"
+                    className="p-1 text-zinc-400 active:text-[#FFD300] transition-colors"
                     title="Copiar link com cupom"
                   >
                     {copied === c.id ? <Check size={13} className="text-emerald-400" /> : <Link2 size={13} />}
                   </button>
                   <button
                     onClick={() => handleToggle(c)}
-                    className="p-1 text-zinc-500 active:text-[#FFD300] transition-colors"
+                    className="p-1 text-zinc-400 active:text-[#FFD300] transition-colors"
                   >
                     {c.ativo ? <ToggleRight size={18} className="text-emerald-400" /> : <ToggleLeft size={18} />}
                   </button>
                   <button
                     onClick={() => handleRemover(c)}
-                    className="p-1 text-zinc-600 active:text-red-400 transition-colors"
+                    className="p-1 text-zinc-400 active:text-red-400 transition-colors"
                   >
                     <Trash2 size={13} />
                   </button>
                 </div>
               </div>
-              <div className="flex items-center gap-3 text-[9px] text-zinc-500 font-bold uppercase tracking-widest">
+              <div className="flex items-center gap-3 text-[9px] text-zinc-400 font-bold uppercase tracking-widest">
                 <span className="text-[#FFD300]">{c.tipo === 'PERCENTUAL' ? `${c.valor}%` : fmtBrl(c.valor)}</span>
                 <span className="w-1 h-1 rounded-full bg-zinc-700" />
                 <span>
@@ -166,7 +166,7 @@ export const CuponsSubView: React.FC<{
             <div className="w-10 h-1 bg-zinc-700 rounded-full mx-auto" />
             <div className="flex items-center justify-between">
               <p className="text-white font-bold text-base">Novo Cupom</p>
-              <button onClick={() => setShowForm(false)} className="p-1 text-zinc-600">
+              <button onClick={() => setShowForm(false)} className="p-1 text-zinc-400">
                 <X size={14} />
               </button>
             </div>
@@ -180,13 +180,13 @@ export const CuponsSubView: React.FC<{
             <div className="grid grid-cols-2 gap-2">
               <button
                 onClick={() => setTipo('PERCENTUAL')}
-                className={`py-3 rounded-xl text-xs font-bold uppercase tracking-wider border transition-all ${tipo === 'PERCENTUAL' ? 'bg-[#FFD300]/10 border-[#FFD300]/30 text-[#FFD300]' : 'bg-zinc-900/40 border-white/5 text-zinc-500'}`}
+                className={`py-3 rounded-xl text-xs font-bold uppercase tracking-wider border transition-all ${tipo === 'PERCENTUAL' ? 'bg-[#FFD300]/10 border-[#FFD300]/30 text-[#FFD300]' : 'bg-zinc-900/40 border-white/5 text-zinc-400'}`}
               >
                 Percentual (%)
               </button>
               <button
                 onClick={() => setTipo('FIXO')}
-                className={`py-3 rounded-xl text-xs font-bold uppercase tracking-wider border transition-all ${tipo === 'FIXO' ? 'bg-[#FFD300]/10 border-[#FFD300]/30 text-[#FFD300]' : 'bg-zinc-900/40 border-white/5 text-zinc-500'}`}
+                className={`py-3 rounded-xl text-xs font-bold uppercase tracking-wider border transition-all ${tipo === 'FIXO' ? 'bg-[#FFD300]/10 border-[#FFD300]/30 text-[#FFD300]' : 'bg-zinc-900/40 border-white/5 text-zinc-400'}`}
               >
                 Fixo (R$)
               </button>

@@ -15,7 +15,7 @@ export const RaioXEvento: React.FC<Props> = ({ evento }) => {
     <div className="bg-zinc-900/40 border border-[#FFD300]/15 rounded-2xl p-5 space-y-4">
       <div className="flex items-center gap-2">
         <BarChart3 size={13} className="text-[#FFD300]" />
-        <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Raio-X — {evento.nome}</p>
+        <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Raio-X — {evento.nome}</p>
       </div>
 
       {/* Performance por Lote */}
@@ -30,7 +30,7 @@ export const RaioXEvento: React.FC<Props> = ({ evento }) => {
             <div key={lote.id} className="space-y-1">
               <div className="flex items-center justify-between">
                 <p className="text-zinc-400 text-[9px] font-bold truncate flex-1 min-w-0">{lote.nome}</p>
-                <p className="text-zinc-500 text-[9px] shrink-0 ml-2">
+                <p className="text-zinc-400 text-[9px] shrink-0 ml-2">
                   {loteVendidos}/{loteLimite} · {fmtBRL(loteGmv)}
                 </p>
               </div>
@@ -69,7 +69,7 @@ export const RaioXEvento: React.FC<Props> = ({ evento }) => {
                 const taxaV = d.gmv * fees.feePercent + fees.feeFixed * d.vendidos;
                 return (
                   <div key={tipo} className="bg-zinc-900/60 border border-white/5 rounded-xl p-3 space-y-1">
-                    <p className="text-zinc-500 text-[8px] font-black uppercase tracking-widest truncate">{tipo}</p>
+                    <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest truncate">{tipo}</p>
                     <p className="text-zinc-300 text-xs font-bold">{fmtBRL(taxaV)}</p>
                     <p className="text-zinc-700 text-[7px]">{d.vendidos} ingressos</p>
                   </div>

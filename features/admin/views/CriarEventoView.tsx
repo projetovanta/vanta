@@ -642,7 +642,7 @@ export const CriarEventoView: React.FC<{
                 Tipo de Evento
               </h1>
             </div>
-            <button
+            <button aria-label="Voltar"
               onClick={onBack}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0 mt-1"
             >
@@ -671,7 +671,7 @@ export const CriarEventoView: React.FC<{
           <h2 style={TYPOGRAPHY.screenTitle} className="text-2xl italic mb-2">
             {nome}
           </h2>
-          <p className="text-zinc-500 text-sm leading-relaxed">
+          <p className="text-zinc-400 text-sm leading-relaxed">
             {isComSocio ? (
               <>
                 Convite enviado ao sócio.
@@ -688,7 +688,7 @@ export const CriarEventoView: React.FC<{
           </p>
         </div>
         <div className="w-full max-w-xs bg-zinc-900/60 border border-white/5 rounded-2xl p-4 text-center">
-          <p className="text-zinc-600 text-[10px] font-black uppercase tracking-widest mb-1">Status</p>
+          <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest mb-1">Status</p>
           <p className="font-bold text-sm text-amber-400">{isComSocio ? 'Aguardando sócio' : 'Aguardando aprovação'}</p>
         </div>
         {isComSocio && socio?.email && (
@@ -763,7 +763,7 @@ export const CriarEventoView: React.FC<{
               {stepTitle}
             </h1>
           </div>
-          <button
+          <button aria-label="Voltar"
             onClick={safeBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0 mt-1"
           >
@@ -781,7 +781,7 @@ export const CriarEventoView: React.FC<{
                     ? 'bg-[#FFD300] border-[#FFD300] text-black'
                     : step > s
                       ? 'bg-[#FFD300]/15 border-[#FFD300]/30 text-[#FFD300]'
-                      : 'bg-zinc-900 border-white/10 text-zinc-600'
+                      : 'bg-zinc-900 border-white/10 text-zinc-400'
                 }`}
               >
                 {step > s ? <Check size={10} /> : s}

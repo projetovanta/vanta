@@ -35,7 +35,7 @@ export const SubTabMembros: React.FC<Props> = ({
   <div className="space-y-3">
     <div className="flex gap-2">
       <div className="relative flex-1">
-        <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-600" />
+        <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
         <input
           value={query}
           onChange={e => setQuery(e.target.value)}
@@ -53,7 +53,7 @@ export const SubTabMembros: React.FC<Props> = ({
         placeholder="Todos"
         className="w-28"
       />
-      <button
+      <button aria-label="Atualizar"
         onClick={onAtualizarSeguidores}
         disabled={atualizandoSeg}
         className="flex items-center gap-1 px-3 py-2 bg-zinc-900 border border-white/10 rounded-xl text-zinc-400 text-[9px] font-bold shrink-0 active:scale-90 transition-all disabled:opacity-40"
@@ -64,7 +64,7 @@ export const SubTabMembros: React.FC<Props> = ({
     </div>
 
     {filteredMembros.length === 0 ? (
-      <p className="text-zinc-600 text-xs text-center py-10">Nenhum membro encontrado</p>
+      <p className="text-zinc-400 text-xs text-center py-10">Nenhum membro encontrado</p>
     ) : (
       filteredMembros.map(m => {
         const p = perfis[m.userId];
@@ -82,7 +82,7 @@ export const SubTabMembros: React.FC<Props> = ({
                   <img loading="lazy" src={p.foto} alt="" className="w-full h-full object-cover" />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center">
-                    <User size={16} className="text-zinc-600" />
+                    <User size={16} className="text-zinc-400" />
                   </div>
                 )}
               </button>
@@ -91,12 +91,12 @@ export const SubTabMembros: React.FC<Props> = ({
                 <div className="flex items-center gap-2 mt-0.5">
                   {m.instagramHandle && (
                     <>
-                      <Instagram size={10} className="text-zinc-500" />
+                      <Instagram size={10} className="text-zinc-400" />
                       <span className="text-zinc-400 text-[10px]">@{m.instagramHandle}</span>
                     </>
                   )}
                   {m.instagramSeguidores && (
-                    <span className="text-zinc-600 text-[9px]">
+                    <span className="text-zinc-400 text-[9px]">
                       · {m.instagramSeguidores.toLocaleString('pt-BR')} seg.
                     </span>
                   )}

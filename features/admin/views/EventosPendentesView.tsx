@@ -78,7 +78,7 @@ const CampoEditavel: React.FC<{
           {ativo && <Check size={8} className="text-white" />}
         </span>
         <div className="min-w-0 flex-1">
-          <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-0.5">{label}</p>
+          <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-0.5">{label}</p>
           {children}
         </div>
       </button>
@@ -230,7 +230,7 @@ const EventoDetalheView: React.FC<{
           </div>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/30 to-transparent" />
-        <button
+        <button aria-label="Voltar"
           onClick={onBack}
           className="absolute top-8 left-4 w-10 h-10 bg-black/60 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
         >
@@ -407,7 +407,7 @@ const EventoDetalheView: React.FC<{
                   <div className="flex items-center justify-between">
                     <p className="text-zinc-300 text-xs font-bold truncate">{lote.nome}</p>
                     <span
-                      className={`text-[7px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded-full ${lote.ativo ? 'bg-emerald-500/15 text-emerald-400' : 'bg-zinc-800 text-zinc-600'}`}
+                      className={`text-[7px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded-full ${lote.ativo ? 'bg-emerald-500/15 text-emerald-400' : 'bg-zinc-800 text-zinc-400'}`}
                     >
                       {lote.ativo ? 'Ativo' : 'Inativo'}
                     </span>
@@ -430,7 +430,7 @@ const EventoDetalheView: React.FC<{
                         <p className="text-white text-xs font-bold text-right tabular-nums">
                           R$ {v.valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                         </p>
-                        <p className="text-zinc-500 text-xs text-right tabular-nums w-12">{v.limite}</p>
+                        <p className="text-zinc-400 text-xs text-right tabular-nums w-12">{v.limite}</p>
                       </div>
                     ))}
                   </div>
@@ -448,7 +448,7 @@ const EventoDetalheView: React.FC<{
                 <p className="text-zinc-400 text-[10px] leading-relaxed">
                   Este evento vende ingressos fora do VANTA.{' '}
                   {evento.linkExterno && <span className="text-blue-300">Link: {evento.linkExterno}</span>}
-                  {evento.plataformaExterna && <span className="text-zinc-500"> · {evento.plataformaExterna}</span>}
+                  {evento.plataformaExterna && <span className="text-zinc-400"> · {evento.plataformaExterna}</span>}
                 </p>
               </div>
             </div>
@@ -464,7 +464,7 @@ const EventoDetalheView: React.FC<{
           >
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1.5 block">
+                <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
                   Taxa VANTA %
                 </label>
                 <div className="relative">
@@ -477,11 +477,11 @@ const EventoDetalheView: React.FC<{
                     onChange={e => setFeePercent(e.target.value)}
                     className="w-full bg-zinc-900 border border-white/5 rounded-xl px-3 py-2.5 text-white text-sm outline-none focus:border-emerald-500/30 pr-8"
                   />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-600 text-xs">%</span>
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 text-xs">%</span>
                 </div>
               </div>
               <div>
-                <label className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1.5 block">
+                <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
                   Taxa Fixa / Ingresso
                 </label>
                 <div className="relative">
@@ -493,7 +493,7 @@ const EventoDetalheView: React.FC<{
                     onChange={e => setFeeFixed(e.target.value)}
                     className="w-full bg-zinc-900 border border-white/5 rounded-xl px-3 py-2.5 text-white text-sm outline-none focus:border-emerald-500/30 pl-7"
                   />
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-600 text-xs">R$</span>
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 text-xs">R$</span>
                 </div>
               </div>
             </div>
@@ -501,11 +501,11 @@ const EventoDetalheView: React.FC<{
             {/* Info: taxa VANTA sempre do cliente */}
             <div className="bg-[#FFD300]/5 border border-[#FFD300]/15 rounded-xl px-3 py-2">
               <p className="text-[8px] text-[#FFD300]/70 font-black uppercase tracking-widest">Taxa de Serviço</p>
-              <p className="text-zinc-500 text-[9px] leading-relaxed mt-0.5">Sempre cobrada do cliente no checkout.</p>
+              <p className="text-zinc-400 text-[9px] leading-relaxed mt-0.5">Sempre cobrada do cliente no checkout.</p>
             </div>
 
             <div>
-              <label className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-2 block">
+              <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2 block">
                 Quem paga o Gateway?
               </label>
               <div className="flex gap-2">
@@ -516,7 +516,7 @@ const EventoDetalheView: React.FC<{
                     className={`flex-1 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-wider border transition-all ${
                       gatewayMode === m
                         ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
-                        : 'bg-zinc-900/60 border-white/5 text-zinc-500'
+                        : 'bg-zinc-900/60 border-white/5 text-zinc-400'
                     }`}
                   >
                     {m === 'ABSORVER' ? 'Organizador absorve' : 'Repassa ao cliente'}
@@ -524,8 +524,8 @@ const EventoDetalheView: React.FC<{
                 ))}
               </div>
               <div className="flex items-start gap-2 mt-2 bg-zinc-950/50 rounded-xl px-3 py-2">
-                <Info size={11} className="text-zinc-600 shrink-0 mt-0.5" />
-                <p className="text-zinc-600 text-[9px] leading-relaxed">
+                <Info size={11} className="text-zinc-400 shrink-0 mt-0.5" />
+                <p className="text-zinc-400 text-[9px] leading-relaxed">
                   {gatewayMode === 'ABSORVER'
                     ? 'O custo de processamento é descontado do repasse ao organizador.'
                     : 'O custo de processamento é cobrado do cliente no checkout.'}
@@ -536,7 +536,7 @@ const EventoDetalheView: React.FC<{
             {/* ── Taxas detalhadas ── */}
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1.5 block">
+                <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
                   Processamento %
                 </label>
                 <div className="relative">
@@ -549,11 +549,11 @@ const EventoDetalheView: React.FC<{
                     onChange={e => setTaxaProc(e.target.value)}
                     className="w-full bg-zinc-900 border border-white/5 rounded-xl px-3 py-2.5 text-white text-sm outline-none focus:border-emerald-500/30 pr-8"
                   />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-600 text-xs">%</span>
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 text-xs">%</span>
                 </div>
               </div>
               <div>
-                <label className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1.5 block">
+                <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
                   Taxa Porta %
                 </label>
                 <div className="relative">
@@ -566,13 +566,13 @@ const EventoDetalheView: React.FC<{
                     onChange={e => setTaxaPorta(e.target.value)}
                     className="w-full bg-zinc-900 border border-white/5 rounded-xl px-3 py-2.5 text-white text-sm outline-none focus:border-emerald-500/30 pr-8"
                   />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-600 text-xs">%</span>
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 text-xs">%</span>
                 </div>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1.5 block">
+                <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
                   Mínimo / Ingresso
                 </label>
                 <div className="relative">
@@ -584,11 +584,11 @@ const EventoDetalheView: React.FC<{
                     onChange={e => setTaxaMinima(e.target.value)}
                     className="w-full bg-zinc-900 border border-white/5 rounded-xl px-3 py-2.5 text-white text-sm outline-none focus:border-emerald-500/30 pl-7"
                   />
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-600 text-xs">R$</span>
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 text-xs">R$</span>
                 </div>
               </div>
               <div>
-                <label className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1.5 block">
+                <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
                   Fixo Evento
                 </label>
                 <div className="relative">
@@ -600,13 +600,13 @@ const EventoDetalheView: React.FC<{
                     onChange={e => setTaxaFixaEvento(e.target.value)}
                     className="w-full bg-zinc-900 border border-white/5 rounded-xl px-3 py-2.5 text-white text-sm outline-none focus:border-emerald-500/30 pl-7"
                   />
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-600 text-xs">R$</span>
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 text-xs">R$</span>
                 </div>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1.5 block">
+                <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
                   Cota Nomes Lista
                 </label>
                 <input
@@ -618,7 +618,7 @@ const EventoDetalheView: React.FC<{
                 />
               </div>
               <div>
-                <label className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1.5 block">
+                <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
                   R$ / Nome Excedente
                 </label>
                 <div className="relative">
@@ -630,13 +630,13 @@ const EventoDetalheView: React.FC<{
                     onChange={e => setTaxaNomeExc(e.target.value)}
                     className="w-full bg-zinc-900 border border-white/5 rounded-xl px-3 py-2.5 text-white text-sm outline-none focus:border-emerald-500/30 pl-7"
                   />
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-600 text-xs">R$</span>
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 text-xs">R$</span>
                 </div>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1.5 block">
+                <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
                   Cota Cortesias
                 </label>
                 <input
@@ -648,7 +648,7 @@ const EventoDetalheView: React.FC<{
                 />
               </div>
               <div>
-                <label className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1.5 block">
+                <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
                   Cortesia Exc. %
                 </label>
                 <div className="relative">
@@ -661,12 +661,12 @@ const EventoDetalheView: React.FC<{
                     onChange={e => setTaxaCortExc(e.target.value)}
                     className="w-full bg-zinc-900 border border-white/5 rounded-xl px-3 py-2.5 text-white text-sm outline-none focus:border-emerald-500/30 pr-8"
                   />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-600 text-xs">%</span>
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 text-xs">%</span>
                 </div>
               </div>
             </div>
             <div>
-              <label className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1.5 block">
+              <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
                 Prazo Pagamento (dias pós-evento)
               </label>
               <input
@@ -708,13 +708,13 @@ const EventoDetalheView: React.FC<{
             title="Proposta VANTA"
             borderColor="rgba(255,211,0,0.15)"
           >
-            <p className="text-zinc-500 text-[10px] leading-relaxed">
+            <p className="text-zinc-400 text-[10px] leading-relaxed">
               Configure a proposta de afiliado para este evento. O organizador receberá e poderá aceitar, recusar ou
               negociar (até 3 rodadas).
             </p>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1.5 block">
+                <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
                   Comissão %
                 </label>
                 <div className="relative">
@@ -727,11 +727,11 @@ const EventoDetalheView: React.FC<{
                     onChange={e => setComissaoVanta(e.target.value)}
                     className="w-full bg-zinc-900 border border-white/5 rounded-xl px-3 py-2.5 text-white text-sm outline-none focus:border-[#FFD300]/30 pr-8"
                   />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-600 text-xs">%</span>
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 text-xs">%</span>
                 </div>
               </div>
               <div>
-                <label className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1.5 block">
+                <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
                   Código Afiliado
                 </label>
                 <input
@@ -744,7 +744,7 @@ const EventoDetalheView: React.FC<{
               </div>
             </div>
             <div>
-              <label className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1.5 block">
+              <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
                 Mensagem ao organizador
               </label>
               <textarea
@@ -757,7 +757,7 @@ const EventoDetalheView: React.FC<{
             </div>
             <div className="flex items-start gap-2 bg-[#FFD300]/5 border border-[#FFD300]/15 rounded-xl px-3 py-2">
               <MessageSquare size={11} className="text-[#FFD300] shrink-0 mt-0.5" />
-              <p className="text-zinc-500 text-[9px] leading-relaxed">
+              <p className="text-zinc-400 text-[9px] leading-relaxed">
                 O organizador poderá aceitar ou negociar em até 3 rodadas. Se recusar todas, o evento é publicado sem
                 acordo.
               </p>
@@ -856,7 +856,7 @@ const ModalRejeicaoEdicao: React.FC<{
       >
         <div className="px-6 pt-6 pb-2">
           <p className="text-white font-bold text-base mb-1">Rejeitar edição</p>
-          <p className="text-zinc-500 text-sm mb-4">Rejeitar edição de &ldquo;{eventoNome}&rdquo;.</p>
+          <p className="text-zinc-400 text-sm mb-4">Rejeitar edição de &ldquo;{eventoNome}&rdquo;.</p>
           <textarea
             value={motivo}
             onChange={e => setMotivo(e.target.value)}
@@ -976,7 +976,7 @@ export const EventosPendentesView: React.FC<{
               )}
             </div>
           </div>
-          <button
+          <button aria-label="Voltar"
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all mt-1"
           >
@@ -992,7 +992,7 @@ export const EventosPendentesView: React.FC<{
             <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center">
               <ClipboardList size={28} className="text-zinc-700" />
             </div>
-            <p className="text-zinc-600 text-[10px] font-black uppercase tracking-widest text-center">
+            <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest text-center">
               Nenhum evento aguardando aprovação.
             </p>
           </div>
@@ -1029,7 +1029,7 @@ export const EventosPendentesView: React.FC<{
                   )}
                 </div>
                 <p className="text-white font-bold text-sm leading-tight truncate mb-0.5">{ev.nome}</p>
-                <p className="text-zinc-600 text-[10px] truncate mb-1">
+                <p className="text-zinc-400 text-[10px] truncate mb-1">
                   {ev.comunidade.nome} · {ev.cidade}
                 </p>
                 <p className="text-zinc-700 text-[9px]">{formatDateTime(ev.dataInicio)}</p>
@@ -1063,7 +1063,7 @@ export const EventosPendentesView: React.FC<{
                     </span>
                     <p className="text-white font-bold text-sm truncate flex-1">{ev.nome}</p>
                   </div>
-                  <p className="text-zinc-600 text-[10px] truncate">
+                  <p className="text-zinc-400 text-[10px] truncate">
                     {ev.comunidade.nome} · {campos.length} campo(s) alterado(s)
                   </p>
                   {campos.length > 0 && (

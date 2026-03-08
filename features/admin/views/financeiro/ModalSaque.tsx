@@ -49,15 +49,15 @@ export const ModalSaque: React.FC<Props> = ({
       <div className="w-10 h-1 bg-zinc-700 rounded-full mx-auto" />
 
       <div>
-        <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest">Solicitar Saque</p>
+        <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">Solicitar Saque</p>
         <p className="text-white font-bold text-base mt-0.5">Disponível: {fmtBRL(valorMax)}</p>
-        <p className="text-zinc-500 text-[10px] mt-0.5">
+        <p className="text-zinc-400 text-[10px] mt-0.5">
           PIX {pixTipo}: {pixChave}
         </p>
       </div>
 
       <div className="space-y-1.5">
-        <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest">Valor a sacar (R$)</p>
+        <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">Valor a sacar (R$)</p>
         <input
           value={valorSaque}
           onChange={e => setValorSaque(e.target.value.replace(/[^0-9.,]/g, ''))}
@@ -74,20 +74,20 @@ export const ModalSaque: React.FC<Props> = ({
       {/* Detalhamento de taxas */}
       {valorNum > 0 && (
         <div className="rounded-xl p-4 space-y-2 border bg-zinc-900/60 border-white/5">
-          <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-3">Detalhamento</p>
+          <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-3">Detalhamento</p>
           <div className="flex justify-between items-center">
-            <p className="text-zinc-500 text-[10px]">Bruto solicitado</p>
+            <p className="text-zinc-400 text-[10px]">Bruto solicitado</p>
             <p className="text-zinc-300 text-[10px] font-bold">{fmtBRL(valorNum)}</p>
           </div>
           <div className="flex justify-between items-center">
-            <p className="text-zinc-500 text-[10px]">
+            <p className="text-zinc-400 text-[10px]">
               Taxa de Serviço ({(contractedFees.feePercent * 100).toFixed(1)}%)
             </p>
             <p className="text-[10px] font-bold text-[#FFD300]/70">(cobrada do cliente)</p>
           </div>
           {taxaFixaValor > 0 && (
             <div className="flex justify-between items-center">
-              <p className="text-zinc-500 text-[10px]">Taxa Fixa ({totalIngressosEvento} ingressos)</p>
+              <p className="text-zinc-400 text-[10px]">Taxa Fixa ({totalIngressosEvento} ingressos)</p>
               <p className="text-[10px] font-bold text-[#FFD300]/70">(cobrada do cliente)</p>
             </div>
           )}
@@ -103,7 +103,7 @@ export const ModalSaque: React.FC<Props> = ({
           onClick={onClose}
           className="w-12 h-12 bg-zinc-900 border border-white/10 rounded-xl flex items-center justify-center active:scale-90 transition-all shrink-0"
         >
-          <X size={16} className="text-zinc-500" />
+          <X size={16} className="text-zinc-400" />
         </button>
         <button
           onClick={onConfirmar}

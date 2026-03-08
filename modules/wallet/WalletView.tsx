@@ -142,7 +142,7 @@ export const WalletView: React.FC<WalletViewProps> = ({
           style={isSubView ? { paddingTop: '2rem' } : undefined}
         >
           {isSubView && (
-            <button
+            <button aria-label="Voltar"
               onClick={onGoToHome}
               className="ml-6 mb-4 w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-transform shrink-0"
             >
@@ -181,7 +181,7 @@ export const WalletView: React.FC<WalletViewProps> = ({
     >
       <div className="flex items-center justify-between mb-8">
         {isSubView && (
-          <button
+          <button aria-label="Voltar"
             onClick={onGoToHome}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-transform"
           >
@@ -197,7 +197,7 @@ export const WalletView: React.FC<WalletViewProps> = ({
       <h1 style={TYPOGRAPHY.screenTitle} className="text-3xl mb-2 text-[#FFD300]">
         Carteira
       </h1>
-      <p className="text-zinc-500 text-xs uppercase tracking-widest mb-8 italic">Seus acessos e confirmações</p>
+      <p className="text-zinc-400 text-xs uppercase tracking-widest mb-8 italic">Seus acessos e confirmações</p>
 
       {/* Abas */}
       <div className="flex p-1 bg-zinc-900/50 rounded-2xl border border-white/5 mb-8">
@@ -208,7 +208,7 @@ export const WalletView: React.FC<WalletViewProps> = ({
             className={`flex-1 py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300 ${
               activeTab === tab
                 ? 'bg-[#FFD300] text-black shadow-lg shadow-[#FFD300]/10'
-                : 'text-zinc-500 active:text-zinc-300'
+                : 'text-zinc-400 active:text-zinc-300'
             }`}
           >
             {tab === 'UPCOMING' ? 'Próximos' : 'Passados'}
@@ -231,11 +231,11 @@ export const WalletView: React.FC<WalletViewProps> = ({
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-white font-bold text-sm truncate">{cp.eventoNome}</p>
-                    <p className="text-zinc-500 text-[10px] mt-0.5">
+                    <p className="text-zinc-400 text-[10px] mt-0.5">
                       Enviado por {cp.remetenteNome} · {cp.variacaoLabel}
                       {cp.quantidade > 1 && ` · x${cp.quantidade}`}
                     </p>
-                    <p className="text-zinc-600 text-[9px] mt-0.5">{cp.eventoData}</p>
+                    <p className="text-zinc-400 text-[9px] mt-0.5">{cp.eventoData}</p>
                   </div>
                 </div>
                 <div className="flex gap-2">
@@ -273,11 +273,11 @@ export const WalletView: React.FC<WalletViewProps> = ({
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-white font-bold text-sm truncate">{tp.tituloEvento}</p>
-                    <p className="text-zinc-500 text-[10px] mt-0.5">
+                    <p className="text-zinc-400 text-[10px] mt-0.5">
                       Enviado por {tp.remetenteNome}
                       {tp.variacaoLabel && ` · ${tp.variacaoLabel}`}
                     </p>
-                    {tp.dataEvento && <p className="text-zinc-600 text-[9px] mt-0.5">{tp.dataEvento}</p>}
+                    {tp.dataEvento && <p className="text-zinc-400 text-[9px] mt-0.5">{tp.dataEvento}</p>}
                   </div>
                 </div>
                 <div className="flex gap-2">
@@ -321,7 +321,7 @@ export const WalletView: React.FC<WalletViewProps> = ({
                           ? 'bg-emerald-500/15 text-emerald-400'
                           : r.postUrl
                             ? 'bg-amber-500/15 text-amber-400'
-                            : 'bg-zinc-800 text-zinc-500'
+                            : 'bg-zinc-800 text-zinc-400'
                       }`}
                     >
                       {r.postVerificado ? 'Post verificado' : r.postUrl ? 'Aguardando verificação' : 'Post pendente'}
@@ -360,9 +360,9 @@ export const WalletView: React.FC<WalletViewProps> = ({
         <div className="flex flex-col items-center justify-center py-20 opacity-40">
           <div className="w-16 h-16 bg-zinc-900 rounded-full flex items-center justify-center mb-6 border border-zinc-800">
             {activeTab === 'UPCOMING' ? (
-              <Ticket size={24} className="text-zinc-600" />
+              <Ticket size={24} className="text-zinc-400" />
             ) : (
-              <Calendar size={24} className="text-zinc-600" />
+              <Calendar size={24} className="text-zinc-400" />
             )}
           </div>
           <p className="text-zinc-400 text-[10px] uppercase font-bold tracking-widest">
@@ -408,7 +408,7 @@ export const WalletView: React.FC<WalletViewProps> = ({
                       {/* Dados */}
                       <div className="flex-1 min-w-0">
                         <p className="text-white font-bold text-sm leading-tight truncate mb-1">{grupo.titulo}</p>
-                        <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest">{grupo.data}</p>
+                        <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">{grupo.data}</p>
                         <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
                           {count > 1 && (
                             <span className="text-[8px] font-black px-2 py-0.5 rounded-full bg-purple-500/15 border border-purple-500/25 text-purple-300">
@@ -428,7 +428,7 @@ export const WalletView: React.FC<WalletViewProps> = ({
                         </div>
                       </div>
 
-                      <ChevronRight size={16} className="text-zinc-600 shrink-0" />
+                      <ChevronRight size={16} className="text-zinc-400 shrink-0" />
                     </button>
                   );
                 })}

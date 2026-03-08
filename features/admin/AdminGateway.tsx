@@ -170,7 +170,7 @@ export const AdminGateway: React.FC<Props> = ({ onBack }) => {
                 Bem-vindo, {adminNome}
               </h1>
             </div>
-            <button
+            <button aria-label="Voltar"
               onClick={onBack}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
             >
@@ -184,7 +184,7 @@ export const AdminGateway: React.FC<Props> = ({ onBack }) => {
           {!accessData ? (
             <div className="flex flex-col items-center justify-center gap-4 py-16">
               <div className="w-10 h-10 border-2 border-[#FFD300]/30 border-t-[#FFD300] rounded-full animate-spin" />
-              <p className="text-zinc-500 text-xs font-semibold">Carregando comunidades...</p>
+              <p className="text-zinc-400 text-xs font-semibold">Carregando comunidades...</p>
             </div>
           ) : !temOpcoes ? (
             <div className="flex flex-col items-center justify-center gap-4 py-16">
@@ -192,7 +192,7 @@ export const AdminGateway: React.FC<Props> = ({ onBack }) => {
                 <Shield size={24} className="text-zinc-700" />
               </div>
               <div className="text-center">
-                <p className="text-zinc-500 text-sm font-semibold">Sem atribuições ativas</p>
+                <p className="text-zinc-400 text-sm font-semibold">Sem atribuições ativas</p>
                 <p className="text-zinc-700 text-[10px] font-black uppercase tracking-widest mt-1">
                   Solicite acesso ao administrador
                 </p>
@@ -217,17 +217,17 @@ export const AdminGateway: React.FC<Props> = ({ onBack }) => {
                         className="w-6 h-6 rounded-full object-cover shrink-0"
                       />
                     ) : (
-                      <Building2 size={14} className={destinoSelecionado ? 'text-[#FFD300]' : 'text-zinc-600'} />
+                      <Building2 size={14} className={destinoSelecionado ? 'text-[#FFD300]' : 'text-zinc-400'} />
                     )}
                     <span
-                      className={`text-sm font-semibold truncate ${destinoSelecionado ? 'text-white' : 'text-zinc-500'}`}
+                      className={`text-sm font-semibold truncate ${destinoSelecionado ? 'text-white' : 'text-zinc-400'}`}
                     >
                       {destinoSelecionado ? destinoSelecionado.nome : 'Selecione uma comunidade...'}
                     </span>
                   </div>
                   <ChevronDown
                     size={16}
-                    className={`text-zinc-500 shrink-0 transition-transform ${listaAberta ? 'rotate-180' : ''}`}
+                    className={`text-zinc-400 shrink-0 transition-transform ${listaAberta ? 'rotate-180' : ''}`}
                   />
                 </button>
 
@@ -249,7 +249,7 @@ export const AdminGateway: React.FC<Props> = ({ onBack }) => {
                             className={`w-full flex items-center justify-between py-2.5 px-3 rounded-xl transition-all ${
                               selecionadoId === d.id
                                 ? 'bg-[#FFD300]/10 text-[#FFD300]'
-                                : 'text-zinc-500 active:bg-white/5'
+                                : 'text-zinc-400 active:bg-white/5'
                             }`}
                           >
                             <div className="flex items-center min-w-0">

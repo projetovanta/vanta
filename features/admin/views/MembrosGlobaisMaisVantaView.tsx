@@ -273,7 +273,7 @@ export const MembrosGlobaisMaisVantaView: React.FC<{
               </button>
               <button
                 onClick={() => setSelecionados(new Set())}
-                className="px-2 py-1 bg-zinc-800 border border-white/10 rounded-lg text-zinc-500 text-[8px] font-black uppercase active:scale-95 transition-all"
+                className="px-2 py-1 bg-zinc-800 border border-white/10 rounded-lg text-zinc-400 text-[8px] font-black uppercase active:scale-95 transition-all"
               >
                 Limpar
               </button>
@@ -290,13 +290,13 @@ export const MembrosGlobaisMaisVantaView: React.FC<{
             </h1>
           </div>
           <div className="flex gap-2 shrink-0">
-            <button
+            <button aria-label="Atualizar"
               onClick={handleRefresh}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
             >
               <RefreshCw size={16} className="text-zinc-400" />
             </button>
-            <button
+            <button aria-label="Voltar"
               onClick={onBack}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
             >
@@ -309,19 +309,19 @@ export const MembrosGlobaisMaisVantaView: React.FC<{
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 mb-4">
           <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center">
             <p className="text-emerald-400 font-black text-xl leading-none">{totais.ativos}</p>
-            <p className="text-zinc-500 text-[9px] font-bold uppercase tracking-wider mt-1">Ativos</p>
+            <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider mt-1">Ativos</p>
           </div>
           <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center">
             <p className="text-amber-400 font-black text-xl leading-none">{totais.bloqueados}</p>
-            <p className="text-zinc-500 text-[9px] font-bold uppercase tracking-wider mt-1">Bloqueados</p>
+            <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider mt-1">Bloqueados</p>
           </div>
           <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center">
             <p className="text-red-400 font-black text-xl leading-none">{totais.banidos}</p>
-            <p className="text-zinc-500 text-[9px] font-bold uppercase tracking-wider mt-1">Banidos</p>
+            <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider mt-1">Banidos</p>
           </div>
           <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center">
             <p className="text-orange-400 font-black text-xl leading-none">{totais.divida}</p>
-            <p className="text-zinc-500 text-[9px] font-bold uppercase tracking-wider mt-1">Dívida</p>
+            <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider mt-1">Dívida</p>
           </div>
         </div>
 
@@ -334,7 +334,7 @@ export const MembrosGlobaisMaisVantaView: React.FC<{
               className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider shrink-0 border transition-all ${
                 filtro === f.id
                   ? 'bg-[#FFD300] text-black border-transparent'
-                  : 'bg-zinc-900/60 text-zinc-500 border-white/5 active:bg-zinc-800'
+                  : 'bg-zinc-900/60 text-zinc-400 border-white/5 active:bg-zinc-800'
               }`}
             >
               {f.label} ({f.count})
@@ -350,7 +350,7 @@ export const MembrosGlobaisMaisVantaView: React.FC<{
             <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center">
               <Users size={28} className="text-zinc-700" />
             </div>
-            <p className="text-zinc-600 text-[10px] font-black uppercase tracking-widest">Nenhum membro encontrado</p>
+            <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">Nenhum membro encontrado</p>
           </div>
         )}
 
@@ -391,7 +391,7 @@ export const MembrosGlobaisMaisVantaView: React.FC<{
                   />
                 ) : (
                   <div className="w-12 h-12 rounded-full bg-zinc-800 border border-white/5 flex items-center justify-center shrink-0">
-                    <Users size={20} className="text-zinc-600" />
+                    <Users size={20} className="text-zinc-400" />
                   </div>
                 )}
                 <div className="flex-1 min-w-0">
@@ -404,15 +404,15 @@ export const MembrosGlobaisMaisVantaView: React.FC<{
                     </span>
                     <span className="text-[#FFD300] text-[9px] font-black">{m.tier}</span>
                   </div>
-                  <p className="text-zinc-600 text-[9px] mt-1">Origem: {getComunidadeNome(m.comunidadeOrigem)}</p>
+                  <p className="text-zinc-400 text-[9px] mt-1">Origem: {getComunidadeNome(m.comunidadeOrigem)}</p>
                 </div>
 
                 {/* Status info */}
-                <div className="text-right shrink-0 text-[9px] text-zinc-500">
+                <div className="text-right shrink-0 text-[9px] text-zinc-400">
                   {m.bloqueioAte && (
                     <p>Até {new Date(m.bloqueioAte).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })}</p>
                   )}
-                  {m.instagramHandle && <p className="text-zinc-600">@{m.instagramHandle}</p>}
+                  {m.instagramHandle && <p className="text-zinc-400">@{m.instagramHandle}</p>}
                 </div>
               </div>
 
@@ -472,7 +472,7 @@ export const MembrosGlobaisMaisVantaView: React.FC<{
                   ? 'Banir permanentemente?'
                   : 'Resolver dívida social?'}
             </p>
-            <p className="text-zinc-500 text-[10px] text-center leading-relaxed">
+            <p className="text-zinc-400 text-[10px] text-center leading-relaxed">
               {confirmar.acao === 'DESBLOQUEAR'
                 ? `"${confirmar.nome}" poderá participar de eventos MAIS VANTA novamente.`
                 : confirmar.acao === 'BANIR'
@@ -530,7 +530,7 @@ export const MembrosGlobaisMaisVantaView: React.FC<{
                   ? 'Desbloquear membros?'
                   : 'Banir membros?'}
             </p>
-            <p className="text-zinc-500 text-[10px] text-center leading-relaxed">
+            <p className="text-zinc-400 text-[10px] text-center leading-relaxed">
               Esta ação afetará {confirmaBulk.count} membro{confirmaBulk.count > 1 ? 's' : ''}.
             </p>
             <div className="flex gap-2">

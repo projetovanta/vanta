@@ -85,9 +85,9 @@ export const ModalInserirLote: React.FC<{
         <div className="p-6 space-y-4" style={{ paddingBottom: 'max(2rem, env(safe-area-inset-bottom, 2rem))' }}>
           {/* Pills de regra */}
           <div>
-            <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest mb-2">Categoria</p>
+            <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mb-2">Categoria</p>
             {regrasDisponiveis.length === 0 ? (
-              <p className="text-zinc-600 text-xs">Sem saldo disponível em nenhuma categoria.</p>
+              <p className="text-zinc-400 text-xs">Sem saldo disponível em nenhuma categoria.</p>
             ) : (
               <div className="flex flex-wrap gap-2">
                 {regrasDisponiveis.map(r => {
@@ -107,7 +107,7 @@ export const ModalInserirLote: React.FC<{
                     >
                       <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: r.cor ?? '#71717a' }} />
                       {r.label}
-                      <span className={`text-[9px] font-black ${ativa ? 'opacity-70' : 'text-zinc-600'}`}>
+                      <span className={`text-[9px] font-black ${ativa ? 'opacity-70' : 'text-zinc-400'}`}>
                         ({saldo})
                       </span>
                     </button>
@@ -119,7 +119,7 @@ export const ModalInserirLote: React.FC<{
 
           {/* Textarea */}
           <div>
-            <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest mb-2">
+            <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mb-2">
               Nomes <span className="text-zinc-700">(um por linha, máx. 20)</span>
             </p>
             <textarea

@@ -81,7 +81,7 @@ const Keypad: React.FC<{
             disabled={val === '' || disabled}
             className={`aspect-square w-full max-w-16 rounded-full flex items-center justify-center text-xl font-bold transition-all active:scale-90 mx-auto ${
               val === 'DEL'
-                ? 'text-zinc-600 active:text-white'
+                ? 'text-zinc-400 active:text-white'
                 : 'bg-zinc-900/50 border border-white/5 text-white active:bg-[#FFD300] active:text-black shadow-lg'
             }`}
           >
@@ -270,7 +270,7 @@ export const WalletLockScreen: React.FC<WalletLockScreenProps> = ({ onUnlock, on
         <h2 style={TYPOGRAPHY.screenTitle} className="text-2xl text-white mb-2 italic">
           {title}
         </h2>
-        <p className="text-zinc-500 text-[9px] uppercase tracking-[0.3em] font-black">{subtitle}</p>
+        <p className="text-zinc-400 text-[9px] uppercase tracking-[0.3em] font-black">{subtitle}</p>
       </div>
 
       {/* Keypad */}
@@ -280,7 +280,7 @@ export const WalletLockScreen: React.FC<WalletLockScreenProps> = ({ onUnlock, on
       {!lockUntil && !showErrorModal && !pinMismatch && (
         <button
           onClick={onExit}
-          className="mt-12 text-zinc-600 hover:text-zinc-400 text-[10px] font-black uppercase tracking-[0.2em] flex items-center gap-2 transition-colors"
+          className="mt-12 text-zinc-400 hover:text-zinc-400 text-[10px] font-black uppercase tracking-[0.2em] flex items-center gap-2 transition-colors"
         >
           <LogOut size={12} />
           Voltar ao Perfil
@@ -300,7 +300,7 @@ export const WalletLockScreen: React.FC<WalletLockScreenProps> = ({ onUnlock, on
               PIN Incorreto
             </h2>
 
-            <p className="text-zinc-500 text-[11px] leading-relaxed mb-8 px-2 font-medium">
+            <p className="text-zinc-400 text-[11px] leading-relaxed mb-8 px-2 font-medium">
               Você tem mais <span className="text-white font-black">{remainingAttempts}</span>{' '}
               {remainingAttempts === 1 ? 'tentativa' : 'tentativas'} antes de bloquear por{' '}
               <span className="text-white font-black">{nextLockDurationMinutes} minutos</span>.
@@ -317,7 +317,7 @@ export const WalletLockScreen: React.FC<WalletLockScreenProps> = ({ onUnlock, on
 
               <button
                 onClick={onExit}
-                className="w-full py-4 bg-transparent text-zinc-600 font-bold text-[10px] uppercase tracking-[0.2em] border border-white/5 rounded-xl active:bg-white/5 transition-all"
+                className="w-full py-4 bg-transparent text-zinc-400 font-bold text-[10px] uppercase tracking-[0.2em] border border-white/5 rounded-xl active:bg-white/5 transition-all"
               >
                 Sair
               </button>

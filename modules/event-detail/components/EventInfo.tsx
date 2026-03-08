@@ -26,7 +26,7 @@ export const EventInfo: React.FC<EventInfoProps> = ({ evento, isNextDay, onComun
         <div className="flex-1">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p style={TYPOGRAPHY.uiLabel} className="text-[9px] text-zinc-500 mb-0.5">
+              <p style={TYPOGRAPHY.uiLabel} className="text-[9px] text-zinc-400 mb-0.5">
                 Início
               </p>
               <p className="text-sm font-medium text-white leading-tight">
@@ -37,7 +37,7 @@ export const EventInfo: React.FC<EventInfoProps> = ({ evento, isNextDay, onComun
             </div>
             {evento.horarioFim && (
               <div>
-                <p style={TYPOGRAPHY.uiLabel} className="text-[9px] text-zinc-500 mb-0.5">
+                <p style={TYPOGRAPHY.uiLabel} className="text-[9px] text-zinc-400 mb-0.5">
                   Término
                 </p>
                 <p className="text-sm font-medium text-white leading-tight">
@@ -60,14 +60,14 @@ export const EventInfo: React.FC<EventInfoProps> = ({ evento, isNextDay, onComun
             className="flex-1 text-left group"
             onClick={() => evento.comunidade && onComunidadeClick?.(evento.comunidade.id)}
           >
-            <p style={TYPOGRAPHY.uiLabel} className="text-[9px] text-zinc-500">
+            <p style={TYPOGRAPHY.uiLabel} className="text-[9px] text-zinc-400">
               Local
             </p>
             <div className="flex items-center gap-1">
               <p className="text-sm font-medium text-white group-active:text-[#FFD300] transition-colors">
                 {evento.comunidade.nome}
               </p>
-              <ExternalLink size={10} className="text-zinc-600 group-active:text-[#FFD300]" />
+              <ExternalLink size={10} className="text-zinc-400 group-active:text-[#FFD300]" />
             </div>
           </button>
         </div>
@@ -78,7 +78,7 @@ export const EventInfo: React.FC<EventInfoProps> = ({ evento, isNextDay, onComun
           <MapPin size={18} />
         </div>
         <button onClick={handleOpenMaps} className="flex-1 text-left group">
-          <p style={TYPOGRAPHY.uiLabel} className="text-[9px] text-zinc-500">
+          <p style={TYPOGRAPHY.uiLabel} className="text-[9px] text-zinc-400">
             Endereço
           </p>
           <p className="text-sm font-medium text-white group-active:text-[#FFD300] transition-colors">
@@ -93,7 +93,7 @@ export const EventInfo: React.FC<EventInfoProps> = ({ evento, isNextDay, onComun
             <User size={18} />
           </div>
           <div>
-            <p style={TYPOGRAPHY.uiLabel} className="text-[9px] text-zinc-500">
+            <p style={TYPOGRAPHY.uiLabel} className="text-[9px] text-zinc-400">
               Dress Code
             </p>
             <p className="text-sm font-medium text-white">{evento.dressCode}</p>

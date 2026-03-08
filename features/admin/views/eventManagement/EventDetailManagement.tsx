@@ -146,7 +146,7 @@ export const EventDetailManagement: React.FC<{
               {lista?.eventoNome ?? eventoAdmin?.nome ?? 'Evento'}
             </h1>
           </div>
-          <button
+          <button aria-label="Voltar"
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0 mt-1"
           >
@@ -154,11 +154,11 @@ export const EventDetailManagement: React.FC<{
           </button>
         </div>
         <div className="flex items-center gap-3 mb-4 mt-2 flex-wrap">
-          <span className="text-zinc-600 text-[9px] font-black uppercase tracking-widest">
+          <span className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">
             {lista?.eventoLocal ?? eventoAdmin?.local ?? ''}
           </span>
           <span className="w-1 h-1 rounded-full bg-zinc-700 shrink-0" />
-          <span className="text-zinc-600 text-[9px] font-black uppercase tracking-widest">{total} inscritos</span>
+          <span className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">{total} inscritos</span>
           {checkedIn > 0 && (
             <>
               <span className="w-1 h-1 rounded-full bg-zinc-700 shrink-0" />
@@ -182,7 +182,7 @@ export const EventDetailManagement: React.FC<{
                 key={t.id}
                 onClick={() => setTab(t.id)}
                 className={`flex-none flex items-center justify-center gap-1 px-3.5 py-2.5 rounded-lg text-[9px] font-black uppercase tracking-wide transition-all whitespace-nowrap ${
-                  tab === t.id ? 'bg-[#FFD300] text-black' : 'text-zinc-500 active:text-zinc-300'
+                  tab === t.id ? 'bg-[#FFD300] text-black' : 'text-zinc-400 active:text-zinc-300'
                 }`}
               >
                 <t.icon size={10} /> {t.label}
@@ -316,7 +316,7 @@ export const EventDetailManagement: React.FC<{
               </h2>
             </div>
             <div className="p-6 space-y-3 max-h-[50vh] overflow-y-auto no-scrollbar">
-              <p className="text-[10px] text-zinc-600 font-black uppercase tracking-widest mb-4">
+              <p className="text-[10px] text-zinc-400 font-black uppercase tracking-widest mb-4">
                 Gerentes da Comunidade
               </p>
               {rbacService.getSolicitacoesPendentes(eventoAdminId!).map(uid => {
@@ -335,14 +335,14 @@ export const EventDetailManagement: React.FC<{
                           className="w-full h-full object-cover"
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-zinc-500 text-xs font-bold">
+                        <div className="w-full h-full flex items-center justify-center text-zinc-400 text-xs font-bold">
                           {membro?.nome?.[0] ?? '?'}
                         </div>
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-white text-sm font-semibold truncate">{membro?.nome ?? uid}</p>
-                      <p className="text-zinc-600 text-[10px] font-black uppercase tracking-widest">
+                      <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">
                         Produtor · Comunidade
                       </p>
                     </div>

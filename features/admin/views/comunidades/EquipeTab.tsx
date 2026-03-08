@@ -105,7 +105,7 @@ export const EquipeTab: React.FC<{
       >
         <div className="text-left">
           <p className="text-zinc-300 text-sm font-bold">Adicionar membro</p>
-          <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest mt-0.5">
+          <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mt-0.5">
             Equipe fixa da comunidade
           </p>
         </div>
@@ -158,7 +158,7 @@ export const EquipeTab: React.FC<{
                   onClick={() => handleRemover(item)}
                   className="w-8 h-8 bg-zinc-800 rounded-full flex items-center justify-center border border-white/5 active:scale-90 transition-all shrink-0"
                 >
-                  <Trash2 size={12} className="text-zinc-500" />
+                  <Trash2 size={12} className="text-zinc-400" />
                 </button>
               </div>
             );

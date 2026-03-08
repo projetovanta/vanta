@@ -11,13 +11,13 @@ export const PreferencesView: React.FC<{ onBack: () => void; onSave: (d: any) =>
     <div className="flex items-center justify-between p-5 bg-zinc-900/40 border border-white/5 rounded-2xl">
       <div className="flex items-start gap-4">
         <div
-          className={`p-2 rounded-xl border ${active ? 'bg-[#FFD300]/10 border-[#FFD300]/30 text-[#FFD300]' : 'bg-black border-white/5 text-zinc-600'}`}
+          className={`p-2 rounded-xl border ${active ? 'bg-[#FFD300]/10 border-[#FFD300]/30 text-[#FFD300]' : 'bg-black border-white/5 text-zinc-400'}`}
         >
           <Icon size={18} />
         </div>
         <div>
           <h4 className="text-sm font-bold text-white leading-none mb-1.5">{label}</h4>
-          <p className="text-[10px] text-zinc-500 italic">{description}</p>
+          <p className="text-[10px] text-zinc-400 italic">{description}</p>
         </div>
       </div>
       <button
@@ -37,7 +37,7 @@ export const PreferencesView: React.FC<{ onBack: () => void; onSave: (d: any) =>
         className="shrink-0 bg-[#0a0a0a] border-b border-white/5 px-6 pb-4 flex items-center justify-between"
         style={{ paddingTop: '1rem' }}
       >
-        <button onClick={onBack} className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center">
+        <button aria-label="Voltar" onClick={onBack} className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center">
           <ArrowLeft size={18} />
         </button>
         <h1 style={TYPOGRAPHY.screenTitle} className="text-lg italic">

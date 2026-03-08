@@ -4,7 +4,7 @@ import { buscarCep, formatCep, geocodeEndereco } from '../../../../services/cepS
 
 const inputCls =
   'w-full bg-zinc-900/60 border border-white/5 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-[#FFD300]/30 placeholder-zinc-700';
-const labelCls = 'text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1.5 block';
+const labelCls = 'text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block';
 
 export const Step2Localizacao: React.FC<{
   cep: string;
@@ -151,15 +151,15 @@ export const Step2Localizacao: React.FC<{
           <MapPin size={13} className="text-emerald-400 shrink-0" />
           <div>
             <p className="text-emerald-400 text-[9px] font-black uppercase tracking-widest">Coordenadas definidas</p>
-            <p className="text-zinc-500 text-[8px] mt-0.5">
+            <p className="text-zinc-400 text-[8px] mt-0.5">
               Lat {p.coords.lat.toFixed(4)} · Lng {p.coords.lng.toFixed(4)}
             </p>
           </div>
         </div>
       ) : (
         <div className="flex items-center gap-2 bg-zinc-900/40 border border-white/5 rounded-xl px-4 py-3">
-          <MapPin size={13} className="text-zinc-600 shrink-0" />
-          <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest">
+          <MapPin size={13} className="text-zinc-400 shrink-0" />
+          <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">
             Digite o CEP para obter coordenadas automáticas
           </p>
         </div>

@@ -54,7 +54,7 @@ export const PriceFilterModal: React.FC<PriceFilterModalProps> = ({ isOpen, onCl
 
             <div className="space-y-6">
               <div className="flex justify-between items-end">
-                <span className="text-[10px] text-zinc-500 uppercase font-black tracking-widest">Valor Máximo</span>
+                <span className="text-[10px] text-zinc-400 uppercase font-black tracking-widest">Valor Máximo</span>
                 <span className="text-xl font-serif font-bold text-white">
                   {tempPrice >= 5000 ? 'R$ 5000+' : `R$ ${tempPrice}`}
                 </span>
@@ -94,7 +94,7 @@ export const PriceFilterModal: React.FC<PriceFilterModalProps> = ({ isOpen, onCl
           <div className="flex border-t border-white/5">
             <button
               onClick={handleClear}
-              className="flex-1 py-4 bg-black/60 text-[9px] font-black uppercase tracking-[0.2em] text-zinc-500 hover:text-white transition-colors"
+              className="flex-1 py-4 bg-black/60 text-[9px] font-black uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors"
             >
               Limpar
             </button>

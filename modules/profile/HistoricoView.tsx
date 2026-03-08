@@ -110,7 +110,7 @@ export const HistoricoView: React.FC<HistoricoViewProps> = ({
         className="shrink-0 bg-[#0a0a0a] border-b border-white/5 px-6 pb-4 flex items-center justify-between"
         style={{ paddingTop: '1rem' }}
       >
-        <button
+        <button aria-label="Voltar"
           onClick={onBack}
           className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-transform"
         >
@@ -164,8 +164,8 @@ export const HistoricoView: React.FC<HistoricoViewProps> = ({
                         >
                           {cfg.label}
                         </p>
-                        <p className="text-[10px] text-zinc-500 text-center truncate w-full">{ach.comunidadeNome}</p>
-                        <p className="text-[9px] text-zinc-600">
+                        <p className="text-[10px] text-zinc-400 text-center truncate w-full">{ach.comunidadeNome}</p>
+                        <p className="text-[9px] text-zinc-400">
                           {ach.totalEventos} evento{ach.totalEventos !== 1 ? 's' : ''}
                         </p>
                       </div>
@@ -216,7 +216,7 @@ export const HistoricoView: React.FC<HistoricoViewProps> = ({
                   <div className="w-12 h-12 bg-zinc-900 rounded-2xl border border-white/5 flex items-center justify-center">
                     <Calendar size={20} className="text-zinc-700" />
                   </div>
-                  <p className="text-zinc-500 text-sm text-center">Nenhum evento no histórico ainda</p>
+                  <p className="text-zinc-400 text-sm text-center">Nenhum evento no histórico ainda</p>
                 </div>
               ) : (
                 <div className="space-y-3">
@@ -233,7 +233,7 @@ export const HistoricoView: React.FC<HistoricoViewProps> = ({
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-white font-bold text-sm truncate">{item.evento.titulo}</p>
-                        <p className="text-zinc-500 text-[11px] mt-0.5 truncate">
+                        <p className="text-zinc-400 text-[11px] mt-0.5 truncate">
                           {item.evento.data} · {item.evento.local}
                         </p>
                       </div>

@@ -264,7 +264,7 @@ export const TabClube: React.FC<Props> = ({ adminId, toastFn, comunidadeId }) =>
             className={`snap-start px-2.5 py-2 rounded-xl text-[8px] font-black uppercase tracking-wider border transition-all shrink-0 whitespace-nowrap ${
               subTab === t.id
                 ? 'bg-[#FFD300]/10 border-[#FFD300]/30 text-[#FFD300]'
-                : 'bg-zinc-900 border-white/5 text-zinc-500'
+                : 'bg-zinc-900 border-white/5 text-zinc-400'
             }`}
           >
             {t.label}{' '}

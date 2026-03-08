@@ -176,7 +176,7 @@ export const Step4EquipeCasa: React.FC<Props> = ({
         >
           <div className="text-left">
             <p className="text-white text-[8px] font-black uppercase tracking-widest mb-0.5">Gerente de Evento</p>
-            <p className="text-zinc-500 text-[10px] leading-relaxed">
+            <p className="text-zinc-400 text-[10px] leading-relaxed">
               Opcional. Designe alguém para supervisionar a operação.
             </p>
           </div>
@@ -196,7 +196,7 @@ export const Step4EquipeCasa: React.FC<Props> = ({
         {gerenteEnabled && !gerente && (
           <div className="relative">
             <div className="flex items-center gap-3 bg-zinc-900/60 border border-white/5 rounded-xl px-4 py-2.5 focus-within:border-[#FFD300]/30">
-              <Search size={14} className="text-zinc-600 shrink-0" />
+              <Search size={14} className="text-zinc-400 shrink-0" />
               <input
                 value={gerenteQuery}
                 onChange={e => {
@@ -213,7 +213,7 @@ export const Step4EquipeCasa: React.FC<Props> = ({
                     setGerenteQuery('');
                     setShowGerenteResults(false);
                   }}
-                  className="text-zinc-600 active:text-zinc-400"
+                  className="text-zinc-400 active:text-zinc-400"
                 >
                   <X size={13} />
                 </button>
@@ -224,11 +224,11 @@ export const Step4EquipeCasa: React.FC<Props> = ({
                 {gerenteBuscando && (
                   <div className="p-4 flex items-center justify-center gap-2">
                     <div className="w-4 h-4 border-2 border-[#FFD300]/30 border-t-[#FFD300] rounded-full animate-spin" />
-                    <span className="text-zinc-500 text-[10px] font-black uppercase tracking-widest">Buscando...</span>
+                    <span className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">Buscando...</span>
                   </div>
                 )}
                 {!gerenteBuscando && gerenteResults.length === 0 && (
-                  <p className="p-4 text-zinc-600 text-[10px] font-black uppercase tracking-widest text-center">
+                  <p className="p-4 text-zinc-400 text-[10px] font-black uppercase tracking-widest text-center">
                     Nenhum membro encontrado
                   </p>
                 )}
@@ -247,7 +247,7 @@ export const Step4EquipeCasa: React.FC<Props> = ({
                       />
                       <div className="min-w-0 flex-1">
                         <p className="text-white font-bold text-sm leading-none truncate">{m.nome}</p>
-                        <p className="text-zinc-600 text-[10px] mt-0.5 truncate">{m.email}</p>
+                        <p className="text-zinc-400 text-[10px] mt-0.5 truncate">{m.email}</p>
                       </div>
                     </button>
                   ))}
@@ -266,7 +266,7 @@ export const Step4EquipeCasa: React.FC<Props> = ({
             />
             <div className="flex-1 min-w-0">
               <p className="text-white font-bold text-sm leading-none truncate">{gerente.nome}</p>
-              <p className="text-zinc-500 text-[10px] mt-0.5 truncate">{gerente.email}</p>
+              <p className="text-zinc-400 text-[10px] mt-0.5 truncate">{gerente.email}</p>
             </div>
             <span className="text-[7px] font-black uppercase tracking-widest text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full shrink-0">
               Gerente
@@ -276,7 +276,7 @@ export const Step4EquipeCasa: React.FC<Props> = ({
                 setGerente(null);
                 setGerentePermissoes([]);
               }}
-              className="text-zinc-600 active:text-red-400 transition-colors p-1 shrink-0"
+              className="text-zinc-400 active:text-red-400 transition-colors p-1 shrink-0"
             >
               <X size={14} />
             </button>
@@ -286,7 +286,7 @@ export const Step4EquipeCasa: React.FC<Props> = ({
         {/* Permissões do Gerente */}
         {gerenteEnabled && gerente && (
           <div className="space-y-2">
-            <p className="text-zinc-500 text-[8px] font-black uppercase tracking-widest">Permissões do Gerente</p>
+            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">Permissões do Gerente</p>
             {GERENTE_PERMISSOES.map(p => (
               <button
                 key={p.id}
@@ -315,14 +315,14 @@ export const Step4EquipeCasa: React.FC<Props> = ({
       <div className="space-y-4">
         <div>
           <p className="text-white text-[8px] font-black uppercase tracking-widest mb-1">Equipe da Casa</p>
-          <p className="text-zinc-500 text-[10px] leading-relaxed">
+          <p className="text-zinc-400 text-[10px] leading-relaxed">
             Busque pelo email ou nome do membro para adicioná-lo à equipe.
           </p>
         </div>
 
         <div className="relative">
           <div className="flex items-center gap-3 bg-zinc-900/60 border border-white/5 rounded-xl px-4 py-2.5 focus-within:border-[#FFD300]/30">
-            <Search size={14} className="text-zinc-600 shrink-0" />
+            <Search size={14} className="text-zinc-400 shrink-0" />
             <input
               value={query}
               onChange={e => {
@@ -339,7 +339,7 @@ export const Step4EquipeCasa: React.FC<Props> = ({
                   setQuery('');
                   setShowResults(false);
                 }}
-                className="text-zinc-600 active:text-zinc-400"
+                className="text-zinc-400 active:text-zinc-400"
               >
                 <X size={13} />
               </button>
@@ -350,11 +350,11 @@ export const Step4EquipeCasa: React.FC<Props> = ({
               {buscando && (
                 <div className="p-4 flex items-center justify-center gap-2">
                   <div className="w-4 h-4 border-2 border-[#FFD300]/30 border-t-[#FFD300] rounded-full animate-spin" />
-                  <span className="text-zinc-500 text-[10px] font-black uppercase tracking-widest">Buscando...</span>
+                  <span className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">Buscando...</span>
                 </div>
               )}
               {!buscando && resultados.length === 0 && (
-                <p className="p-4 text-zinc-600 text-[10px] font-black uppercase tracking-widest text-center">
+                <p className="p-4 text-zinc-400 text-[10px] font-black uppercase tracking-widest text-center">
                   Nenhum membro encontrado
                 </p>
               )}
@@ -376,7 +376,7 @@ export const Step4EquipeCasa: React.FC<Props> = ({
                     />
                     <div className="min-w-0 flex-1">
                       <p className="text-white font-bold text-sm leading-none truncate">{m.nome}</p>
-                      <p className="text-zinc-600 text-[10px] mt-0.5 truncate">{m.email}</p>
+                      <p className="text-zinc-400 text-[10px] mt-0.5 truncate">{m.email}</p>
                     </div>
                   </button>
                 ))}
@@ -404,7 +404,7 @@ export const Step4EquipeCasa: React.FC<Props> = ({
                   />
                   <div className="flex-1 min-w-0">
                     <p className="text-white font-bold text-sm leading-none mb-1 truncate">{m.nome}</p>
-                    <span className="text-[8px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-zinc-900 text-zinc-500 border border-white/5">
+                    <span className="text-[8px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-zinc-900 text-zinc-400 border border-white/5">
                       {papelInfo?.label || m.papel}
                     </span>
                   </div>

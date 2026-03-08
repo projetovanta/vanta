@@ -112,7 +112,7 @@ export const HorarioPublicDisplay: React.FC<{
     <div className="px-5 border-t border-white/5">
       <button onClick={() => setModalAberto(p => !p)} className="w-full py-3 text-left">
         <div className="flex items-center gap-2">
-          <Clock size={13} className="text-zinc-500 shrink-0" />
+          <Clock size={13} className="text-zinc-400 shrink-0" />
           <span className="text-[11px] text-zinc-400">{resumo}</span>
           <span
             className={`text-[8px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full shrink-0 ml-auto border ${
@@ -125,7 +125,7 @@ export const HorarioPublicDisplay: React.FC<{
           </span>
           <ChevronDown
             size={12}
-            className={`text-zinc-600 shrink-0 transition-transform duration-200 ${modalAberto ? 'rotate-180' : ''}`}
+            className={`text-zinc-400 shrink-0 transition-transform duration-200 ${modalAberto ? 'rotate-180' : ''}`}
           />
         </div>
         {overrideHoje && !modalAberto && (
@@ -155,7 +155,7 @@ export const HorarioPublicDisplay: React.FC<{
                   {DIAS_COMPLETO[dia]}
                 </span>
                 {h?.aberto ? (
-                  <span className={`text-[10px] shrink-0 ${isHoje ? 'text-zinc-300' : 'text-zinc-500'}`}>
+                  <span className={`text-[10px] shrink-0 ${isHoje ? 'text-zinc-300' : 'text-zinc-400'}`}>
                     {h.abertura} – {h.fechamento}
                   </span>
                 ) : (

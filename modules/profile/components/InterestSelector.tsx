@@ -265,7 +265,7 @@ export const InterestSelector: React.FC<{ selected: string[]; onToggle: (id: str
               </p>
               <ChevronDown
                 size={14}
-                className={`text-zinc-600 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+                className={`text-zinc-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
               />
             </button>
             {isOpen && (
@@ -281,12 +281,12 @@ export const InterestSelector: React.FC<{ selected: string[]; onToggle: (id: str
                       className={`flex items-center gap-2 px-3 py-2 rounded-xl border transition-all duration-200 ${
                         isSelected
                           ? 'border-[#FFD300] bg-[#FFD300]/10 text-white'
-                          : 'border-white/5 bg-zinc-900/50 text-zinc-500'
+                          : 'border-white/5 bg-zinc-900/50 text-zinc-400'
                       }`}
                     >
-                      {Icon && <Icon size={12} className={isSelected ? 'text-[#FFD300]' : 'text-zinc-600'} />}
+                      {Icon && <Icon size={12} className={isSelected ? 'text-[#FFD300]' : 'text-zinc-400'} />}
                       <span
-                        className={`text-[10px] font-bold uppercase tracking-wider ${isSelected ? 'text-white' : 'text-zinc-500'}`}
+                        className={`text-[10px] font-bold uppercase tracking-wider ${isSelected ? 'text-white' : 'text-zinc-400'}`}
                       >
                         {item.label}
                       </span>

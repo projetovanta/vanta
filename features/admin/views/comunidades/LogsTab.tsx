@@ -37,7 +37,7 @@ export const LogsTab: React.FC<{ comunidade: Comunidade }> = ({ comunidade }) =>
   if (loading) {
     return (
       <div className="flex flex-col items-center py-12 gap-3">
-        <RefreshCw size={20} className="text-zinc-600 animate-spin" />
+        <RefreshCw size={20} className="text-zinc-400 animate-spin" />
         <p className="text-zinc-700 text-[10px] font-black uppercase tracking-widest">Carregando logs...</p>
       </div>
     );
@@ -55,7 +55,7 @@ export const LogsTab: React.FC<{ comunidade: Comunidade }> = ({ comunidade }) =>
         </p>
         <button
           onClick={handleRefresh}
-          className="mt-2 flex items-center gap-1.5 px-4 py-2 bg-zinc-900 border border-white/5 rounded-xl text-zinc-500 text-[9px] font-black uppercase tracking-wider active:scale-95 transition-all"
+          className="mt-2 flex items-center gap-1.5 px-4 py-2 bg-zinc-900 border border-white/5 rounded-xl text-zinc-400 text-[9px] font-black uppercase tracking-wider active:scale-95 transition-all"
         >
           <RefreshCw size={12} /> Atualizar
         </button>
@@ -69,7 +69,7 @@ export const LogsTab: React.FC<{ comunidade: Comunidade }> = ({ comunidade }) =>
         <button
           onClick={handleRefresh}
           disabled={loading}
-          className="flex items-center gap-1.5 px-3 py-1.5 bg-zinc-900/60 border border-white/5 rounded-lg text-zinc-500 text-[9px] font-black uppercase tracking-wider active:scale-95 transition-all disabled:opacity-40"
+          className="flex items-center gap-1.5 px-3 py-1.5 bg-zinc-900/60 border border-white/5 rounded-lg text-zinc-400 text-[9px] font-black uppercase tracking-wider active:scale-95 transition-all disabled:opacity-40"
         >
           <RefreshCw size={11} className={loading ? 'animate-spin' : ''} /> Atualizar
         </button>
@@ -101,7 +101,7 @@ export const LogsTab: React.FC<{ comunidade: Comunidade }> = ({ comunidade }) =>
                   <span className="text-zinc-400">{humanized}</span>
                 )}
               </p>
-              <p className="text-zinc-600 text-[9px]">
+              <p className="text-zinc-400 text-[9px]">
                 {dateLabel} · {timeLabel}
               </p>
             </div>

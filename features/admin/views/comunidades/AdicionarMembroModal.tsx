@@ -62,7 +62,7 @@ export const AdicionarMembroModal: React.FC<{
 
         {/* Cargo picker */}
         <div className="px-6 pt-4 pb-3 shrink-0">
-          <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-2">Função na comunidade</p>
+          <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">Função na comunidade</p>
           <div className="flex gap-1.5 flex-wrap">
             {(Object.keys(CARGO_LABEL) as TipoCargo[]).map(t => (
               <button
@@ -71,7 +71,7 @@ export const AdicionarMembroModal: React.FC<{
                 className={`px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest transition-all ${
                   cargo === t
                     ? 'bg-[#FFD300] text-black'
-                    : 'bg-zinc-900 border border-white/5 text-zinc-500 active:text-zinc-300'
+                    : 'bg-zinc-900 border border-white/5 text-zinc-400 active:text-zinc-300'
                 }`}
               >
                 {CARGO_LABEL[t]}
@@ -84,9 +84,9 @@ export const AdicionarMembroModal: React.FC<{
         <div className="px-6 pb-3 shrink-0">
           <div className="flex items-center gap-2 bg-zinc-900/60 border border-white/5 rounded-xl px-3 py-2 focus-within:border-[#FFD300]/20">
             {searching ? (
-              <Loader2 size={13} className="text-zinc-500 shrink-0 animate-spin" />
+              <Loader2 size={13} className="text-zinc-400 shrink-0 animate-spin" />
             ) : (
-              <Search size={13} className="text-zinc-600 shrink-0" />
+              <Search size={13} className="text-zinc-400 shrink-0" />
             )}
             <input
               value={query}
@@ -95,7 +95,7 @@ export const AdicionarMembroModal: React.FC<{
               className="flex-1 bg-transparent text-white text-sm outline-none placeholder-zinc-700"
             />
             {query && (
-              <button onClick={() => setQuery('')} className="text-zinc-600 active:text-zinc-400">
+              <button onClick={() => setQuery('')} className="text-zinc-400 active:text-zinc-400">
                 <X size={13} />
               </button>
             )}
@@ -106,7 +106,7 @@ export const AdicionarMembroModal: React.FC<{
         <div className="flex-1 overflow-y-auto no-scrollbar px-6 pb-3 space-y-2">
           {searching && filtrados.length === 0 && (
             <div className="flex items-center justify-center py-8">
-              <Loader2 size={20} className="text-zinc-600 animate-spin" />
+              <Loader2 size={20} className="text-zinc-400 animate-spin" />
             </div>
           )}
           {!searching &&
@@ -125,7 +125,7 @@ export const AdicionarMembroModal: React.FC<{
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-white text-sm font-bold truncate">{m.nome}</p>
-                  <p className="text-zinc-600 text-[10px] truncate">{m.email}</p>
+                  <p className="text-zinc-400 text-[10px] truncate">{m.email}</p>
                 </div>
                 {selected === m.id && <Check size={14} className="text-[#FFD300] shrink-0" />}
               </button>
@@ -145,7 +145,7 @@ export const AdicionarMembroModal: React.FC<{
             onClick={() => selected && onAdd(selected, cargo)}
             disabled={!selected}
             className={`w-full py-4 font-bold text-[10px] uppercase tracking-[0.3em] rounded-xl flex items-center justify-center gap-2 transition-all ${
-              selected ? 'bg-[#FFD300] text-black active:scale-[0.98]' : 'bg-zinc-800 text-zinc-600 cursor-not-allowed'
+              selected ? 'bg-[#FFD300] text-black active:scale-[0.98]' : 'bg-zinc-800 text-zinc-400 cursor-not-allowed'
             }`}
           >
             <UserPlus size={13} /> Adicionar à Equipe

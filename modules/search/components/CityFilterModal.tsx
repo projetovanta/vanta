@@ -51,7 +51,7 @@ export const CityFilterModal: React.FC<{
               onClear();
               onClose();
             }}
-            className="w-full py-4 bg-black/60 border-t border-white/5 text-[9px] font-black uppercase tracking-[0.3em] text-zinc-500 hover:text-white transition-colors"
+            className="w-full py-4 bg-black/60 border-t border-white/5 text-[9px] font-black uppercase tracking-[0.3em] text-zinc-400 hover:text-white transition-colors"
           >
             Limpar Filtro
           </button>

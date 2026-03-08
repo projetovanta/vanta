@@ -160,7 +160,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
       {/* Saudação personalizada — px-5 individual, carrossel com edge-bleed */}
       <div className="px-5 pt-6 pb-2">
-        <p className="text-sm text-zinc-500">
+        <p className="text-sm text-zinc-400">
           {getGreeting()}
           {firstName ? ',' : ''}
         </p>
@@ -240,12 +240,12 @@ export const HomeView: React.FC<HomeViewProps> = ({
       {!hasAnyContent && !eventsLoading && (
         <div className="flex flex-col items-center justify-center px-8 py-20 text-center">
           <div className="w-12 h-12 rounded-full bg-zinc-900 border border-white/5 flex items-center justify-center mb-4">
-            <MapPin size={18} className="text-zinc-600" />
+            <MapPin size={18} className="text-zinc-400" />
           </div>
           <h3 style={TYPOGRAPHY.screenTitle} className="text-lg text-white mb-2">
             Nenhum evento{selectedCity ? ` em ${selectedCity}` : ''}
           </h3>
-          <p className="text-zinc-500 text-sm mb-6 max-w-[240px] mx-auto">
+          <p className="text-zinc-400 text-sm mb-6 max-w-[240px] mx-auto">
             {selectedCity
               ? 'Explore outras cidades ou volte depois — novos eventos aparecem toda semana.'
               : 'Novos eventos aparecem toda semana. Fique de olho!'}

@@ -156,7 +156,7 @@ export const Step4EquipeSocio: React.FC<Props> = ({
       <div className="p-4 bg-zinc-900/40 border border-[#FFD300]/15 rounded-2xl space-y-4">
         <div>
           <p className="text-[#FFD300] text-[8px] font-black uppercase tracking-widest mb-1">Convidar Sócio</p>
-          <p className="text-zinc-500 text-[10px] leading-relaxed">
+          <p className="text-zinc-400 text-[10px] leading-relaxed">
             O sócio será convidado para co-gerenciar o evento. Ele receberá uma notificação para aceitar.
           </p>
         </div>
@@ -164,7 +164,7 @@ export const Step4EquipeSocio: React.FC<Props> = ({
         {!socio ? (
           <div className="relative">
             <div className="flex items-center gap-3 bg-zinc-900/60 border border-white/5 rounded-xl px-4 py-2.5 focus-within:border-[#FFD300]/30">
-              <Search size={14} className="text-zinc-600 shrink-0" />
+              <Search size={14} className="text-zinc-400 shrink-0" />
               <input
                 value={socioQuery}
                 onChange={e => {
@@ -181,7 +181,7 @@ export const Step4EquipeSocio: React.FC<Props> = ({
                     setSocioQuery('');
                     setShowSocioResults(false);
                   }}
-                  className="text-zinc-600 active:text-zinc-400"
+                  className="text-zinc-400 active:text-zinc-400"
                 >
                   <X size={13} />
                 </button>
@@ -192,11 +192,11 @@ export const Step4EquipeSocio: React.FC<Props> = ({
                 {socioBuscando && (
                   <div className="p-4 flex items-center justify-center gap-2">
                     <div className="w-4 h-4 border-2 border-[#FFD300]/30 border-t-[#FFD300] rounded-full animate-spin" />
-                    <span className="text-zinc-500 text-[10px] font-black uppercase tracking-widest">Buscando...</span>
+                    <span className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">Buscando...</span>
                   </div>
                 )}
                 {!socioBuscando && socioResults.length === 0 && (
-                  <p className="p-4 text-zinc-600 text-[10px] font-black uppercase tracking-widest text-center">
+                  <p className="p-4 text-zinc-400 text-[10px] font-black uppercase tracking-widest text-center">
                     Nenhum membro encontrado
                   </p>
                 )}
@@ -215,7 +215,7 @@ export const Step4EquipeSocio: React.FC<Props> = ({
                       />
                       <div className="min-w-0 flex-1">
                         <p className="text-white font-bold text-sm leading-none truncate">{m.nome}</p>
-                        <p className="text-zinc-600 text-[10px] mt-0.5 truncate">{m.email}</p>
+                        <p className="text-zinc-400 text-[10px] mt-0.5 truncate">{m.email}</p>
                       </div>
                     </button>
                   ))}
@@ -232,11 +232,11 @@ export const Step4EquipeSocio: React.FC<Props> = ({
             />
             <div className="flex-1 min-w-0">
               <p className="text-white font-bold text-sm leading-none truncate">{socio.nome}</p>
-              <p className="text-zinc-500 text-[10px] mt-0.5 truncate">{socio.email}</p>
+              <p className="text-zinc-400 text-[10px] mt-0.5 truncate">{socio.email}</p>
             </div>
             <button
               onClick={() => setSocio(null)}
-              className="text-zinc-600 active:text-red-400 transition-colors p-1 shrink-0"
+              className="text-zinc-400 active:text-red-400 transition-colors p-1 shrink-0"
             >
               <X size={14} />
             </button>
@@ -247,7 +247,7 @@ export const Step4EquipeSocio: React.FC<Props> = ({
         {socio && (
           <div className="space-y-2">
             <p className={labelCls}>Permissões para o Produtor</p>
-            <p className="text-zinc-600 text-[9px] leading-relaxed mb-2">
+            <p className="text-zinc-400 text-[9px] leading-relaxed mb-2">
               O sócio terá acesso total. Selecione o que <span className="text-white">você (produtor)</span> também
               deseja acessar.
             </p>
@@ -265,7 +265,7 @@ export const Step4EquipeSocio: React.FC<Props> = ({
                   >
                     {p.label}
                   </p>
-                  <p className="text-zinc-600 text-[9px]">{p.desc}</p>
+                  <p className="text-zinc-400 text-[9px]">{p.desc}</p>
                 </div>
                 <div
                   className={`w-10 h-5 rounded-full border relative transition-all shrink-0 ml-3 ${
@@ -288,14 +288,14 @@ export const Step4EquipeSocio: React.FC<Props> = ({
       <div className="space-y-4">
         <div>
           <p className="text-white text-[8px] font-black uppercase tracking-widest mb-1">Equipe da Casa</p>
-          <p className="text-zinc-500 text-[10px] leading-relaxed">
+          <p className="text-zinc-400 text-[10px] leading-relaxed">
             Busque pelo email ou nome do membro para adicioná-lo à equipe.
           </p>
         </div>
 
         <div className="relative">
           <div className="flex items-center gap-3 bg-zinc-900/60 border border-white/5 rounded-xl px-4 py-2.5 focus-within:border-[#FFD300]/30">
-            <Search size={14} className="text-zinc-600 shrink-0" />
+            <Search size={14} className="text-zinc-400 shrink-0" />
             <input
               value={query}
               onChange={e => {
@@ -312,7 +312,7 @@ export const Step4EquipeSocio: React.FC<Props> = ({
                   setQuery('');
                   setShowResults(false);
                 }}
-                className="text-zinc-600 active:text-zinc-400"
+                className="text-zinc-400 active:text-zinc-400"
               >
                 <X size={13} />
               </button>
@@ -323,11 +323,11 @@ export const Step4EquipeSocio: React.FC<Props> = ({
               {buscando && (
                 <div className="p-4 flex items-center justify-center gap-2">
                   <div className="w-4 h-4 border-2 border-[#FFD300]/30 border-t-[#FFD300] rounded-full animate-spin" />
-                  <span className="text-zinc-500 text-[10px] font-black uppercase tracking-widest">Buscando...</span>
+                  <span className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">Buscando...</span>
                 </div>
               )}
               {!buscando && resultados.length === 0 && (
-                <p className="p-4 text-zinc-600 text-[10px] font-black uppercase tracking-widest text-center">
+                <p className="p-4 text-zinc-400 text-[10px] font-black uppercase tracking-widest text-center">
                   Nenhum membro encontrado
                 </p>
               )}
@@ -349,7 +349,7 @@ export const Step4EquipeSocio: React.FC<Props> = ({
                     />
                     <div className="min-w-0 flex-1">
                       <p className="text-white font-bold text-sm leading-none truncate">{m.nome}</p>
-                      <p className="text-zinc-600 text-[10px] mt-0.5 truncate">{m.email}</p>
+                      <p className="text-zinc-400 text-[10px] mt-0.5 truncate">{m.email}</p>
                     </div>
                   </button>
                 ))}
@@ -377,7 +377,7 @@ export const Step4EquipeSocio: React.FC<Props> = ({
                   />
                   <div className="flex-1 min-w-0">
                     <p className="text-white font-bold text-sm leading-none mb-1 truncate">{m.nome}</p>
-                    <span className="text-[8px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-zinc-900 text-zinc-500 border border-white/5">
+                    <span className="text-[8px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-zinc-900 text-zinc-400 border border-white/5">
                       {papelInfo?.label || m.papel}
                     </span>
                   </div>
@@ -413,7 +413,7 @@ export const Step4EquipeSocio: React.FC<Props> = ({
                     </button>
                     {m.liberarLista && (
                       <div className="px-4 pb-4 space-y-2">
-                        <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-2">
+                        <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">
                           Limite por variação
                         </p>
                         {varsLista.map(v => (

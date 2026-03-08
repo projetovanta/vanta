@@ -34,7 +34,7 @@ export const MoodPicker: React.FC<MoodPickerProps> = ({ currentEmoji, currentTex
           </button>
         </div>
 
-        <p className="text-[10px] text-zinc-500">Como você está hoje? Seus amigos vão ver.</p>
+        <p className="text-[10px] text-zinc-400">Como você está hoje? Seus amigos vão ver.</p>
 
         {/* Emoji grid */}
         <div className="grid grid-cols-6 gap-2">
@@ -82,7 +82,7 @@ export const MoodPicker: React.FC<MoodPickerProps> = ({ currentEmoji, currentTex
             }}
             disabled={!emoji}
             className={`flex-1 py-3 rounded-xl text-xs font-black uppercase tracking-widest active:scale-[0.97] transition-all ${
-              emoji ? 'bg-[#FFD300] text-black' : 'bg-zinc-800 text-zinc-600'
+              emoji ? 'bg-[#FFD300] text-black' : 'bg-zinc-800 text-zinc-400'
             }`}
           >
             Salvar

@@ -14,18 +14,18 @@ interface Props {
 export const SubTabPosts: React.FC<Props> = ({ pendentePosts, perfis, onVerificarPost, onVerificarAuto }) => (
   <div className="space-y-3">
     {pendentePosts.length === 0 ? (
-      <p className="text-zinc-600 text-xs text-center py-10">Nenhum post pendente de verificação</p>
+      <p className="text-zinc-400 text-xs text-center py-10">Nenhum post pendente de verificação</p>
     ) : (
       pendentePosts.map(r => (
         <div key={r.id} className="bg-zinc-900/60 border border-white/5 rounded-2xl p-4">
           <div className="flex items-center justify-between">
             <div className="flex-1 min-w-0">
               <p className="text-white font-bold text-sm truncate">{perfis[r.userId]?.nome || r.userId.slice(0, 8)}</p>
-              <p className="text-zinc-600 text-[9px] mt-1">Reservado em {formatDate(r.reservadoEm)}</p>
+              <p className="text-zinc-400 text-[9px] mt-1">Reservado em {formatDate(r.reservadoEm)}</p>
             </div>
             <span
               className={`text-[8px] font-black uppercase px-2 py-0.5 rounded ${
-                r.postUrl ? 'bg-amber-500/15 text-amber-400' : 'bg-zinc-800 text-zinc-500'
+                r.postUrl ? 'bg-amber-500/15 text-amber-400' : 'bg-zinc-800 text-zinc-400'
               }`}
             >
               {r.postUrl ? 'Post enviado' : 'Aguardando post'}

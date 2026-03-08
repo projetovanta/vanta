@@ -344,10 +344,10 @@ export const ProductAnalyticsView: React.FC<{ onBack: () => void }> = ({ onBack 
         {/* ── Bloco 2: Discovery Rate ─────────────────────────────── */}
         <Card icon={Eye} title="Discovery Rate">
           {discoveryRows.length === 0 ? (
-            <p className="text-zinc-600 text-xs">Sem dados de discovery ainda</p>
+            <p className="text-zinc-400 text-xs">Sem dados de discovery ainda</p>
           ) : (
             <div className="space-y-2">
-              <div className="grid grid-cols-5 gap-2 text-[10px] font-bold text-zinc-500 uppercase">
+              <div className="grid grid-cols-5 gap-2 text-[10px] font-bold text-zinc-400 uppercase">
                 <span className="col-span-2">Evento</span>
                 <span className="text-right">Views</span>
                 <span className="text-right">Opens</span>
@@ -376,7 +376,7 @@ export const ProductAnalyticsView: React.FC<{ onBack: () => void }> = ({ onBack 
                   <div key={i}>
                     <div className="flex items-center justify-between mb-1">
                       <span className="text-xs text-zinc-300">{step.label}</span>
-                      <span className="text-[10px] text-zinc-500">
+                      <span className="text-[10px] text-zinc-400">
                         {step.value.toLocaleString('pt-BR')} ({step.rate})
                       </span>
                     </div>
@@ -421,7 +421,7 @@ export const ProductAnalyticsView: React.FC<{ onBack: () => void }> = ({ onBack 
           {pmfSlices.length > 0 ? (
             <VantaPieChart data={pmfSlices} height={140} />
           ) : (
-            <p className="text-zinc-600 text-xs">Sem respostas PMF ainda</p>
+            <p className="text-zinc-400 text-xs">Sem respostas PMF ainda</p>
           )}
         </Card>
       </div>
@@ -433,7 +433,7 @@ export const ProductAnalyticsView: React.FC<{ onBack: () => void }> = ({ onBack 
 function Header({ title, onBack }: { title: string; onBack: () => void }) {
   return (
     <div className="shrink-0 flex items-center gap-3 px-4 py-3 border-b border-white/5">
-      <button onClick={onBack} className="p-1.5 rounded-lg hover:bg-white/5 transition-colors">
+      <button aria-label="Voltar" onClick={onBack} className="p-1.5 rounded-lg hover:bg-white/5 transition-colors">
         <ArrowLeft size={18} className="text-zinc-400" />
       </button>
       <h1 style={{ ...TYPOGRAPHY.screenTitle, fontSize: '14px' }}>{title}</h1>
@@ -456,7 +456,7 @@ function Card({
     <div className="bg-zinc-900/30 border border-white/5 rounded-2xl p-5">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Icon size={16} className="text-zinc-500" />
+          <Icon size={16} className="text-zinc-400" />
           <span className="text-xs font-bold text-zinc-300">{title}</span>
         </div>
         {b && (
@@ -476,7 +476,7 @@ function Card({
 function Metric({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <p className="text-[10px] text-zinc-600 uppercase tracking-wider">{label}</p>
+      <p className="text-[10px] text-zinc-400 uppercase tracking-wider">{label}</p>
       <p className="text-lg font-black text-white">{value}</p>
     </div>
   );

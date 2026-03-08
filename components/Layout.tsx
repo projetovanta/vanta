@@ -90,7 +90,7 @@ export const Header: React.FC<{
             </button>
           )}
           <button onClick={onNotificationClick} className="p-2 relative active:scale-90 transition-all">
-            <Bell size={18} className="text-zinc-500" />
+            <Bell size={18} className="text-zinc-400" />
             {notificationCount > 0 && (
               <span className="absolute -top-0.5 -right-0.5 min-w-[16px] h-4 px-1 bg-red-500 rounded-full flex items-center justify-center text-[9px] font-black text-white leading-none">
                 {notificationCount > 99 ? '99+' : notificationCount}

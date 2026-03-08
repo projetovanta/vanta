@@ -97,11 +97,11 @@ const ReembolsoModal: React.FC<{
             <ReembolsoIcon size={18} className="text-orange-400" />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest">Solicitar Reembolso</p>
+            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">Solicitar Reembolso</p>
             <p className="text-white font-bold text-base mt-0.5 truncate">{ticket.tituloEvento}</p>
-            {ticket.variacaoLabel && <p className="text-zinc-500 text-xs mt-0.5">{ticket.variacaoLabel}</p>}
+            {ticket.variacaoLabel && <p className="text-zinc-400 text-xs mt-0.5">{ticket.variacaoLabel}</p>}
           </div>
-          <button onClick={onClose} className="p-1.5 text-zinc-600 active:text-white transition-colors">
+          <button onClick={onClose} className="p-1.5 text-zinc-400 active:text-white transition-colors">
             <X size={14} />
           </button>
         </div>
@@ -110,7 +110,7 @@ const ReembolsoModal: React.FC<{
           <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-4 space-y-2">
             <p className="text-red-400 font-bold text-sm">Não elegível para reembolso automático</p>
             <p className="text-zinc-400 text-[9px]">{elegibilidade.motivo}</p>
-            <p className="text-zinc-600 text-[9px] mt-3">
+            <p className="text-zinc-400 text-[9px] mt-3">
               Entre em contato com o produtor se você acha que isso é um erro.
             </p>
           </div>
@@ -203,17 +203,17 @@ const TransferirModal: React.FC<{
 
         <div className="flex items-start justify-between">
           <div>
-            <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest">Transferir Ingresso</p>
+            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">Transferir Ingresso</p>
             <p className="text-white font-bold text-base mt-0.5 truncate">{ticket.tituloEvento}</p>
-            {ticket.variacaoLabel && <p className="text-zinc-500 text-xs mt-0.5">{ticket.variacaoLabel}</p>}
+            {ticket.variacaoLabel && <p className="text-zinc-400 text-xs mt-0.5">{ticket.variacaoLabel}</p>}
           </div>
-          <button onClick={onClose} className="p-1.5 text-zinc-600 active:text-white transition-colors">
+          <button onClick={onClose} className="p-1.5 text-zinc-400 active:text-white transition-colors">
             <X size={14} />
           </button>
         </div>
 
         <div className="space-y-2">
-          <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest">Para quem?</p>
+          <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">Para quem?</p>
           <input
             type="text"
             placeholder="Buscar membro por nome..."
@@ -323,16 +323,16 @@ const TitularModal: React.FC<{
         <div className="w-10 h-1 bg-zinc-700 rounded-full mx-auto" />
 
         <div>
-          <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest">Dados do Titular</p>
+          <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">Dados do Titular</p>
           <p className="text-white font-bold text-base mt-0.5">Preencha para usar o ingresso</p>
-          <p className="text-zinc-500 text-xs mt-1">
+          <p className="text-zinc-400 text-xs mt-1">
             {ticket.variacaoLabel ? `${ticket.tituloEvento} · ${ticket.variacaoLabel}` : ticket.tituloEvento}
           </p>
         </div>
 
         <div className="space-y-3">
           <div>
-            <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1.5">Nome completo</p>
+            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5">Nome completo</p>
             <input
               type="text"
               placeholder="Nome do titular do ingresso"
@@ -343,7 +343,7 @@ const TitularModal: React.FC<{
             />
           </div>
           <div>
-            <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1.5">CPF</p>
+            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5">CPF</p>
             <input
               type="text"
               inputMode="numeric"
@@ -484,20 +484,20 @@ export const EventTicketsCarousel: React.FC<Props> = ({
       {/* Header */}
       <div className="px-6 pt-8 pb-5 border-b border-white/5 bg-[#0A0A0A] shrink-0">
         <div className="flex items-center gap-3">
-          <button
+          <button aria-label="Voltar"
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
           >
             <ArrowLeft size={18} className="text-zinc-400" />
           </button>
           <div className="flex-1 min-w-0">
-            <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-0.5">
+            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-0.5">
               {tickets.length === 1 ? '1 ingresso' : `${tickets.length} ingressos`}
             </p>
             <h1 style={TYPOGRAPHY.screenTitle} className="text-base italic truncate leading-none">
               {titulo}
             </h1>
-            <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest mt-0.5">{data}</p>
+            <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mt-0.5">{data}</p>
           </div>
         </div>
       </div>
@@ -566,8 +566,8 @@ export const EventTicketsCarousel: React.FC<Props> = ({
                             <>
                               <div className="relative w-36 h-36 rounded-2xl flex items-center justify-center border border-white/5 mb-3 bg-zinc-900">
                                 <div className="flex flex-col items-center gap-2">
-                                  <Clock size={28} className="text-zinc-600" />
-                                  <p className="text-[8px] font-black uppercase tracking-widest text-zinc-600 px-2 text-center">
+                                  <Clock size={28} className="text-zinc-400" />
+                                  <p className="text-[8px] font-black uppercase tracking-widest text-zinc-400 px-2 text-center">
                                     Disponível no início do evento
                                   </p>
                                 </div>

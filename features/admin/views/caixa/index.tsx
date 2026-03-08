@@ -33,7 +33,7 @@ export const CaixaView: React.FC<{
                 {evento?.nome ?? 'Evento'}
               </h1>
             </div>
-            <button
+            <button aria-label="Voltar"
               onClick={backFn}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0 mt-1"
             >
@@ -45,7 +45,7 @@ export const CaixaView: React.FC<{
           <EventoCaixaView evento={evento} onBack={backFn} />
         ) : (
           <div className="flex-1 flex items-center justify-center">
-            <p className="text-zinc-600 text-sm">Evento não encontrado.</p>
+            <p className="text-zinc-400 text-sm">Evento não encontrado.</p>
           </div>
         )}
       </div>
@@ -64,7 +64,7 @@ export const CaixaView: React.FC<{
             Venda na Porta
           </h1>
         </div>
-        <button
+        <button aria-label="Voltar"
           onClick={onBack}
           className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all mt-1"
         >
@@ -104,7 +104,7 @@ export const CaixaView: React.FC<{
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-white font-bold text-sm leading-tight truncate mb-1">{ev.nome}</p>
-                  <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest">
+                  <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">
                     {dataLabel} · {lotesAtivos} lote{lotesAtivos !== 1 ? 's' : ''} ativo{lotesAtivos !== 1 ? 's' : ''}
                   </p>
                 </div>

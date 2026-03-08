@@ -4,7 +4,7 @@ import { HorarioFuncionamentoEditor } from '../../../../components/HorarioFuncio
 
 const inputCls =
   'w-full bg-zinc-900/60 border border-white/5 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-[#FFD300]/30 placeholder-zinc-700';
-const labelCls = 'text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1.5 block';
+const labelCls = 'text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block';
 
 export const Step1Identidade: React.FC<{
   nome: string;
@@ -158,7 +158,7 @@ export const Step1Identidade: React.FC<{
           placeholder="Ex: 10.0"
           className={inputCls + ' pr-10'}
         />
-        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 text-sm font-bold">%</span>
+        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 text-sm font-bold">%</span>
       </div>
       <p className="text-[8px] text-zinc-700 font-black uppercase tracking-widest leading-relaxed">
         O custo do gateway de pagamento (ex: cartão, PIX) é cobrado separadamente e sempre pago pelo dono da comunidade.
@@ -173,7 +173,7 @@ export const Step1Identidade: React.FC<{
       </p>
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-1">
-          <label className="text-[7px] text-zinc-600 font-black uppercase tracking-widest">
+          <label className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">
             Taxa Processamento (%)
           </label>
           <input
@@ -188,7 +188,7 @@ export const Step1Identidade: React.FC<{
           />
         </div>
         <div className="space-y-1">
-          <label className="text-[7px] text-zinc-600 font-black uppercase tracking-widest">Taxa Porta (%)</label>
+          <label className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">Taxa Porta (%)</label>
           <input
             type="number"
             min="0"
@@ -201,7 +201,7 @@ export const Step1Identidade: React.FC<{
           />
         </div>
         <div className="space-y-1">
-          <label className="text-[7px] text-zinc-600 font-black uppercase tracking-widest">Taxa Mínima (R$)</label>
+          <label className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">Taxa Mínima (R$)</label>
           <input
             type="number"
             min="0"
@@ -213,7 +213,7 @@ export const Step1Identidade: React.FC<{
           />
         </div>
         <div className="space-y-1">
-          <label className="text-[7px] text-zinc-600 font-black uppercase tracking-widest">Cota Nomes Lista</label>
+          <label className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">Cota Nomes Lista</label>
           <input
             type="number"
             min="0"
@@ -225,7 +225,7 @@ export const Step1Identidade: React.FC<{
           />
         </div>
         <div className="space-y-1">
-          <label className="text-[7px] text-zinc-600 font-black uppercase tracking-widest">R$/Nome Excedente</label>
+          <label className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">R$/Nome Excedente</label>
           <input
             type="number"
             min="0"
@@ -237,7 +237,7 @@ export const Step1Identidade: React.FC<{
           />
         </div>
         <div className="space-y-1">
-          <label className="text-[7px] text-zinc-600 font-black uppercase tracking-widest">Cota Cortesias</label>
+          <label className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">Cota Cortesias</label>
           <input
             type="number"
             min="0"
@@ -249,7 +249,7 @@ export const Step1Identidade: React.FC<{
           />
         </div>
         <div className="col-span-2 space-y-1">
-          <label className="text-[7px] text-zinc-600 font-black uppercase tracking-widest">
+          <label className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">
             % Cortesia Excedente (sobre valor face)
           </label>
           <input

@@ -79,7 +79,7 @@ const ChipSelect: React.FC<{
           className={`px-3 py-2 rounded-xl text-xs font-bold border transition-all ${
             active
               ? 'bg-[#FFD300]/15 border-[#FFD300]/40 text-[#FFD300]'
-              : 'bg-zinc-900/60 border-white/5 text-zinc-500'
+              : 'bg-zinc-900/60 border-white/5 text-zinc-400'
           }`}
         >
           {active && <Check size={10} className="inline mr-1" />}
@@ -92,7 +92,7 @@ const ChipSelect: React.FC<{
 
 // ── Label ───────────────────────────────────────────────────────────────────
 const Label: React.FC<{ children: React.ReactNode; required?: boolean }> = ({ children, required }) => (
-  <p className="text-[8px] text-zinc-500 font-black uppercase tracking-widest mb-1.5">
+  <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5">
     {children} {required && <span className="text-red-400">*</span>}
   </p>
 );
@@ -223,7 +223,7 @@ export const SolicitarParceriaView: React.FC<{
           >
             <ArrowLeft size={18} className="text-zinc-400" />
           </button>
-          <p className="text-[9px] text-zinc-600 font-black uppercase tracking-widest">Passo {step} de 4</p>
+          <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest">Passo {step} de 4</p>
         </div>
         <p style={TYPOGRAPHY.sectionKicker} className="mb-1">
           Parceria VANTA
@@ -263,11 +263,11 @@ export const SolicitarParceriaView: React.FC<{
                       tipo === t.key ? 'bg-[#FFD300]/10 border-[#FFD300]/30' : 'bg-zinc-900/60 border-white/5'
                     }`}
                   >
-                    <Building2 size={16} className={tipo === t.key ? 'text-[#FFD300] mb-1' : 'text-zinc-600 mb-1'} />
+                    <Building2 size={16} className={tipo === t.key ? 'text-[#FFD300] mb-1' : 'text-zinc-400 mb-1'} />
                     <p className={`text-xs font-bold ${tipo === t.key ? 'text-[#FFD300]' : 'text-zinc-400'}`}>
                       {t.label}
                     </p>
-                    <p className="text-[9px] text-zinc-600 mt-0.5">{t.desc}</p>
+                    <p className="text-[9px] text-zinc-400 mt-0.5">{t.desc}</p>
                   </button>
                 ))}
               </div>
@@ -338,7 +338,7 @@ export const SolicitarParceriaView: React.FC<{
                 inputMode="numeric"
               />
               {telefone && (
-                <p className="text-[10px] text-zinc-500 mt-1">
+                <p className="text-[10px] text-zinc-400 mt-1">
                   {telefone.length >= 10
                     ? `(${telefone.slice(0, 2)}) ${telefone.slice(2, telefone.length === 11 ? 7 : 6)}-${telefone.slice(telefone.length === 11 ? 7 : 6)}`
                     : 'Digite DDD + número'}
@@ -354,7 +354,7 @@ export const SolicitarParceriaView: React.FC<{
             <div>
               <Label required>Instagram</Label>
               <div className="relative">
-                <Instagram size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-600" />
+                <Instagram size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
                 <input
                   value={instagram}
                   onChange={e => setInstagram(e.target.value)}
@@ -366,7 +366,7 @@ export const SolicitarParceriaView: React.FC<{
             <div>
               <Label>Site</Label>
               <div className="relative">
-                <ExternalLink size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-600" />
+                <ExternalLink size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
                 <input
                   value={site}
                   onChange={e => setSite(e.target.value)}
@@ -417,8 +417,8 @@ export const SolicitarParceriaView: React.FC<{
                   onClick={() => fileInputRef.current?.click()}
                   className="w-full bg-zinc-900/60 border border-dashed border-white/10 rounded-xl p-4 flex flex-col items-center gap-1.5 active:scale-[0.98] transition-all"
                 >
-                  <Upload size={20} className="text-zinc-500" />
-                  <p className="text-zinc-500 text-xs">Toque para adicionar fotos</p>
+                  <Upload size={20} className="text-zinc-400" />
+                  <p className="text-zinc-400 text-xs">Toque para adicionar fotos</p>
                 </button>
               )}
             </div>
@@ -428,7 +428,7 @@ export const SolicitarParceriaView: React.FC<{
         {/* ── Step 3: Intenção ─────────────────────────────────────── */}
         {step === 3 && (
           <>
-            <p className="text-zinc-500 text-xs leading-relaxed">
+            <p className="text-zinc-400 text-xs leading-relaxed">
               Selecione o que você gostaria de usar no VANTA. Isso nos ajuda a entender como te atender melhor.
             </p>
             <div className="space-y-2">
@@ -454,7 +454,7 @@ export const SolicitarParceriaView: React.FC<{
                         <p className={`text-sm font-bold ${active ? 'text-[#FFD300]' : 'text-zinc-300'}`}>
                           {int.label}
                         </p>
-                        <p className="text-[10px] text-zinc-600 mt-0.5">{int.desc}</p>
+                        <p className="text-[10px] text-zinc-400 mt-0.5">{int.desc}</p>
                       </div>
                     </div>
                   </button>
@@ -505,7 +505,7 @@ export const SolicitarParceriaView: React.FC<{
             {/* Termos */}
             <div className="bg-zinc-900/60 border border-white/5 rounded-xl p-4 space-y-3 mt-2">
               <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest">Termos de Parceria</p>
-              <div className="text-zinc-500 text-[10px] leading-relaxed space-y-1.5">
+              <div className="text-zinc-400 text-[10px] leading-relaxed space-y-1.5">
                 <p>Ao enviar esta solicitação, você declara que:</p>
                 <p>• Todas as informações fornecidas são verdadeiras</p>
                 <p>

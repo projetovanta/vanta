@@ -46,7 +46,7 @@ export const InviteFriendsModal: React.FC<InviteFriendsModalProps> = ({
           <h2 style={TYPOGRAPHY.screenTitle} className="text-2xl">
             Convidar Amigos
           </h2>
-          <p className="text-zinc-500 text-[10px] font-bold uppercase tracking-widest mt-1">
+          <p className="text-zinc-400 text-[10px] font-bold uppercase tracking-widest mt-1">
             Selecione quem vai com você
           </p>
         </div>
@@ -60,7 +60,7 @@ export const InviteFriendsModal: React.FC<InviteFriendsModalProps> = ({
 
       <div className="px-6 py-6">
         <div className="relative">
-          <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" />
+          <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
           <input
             type="text"
             placeholder="Buscar amigos..."
@@ -86,7 +86,7 @@ export const InviteFriendsModal: React.FC<InviteFriendsModalProps> = ({
               </div>
               <div className="flex-1 text-left min-w-0">
                 <h4 className="text-sm font-bold text-zinc-200 truncate">{f.nome}</h4>
-                <p className="text-[10px] text-zinc-500 truncate">@{f.email.split('@')[0]}</p>
+                <p className="text-[10px] text-zinc-400 truncate">@{f.email.split('@')[0]}</p>
               </div>
               <div
                 className={`w-6 h-6 rounded-full border flex items-center justify-center transition-all ${
@@ -101,7 +101,7 @@ export const InviteFriendsModal: React.FC<InviteFriendsModalProps> = ({
           ))
         ) : (
           <div className="py-20 text-center opacity-40">
-            <p className="text-sm text-zinc-500 italic">Nenhum amigo encontrado.</p>
+            <p className="text-sm text-zinc-400 italic">Nenhum amigo encontrado.</p>
           </div>
         )}
       </div>
@@ -113,7 +113,7 @@ export const InviteFriendsModal: React.FC<InviteFriendsModalProps> = ({
             onSendInvite(Array.from(selectedIds));
             onClose();
           }}
-          className="w-full py-4 bg-[#FFD300] disabled:bg-zinc-800 disabled:text-zinc-600 text-black font-bold text-xs uppercase tracking-[0.2em] rounded-xl shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2"
+          className="w-full py-4 bg-[#FFD300] disabled:bg-zinc-800 disabled:text-zinc-400 text-black font-bold text-xs uppercase tracking-[0.2em] rounded-xl shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2"
         >
           <Send size={16} />
           Enviar Convites ({selectedIds.size})

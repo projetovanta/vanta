@@ -55,7 +55,7 @@ export const EventHeader: React.FC<EventHeaderProps> = ({
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-[#0a0a0a]" />
 
       <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-10">
-        <button
+        <button aria-label="Voltar"
           onClick={onBack}
           className="p-3 bg-black/20 backdrop-blur-md rounded-full border border-white/10 text-white active:scale-90 transition-transform"
         >
@@ -74,7 +74,7 @@ export const EventHeader: React.FC<EventHeaderProps> = ({
               />
             </button>
           )}
-          <button
+          <button aria-label="Compartilhar"
             onClick={handleShare}
             className="p-3 bg-black/20 backdrop-blur-md rounded-full border border-white/10 text-white active:scale-90 transition-transform"
           >

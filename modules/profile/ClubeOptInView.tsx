@@ -266,7 +266,7 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
     return (
       <div className="absolute inset-0 bg-[#0a0a0a] flex flex-col overflow-hidden animate-in fade-in duration-300">
         <div className="flex-1 overflow-y-auto no-scrollbar pt-4 px-6 pb-32">
-          <button
+          <button aria-label="Voltar"
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-transform mb-6"
           >
@@ -301,10 +301,10 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
           <div className="bg-zinc-900/60 border border-white/5 rounded-2xl p-4 mb-6 space-y-2">
             {membro.instagramHandle && (
               <div className="flex items-center gap-2">
-                <Instagram size={12} className="text-zinc-500" />
+                <Instagram size={12} className="text-zinc-400" />
                 <span className="text-zinc-400 text-xs">@{membro.instagramHandle}</span>
                 {membro.instagramSeguidores && (
-                  <span className="text-zinc-600 text-[9px]">
+                  <span className="text-zinc-400 text-[9px]">
                     · {membro.instagramSeguidores.toLocaleString('pt-BR')} seguidores
                   </span>
                 )}
@@ -316,13 +316,13 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
           <div className="flex gap-0 bg-zinc-900/40 rounded-xl p-1 mb-5">
             <button
               onClick={() => setActiveTab('ATIVOS')}
-              className={`flex-1 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'ATIVOS' ? 'bg-[#FFD300] text-black' : 'text-zinc-500'}`}
+              className={`flex-1 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'ATIVOS' ? 'bg-[#FFD300] text-black' : 'text-zinc-400'}`}
             >
               Ativos{reservasAtivas.length > 0 ? ` (${reservasAtivas.length})` : ''}
             </button>
             <button
               onClick={() => setActiveTab('PASSADOS')}
-              className={`flex-1 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'PASSADOS' ? 'bg-zinc-700 text-white' : 'text-zinc-500'}`}
+              className={`flex-1 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'PASSADOS' ? 'bg-zinc-700 text-white' : 'text-zinc-400'}`}
             >
               Passados{reservasPassadas.length > 0 ? ` (${reservasPassadas.length})` : ''}
             </button>
@@ -330,7 +330,7 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
 
           {/* Lista de reservas da aba selecionada */}
           {listaExibida.length === 0 ? (
-            <p className="text-zinc-600 text-xs text-center py-10">
+            <p className="text-zinc-400 text-xs text-center py-10">
               {activeTab === 'ATIVOS' ? 'Nenhum benefício ativo' : 'Nenhum benefício passado'}
             </p>
           ) : (
@@ -367,7 +367,7 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
                     {/* Enviar comprovação se pendente — somente na aba Ativos */}
                     {activeTab === 'ATIVOS' && isPendingPost && !r.postUrl && (
                       <div className="mt-3 space-y-2">
-                        <p className="text-zinc-500 text-[10px]">Envie o link do seu post/story:</p>
+                        <p className="text-zinc-400 text-[10px]">Envie o link do seu post/story:</p>
                         <div className="flex gap-2">
                           <input
                             value={postUrl}
@@ -424,7 +424,7 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
                         className="flex items-center justify-between bg-zinc-900/40 border border-white/5 rounded-xl px-4 py-3"
                       >
                         <div className="flex items-center gap-2.5 min-w-0">
-                          <MapPin size={12} className="text-zinc-500 shrink-0" />
+                          <MapPin size={12} className="text-zinc-400 shrink-0" />
                           <div className="min-w-0">
                             <p className="text-white text-xs font-semibold truncate">{cidade}</p>
                           </div>
@@ -456,7 +456,7 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
                     );
                   })}
                   {cidades.length === 0 && (
-                    <p className="text-zinc-600 text-[10px] text-center py-4">Nenhuma cidade disponível</p>
+                    <p className="text-zinc-400 text-[10px] text-center py-4">Nenhuma cidade disponível</p>
                   )}
                 </div>
               );
@@ -472,10 +472,10 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
               <UserPlus size={14} className="text-[#FFD300]" />
               <span className="text-white text-xs font-bold">Convidar amigo para o Clube</span>
             </div>
-            <p className="text-zinc-500 text-[10px] mb-3">
+            <p className="text-zinc-400 text-[10px] mb-3">
               Convites são pré-aprovados com o seu nome. O convidado ainda precisa ser aceito pelo curador.
             </p>
-            <p className="text-zinc-600 text-[9px] italic">Em breve: busca de amigos por nome</p>
+            <p className="text-zinc-400 text-[9px] italic">Em breve: busca de amigos por nome</p>
           </div>
         </div>
       </div>
@@ -487,7 +487,7 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
     return (
       <div className="absolute inset-0 bg-[#0a0a0a] flex flex-col overflow-hidden animate-in fade-in duration-300">
         <div className="flex-1 overflow-y-auto no-scrollbar pt-4 px-6 pb-32">
-          <button
+          <button aria-label="Voltar"
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-transform mb-6"
           >
@@ -498,7 +498,7 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
               <Clock size={28} className="text-amber-400" />
             </div>
             <h2 className="text-white font-bold text-lg mb-2">Solicitação Enviada</h2>
-            <p className="text-zinc-500 text-sm max-w-xs">
+            <p className="text-zinc-400 text-sm max-w-xs">
               Sua solicitação está sendo analisada pelo curador. Você será notificado quando houver uma decisão.
             </p>
           </div>
@@ -513,7 +513,7 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
     return (
       <div className="absolute inset-0 bg-[#0a0a0a] flex flex-col overflow-hidden animate-in fade-in duration-300">
         <div className="flex-1 overflow-y-auto no-scrollbar pt-4 px-6 pb-32">
-          <button
+          <button aria-label="Voltar"
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-transform mb-6"
           >
@@ -544,7 +544,7 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="text-white font-bold text-sm">{v.titulo}</p>
-                    <p className="text-zinc-500 text-[11px] leading-relaxed mt-0.5 line-clamp-2">{v.descricao}</p>
+                    <p className="text-zinc-400 text-[11px] leading-relaxed mt-0.5 line-clamp-2">{v.descricao}</p>
                   </div>
                 </div>
               );
@@ -584,7 +584,7 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
               <h1 style={TYPOGRAPHY.screenTitle} className="text-lg text-white mb-1">
                 Você foi convidado!
               </h1>
-              <p className="text-zinc-500 text-[11px] max-w-xs mx-auto">
+              <p className="text-zinc-400 text-[11px] max-w-xs mx-auto">
                 {conviteNomeMaster ? `${conviteNomeMaster} convidou você` : 'Você recebeu um convite'} para o MAIS
                 VANTA. Preencha seus dados para aceitar.
               </p>
@@ -594,7 +594,7 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
               <h1 style={TYPOGRAPHY.screenTitle} className="text-lg text-white mb-1">
                 Solicitar Entrada
               </h1>
-              <p className="text-zinc-500 text-[11px] max-w-xs mx-auto">
+              <p className="text-zinc-400 text-[11px] max-w-xs mx-auto">
                 Preencha seus dados. A aprovação está sujeita à análise interna.
               </p>
             </>
@@ -604,12 +604,12 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
         <div className="space-y-4 mb-6">
           {/* Etapa A — @ do Instagram */}
           <div>
-            <label className="text-[9px] font-black uppercase tracking-widest text-zinc-500 mb-2 block">
+            <label className="text-[9px] font-black uppercase tracking-widest text-zinc-400 mb-2 block">
               Instagram
             </label>
             <div className="flex gap-2">
               <div className="relative flex-1 min-w-0">
-                <Instagram size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-600" />
+                <Instagram size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
                 <input
                   value={instagramHandle}
                   onChange={e => {
@@ -666,7 +666,7 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
                 <div className="flex-1 bg-black/40 border border-[#FFD300]/20 rounded-lg px-4 py-3 font-mono text-[#FFD300] text-sm font-bold tracking-widest text-center">
                   {verificationCode}
                 </div>
-                <button
+                <button aria-label="Copiar"
                   onClick={handleCopiarCodigo}
                   className="shrink-0 w-10 h-10 bg-zinc-800 rounded-lg border border-white/10 flex items-center justify-center active:scale-90 transition-all"
                 >
@@ -684,7 +684,7 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
               {bioAttempts >= 2 && (
                 <button
                   onClick={handlePularVerificacao}
-                  className="w-full py-2 text-zinc-500 text-[10px] underline active:opacity-60 transition-opacity"
+                  className="w-full py-2 text-zinc-400 text-[10px] underline active:opacity-60 transition-opacity"
                 >
                   Não consigo verificar — continuar sem verificação
                 </button>
@@ -739,12 +739,12 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
             </div>
             <ChevronRight
               size={12}
-              className={`text-zinc-600 transition-transform ${mostrarTermos ? 'rotate-90' : ''}`}
+              className={`text-zinc-400 transition-transform ${mostrarTermos ? 'rotate-90' : ''}`}
             />
           </button>
           {mostrarTermos && (
             <div className="px-4 pb-4 max-h-60 overflow-y-auto no-scrollbar">
-              <pre className="text-zinc-500 text-[9px] leading-relaxed whitespace-pre-wrap font-sans">
+              <pre className="text-zinc-400 text-[9px] leading-relaxed whitespace-pre-wrap font-sans">
                 {maisVantaConfigService.getConfig().termosCustomizados || TERMOS_PADRAO}
               </pre>
             </div>
@@ -759,7 +759,7 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
           {aceitouTermos ? (
             <CheckSquare size={18} className="text-[#FFD300] shrink-0 mt-0.5" />
           ) : (
-            <Square size={18} className="text-zinc-600 shrink-0 mt-0.5" />
+            <Square size={18} className="text-zinc-400 shrink-0 mt-0.5" />
           )}
           <span className="text-zinc-400 text-[10px] leading-relaxed">
             Li e concordo com os <span className="text-white font-semibold">Termos de Uso</span>, a{' '}

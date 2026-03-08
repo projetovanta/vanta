@@ -146,7 +146,7 @@ const useDragElement = (
 
 const Field: React.FC<{ label: string; children: React.ReactNode }> = ({ label, children }) => (
   <div className="space-y-1.5">
-    <label className="text-[9px] text-zinc-500 font-black uppercase tracking-widest ml-1">{label}</label>
+    <label className="text-[9px] text-zinc-400 font-black uppercase tracking-widest ml-1">{label}</label>
     {children}
   </div>
 );
@@ -175,7 +175,7 @@ const VantaSelect: React.FC<{
           {selected?.label || 'Selecionar'}
         </span>
         <svg
-          className={`w-3 h-3 text-zinc-500 shrink-0 transition-transform ${open ? 'rotate-180' : ''}`}
+          className={`w-3 h-3 text-zinc-400 shrink-0 transition-transform ${open ? 'rotate-180' : ''}`}
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -243,7 +243,7 @@ const CidadeSelector: React.FC<{
         className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-bold transition-all active:scale-[0.98] border ${
           isGlobal
             ? 'bg-[#FFD300]/10 border-[#FFD300]/30 text-[#FFD300]'
-            : 'bg-zinc-900/60 border-white/5 text-zinc-500'
+            : 'bg-zinc-900/60 border-white/5 text-zinc-400'
         }`}
       >
         <span>GLOBAL</span>
@@ -269,7 +269,7 @@ const CidadeSelector: React.FC<{
             </div>
           )}
           <div className="relative">
-            <Search size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-600" />
+            <Search size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
             <input
               value={query}
               onChange={e => {
@@ -296,7 +296,7 @@ const CidadeSelector: React.FC<{
             )}
             {showDrop && filtradas.length === 0 && query.length >= 1 && (
               <div className="absolute z-30 left-0 right-0 top-full mt-1 bg-zinc-900 border border-white/10 rounded-xl px-4 py-3">
-                <p className="text-zinc-600 text-xs text-center">Nenhuma cidade encontrada</p>
+                <p className="text-zinc-400 text-xs text-center">Nenhuma cidade encontrada</p>
               </div>
             )}
           </div>
@@ -509,7 +509,7 @@ const CardModal: React.FC<{
               {initial.id ? 'Editar Card' : 'Novo Card'}
             </h1>
           </div>
-          <button
+          <button aria-label="Voltar"
             onClick={safeClose}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
           >
@@ -565,7 +565,7 @@ const CardModal: React.FC<{
               ) : (
                 <>
                   <div className="relative">
-                    <Search size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-600" />
+                    <Search size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
                     <input
                       value={eventQuery}
                       onChange={e => {
@@ -579,7 +579,7 @@ const CardModal: React.FC<{
                     {searchingEvents && (
                       <Loader2
                         size={14}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-600 animate-spin"
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 animate-spin"
                       />
                     )}
                   </div>
@@ -601,7 +601,7 @@ const CardModal: React.FC<{
                           </div>
                           <div className="min-w-0 flex-1">
                             <p className="text-white text-sm font-medium truncate">{ev.nome}</p>
-                            <p className="text-zinc-500 text-[10px]">{ev.cidade || 'Sem cidade'}</p>
+                            <p className="text-zinc-400 text-[10px]">{ev.cidade || 'Sem cidade'}</p>
                           </div>
                         </button>
                       ))}
@@ -609,7 +609,7 @@ const CardModal: React.FC<{
                   )}
                   {showEventDropdown && eventResults.length === 0 && !searchingEvents && (
                     <div className="absolute z-20 left-0 right-0 top-full mt-1 bg-zinc-900 border border-white/10 rounded-xl px-4 py-3">
-                      <p className="text-zinc-600 text-xs text-center">Nenhum evento encontrado</p>
+                      <p className="text-zinc-400 text-xs text-center">Nenhum evento encontrado</p>
                     </div>
                   )}
                 </>
@@ -625,7 +625,7 @@ const CardModal: React.FC<{
             onChange={e => !isDestaque && set('badge', e.target.value)}
             readOnly={isDestaque}
             placeholder={isDestaque ? 'Auto: VANTA INDICA' : 'CURADORIA'}
-            className={inputCls + (isDestaque ? ' text-zinc-500 cursor-not-allowed' : '')}
+            className={inputCls + (isDestaque ? ' text-zinc-400 cursor-not-allowed' : '')}
           />
         </Field>
 
@@ -636,7 +636,7 @@ const CardModal: React.FC<{
             onChange={e => !isDestaque && set('titulo', e.target.value)}
             readOnly={isDestaque}
             placeholder={isDestaque ? 'Auto: nome do evento' : 'O Segredo do Casarão'}
-            className={inputCls + (isDestaque ? ' text-zinc-500 cursor-not-allowed' : '')}
+            className={inputCls + (isDestaque ? ' text-zinc-400 cursor-not-allowed' : '')}
           />
         </Field>
 
@@ -660,11 +660,11 @@ const CardModal: React.FC<{
               className="flex-1 h-16 bg-zinc-900/60 border border-white/5 rounded-xl flex flex-col items-center justify-center gap-1 active:border-[#FFD300]/30 transition-all disabled:opacity-40"
             >
               {uploadingImg ? (
-                <Loader2 size={18} className="text-zinc-500 animate-spin" />
+                <Loader2 size={18} className="text-zinc-400 animate-spin" />
               ) : (
-                <ImagePlus size={18} className="text-zinc-500" />
+                <ImagePlus size={18} className="text-zinc-400" />
               )}
-              <span className="text-[8px] font-black uppercase tracking-widest text-zinc-600">
+              <span className="text-[8px] font-black uppercase tracking-widest text-zinc-400">
                 {uploadingImg ? 'Enviando…' : 'Foto / Câmera'}
               </span>
             </button>
@@ -694,7 +694,7 @@ const CardModal: React.FC<{
         {/* 7. Localidade */}
         <Field label="Localidade">
           {isDestaque ? (
-            <div className={inputCls + ' text-zinc-500 cursor-not-allowed'}>
+            <div className={inputCls + ' text-zinc-400 cursor-not-allowed'}>
               {form.alvoLocalidades || 'Auto: cidade do evento'}
             </div>
           ) : (
@@ -760,7 +760,7 @@ const CardModal: React.FC<{
         <div className="space-y-3 pt-2">
           <div className="flex items-center gap-2">
             <Eye size={12} className="text-[#FFD300]" />
-            <span className="text-[9px] text-zinc-500 font-black uppercase tracking-widest">
+            <span className="text-[9px] text-zinc-400 font-black uppercase tracking-widest">
               Preview — arraste os textos para posicionar
             </span>
           </div>
@@ -981,7 +981,7 @@ export const VantaIndicaView: React.FC<{ onBack: () => void; userId?: string }> 
               <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic">
                 VANTA Indica
               </h1>
-              <span className="text-[9px] font-black text-zinc-600 bg-zinc-900 border border-white/5 px-2 py-0.5 rounded-full">
+              <span className="text-[9px] font-black text-zinc-400 bg-zinc-900 border border-white/5 px-2 py-0.5 rounded-full">
                 {ativos.length} ativo{ativos.length !== 1 ? 's' : ''}
               </span>
             </div>
@@ -994,7 +994,7 @@ export const VantaIndicaView: React.FC<{ onBack: () => void; userId?: string }> 
               <Plus size={14} className="text-[#FFD300]" />
               <span className="text-[#FFD300] text-[10px] font-black uppercase tracking-wider">Novo</span>
             </button>
-            <button
+            <button aria-label="Voltar"
               onClick={onBack}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
             >
@@ -1008,7 +1008,7 @@ export const VantaIndicaView: React.FC<{ onBack: () => void; userId?: string }> 
         {loading && (
           <div className="flex flex-col items-center py-20 gap-4">
             <Loader2 size={24} className="text-zinc-700 animate-spin" />
-            <p className="text-zinc-600 text-[10px] font-black uppercase tracking-widest">Carregando cards...</p>
+            <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">Carregando cards...</p>
           </div>
         )}
         {!loading && cards.length === 0 && (
@@ -1016,7 +1016,7 @@ export const VantaIndicaView: React.FC<{ onBack: () => void; userId?: string }> 
             <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center">
               <Compass size={28} className="text-zinc-700" />
             </div>
-            <p className="text-zinc-600 text-[10px] font-black uppercase tracking-widest">Nenhum card criado ainda.</p>
+            <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">Nenhum card criado ainda.</p>
           </div>
         )}
 
@@ -1053,12 +1053,12 @@ export const VantaIndicaView: React.FC<{ onBack: () => void; userId?: string }> 
                         onClick={() => handleEdit(card)}
                         className="w-7 h-7 bg-zinc-900 border border-white/10 rounded-lg flex items-center justify-center active:scale-90 transition-all"
                       >
-                        <Edit2 size={11} className="text-zinc-500" />
+                        <Edit2 size={11} className="text-zinc-400" />
                       </button>
                     </div>
                   </div>
                   <p className="text-white font-bold text-sm leading-tight truncate">{card.titulo}</p>
-                  <p className="text-zinc-500 text-[10px] mt-0.5 truncate">{card.subtitulo}</p>
+                  <p className="text-zinc-400 text-[10px] mt-0.5 truncate">{card.subtitulo}</p>
                   <div className="flex items-center gap-1.5 mt-2">
                     <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: cfg.dot }} />
                     <p className="text-zinc-700 text-[8px] font-black uppercase tracking-widest">{card.badge}</p>

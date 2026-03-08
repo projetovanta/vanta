@@ -194,7 +194,7 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({
       }
       if (notif.tipo === 'ANIVERSARIO') return <Bell size={14} className="text-pink-400" />;
       return (
-        <div className="w-8 h-8 rounded-full bg-zinc-800 border border-white/10 flex items-center justify-center text-zinc-500 text-[10px] font-bold">
+        <div className="w-8 h-8 rounded-full bg-zinc-800 border border-white/10 flex items-center justify-center text-zinc-400 text-[10px] font-bold">
           {(notif.titulo?.[0] || '?').toUpperCase()}
         </div>
       );
@@ -253,7 +253,7 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({
       return <Star size={14} className="text-[#FFD300]" />;
     }
 
-    return <Bell size={14} className="text-zinc-500" />;
+    return <Bell size={14} className="text-zinc-400" />;
   };
 
   return (
@@ -267,7 +267,7 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({
                 <h4 style={TYPOGRAPHY.uiLabel} className="text-[8px] opacity-40">
                   Notificações
                 </h4>
-                <button onClick={onClose} className="text-zinc-600 active:text-white transition-colors p-1">
+                <button onClick={onClose} className="text-zinc-400 active:text-white transition-colors p-1">
                   <X size={14} />
                 </button>
               </div>
@@ -284,7 +284,7 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({
                     {idx > 0 && <span className="text-[#FFD300]/40 text-[6px] shrink-0">●</span>}
                     <button
                       onClick={() => setActiveFilter(filter)}
-                      className={`px-2 py-1.5 text-[8px] font-black uppercase tracking-wider transition-all rounded-lg ${activeFilter === filter ? 'text-[#FFD300] bg-[#FFD300]/10' : 'text-zinc-600'}`}
+                      className={`px-2 py-1.5 text-[8px] font-black uppercase tracking-wider transition-all rounded-lg ${activeFilter === filter ? 'text-[#FFD300] bg-[#FFD300]/10' : 'text-zinc-400'}`}
                     >
                       {label}
                     </button>
@@ -332,7 +332,7 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({
                               <div className="w-1.5 h-1.5 bg-[#FFD300] rounded-full shadow-[0_0_8px_#FFD300] shrink-0 mt-1" />
                             )}
                           </div>
-                          <p className="text-[9px] leading-tight text-zinc-500 line-clamp-2 italic">{notif.mensagem}</p>
+                          <p className="text-[9px] leading-tight text-zinc-400 line-clamp-2 italic">{notif.mensagem}</p>
                         </div>
                       </div>
                       {isFriendRequest && (
@@ -400,8 +400,8 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({
               }}
               className="w-full py-4 bg-black/40 border-t border-white/5 flex items-center justify-center space-x-2 active:bg-white/5 transition-colors"
             >
-              <Check size={10} className="text-zinc-600" />
-              <span className="text-[8px] font-black uppercase tracking-[0.3em] text-zinc-600">Marcar lidas</span>
+              <Check size={10} className="text-zinc-400" />
+              <span className="text-[8px] font-black uppercase tracking-[0.3em] text-zinc-400">Marcar lidas</span>
             </button>
           </div>
         </div>
@@ -410,12 +410,12 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({
         <div className="absolute inset-0 z-[500] flex items-center justify-center p-6 bg-black/80 backdrop-blur-sm animate-in fade-in duration-300">
           <div className="bg-[#0A0A0A] border border-white/10 rounded-[2.5rem] p-8 w-full max-w-[85%] text-center shadow-2xl animate-in zoom-in-95 duration-300">
             <div className="w-16 h-16 bg-zinc-900 rounded-full flex items-center justify-center mx-auto mb-6 border border-white/5">
-              <UserX size={28} className="text-zinc-500" />
+              <UserX size={28} className="text-zinc-400" />
             </div>
             <h2 style={TYPOGRAPHY.screenTitle} className="text-xl mb-3">
               Pedido Recusado
             </h2>
-            <p className="text-zinc-500 text-[10px] uppercase font-bold tracking-widest mb-8 leading-relaxed">
+            <p className="text-zinc-400 text-[10px] uppercase font-bold tracking-widest mb-8 leading-relaxed">
               A solicitação de amizade foi removida.
             </p>
             <button

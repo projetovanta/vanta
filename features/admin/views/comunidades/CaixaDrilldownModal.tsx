@@ -16,7 +16,7 @@ export const CaixaDrilldownModal: React.FC<{
     if (tipo === 'INGRESSOS') {
       return (
         <div className="space-y-3">
-          <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Por evento</p>
+          <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Por evento</p>
           {eventos.map(e => {
             const totalVendidos = e.lotes.reduce((a, l) => a + l.vendidos, 0);
             const allVar = e.lotes.flatMap(l => l.variacoes);
@@ -28,15 +28,15 @@ export const CaixaDrilldownModal: React.FC<{
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5">
                   <div className="text-center">
                     <p className="text-[#FFD300] font-black text-xl">{totalVendidos}</p>
-                    <p className="text-zinc-500 text-[9px] font-bold uppercase tracking-wider">Total</p>
+                    <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider">Total</p>
                   </div>
                   <div className="text-center">
                     <p className="text-blue-400 font-black text-xl">{mascVar}</p>
-                    <p className="text-zinc-500 text-[9px] font-bold uppercase tracking-wider">Masc.</p>
+                    <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider">Masc.</p>
                   </div>
                   <div className="text-center">
                     <p className="text-pink-400 font-black text-xl">{femVar}</p>
-                    <p className="text-zinc-500 text-[9px] font-bold uppercase tracking-wider">Fem.</p>
+                    <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider">Fem.</p>
                   </div>
                 </div>
               </div>
@@ -54,25 +54,25 @@ export const CaixaDrilldownModal: React.FC<{
         <div className="space-y-4">
           {topPromoters.length > 0 && (
             <>
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Quem mais adicionou nomes</p>
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Quem mais adicionou nomes</p>
               <div className="space-y-2">
                 {topPromoters.map((p, i) => (
                   <div key={i} className="flex items-center gap-3 p-3 bg-zinc-900/40 border border-white/5 rounded-xl">
                     <span
-                      className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black shrink-0 ${i === 0 ? 'bg-[#FFD300] text-black' : 'bg-zinc-800 text-zinc-500'}`}
+                      className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black shrink-0 ${i === 0 ? 'bg-[#FFD300] text-black' : 'bg-zinc-800 text-zinc-400'}`}
                     >
                       {i + 1}
                     </span>
                     <p className="text-white text-sm font-bold flex-1 min-w-0 truncate">{p.nome}</p>
                     <p className="text-[#FFD300] font-black text-sm">
-                      {p.total} <span className="text-zinc-600 text-[9px] font-normal">nomes</span>
+                      {p.total} <span className="text-zinc-400 text-[9px] font-normal">nomes</span>
                     </p>
                   </div>
                 ))}
               </div>
             </>
           )}
-          <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Por evento</p>
+          <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Por evento</p>
           {listaMatches.length === 0 && (
             <p className="text-zinc-700 text-[10px] italic text-center py-4">Nenhuma lista vinculada.</p>
           )}
@@ -82,13 +82,13 @@ export const CaixaDrilldownModal: React.FC<{
               <div className="grid grid-cols-2 gap-2">
                 <div className="p-2.5 bg-zinc-900 rounded-xl text-center">
                   <p className="text-zinc-300 font-black text-lg">{lista.convidados.length}</p>
-                  <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest">Na lista</p>
+                  <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">Na lista</p>
                 </div>
                 <div className="p-2.5 bg-emerald-500/5 border border-emerald-500/10 rounded-xl text-center">
                   <p className="text-emerald-400 font-black text-lg">
                     {lista.convidados.filter(c => c.checkedIn).length}
                   </p>
-                  <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest">Entraram</p>
+                  <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">Entraram</p>
                 </div>
               </div>
             </div>
@@ -127,7 +127,7 @@ export const CaixaDrilldownModal: React.FC<{
               <div className="h-full bg-emerald-400 rounded-full transition-all" style={{ width: `${pct}%` }} />
             </div>
           </div>
-          <p className="text-zinc-600 text-[9px] italic">
+          <p className="text-zinc-400 text-[9px] italic">
             * {totalIngressos} ingresso{totalIngressos !== 1 ? 's' : ''} vendido{totalIngressos !== 1 ? 's' : ''} via
             lote não possuem check-in individual rastreado.
           </p>
@@ -142,16 +142,16 @@ export const CaixaDrilldownModal: React.FC<{
           {sorted.map((lote, i) => (
             <div key={lote.id} className="flex items-center gap-3 p-3 bg-zinc-900/40 border border-white/5 rounded-xl">
               <span
-                className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black shrink-0 ${i === 0 ? 'bg-[#FFD300] text-black' : 'bg-zinc-800 text-zinc-500'}`}
+                className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black shrink-0 ${i === 0 ? 'bg-[#FFD300] text-black' : 'bg-zinc-800 text-zinc-400'}`}
               >
                 {i + 1}
               </span>
               <div className="flex-1 min-w-0">
                 <p className="text-white text-sm font-bold truncate">{lote.nome}</p>
-                <p className="text-zinc-600 text-[9px] truncate">{lote.eventoNome}</p>
+                <p className="text-zinc-400 text-[9px] truncate">{lote.eventoNome}</p>
               </div>
               <p className="text-[#FFD300] font-black text-sm shrink-0">
-                {lote.vendidos} <span className="text-zinc-600 text-[9px] font-normal">vendidos</span>
+                {lote.vendidos} <span className="text-zinc-400 text-[9px] font-normal">vendidos</span>
               </p>
             </div>
           ))}

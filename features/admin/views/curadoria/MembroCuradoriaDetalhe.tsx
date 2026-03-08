@@ -56,13 +56,13 @@ export const MembroCuradoriaDetalhe: React.FC<{
       {/* Header */}
       <div className="shrink-0 border-b border-white/5 px-5 pt-8 pb-4">
         <div className="flex items-center gap-3 mb-4">
-          <button
+          <button aria-label="Voltar"
             onClick={onClose}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
           >
             <ArrowLeft size={18} className="text-zinc-400" />
           </button>
-          <p className="text-[9px] text-zinc-600 font-black uppercase tracking-widest">Curadoria · Novo Membro</p>
+          <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest">Curadoria · Novo Membro</p>
         </div>
       </div>
 
@@ -92,15 +92,15 @@ export const MembroCuradoriaDetalhe: React.FC<{
         {/* Grid de dados */}
         <div className="grid grid-cols-2 gap-3">
           <div className="bg-zinc-900/60 border border-white/5 rounded-xl p-3">
-            <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1">Gênero</p>
+            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1">Gênero</p>
             <p className="text-white text-sm font-bold">{membro.genero === 'MASCULINO' ? 'Masculino' : 'Feminino'}</p>
           </div>
           <div className="bg-zinc-900/60 border border-white/5 rounded-xl p-3">
-            <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1">Cidade / Estado</p>
+            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1">Cidade / Estado</p>
             <p className="text-white text-sm font-bold truncate">{cidade}</p>
           </div>
           <div className="bg-zinc-900/60 border border-white/5 rounded-xl p-3">
-            <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1">Instagram</p>
+            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1">Instagram</p>
             <div className="flex items-center gap-2 min-w-0">
               <p className="text-white text-sm font-bold truncate">
                 {membro.instagram ? `@${membro.instagram.replace(/^@/, '')}` : '—'}
@@ -113,7 +113,7 @@ export const MembroCuradoriaDetalhe: React.FC<{
             </div>
           </div>
           <div className="bg-zinc-900/60 border border-white/5 rounded-xl p-3">
-            <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1">Cadastro</p>
+            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1">Cadastro</p>
             <p className="text-white text-sm font-bold truncate">{formatDate(membro.cadastradoEm)}</p>
           </div>
         </div>
@@ -156,7 +156,7 @@ export const MembroCuradoriaDetalhe: React.FC<{
               placeholder="Digite uma tag e Enter..."
               className="flex-1 min-w-0 bg-zinc-900 border border-white/10 rounded-xl px-3 py-2.5 text-white text-sm outline-none focus:border-[#FFD300]/30 placeholder-zinc-700"
             />
-            <button
+            <button aria-label="Adicionar"
               onClick={addTag}
               disabled={!tagInput.trim()}
               className="w-10 h-10 bg-[#FFD300]/10 border border-[#FFD300]/20 rounded-xl flex items-center justify-center active:scale-90 transition-all disabled:opacity-40 shrink-0"

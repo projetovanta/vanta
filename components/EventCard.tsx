@@ -113,7 +113,7 @@ export const EventCard: React.FC<EventCardProps> = React.memo(
           </button>
           {!evento.ocultarValor && minPrice > 0 && (
             <div className="shrink-0 text-right">
-              <p className="text-[8px] text-zinc-500 uppercase font-bold tracking-wider leading-none">A partir de</p>{' '}
+              <p className="text-[8px] text-zinc-400 uppercase font-bold tracking-wider leading-none">A partir de</p>{' '}
               {/* lint-layout-ok */}
               <p
                 className="text-[13px] text-[#FFD300] leading-tight" // lint-layout-ok

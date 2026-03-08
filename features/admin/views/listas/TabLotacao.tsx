@@ -9,15 +9,15 @@ export const TabLotacao: React.FC<{ lista: ListaEvento }> = ({ lista }) => {
   return (
     <div className="flex-1 overflow-y-auto no-scrollbar space-y-4">
       <div className="p-6 bg-zinc-900/40 border border-white/5 rounded-3xl">
-        <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest mb-4">Lotação Global</p>
+        <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mb-4">Lotação Global</p>
         <div className="flex items-end justify-between mb-4">
           <div className="flex items-baseline gap-2">
             <span className="text-white font-black text-5xl leading-none">{total}</span>
-            <span className="text-zinc-600 text-xl font-light">/{lista.tetoGlobalTotal}</span>
+            <span className="text-zinc-400 text-xl font-light">/{lista.tetoGlobalTotal}</span>
           </div>
           <div className="text-right pb-1">
             <p className="text-[#FFD300] font-black text-3xl leading-none">{pct}%</p>
-            <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest">preenchido</p>
+            <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">preenchido</p>
           </div>
         </div>
         <div className="w-full h-4 bg-zinc-800 rounded-full overflow-hidden mb-3">
@@ -26,7 +26,7 @@ export const TabLotacao: React.FC<{ lista: ListaEvento }> = ({ lista }) => {
             style={{ width: `${Math.min(pct, 100)}%` }}
           />
         </div>
-        <p className="text-zinc-600 text-[10px] font-black uppercase tracking-widest">
+        <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">
           {lista.tetoGlobalTotal - total} vagas restantes
         </p>
       </div>
@@ -48,7 +48,7 @@ export const TabLotacao: React.FC<{ lista: ListaEvento }> = ({ lista }) => {
                 <span className="font-black text-2xl leading-none" style={{ color: cor }}>
                   {usado}
                 </span>
-                <span className="text-zinc-600 font-light text-base">/{r.tetoGlobal}</span>
+                <span className="text-zinc-400 font-light text-base">/{r.tetoGlobal}</span>
               </div>
             </div>
             <div className="w-full h-2.5 bg-zinc-800 rounded-full overflow-hidden mb-2.5">
@@ -58,8 +58,8 @@ export const TabLotacao: React.FC<{ lista: ListaEvento }> = ({ lista }) => {
               />
             </div>
             <div className="flex justify-between text-[9px] font-black uppercase tracking-widest">
-              <span className="text-zinc-600">Banco: {r.saldoBanco}</span>
-              <span className="text-zinc-600">Alocado: {alocado}</span>
+              <span className="text-zinc-400">Banco: {r.saldoBanco}</span>
+              <span className="text-zinc-400">Alocado: {alocado}</span>
             </div>
           </div>
         );

@@ -80,7 +80,7 @@ const ScannerFrame: React.FC<{ scanning: boolean }> = ({ scanning }) => (
             style={{ animation: 'scan-line 2s ease-in-out infinite', top: '20%' }}
           />
           <QrCode size={40} className="text-white/20" />
-          <p className="text-[9px] text-zinc-600 font-black uppercase tracking-widest">Aguardando QR Code</p>
+          <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest">Aguardando QR Code</p>
         </>
       ) : (
         <>
@@ -207,7 +207,7 @@ export const PortariaScannerView: React.FC<Props> = ({ onBack, eventoId }) => {
               Scanner QR
             </h1>
           </div>
-          <button
+          <button aria-label="Voltar"
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
           >
@@ -227,12 +227,12 @@ export const PortariaScannerView: React.FC<Props> = ({ onBack, eventoId }) => {
         <div className="flex gap-6">
           <div className="text-center">
             <p className="text-emerald-400 font-black text-3xl leading-none">{contador.validos}</p>
-            <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest mt-0.5">entradas</p>
+            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mt-0.5">entradas</p>
           </div>
           <div className="w-px bg-white/5" />
           <div className="text-center">
             <p className="text-red-400 font-black text-3xl leading-none">{contador.invalidos}</p>
-            <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest mt-0.5">recusados</p>
+            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mt-0.5">recusados</p>
           </div>
         </div>
 
@@ -257,7 +257,7 @@ export const PortariaScannerView: React.FC<Props> = ({ onBack, eventoId }) => {
               <p className="text-emerald-300 text-xs font-bold truncate">
                 {lastTicket.nomeTitular || lastTicket.email}
               </p>
-              <p className="text-zinc-600 text-[9px] truncate">{lastTicket.variacaoLabel}</p>
+              <p className="text-zinc-400 text-[9px] truncate">{lastTicket.variacaoLabel}</p>
             </div>
           </div>
         )}

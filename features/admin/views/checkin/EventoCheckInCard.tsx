@@ -42,14 +42,14 @@ export const EventoCheckInCard: React.FC<{
           <div className="flex-1 min-w-0 mr-4">
             <p className="text-[#FFD300] text-[8px] font-black uppercase tracking-[0.3em] mb-0.5">{dataLabel}</p>
             <p className="text-white font-black text-xl italic leading-tight truncate">{ev.nome}</p>
-            <p className="text-zinc-500 text-[10px] mt-1 truncate">{ev.local}</p>
+            <p className="text-zinc-400 text-[10px] mt-1 truncate">{ev.local}</p>
             {antesDoInicio && (
               <span className="inline-block mt-1.5 text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400">
                 Aguardando início
               </span>
             )}
             {depoisDoFim && (
-              <span className="inline-block mt-1.5 text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full bg-zinc-800 border border-white/5 text-zinc-500">
+              <span className="inline-block mt-1.5 text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full bg-zinc-800 border border-white/5 text-zinc-400">
                 Encerrado
               </span>
             )}
@@ -59,7 +59,7 @@ export const EventoCheckInCard: React.FC<{
               usados > 0 ? 'bg-emerald-500/10 border border-emerald-500/20' : 'bg-zinc-900 border border-white/5'
             }`}
           >
-            <p className={`font-black text-2xl leading-none ${usados > 0 ? 'text-emerald-400' : 'text-zinc-600'}`}>
+            <p className={`font-black text-2xl leading-none ${usados > 0 ? 'text-emerald-400' : 'text-zinc-400'}`}>
               {usados}
             </p>
             <p
@@ -82,20 +82,20 @@ export const EventoCheckInCard: React.FC<{
 
         <div className="flex items-stretch">
           <div className="flex-1 text-center py-1">
-            <p className={`font-black text-xl leading-none ${usados > 0 ? 'text-emerald-400' : 'text-zinc-600'}`}>
+            <p className={`font-black text-xl leading-none ${usados > 0 ? 'text-emerald-400' : 'text-zinc-400'}`}>
               {usados}
             </p>
-            <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest mt-1">Entraram</p>
+            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mt-1">Entraram</p>
           </div>
           <div className="w-px bg-zinc-800" />
           <div className="flex-1 text-center py-1">
             <p className="text-zinc-300 font-black text-xl leading-none">{aguardando}</p>
-            <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest mt-1">Aguardam</p>
+            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mt-1">Aguardam</p>
           </div>
           <div className="w-px bg-zinc-800" />
           <div className="flex-1 text-center py-1">
-            <p className="text-zinc-500 font-black text-xl leading-none">{total}</p>
-            <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest mt-1">Total</p>
+            <p className="text-zinc-400 font-black text-xl leading-none">{total}</p>
+            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mt-1">Total</p>
           </div>
         </div>
       </div>
@@ -104,19 +104,19 @@ export const EventoCheckInCard: React.FC<{
         <div className="flex items-center gap-3">
           {(!modoFixo || modoFixo === 'LISTA') && (
             <div className="flex items-center gap-1">
-              <List size={10} className="text-zinc-600" />
-              <p className="text-zinc-500 text-[9px] font-black uppercase tracking-widest">Lista</p>
+              <List size={10} className="text-zinc-400" />
+              <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">Lista</p>
             </div>
           )}
           {!modoFixo && <span className="w-1 h-1 rounded-full bg-zinc-700" />}
           {(!modoFixo || modoFixo === 'QR') && (
             <div className="flex items-center gap-1">
-              <QrCode size={10} className="text-zinc-600" />
-              <p className="text-zinc-500 text-[9px] font-black uppercase tracking-widest">QR Code</p>
+              <QrCode size={10} className="text-zinc-400" />
+              <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">QR Code</p>
             </div>
           )}
         </div>
-        <ChevronRight size={14} className="text-zinc-600" />
+        <ChevronRight size={14} className="text-zinc-400" />
       </div>
     </button>
   );

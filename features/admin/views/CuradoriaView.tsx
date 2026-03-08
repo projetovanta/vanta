@@ -245,7 +245,7 @@ export const CuradoriaView: React.FC<{
                 <span className="text-[#FFD300] text-[10px] font-black uppercase tracking-wider">Convidar</span>
               </button>
             )}
-            <button
+            <button aria-label="Voltar"
               onClick={onBack}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
             >
@@ -268,7 +268,7 @@ export const CuradoriaView: React.FC<{
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`snap-start flex items-center gap-1.5 px-3 py-3 text-[10px] font-black uppercase tracking-wider transition-all relative shrink-0 whitespace-nowrap ${
-                  activeTab === tab.id ? 'text-[#FFD300]' : 'text-zinc-600'
+                  activeTab === tab.id ? 'text-[#FFD300]' : 'text-zinc-400'
                 }`}
               >
                 <Icon size={12} />

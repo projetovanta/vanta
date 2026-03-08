@@ -307,7 +307,7 @@ export const PublicoDrilldown: React.FC<{
       {/* Breadcrumb */}
       {breadcrumb.length > 1 && (
         <div className="flex items-center gap-1 flex-wrap">
-          <button
+          <button aria-label="Voltar"
             onClick={goBack}
             className="w-6 h-6 rounded-full bg-zinc-800 flex items-center justify-center shrink-0 active:scale-90 transition-all"
           >
@@ -319,7 +319,7 @@ export const PublicoDrilldown: React.FC<{
               <button
                 onClick={() => goTo(i)}
                 className={`text-[8px] font-black uppercase tracking-widest transition-all ${
-                  i === breadcrumb.length - 1 ? 'text-[#FFD300]' : 'text-zinc-600 active:text-zinc-400'
+                  i === breadcrumb.length - 1 ? 'text-[#FFD300]' : 'text-zinc-400 active:text-zinc-400'
                 }`}
               >
                 {bc.label}
@@ -338,13 +338,13 @@ export const PublicoDrilldown: React.FC<{
           {peopleList.map((p, i) => (
             <div key={i} className="flex items-center gap-2.5 p-2.5 bg-zinc-900/40 border border-white/5 rounded-xl">
               <div className="w-7 h-7 rounded-full bg-zinc-800 flex items-center justify-center shrink-0">
-                <User size={12} className="text-zinc-600" />
+                <User size={12} className="text-zinc-400" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-white text-[11px] font-bold truncate">{p.nome}</p>
-                <p className="text-zinc-600 text-[9px] truncate">{p.sub}</p>
+                <p className="text-zinc-400 text-[9px] truncate">{p.sub}</p>
               </div>
-              {p.extra && <p className="text-zinc-600 text-[8px] shrink-0">{p.extra}</p>}
+              {p.extra && <p className="text-zinc-400 text-[8px] shrink-0">{p.extra}</p>}
             </div>
           ))}
         </div>
@@ -352,7 +352,7 @@ export const PublicoDrilldown: React.FC<{
         <div>
           {/* Número central */}
           <div className="text-center mb-1">
-            <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest">{currentLevel.title}</p>
+            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">{currentLevel.title}</p>
             <p className="text-white font-black text-xl">{fmt(total)}</p>
           </div>
           <VantaPieChart

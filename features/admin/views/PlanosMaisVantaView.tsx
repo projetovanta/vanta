@@ -74,7 +74,7 @@ const PlanoModal: React.FC<{
 
   const inputCls =
     'w-full bg-[#1A1A1A] border border-zinc-800 rounded-xl px-3 py-2.5 text-sm text-white focus:border-[#FFD300]/50 focus:outline-none';
-  const labelCls = 'text-[11px] text-zinc-500 uppercase tracking-wider mb-1';
+  const labelCls = 'text-[11px] text-zinc-400 uppercase tracking-wider mb-1';
 
   return (
     <div className="absolute inset-0 z-[200] bg-[#0A0A0A] flex flex-col">
@@ -83,7 +83,7 @@ const PlanoModal: React.FC<{
         className="shrink-0 flex items-center gap-3 px-4 pb-3 border-b border-zinc-800/50"
         style={{ paddingTop: '0.75rem' }}
       >
-        <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-white/5">
+        <button aria-label="Voltar" onClick={onClose} className="p-1.5 rounded-lg hover:bg-white/5">
           <ArrowLeft size={18} className="text-zinc-400" />
         </button>
         <h2 style={TYPOGRAPHY.cardTitle} className="text-white text-sm">
@@ -130,7 +130,7 @@ const PlanoModal: React.FC<{
               value={precoAvulso}
               onChange={e => setPrecoAvulso(Number(e.target.value))}
             />
-            <p className="text-[10px] text-zinc-600 mt-0.5">0 = entrada gratuita</p>
+            <p className="text-[10px] text-zinc-400 mt-0.5">0 = entrada gratuita</p>
           </div>
         </div>
 
@@ -148,7 +148,7 @@ const PlanoModal: React.FC<{
               />
               <button
                 onClick={() => setLimiteEventosMV(limiteEventosMV === -1 ? 5 : -1)}
-                className={`shrink-0 px-3 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-wider border transition-all ${limiteEventosMV === -1 ? 'bg-[#FFD300] text-black border-transparent' : 'bg-zinc-800 text-zinc-500 border-zinc-700'}`}
+                className={`shrink-0 px-3 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-wider border transition-all ${limiteEventosMV === -1 ? 'bg-[#FFD300] text-black border-transparent' : 'bg-zinc-800 text-zinc-400 border-zinc-700'}`}
               >
                 Ilimitado
               </button>
@@ -167,7 +167,7 @@ const PlanoModal: React.FC<{
               />
               <button
                 onClick={() => setLimiteMembros(limiteMembros === -1 ? 50 : -1)}
-                className={`shrink-0 px-3 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-wider border transition-all ${limiteMembros === -1 ? 'bg-[#FFD300] text-black border-transparent' : 'bg-zinc-800 text-zinc-500 border-zinc-700'}`}
+                className={`shrink-0 px-3 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-wider border transition-all ${limiteMembros === -1 ? 'bg-[#FFD300] text-black border-transparent' : 'bg-zinc-800 text-zinc-400 border-zinc-700'}`}
               >
                 Ilimitado
               </button>
@@ -203,7 +203,7 @@ const PlanoModal: React.FC<{
               value={ordem}
               onChange={e => setOrdem(Number(e.target.value))}
             />
-            <p className="text-[10px] text-zinc-600 mt-0.5">Menor = aparece primeiro</p>
+            <p className="text-[10px] text-zinc-400 mt-0.5">Menor = aparece primeiro</p>
           </div>
         </div>
 
@@ -215,7 +215,7 @@ const PlanoModal: React.FC<{
             value={prazoPostHoras}
             onChange={e => setPrazoPostHoras(Number(e.target.value))}
           />
-          <p className="text-[10px] text-zinc-600 mt-0.5">Tempo que o membro tem para postar após o evento</p>
+          <p className="text-[10px] text-zinc-400 mt-0.5">Tempo que o membro tem para postar após o evento</p>
         </div>
 
         {/* Toggles */}
@@ -227,7 +227,7 @@ const PlanoModal: React.FC<{
             {acompanhante ? (
               <ToggleRight size={20} className="text-[#FFD300]" />
             ) : (
-              <ToggleLeft size={20} className="text-zinc-600" />
+              <ToggleLeft size={20} className="text-zinc-400" />
             )}
             <span className="text-sm text-zinc-300">Permite acompanhante (+1)</span>
           </button>
@@ -238,7 +238,7 @@ const PlanoModal: React.FC<{
             {destaque ? (
               <ToggleRight size={20} className="text-[#FFD300]" />
             ) : (
-              <ToggleLeft size={20} className="text-zinc-600" />
+              <ToggleLeft size={20} className="text-zinc-400" />
             )}
             <span className="text-sm text-zinc-300">Destacar na vitrine (borda dourada)</span>
           </button>
@@ -249,7 +249,7 @@ const PlanoModal: React.FC<{
             {ativo ? (
               <ToggleRight size={20} className="text-emerald-400" />
             ) : (
-              <ToggleLeft size={20} className="text-zinc-600" />
+              <ToggleLeft size={20} className="text-zinc-400" />
             )}
             <span className="text-sm text-zinc-300">Disponível para assinatura</span>
           </button>
@@ -307,7 +307,7 @@ const TierModal: React.FC<{
 
   const inputCls =
     'w-full bg-[#1A1A1A] border border-zinc-800 rounded-xl px-3 py-2.5 text-sm text-white focus:border-[#FFD300]/50 focus:outline-none';
-  const labelCls = 'text-[11px] text-zinc-500 uppercase tracking-wider mb-1';
+  const labelCls = 'text-[11px] text-zinc-400 uppercase tracking-wider mb-1';
 
   return (
     <div className="absolute inset-0 z-[200] bg-[#0A0A0A] flex flex-col">
@@ -315,7 +315,7 @@ const TierModal: React.FC<{
         className="shrink-0 flex items-center gap-3 px-4 pb-3 border-b border-zinc-800/50"
         style={{ paddingTop: '0.75rem' }}
       >
-        <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-white/5">
+        <button aria-label="Voltar" onClick={onClose} className="p-1.5 rounded-lg hover:bg-white/5">
           <ArrowLeft size={18} className="text-zinc-400" />
         </button>
         <h2 style={TYPOGRAPHY.cardTitle} className="text-white text-sm">
@@ -358,7 +358,7 @@ const TierModal: React.FC<{
               value={ordem}
               onChange={e => setOrdem(Number(e.target.value))}
             />
-            <p className="text-[10px] text-zinc-600 mt-0.5">Menor = mais baixo</p>
+            <p className="text-[10px] text-zinc-400 mt-0.5">Menor = mais baixo</p>
           </div>
           <div>
             <p className={labelCls}>Resgates/mês</p>
@@ -371,7 +371,7 @@ const TierModal: React.FC<{
             <div className="mt-1">
               <button
                 onClick={() => setLimiteMensal(limiteMensal === -1 ? 5 : -1)}
-                className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-lg transition-all ${limiteMensal === -1 ? 'bg-[#FFD300] text-black' : 'bg-zinc-800 text-zinc-500'}`}
+                className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-lg transition-all ${limiteMensal === -1 ? 'bg-[#FFD300] text-black' : 'bg-zinc-800 text-zinc-400'}`}
               >
                 {limiteMensal === -1 ? 'Ilimitado' : 'Sem limite?'}
               </button>
@@ -404,7 +404,7 @@ const TierModal: React.FC<{
           {ativo ? (
             <ToggleRight size={20} className="text-emerald-400" />
           ) : (
-            <ToggleLeft size={20} className="text-zinc-600" />
+            <ToggleLeft size={20} className="text-zinc-400" />
           )}
           <span className="text-sm text-zinc-300">Ativo</span>
         </button>
@@ -501,7 +501,7 @@ export const PlanosMaisVantaView: React.FC<{
     <div className="flex-1 flex flex-col overflow-hidden bg-[#0A0A0A]">
       {/* Header */}
       <div className="shrink-0 flex items-center gap-3 px-4 py-3 border-b border-zinc-800/50">
-        <button onClick={onBack} className="p-1.5 rounded-lg hover:bg-white/5">
+        <button aria-label="Voltar" onClick={onBack} className="p-1.5 rounded-lg hover:bg-white/5">
           <ArrowLeft size={18} className="text-zinc-400" />
         </button>
         <Crown size={18} className="text-[#FFD300]" />
@@ -514,14 +514,14 @@ export const PlanosMaisVantaView: React.FC<{
       <div className="shrink-0 flex border-b border-zinc-800/50">
         <button
           onClick={() => setAba('planos')}
-          className={`flex-1 py-2.5 text-xs font-bold uppercase tracking-wider text-center transition-colors ${aba === 'planos' ? 'text-[#FFD300] border-b-2 border-[#FFD300]' : 'text-zinc-500'}`}
+          className={`flex-1 py-2.5 text-xs font-bold uppercase tracking-wider text-center transition-colors ${aba === 'planos' ? 'text-[#FFD300] border-b-2 border-[#FFD300]' : 'text-zinc-400'}`}
         >
           <DollarSign size={14} className="inline mr-1" />
           Planos
         </button>
         <button
           onClick={() => setAba('tiers')}
-          className={`flex-1 py-2.5 text-xs font-bold uppercase tracking-wider text-center transition-colors ${aba === 'tiers' ? 'text-[#FFD300] border-b-2 border-[#FFD300]' : 'text-zinc-500'}`}
+          className={`flex-1 py-2.5 text-xs font-bold uppercase tracking-wider text-center transition-colors ${aba === 'tiers' ? 'text-[#FFD300] border-b-2 border-[#FFD300]' : 'text-zinc-400'}`}
         >
           <Layers size={14} className="inline mr-1" />
           Níveis
@@ -565,11 +565,11 @@ export const PlanosMaisVantaView: React.FC<{
                           </span>
                         )}
                       </div>
-                      {p.descricao && <p className="text-zinc-500 text-xs mt-0.5 truncate">{p.descricao}</p>}
+                      {p.descricao && <p className="text-zinc-400 text-xs mt-0.5 truncate">{p.descricao}</p>}
                     </div>
                     <p className="text-[#FFD300] font-bold text-lg shrink-0">
                       R$ {p.precoMensal}
-                      <span className="text-zinc-600 text-[10px]">/mês</span>
+                      <span className="text-zinc-400 text-[10px]">/mês</span>
                     </p>
                   </div>
 
@@ -642,7 +642,7 @@ export const PlanosMaisVantaView: React.FC<{
               );
             })}
 
-            {planos.length === 0 && <p className="text-center text-zinc-600 text-sm py-8">Nenhum plano cadastrado</p>}
+            {planos.length === 0 && <p className="text-center text-zinc-400 text-sm py-8">Nenhum plano cadastrado</p>}
           </>
         ) : (
           <>
@@ -663,7 +663,7 @@ export const PlanosMaisVantaView: React.FC<{
                   <div className="flex items-center gap-2 min-w-0">
                     <div className="w-4 h-4 rounded-full shrink-0" style={{ backgroundColor: t.cor }} />
                     <h3 className="text-white font-bold text-sm truncate">{t.nome}</h3>
-                    <span className="text-[10px] text-zinc-600">Pos. {t.ordem}</span>
+                    <span className="text-[10px] text-zinc-400">Pos. {t.ordem}</span>
                     {!t.ativo && (
                       <span className="text-[10px] text-red-400 bg-red-500/10 px-1.5 py-0.5 rounded-full shrink-0">
                         Inativo
@@ -681,7 +681,7 @@ export const PlanosMaisVantaView: React.FC<{
                         }}
                         className="p-1 rounded hover:bg-white/5"
                       >
-                        <ChevronUp size={14} className="text-zinc-500" />
+                        <ChevronUp size={14} className="text-zinc-400" />
                       </button>
                     )}
                     {idx < tiers.length - 1 && (
@@ -694,7 +694,7 @@ export const PlanosMaisVantaView: React.FC<{
                         }}
                         className="p-1 rounded hover:bg-white/5"
                       >
-                        <ChevronDown size={14} className="text-zinc-500" />
+                        <ChevronDown size={14} className="text-zinc-400" />
                       </button>
                     )}
                   </div>
@@ -710,7 +710,7 @@ export const PlanosMaisVantaView: React.FC<{
                 </div>
 
                 <div className="flex items-center gap-3 mt-2">
-                  <span className="text-[10px] text-zinc-500">
+                  <span className="text-[10px] text-zinc-400">
                     Resgates/mês: {t.limiteMensal === -1 ? 'Ilimitado' : t.limiteMensal}
                   </span>
                 </div>
@@ -765,7 +765,7 @@ export const PlanosMaisVantaView: React.FC<{
               </div>
             ))}
 
-            {tiers.length === 0 && <p className="text-center text-zinc-600 text-sm py-8">Nenhum nível cadastrado</p>}
+            {tiers.length === 0 && <p className="text-center text-zinc-400 text-sm py-8">Nenhum nível cadastrado</p>}
           </>
         )}
       </div>
@@ -792,7 +792,7 @@ export const PlanosMaisVantaView: React.FC<{
             onClick={e => e.stopPropagation()}
           >
             <p className="text-white font-bold text-sm text-center">Desativar plano?</p>
-            <p className="text-zinc-500 text-[10px] text-center leading-relaxed">
+            <p className="text-zinc-400 text-[10px] text-center leading-relaxed">
               O plano será desativado e não poderá ser adquirido por novas comunidades. Assinaturas existentes não são
               afetadas.
             </p>

@@ -62,7 +62,7 @@ export const ComunidadesView: React.FC<{
               <span className="text-black font-black text-[10px] uppercase tracking-wider">Nova</span>
             </button>
           )}
-          <button
+          <button aria-label="Voltar"
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
           >
@@ -77,7 +77,7 @@ export const ComunidadesView: React.FC<{
             <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center">
               <Building2 size={28} className="text-zinc-700" />
             </div>
-            <p className="text-zinc-600 text-[10px] font-black uppercase tracking-widest text-center">
+            <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest text-center">
               Nenhuma comunidade vinculada
             </p>
           </div>
@@ -100,7 +100,7 @@ export const ComunidadesView: React.FC<{
             />
             {!c.ativa && (
               <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md border border-white/10 rounded-full px-3 py-1">
-                <p className="text-zinc-500 text-[8px] font-black uppercase tracking-widest">Inativa</p>
+                <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">Inativa</p>
               </div>
             )}
             <div className="absolute bottom-0 left-0 right-0 p-5">

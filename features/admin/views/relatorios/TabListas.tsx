@@ -41,7 +41,7 @@ export const TabListas: React.FC<Props> = ({ listas, role, currentUserId }) => {
             className={`py-2.5 px-3 text-[9px] font-black uppercase tracking-widest border-b-2 transition-all flex items-center gap-1.5 shrink-0 ${
               subTab === t.id
                 ? 'border-[#FFD300] text-[#FFD300]'
-                : 'border-transparent text-zinc-600 active:text-zinc-400'
+                : 'border-transparent text-zinc-400 active:text-zinc-400'
             }`}
           >
             {t.icon} {t.label}
@@ -109,7 +109,7 @@ const PromotersReport: React.FC<{ convidados: ConvidadoLista[]; regras: RegraLis
             <div className="flex items-center gap-3">
               <div className="flex-1 min-w-0">
                 <p className="text-zinc-300 text-xs font-bold truncate">{p.nome}</p>
-                <p className="text-zinc-600 text-[9px]">
+                <p className="text-zinc-400 text-[9px]">
                   {p.checkins}/{p.total} check-ins · {genStr}
                 </p>
               </div>
@@ -119,7 +119,7 @@ const PromotersReport: React.FC<{ convidados: ConvidadoLista[]; regras: RegraLis
               <div className="mt-2 pt-2 border-t border-white/5 space-y-1">
                 {regrasArr.map(([rId, r]) => (
                   <div key={rId} className="flex items-center justify-between">
-                    <p className="text-zinc-500 text-[9px] truncate flex-1 min-w-0">{r.label}</p>
+                    <p className="text-zinc-400 text-[9px] truncate flex-1 min-w-0">{r.label}</p>
                     <p className="text-zinc-400 text-[9px] font-bold shrink-0 ml-2">{r.count}</p>
                   </div>
                 ))}
@@ -165,11 +165,11 @@ const PorListaReport: React.FC<{ convidados: ConvidadoLista[]; regras: RegraList
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 flex-1 min-w-0">
                 <p className="text-zinc-300 text-xs font-bold truncate">{r.label}</p>
-                <span className="text-[7px] text-zinc-600 font-black uppercase tracking-wider px-1.5 py-0.5 bg-zinc-800 rounded-full shrink-0">
+                <span className="text-[7px] text-zinc-400 font-black uppercase tracking-wider px-1.5 py-0.5 bg-zinc-800 rounded-full shrink-0">
                   {genLabel}
                 </span>
               </div>
-              <p className="text-zinc-500 text-[10px] shrink-0 ml-2">
+              <p className="text-zinc-400 text-[10px] shrink-0 ml-2">
                 {r.checkins}/{r.total}
               </p>
             </div>
@@ -180,8 +180,8 @@ const PorListaReport: React.FC<{ convidados: ConvidadoLista[]; regras: RegraList
               />
             </div>
             <div className="flex gap-4">
-              <p className="text-zinc-600 text-[8px]">{pctPropria}% conversão própria</p>
-              <p className="text-zinc-600 text-[8px]">{pctTotal}% do total</p>
+              <p className="text-zinc-400 text-[8px]">{pctPropria}% conversão própria</p>
+              <p className="text-zinc-400 text-[8px]">{pctTotal}% do total</p>
             </div>
           </div>
         );
@@ -213,7 +213,7 @@ const PortariaReport: React.FC<{ convidados: ConvidadoLista[] }> = ({ convidados
           <div key={nome} className="flex items-center gap-3 p-3 bg-zinc-900/30 border border-white/5 rounded-xl">
             <div className="flex-1 min-w-0">
               <p className="text-zinc-300 text-xs font-bold truncate">{nome}</p>
-              <p className="text-zinc-600 text-[9px]">{pct}% dos check-ins</p>
+              <p className="text-zinc-400 text-[9px]">{pct}% dos check-ins</p>
             </div>
             <p className="text-[#FFD300] font-black text-sm shrink-0">{count}</p>
           </div>
@@ -263,7 +263,7 @@ const ConvidadosReport: React.FC<{ convidados: ConvidadoLista[] }> = ({ convidad
             className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all ${
               filtroCheckin === val
                 ? 'bg-[#FFD300]/10 border border-[#FFD300]/30 text-[#FFD300]'
-                : 'bg-zinc-900/60 border border-white/5 text-zinc-600 active:text-zinc-400'
+                : 'bg-zinc-900/60 border border-white/5 text-zinc-400 active:text-zinc-400'
             }`}
           >
             {label}
@@ -271,7 +271,7 @@ const ConvidadosReport: React.FC<{ convidados: ConvidadoLista[] }> = ({ convidad
         ))}
       </div>
 
-      <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest">{filtrados.length} convidados</p>
+      <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">{filtrados.length} convidados</p>
 
       <div className="space-y-1.5">
         {filtrados.slice(0, 100).map(c => (
@@ -279,17 +279,17 @@ const ConvidadosReport: React.FC<{ convidados: ConvidadoLista[] }> = ({ convidad
             <div className={`w-2 h-2 rounded-full shrink-0 ${c.checkedIn ? 'bg-emerald-400' : 'bg-zinc-700'}`} />
             <div className="flex-1 min-w-0">
               <p className="text-zinc-300 text-[11px] font-bold truncate">{c.nome}</p>
-              <p className="text-zinc-600 text-[8px] truncate">
+              <p className="text-zinc-400 text-[8px] truncate">
                 {c.regraLabel} · {c.inseridoPorNome || 'Desconhecido'}
               </p>
             </div>
             {c.checkedIn && c.checkedInPorNome && (
-              <p className="text-zinc-600 text-[8px] shrink-0">{c.checkedInPorNome}</p>
+              <p className="text-zinc-400 text-[8px] shrink-0">{c.checkedInPorNome}</p>
             )}
           </div>
         ))}
         {filtrados.length > 100 && (
-          <p className="text-zinc-600 text-[9px] text-center py-2">+ {filtrados.length - 100} convidados...</p>
+          <p className="text-zinc-400 text-[9px] text-center py-2">+ {filtrados.length - 100} convidados...</p>
         )}
       </div>
     </div>
@@ -298,6 +298,6 @@ const ConvidadosReport: React.FC<{ convidados: ConvidadoLista[] }> = ({ convidad
 
 const EmptyState: React.FC<{ text: string }> = ({ text }) => (
   <div className="flex flex-col items-center py-10 opacity-40">
-    <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest">{text}</p>
+    <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">{text}</p>
   </div>
 );

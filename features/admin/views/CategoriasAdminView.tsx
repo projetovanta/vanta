@@ -156,7 +156,7 @@ export const CategoriasAdminView: React.FC<{ onBack: () => void }> = ({ onBack }
       </div>
       <div className="flex-1 min-w-0">
         <p className="text-white font-bold text-sm truncate">{item.label}</p>
-        <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest">
+        <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">
           {item.ativo ? 'Ativo' : 'Desativado'}
         </p>
       </div>
@@ -166,7 +166,7 @@ export const CategoriasAdminView: React.FC<{ onBack: () => void }> = ({ onBack }
           className={`w-8 h-8 rounded-lg flex items-center justify-center border transition-all active:scale-90 ${
             item.ativo
               ? 'bg-emerald-500/15 border-emerald-500/25 text-emerald-400'
-              : 'bg-zinc-800 border-white/5 text-zinc-500'
+              : 'bg-zinc-800 border-white/5 text-zinc-400'
           }`}
         >
           <Check size={12} />
@@ -194,7 +194,7 @@ export const CategoriasAdminView: React.FC<{ onBack: () => void }> = ({ onBack }
       {/* Header */}
       <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-6 pt-8 pb-5 shrink-0 flex justify-between items-start">
         <div className="flex items-center gap-3">
-          <button
+          <button aria-label="Voltar"
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
           >
@@ -229,7 +229,7 @@ export const CategoriasAdminView: React.FC<{ onBack: () => void }> = ({ onBack }
               className={`shrink-0 px-4 py-3 rounded-2xl text-[9px] font-black uppercase tracking-widest border transition-all snap-start ${
                 isActive
                   ? `${c.colorBg} ${c.colorBorder} ${t === 'formatos' || t === 'outros' ? 'text-black' : 'text-white'} shadow-lg`
-                  : 'bg-zinc-900/50 border-white/5 text-zinc-500'
+                  : 'bg-zinc-900/50 border-white/5 text-zinc-400'
               }`}
             >
               {c.emoji} {c.label} ({items[t].length})
@@ -247,7 +247,7 @@ export const CategoriasAdminView: React.FC<{ onBack: () => void }> = ({ onBack }
         ) : currentItems.length === 0 ? (
           <div className="flex flex-col items-center py-20 gap-3">
             <span className="text-3xl">{cfg.emoji}</span>
-            <p className="text-zinc-600 text-[10px] font-black uppercase tracking-widest">
+            <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">
               Nenhum {cfg.label.toLowerCase().slice(0, -1)} cadastrado
             </p>
           </div>
@@ -269,16 +269,16 @@ export const CategoriasAdminView: React.FC<{ onBack: () => void }> = ({ onBack }
           >
             <div className="w-10 h-1 bg-zinc-700 rounded-full mx-auto" />
             <div className="flex items-start justify-between">
-              <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest">
+              <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">
                 {editItem.id ? 'Editar' : 'Novo'} {cfg.emoji} {cfg.label.slice(0, -1)}
               </p>
-              <button onClick={() => setEditItem(null)} className="p-1.5 text-zinc-600 active:text-white">
+              <button onClick={() => setEditItem(null)} className="p-1.5 text-zinc-400 active:text-white">
                 <X size={14} />
               </button>
             </div>
 
             <div>
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1.5">Nome</p>
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5">Nome</p>
               <input
                 type="text"
                 value={editItem.label ?? ''}

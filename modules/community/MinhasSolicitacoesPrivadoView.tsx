@@ -93,7 +93,7 @@ export const MinhasSolicitacoesPrivadoView: React.FC<Props> = ({ onBack }) => {
     <div className="absolute inset-0 flex flex-col bg-[#050505] overflow-hidden">
       {/* Header */}
       <div className="shrink-0 flex items-center gap-3 px-4 pt-[calc(env(safe-area-inset-top)+12px)] pb-3 border-b border-white/5">
-        <button
+        <button aria-label="Voltar"
           onClick={onBack}
           className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
         >
@@ -108,14 +108,14 @@ export const MinhasSolicitacoesPrivadoView: React.FC<Props> = ({ onBack }) => {
       <div className="flex-1 overflow-y-auto no-scrollbar px-5 py-5 space-y-4">
         {loading ? (
           <div className="flex items-center justify-center py-16">
-            <Loader2 size={20} className="text-zinc-600 animate-spin" />
+            <Loader2 size={20} className="text-zinc-400 animate-spin" />
           </div>
         ) : solicitacoes.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 gap-3">
             <div className="w-14 h-14 rounded-full bg-zinc-900 flex items-center justify-center border border-white/5">
               <Clock size={24} className="text-zinc-700" />
             </div>
-            <p className="text-zinc-500 text-sm">Nenhuma solicitação ainda</p>
+            <p className="text-zinc-400 text-sm">Nenhuma solicitação ainda</p>
           </div>
         ) : (
           solicitacoes.map(sol => {
@@ -128,7 +128,7 @@ export const MinhasSolicitacoesPrivadoView: React.FC<Props> = ({ onBack }) => {
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex-1 min-w-0">
                     <p className="text-white font-bold text-sm truncate">{sol.empresa}</p>
-                    <p className="text-zinc-500 text-[10px] mt-0.5">
+                    <p className="text-zinc-400 text-[10px] mt-0.5">
                       {sol.data_evento || sol.data_estimativa || 'Data a definir'} · {sol.faixa_capacidade}
                     </p>
                   </div>
@@ -157,7 +157,7 @@ export const MinhasSolicitacoesPrivadoView: React.FC<Props> = ({ onBack }) => {
                         >
                           {step.icon}
                         </div>
-                        <span className="text-[8px] text-zinc-500 text-center leading-tight w-14 truncate">
+                        <span className="text-[8px] text-zinc-400 text-center leading-tight w-14 truncate">
                           {step.reached && step.timestamp ? formatDate(step.timestamp) : step.label}
                         </span>
                       </div>
@@ -176,7 +176,7 @@ export const MinhasSolicitacoesPrivadoView: React.FC<Props> = ({ onBack }) => {
                 {/* Mensagem do gerente */}
                 {sol.mensagem_gerente && (
                   <div className="flex items-start gap-2 bg-zinc-800/50 border border-white/5 rounded-xl p-3">
-                    <MessageSquare size={12} className="text-zinc-500 shrink-0 mt-0.5" />
+                    <MessageSquare size={12} className="text-zinc-400 shrink-0 mt-0.5" />
                     <p className="text-zinc-300 text-xs leading-relaxed">{sol.mensagem_gerente}</p>
                   </div>
                 )}

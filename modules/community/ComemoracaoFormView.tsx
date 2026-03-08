@@ -95,14 +95,14 @@ export const ComemoracaoFormView: React.FC<Props> = ({
   }
 
   const inputClass =
-    'w-full bg-zinc-900/50 border border-white/10 rounded-xl py-3 px-4 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#FFD300]/50 transition-colors';
-  const labelClass = 'text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-1.5';
+    'w-full bg-zinc-900/50 border border-white/10 rounded-xl py-3 px-4 text-sm text-white placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/50 transition-colors';
+  const labelClass = 'text-[10px] font-black uppercase tracking-widest text-zinc-400 mb-1.5';
 
   return (
     <div className="absolute inset-0 flex flex-col bg-[#050505] overflow-hidden">
       {/* Header */}
       <div className="shrink-0 flex items-center gap-3 px-4 pt-[calc(env(safe-area-inset-top)+12px)] pb-3 border-b border-white/5">
-        <button
+        <button aria-label="Voltar"
           onClick={onBack}
           className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
         >
@@ -112,7 +112,7 @@ export const ComemoracaoFormView: React.FC<Props> = ({
           <h1 style={TYPOGRAPHY.screenTitle} className="text-base text-white truncate">
             Comemorar aqui
           </h1>
-          <p className="text-[10px] text-zinc-500 truncate">{eventoNome ?? comunidadeNome}</p>
+          <p className="text-[10px] text-zinc-400 truncate">{eventoNome ?? comunidadeNome}</p>
         </div>
         <Cake size={20} className="text-[#FFD300] shrink-0" />
       </div>
@@ -179,7 +179,7 @@ export const ComemoracaoFormView: React.FC<Props> = ({
               className={inputClass}
             />
             {!eventoId && (
-              <p className="text-[9px] text-zinc-600 mt-1">
+              <p className="text-[9px] text-zinc-400 mt-1">
                 Se ainda não tem evento nessa data, vincularemos quando ele for criado.
               </p>
             )}
@@ -216,7 +216,7 @@ export const ComemoracaoFormView: React.FC<Props> = ({
           onClick={handleSubmit}
           disabled={!canSubmit || sending}
           className={`w-full flex items-center justify-center gap-2 py-3.5 rounded-full text-xs font-black uppercase tracking-widest transition-all active:scale-95 ${
-            canSubmit ? 'bg-[#FFD300] text-black' : 'bg-zinc-800 text-zinc-600'
+            canSubmit ? 'bg-[#FFD300] text-black' : 'bg-zinc-800 text-zinc-400'
           } disabled:opacity-50`}
         >
           {sending ? (

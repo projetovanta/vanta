@@ -62,7 +62,7 @@ export const OnboardingView: React.FC<{ onComplete: () => void }> = ({ onComplet
       <div className="shrink-0 flex justify-end px-6 pt-3">
         <button
           onClick={onComplete}
-          className="py-2 px-4 text-zinc-600 text-[10px] font-black uppercase tracking-widest active:text-zinc-300 transition-colors"
+          className="py-2 px-4 text-zinc-400 text-[10px] font-black uppercase tracking-widest active:text-zinc-300 transition-colors"
         >
           Pular
         </button>

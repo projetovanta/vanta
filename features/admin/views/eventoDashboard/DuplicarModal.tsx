@@ -95,10 +95,10 @@ export const DuplicarModal: React.FC<{
         <div className="w-10 h-1 bg-zinc-700 rounded-full mx-auto" />
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest">Duplicar</p>
+            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">Duplicar</p>
             <p className="text-white font-bold text-base truncate">{evento.nome}</p>
           </div>
-          <button onClick={onClose} className="p-1 text-zinc-600">
+          <button onClick={onClose} className="p-1 text-zinc-400">
             <X size={14} />
           </button>
         </div>
@@ -109,7 +109,7 @@ export const DuplicarModal: React.FC<{
 
         <div className="grid grid-cols-2 gap-2">
           <div>
-            <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest mb-1">Data Início</p>
+            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mb-1">Data Início</p>
             <input
               type="date"
               value={dataInicio}
@@ -118,7 +118,7 @@ export const DuplicarModal: React.FC<{
             />
           </div>
           <div>
-            <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest mb-1">Hora Início</p>
+            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mb-1">Hora Início</p>
             <input
               type="time"
               value={horaInicio}
@@ -127,7 +127,7 @@ export const DuplicarModal: React.FC<{
             />
           </div>
           <div>
-            <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest mb-1">Data Fim</p>
+            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mb-1">Data Fim</p>
             <input
               type="date"
               value={dataFim}
@@ -136,7 +136,7 @@ export const DuplicarModal: React.FC<{
             />
           </div>
           <div>
-            <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest mb-1">Hora Fim</p>
+            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mb-1">Hora Fim</p>
             <input
               type="time"
               value={horaFim}

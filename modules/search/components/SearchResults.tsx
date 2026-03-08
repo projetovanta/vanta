@@ -79,12 +79,12 @@ export const SearchResults: React.FC<{
                         {evento.formato || evento.categoria}
                       </span>
                       <h3 className="font-serif font-bold text-white truncate mb-1">{evento.titulo}</h3>
-                      <div className="text-zinc-500 text-[10px] truncate">
+                      <div className="text-zinc-400 text-[10px] truncate">
                         <MapPin size={10} className="inline mr-1" />
                         {evento.local}
                       </div>
                     </div>
-                    <div className="flex items-center text-zinc-600">
+                    <div className="flex items-center text-zinc-400">
                       <ArrowRight size={16} />
                     </div>
                   </div>
@@ -95,7 +95,7 @@ export const SearchResults: React.FC<{
         </div>
       ) : (
         <div className="py-12 text-center">
-          <p className="text-zinc-500">Nenhum evento encontrado.</p>
+          <p className="text-zinc-400">Nenhum evento encontrado.</p>
         </div>
       )}
     </div>

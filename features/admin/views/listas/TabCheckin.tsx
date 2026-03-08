@@ -28,7 +28,7 @@ export const TabCheckin: React.FC<{
   return (
     <div className="flex-1 flex flex-col min-h-0">
       <div className="flex items-center gap-2 bg-zinc-900/60 border border-white/5 rounded-xl px-3 py-2.5 focus-within:border-[#FFD300]/30 mb-4 shrink-0">
-        <Search size={13} className="text-zinc-600 shrink-0" />
+        <Search size={13} className="text-zinc-400 shrink-0" />
         <input
           value={busca}
           onChange={e => setBusca(e.target.value)}
@@ -37,7 +37,7 @@ export const TabCheckin: React.FC<{
         />
         {busca && (
           <button onClick={() => setBusca('')}>
-            <X size={12} className="text-zinc-600" />
+            <X size={12} className="text-zinc-400" />
           </button>
         )}
       </div>
@@ -45,11 +45,11 @@ export const TabCheckin: React.FC<{
       <div className="flex gap-3 mb-4 shrink-0">
         <div className="flex-1 bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center">
           <p className="text-white font-black text-xl">{lista.convidados.filter(c => !c.checkedIn).length}</p>
-          <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest mt-0.5">Aguardando</p>
+          <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mt-0.5">Aguardando</p>
         </div>
         <div className="flex-1 bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center">
           <p className="text-emerald-400 font-black text-xl">{lista.convidados.filter(c => c.checkedIn).length}</p>
-          <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest mt-0.5">Dentro</p>
+          <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mt-0.5">Dentro</p>
         </div>
       </div>
 
@@ -73,7 +73,7 @@ export const TabCheckin: React.FC<{
               }`}
             >
               <div className="w-9 h-9 rounded-full bg-zinc-800 border border-white/10 flex items-center justify-center shrink-0">
-                <span className="text-zinc-500 text-xs font-black">{c.nome.charAt(0).toUpperCase()}</span>
+                <span className="text-zinc-400 text-xs font-black">{c.nome.charAt(0).toUpperCase()}</span>
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-white text-sm font-bold truncate">{c.nome}</p>
@@ -84,7 +84,7 @@ export const TabCheckin: React.FC<{
                         className="w-1.5 h-1.5 rounded-full shrink-0"
                         style={{ backgroundColor: regra.cor ?? '#71717a' }}
                       />
-                      <span className="text-zinc-600 text-[9px] font-black truncate">{regra.label}</span>
+                      <span className="text-zinc-400 text-[9px] font-black truncate">{regra.label}</span>
                     </span>
                   )}
                   {abobora && !c.checkedIn && (

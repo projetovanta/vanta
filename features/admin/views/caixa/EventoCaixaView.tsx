@@ -317,7 +317,7 @@ const EventoCaixaView: React.FC<{
               >
                 {fmtBRL(variacao.valor)}
               </p>
-              <p className="text-zinc-500 text-[10px] mt-1 truncate max-w-full">{email}</p>
+              <p className="text-zinc-400 text-[10px] mt-1 truncate max-w-full">{email}</p>
               <p className="text-zinc-700 text-[8px] font-black uppercase tracking-widest mt-1">{evento.nome}</p>
             </div>
 
@@ -384,11 +384,11 @@ const EventoCaixaView: React.FC<{
       <div className="flex-1 overflow-y-auto no-scrollbar p-6 space-y-5 max-w-3xl mx-auto w-full">
         {/* Resumo */}
         <div className="p-4 bg-zinc-900/40 border border-white/5 rounded-2xl">
-          <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest mb-1">Ingresso</p>
+          <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mb-1">Ingresso</p>
           <p className="text-white font-bold text-sm">
             {sel.variacao.area} · {genLabel(sel.variacao)}
           </p>
-          <p className="text-zinc-500 text-xs mt-0.5 truncate">{nome}</p>
+          <p className="text-zinc-400 text-xs mt-0.5 truncate">{nome}</p>
         </div>
 
         {/* Info: ingresso vai pro app ou por email */}
@@ -447,7 +447,7 @@ const EventoCaixaView: React.FC<{
                 <AlertTriangle size={12} />
                 <span className="text-[10px] font-black uppercase tracking-widest">Câmera bloqueada</span>
               </div>
-              <p className="text-zinc-600 text-[9px] text-center max-w-[220px]">
+              <p className="text-zinc-400 text-[9px] text-center max-w-[220px]">
                 Libere o acesso à câmera nas configurações do navegador.
               </p>
             </div>
@@ -476,7 +476,7 @@ const EventoCaixaView: React.FC<{
             </button>
           )}
 
-          <p className="text-zinc-600 text-[9px] text-center leading-relaxed max-w-[200px]">
+          <p className="text-zinc-400 text-[9px] text-center leading-relaxed max-w-[200px]">
             Opcional — foto usada na portaria para conferência de identidade
           </p>
         </div>
@@ -489,7 +489,7 @@ const EventoCaixaView: React.FC<{
             }}
             className="w-12 h-12 bg-zinc-900 border border-white/10 rounded-xl flex items-center justify-center active:scale-90 transition-all shrink-0"
           >
-            <X size={16} className="text-zinc-500" />
+            <X size={16} className="text-zinc-400" />
           </button>
           <button
             onClick={confirmarVenda}
@@ -507,16 +507,16 @@ const EventoCaixaView: React.FC<{
     return (
       <div className="flex-1 overflow-y-auto no-scrollbar p-6 space-y-5 max-w-3xl mx-auto w-full">
         <div className="p-5 bg-zinc-900/40 border border-white/5 rounded-2xl">
-          <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest mb-2">Ingresso selecionado</p>
+          <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mb-2">Ingresso selecionado</p>
           <p className="text-white font-bold">
             {sel.variacao.area} · {genLabel(sel.variacao)}
           </p>
           <p className="text-[#FFD300] font-black text-lg mt-1">{fmtBRL(sel.variacao.valor)}</p>
-          <p className="text-zinc-600 text-xs mt-1 truncate">{nome}</p>
+          <p className="text-zinc-400 text-xs mt-1 truncate">{nome}</p>
         </div>
 
         <div>
-          <label className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-2 block">
+          <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2 block">
             E-mail do comprador
           </label>
           <input
@@ -543,7 +543,7 @@ const EventoCaixaView: React.FC<{
             }}
             className="w-12 h-12 bg-zinc-900 border border-white/10 rounded-xl flex items-center justify-center active:scale-90 transition-all shrink-0"
           >
-            <X size={16} className="text-zinc-500" />
+            <X size={16} className="text-zinc-400" />
           </button>
           <button
             onClick={handleEmailNext}
@@ -562,7 +562,7 @@ const EventoCaixaView: React.FC<{
     return (
       <div className="flex-1 overflow-y-auto no-scrollbar p-6 space-y-5 max-w-3xl mx-auto w-full">
         <div className="p-4 bg-zinc-900/40 border border-white/5 rounded-2xl">
-          <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest mb-1">Ingresso selecionado</p>
+          <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mb-1">Ingresso selecionado</p>
           <p className="text-white font-bold text-sm">
             {sel.variacao.area} · {genLabel(sel.variacao)}
           </p>
@@ -571,11 +571,11 @@ const EventoCaixaView: React.FC<{
 
         {/* Nome completo */}
         <div>
-          <label className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-2 block">
+          <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2 block">
             Nome completo
           </label>
           <div className="relative">
-            <User size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-600 pointer-events-none" />
+            <User size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none" />
             <input
               className="w-full bg-zinc-900/60 border border-white/5 rounded-xl pl-9 pr-4 py-3 text-white text-sm outline-none focus:border-[#FFD300]/30 placeholder-zinc-700"
               placeholder="Nome Sobrenome"
@@ -594,7 +594,7 @@ const EventoCaixaView: React.FC<{
 
         {/* CPF */}
         <div>
-          <label className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-2 block">CPF</label>
+          <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2 block">CPF</label>
           <input
             className="w-full bg-zinc-900/60 border border-white/5 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-[#FFD300]/30 placeholder-zinc-700 tabular-nums"
             placeholder="000.000.000-00"
@@ -615,7 +615,7 @@ const EventoCaixaView: React.FC<{
             }}
             className="w-12 h-12 bg-zinc-900 border border-white/10 rounded-xl flex items-center justify-center active:scale-90 transition-all shrink-0"
           >
-            <X size={16} className="text-zinc-500" />
+            <X size={16} className="text-zinc-400" />
           </button>
           <button
             onClick={handleCadastroNext}
@@ -678,7 +678,7 @@ const EventoCaixaView: React.FC<{
                   Ativo
                 </span>
               </div>
-              <p className="text-zinc-600 text-[9px] mt-0.5">
+              <p className="text-zinc-400 text-[9px] mt-0.5">
                 {lote.vendidos} / {lote.limitTotal} vendidos
               </p>
             </div>
@@ -694,7 +694,7 @@ const EventoCaixaView: React.FC<{
                       <p className="text-white text-sm font-medium leading-none">
                         {v.area} · {genLabel(v)}
                       </p>
-                      <p className="text-zinc-600 text-[9px] mt-0.5 font-black uppercase tracking-widest">
+                      <p className="text-zinc-400 text-[9px] mt-0.5 font-black uppercase tracking-widest">
                         {disponivel > 0 ? `${disponivel} disponíveis` : 'Esgotado'}
                       </p>
                     </div>

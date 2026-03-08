@@ -281,7 +281,7 @@ export const NotificacoesAdminView: React.FC<{ onBack: () => void }> = ({ onBack
             Campanhas
           </h1>
         </div>
-        <button
+        <button aria-label="Voltar"
           onClick={onBack}
           className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all mt-1"
         >
@@ -293,7 +293,7 @@ export const NotificacoesAdminView: React.FC<{ onBack: () => void }> = ({ onBack
         {/* Preview */}
         {(titulo || mensagem) && (
           <div className="mx-5 mt-5">
-            <p className="text-[9px] text-zinc-600 font-black uppercase tracking-widest mb-2 ml-1">Preview</p>
+            <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest mb-2 ml-1">Preview</p>
             <div className="bg-zinc-900/60 border border-white/5 rounded-2xl p-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-[#FFD300]/15 border border-[#FFD300]/20 flex items-center justify-center shrink-0">
@@ -303,7 +303,7 @@ export const NotificacoesAdminView: React.FC<{ onBack: () => void }> = ({ onBack
                   <p className="text-white font-bold text-sm leading-none mb-0.5 truncate">
                     {titulo || 'Título da campanha'}
                   </p>
-                  <p className="text-zinc-500 text-[10px] leading-relaxed line-clamp-2">
+                  <p className="text-zinc-400 text-[10px] leading-relaxed line-clamp-2">
                     {mensagem || 'Sua mensagem aparecerá aqui...'}
                   </p>
                 </div>
@@ -323,7 +323,7 @@ export const NotificacoesAdminView: React.FC<{ onBack: () => void }> = ({ onBack
                     {getAcaoLabel()}
                   </span>
                 )}
-                <span className="text-zinc-600 text-[8px] font-black uppercase tracking-widest ml-auto truncate max-w-[40%]">
+                <span className="text-zinc-400 text-[8px] font-black uppercase tracking-widest ml-auto truncate max-w-[40%]">
                   {getSegLabel()}
                   {destCount !== null && !countLoading && ` (${destCount})`}
                 </span>
@@ -335,7 +335,7 @@ export const NotificacoesAdminView: React.FC<{ onBack: () => void }> = ({ onBack
         <div className="p-5 space-y-5">
           {/* Canais */}
           <div className="space-y-1.5">
-            <label className="text-[9px] text-zinc-500 font-black uppercase tracking-widest ml-1">Canais</label>
+            <label className="text-[9px] text-zinc-400 font-black uppercase tracking-widest ml-1">Canais</label>
             <div className="flex gap-2">
               {[
                 { id: 'IN_APP' as CanalCampanha, label: 'In-App', Icon: Bell },
@@ -350,7 +350,7 @@ export const NotificacoesAdminView: React.FC<{ onBack: () => void }> = ({ onBack
                     className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border transition-all text-xs font-bold ${
                       ativo
                         ? 'bg-[#FFD300]/10 border-[#FFD300]/30 text-[#FFD300]'
-                        : 'bg-zinc-900/40 border-white/5 text-zinc-500 active:bg-zinc-900/60'
+                        : 'bg-zinc-900/40 border-white/5 text-zinc-400 active:bg-zinc-900/60'
                     }`}
                   >
                     <Icon size={14} />
@@ -363,7 +363,7 @@ export const NotificacoesAdminView: React.FC<{ onBack: () => void }> = ({ onBack
 
           {/* Título */}
           <div className="space-y-1.5">
-            <label className="text-[9px] text-zinc-500 font-black uppercase tracking-widest ml-1">Título</label>
+            <label className="text-[9px] text-zinc-400 font-black uppercase tracking-widest ml-1">Título</label>
             <input
               value={titulo}
               onChange={e => setTitulo(e.target.value)}
@@ -374,7 +374,7 @@ export const NotificacoesAdminView: React.FC<{ onBack: () => void }> = ({ onBack
 
           {/* Mensagem */}
           <div className="space-y-1.5">
-            <label className="text-[9px] text-zinc-500 font-black uppercase tracking-widest ml-1">Mensagem</label>
+            <label className="text-[9px] text-zinc-400 font-black uppercase tracking-widest ml-1">Mensagem</label>
             <textarea
               value={mensagem}
               onChange={e => setMensagem(e.target.value)}
@@ -386,8 +386,8 @@ export const NotificacoesAdminView: React.FC<{ onBack: () => void }> = ({ onBack
 
           {/* Sobre o quê? (Ação / Deep Link) */}
           <div className="space-y-2">
-            <label className="text-[9px] text-zinc-500 font-black uppercase tracking-widest ml-1 flex items-center gap-1.5">
-              <Target size={10} className="text-zinc-600" />
+            <label className="text-[9px] text-zinc-400 font-black uppercase tracking-widest ml-1 flex items-center gap-1.5">
+              <Target size={10} className="text-zinc-400" />
               Sobre o quê?
             </label>
             <div className="grid grid-cols-3 gap-2">
@@ -408,9 +408,9 @@ export const NotificacoesAdminView: React.FC<{ onBack: () => void }> = ({ onBack
                         : 'bg-zinc-900/40 border-white/5 active:bg-zinc-900/60'
                     }`}
                   >
-                    <Icon size={14} className={ativo ? 'text-emerald-400' : 'text-zinc-500'} />
+                    <Icon size={14} className={ativo ? 'text-emerald-400' : 'text-zinc-400'} />
                     <span
-                      className={`text-[8px] font-bold text-center leading-tight ${ativo ? 'text-emerald-400' : 'text-zinc-500'}`}
+                      className={`text-[8px] font-bold text-center leading-tight ${ativo ? 'text-emerald-400' : 'text-zinc-400'}`}
                     >
                       {a.label}
                     </span>
@@ -426,7 +426,7 @@ export const NotificacoesAdminView: React.FC<{ onBack: () => void }> = ({ onBack
                   onClick={() => setAcaoDropdownOpen(p => !p)}
                   className="w-full flex items-center justify-between p-4 bg-zinc-900/40 border border-white/5 rounded-xl text-sm transition-all active:bg-zinc-900/60"
                 >
-                  <span className={acaoValor ? 'text-white truncate' : 'text-zinc-600'}>
+                  <span className={acaoValor ? 'text-white truncate' : 'text-zinc-400'}>
                     {acaoValor
                       ? acao === 'NOVO_EVENTO'
                         ? (eventos.find(e => e.id === acaoValor)?.nome ?? acaoValor)
@@ -435,7 +435,7 @@ export const NotificacoesAdminView: React.FC<{ onBack: () => void }> = ({ onBack
                   </span>
                   <ChevronDown
                     size={14}
-                    className={`text-zinc-500 transition-transform shrink-0 ml-2 ${acaoDropdownOpen ? 'rotate-180' : ''}`}
+                    className={`text-zinc-400 transition-transform shrink-0 ml-2 ${acaoDropdownOpen ? 'rotate-180' : ''}`}
                   />
                 </button>
 
@@ -459,7 +459,7 @@ export const NotificacoesAdminView: React.FC<{ onBack: () => void }> = ({ onBack
                       );
                     })}
                     {(acao === 'NOVO_EVENTO' ? eventos : comunidades).length === 0 && (
-                      <p className="text-zinc-600 text-xs text-center py-4">Nenhuma opção disponível</p>
+                      <p className="text-zinc-400 text-xs text-center py-4">Nenhuma opção disponível</p>
                     )}
                   </div>
                 )}
@@ -470,12 +470,12 @@ export const NotificacoesAdminView: React.FC<{ onBack: () => void }> = ({ onBack
           {/* Destinatários */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <label className="text-[9px] text-zinc-500 font-black uppercase tracking-widest ml-1">
+              <label className="text-[9px] text-zinc-400 font-black uppercase tracking-widest ml-1">
                 Destinatários
               </label>
               {destCount !== null && (
                 <span
-                  className={`text-[9px] font-bold ${countLoading ? 'text-zinc-600 animate-pulse' : 'text-[#FFD300]'}`}
+                  className={`text-[9px] font-bold ${countLoading ? 'text-zinc-400 animate-pulse' : 'text-[#FFD300]'}`}
                 >
                   ~{destCount} {destCount === 1 ? 'membro' : 'membros'}
                 </span>
@@ -501,8 +501,8 @@ export const NotificacoesAdminView: React.FC<{ onBack: () => void }> = ({ onBack
                         : 'bg-zinc-900/40 border-white/5 active:bg-zinc-900/60'
                     }`}
                   >
-                    <Icon size={16} className={ativo ? 'text-[#FFD300]' : 'text-zinc-500'} />
-                    <span className={`text-[9px] font-bold ${ativo ? 'text-[#FFD300]' : 'text-zinc-500'}`}>
+                    <Icon size={16} className={ativo ? 'text-[#FFD300]' : 'text-zinc-400'} />
+                    <span className={`text-[9px] font-bold ${ativo ? 'text-[#FFD300]' : 'text-zinc-400'}`}>
                       {seg.label}
                     </span>
                   </button>
@@ -517,14 +517,14 @@ export const NotificacoesAdminView: React.FC<{ onBack: () => void }> = ({ onBack
                   onClick={() => setDropdownOpen(p => !p)}
                   className="w-full flex items-center justify-between p-4 bg-zinc-900/40 border border-white/5 rounded-xl text-sm transition-all active:bg-zinc-900/60"
                 >
-                  <span className={segValor ? 'text-white' : 'text-zinc-600'}>
+                  <span className={segValor ? 'text-white' : 'text-zinc-400'}>
                     {segValor
                       ? (dropdownOptions.find(o => o.value === segValor)?.label ?? segValor)
                       : `Selecionar ${segTipo === 'TAG' ? 'tag' : segTipo === 'COMUNIDADE' ? 'comunidade' : segTipo === 'EVENTO' ? 'evento' : 'cidade'}...`}
                   </span>
                   <ChevronDown
                     size={14}
-                    className={`text-zinc-500 transition-transform ${dropdownOpen ? 'rotate-180' : ''}`}
+                    className={`text-zinc-400 transition-transform ${dropdownOpen ? 'rotate-180' : ''}`}
                   />
                 </button>
 
@@ -548,7 +548,7 @@ export const NotificacoesAdminView: React.FC<{ onBack: () => void }> = ({ onBack
                       );
                     })}
                     {dropdownOptions.length === 0 && (
-                      <p className="text-zinc-600 text-xs text-center py-4">Nenhuma opção disponível</p>
+                      <p className="text-zinc-400 text-xs text-center py-4">Nenhuma opção disponível</p>
                     )}
                   </div>
                 )}

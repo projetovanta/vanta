@@ -17,7 +17,7 @@ export const SimuladorGateway: React.FC = () => {
     <div className="bg-zinc-900/40 border border-white/5 rounded-2xl p-5 space-y-4">
       <div className="flex items-center gap-2">
         <Calculator size={13} className="text-[#FFD300] shrink-0" />
-        <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Simulador de Lucro Real</p>
+        <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Simulador de Lucro Real</p>
       </div>
 
       <div className="grid grid-cols-2 gap-3">
@@ -41,7 +41,7 @@ export const SimuladorGateway: React.FC = () => {
                 className={`flex-1 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-wider transition-all flex items-center justify-center gap-1 ${
                   simMetodo === m
                     ? 'bg-[#FFD300]/10 border border-[#FFD300]/30 text-[#FFD300]'
-                    : 'bg-zinc-900/60 border border-white/5 text-zinc-600'
+                    : 'bg-zinc-900/60 border border-white/5 text-zinc-400'
                 }`}
               >
                 {m === 'PIX' ? <Zap size={10} /> : <CreditCard size={10} />}
@@ -68,11 +68,11 @@ export const SimuladorGateway: React.FC = () => {
           </div>
           <div className="grid grid-cols-2 gap-2 pt-2">
             <div className="bg-zinc-900/60 border border-white/5 rounded-xl p-3 text-center">
-              <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest mb-1">100 ingressos</p>
+              <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mb-1">100 ingressos</p>
               <p className="text-zinc-300 font-black text-sm leading-none">{fmtBRL(simLucro100)}</p>
             </div>
             <div className="bg-zinc-900/60 border border-white/5 rounded-xl p-3 text-center">
-              <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest mb-1">500 ingressos</p>
+              <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mb-1">500 ingressos</p>
               <p className="text-emerald-400 font-black text-sm leading-none">{fmtBRL(simLucro500)}</p>
             </div>
           </div>

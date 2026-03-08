@@ -36,7 +36,7 @@ export const CentralEventosView: React.FC<{
               {comunidade.nome}
             </h1>
           </div>
-          <button
+          <button aria-label="Voltar"
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0 mt-1"
           >
@@ -50,7 +50,7 @@ export const CentralEventosView: React.FC<{
               key={t.id}
               onClick={() => setTab(t.id)}
               className={`flex-1 py-2.5 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all ${
-                tab === t.id ? 'bg-[#FFD300] text-black' : 'text-zinc-500 active:text-zinc-300'
+                tab === t.id ? 'bg-[#FFD300] text-black' : 'text-zinc-400 active:text-zinc-300'
               }`}
             >
               {t.label}

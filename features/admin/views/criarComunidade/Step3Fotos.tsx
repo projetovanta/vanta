@@ -6,7 +6,7 @@ import { Membro } from '../../../../types';
 
 const inputCls =
   'w-full bg-zinc-900/60 border border-white/5 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-[#FFD300]/30 placeholder-zinc-700';
-const labelCls = 'text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1.5 block';
+const labelCls = 'text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block';
 
 export const Step3Fotos: React.FC<{
   fotoPerfil: string;
@@ -111,14 +111,14 @@ export const Step3Fotos: React.FC<{
                 <img loading="lazy" src={fotoPerfil} alt="perfil" className="w-full h-full object-cover" />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
-                  <Camera size={18} className="text-zinc-600" />
+                  <Camera size={18} className="text-zinc-400" />
                 </div>
               )}
               <div className="absolute inset-0 bg-black/50 opacity-0 group-active:opacity-100 flex items-center justify-center">
                 <Upload size={14} className="text-white" />
               </div>
             </button>
-            <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Perfil *</p>
+            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Perfil *</p>
             <p className="text-[7px] text-zinc-700 font-black uppercase tracking-widest">Mín. 400×400</p>
           </div>
 
@@ -139,7 +139,7 @@ export const Step3Fotos: React.FC<{
                 <img loading="lazy" src={fotoCapa} alt="capa" className="w-full h-full object-cover" />
               ) : (
                 <div className="w-full h-full flex flex-col items-center justify-center gap-1">
-                  <Camera size={18} className="text-zinc-600" />
+                  <Camera size={18} className="text-zinc-400" />
                   <p className="text-zinc-700 text-[8px] font-black uppercase tracking-widest">Capa</p>
                 </div>
               )}
@@ -147,7 +147,7 @@ export const Step3Fotos: React.FC<{
                 <Upload size={14} className="text-white" />
               </div>
             </button>
-            <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Capa *</p>
+            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Capa *</p>
             <p className="text-[7px] text-zinc-700 font-black uppercase tracking-widest">Mín. 1200×400</p>
           </div>
         </div>
@@ -180,9 +180,9 @@ export const Step3Fotos: React.FC<{
         <div className="relative mb-3">
           <div className="flex items-center gap-3 bg-zinc-900/60 border border-white/5 rounded-xl px-4 py-2.5 focus-within:border-[#FFD300]/30">
             {searching ? (
-              <Loader2 size={14} className="text-zinc-500 shrink-0 animate-spin" />
+              <Loader2 size={14} className="text-zinc-400 shrink-0 animate-spin" />
             ) : (
-              <Search size={14} className="text-zinc-600 shrink-0" />
+              <Search size={14} className="text-zinc-400 shrink-0" />
             )}
             <input
               value={query}
@@ -201,7 +201,7 @@ export const Step3Fotos: React.FC<{
                   setShowResults(false);
                   setResultados([]);
                 }}
-                className="text-zinc-600 active:text-zinc-400"
+                className="text-zinc-400 active:text-zinc-400"
               >
                 <X size={13} />
               </button>
@@ -209,7 +209,7 @@ export const Step3Fotos: React.FC<{
           </div>
           {showResults && query.length >= 2 && !searching && resultados.length === 0 && (
             <div className="absolute top-full left-0 right-0 z-10 bg-zinc-900 border border-white/10 rounded-xl mt-1 overflow-hidden shadow-2xl px-4 py-3">
-              <p className="text-zinc-600 text-[10px] font-black uppercase tracking-widest text-center">
+              <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest text-center">
                 Nenhum membro encontrado
               </p>
             </div>
@@ -230,7 +230,7 @@ export const Step3Fotos: React.FC<{
                   />
                   <div className="min-w-0 flex-1">
                     <p className="text-white font-bold text-sm leading-none truncate">{m.nome}</p>
-                    <p className="text-zinc-600 text-[10px] mt-0.5 truncate">{m.email}</p>
+                    <p className="text-zinc-400 text-[10px] mt-0.5 truncate">{m.email}</p>
                   </div>
                 </button>
               ))}

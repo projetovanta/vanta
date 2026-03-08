@@ -175,7 +175,7 @@ export const RelatorioMasterView: React.FC<Props> = ({ onBack }) => {
       {/* Header */}
       <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-5 pt-8 pb-4 shrink-0">
         <div className="flex items-start gap-3">
-          <button
+          <button aria-label="Voltar"
             onClick={onBack}
             className="w-9 h-9 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0 mt-0.5"
           >
@@ -184,7 +184,7 @@ export const RelatorioMasterView: React.FC<Props> = ({ onBack }) => {
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
               <BarChart3 size={12} className="text-[#FFD300] shrink-0" />
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Relatório Master</p>
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Relatório Master</p>
             </div>
             <p className="text-white text-sm font-bold truncate mt-0.5">Visão Global — VANTA</p>
           </div>
@@ -195,12 +195,12 @@ export const RelatorioMasterView: React.FC<Props> = ({ onBack }) => {
             >
               <Download size={9} /> Excel
             </button>
-            <button
+            <button aria-label="Atualizar"
               onClick={refresh}
               className="flex items-center gap-1 px-2 py-1 bg-zinc-900 border border-white/10 rounded-lg active:scale-90 transition-all"
             >
-              <RefreshCw size={10} className="text-zinc-500" />
-              <p className="text-zinc-600 text-[8px]">{tempoStr}</p>
+              <RefreshCw size={10} className="text-zinc-400" />
+              <p className="text-zinc-400 text-[8px]">{tempoStr}</p>
             </button>
           </div>
         </div>
@@ -211,29 +211,29 @@ export const RelatorioMasterView: React.FC<Props> = ({ onBack }) => {
         {/* KPIs */}
         <div className="grid grid-cols-2 gap-3">
           <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-4">
-            <p className="text-[7px] text-zinc-600 font-black uppercase tracking-widest">Comunidades</p>
+            <p className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">Comunidades</p>
             <p className="text-white font-black text-xl mt-1">{comunidades.length}</p>
           </div>
           <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-4">
-            <p className="text-[7px] text-zinc-600 font-black uppercase tracking-widest">GMV Total</p>
+            <p className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">GMV Total</p>
             <p className="text-[#FFD300] font-black text-xl mt-1">{fmtBRL(stats.totalGmv)}</p>
           </div>
           <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-4">
-            <p className="text-[7px] text-zinc-600 font-black uppercase tracking-widest">Eventos</p>
+            <p className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">Eventos</p>
             <p className="text-white font-black text-xl mt-1">{stats.totalEventos}</p>
           </div>
           <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-4">
-            <p className="text-[7px] text-zinc-600 font-black uppercase tracking-widest">Ticket Médio</p>
+            <p className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">Ticket Médio</p>
             <p className="text-white font-black text-xl mt-1">{fmtBRL(ticketMedio)}</p>
-            <p className="text-zinc-600 text-[8px] mt-0.5">{stats.totalVendidos} vendidos</p>
+            <p className="text-zinc-400 text-[8px] mt-0.5">{stats.totalVendidos} vendidos</p>
           </div>
           <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-4">
-            <p className="text-[7px] text-zinc-600 font-black uppercase tracking-widest">Convidados Lista</p>
+            <p className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">Convidados Lista</p>
             <p className="text-white font-black text-xl mt-1">{stats.totalConvidados}</p>
-            <p className="text-zinc-600 text-[8px] mt-0.5">{pctCheckin}% check-in</p>
+            <p className="text-zinc-400 text-[8px] mt-0.5">{pctCheckin}% check-in</p>
           </div>
           <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-4">
-            <p className="text-[7px] text-zinc-600 font-black uppercase tracking-widest">Ingressos</p>
+            <p className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">Ingressos</p>
             <p className="text-white font-black text-xl mt-1">{stats.totalVendidos}</p>
           </div>
         </div>
@@ -243,7 +243,7 @@ export const RelatorioMasterView: React.FC<Props> = ({ onBack }) => {
           <div className="bg-zinc-900/40 border border-white/5 rounded-2xl p-5 space-y-3">
             <div className="flex items-center gap-2">
               <Building2 size={13} className="text-[#FFD300]" />
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Ranking de Comunidades</p>
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Ranking de Comunidades</p>
             </div>
             <div className="space-y-2">
               {stats.comunidadesOrdenadas.map((c, i) => {
@@ -255,7 +255,7 @@ export const RelatorioMasterView: React.FC<Props> = ({ onBack }) => {
                       <p className="text-[#FFD300] font-black text-sm w-5 text-center shrink-0">{i + 1}</p>
                       <div className="flex-1 min-w-0">
                         <p className="text-zinc-300 text-xs font-bold truncate">{c.nome}</p>
-                        <p className="text-zinc-600 text-[9px]">
+                        <p className="text-zinc-400 text-[9px]">
                           {c.eventos} eventos · {c.convidados} lista ({convPct}%) · {c.vendidos} ingressos
                         </p>
                       </div>
@@ -276,7 +276,7 @@ export const RelatorioMasterView: React.FC<Props> = ({ onBack }) => {
           <div className="bg-zinc-900/40 border border-white/5 rounded-2xl p-5 space-y-3">
             <div className="flex items-center gap-2">
               <Trophy size={13} className="text-[#FFD300]" />
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Top Promoters Global</p>
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Top Promoters Global</p>
             </div>
             <div className="space-y-2">
               {stats.topPromoters.map(([id, p], i) => {
@@ -286,7 +286,7 @@ export const RelatorioMasterView: React.FC<Props> = ({ onBack }) => {
                     <p className="text-[#FFD300] font-black text-sm w-5 text-center shrink-0">{i + 1}</p>
                     <div className="flex-1 min-w-0">
                       <p className="text-zinc-300 text-xs font-bold truncate">{p.nome}</p>
-                      <p className="text-zinc-600 text-[9px]">
+                      <p className="text-zinc-400 text-[9px]">
                         {p.checkins}/{p.total} check-ins ({convPct}%) · {p.comunidades.size} comunidade
                         {p.comunidades.size > 1 ? 's' : ''}
                       </p>
@@ -304,7 +304,7 @@ export const RelatorioMasterView: React.FC<Props> = ({ onBack }) => {
           <div className="bg-zinc-900/40 border border-white/5 rounded-2xl p-5 space-y-3">
             <div className="flex items-center gap-2">
               <TrendingUp size={13} className="text-[#FFD300]" />
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Comparativo</p>
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Comparativo</p>
             </div>
             <div className="overflow-x-auto no-scrollbar">
               <table className="w-full min-w-0">
@@ -313,7 +313,7 @@ export const RelatorioMasterView: React.FC<Props> = ({ onBack }) => {
                     {['Comunidade', 'Eventos', 'Lista', 'Check-in', 'Ingressos', 'GMV'].map(h => (
                       <th
                         key={h}
-                        className="text-[7px] text-zinc-600 font-black uppercase tracking-widest text-left py-2 px-1"
+                        className="text-[7px] text-zinc-400 font-black uppercase tracking-widest text-left py-2 px-1"
                       >
                         {h}
                       </th>
@@ -326,12 +326,12 @@ export const RelatorioMasterView: React.FC<Props> = ({ onBack }) => {
                     return (
                       <tr key={c.id} className="border-b border-white/5">
                         <td className="text-zinc-300 text-[10px] font-bold py-2 px-1 truncate max-w-0">{c.nome}</td>
-                        <td className="text-zinc-500 text-[10px] py-2 px-1">{c.eventos}</td>
-                        <td className="text-zinc-500 text-[10px] py-2 px-1">{c.convidados}</td>
-                        <td className="text-zinc-500 text-[10px] py-2 px-1">
+                        <td className="text-zinc-400 text-[10px] py-2 px-1">{c.eventos}</td>
+                        <td className="text-zinc-400 text-[10px] py-2 px-1">{c.convidados}</td>
+                        <td className="text-zinc-400 text-[10px] py-2 px-1">
                           {c.checkins} ({convPct}%)
                         </td>
-                        <td className="text-zinc-500 text-[10px] py-2 px-1">{c.vendidos}</td>
+                        <td className="text-zinc-400 text-[10px] py-2 px-1">{c.vendidos}</td>
                         <td className="text-[#FFD300] text-[10px] font-bold py-2 px-1">{fmtBRL(c.gmv)}</td>
                       </tr>
                     );

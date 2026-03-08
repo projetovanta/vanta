@@ -84,7 +84,7 @@ export const PushPermissionBanner: React.FC<Props> = ({
           {iosNonStandalone ? (
             <>
               <h2 className="text-white text-lg font-bold text-center leading-tight">Adicione à tela inicial</h2>
-              <p className="text-zinc-500 text-xs text-center mt-2.5 leading-relaxed">
+              <p className="text-zinc-400 text-xs text-center mt-2.5 leading-relaxed">
                 Para receber notificações, adicione o VANTA à sua tela inicial.
               </p>
               <div className="mt-5 bg-zinc-900/60 border border-white/5 rounded-2xl p-4 space-y-3">
@@ -115,7 +115,7 @@ export const PushPermissionBanner: React.FC<Props> = ({
           ) : (
             <>
               <h2 className="text-white text-lg font-bold text-center leading-tight">Não perca nada</h2>
-              <p className="text-zinc-500 text-xs text-center mt-2.5 leading-relaxed max-w-[240px] mx-auto">
+              <p className="text-zinc-400 text-xs text-center mt-2.5 leading-relaxed max-w-[240px] mx-auto">
                 Ative as notificações para saber em primeira mão sobre eventos, ingressos e novidades.
               </p>
 
@@ -153,7 +153,7 @@ export const PushPermissionBanner: React.FC<Props> = ({
               </button>
               <button
                 onClick={() => setDismissed(true)}
-                className="w-full mt-2 py-3 text-zinc-600 text-[10px] font-bold uppercase tracking-[0.15em] active:text-zinc-400 transition-all"
+                className="w-full mt-2 py-3 text-zinc-400 text-[10px] font-bold uppercase tracking-[0.15em] active:text-zinc-400 transition-all"
               >
                 Agora não
               </button>
@@ -166,7 +166,7 @@ export const PushPermissionBanner: React.FC<Props> = ({
           onClick={() => setDismissed(true)}
           className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/5 flex items-center justify-center active:scale-90 transition-all"
         >
-          <X size={14} className="text-zinc-500" />
+          <X size={14} className="text-zinc-400" />
         </button>
       </div>
     </div>

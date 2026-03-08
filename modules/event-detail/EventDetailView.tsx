@@ -205,11 +205,11 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
               {loteMV?.descricao && <p className="text-zinc-300 text-sm line-clamp-3">{loteMV.descricao}</p>}
               {loteMV && vagasRestantes > 0 && (
                 <div className="flex items-center gap-3 flex-wrap">
-                  <span className="text-zinc-500 text-[10px]">
+                  <span className="text-zinc-400 text-[10px]">
                     {vagasRestantes} vaga{vagasRestantes !== 1 ? 's' : ''}
                   </span>
                   {loteMV.acompanhantes > 0 && (
-                    <span className="flex items-center gap-1 text-zinc-500 text-[10px]">
+                    <span className="flex items-center gap-1 text-zinc-400 text-[10px]">
                       <UserPlus size={9} /> +{loteMV.acompanhantes} acompanhante{loteMV.acompanhantes !== 1 ? 's' : ''}
                     </span>
                   )}
@@ -222,7 +222,7 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
               )}
 
               {!isMembro ? (
-                <p className="text-zinc-500 text-[10px] italic">
+                <p className="text-zinc-400 text-[10px] italic">
                   Você não faz parte do Clube MAIS VANTA. Solicite entrada pelo seu perfil.
                 </p>
               ) : estaBloqueado ? (
@@ -239,8 +239,8 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
                 </div>
               ) : !loteMV || vagasRestantes <= 0 ? (
                 <div className="flex items-center gap-2 bg-zinc-800/50 border border-white/5 rounded-xl p-3">
-                  <Lock size={12} className="text-zinc-500 shrink-0" />
-                  <span className="text-zinc-500 text-[10px]">Este evento não oferece benefício para o seu perfil</span>
+                  <Lock size={12} className="text-zinc-400 shrink-0" />
+                  <span className="text-zinc-400 text-[10px]">Este evento não oferece benefício para o seu perfil</span>
                 </div>
               ) : !passportOk ? (
                 <div className="space-y-2">
@@ -299,12 +299,12 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
                     ))}
                   </div>
                   <span className="text-white text-sm font-bold">{reviewStats.media.toFixed(1)}</span>
-                  <span className="text-zinc-500 text-xs">
+                  <span className="text-zinc-400 text-xs">
                     ({reviewStats.count} {reviewStats.count === 1 ? 'avaliação' : 'avaliações'})
                   </span>
                 </div>
               ) : (
-                <p className="text-zinc-600 text-xs">Nenhuma avaliação ainda.</p>
+                <p className="text-zinc-400 text-xs">Nenhuma avaliação ainda.</p>
               )}
               {hasTicket && (
                 <button
@@ -357,7 +357,7 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
           >
             <button
               onClick={fecharSheet}
-              className="absolute top-5 right-5 p-1.5 text-zinc-600 hover:text-white transition-colors"
+              className="absolute top-5 right-5 p-1.5 text-zinc-400 hover:text-white transition-colors"
             >
               <X size={16} />
             </button>

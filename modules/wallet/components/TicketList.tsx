@@ -64,17 +64,17 @@ const TransferirModal: React.FC<{
 
         <div className="flex items-start justify-between">
           <div>
-            <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest">Transferir Ingresso</p>
+            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">Transferir Ingresso</p>
             <p className="text-white font-bold text-base mt-0.5 truncate">{ticket.tituloEvento}</p>
-            {ticket.variacaoLabel && <p className="text-zinc-500 text-xs mt-0.5">{ticket.variacaoLabel}</p>}
+            {ticket.variacaoLabel && <p className="text-zinc-400 text-xs mt-0.5">{ticket.variacaoLabel}</p>}
           </div>
-          <button onClick={onClose} className="p-1.5 text-zinc-600 active:text-white transition-colors">
+          <button onClick={onClose} className="p-1.5 text-zinc-400 active:text-white transition-colors">
             <X size={14} />
           </button>
         </div>
 
         <div className="space-y-2">
-          <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest">Para quem?</p>
+          <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">Para quem?</p>
           <input
             type="text"
             placeholder="Buscar membro por nome..."
@@ -167,7 +167,7 @@ export const TicketList: React.FC<TicketListProps> = React.memo(
                   />
                   <div className="w-12 h-12 bg-black rounded-xl flex items-center justify-center shrink-0 border border-white/5">
                     {isPast ? (
-                      <Lock size={20} className="text-zinc-600" />
+                      <Lock size={20} className="text-zinc-400" />
                     ) : (
                       <QrCode size={20} className="text-white" />
                     )}
@@ -188,7 +188,7 @@ export const TicketList: React.FC<TicketListProps> = React.memo(
                         ticket.status === 'TRANSFERIDO'
                           ? 'bg-purple-900/30 text-purple-400 border-purple-500/20'
                           : isPast
-                            ? 'bg-zinc-800 text-zinc-500 border-zinc-700'
+                            ? 'bg-zinc-800 text-zinc-400 border-zinc-700'
                             : 'bg-green-900/30 text-green-400 border-green-500/20'
                       }`}
                     >
@@ -273,7 +273,7 @@ export const TicketList: React.FC<TicketListProps> = React.memo(
                     className={`w-12 h-12 bg-black rounded-xl flex items-center justify-center shrink-0 border border-white/5 ${!isPast ? 'cursor-pointer active:scale-90 transition-transform' : ''}`}
                   >
                     {isPast ? (
-                      <Lock size={20} className="text-zinc-600" />
+                      <Lock size={20} className="text-zinc-400" />
                     ) : (
                       <Gift size={20} className="text-[#FFD300]" />
                     )}
@@ -282,7 +282,7 @@ export const TicketList: React.FC<TicketListProps> = React.memo(
                     <h3 className="font-bold text-white text-sm truncate">{ticket.tituloEvento}</h3>
                     <p className="text-zinc-400 text-xs mt-0.5">{ticket.dataEvento}</p>
                     <span
-                      className={`inline-block mt-2 text-[9px] px-2 py-0.5 rounded border uppercase font-bold tracking-wider ${isPast ? 'bg-zinc-800 text-zinc-500 border-zinc-700' : 'bg-[#FFD300]/10 text-[#FFD300] border-[#FFD300]/20'}`}
+                      className={`inline-block mt-2 text-[9px] px-2 py-0.5 rounded border uppercase font-bold tracking-wider ${isPast ? 'bg-zinc-800 text-zinc-400 border-zinc-700' : 'bg-[#FFD300]/10 text-[#FFD300] border-[#FFD300]/20'}`}
                     >
                       {isPast ? 'Encerrado' : 'Cortesia'}
                     </span>

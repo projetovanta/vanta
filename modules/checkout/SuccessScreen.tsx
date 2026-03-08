@@ -65,7 +65,7 @@ export const SuccessScreen: React.FC<Props> = ({ tickets, titulo, data }) => {
         <p className="font-serif italic text-2xl text-white">
           {tickets.length === 1 ? 'Ingresso Confirmado!' : `${tickets.length} Ingressos Confirmados!`}
         </p>
-        <p className="text-zinc-500 text-xs mt-1">
+        <p className="text-zinc-400 text-xs mt-1">
           {titulo} · {data}
         </p>
         <button
@@ -84,7 +84,7 @@ export const SuccessScreen: React.FC<Props> = ({ tickets, titulo, data }) => {
             <div className="min-w-0">
               <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mb-0.5">Ingresso {i + 1}</p>
               <p className="text-white font-mono text-xs font-bold truncate">{t.codigoQR}</p>
-              {t.variacaoLabel && <p className="text-zinc-500 text-[9px] mt-0.5">{t.variacaoLabel}</p>}
+              {t.variacaoLabel && <p className="text-zinc-400 text-[9px] mt-0.5">{t.variacaoLabel}</p>}
             </div>
           </div>
         ))}

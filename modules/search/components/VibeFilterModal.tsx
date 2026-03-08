@@ -111,7 +111,7 @@ export const VibeFilterModal: React.FC<{
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex-1 py-2 rounded-lg text-[9px] font-bold uppercase tracking-wider transition-all ${activeTab === tab.id ? 'bg-[#FFD300]/15 text-[#FFD300] border border-[#FFD300]/20' : 'text-zinc-500'}`}
+                  className={`flex-1 py-2 rounded-lg text-[9px] font-bold uppercase tracking-wider transition-all ${activeTab === tab.id ? 'bg-[#FFD300]/15 text-[#FFD300] border border-[#FFD300]/20' : 'text-zinc-400'}`}
                 >
                   {tab.emoji} {tab.label}
                   {(activeTab === 'FORMATO'
@@ -128,7 +128,7 @@ export const VibeFilterModal: React.FC<{
             <div className="max-h-[35vh] overflow-y-auto no-scrollbar">
               {loading ? (
                 <div className="flex items-center justify-center py-10">
-                  <Loader2 size={20} className="text-zinc-600 animate-spin" />
+                  <Loader2 size={20} className="text-zinc-400 animate-spin" />
                 </div>
               ) : (
                 <div className="flex flex-wrap gap-2">
@@ -148,7 +148,7 @@ export const VibeFilterModal: React.FC<{
           </div>
           <button
             onClick={handleClear}
-            className="w-full py-4 bg-black/60 border-t border-white/5 text-[9px] font-black uppercase tracking-[0.3em] text-zinc-500 hover:text-white transition-colors"
+            className="w-full py-4 bg-black/60 border-t border-white/5 text-[9px] font-black uppercase tracking-[0.3em] text-zinc-400 hover:text-white transition-colors"
           >
             Limpar Filtros
           </button>

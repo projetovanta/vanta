@@ -95,7 +95,7 @@ export const CaixaTab: React.FC<{ comunidadeId: string }> = ({ comunidadeId }) =
         >
           <p className="text-[#FFD300] font-black text-2xl leading-none">{totalIngressos}</p>
           <p className="text-white font-bold text-xs mt-1">Ingressos</p>
-          <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest mt-0.5">Vendidos total</p>
+          <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mt-0.5">Vendidos total</p>
           <p className="text-zinc-700 text-[8px] mt-2">Toque para detalhar →</p>
         </button>
 
@@ -106,7 +106,7 @@ export const CaixaTab: React.FC<{ comunidadeId: string }> = ({ comunidadeId }) =
         >
           <p className="text-[#FFD300] font-black text-2xl leading-none">{totalNaLista}</p>
           <p className="text-white font-bold text-xs mt-1">Lista</p>
-          <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest mt-0.5">Nomes adicionados</p>
+          <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mt-0.5">Nomes adicionados</p>
           <p className="text-zinc-700 text-[8px] mt-2">Toque para detalhar →</p>
         </button>
 
@@ -117,7 +117,7 @@ export const CaixaTab: React.FC<{ comunidadeId: string }> = ({ comunidadeId }) =
         >
           <p className="text-emerald-400 font-black text-2xl leading-none">{totalCheckedIn}</p>
           <p className="text-white font-bold text-xs mt-1">Entraram</p>
-          <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest mt-0.5">
+          <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mt-0.5">
             {freqPct}% de frequência
           </p>
           <p className="text-zinc-700 text-[8px] mt-2">Toque para detalhar →</p>
@@ -130,7 +130,7 @@ export const CaixaTab: React.FC<{ comunidadeId: string }> = ({ comunidadeId }) =
         >
           <p className="text-[#FFD300] font-black text-2xl leading-none">{melhorLote?.vendidos ?? 0}</p>
           <p className="text-white font-bold text-xs mt-1">Melhor Lote</p>
-          <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest mt-0.5 truncate">
+          <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mt-0.5 truncate">
             {melhorLote?.nome || '—'}
           </p>
           <p className="text-zinc-700 text-[8px] mt-2">Toque para detalhar →</p>

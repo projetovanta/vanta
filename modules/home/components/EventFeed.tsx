@@ -148,7 +148,7 @@ const CategoryRow: React.FC<{
         {eventos.length > 3 && (
           <button
             onClick={() => onViewAll(categoria)}
-            className="flex items-center gap-1 text-[9px] text-zinc-500 font-black uppercase tracking-widest active:text-[#FFD300] transition-colors"
+            className="flex items-center gap-1 text-[9px] text-zinc-400 font-black uppercase tracking-widest active:text-[#FFD300] transition-colors"
           >
             Ver todos <ChevronRight size={12} />
           </button>
@@ -174,7 +174,7 @@ const CategoryRow: React.FC<{
           >
             <ChevronRight size={24} className="text-[#FFD300]" />
             <span className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Ver Mais</span>
-            <span className="text-[9px] text-zinc-600">+{eventos.length - MAX_VISIBLE} eventos</span>
+            <span className="text-[9px] text-zinc-400">+{eventos.length - MAX_VISIBLE} eventos</span>
           </button>
         )}
       </div>

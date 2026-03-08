@@ -4,7 +4,7 @@ export const SubTabNotificacoes: React.FC = () => (
   <div className="space-y-4">
     <div className="bg-zinc-900/60 border border-white/5 rounded-2xl p-4 space-y-3">
       <h3 className="text-white font-bold text-sm">Notificações Automáticas</h3>
-      <p className="text-zinc-500 text-xs">Sistema automático envia notificações quando:</p>
+      <p className="text-zinc-400 text-xs">Sistema automático envia notificações quando:</p>
       <ul className="text-zinc-400 text-[10px] space-y-1 ml-3 list-disc">
         <li>Membro confirma presença (check-in)</li>
         <li>Evento começa (lembrete de postar)</li>
@@ -18,7 +18,7 @@ export const SubTabNotificacoes: React.FC = () => (
       <div className="flex items-center justify-between">
         <div className="flex-1">
           <p className="text-white font-bold text-xs">Ativar Notificações Automáticas</p>
-          <p className="text-zinc-500 text-[9px] mt-1">Para esta comunidade</p>
+          <p className="text-zinc-400 text-[9px] mt-1">Para esta comunidade</p>
         </div>
         <button className="px-3 py-1.5 bg-[#FFD300]/10 border border-[#FFD300]/25 rounded-lg text-[#FFD300] text-[8px] font-bold active:scale-95 transition-all">
           ATIVAR
@@ -34,7 +34,7 @@ export const SubTabNotificacoes: React.FC = () => (
       </p>
     </div>
 
-    <div className="text-zinc-600 text-[9px] text-center py-6">
+    <div className="text-zinc-400 text-[9px] text-center py-6">
       Configuração avançada em painel administrativo global
     </div>
   </div>

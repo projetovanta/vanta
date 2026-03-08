@@ -19,7 +19,7 @@ export const SuccessScreen: React.FC<SuccessScreenProps> = ({
 }) => (
   <div className="absolute inset-0 bg-[#0A0A0A] flex flex-col overflow-hidden">
     <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-6 pt-10 pb-6 shrink-0">
-      <button
+      <button aria-label="Voltar"
         onClick={onBack}
         className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
       >
@@ -33,7 +33,7 @@ export const SuccessScreen: React.FC<SuccessScreenProps> = ({
       <h2 style={TYPOGRAPHY.screenTitle} className="text-2xl text-white italic mb-2">
         Cargo Atribuído
       </h2>
-      <p className="text-zinc-500 text-xs leading-relaxed mb-8 max-w-xs text-center">
+      <p className="text-zinc-400 text-xs leading-relaxed mb-8 max-w-xs text-center">
         {selectedMembro?.nome} agora tem acesso ao painel como{' '}
         <span className="text-white font-bold">{labelCargo}</span> em{' '}
         <span className="text-white font-bold">{selectedDestino?.nome}</span>. Uma notificação foi enviada.

@@ -89,7 +89,7 @@ const ModalReenvio: React.FC<{
         <div className="flex-1 overflow-y-auto no-scrollbar px-6 pt-6 pb-2 space-y-5">
           <div>
             <p className="text-white font-bold text-base mb-1">Reenviar Proposta</p>
-            <p className="text-zinc-500 text-sm">
+            <p className="text-zinc-400 text-sm">
               Ajuste e reenvie para o sócio. Rodada {(evento.rodadaNegociacao ?? 1) + 1}/3.
             </p>
           </div>
@@ -107,7 +107,7 @@ const ModalReenvio: React.FC<{
 
           {/* Split */}
           <div>
-            <p className="text-[8px] text-zinc-500 font-black uppercase tracking-widest mb-2">Split da Receita</p>
+            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">Split da Receita</p>
             <input
               type="range"
               min={10}
@@ -124,7 +124,7 @@ const ModalReenvio: React.FC<{
 
           {/* Permissões */}
           <div>
-            <p className="text-[8px] text-zinc-500 font-black uppercase tracking-widest mb-2">Permissões Solicitadas</p>
+            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">Permissões Solicitadas</p>
             <div className="space-y-1.5">
               {PERMISSOES_DISPONIVEIS.map(p => (
                 <button
@@ -149,7 +149,7 @@ const ModalReenvio: React.FC<{
 
           {/* Mensagem */}
           <div>
-            <p className="text-[8px] text-zinc-500 font-black uppercase tracking-widest mb-2">
+            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">
               Mensagem ao Sócio (opcional)
             </p>
             <textarea
@@ -248,7 +248,7 @@ const EventoCard: React.FC<{
         <p className="text-white font-bold text-sm leading-tight truncate">{ev.nome}</p>
         {ev.local && (
           <div className="flex items-center gap-1 mt-0.5">
-            <MapPin size={8} className="text-zinc-500" />
+            <MapPin size={8} className="text-zinc-400" />
             <p className="text-zinc-400 text-[10px] truncate">{ev.local}</p>
           </div>
         )}
@@ -501,7 +501,7 @@ export const GerenteDashboardView: React.FC<{
             }}
           />
           <div className="absolute bottom-0 left-0 right-0 px-6 pb-4">
-            <p className="text-[8px] text-zinc-500 font-black uppercase tracking-[0.2em] mb-1">Painel da Comunidade</p>
+            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-[0.2em] mb-1">Painel da Comunidade</p>
             <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic leading-none text-white truncate">
               {comunidadeNome}
             </h1>
@@ -515,7 +515,7 @@ export const GerenteDashboardView: React.FC<{
             <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-3 flex flex-col gap-1">
               <div className="flex items-center gap-1.5">
                 <DollarSign size={11} className="text-[#FFD300] shrink-0" />
-                <p className="text-[8px] text-zinc-500 font-black uppercase tracking-wider">Receita Total</p>
+                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider">Receita Total</p>
               </div>
               <p className="text-lg font-bold text-[#FFD300] leading-none truncate">
                 {kpisAgg.loading ? '...' : fmtBRL(kpisFiltrados.receita)}
@@ -524,7 +524,7 @@ export const GerenteDashboardView: React.FC<{
             <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-3 flex flex-col gap-1">
               <div className="flex items-center gap-1.5">
                 <UserCheck size={11} className="text-emerald-400 shrink-0" />
-                <p className="text-[8px] text-zinc-500 font-black uppercase tracking-wider">Check-ins</p>
+                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider">Check-ins</p>
               </div>
               <p className="text-lg font-bold text-white leading-none">
                 {kpisAgg.loading ? '...' : String(kpisFiltrados.checkins)}
@@ -533,23 +533,23 @@ export const GerenteDashboardView: React.FC<{
             <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-3 flex flex-col gap-1">
               <div className="flex items-center gap-1.5">
                 <Ticket size={11} className="text-purple-400 shrink-0" />
-                <p className="text-[8px] text-zinc-500 font-black uppercase tracking-wider">Próx. Evento</p>
+                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider">Próx. Evento</p>
               </div>
               <p className="text-[11px] font-bold text-white leading-tight truncate">{proxEventoLabel}</p>
             </div>
             <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-3 flex flex-col gap-1">
               <div className="flex items-center gap-1.5">
                 <Users size={11} className="text-blue-400 shrink-0" />
-                <p className="text-[8px] text-zinc-500 font-black uppercase tracking-wider">Equipe</p>
+                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider">Equipe</p>
               </div>
               <p className="text-lg font-bold text-white leading-none">{equipeTotalCount}</p>
-              <p className="text-[8px] text-zinc-600">{aoVivo.length + futuros.length} eventos ativos</p>
+              <p className="text-[8px] text-zinc-400">{aoVivo.length + futuros.length} eventos ativos</p>
             </div>
             {reviewsCom.count > 0 && (
               <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-3 flex flex-col gap-1 col-span-2 md:col-span-1">
                 <div className="flex items-center gap-1.5">
                   <Star size={11} className="text-[#FFD300] shrink-0" />
-                  <p className="text-[8px] text-zinc-500 font-black uppercase tracking-wider">Reviews</p>
+                  <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider">Reviews</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <p className="text-lg font-bold text-[#FFD300] leading-none">{reviewsCom.media.toFixed(1)}</p>
@@ -565,7 +565,7 @@ export const GerenteDashboardView: React.FC<{
                     ))}
                   </div>
                 </div>
-                <p className="text-[8px] text-zinc-600">{reviewsCom.count} avaliações</p>
+                <p className="text-[8px] text-zinc-400">{reviewsCom.count} avaliações</p>
               </div>
             )}
           </div>
@@ -574,7 +574,7 @@ export const GerenteDashboardView: React.FC<{
           {!kpisAgg.loading && kpisAgg.receitaPorDia.length > 1 && (
             <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-4 mb-4">
               <div className="flex items-center justify-between mb-2">
-                <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Receita Últimos 30 Dias</p>
+                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Receita Últimos 30 Dias</p>
                 <div className="flex items-center gap-1">
                   <TrendingUp size={10} className="text-[#FFD300]" />
                   <p className="text-[10px] text-[#FFD300] font-bold">{fmtBRL(kpisAgg.receitaTotal)}</p>
@@ -617,7 +617,7 @@ export const GerenteDashboardView: React.FC<{
                     ? kpisAgg.porEvento.find(e => e.eventoId === filtroEventoId)?.eventoNome
                     : 'Todos os eventos'}
                 </span>
-                <ChevronDown size={14} className="text-zinc-500" />
+                <ChevronDown size={14} className="text-zinc-400" />
               </button>
               {showFiltroDropdown && (
                 <div className="absolute left-0 right-0 top-full z-20 bg-zinc-900 border border-white/10 rounded-xl overflow-hidden shadow-xl mt-1">
@@ -666,7 +666,7 @@ export const GerenteDashboardView: React.FC<{
                 >
                   {tendenciaGerente === 'acima' ? 'Acima' : 'Abaixo'} da média
                 </p>
-                <p className="text-[10px] text-zinc-500">
+                <p className="text-[10px] text-zinc-400">
                   ({fmtBRL(eventoFiltrado?.receita ?? 0)} vs média {fmtBRL(mediaReceitaEvento)})
                 </p>
               </div>
@@ -676,7 +676,7 @@ export const GerenteDashboardView: React.FC<{
           {/* Comparativo por evento */}
           {!kpisAgg.loading && kpisAgg.porEvento.length > 1 && !filtroEventoId && (
             <div className="mb-4">
-              <p className="text-[8px] text-zinc-500 font-black uppercase tracking-wider mb-2">
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider mb-2">
                 Comparativo por Evento
               </p>
               <div className="space-y-2">
@@ -694,7 +694,7 @@ export const GerenteDashboardView: React.FC<{
                           style={{ width: `${Math.min(pct, 200)}%` }}
                         />
                       </div>
-                      <p className="text-[9px] text-zinc-600 mt-1">{ev.checkins} check-ins</p>
+                      <p className="text-[9px] text-zinc-400 mt-1">{ev.checkins} check-ins</p>
                     </div>
                   );
                 })}
@@ -762,7 +762,7 @@ export const GerenteDashboardView: React.FC<{
                           <p className="text-red-400/80 text-[10px] leading-relaxed">Motivo: {ev.motivoRejeicao}</p>
                         )}
                         <div className="flex items-center gap-2">
-                          <p className="text-zinc-600 text-[9px] flex-1">Rodada {ev.rodadaNegociacao ?? 1}/3</p>
+                          <p className="text-zinc-400 text-[9px] flex-1">Rodada {ev.rodadaNegociacao ?? 1}/3</p>
                           {(ev.rodadaNegociacao ?? 1) < 3 ? (
                             <button
                               onClick={() => setReenvioModal(ev)}
@@ -818,16 +818,16 @@ export const GerenteDashboardView: React.FC<{
                             Proposta de Parceria
                           </p>
                           {ev.propostaRodada && (
-                            <span className="text-[7px] text-zinc-600 font-bold">Rodada {ev.propostaRodada}/3</span>
+                            <span className="text-[7px] text-zinc-400 font-bold">Rodada {ev.propostaRodada}/3</span>
                           )}
                         </div>
                         <div className="grid grid-cols-2 gap-2">
                           <div className="bg-zinc-950/50 rounded-lg px-2.5 py-1.5">
-                            <p className="text-[7px] text-zinc-600 font-black uppercase tracking-widest">Comissão</p>
+                            <p className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">Comissão</p>
                             <p className="text-[#FFD300] text-sm font-bold">{ev.comissaoVanta ?? 0}%</p>
                           </div>
                           <div className="bg-zinc-950/50 rounded-lg px-2.5 py-1.5">
-                            <p className="text-[7px] text-zinc-600 font-black uppercase tracking-widest">
+                            <p className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">
                               Cód. Afiliado
                             </p>
                             <p className="text-white text-xs font-bold truncate">{ev.codigoAfiliado ?? '—'}</p>
@@ -902,7 +902,7 @@ export const GerenteDashboardView: React.FC<{
                 className={`flex-1 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-wider transition-all border ${
                   aba === tab
                     ? 'bg-[#FFD300]/10 border-[#FFD300]/30 text-[#FFD300]'
-                    : 'bg-zinc-900/40 border-white/5 text-zinc-600 active:border-white/20'
+                    : 'bg-zinc-900/40 border-white/5 text-zinc-400 active:border-white/20'
                 }`}
               >
                 {tab === 'FUTUROS'
@@ -918,7 +918,7 @@ export const GerenteDashboardView: React.FC<{
           {listaAtual.length === 0 ? (
             <div className="flex flex-col items-center justify-center gap-3 py-16">
               <Calendar size={28} className="text-zinc-800" />
-              <p className="text-zinc-600 text-xs font-semibold">
+              <p className="text-zinc-400 text-xs font-semibold">
                 {aba === 'FUTUROS'
                   ? 'Nenhum evento futuro'
                   : aba === 'CANCELADOS'

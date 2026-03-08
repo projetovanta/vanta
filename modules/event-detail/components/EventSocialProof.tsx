@@ -209,7 +209,7 @@ export const EventSocialProof: React.FC<EventSocialProofProps> = ({ eventoId, to
             </p>
           )}
         </div>
-        <ChevronRight size={14} className="ml-auto text-zinc-600 group-active:text-[#FFD300] transition-colors" />
+        <ChevronRight size={14} className="ml-auto text-zinc-400 group-active:text-[#FFD300] transition-colors" />
       </button>
 
       {isListOpen && (
@@ -220,7 +220,7 @@ export const EventSocialProof: React.FC<EventSocialProofProps> = ({ eventoId, to
                 <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white">
                   Confirmados
                 </h2>
-                <p className="text-zinc-500 text-[10px] font-bold uppercase tracking-widest mt-1">
+                <p className="text-zinc-400 text-[10px] font-bold uppercase tracking-widest mt-1">
                   {totalConfirmados} pessoas confirmaram presença nesse evento.
                 </p>
               </div>
@@ -232,13 +232,13 @@ export const EventSocialProof: React.FC<EventSocialProofProps> = ({ eventoId, to
               </button>
             </div>
             <div className="relative">
-              <Search size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" />
+              <Search size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
               <input
                 type="text"
                 placeholder="Buscar por nome ou email..."
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
-                className="w-full bg-zinc-900/50 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-xs text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#FFD300]/50 transition-colors"
+                className="w-full bg-zinc-900/50 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-xs text-white placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/50 transition-colors"
               />
             </div>
           </div>
@@ -286,7 +286,7 @@ export const EventSocialProof: React.FC<EventSocialProofProps> = ({ eventoId, to
                     {others.length > 0 && (
                       <>
                         {friends.length > 0 && (
-                          <p className="text-[9px] font-black uppercase tracking-widest text-zinc-600 px-1 pt-4 pb-1">
+                          <p className="text-[9px] font-black uppercase tracking-widest text-zinc-400 px-1 pt-4 pb-1">
                             Outros confirmados ({others.length})
                           </p>
                         )}
@@ -307,7 +307,7 @@ export const EventSocialProof: React.FC<EventSocialProofProps> = ({ eventoId, to
                             </div>
                             <div className="flex-1 text-left">
                               <h4 className="text-sm font-bold text-zinc-200 truncate">{member.nome}</h4>
-                              <p className="text-[10px] text-zinc-500 truncate">
+                              <p className="text-[10px] text-zinc-400 truncate">
                                 {member.biografia || 'Membro da comunidade'}
                               </p>
                             </div>
@@ -321,12 +321,12 @@ export const EventSocialProof: React.FC<EventSocialProofProps> = ({ eventoId, to
               })()
             ) : (
               <div className="py-12 text-center opacity-50">
-                <p className="text-xs text-zinc-500">Nenhum membro encontrado.</p>
+                <p className="text-xs text-zinc-400">Nenhum membro encontrado.</p>
               </div>
             )}
             {!searchQuery && filteredMembers.length > 0 && (
               <div className="py-8 text-center">
-                <p className="text-[10px] text-zinc-600 italic">
+                <p className="text-[10px] text-zinc-400 italic">
                   Exibindo {filteredMembers.length} visíveis de {totalConfirmados}
                 </p>
               </div>

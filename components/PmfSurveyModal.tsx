@@ -35,7 +35,7 @@ export const PmfSurveyModal: React.FC<{ userId: string; onClose: () => void }> =
         <button
           onClick={onClose}
           aria-label="Fechar"
-          className="absolute top-4 right-4 text-zinc-500 hover:text-white transition-colors"
+          className="absolute top-4 right-4 text-zinc-400 hover:text-white transition-colors"
         >
           <X size={18} />
         </button>

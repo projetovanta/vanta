@@ -32,12 +32,12 @@ export const VantaDropdown: React.FC<{
         style={selected?.color ? { color: selected.color, borderColor: selected.color + '40' } : undefined}
       >
         <span
-          className={`truncate ${selected ? 'text-white' : 'text-zinc-500'}`}
+          className={`truncate ${selected ? 'text-white' : 'text-zinc-400'}`}
           style={selected?.color ? { color: selected.color } : undefined}
         >
           {selected?.label || placeholder || 'Selecione'}
         </span>
-        <ChevronDown size={12} className={`text-zinc-500 shrink-0 transition-transform ${open ? 'rotate-180' : ''}`} />
+        <ChevronDown size={12} className={`text-zinc-400 shrink-0 transition-transform ${open ? 'rotate-180' : ''}`} />
       </button>
       {open && (
         <div className="absolute z-50 top-full mt-1 left-0 right-0 bg-zinc-900 border border-white/10 rounded-xl overflow-hidden shadow-2xl max-h-48 overflow-y-auto no-scrollbar">

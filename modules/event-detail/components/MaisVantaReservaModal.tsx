@@ -48,7 +48,7 @@ export const MaisVantaReservaModal: React.FC<Props> = ({
       >
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 p-1.5 text-zinc-600 active:text-white transition-colors"
+          className="absolute top-5 right-5 p-1.5 text-zinc-400 active:text-white transition-colors"
         >
           <X size={16} />
         </button>
@@ -65,7 +65,7 @@ export const MaisVantaReservaModal: React.FC<Props> = ({
           <p className="text-white text-sm font-bold">{eventoNome}</p>
           {lote.descricao && <p className="text-zinc-400 text-xs">{lote.descricao}</p>}
           <div className="flex items-center gap-3 flex-wrap">
-            <span className="text-zinc-500 text-[10px]">
+            <span className="text-zinc-400 text-[10px]">
               {vagasRestantes} vaga{vagasRestantes !== 1 ? 's' : ''} restante{vagasRestantes !== 1 ? 's' : ''}
             </span>
             {lote.tipoAcesso && lote.tipoAcesso !== 'Pista' && (
@@ -74,7 +74,7 @@ export const MaisVantaReservaModal: React.FC<Props> = ({
               </span>
             )}
             {maxAcomp > 0 && (
-              <span className="flex items-center gap-1 text-zinc-500 text-[10px]">
+              <span className="flex items-center gap-1 text-zinc-400 text-[10px]">
                 <UserPlus size={9} /> +{maxAcomp} acompanhante{maxAcomp !== 1 ? 's' : ''}
               </span>
             )}
@@ -90,7 +90,7 @@ export const MaisVantaReservaModal: React.FC<Props> = ({
                 comAcompanhante ? 'bg-[#FFD300]/10 border-[#FFD300]/30' : 'bg-zinc-900/50 border-white/5'
               }`}
             >
-              <UserPlus size={14} className={comAcompanhante ? 'text-[#FFD300]' : 'text-zinc-500'} />
+              <UserPlus size={14} className={comAcompanhante ? 'text-[#FFD300]' : 'text-zinc-400'} />
               <span className={`text-xs font-bold ${comAcompanhante ? 'text-white' : 'text-zinc-400'}`}>
                 Levar acompanhante{maxAcomp > 1 ? 's' : ''}
               </span>
@@ -104,7 +104,7 @@ export const MaisVantaReservaModal: React.FC<Props> = ({
             </button>
             {comAcompanhante && maxAcomp > 1 && (
               <div className="flex items-center gap-3 px-3">
-                <span className="text-zinc-500 text-[10px]">Quantidade:</span>
+                <span className="text-zinc-400 text-[10px]">Quantidade:</span>
                 <div className="flex items-center gap-1">
                   {Array.from({ length: maxAcomp }, (_, i) => i + 1).map(n => (
                     <button

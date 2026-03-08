@@ -16,8 +16,8 @@ const StatCard: React.FC<{
 }> = ({ label, value, sub, color = 'text-zinc-300', bgClass = 'bg-zinc-900/40 border-white/5' }) => (
   <div className={`p-3.5 border rounded-xl text-center ${bgClass}`}>
     <p className={`${color} font-black text-xl leading-none`}>{value}</p>
-    <p className="text-zinc-500 text-[9px] font-bold uppercase tracking-wider mt-1.5">{label}</p>
-    {sub && <p className="text-zinc-600 text-[8px] mt-0.5">{sub}</p>}
+    <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider mt-1.5">{label}</p>
+    {sub && <p className="text-zinc-400 text-[8px] mt-0.5">{sub}</p>}
   </div>
 );
 
@@ -29,7 +29,7 @@ const Section: React.FC<{ icon: React.ReactNode; title: string; children: React.
   <div>
     <div className="flex items-center gap-1.5 mb-2.5">
       {icon}
-      <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">{title}</p>
+      <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">{title}</p>
     </div>
     {children}
   </div>
@@ -141,7 +141,7 @@ export const ResumoEventoView: React.FC<{
         ? 'bg-zinc-600 text-white'
         : i === 2
           ? 'bg-amber-700 text-white'
-          : 'bg-zinc-800 text-zinc-500';
+          : 'bg-zinc-800 text-zinc-400';
 
   // ── Público total estimado ──
   const publicoTotal = totalVendidos + totalCheckedIn + cortesiasEnviadas;
@@ -151,18 +151,18 @@ export const ResumoEventoView: React.FC<{
       {/* Header */}
       <div className="shrink-0 px-5 pt-[max(0.75rem,env(safe-area-inset-top))] pb-3 border-b border-white/5">
         <div className="flex items-center gap-3">
-          <button
+          <button aria-label="Voltar"
             onClick={onClose}
             className="w-9 h-9 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 shrink-0 active:scale-90 transition-all"
           >
             <ArrowLeft size={16} className="text-zinc-400" />
           </button>
           <div className="flex-1 min-w-0">
-            <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest mb-0.5">Resumo do Evento</p>
+            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mb-0.5">Resumo do Evento</p>
             <h2 style={TYPOGRAPHY.screenTitle} className="text-base italic truncate">
               {evento.nome}
             </h2>
-            <p className="text-zinc-600 text-[10px] font-bold mt-0.5">{dataLabel}</p>
+            <p className="text-zinc-400 text-[10px] font-bold mt-0.5">{dataLabel}</p>
           </div>
         </div>
       </div>
@@ -173,62 +173,62 @@ export const ResumoEventoView: React.FC<{
         style={{ paddingBottom: 'max(1.5rem, env(safe-area-inset-bottom, 1.5rem))' }}
       >
         {/* ══ FATURAMENTO TOTAL ══ */}
-        <Section icon={<DollarSign size={10} className="text-zinc-600" />} title="Faturamento">
+        <Section icon={<DollarSign size={10} className="text-zinc-400" />} title="Faturamento">
           <div className="p-4 bg-gradient-to-br from-[#FFD300]/10 to-[#FFD300]/5 border border-[#FFD300]/20 rounded-2xl mb-3">
-            <p className="text-zinc-500 text-[9px] font-bold uppercase tracking-wider mb-1">Receita Bruta Total</p>
+            <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider mb-1">Receita Bruta Total</p>
             <p className="text-[#FFD300] font-black text-2xl leading-none">{fmt(faturamentoBrutoTotal)}</p>
-            {publicoTotal > 0 && <p className="text-zinc-600 text-[10px] mt-1.5">~{publicoTotal} pessoas no evento</p>}
+            {publicoTotal > 0 && <p className="text-zinc-400 text-[10px] mt-1.5">~{publicoTotal} pessoas no evento</p>}
           </div>
           <div className="grid grid-cols-2 gap-2.5">
             <div className="p-3 bg-zinc-900/40 border border-white/5 rounded-xl">
-              <p className="text-zinc-500 text-[8px] font-bold uppercase tracking-wider">Ingressos</p>
+              <p className="text-zinc-400 text-[8px] font-bold uppercase tracking-wider">Ingressos</p>
               <p className="text-white font-black text-base mt-1">{fmt(faturamentoBrutoIngressos)}</p>
-              <p className="text-zinc-600 text-[9px] mt-0.5">{totalVendidos} vendidos</p>
+              <p className="text-zinc-400 text-[9px] mt-0.5">{totalVendidos} vendidos</p>
             </div>
             <div className="p-3 bg-zinc-900/40 border border-white/5 rounded-xl">
-              <p className="text-zinc-500 text-[8px] font-bold uppercase tracking-wider">Lista (porta)</p>
+              <p className="text-zinc-400 text-[8px] font-bold uppercase tracking-wider">Lista (porta)</p>
               <p className="text-white font-black text-base mt-1">{fmt(faturamentoLista)}</p>
-              <p className="text-zinc-600 text-[9px] mt-0.5">
+              <p className="text-zinc-400 text-[9px] mt-0.5">
                 {listaPago} pagaram · {listaGratis} grátis
               </p>
             </div>
           </div>
           {taxaVantaTotal > 0 && (
             <div className="mt-2.5 p-3.5 bg-zinc-900/40 border border-white/5 rounded-xl space-y-2">
-              <p className="text-zinc-500 text-[8px] font-bold uppercase tracking-widest">Taxas VANTA</p>
+              <p className="text-zinc-400 text-[8px] font-bold uppercase tracking-widest">Taxas VANTA</p>
               {taxaServicoApp > 0 && (
                 <div className="flex justify-between text-[10px]">
-                  <span className="text-zinc-500">Serviço app ({(fees.feePercent * 100).toFixed(0)}%)</span>
+                  <span className="text-zinc-400">Serviço app ({(fees.feePercent * 100).toFixed(0)}%)</span>
                   <span className="text-red-400 font-bold">-{fmt(taxaServicoApp)}</span>
                 </div>
               )}
               {taxaProcessamento > 0 && (
                 <div className="flex justify-between text-[10px]">
-                  <span className="text-zinc-500">Processamento ({(fees.taxaProcessamento * 100).toFixed(1)}%)</span>
+                  <span className="text-zinc-400">Processamento ({(fees.taxaProcessamento * 100).toFixed(1)}%)</span>
                   <span className="text-red-400 font-bold">-{fmt(taxaProcessamento)}</span>
                 </div>
               )}
               {taxaPorta > 0 && (
                 <div className="flex justify-between text-[10px]">
-                  <span className="text-zinc-500">Porta ({(fees.taxaPorta * 100).toFixed(0)}%)</span>
+                  <span className="text-zinc-400">Porta ({(fees.taxaPorta * 100).toFixed(0)}%)</span>
                   <span className="text-red-400 font-bold">-{fmt(taxaPorta)}</span>
                 </div>
               )}
               {taxaFixa > 0 && (
                 <div className="flex justify-between text-[10px]">
-                  <span className="text-zinc-500">Fixo evento</span>
+                  <span className="text-zinc-400">Fixo evento</span>
                   <span className="text-red-400 font-bold">-{fmt(taxaFixa)}</span>
                 </div>
               )}
               {taxaListaExcedente > 0 && (
                 <div className="flex justify-between text-[10px]">
-                  <span className="text-zinc-500">Lista excedente ({nomesExcedentes} nomes)</span>
+                  <span className="text-zinc-400">Lista excedente ({nomesExcedentes} nomes)</span>
                   <span className="text-red-400 font-bold">-{fmt(taxaListaExcedente)}</span>
                 </div>
               )}
               {taxaCortesiaExcedente > 0 && (
                 <div className="flex justify-between text-[10px]">
-                  <span className="text-zinc-500">Cortesias excedentes ({cortesiasExcedentes})</span>
+                  <span className="text-zinc-400">Cortesias excedentes ({cortesiasExcedentes})</span>
                   <span className="text-red-400 font-bold">-{fmt(taxaCortesiaExcedente)}</span>
                 </div>
               )}
@@ -244,8 +244,8 @@ export const ResumoEventoView: React.FC<{
           )}
           {ticketMedioIngresso > 0 && (
             <div className="mt-2 flex items-center gap-1.5 px-3 py-2 bg-zinc-900/20 rounded-lg">
-              <TrendingUp size={10} className="text-zinc-600" />
-              <p className="text-zinc-500 text-[9px]">
+              <TrendingUp size={10} className="text-zinc-400" />
+              <p className="text-zinc-400 text-[9px]">
                 Ticket médio ingresso: <span className="text-white font-bold">{fmt(ticketMedioIngresso)}</span>
               </p>
             </div>
@@ -253,12 +253,12 @@ export const ResumoEventoView: React.FC<{
         </Section>
 
         {/* ══ PUBLICO — DRILL-DOWN ══ */}
-        <Section icon={<PieIcon size={10} className="text-zinc-600" />} title="Publico — De onde veio?">
+        <Section icon={<PieIcon size={10} className="text-zinc-400" />} title="Publico — De onde veio?">
           <PublicoDrilldown evento={evento} lista={lista} />
         </Section>
 
         {/* ══ INGRESSOS ══ */}
-        <Section icon={<Ticket size={10} className="text-zinc-600" />} title="Ingressos">
+        <Section icon={<Ticket size={10} className="text-zinc-400" />} title="Ingressos">
           <div className="grid grid-cols-3 gap-2.5">
             <StatCard
               label="Total"
@@ -293,7 +293,7 @@ export const ResumoEventoView: React.FC<{
                   style={{ width: `${Math.min(100, (totalVendidos / totalCapacidade) * 100)}%` }}
                 />
               </div>
-              <p className="text-zinc-600 text-[9px] mt-1">
+              <p className="text-zinc-400 text-[9px] mt-1">
                 {totalVendidos} / {totalCapacidade} ingressos
               </p>
             </div>
@@ -307,7 +307,7 @@ export const ResumoEventoView: React.FC<{
 
         {/* ══ LISTA DE CONVIDADOS ══ */}
         {totalLista > 0 && (
-          <Section icon={<ListChecks size={10} className="text-zinc-600" />} title="Lista de Convidados">
+          <Section icon={<ListChecks size={10} className="text-zinc-400" />} title="Lista de Convidados">
             <div className="grid grid-cols-3 gap-2.5">
               <StatCard label="Na lista" value={totalLista} />
               <StatCard
@@ -342,7 +342,7 @@ export const ResumoEventoView: React.FC<{
 
         {/* ══ RANKING PROMOTERS ══ */}
         {topPromoters.length > 0 && (
-          <Section icon={<Users size={10} className="text-zinc-600" />} title="Ranking de Promoters">
+          <Section icon={<Users size={10} className="text-zinc-400" />} title="Ranking de Promoters">
             <div className="space-y-2">
               {topPromoters.map((p, i) => {
                 const convPct = p.total > 0 ? Math.round((p.checkins / p.total) * 100) : 0;
@@ -358,7 +358,7 @@ export const ResumoEventoView: React.FC<{
                     </span>
                     <div className="flex-1 min-w-0">
                       <p className="text-white text-sm font-bold truncate">{p.nome}</p>
-                      <p className="text-zinc-600 text-[9px]">
+                      <p className="text-zinc-400 text-[9px]">
                         {p.checkins} entraram ({convPct}% conversão)
                       </p>
                     </div>
@@ -371,7 +371,7 @@ export const ResumoEventoView: React.FC<{
         )}
 
         {/* ══ RANKING LOTES ══ */}
-        <Section icon={<Ticket size={10} className="text-zinc-600" />} title="Ranking de Lotes">
+        <Section icon={<Ticket size={10} className="text-zinc-400" />} title="Ranking de Lotes">
           <div className="space-y-2">
             {lotesOrdenados.map((lote, i) => {
               const faturamentoLote = lote.variacoes.reduce((a, v) => a + v.vendidos * v.valor, 0);
@@ -387,10 +387,10 @@ export const ResumoEventoView: React.FC<{
                   </span>
                   <div className="flex-1 min-w-0">
                     <p className="text-white text-sm font-bold truncate">{lote.nome}</p>
-                    <p className="text-zinc-600 text-[9px]">{fmt(faturamentoLote)}</p>
+                    <p className="text-zinc-400 text-[9px]">{fmt(faturamentoLote)}</p>
                   </div>
                   <p className="text-[#FFD300] font-black text-sm shrink-0">
-                    {lote.vendidos} <span className="text-zinc-600 text-[9px] font-normal">vendidos</span>
+                    {lote.vendidos} <span className="text-zinc-400 text-[9px] font-normal">vendidos</span>
                   </p>
                 </div>
               );

@@ -127,7 +127,7 @@ export const EventosPrivadosTab: React.FC<Props> = ({ comunidadeId }) => {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-16">
-        <Loader2 size={20} className="text-zinc-600 animate-spin" />
+        <Loader2 size={20} className="text-zinc-400 animate-spin" />
       </div>
     );
   }
@@ -138,7 +138,7 @@ export const EventosPrivadosTab: React.FC<Props> = ({ comunidadeId }) => {
         <div className="w-14 h-14 rounded-full bg-zinc-900 flex items-center justify-center border border-white/5">
           <Calendar size={24} className="text-zinc-700" />
         </div>
-        <p className="text-zinc-500 text-sm">Nenhuma solicitação de evento privado</p>
+        <p className="text-zinc-400 text-sm">Nenhuma solicitação de evento privado</p>
       </div>
     );
   }
@@ -168,7 +168,7 @@ export const EventosPrivadosTab: React.FC<Props> = ({ comunidadeId }) => {
           )}
           <div className="flex-1 min-w-0">
             <p className="text-white font-bold text-sm truncate">{sol.nome_completo}</p>
-            <p className="text-zinc-500 text-[10px] truncate">
+            <p className="text-zinc-400 text-[10px] truncate">
               {sol.empresa} · {sol.data_evento || sol.data_estimativa || 'Data a definir'}
             </p>
           </div>
@@ -179,9 +179,9 @@ export const EventosPrivadosTab: React.FC<Props> = ({ comunidadeId }) => {
             {cfg.label}
           </span>
           {isExpanded ? (
-            <ChevronUp size={16} className="text-zinc-600 shrink-0" />
+            <ChevronUp size={16} className="text-zinc-400 shrink-0" />
           ) : (
-            <ChevronDown size={16} className="text-zinc-600 shrink-0" />
+            <ChevronDown size={16} className="text-zinc-400 shrink-0" />
           )}
         </button>
 
@@ -235,14 +235,14 @@ export const EventosPrivadosTab: React.FC<Props> = ({ comunidadeId }) => {
               <p className="text-zinc-300 text-xs leading-relaxed">{sol.descricao}</p>
             </div>
 
-            <p className="text-[9px] text-zinc-600">Enviada em {formatDate(sol.created_at)}</p>
+            <p className="text-[9px] text-zinc-400">Enviada em {formatDate(sol.created_at)}</p>
 
             {/* Ações */}
             {canAct && (
               <div className="space-y-3 pt-2 border-t border-white/5">
                 {/* Mensagem opcional */}
                 <div>
-                  <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider mb-1">
+                  <p className="text-[9px] text-zinc-400 font-bold uppercase tracking-wider mb-1">
                     Mensagem (opcional)
                   </p>
                   <input
@@ -250,7 +250,7 @@ export const EventosPrivadosTab: React.FC<Props> = ({ comunidadeId }) => {
                     value={mensagem}
                     onChange={e => setMensagem(e.target.value)}
                     placeholder="Ex: Vamos alinhar detalhes por WhatsApp..."
-                    className="w-full bg-zinc-900/50 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#FFD300]/50"
+                    className="w-full bg-zinc-900/50 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/50"
                   />
                 </div>
 
@@ -282,7 +282,7 @@ export const EventosPrivadosTab: React.FC<Props> = ({ comunidadeId }) => {
                     value={motivoRecusa}
                     onChange={e => setMotivoRecusa(e.target.value)}
                     placeholder="Motivo da recusa (obrigatório para recusar)"
-                    className="w-full bg-zinc-900/50 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white placeholder:text-zinc-600 focus:outline-none focus:border-red-500/50"
+                    className="w-full bg-zinc-900/50 border border-white/10 rounded-xl py-2.5 px-3 text-xs text-white placeholder:text-zinc-400 focus:outline-none focus:border-red-500/50"
                   />
                   <button
                     onClick={() => handleRecusar(sol.id)}
@@ -299,7 +299,7 @@ export const EventosPrivadosTab: React.FC<Props> = ({ comunidadeId }) => {
             {/* Mensagem do gerente (se já respondeu) */}
             {sol.mensagem_gerente && !canAct && (
               <div className="flex items-start gap-2 bg-zinc-800/50 border border-white/5 rounded-xl p-3">
-                <MessageSquare size={12} className="text-zinc-500 shrink-0 mt-0.5" />
+                <MessageSquare size={12} className="text-zinc-400 shrink-0 mt-0.5" />
                 <p className="text-zinc-300 text-xs">{sol.mensagem_gerente}</p>
               </div>
             )}
@@ -309,12 +309,12 @@ export const EventosPrivadosTab: React.FC<Props> = ({ comunidadeId }) => {
               <div className="space-y-2 pt-2 border-t border-white/5">
                 {convertId === sol.id ? (
                   <>
-                    <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider">
+                    <p className="text-[9px] text-zinc-400 font-bold uppercase tracking-wider">
                       Selecione o evento criado para vincular
                     </p>
                     <div className="space-y-2">
                       {eventosComunidade.length === 0 ? (
-                        <p className="text-zinc-600 text-xs">Nenhum evento nesta comunidade. Crie o evento primeiro.</p>
+                        <p className="text-zinc-400 text-xs">Nenhum evento nesta comunidade. Crie o evento primeiro.</p>
                       ) : (
                         <div className="max-h-32 overflow-y-auto no-scrollbar space-y-1">
                           {eventosComunidade.map(ev => (
@@ -381,7 +381,7 @@ export const EventosPrivadosTab: React.FC<Props> = ({ comunidadeId }) => {
       {resolvidas.length > 0 && (
         <div>
           <p style={TYPOGRAPHY.sectionKicker} className="mb-3 flex items-center gap-2">
-            <CheckCircle size={12} className="text-zinc-600" />
+            <CheckCircle size={12} className="text-zinc-400" />
             Resolvidas ({resolvidas.length})
           </p>
           <div className="space-y-3">{resolvidas.map(renderCard)}</div>

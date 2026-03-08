@@ -31,9 +31,9 @@ export const ModalReembolsoManual: React.FC<Props> = ({
       <div className="w-10 h-1 bg-zinc-700 rounded-full mx-auto" />
 
       <div>
-        <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest">Solicitar Reembolso Manual</p>
+        <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">Solicitar Reembolso Manual</p>
         <p className="text-white font-bold text-base mt-0.5 truncate">{eventoNome}</p>
-        <p className="text-zinc-500 text-[9px] mt-2">
+        <p className="text-zinc-400 text-[9px] mt-2">
           Use esta opção para solicitar reembolso fora da janela legal (7 dias + 48h).
         </p>
       </div>
@@ -58,7 +58,7 @@ export const ModalReembolsoManual: React.FC<Props> = ({
           onClick={onClose}
           className="w-12 h-12 bg-zinc-900 border border-white/10 rounded-xl flex items-center justify-center active:scale-90 transition-all shrink-0"
         >
-          <X size={16} className="text-zinc-500" />
+          <X size={16} className="text-zinc-400" />
         </button>
         <button
           onClick={onSolicitar}

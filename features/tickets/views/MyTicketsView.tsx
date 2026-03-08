@@ -80,15 +80,15 @@ const TitularModalMyTickets: React.FC<{
       >
         <div className="w-10 h-1 bg-zinc-700 rounded-full mx-auto" />
         <div>
-          <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest">Dados do Titular</p>
+          <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">Dados do Titular</p>
           <p className="text-white font-bold text-base mt-0.5">Preencha para usar o ingresso</p>
-          <p className="text-zinc-500 text-xs mt-1">
+          <p className="text-zinc-400 text-xs mt-1">
             {ticket.variacaoLabel ? `${ticket.eventoNome} · ${ticket.variacaoLabel}` : ticket.eventoNome}
           </p>
         </div>
         <div className="space-y-3">
           <div>
-            <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1.5">Nome completo</p>
+            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5">Nome completo</p>
             <input
               type="text"
               placeholder="Nome do titular do ingresso"
@@ -99,7 +99,7 @@ const TitularModalMyTickets: React.FC<{
             />
           </div>
           <div>
-            <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1.5">CPF</p>
+            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5">CPF</p>
             <input
               type="text"
               inputMode="numeric"
@@ -183,11 +183,11 @@ const QRModal: React.FC<{ ticket: MyTicket; onClose: () => void }> = ({ ticket, 
             <div
               className={`relative w-36 h-36 rounded-2xl flex items-center justify-center border border-white/5 mb-3 overflow-hidden ${isUsado ? 'bg-zinc-900/50' : 'bg-zinc-900'}`}
             >
-              <QrCode size={96} className={isUsado ? 'text-zinc-600' : 'text-zinc-300'} strokeWidth={1.2} />
+              <QrCode size={96} className={isUsado ? 'text-zinc-400' : 'text-zinc-300'} strokeWidth={1.2} />
               <div
                 className={`absolute w-10 h-10 bg-zinc-950 rounded-xl flex items-center justify-center border ${isUsado ? 'border-zinc-700' : 'border-[#FFD300]/30'}`}
               >
-                <Sparkles size={18} className={isUsado ? 'text-zinc-600' : 'text-[#FFD300]'} />
+                <Sparkles size={18} className={isUsado ? 'text-zinc-400' : 'text-[#FFD300]'} />
               </div>
               {!isUsado && (
                 <div
@@ -199,8 +199,8 @@ const QRModal: React.FC<{ ticket: MyTicket; onClose: () => void }> = ({ ticket, 
                 />
               )}
               <div className="absolute bottom-1.5 right-1.5 flex items-center gap-0.5 opacity-35">
-                <Clock size={7} className={isUsado ? 'text-zinc-500' : 'text-[#FFD300]'} />
-                <span className={`text-[6px] font-black tabular-nums ${isUsado ? 'text-zinc-500' : 'text-[#FFD300]'}`}>
+                <Clock size={7} className={isUsado ? 'text-zinc-400' : 'text-[#FFD300]'} />
+                <span className={`text-[6px] font-black tabular-nums ${isUsado ? 'text-zinc-400' : 'text-[#FFD300]'}`}>
                   {clockTime}
                 </span>
               </div>
@@ -214,11 +214,11 @@ const QRModal: React.FC<{ ticket: MyTicket; onClose: () => void }> = ({ ticket, 
             </div>
 
             {/* Nonce anti-screenshot */}
-            <p className="text-[7px] font-black text-zinc-600 uppercase tracking-[0.25em] mb-3">#{qrNonce}</p>
+            <p className="text-[7px] font-black text-zinc-400 uppercase tracking-[0.25em] mb-3">#{qrNonce}</p>
 
             <p className="text-white font-black text-sm leading-none">{ticket.variacaoLabel}</p>
             <p
-              className={`font-black text-lg mt-1 ${isUsado ? 'text-zinc-500' : ''}`}
+              className={`font-black text-lg mt-1 ${isUsado ? 'text-zinc-400' : ''}`}
               style={
                 isUsado
                   ? {}
@@ -231,7 +231,7 @@ const QRModal: React.FC<{ ticket: MyTicket; onClose: () => void }> = ({ ticket, 
             >
               {fmtBRL(ticket.valor)}
             </p>
-            <p className="text-zinc-500 text-[10px] mt-1 truncate max-w-full">{ticket.email}</p>
+            <p className="text-zinc-400 text-[10px] mt-1 truncate max-w-full">{ticket.email}</p>
             <p className="text-zinc-700 text-[8px] font-black uppercase tracking-widest mt-1 truncate max-w-full">
               {ticket.eventoNome}
             </p>
@@ -247,7 +247,7 @@ const QRModal: React.FC<{ ticket: MyTicket; onClose: () => void }> = ({ ticket, 
           {/* Rodapé */}
           <div className="px-6 py-4 text-center space-y-1">
             {isUsado && ticket.usadoEm ? (
-              <p className="text-zinc-600 text-[9px]">Utilizado em {fmtDate(ticket.usadoEm)}</p>
+              <p className="text-zinc-400 text-[9px]">Utilizado em {fmtDate(ticket.usadoEm)}</p>
             ) : (
               <div
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full border"
@@ -321,13 +321,13 @@ export const MyTicketsView: React.FC<{
           </h1>
         </div>
         <div className="flex items-center gap-2 mt-1">
-          <button
+          <button aria-label="Atualizar"
             onClick={load}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
           >
             <RefreshCw size={15} className={`text-zinc-400 ${loading ? 'animate-spin' : ''}`} />
           </button>
-          <button
+          <button aria-label="Voltar"
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
           >
@@ -359,7 +359,7 @@ export const MyTicketsView: React.FC<{
             {/* Disponíveis */}
             {disponíveis.length > 0 && (
               <div>
-                <p className="text-[9px] text-zinc-600 font-black uppercase tracking-widest mb-3 px-1">
+                <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest mb-3 px-1">
                   Disponíveis ({disponíveis.length})
                 </p>
                 <div className="space-y-2">
@@ -374,7 +374,7 @@ export const MyTicketsView: React.FC<{
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-white font-bold text-sm truncate">{t.eventoNome}</p>
-                        <p className="text-zinc-500 text-[10px] truncate">
+                        <p className="text-zinc-400 text-[10px] truncate">
                           {t.variacaoLabel} · {fmtBRL(t.valor)}
                         </p>
                         <p className="text-zinc-700 text-[9px]">{fmtDate(t.eventoDataInicio)}</p>
@@ -395,7 +395,7 @@ export const MyTicketsView: React.FC<{
             {/* Utilizados */}
             {utilizados.length > 0 && (
               <div>
-                <p className="text-[9px] text-zinc-600 font-black uppercase tracking-widest mb-3 px-1">
+                <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest mb-3 px-1">
                   Utilizados ({utilizados.length})
                 </p>
                 <div className="space-y-2">
@@ -406,16 +406,16 @@ export const MyTicketsView: React.FC<{
                       className="w-full flex items-center gap-4 p-4 bg-zinc-900/20 border border-white/5 rounded-2xl active:bg-white/5 transition-all text-left opacity-60"
                     >
                       <div className="w-10 h-10 rounded-xl bg-zinc-900 border border-white/5 flex items-center justify-center shrink-0">
-                        <QrCode size={18} className="text-zinc-600" />
+                        <QrCode size={18} className="text-zinc-400" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-zinc-400 font-bold text-sm truncate">{t.eventoNome}</p>
-                        <p className="text-zinc-600 text-[10px] truncate">
+                        <p className="text-zinc-400 text-[10px] truncate">
                           {t.variacaoLabel} · {fmtBRL(t.valor)}
                         </p>
                         <p className="text-zinc-700 text-[9px]">{fmtDate(t.eventoDataInicio)}</p>
                       </div>
-                      <span className="shrink-0 text-[7px] font-black uppercase tracking-widest px-2 py-1 rounded-full bg-zinc-800 text-zinc-500">
+                      <span className="shrink-0 text-[7px] font-black uppercase tracking-widest px-2 py-1 rounded-full bg-zinc-800 text-zinc-400">
                         Utilizado
                       </span>
                     </button>

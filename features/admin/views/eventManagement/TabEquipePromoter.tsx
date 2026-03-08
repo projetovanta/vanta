@@ -175,13 +175,13 @@ export const TabEquipePromoter: React.FC<{
         <div className="bg-zinc-900/40 border border-white/5 rounded-2xl p-4">
           <div className="flex items-center gap-2 mb-3">
             <Trophy size={14} className="text-[#FFD300]" />
-            <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Ranking Promoters</p>
+            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Ranking Promoters</p>
           </div>
           <div className="space-y-2">
             {ranking.map((r, i) => (
               <div key={r.pid} className="flex items-center gap-3">
                 <span
-                  className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 text-[9px] font-black ${i === 0 ? 'bg-[#FFD300] text-black' : i === 1 ? 'bg-zinc-400 text-black' : i === 2 ? 'bg-amber-700 text-white' : 'bg-zinc-800 text-zinc-500'}`}
+                  className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 text-[9px] font-black ${i === 0 ? 'bg-[#FFD300] text-black' : i === 1 ? 'bg-zinc-400 text-black' : i === 2 ? 'bg-amber-700 text-white' : 'bg-zinc-800 text-zinc-400'}`}
                 >
                   {i + 1}
                 </span>
@@ -189,9 +189,9 @@ export const TabEquipePromoter: React.FC<{
                   <p className="text-white text-xs font-bold truncate">{r.nome}</p>
                 </div>
                 <div className="flex items-center gap-3 shrink-0 text-[9px]">
-                  <span className="text-zinc-500">{r.nomesNaLista} nomes</span>
+                  <span className="text-zinc-400">{r.nomesNaLista} nomes</span>
                   <span className="text-emerald-400">{r.checkins} check-ins</span>
-                  <span className="text-zinc-600">{r.conversao}%</span>
+                  <span className="text-zinc-400">{r.conversao}%</span>
                 </div>
               </div>
             ))}
@@ -226,7 +226,7 @@ export const TabEquipePromoter: React.FC<{
               </div>
               <div className="text-right shrink-0">
                 <p className="text-white font-black text-xl leading-none">{cotas.reduce((a, c) => a + c.usado, 0)}</p>
-                <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest">usadas</p>
+                <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">usadas</p>
               </div>
             </div>
             <div className="p-3 space-y-2">
@@ -243,7 +243,7 @@ export const TabEquipePromoter: React.FC<{
                         <p className="text-zinc-300 text-[10px] font-bold">{regra?.label}</p>
                       </div>
                       <div className="flex items-center gap-2 text-[9px] font-black uppercase tracking-widest">
-                        <span className="text-zinc-600">Usado: {c.usado}</span>
+                        <span className="text-zinc-400">Usado: {c.usado}</span>
                         <span className={saldo > 0 ? 'text-[#FFD300]' : 'text-zinc-700'}>Saldo: {saldo}</span>
                       </div>
                     </div>
@@ -362,7 +362,7 @@ export const TabEquipePromoter: React.FC<{
               <h2 style={TYPOGRAPHY.screenTitle} className="text-base italic">
                 Registrar Pagamento
               </h2>
-              <p className="text-zinc-500 text-[10px] mt-1">
+              <p className="text-zinc-400 text-[10px] mt-1">
                 {PROMOTERS_CACHE.find(p => p.id === pagModal)?.nome ?? pagModal}
               </p>
             </div>
@@ -409,22 +409,22 @@ export const TabEquipePromoter: React.FC<{
               {/* Histórico de pagamentos */}
               {pagHistLoading ? (
                 <div className="flex justify-center py-3">
-                  <Loader2 size={14} className="text-zinc-600 animate-spin" />
+                  <Loader2 size={14} className="text-zinc-400 animate-spin" />
                 </div>
               ) : pagHistorico.length > 0 ? (
                 <div className="pt-3 border-t border-white/5 space-y-2">
-                  <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Pagamentos anteriores</p>
+                  <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Pagamentos anteriores</p>
                   {pagHistorico.map(p => (
                     <div key={p.id} className="flex items-center gap-2 text-[10px]">
                       <Clock size={10} className="text-zinc-700 shrink-0" />
                       <span className="text-emerald-400 font-bold shrink-0">{fmtBRL(p.valor)}</span>
-                      <span className="text-zinc-600 truncate flex-1">{p.observacao || '—'}</span>
+                      <span className="text-zinc-400 truncate flex-1">{p.observacao || '—'}</span>
                       <span className="text-zinc-700 shrink-0">
                         {new Date(p.criado_em).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })}
                       </span>
                     </div>
                   ))}
-                  <p className="text-[9px] text-zinc-500 font-bold">
+                  <p className="text-[9px] text-zinc-400 font-bold">
                     Total: {fmtBRL(pagHistorico.reduce((s, p) => s + Number(p.valor), 0))}
                   </p>
                 </div>

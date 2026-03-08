@@ -135,14 +135,14 @@ export const InfracoesGlobaisMaisVantaView: React.FC<{
             </h1>
           </div>
           <div className="flex gap-2 shrink-0">
-            <button
+            <button aria-label="Atualizar"
               onClick={handleRefresh}
               disabled={loading}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all disabled:opacity-40"
             >
               <RefreshCw size={16} className={`text-zinc-400 ${loading ? 'animate-spin' : ''}`} />
             </button>
-            <button
+            <button aria-label="Voltar"
               onClick={onBack}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
             >
@@ -155,15 +155,15 @@ export const InfracoesGlobaisMaisVantaView: React.FC<{
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5 mb-4">
           <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center">
             <p className="text-white font-black text-xl leading-none">{totais.total}</p>
-            <p className="text-zinc-500 text-[9px] font-bold uppercase tracking-wider mt-1">Total</p>
+            <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider mt-1">Total</p>
           </div>
           <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center">
             <p className="text-red-400 font-black text-xl leading-none">{totais.noShow}</p>
-            <p className="text-zinc-500 text-[9px] font-bold uppercase tracking-wider mt-1">No-Show</p>
+            <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider mt-1">No-Show</p>
           </div>
           <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center">
             <p className="text-amber-400 font-black text-xl leading-none">{totais.naoPostou}</p>
-            <p className="text-zinc-500 text-[9px] font-bold uppercase tracking-wider mt-1">Não Postou</p>
+            <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider mt-1">Não Postou</p>
           </div>
         </div>
 
@@ -176,7 +176,7 @@ export const InfracoesGlobaisMaisVantaView: React.FC<{
               className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider shrink-0 border transition-all ${
                 filtro === f.id
                   ? 'bg-[#FFD300] text-black border-transparent'
-                  : 'bg-zinc-900/60 text-zinc-500 border-white/5 active:bg-zinc-800'
+                  : 'bg-zinc-900/60 text-zinc-400 border-white/5 active:bg-zinc-800'
               }`}
             >
               {f.label} ({f.count})
@@ -192,7 +192,7 @@ export const InfracoesGlobaisMaisVantaView: React.FC<{
             <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center">
               <AlertCircle size={28} className="text-zinc-700" />
             </div>
-            <p className="text-zinc-600 text-[10px] font-black uppercase tracking-widest">
+            <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">
               Nenhuma infração encontrada
             </p>
           </div>
@@ -205,11 +205,11 @@ export const InfracoesGlobaisMaisVantaView: React.FC<{
             <div key={inf.id} className="bg-zinc-900/40 border border-white/5 rounded-2xl p-4">
               <div className="flex items-start gap-3 mb-3">
                 <div className="w-10 h-10 rounded-full bg-zinc-800 border border-white/5 flex items-center justify-center shrink-0">
-                  <User size={16} className="text-zinc-600" />
+                  <User size={16} className="text-zinc-400" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-white font-bold text-sm truncate">{inf.nomeMembro}</p>
-                  <p className="text-zinc-600 text-[10px] mt-1">
+                  <p className="text-zinc-400 text-[10px] mt-1">
                     <span
                       className={`inline-block px-2 py-0.5 rounded-md border text-[8px] font-black uppercase tracking-wider ${tipoInfo?.color ?? 'text-zinc-400 bg-zinc-500/15 border-zinc-500/25'}`}
                     >
@@ -220,7 +220,7 @@ export const InfracoesGlobaisMaisVantaView: React.FC<{
               </div>
 
               {/* Detalhes */}
-              <div className="space-y-1.5 text-[9px] text-zinc-500 mb-3">
+              <div className="space-y-1.5 text-[9px] text-zinc-400 mb-3">
                 {inf.evento_nome && (
                   <p>
                     <span className="text-zinc-400 font-bold">Evento:</span> {inf.evento_nome}
@@ -260,7 +260,7 @@ export const InfracoesGlobaisMaisVantaView: React.FC<{
             onClick={e => e.stopPropagation()}
           >
             <p className="text-white font-bold text-sm text-center">Deletar infração?</p>
-            <p className="text-zinc-500 text-[10px] text-center leading-relaxed">
+            <p className="text-zinc-400 text-[10px] text-center leading-relaxed">
               A infração de "{confirmar.nomeMembro}" será deletada. Seu nível de bloqueio será recalculado
               automaticamente.
             </p>

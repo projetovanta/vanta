@@ -106,7 +106,7 @@ export const MeusEventosView: React.FC<{
             Eventos da Comunidade
           </h1>
         </div>
-        <button
+        <button aria-label="Voltar"
           onClick={onBack}
           className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all mt-1"
         >
@@ -132,14 +132,14 @@ export const MeusEventosView: React.FC<{
             className={`flex-1 py-3 text-center text-[10px] font-black uppercase tracking-widest transition-all ${
               aba === t.id
                 ? 'text-[#FFD300] border-b-2 border-[#FFD300]'
-                : 'text-zinc-600 border-b-2 border-transparent'
+                : 'text-zinc-400 border-b-2 border-transparent'
             }`}
           >
             {t.label}
             {t.count > 0 && (
               <span
                 className={`ml-1.5 text-[8px] px-1.5 py-0.5 rounded-full ${
-                  aba === t.id ? 'bg-[#FFD300]/15 text-[#FFD300]' : 'bg-zinc-800 text-zinc-500'
+                  aba === t.id ? 'bg-[#FFD300]/15 text-[#FFD300]' : 'bg-zinc-800 text-zinc-400'
                 }`}
               >
                 {t.count}
@@ -153,7 +153,7 @@ export const MeusEventosView: React.FC<{
       {aba === 'rejeitados' && rejeitados.length > 0 && (
         <div className="px-5 pt-3 pb-1 shrink-0 space-y-2">
           <div className="relative">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-600" />
+            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
             <input
               type="text"
               value={buscaRejeitados}
@@ -224,12 +224,12 @@ export const MeusEventosView: React.FC<{
                 <div className="flex-1 min-w-0">
                   <p className="text-white font-bold text-sm leading-tight truncate mb-1">{ev.nome}</p>
                   <div className="flex items-center gap-1 mb-0.5">
-                    <Calendar size={10} className="text-zinc-600 shrink-0" />
-                    <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest">{dataLabel}</p>
+                    <Calendar size={10} className="text-zinc-400 shrink-0" />
+                    <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">{dataLabel}</p>
                   </div>
                   <div className="flex items-center gap-1">
-                    <MapPin size={10} className="text-zinc-600 shrink-0" />
-                    <p className="text-zinc-600 text-[9px] truncate">{ev.local}</p>
+                    <MapPin size={10} className="text-zinc-400 shrink-0" />
+                    <p className="text-zinc-400 text-[9px] truncate">{ev.local}</p>
                   </div>
                 </div>
                 <div className="flex flex-col items-end gap-1.5 shrink-0">
@@ -245,7 +245,7 @@ export const MeusEventosView: React.FC<{
                     </span>
                   )}
                   {statusEvento === 'encerrado' && (
-                    <span className="text-[7px] font-black uppercase tracking-widest px-1.5 py-0.5 bg-zinc-800/60 text-zinc-500 rounded-full border border-white/5">
+                    <span className="text-[7px] font-black uppercase tracking-widest px-1.5 py-0.5 bg-zinc-800/60 text-zinc-400 rounded-full border border-white/5">
                       encerrado
                     </span>
                   )}
@@ -289,7 +289,7 @@ export const MeusEventosView: React.FC<{
                           <span className="text-red-400 text-[10px] font-bold uppercase">
                             {campo.replace(/_/g, ' ')}
                           </span>
-                          {comentario && <p className="text-zinc-500 text-[10px]">{comentario}</p>}
+                          {comentario && <p className="text-zinc-400 text-[10px]">{comentario}</p>}
                         </div>
                       </div>
                     ))}
@@ -310,7 +310,7 @@ export const MeusEventosView: React.FC<{
             >
               <ChevronLeft size={14} />
             </button>
-            <span className="text-zinc-500 text-xs">
+            <span className="text-zinc-400 text-xs">
               {paginaRejeitados + 1} / {totalPaginas}
             </span>
             <button

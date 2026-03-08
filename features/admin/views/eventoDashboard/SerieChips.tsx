@@ -96,7 +96,7 @@ export const SerieChips: React.FC<SerieChipsProps> = ({
         </div>
 
         {loading ? (
-          <Loader2 size={12} className="text-zinc-600 animate-spin" />
+          <Loader2 size={12} className="text-zinc-400 animate-spin" />
         ) : (
           <div className="flex-1 overflow-x-auto no-scrollbar">
             <div className="flex items-center gap-1.5">
@@ -111,7 +111,7 @@ export const SerieChips: React.FC<SerieChipsProps> = ({
                         ? 'bg-[#FFD300] text-black'
                         : o.publicado
                           ? 'bg-zinc-800 text-zinc-300 border border-white/10'
-                          : 'bg-zinc-900 text-zinc-600 border border-white/5'
+                          : 'bg-zinc-900 text-zinc-400 border border-white/5'
                     }`}
                   >
                     {fmtChip(o.data_inicio)}
@@ -128,7 +128,7 @@ export const SerieChips: React.FC<SerieChipsProps> = ({
         {futurasSemPublicar > 0 && (
           <button
             onClick={() => setShowCancelar(true)}
-            className="shrink-0 p-1.5 rounded-full bg-zinc-900 border border-white/5 text-zinc-500 active:scale-90"
+            className="shrink-0 p-1.5 rounded-full bg-zinc-900 border border-white/5 text-zinc-400 active:scale-90"
             title="Cancelar datas futuras"
           >
             <X size={12} />

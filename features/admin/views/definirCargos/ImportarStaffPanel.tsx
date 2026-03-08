@@ -124,7 +124,7 @@ export const ImportarStaffPanel: React.FC<ImportarStaffPanelProps> = ({
       <div>
         <label className={labelCls}>Evento de origem</label>
         {eventosDisponiveis.length === 0 ? (
-          <p className="text-zinc-600 text-xs py-2 pl-1">Nenhum evento anterior encontrado.</p>
+          <p className="text-zinc-400 text-xs py-2 pl-1">Nenhum evento anterior encontrado.</p>
         ) : (
           <VantaDropdown
             value={eventoOrigemId}
@@ -139,7 +139,7 @@ export const ImportarStaffPanel: React.FC<ImportarStaffPanelProps> = ({
       {eventoOrigemId && membros.length === 0 && (
         <div className="flex flex-col items-center py-8 gap-3">
           <Users size={24} className="text-zinc-700" />
-          <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest">Nenhum membro neste evento</p>
+          <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">Nenhum membro neste evento</p>
         </div>
       )}
 
@@ -186,14 +186,14 @@ export const ImportarStaffPanel: React.FC<ImportarStaffPanelProps> = ({
                     className="w-8 h-8 rounded-full object-cover shrink-0"
                   />
                 ) : (
-                  <div className="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-500 text-xs font-bold shrink-0">
+                  <div className="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-400 text-xs font-bold shrink-0">
                     {m.nome[0]}
                   </div>
                 )}
                 {/* Nome + cargo */}
                 <div className="flex-1 min-w-0">
                   <p className="text-white text-sm font-bold truncate">{m.nome}</p>
-                  <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest">
+                  <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">
                     {CARGO_LABELS[m.cargoOriginal]}
                   </p>
                 </div>
@@ -202,7 +202,7 @@ export const ImportarStaffPanel: React.FC<ImportarStaffPanelProps> = ({
                   <button
                     type="button"
                     onClick={() => toggleExpandido(m.userId)}
-                    className="flex items-center gap-1 text-[9px] text-zinc-500 font-black uppercase tracking-wider active:text-white transition-all shrink-0"
+                    className="flex items-center gap-1 text-[9px] text-zinc-400 font-black uppercase tracking-wider active:text-white transition-all shrink-0"
                   >
                     Permissões
                     {m.expandido ? <ChevronDown size={10} /> : <ChevronRight size={10} />}

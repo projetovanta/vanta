@@ -22,7 +22,7 @@ export const EventFooter: React.FC<EventFooterProps> = ({
   <div className="shrink-0 w-full p-4 bg-[#0a0a0a] border-t border-white/5 z-50 pb-[calc(1rem+env(safe-area-inset-bottom,0px))]">
     <div className="flex gap-3 items-center">
       <div className="flex-1">
-        <p className="text-[10px] text-zinc-500 uppercase font-bold tracking-wider">A partir de</p>
+        <p className="text-[10px] text-zinc-400 uppercase font-bold tracking-wider">A partir de</p>
         <p className="text-xl font-serif font-bold text-[#FFD300] leading-tight">
           {evento.ocultarValor
             ? 'Sob Consulta'
@@ -44,7 +44,7 @@ export const EventFooter: React.FC<EventFooterProps> = ({
             disabled={hasPresenca}
             className={`px-4 py-3 rounded-xl font-bold text-[10px] uppercase tracking-widest border transition-all ${
               hasPresenca
-                ? 'bg-zinc-800 text-zinc-500 border-zinc-700 cursor-not-allowed'
+                ? 'bg-zinc-800 text-zinc-400 border-zinc-700 cursor-not-allowed'
                 : 'bg-transparent text-white border-white/20 active:bg-white/10'
             }`}
           >

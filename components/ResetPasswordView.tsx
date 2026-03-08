@@ -56,7 +56,7 @@ export const ResetPasswordView: React.FC<Props> = ({ onComplete }) => {
         <h1 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-3">
           Senha redefinida!
         </h1>
-        <p className="text-zinc-500 text-sm">Redirecionando...</p>
+        <p className="text-zinc-400 text-sm">Redirecionando...</p>
       </div>
     );
   }
@@ -71,7 +71,7 @@ export const ResetPasswordView: React.FC<Props> = ({ onComplete }) => {
           <h1 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-2">
             Nova Senha
           </h1>
-          <p className="text-zinc-500 text-xs text-center">Defina sua nova senha para acessar o VANTA.</p>
+          <p className="text-zinc-400 text-xs text-center">Defina sua nova senha para acessar o VANTA.</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -87,7 +87,7 @@ export const ResetPasswordView: React.FC<Props> = ({ onComplete }) => {
             <button
               type="button"
               onClick={() => setShowPass(p => !p)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-600"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400"
             >
               {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
             </button>

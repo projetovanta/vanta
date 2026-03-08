@@ -30,7 +30,7 @@ export const CargoModal: React.FC<Props> = ({ membro, papeis, onSelect, onClose 
           </div>
           <div className="min-w-0 flex-1">
             <p className="text-white font-bold text-base leading-none truncate">{membro.nome}</p>
-            <p className="text-zinc-500 text-[10px] mt-0.5 truncate">{membro.email}</p>
+            <p className="text-zinc-400 text-[10px] mt-0.5 truncate">{membro.email}</p>
           </div>
         </div>
         <div className="p-5 space-y-2">
@@ -50,7 +50,7 @@ export const CargoModal: React.FC<Props> = ({ membro, papeis, onSelect, onClose 
                 >
                   {p.label}
                 </p>
-                <p className="text-zinc-600 text-[9px]">{p.desc}</p>
+                <p className="text-zinc-400 text-[9px]">{p.desc}</p>
               </div>
             </button>
           ))}

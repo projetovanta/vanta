@@ -37,13 +37,13 @@ export const ProfilePanel: React.FC<{
     <div className="absolute inset-0 z-50 bg-[#0A0A0A] flex flex-col overflow-hidden animate-in slide-in-from-right duration-300">
       <div className="shrink-0 border-b border-white/5 px-5 pt-8 pb-4">
         <div className="flex items-center gap-3 mb-4">
-          <button
+          <button aria-label="Voltar"
             onClick={onClose}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
           >
             <ArrowLeft size={18} className="text-zinc-400" />
           </button>
-          <p className="text-[9px] text-zinc-600 font-black uppercase tracking-widest">Perfil do Membro</p>
+          <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest">Perfil do Membro</p>
         </div>
         <div className="flex items-center gap-4">
           <div className="w-14 h-14 rounded-2xl overflow-hidden border border-white/10 shrink-0">
@@ -51,7 +51,7 @@ export const ProfilePanel: React.FC<{
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-white font-bold text-base leading-none mb-1 truncate">{membro.nome}</p>
-            <p className="text-zinc-500 text-[11px] truncate">{membro.email}</p>
+            <p className="text-zinc-400 text-[11px] truncate">{membro.email}</p>
             {(membro.cidade || membro.estado) && (
               <p className="text-zinc-700 text-[10px] mt-0.5 truncate">
                 {[membro.cidade, membro.estado].filter(Boolean).join(', ')}
@@ -79,7 +79,7 @@ export const ProfilePanel: React.FC<{
           if (!por) return null;
           return (
             <p className="text-zinc-700 text-[9px] mt-2 italic truncate">
-              Curadoria feita por <span className="text-zinc-500">{por}</span>
+              Curadoria feita por <span className="text-zinc-400">{por}</span>
               {em ? ` em ${em}` : ''}
             </p>
           );
@@ -91,7 +91,7 @@ export const ProfilePanel: React.FC<{
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`flex-1 py-3.5 text-[10px] font-black uppercase tracking-wider transition-all relative ${activeTab === tab.id ? 'text-[#FFD300]' : 'text-zinc-600'}`}
+            className={`flex-1 py-3.5 text-[10px] font-black uppercase tracking-wider transition-all relative ${activeTab === tab.id ? 'text-[#FFD300]' : 'text-zinc-400'}`}
           >
             {tab.label}
             {activeTab === tab.id && (
@@ -106,20 +106,20 @@ export const ProfilePanel: React.FC<{
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-zinc-900/60 border border-white/5 rounded-xl p-3">
-                <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1">Gênero</p>
+                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1">Gênero</p>
                 <p className="text-white text-sm font-bold">
                   {membro.genero === 'MASCULINO' ? 'Masculino' : membro.genero === 'FEMININO' ? 'Feminino' : '—'}
                 </p>
               </div>
               <div className="bg-zinc-900/60 border border-white/5 rounded-xl p-3">
-                <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1">Cadastro</p>
+                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1">Cadastro</p>
                 <p className="text-white text-sm font-bold truncate">
                   {membro.cadastradoEm ? formatDateM(membro.cadastradoEm) : '—'}
                 </p>
               </div>
               {membro.instagram && (
                 <div className="bg-zinc-900/60 border border-white/5 rounded-xl p-3 col-span-2">
-                  <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1">Instagram</p>
+                  <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1">Instagram</p>
                   <div className="flex items-center gap-2 min-w-0">
                     <p className="text-white text-sm font-bold truncate">@{membro.instagram.replace(/^@/, '')}</p>
                     {membro.seguidoresInstagram != null && (
@@ -135,7 +135,7 @@ export const ProfilePanel: React.FC<{
             {/* Notas do Admin */}
             <div className="bg-zinc-900/50 border border-white/5 rounded-2xl p-4">
               <div className="flex items-center justify-between mb-3">
-                <p className="text-[9px] text-zinc-600 font-black uppercase tracking-widest">Notas do Admin</p>
+                <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest">Notas do Admin</p>
                 {!editNota && (
                   <button
                     onClick={() => {
@@ -195,7 +195,7 @@ export const ProfilePanel: React.FC<{
             <div className="w-14 h-14 bg-zinc-900 rounded-2xl border border-white/5 flex items-center justify-center">
               <Activity size={24} className="text-zinc-700" />
             </div>
-            <p className="text-zinc-600 text-[10px] font-black uppercase tracking-widest">Histórico em breve</p>
+            <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">Histórico em breve</p>
             <p className="text-zinc-700 text-[9px] italic text-center leading-relaxed">
               Log de atividades será exibido
               <br />

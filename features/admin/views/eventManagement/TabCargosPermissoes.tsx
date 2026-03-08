@@ -95,7 +95,7 @@ const FuncaoModal: React.FC<FuncaoModalProps> = ({ onClose, onSave }) => {
             className={inputCls}
           />
           <div>
-            <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-2">Permissões</p>
+            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">Permissões</p>
             <div className="space-y-2">
               {TODAS_PERMISSOES.map(p => (
                 <button

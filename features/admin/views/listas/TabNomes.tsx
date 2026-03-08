@@ -51,11 +51,11 @@ const ConvidadosList: React.FC<{
           className={`flex items-center gap-3 px-4 py-3 ${idx < shown.length - 1 ? 'border-b border-white/5' : ''}`}
         >
           <div className="w-8 h-8 rounded-full bg-zinc-800 border border-white/10 flex items-center justify-center shrink-0">
-            <span className="text-zinc-500 text-[10px] font-black">{c.nome.charAt(0).toUpperCase()}</span>
+            <span className="text-zinc-400 text-[10px] font-black">{c.nome.charAt(0).toUpperCase()}</span>
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-white text-sm font-semibold truncate">{c.nome}</p>
-            <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest truncate">
+            <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest truncate">
               por {c.inseridoPorNome}
             </p>
           </div>
@@ -72,7 +72,7 @@ const ConvidadosList: React.FC<{
         </div>
       ))}
       {visible < convs.length && (
-        <p className="text-center text-zinc-600 text-[9px] font-black uppercase tracking-widest py-3">
+        <p className="text-center text-zinc-400 text-[9px] font-black uppercase tracking-widest py-3">
           {convs.length - visible} restantes · role para ver mais
         </p>
       )}
@@ -137,18 +137,18 @@ export const TabNomes: React.FC<{
         <div className="flex gap-3 mb-4 shrink-0">
           <div className="flex-1 bg-zinc-900/40 border border-white/5 rounded-2xl p-4 text-center">
             <p className="text-white font-black text-2xl">{totalInseridos}</p>
-            <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest mt-1">Inseridos</p>
+            <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mt-1">Inseridos</p>
           </div>
           <div className="flex-1 bg-zinc-900/40 border border-white/5 rounded-2xl p-4 text-center">
             <p className="text-[#FFD300] font-black text-2xl">{totalEntraram}</p>
-            <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest mt-1">Entraram</p>
+            <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mt-1">Entraram</p>
           </div>
         </div>
       )}
 
       <div className="flex items-center gap-2 mb-4 shrink-0">
         <div className="flex-1 flex items-center gap-2 bg-zinc-900/60 border border-white/5 rounded-xl px-3 py-2.5 focus-within:border-[#FFD300]/30">
-          <Search size={13} className="text-zinc-600 shrink-0" />
+          <Search size={13} className="text-zinc-400 shrink-0" />
           <input
             value={busca}
             onChange={e => setBusca(e.target.value)}
@@ -157,7 +157,7 @@ export const TabNomes: React.FC<{
           />
           {busca && (
             <button onClick={() => setBusca('')}>
-              <X size={12} className="text-zinc-600" />
+              <X size={12} className="text-zinc-400" />
             </button>
           )}
         </div>
@@ -194,7 +194,7 @@ export const TabNomes: React.FC<{
                 <span className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: regra.cor ?? '#71717a' }} />
                 <div className="flex-1 min-w-0 text-left">
                   <p className="text-white text-sm font-bold truncate">{regra.label}</p>
-                  <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest mt-0.5">
+                  <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mt-0.5">
                     {convs.length} nome{convs.length > 1 ? 's' : ''} · {checkins} dentro
                   </p>
                 </div>

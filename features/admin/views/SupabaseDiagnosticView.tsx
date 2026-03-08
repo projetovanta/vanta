@@ -362,7 +362,7 @@ export const SupabaseDiagnosticView: React.FC<{ onBack: () => void }> = ({ onBac
       {/* Header */}
       <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-6 pt-8 pb-5 shrink-0">
         <div className="flex items-center gap-3 mb-4">
-          <button
+          <button aria-label="Voltar"
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
           >
@@ -381,7 +381,7 @@ export const SupabaseDiagnosticView: React.FC<{ onBack: () => void }> = ({ onBac
         {/* Credenciais runtime */}
         <div className="flex gap-2 mb-3">
           <div className="flex-1 min-w-0">
-            <label className="text-zinc-600 text-[8px] font-black uppercase tracking-widest mb-1 flex items-center gap-1">
+            <label className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mb-1 flex items-center gap-1">
               <Key size={8} /> PAT
             </label>
             <input
@@ -393,7 +393,7 @@ export const SupabaseDiagnosticView: React.FC<{ onBack: () => void }> = ({ onBac
             />
           </div>
           <div className="flex-1 min-w-0">
-            <label className="text-zinc-600 text-[8px] font-black uppercase tracking-widest mb-1 block">
+            <label className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mb-1 block">
               Project Ref
             </label>
             <input
@@ -407,7 +407,7 @@ export const SupabaseDiagnosticView: React.FC<{ onBack: () => void }> = ({ onBac
         </div>
 
         {/* Botão scan */}
-        <button
+        <button aria-label="Carregando"
           onClick={runDiagnostic}
           disabled={scanning || !pat || !projectRef}
           className="w-full py-3.5 bg-[#FFD300] text-black font-black text-[10px] uppercase tracking-[0.2em] rounded-xl flex items-center justify-center gap-2 active:scale-[0.97] transition-all disabled:opacity-50"
@@ -450,7 +450,7 @@ export const SupabaseDiagnosticView: React.FC<{ onBack: () => void }> = ({ onBac
         {!scanned && !scanning && (
           <div className="flex flex-col items-center py-20 gap-4 text-center">
             <Database size={36} className="text-zinc-800" />
-            <p className="text-zinc-600 text-[10px] font-black uppercase tracking-widest">
+            <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">
               Diagnóstico do Banco de Dados
             </p>
             <p className="text-zinc-700 text-xs max-w-[260px] leading-relaxed">
@@ -463,7 +463,7 @@ export const SupabaseDiagnosticView: React.FC<{ onBack: () => void }> = ({ onBac
         {scanning && (
           <div className="flex flex-col items-center py-20 gap-4">
             <Loader2 size={28} className="text-[#FFD300] animate-spin" />
-            <p className="text-zinc-500 text-[10px] font-black uppercase tracking-widest">
+            <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">
               Consultando information_schema...
             </p>
           </div>
@@ -500,7 +500,7 @@ export const SupabaseDiagnosticView: React.FC<{ onBack: () => void }> = ({ onBac
                   </div>
                   <div className="flex-1 min-w-0 text-left">
                     <p className="text-white text-sm font-bold">{catInfo.label}</p>
-                    <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest">
+                    <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">
                       {items.filter(i => i.status === 'ok').length}/{items.length} ok
                       {hasIssues &&
                         ` · ${items.filter(i => i.status !== 'ok').length} pendente${items.filter(i => i.status !== 'ok').length > 1 ? 's' : ''}`}
@@ -512,9 +512,9 @@ export const SupabaseDiagnosticView: React.FC<{ onBack: () => void }> = ({ onBac
                     <CheckCircle2 size={14} className="text-emerald-400 shrink-0" />
                   )}
                   {isExpanded ? (
-                    <ChevronUp size={14} className="text-zinc-600" />
+                    <ChevronUp size={14} className="text-zinc-400" />
                   ) : (
-                    <ChevronDown size={14} className="text-zinc-600" />
+                    <ChevronDown size={14} className="text-zinc-400" />
                   )}
                 </button>
 
@@ -525,7 +525,7 @@ export const SupabaseDiagnosticView: React.FC<{ onBack: () => void }> = ({ onBac
                         {statusIcon(item.status)}
                         <div className="flex-1 min-w-0">
                           <p className="text-white text-xs font-bold truncate">{item.label}</p>
-                          <p className="text-zinc-500 text-[10px] leading-relaxed mt-0.5">{item.detail}</p>
+                          <p className="text-zinc-400 text-[10px] leading-relaxed mt-0.5">{item.detail}</p>
                         </div>
                         {item.fixSQL && item.status !== 'ok' && (
                           <button

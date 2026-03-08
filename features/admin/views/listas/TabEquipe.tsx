@@ -81,7 +81,7 @@ export const TabEquipe: React.FC<{
               </div>
               <div className="text-right shrink-0">
                 <p className="text-white font-black text-xl leading-none">{cotas.reduce((a, c) => a + c.usado, 0)}</p>
-                <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest">usadas</p>
+                <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">usadas</p>
               </div>
             </div>
             <div className="p-3 space-y-2">
@@ -98,7 +98,7 @@ export const TabEquipe: React.FC<{
                         <p className="text-zinc-300 text-[10px] font-bold truncate">{regra?.label}</p>
                       </div>
                       <div className="flex items-center gap-2 text-[9px] font-black uppercase tracking-widest shrink-0">
-                        <span className="text-zinc-600">Usado: {c.usado}</span>
+                        <span className="text-zinc-400">Usado: {c.usado}</span>
                         <span className={saldo > 0 ? 'text-[#FFD300]' : 'text-zinc-700'}>Saldo: {saldo}</span>
                       </div>
                     </div>

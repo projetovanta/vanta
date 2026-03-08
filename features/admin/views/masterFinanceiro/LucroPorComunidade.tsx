@@ -44,7 +44,7 @@ export const LucroPorComunidade: React.FC<Props> = ({
     <div className="bg-zinc-900/40 border border-white/5 rounded-2xl p-5 space-y-4">
       <div className="flex items-center gap-2">
         <PieChart size={13} className="text-[#FFD300]" />
-        <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Lucro por Comunidade</p>
+        <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Lucro por Comunidade</p>
       </div>
 
       <VantaPieChart
@@ -62,7 +62,7 @@ export const LucroPorComunidade: React.FC<Props> = ({
       {/* Eventos da comunidade selecionada */}
       {selectedCom && selectedComId !== '__outros__' && (
         <div className="pt-3 border-t border-white/5 space-y-2">
-          <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Eventos — {selectedCom.nome}</p>
+          <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Eventos — {selectedCom.nome}</p>
           {selectedCom.eventos.map(ev => {
             const fees = eventosAdminService.getContractedFees(ev.id);
             if (fees.feePercent === 0 && fees.feeFixed === 0) return null;

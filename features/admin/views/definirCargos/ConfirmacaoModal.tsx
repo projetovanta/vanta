@@ -45,7 +45,7 @@ export const ConfirmacaoModal: React.FC<ConfirmacaoModalProps> = ({
       {/* Resumo de cotas (somente cargo customizado com INSERIR_LISTA) */}
       {usarCargoCustom && cargoCustom.listas.ativo && cargoCustom.listas.cotas.length > 0 && (
         <div className="mb-5 bg-zinc-900/60 border border-white/5 rounded-xl p-4 space-y-2">
-          <p className="text-[8px] text-zinc-500 font-black uppercase tracking-widest mb-2">Cotas de lista</p>
+          <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">Cotas de lista</p>
           {cargoCustom.listas.cotas
             .filter(c => c.limite > 0)
             .map((cota, i) => (

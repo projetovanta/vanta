@@ -124,13 +124,13 @@ export const PassaportesMaisVantaView: React.FC<{
             </h1>
           </div>
           <div className="flex gap-2 shrink-0">
-            <button
+            <button aria-label="Atualizar"
               onClick={handleRefresh}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
             >
               <RefreshCw size={16} className="text-zinc-400" />
             </button>
-            <button
+            <button aria-label="Voltar"
               onClick={onBack}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
             >
@@ -148,7 +148,7 @@ export const PassaportesMaisVantaView: React.FC<{
               className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider shrink-0 border transition-all ${
                 filtro === f.id
                   ? 'bg-[#FFD300] text-black border-transparent'
-                  : 'bg-zinc-900/60 text-zinc-500 border-white/5 active:bg-zinc-800'
+                  : 'bg-zinc-900/60 text-zinc-400 border-white/5 active:bg-zinc-800'
               }`}
             >
               {f.label} ({f.count})
@@ -164,7 +164,7 @@ export const PassaportesMaisVantaView: React.FC<{
             <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center">
               <Compass size={28} className="text-zinc-700" />
             </div>
-            <p className="text-zinc-600 text-[10px] font-black uppercase tracking-widest">
+            <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">
               Nenhum passaporte {filtro === 'TODOS' ? '' : filtro.toLowerCase()}
             </p>
           </div>
@@ -186,12 +186,12 @@ export const PassaportesMaisVantaView: React.FC<{
                   />
                 ) : (
                   <div className="w-11 h-11 rounded-full bg-zinc-800 border border-white/5 flex items-center justify-center shrink-0">
-                    <User size={18} className="text-zinc-600" />
+                    <User size={18} className="text-zinc-400" />
                   </div>
                 )}
                 <div className="flex-1 min-w-0">
                   <p className="text-white font-bold text-sm truncate">{perfil?.nome || p.userId.slice(0, 8)}</p>
-                  <p className="text-zinc-500 text-[10px] truncate">{getCidadeLabel(p)}</p>
+                  <p className="text-zinc-400 text-[10px] truncate">{getCidadeLabel(p)}</p>
                   <p className="text-zinc-700 text-[9px] mt-0.5">
                     {new Date(p.solicitadoEm).toLocaleDateString('pt-BR', {
                       day: '2-digit',
@@ -247,7 +247,7 @@ export const PassaportesMaisVantaView: React.FC<{
             onClick={e => e.stopPropagation()}
           >
             <p className="text-white font-bold text-sm text-center">Revogar passport?</p>
-            <p className="text-zinc-500 text-[10px] text-center leading-relaxed">
+            <p className="text-zinc-400 text-[10px] text-center leading-relaxed">
               O passport de "{confirmar.nome}" será revogado. O membro não poderá mais acessar eventos dessa cidade a
               menos que solicite novamente.
             </p>

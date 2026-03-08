@@ -47,7 +47,7 @@ export const TosAcceptModal: React.FC<TosAcceptModalProps> = ({ userId, userName
           <h2 style={TYPOGRAPHY.screenTitle} className="text-lg italic mb-1">
             Termos de Serviço
           </h2>
-          <p className="text-zinc-500 text-[10px] font-black uppercase tracking-widest">
+          <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">
             Aceite obrigatório para criar eventos
           </p>
         </div>
@@ -74,7 +74,7 @@ export const TosAcceptModal: React.FC<TosAcceptModalProps> = ({ userId, userName
               Master).
             </li>
           </ul>
-          <p className="text-zinc-600 text-[9px]">
+          <p className="text-zinc-400 text-[9px]">
             Versão {TOS_VERSION} — Estes termos podem ser atualizados. Você será notificado de mudanças significativas.
           </p>
         </div>
@@ -102,7 +102,7 @@ export const TosAcceptModal: React.FC<TosAcceptModalProps> = ({ userId, userName
               onClick={handleAceitar}
               disabled={!aceito || salvando}
               className={`flex-1 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest active:scale-95 transition-all ${
-                aceito ? 'bg-[#FFD300] text-black' : 'bg-zinc-800 text-zinc-600 cursor-not-allowed'
+                aceito ? 'bg-[#FFD300] text-black' : 'bg-zinc-800 text-zinc-400 cursor-not-allowed'
               }`}
             >
               {salvando ? 'Salvando...' : 'Aceitar e Continuar'}

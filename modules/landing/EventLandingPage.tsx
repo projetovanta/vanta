@@ -160,7 +160,7 @@ export const EventLandingPage: React.FC = () => {
     return (
       <div className="min-h-dvh bg-[#050505] flex flex-col items-center justify-center gap-4 p-6">
         <Ticket size={48} className="text-zinc-800" />
-        <p className="text-zinc-500 text-sm">Evento não encontrado</p>
+        <p className="text-zinc-400 text-sm">Evento não encontrado</p>
         <a href="/" className="text-[#FFD300] text-xs underline">
           Voltar ao início
         </a>
@@ -217,7 +217,7 @@ export const EventLandingPage: React.FC = () => {
             </div>
             {evento.local && (
               <div className="flex items-center gap-1.5">
-                <MapPin size={14} className="text-zinc-500" />
+                <MapPin size={14} className="text-zinc-400" />
                 <span className="text-zinc-400">{evento.local}</span>
               </div>
             )}
@@ -230,24 +230,24 @@ export const EventLandingPage: React.FC = () => {
         {/* Descrição */}
         {evento.descricao && (
           <div className="mb-8">
-            <h2 className="text-[10px] text-zinc-600 font-black uppercase tracking-widest mb-3">Sobre o evento</h2>
+            <h2 className="text-[10px] text-zinc-400 font-black uppercase tracking-widest mb-3">Sobre o evento</h2>
             <p className="text-zinc-400 text-sm leading-relaxed whitespace-pre-wrap">{evento.descricao}</p>
           </div>
         )}
 
         {/* Ingressos */}
         <div className="mb-8">
-          <h2 className="text-[10px] text-zinc-600 font-black uppercase tracking-widest mb-4">Ingressos</h2>
+          <h2 className="text-[10px] text-zinc-400 font-black uppercase tracking-widest mb-4">Ingressos</h2>
           {status === 'encerrado' ? (
             <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-6 text-center">
-              <p className="text-zinc-500 text-sm">Evento encerrado</p>
+              <p className="text-zinc-400 text-sm">Evento encerrado</p>
             </div>
           ) : (
             <div className="space-y-3">
               {evento.lotes.map(lote => (
                 <div key={lote.id}>
                   {evento.lotes.length > 1 && (
-                    <p className="text-[9px] text-zinc-600 font-bold uppercase tracking-widest mb-2">{lote.nome}</p>
+                    <p className="text-[9px] text-zinc-400 font-bold uppercase tracking-widest mb-2">{lote.nome}</p>
                   )}
                   <div className="space-y-2">
                     {lote.variacoes.map(v => {
@@ -260,7 +260,7 @@ export const EventLandingPage: React.FC = () => {
                           <div className="min-w-0">
                             <p className="text-white text-sm font-bold truncate">{v.label}</p>
                             {!esgotado && v.limite > 0 && (
-                              <p className="text-[9px] text-zinc-600 mt-0.5">{v.limite - v.vendidos} restantes</p>
+                              <p className="text-[9px] text-zinc-400 mt-0.5">{v.limite - v.vendidos} restantes</p>
                             )}
                           </div>
                           <div className="flex items-center gap-3 shrink-0">
@@ -270,7 +270,7 @@ export const EventLandingPage: React.FC = () => {
                               disabled={esgotado}
                               className={`px-4 py-2 rounded-lg text-xs font-bold transition-all active:scale-95 ${
                                 esgotado
-                                  ? 'bg-zinc-800 text-zinc-600 cursor-not-allowed'
+                                  ? 'bg-zinc-800 text-zinc-400 cursor-not-allowed'
                                   : 'bg-[#FFD300] text-black hover:bg-[#FFD300]/90'
                               }`}
                             >
@@ -290,11 +290,11 @@ export const EventLandingPage: React.FC = () => {
         {/* Info extra */}
         {evento.endereco && (
           <div className="mb-8">
-            <h2 className="text-[10px] text-zinc-600 font-black uppercase tracking-widest mb-3">Local</h2>
+            <h2 className="text-[10px] text-zinc-400 font-black uppercase tracking-widest mb-3">Local</h2>
             <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-4">
               <p className="text-white text-sm font-bold">{evento.local}</p>
-              <p className="text-zinc-500 text-xs mt-1">{evento.endereco}</p>
-              {evento.cidade && <p className="text-zinc-600 text-xs mt-0.5">{evento.cidade}</p>}
+              <p className="text-zinc-400 text-xs mt-1">{evento.endereco}</p>
+              {evento.cidade && <p className="text-zinc-400 text-xs mt-0.5">{evento.cidade}</p>}
             </div>
           </div>
         )}

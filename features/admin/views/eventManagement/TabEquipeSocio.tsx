@@ -43,7 +43,7 @@ const StaffRecrutamentoSection: React.FC<{ listaId: string; toastFn?: (t: 'suces
 
   return (
     <div className="mt-6 pt-6 border-t border-white/5">
-      <p className="text-[9px] text-zinc-500 font-black uppercase tracking-widest mb-4">Staff do Evento</p>
+      <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest mb-4">Staff do Evento</p>
       <StaffRecrutamento
         eventoAdminId={eventoAdminId}
         comunidadeId={comunidadeId}
@@ -194,7 +194,7 @@ export const TabEquipeSocio: React.FC<{
   if (loading) {
     return (
       <div className="flex items-center justify-center py-16">
-        <Loader2 size={20} className="text-zinc-600 animate-spin" />
+        <Loader2 size={20} className="text-zinc-400 animate-spin" />
       </div>
     );
   }
@@ -204,7 +204,7 @@ export const TabEquipeSocio: React.FC<{
       {/* Busca */}
       <div className="relative">
         <div className="flex items-center gap-3 bg-zinc-900/60 border border-white/5 rounded-xl px-4 py-2.5 focus-within:border-[#FFD300]/30">
-          <Search size={14} className="text-zinc-600 shrink-0" />
+          <Search size={14} className="text-zinc-400 shrink-0" />
           <input
             value={query}
             onChange={e => {
@@ -221,7 +221,7 @@ export const TabEquipeSocio: React.FC<{
                 setQuery('');
                 setShowResults(false);
               }}
-              className="text-zinc-600 active:text-zinc-400"
+              className="text-zinc-400 active:text-zinc-400"
             >
               <X size={13} />
             </button>
@@ -241,7 +241,7 @@ export const TabEquipeSocio: React.FC<{
                 <img loading="lazy" src={m.foto} alt={m.nome} className="w-9 h-9 rounded-full object-cover shrink-0" />
                 <div className="min-w-0">
                   <p className="text-white font-bold text-sm leading-none truncate">{m.nome}</p>
-                  <p className="text-zinc-600 text-[10px] mt-0.5 truncate">{m.email}</p>
+                  <p className="text-zinc-400 text-[10px] mt-0.5 truncate">{m.email}</p>
                 </div>
               </button>
             ))}
@@ -273,7 +273,7 @@ export const TabEquipeSocio: React.FC<{
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-white font-bold text-sm leading-none truncate mb-1">{m.nome}</p>
-                <span className="text-[8px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-zinc-900 text-zinc-500 border border-white/5">
+                <span className="text-[8px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-zinc-900 text-zinc-400 border border-white/5">
                   {m.papel}
                 </span>
               </div>
@@ -340,11 +340,11 @@ export const TabEquipeSocio: React.FC<{
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-white font-bold text-base leading-none truncate">{cargoTarget.nome}</p>
-                <p className="text-zinc-500 text-[10px] mt-0.5 truncate">{cargoTarget.email}</p>
+                <p className="text-zinc-400 text-[10px] mt-0.5 truncate">{cargoTarget.email}</p>
               </div>
             </div>
             <div className="p-5 space-y-2">
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-3">Cargo neste evento</p>
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-3">Cargo neste evento</p>
               {PAPEIS.map(p => (
                 <button
                   key={p}

@@ -418,12 +418,12 @@ export const AdminSidebar: React.FC<{
                 </span>
               </div>
             ) : (
-              <span className="flex-1 text-zinc-500 text-[9px] font-black uppercase tracking-widest truncate px-1">
+              <span className="flex-1 text-zinc-400 text-[9px] font-black uppercase tracking-widest truncate px-1">
                 Portal VANTA
               </span>
             )}
             {!isDesktop && (
-              <button
+              <button aria-label="Voltar"
                 onClick={onToggle}
                 className="flex items-center justify-center w-8 h-8 rounded-lg active:bg-white/5 transition-all"
               >
@@ -433,7 +433,7 @@ export const AdminSidebar: React.FC<{
           </div>
         ) : (
           <div className="flex items-center justify-center w-full">
-            <button
+            <button aria-label="Abrir menu"
               onClick={onToggle}
               className="flex items-center justify-center w-10 h-10 rounded-lg active:bg-white/5 transition-all"
             >
@@ -456,12 +456,12 @@ export const AdminSidebar: React.FC<{
                   className="w-full flex items-center gap-1.5 px-4 pt-2 pb-1 group"
                 >
                   {collapsed ? (
-                    <ChevronRight size={10} className="text-zinc-600 shrink-0 transition-transform" />
+                    <ChevronRight size={10} className="text-zinc-400 shrink-0 transition-transform" />
                   ) : (
-                    <ChevronDown size={10} className="text-zinc-600 shrink-0 transition-transform" />
+                    <ChevronDown size={10} className="text-zinc-400 shrink-0 transition-transform" />
                   )}
                   <span
-                    className={`text-[9px] font-black uppercase tracking-[0.2em] truncate ${sectionHasActive ? 'text-zinc-500' : 'text-zinc-700'}`}
+                    className={`text-[9px] font-black uppercase tracking-[0.2em] truncate ${sectionHasActive ? 'text-zinc-400' : 'text-zinc-700'}`}
                   >
                     {section.label}
                   </span>
@@ -490,7 +490,7 @@ export const AdminSidebar: React.FC<{
                       key={item.id}
                       onClick={() => onSelect(item.id)}
                       className={`w-full flex items-center gap-3 px-3 py-2 transition-all relative ${
-                        isActive ? 'bg-[#FFD300]/10 text-white' : 'text-zinc-500 active:bg-white/5 active:text-zinc-300'
+                        isActive ? 'bg-[#FFD300]/10 text-white' : 'text-zinc-400 active:bg-white/5 active:text-zinc-300'
                       }`}
                     >
                       {isActive && (
@@ -543,7 +543,7 @@ export const AdminSidebar: React.FC<{
       {/* Footer — ícone de usuário */}
       <div className="shrink-0 border-t border-white/5 p-2">
         <div className="flex items-center justify-center h-9">
-          <User size={16} className="text-zinc-600" />
+          <User size={16} className="text-zinc-400" />
         </div>
       </div>
     </aside>

@@ -132,7 +132,7 @@ export const EventCheckInView: React.FC<{
 
       <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-6 pt-8 pb-4 shrink-0">
         <div className="flex items-center gap-3 mb-4">
-          <button
+          <button aria-label="Voltar"
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
           >
@@ -173,14 +173,14 @@ export const EventCheckInView: React.FC<{
 
         <div className="flex items-end justify-between mb-3">
           <div>
-            <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest mb-1.5">Presentes</p>
+            <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mb-1.5">Presentes</p>
             <div className="flex items-baseline gap-2">
               <span className="text-emerald-400 font-black text-5xl leading-none">{usados}</span>
-              <span className="text-zinc-600 text-2xl font-light">/{total}</span>
+              <span className="text-zinc-400 text-2xl font-light">/{total}</span>
             </div>
           </div>
           <div className="text-right pb-1">
-            <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest">Frequência</p>
+            <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">Frequência</p>
             <p className="text-white font-black text-3xl leading-none">{pct}%</p>
           </div>
         </div>
@@ -202,7 +202,7 @@ export const EventCheckInView: React.FC<{
               className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${
                 modo === 'LISTA'
                   ? 'bg-white/10 text-white border border-white/10'
-                  : 'text-zinc-600 active:text-zinc-400'
+                  : 'text-zinc-400 active:text-zinc-400'
               }`}
             >
               <List size={11} /> Lista
@@ -212,7 +212,7 @@ export const EventCheckInView: React.FC<{
               className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${
                 modo === 'QR'
                   ? 'bg-[#FFD300]/10 text-[#FFD300] border border-[#FFD300]/20'
-                  : 'text-zinc-600 active:text-zinc-400'
+                  : 'text-zinc-400 active:text-zinc-400'
               }`}
             >
               <QrCode size={11} /> QR Code
@@ -222,7 +222,7 @@ export const EventCheckInView: React.FC<{
 
         {modo === 'LISTA' && (
           <div className="flex items-center gap-3 bg-zinc-900/60 border border-white/5 rounded-xl px-4 py-3">
-            <Search size={14} className="text-zinc-600 shrink-0" />
+            <Search size={14} className="text-zinc-400 shrink-0" />
             <input
               value={search}
               onChange={e => setSearch(e.target.value)}
@@ -231,7 +231,7 @@ export const EventCheckInView: React.FC<{
             />
             {search.length > 0 && (
               <button onClick={() => setSearch('')} className="shrink-0 active:scale-90 transition-all">
-                <X size={13} className="text-zinc-600" />
+                <X size={13} className="text-zinc-400" />
               </button>
             )}
           </div>
@@ -281,7 +281,7 @@ export const EventCheckInView: React.FC<{
                 >
                   <div
                     className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 font-black text-lg ${
-                      isUsado ? 'bg-zinc-800/50 text-zinc-600' : 'bg-zinc-800 text-white'
+                      isUsado ? 'bg-zinc-800/50 text-zinc-400' : 'bg-zinc-800 text-white'
                     }`}
                   >
                     {inicial}
@@ -289,11 +289,11 @@ export const EventCheckInView: React.FC<{
 
                   <div className="flex-1 min-w-0">
                     <p
-                      className={`font-bold text-base leading-tight truncate ${isUsado ? 'text-zinc-500' : 'text-white'}`}
+                      className={`font-bold text-base leading-tight truncate ${isUsado ? 'text-zinc-400' : 'text-white'}`}
                     >
                       {nome}
                     </p>
-                    <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest truncate mt-0.5">
+                    <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest truncate mt-0.5">
                       {ticket.variacaoLabel}
                     </p>
                     {isUsado && ticket.usadoEm && (
@@ -347,14 +347,14 @@ export const EventCheckInView: React.FC<{
                   {(confirming.nomeTitular ?? confirming.email).charAt(0).toUpperCase()}
                 </span>
               </div>
-              <p className="text-zinc-500 text-[9px] font-black uppercase tracking-widest mb-2">Confirmar entrada</p>
+              <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mb-2">Confirmar entrada</p>
               <h2
                 style={TYPOGRAPHY.screenTitle}
                 className="text-2xl italic text-center leading-tight mb-1 truncate max-w-full px-4"
               >
                 {confirming.nomeTitular ?? confirming.email}
               </h2>
-              <p className="text-zinc-600 text-[10px] mb-3 truncate max-w-full px-4">{confirming.email}</p>
+              <p className="text-zinc-400 text-[10px] mb-3 truncate max-w-full px-4">{confirming.email}</p>
               <span className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#FFD300]/10 border border-[#FFD300]/30">
                 <span className="w-2 h-2 rounded-full bg-[#FFD300]" />
                 <span className="text-[#FFD300] text-[9px] font-black uppercase tracking-widest">
@@ -370,7 +370,7 @@ export const EventCheckInView: React.FC<{
                 onClick={() => setConfirming(null)}
                 className="w-14 h-14 bg-zinc-900 border border-white/10 rounded-2xl flex items-center justify-center active:scale-90 transition-all shrink-0"
               >
-                <X size={18} className="text-zinc-500" />
+                <X size={18} className="text-zinc-400" />
               </button>
               <button
                 onClick={() => handleEntrada(confirming)}

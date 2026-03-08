@@ -93,7 +93,7 @@ export const ImageCropperModal: React.FC<{ image: string; onConfirm: (img: strin
         >
           <div className="space-y-4">
             <div className="flex justify-between items-center">
-              <span className="text-[10px] text-zinc-500 uppercase font-black tracking-widest flex gap-2">
+              <span className="text-[10px] text-zinc-400 uppercase font-black tracking-widest flex gap-2">
                 <ZoomIn size={12} /> Zoom
               </span>
               <span className="text-[10px] text-[#FFD300] font-mono">{Math.round(zoom * 100)}%</span>

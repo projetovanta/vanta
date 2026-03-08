@@ -69,14 +69,14 @@ const MiniCalendar: React.FC<{
     <div className="space-y-3">
       {/* Header mês */}
       <div className="flex items-center justify-between">
-        <button
+        <button aria-label="Voltar"
           onClick={prevMonth}
           className="w-8 h-8 flex items-center justify-center rounded-lg bg-black/40 border border-white/5 active:scale-90 transition-all"
         >
           <ChevronLeft size={14} className="text-zinc-400" />
         </button>
         <p className="text-white text-xs font-bold">{monthLabel}</p>
-        <button
+        <button aria-label="Avançar"
           onClick={nextMonth}
           className="w-8 h-8 flex items-center justify-center rounded-lg bg-black/40 border border-white/5 active:scale-90 transition-all"
         >
@@ -87,7 +87,7 @@ const MiniCalendar: React.FC<{
       {/* Grid */}
       <div className="grid grid-cols-7 gap-1">
         {weekDayHeaders.map((h, i) => (
-          <div key={i} className="text-center text-[8px] text-zinc-600 font-black uppercase py-1">
+          <div key={i} className="text-center text-[8px] text-zinc-400 font-black uppercase py-1">
             {h}
           </div>
         ))}
@@ -275,13 +275,13 @@ export const TimeFilterModal: React.FC<{
                   {/* Range labels */}
                   <div className="flex items-center gap-2 mb-1">
                     <div
-                      className={`flex-1 text-center py-2 rounded-lg text-[10px] font-bold ${rangeStart ? 'bg-[#FFD300]/10 text-[#FFD300] border border-[#FFD300]/20' : 'bg-black/40 text-zinc-600 border border-white/5'}`}
+                      className={`flex-1 text-center py-2 rounded-lg text-[10px] font-bold ${rangeStart ? 'bg-[#FFD300]/10 text-[#FFD300] border border-[#FFD300]/20' : 'bg-black/40 text-zinc-400 border border-white/5'}`}
                     >
                       {rangeStart ? formatRange(rangeStart) : 'Início'}
                     </div>
-                    <span className="text-zinc-600 text-[10px]">—</span>
+                    <span className="text-zinc-400 text-[10px]">—</span>
                     <div
-                      className={`flex-1 text-center py-2 rounded-lg text-[10px] font-bold ${rangeEnd ? 'bg-[#FFD300]/10 text-[#FFD300] border border-[#FFD300]/20' : 'bg-black/40 text-zinc-600 border border-white/5'}`}
+                      className={`flex-1 text-center py-2 rounded-lg text-[10px] font-bold ${rangeEnd ? 'bg-[#FFD300]/10 text-[#FFD300] border border-[#FFD300]/20' : 'bg-black/40 text-zinc-400 border border-white/5'}`}
                     >
                       {rangeEnd ? formatRange(rangeEnd) : 'Fim'}
                     </div>
@@ -310,7 +310,7 @@ export const TimeFilterModal: React.FC<{
                 onSelectTimeFilter(null);
                 onClose();
               }}
-              className="w-full py-4 bg-black/60 border-t border-white/5 text-[9px] font-black uppercase tracking-[0.3em] text-zinc-500 hover:text-white transition-colors"
+              className="w-full py-4 bg-black/60 border-t border-white/5 text-[9px] font-black uppercase tracking-[0.3em] text-zinc-400 hover:text-white transition-colors"
             >
               Limpar Filtro
             </button>

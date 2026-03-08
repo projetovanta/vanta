@@ -45,10 +45,10 @@ export const ChatListItem: React.FC<ChatListItemProps> = React.memo(({ chat, onC
             {nome}
             {moodEmoji ? <span className="ml-1 text-[12px]">{moodEmoji}</span> : null}
           </h3>
-          <span className="text-[10px] text-zinc-600 font-medium">{formatRelativeTime(chat.lastMessageTime)}</span>
+          <span className="text-[10px] text-zinc-400 font-medium">{formatRelativeTime(chat.lastMessageTime)}</span>
         </div>
         <p
-          className={`text-[12px] truncate italic ${chat.unreadCount > 0 ? 'text-zinc-200 font-bold' : 'text-zinc-500 font-light'}`}
+          className={`text-[12px] truncate italic ${chat.unreadCount > 0 ? 'text-zinc-200 font-bold' : 'text-zinc-400 font-light'}`}
         >
           {chat.lastMessage || 'Nenhuma mensagem trocada.'}
         </p>

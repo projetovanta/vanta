@@ -69,7 +69,7 @@ export const SovereigntyGuard: React.FC<SovereigntyGuardProps> = ({
             <span className="text-white/60 font-semibold">{nomeEvento}</span>, você precisa de autorização do Gerente do
             Evento.
           </p>
-          <p className="text-[9px] text-zinc-600 font-black uppercase tracking-widest mt-1">
+          <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest mt-1">
             O sócio/dono do evento deve aprovar seu acesso no painel dele.
           </p>
         </div>

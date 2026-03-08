@@ -38,7 +38,7 @@ export const LiveNowSection: React.FC<{
                 {e.formato || e.categoria}
               </span>
               <h4 className="font-serif text-sm text-white leading-tight truncate">{e.titulo}</h4>
-              <p className="text-zinc-500 text-[10px] mt-0.5 truncate">{e.local}</p>
+              <p className="text-zinc-400 text-[10px] mt-0.5 truncate">{e.local}</p>
             </div>
             <div className="flex items-center shrink-0">
               <ArrowRight size={14} className="text-red-400" />

@@ -187,7 +187,7 @@ export const TabResumoCaixa: React.FC<{ lista: ListaEvento; toastFn?: (t: 'suces
             <div className="bg-zinc-900/40 border border-white/5 rounded-2xl p-4 space-y-3">
               <div className="flex items-center gap-2 mb-1">
                 <DollarSign size={14} className="text-[#FFD300]" />
-                <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Resumo Financeiro</p>
+                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Resumo Financeiro</p>
               </div>
               {(
                 [
@@ -202,19 +202,19 @@ export const TabResumoCaixa: React.FC<{ lista: ListaEvento; toastFn?: (t: 'suces
                 ] as [string, string, string][]
               ).map(([label, val, cls]) => (
                 <div key={label} className="flex items-center justify-between">
-                  <span className="text-[10px] text-zinc-500 font-semibold">{label}</span>
+                  <span className="text-[10px] text-zinc-400 font-semibold">{label}</span>
                   <span className={`text-sm font-bold ${cls}`}>{val}</span>
                 </div>
               ))}
               <div className="border-t border-white/5 pt-2 mt-2">
-                <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-2">Por Origem</p>
+                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">Por Origem</p>
                 <div className="grid grid-cols-2 gap-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-[9px] text-zinc-500">Antecipado</span>
+                    <span className="text-[9px] text-zinc-400">Antecipado</span>
                     <span className="text-[9px] text-[#FFD300] font-bold">{fmtBRL(receitaAntecipado)}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-[9px] text-zinc-500">Porta</span>
+                    <span className="text-[9px] text-zinc-400">Porta</span>
                     <span className="text-[9px] text-emerald-400 font-bold">{fmtBRL(receitaPorta)}</span>
                   </div>
                 </div>
@@ -253,7 +253,7 @@ export const TabResumoCaixa: React.FC<{ lista: ListaEvento; toastFn?: (t: 'suces
           },
         ].map(o => (
           <div key={o.label} className="p-3 bg-zinc-900/40 border border-white/5 rounded-2xl space-y-1.5">
-            <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest">{o.label}</p>
+            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">{o.label}</p>
             <p className="text-white font-black text-lg leading-none">{o.valor}</p>
             <div className="w-full h-1 bg-zinc-800 rounded-full overflow-hidden">
               <div
@@ -278,7 +278,7 @@ export const TabResumoCaixa: React.FC<{ lista: ListaEvento; toastFn?: (t: 'suces
             <p className={`text-sm font-bold leading-none ${caixaAtivo ? 'text-emerald-400' : 'text-white'}`}>
               Venda na Porta
             </p>
-            <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest mt-1">
+            <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mt-1">
               {caixaAtivo ? 'Operadores Caixa podem vender agora' : 'Permitir venda por operadores Caixa'}
             </p>
           </div>
@@ -299,7 +299,7 @@ export const TabResumoCaixa: React.FC<{ lista: ListaEvento; toastFn?: (t: 'suces
             key={p.id}
             onClick={() => setPeriodo(p.id)}
             className={`flex-1 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all ${
-              periodo === p.id ? 'bg-[#FFD300] text-black' : 'bg-zinc-900/60 text-zinc-500 border border-white/5'
+              periodo === p.id ? 'bg-[#FFD300] text-black' : 'bg-zinc-900/60 text-zinc-400 border border-white/5'
             }`}
           >
             {p.label}
@@ -310,14 +310,14 @@ export const TabResumoCaixa: React.FC<{ lista: ListaEvento; toastFn?: (t: 'suces
       {/* Bilheteria + Gráfico */}
       {eventoAdmin && (
         <div className="p-5 bg-zinc-900/40 border border-white/5 rounded-2xl">
-          <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest mb-3">Bilheteria</p>
+          <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mb-3">Bilheteria</p>
           <div className="grid grid-cols-2 gap-2">
             <div className="bg-zinc-900 border border-white/5 rounded-xl p-3">
-              <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest mb-1">Antecipado</p>
+              <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mb-1">Antecipado</p>
               <p className="text-[#FFD300] font-black text-xl leading-none">
                 {logFiltrado.filter(v => v.origem === 'ANTECIPADO').length}
               </p>
-              <p className="text-zinc-500 text-[9px] mt-1">
+              <p className="text-zinc-400 text-[9px] mt-1">
                 R${' '}
                 {logFiltrado
                   .filter(v => v.origem === 'ANTECIPADO')
@@ -326,11 +326,11 @@ export const TabResumoCaixa: React.FC<{ lista: ListaEvento; toastFn?: (t: 'suces
               </p>
             </div>
             <div className="bg-zinc-900 border border-white/5 rounded-xl p-3">
-              <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest mb-1">Porta</p>
+              <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mb-1">Porta</p>
               <p className="text-emerald-400 font-black text-xl leading-none">
                 {logFiltrado.filter(v => v.origem === 'PORTA').length}
               </p>
-              <p className="text-zinc-500 text-[9px] mt-1">
+              <p className="text-zinc-400 text-[9px] mt-1">
                 R${' '}
                 {logFiltrado
                   .filter(v => v.origem === 'PORTA')
@@ -339,14 +339,14 @@ export const TabResumoCaixa: React.FC<{ lista: ListaEvento; toastFn?: (t: 'suces
               </p>
             </div>
             <div className="bg-zinc-900 border border-white/5 rounded-xl p-3">
-              <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest mb-1">Lista</p>
+              <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mb-1">Lista</p>
               <p className="text-blue-400 font-black text-xl leading-none">{total}</p>
-              <p className="text-zinc-500 text-[9px] mt-1">{listaCI} check-ins</p>
+              <p className="text-zinc-400 text-[9px] mt-1">{listaCI} check-ins</p>
             </div>
             <div className="bg-zinc-900 border border-white/5 rounded-xl p-3">
-              <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest mb-1">Cortesia</p>
+              <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mb-1">Cortesia</p>
               <p className="text-pink-400 font-black text-xl leading-none">{cortesiasEnviadas}</p>
-              <p className="text-zinc-500 text-[9px] mt-1">R$ 0,00</p>
+              <p className="text-zinc-400 text-[9px] mt-1">R$ 0,00</p>
             </div>
           </div>
 
@@ -357,7 +357,7 @@ export const TabResumoCaixa: React.FC<{ lista: ListaEvento; toastFn?: (t: 'suces
                 key={m}
                 onClick={() => setModoGrafico(m)}
                 className={`flex-1 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all ${
-                  modoGrafico === m ? 'bg-[#FFD300] text-black' : 'bg-zinc-900 text-zinc-500 border border-white/5'
+                  modoGrafico === m ? 'bg-[#FFD300] text-black' : 'bg-zinc-900 text-zinc-400 border border-white/5'
                 }`}
               >
                 {m === 'FINANCEIRO' ? '💰 Financeiro' : '🏟️ Público'}
@@ -368,7 +368,7 @@ export const TabResumoCaixa: React.FC<{ lista: ListaEvento; toastFn?: (t: 'suces
           {/* Gráfico de pizza */}
           {fatias.length > 0 ? (
             <div className="mt-4 pt-4 border-t border-white/5">
-              <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest mb-4">
+              <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mb-4">
                 {modoGrafico === 'FINANCEIRO' ? 'Distribuição de receita' : 'Distribuição de público'}
               </p>
               <VantaPieChart
@@ -391,11 +391,11 @@ export const TabResumoCaixa: React.FC<{ lista: ListaEvento; toastFn?: (t: 'suces
 
       {/* Frequência hero */}
       <div className="p-5 bg-zinc-900/40 border border-white/5 rounded-2xl">
-        <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest mb-3">Frequência</p>
+        <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mb-3">Frequência</p>
         <div className="flex items-end justify-between mb-3">
           <div className="flex items-baseline gap-1.5">
             <span className="text-emerald-400 font-black text-4xl leading-none">{entraram}</span>
-            <span className="text-zinc-600 text-xl font-light">/{total}</span>
+            <span className="text-zinc-400 text-xl font-light">/{total}</span>
           </div>
           <span className="text-white font-black text-2xl leading-none">{pctFreq}%</span>
         </div>
@@ -408,11 +408,11 @@ export const TabResumoCaixa: React.FC<{ lista: ListaEvento; toastFn?: (t: 'suces
         <div className="flex gap-5">
           <div className="flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-emerald-500" />
-            <span className="text-zinc-500 text-[9px] font-black uppercase tracking-widest">Foram · {entraram}</span>
+            <span className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">Foram · {entraram}</span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-zinc-700" />
-            <span className="text-zinc-500 text-[9px] font-black uppercase tracking-widest">Não foram · {naoFoi}</span>
+            <span className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">Não foram · {naoFoi}</span>
           </div>
         </div>
       </div>
@@ -432,13 +432,13 @@ export const TabResumoCaixa: React.FC<{ lista: ListaEvento; toastFn?: (t: 'suces
                 <span className="font-black text-xl leading-none" style={{ color: cor }}>
                   {r.count}
                 </span>
-                <span className="text-zinc-600 text-sm font-light">/{r.tetoGlobal}</span>
+                <span className="text-zinc-400 text-sm font-light">/{r.tetoGlobal}</span>
               </div>
             </div>
             <div className="w-full h-1.5 bg-zinc-800 rounded-full overflow-hidden mb-1.5">
               <div className="h-full rounded-full" style={{ width: `${Math.min(pctR, 100)}%`, backgroundColor: cor }} />
             </div>
-            <p className="text-zinc-600 text-[9px] font-black">{r.entraram} entraram</p>
+            <p className="text-zinc-400 text-[9px] font-black">{r.entraram} entraram</p>
           </div>
         );
       })}
@@ -454,7 +454,7 @@ export const TabResumoCaixa: React.FC<{ lista: ListaEvento; toastFn?: (t: 'suces
                   key={f}
                   onClick={() => setRankingFiltro(f)}
                   className={`px-2.5 py-1 rounded-lg text-[8px] font-black uppercase tracking-widest transition-all ${
-                    rankingFiltro === f ? 'bg-[#FFD300] text-black' : 'bg-zinc-900 text-zinc-500 border border-white/5'
+                    rankingFiltro === f ? 'bg-[#FFD300] text-black' : 'bg-zinc-900 text-zinc-400 border border-white/5'
                   }`}
                 >
                   {f === 'VOLUME' ? 'Volume' : 'Eficiência'}
@@ -479,7 +479,7 @@ export const TabResumoCaixa: React.FC<{ lista: ListaEvento; toastFn?: (t: 'suces
                   <p className="text-white font-bold text-sm flex-1 min-w-0 truncate">{p.nome}</p>
                   <div className="text-right shrink-0">
                     <span className="text-[#FFD300] font-black text-lg leading-none">{metricaValor}</span>
-                    <span className="text-zinc-600 text-[9px] font-black ml-0.5">{metricaSufixo}</span>
+                    <span className="text-zinc-400 text-[9px] font-black ml-0.5">{metricaSufixo}</span>
                   </div>
                 </div>
                 <div className="w-full h-1.5 bg-zinc-800 rounded-full overflow-hidden">
@@ -513,14 +513,14 @@ export const TabResumoCaixa: React.FC<{ lista: ListaEvento; toastFn?: (t: 'suces
       {!encerrado ? (
         <button
           onClick={() => setEncerrado(true)}
-          className="w-full py-4 border border-white/10 bg-zinc-900/40 rounded-2xl text-zinc-500 text-[10px] font-black uppercase tracking-widest active:scale-[0.98] transition-all"
+          className="w-full py-4 border border-white/10 bg-zinc-900/40 rounded-2xl text-zinc-400 text-[10px] font-black uppercase tracking-widest active:scale-[0.98] transition-all"
         >
           Encerrar Evento
         </button>
       ) : (
         <div className="p-5 bg-zinc-900/40 border border-white/5 rounded-2xl space-y-4">
           <div className="flex items-center justify-between">
-            <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest">Relatório Final</p>
+            <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">Relatório Final</p>
             <button
               onClick={() => setEncerrado(false)}
               className="text-zinc-700 active:text-zinc-400 transition-colors"
@@ -561,13 +561,13 @@ export const TabResumoCaixa: React.FC<{ lista: ListaEvento; toastFn?: (t: 'suces
                   <p className="text-white font-bold text-sm leading-none truncate mb-1.5">{p.nome}</p>
                   <div className="flex flex-wrap gap-x-4 gap-y-1">
                     {p.nomes > 0 && (
-                      <p className="text-zinc-500 text-[9px] font-black">
+                      <p className="text-zinc-400 text-[9px] font-black">
                         {p.nomes} nomes
                         {p.ci > 0 && <span className="text-emerald-400"> ({p.ci} CI)</span>}
                       </p>
                     )}
                     {p.receita > 0 && (
-                      <p className="text-zinc-500 text-[9px] font-black">
+                      <p className="text-zinc-400 text-[9px] font-black">
                         R${' '}
                         <span className="text-[#FFD300]">
                           {p.receita.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
@@ -589,8 +589,8 @@ export const TabResumoCaixa: React.FC<{ lista: ListaEvento; toastFn?: (t: 'suces
               </div>
               {auditoriaCortesiasEntries.map(([nome, qtd]) => (
                 <div key={nome} className="flex items-center justify-between px-1">
-                  <p className="text-zinc-500 text-[9px] truncate flex-1 min-w-0">{nome}</p>
-                  <p className="text-zinc-600 text-[9px] font-black shrink-0 ml-3">
+                  <p className="text-zinc-400 text-[9px] truncate flex-1 min-w-0">{nome}</p>
+                  <p className="text-zinc-400 text-[9px] font-black shrink-0 ml-3">
                     {qtd} enviada{qtd !== 1 ? 's' : ''}
                   </p>
                 </div>

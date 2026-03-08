@@ -33,7 +33,7 @@ const selfieStatusColor = (s: SelfieStatus) => {
   if (s === 'APPROVED') return 'text-emerald-500';
   if (s === 'FACE_DETECTED' || s === 'CAPTURED') return 'text-emerald-400';
   if (s === 'DARK' || s === 'NO_FACE' || s === 'PARTIAL') return 'text-red-400';
-  return 'text-zinc-500';
+  return 'text-zinc-400';
 };
 
 const FACE_FRAMES_REQUIRED = 3;
@@ -409,7 +409,7 @@ export const SelfieCameraComponent: React.FC<{
               className={`w-full flex items-center justify-center gap-2 py-3.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
                 status === 'FACE_DETECTED'
                   ? 'bg-[#FFD300] text-black active:scale-95'
-                  : 'bg-zinc-800 text-zinc-600 cursor-not-allowed'
+                  : 'bg-zinc-800 text-zinc-400 cursor-not-allowed'
               }`}
             >
               <Camera size={13} /> Capturar
@@ -488,8 +488,8 @@ export const SelfieCameraComponent: React.FC<{
               />
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-center">
-              <Camera size={32} className="text-zinc-600" />
-              <p className="text-zinc-600 text-[10px] font-black uppercase tracking-widest">Tire uma selfie</p>
+              <Camera size={32} className="text-zinc-400" />
+              <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">Tire uma selfie</p>
             </div>
           </>
         )}
@@ -523,7 +523,7 @@ export const SelfieCameraComponent: React.FC<{
             <RefreshCw size={13} /> Tentar novamente
           </label>
         ) : status === 'ANALYZING' ? (
-          <div className="flex-1 flex items-center justify-center gap-2 py-3.5 bg-zinc-900 border border-white/10 rounded-xl text-zinc-600 text-[10px] font-black uppercase tracking-widest">
+          <div className="flex-1 flex items-center justify-center gap-2 py-3.5 bg-zinc-900 border border-white/10 rounded-xl text-zinc-400 text-[10px] font-black uppercase tracking-widest">
             Analisando…
           </div>
         ) : (

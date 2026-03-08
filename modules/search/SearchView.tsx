@@ -299,7 +299,7 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
-                        <Building2 size={20} className="text-zinc-600" />
+                        <Building2 size={20} className="text-zinc-400" />
                       </div>
                     )}
                   </div>
@@ -310,11 +310,11 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
                       </span>
                     </div>
                     <p className="text-white font-bold text-sm truncate">{comunidadeSpotlight.comunidade.nome}</p>
-                    <p className="text-zinc-500 text-[10px] mt-0.5">Entre para ver todos os eventos</p>
+                    <p className="text-zinc-400 text-[10px] mt-0.5">Entre para ver todos os eventos</p>
                     {comunidadeSpotlight.comunidade.cidade && (
                       <div className="flex items-center gap-1 mt-1">
-                        <MapPin size={9} className="text-zinc-600" />
-                        <p className="text-zinc-600 text-[10px] truncate">{comunidadeSpotlight.comunidade.cidade}</p>
+                        <MapPin size={9} className="text-zinc-400" />
+                        <p className="text-zinc-400 text-[10px] truncate">{comunidadeSpotlight.comunidade.cidade}</p>
                       </div>
                     )}
                   </div>
@@ -322,7 +322,7 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
                 </button>
                 {comunidadeSpotlight.eventos.length > 0 && (
                   <>
-                    <p className="text-[8px] font-black uppercase tracking-widest text-zinc-600 mb-3">
+                    <p className="text-[8px] font-black uppercase tracking-widest text-zinc-400 mb-3">
                       Próximos eventos neste local
                     </p>
                     <div className="space-y-3 mb-6">
@@ -337,7 +337,7 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
                           </div>
                           <div className="flex-1 min-w-0">
                             <p className="text-white text-sm font-bold truncate">{e.titulo}</p>
-                            <p className="text-zinc-500 text-[10px] mt-0.5">
+                            <p className="text-zinc-400 text-[10px] mt-0.5">
                               {e.data} · {e.horario}
                             </p>
                           </div>

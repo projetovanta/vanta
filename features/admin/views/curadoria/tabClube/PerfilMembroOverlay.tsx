@@ -68,7 +68,7 @@ export const PerfilMembroOverlay: React.FC<Props> = ({
       <div className="flex gap-4 mb-5">
         {perfil.selfieSignedUrl && (
           <div className="shrink-0">
-            <p className="text-zinc-600 text-[8px] font-black uppercase tracking-wider mb-1.5">Selfie Cadastro</p>
+            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-wider mb-1.5">Selfie Cadastro</p>
             <div className="w-24 h-24 rounded-2xl overflow-hidden border-2 border-[#FFD300]/30 bg-zinc-900">
               <img loading="lazy" src={perfil.selfieSignedUrl} alt="Selfie" className="w-full h-full object-cover" />
             </div>
@@ -76,7 +76,7 @@ export const PerfilMembroOverlay: React.FC<Props> = ({
         )}
         {perfil.foto && (
           <div className="shrink-0">
-            <p className="text-zinc-600 text-[8px] font-black uppercase tracking-wider mb-1.5">Foto Perfil</p>
+            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-wider mb-1.5">Foto Perfil</p>
             <div className="w-24 h-24 rounded-2xl overflow-hidden border border-white/10 bg-zinc-900">
               <img loading="lazy" src={perfil.foto} alt="Perfil" className="w-full h-full object-cover" />
             </div>
@@ -96,28 +96,28 @@ export const PerfilMembroOverlay: React.FC<Props> = ({
       <div className="space-y-2.5 mb-5">
         {perfil.email && (
           <div className="flex items-center gap-2.5">
-            <Mail size={12} className="text-zinc-600 shrink-0" />
+            <Mail size={12} className="text-zinc-400 shrink-0" />
             <span className="text-zinc-300 text-xs truncate">{perfil.email}</span>
           </div>
         )}
         {perfil.telefone && (
           <div className="flex items-center gap-2.5">
-            <Phone size={12} className="text-zinc-600 shrink-0" />
+            <Phone size={12} className="text-zinc-400 shrink-0" />
             <span className="text-zinc-300 text-xs">{perfil.telefone}</span>
           </div>
         )}
         {(perfil.cidade || perfil.estado) && (
           <div className="flex items-center gap-2.5">
-            <MapPin size={12} className="text-zinc-600 shrink-0" />
+            <MapPin size={12} className="text-zinc-400 shrink-0" />
             <span className="text-zinc-300 text-xs">{[perfil.cidade, perfil.estado].filter(Boolean).join(', ')}</span>
           </div>
         )}
         {igHandle && (
           <div className="flex items-center gap-2.5 flex-wrap">
-            <Instagram size={12} className="text-zinc-600 shrink-0" />
+            <Instagram size={12} className="text-zinc-400 shrink-0" />
             <span className="text-zinc-300 text-xs">@{igHandle}</span>
             {(solicitacao?.instagramSeguidores || membro?.instagramSeguidores) && (
-              <span className="text-zinc-600 text-[10px]">
+              <span className="text-zinc-400 text-[10px]">
                 · {(solicitacao?.instagramSeguidores || membro?.instagramSeguidores)?.toLocaleString('pt-BR')}{' '}
                 seguidores
               </span>
@@ -128,7 +128,7 @@ export const PerfilMembroOverlay: React.FC<Props> = ({
               </span>
             ) : (
               (solicitacao || membro) && (
-                <span className="text-[8px] font-black uppercase tracking-wider text-zinc-500 bg-zinc-800 border border-white/5 px-1.5 py-0.5 rounded-full">
+                <span className="text-[8px] font-black uppercase tracking-wider text-zinc-400 bg-zinc-800 border border-white/5 px-1.5 py-0.5 rounded-full">
                   Não verificado
                 </span>
               )
@@ -137,7 +137,7 @@ export const PerfilMembroOverlay: React.FC<Props> = ({
         )}
         {perfil.cadastradoEm && (
           <div className="flex items-center gap-2.5">
-            <Calendar size={12} className="text-zinc-600 shrink-0" />
+            <Calendar size={12} className="text-zinc-400 shrink-0" />
             <span className="text-zinc-300 text-xs">Cadastro: {formatDate(perfil.cadastradoEm)}</span>
           </div>
         )}
@@ -149,7 +149,7 @@ export const PerfilMembroOverlay: React.FC<Props> = ({
         )}
         {solicitacao?.convidadoPor && (
           <div className="flex items-center gap-2.5">
-            <User size={12} className="text-zinc-600 shrink-0" />
+            <User size={12} className="text-zinc-400 shrink-0" />
             <span className="text-zinc-300 text-xs">
               Convidado por: {perfis[solicitacao.convidadoPor]?.nome || solicitacao.convidadoPor.slice(0, 8)}
             </span>

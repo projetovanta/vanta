@@ -34,8 +34,8 @@ export const Step5Financeiro: React.FC<Props> = ({ split, setSplit, socio }) => 
   return (
     <div className="space-y-6">
       <div>
-        <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1">Split Financeiro</p>
-        <p className="text-zinc-500 text-[10px] leading-relaxed">
+        <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1">Split Financeiro</p>
+        <p className="text-zinc-400 text-[10px] leading-relaxed">
           Defina a divisão da receita líquida entre sócio e produtor. A taxa VANTA é aplicada antes do split.
         </p>
       </div>
@@ -51,7 +51,7 @@ export const Step5Financeiro: React.FC<Props> = ({ split, setSplit, socio }) => 
           />
           <div className="flex-1 min-w-0">
             <p className="text-white font-bold text-sm leading-none truncate">{socio.nome}</p>
-            <p className="text-zinc-500 text-[10px] mt-0.5">Sócio convidado</p>
+            <p className="text-zinc-400 text-[10px] mt-0.5">Sócio convidado</p>
           </div>
         </div>
       )}
@@ -70,7 +70,7 @@ export const Step5Financeiro: React.FC<Props> = ({ split, setSplit, socio }) => 
                 max="100"
                 className="w-full bg-zinc-900/60 border border-white/5 rounded-xl px-4 py-3 text-white text-lg font-bold outline-none focus:border-[#FFD300]/30 text-center"
               />
-              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 text-sm font-bold">%</span>
+              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 text-sm font-bold">%</span>
             </div>
           </div>
           <div className="flex-1">
@@ -84,7 +84,7 @@ export const Step5Financeiro: React.FC<Props> = ({ split, setSplit, socio }) => 
                 max="100"
                 className="w-full bg-zinc-900/60 border border-white/5 rounded-xl px-4 py-3 text-white text-lg font-bold outline-none focus:border-[#FFD300]/30 text-center"
               />
-              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 text-sm font-bold">%</span>
+              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 text-sm font-bold">%</span>
             </div>
           </div>
         </div>
@@ -100,8 +100,8 @@ export const Step5Financeiro: React.FC<Props> = ({ split, setSplit, socio }) => 
             className="w-full h-2 bg-zinc-800 rounded-full appearance-none cursor-pointer accent-[#FFD300]"
           />
           <div className="flex justify-between text-[8px] font-black uppercase tracking-widest">
-            <span className="text-zinc-600">0% Sócio</span>
-            <span className="text-zinc-600">100% Sócio</span>
+            <span className="text-zinc-400">0% Sócio</span>
+            <span className="text-zinc-400">100% Sócio</span>
           </div>
         </div>
 
@@ -112,7 +112,7 @@ export const Step5Financeiro: React.FC<Props> = ({ split, setSplit, socio }) => 
           {somaValida ? (
             <p className="text-white font-bold text-sm">
               <span className="text-[#FFD300]">{pSocio}% Sócio</span>
-              <span className="text-zinc-600 mx-2">·</span>
+              <span className="text-zinc-400 mx-2">·</span>
               <span className="text-emerald-400">{pProdutor}% Produtor</span>
             </p>
           ) : (

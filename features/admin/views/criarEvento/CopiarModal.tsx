@@ -114,7 +114,7 @@ export const CopiarModal: React.FC<Props> = ({ onCopiar, onClose }) => {
           <h2 style={TYPOGRAPHY.screenTitle} className="text-lg italic">
             Importar de Evento
           </h2>
-          <p className="text-zinc-600 text-[10px] mt-1">Selecione um evento e o que deseja copiar.</p>
+          <p className="text-zinc-400 text-[10px] mt-1">Selecione um evento e o que deseja copiar.</p>
         </div>
         <div className="flex-1 overflow-y-auto no-scrollbar p-5 space-y-3">
           {eventos.map(ev => (
@@ -128,7 +128,7 @@ export const CopiarModal: React.FC<Props> = ({ onCopiar, onClose }) => {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-white font-bold text-sm leading-none mb-1 truncate">{ev.nome}</p>
-                <p className="text-zinc-600 text-[10px]">{ev.dataInicio.slice(0, 10)}</p>
+                <p className="text-zinc-400 text-[10px]">{ev.dataInicio.slice(0, 10)}</p>
               </div>
               {sel === ev.id && <Check size={14} className="text-[#FFD300] shrink-0" />}
             </button>

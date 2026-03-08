@@ -23,7 +23,7 @@ export const GuestAreaModal = ({
     <div className="relative w-full max-w-[85%] bg-[#0A0A0A] border border-white/10 rounded-[2.5rem] p-8 text-center shadow-[0_0_50px_rgba(0,0,0,0.5)] animate-in zoom-in-95 duration-300">
       <button
         onClick={onCancel}
-        className="absolute top-6 right-6 p-2 text-zinc-600 hover:text-white transition-colors"
+        className="absolute top-6 right-6 p-2 text-zinc-400 hover:text-white transition-colors"
       >
         <X size={18} />
       </button>
@@ -33,7 +33,7 @@ export const GuestAreaModal = ({
       <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-3 italic">
         Área Restrita
       </h2>
-      <p className="text-zinc-500 text-xs leading-relaxed mb-8 px-2">
+      <p className="text-zinc-400 text-xs leading-relaxed mb-8 px-2">
         Essa área é exclusiva para membros VANTA. Faça login ou solicite seu cadastro.
       </p>
       <div className="space-y-3">
@@ -51,7 +51,7 @@ export const GuestAreaModal = ({
         </button>
         <button
           onClick={onCancel}
-          className="w-full py-3 text-zinc-600 font-bold text-[10px] uppercase tracking-wide active:opacity-60 transition-all"
+          className="w-full py-3 text-zinc-400 font-bold text-[10px] uppercase tracking-wide active:opacity-60 transition-all"
         >
           Não, continuar navegando
         </button>
@@ -64,7 +64,7 @@ export const SuccessFeedbackModal = ({ message, onClose }: { message: string; on
   <div className="absolute inset-0 z-[300] flex items-center justify-center p-6 animate-in fade-in duration-300">
     <div className="absolute inset-0 bg-black/80 backdrop-blur-xl" role="presentation" onClick={onClose} />
     <div className="relative w-full max-w-[85%] bg-[#0A0A0A] border border-[#FFD300]/20 rounded-[2.5rem] p-8 text-center shadow-[0_0_50px_rgba(255,211,0,0.1)] animate-in zoom-in-95 duration-500">
-      <button onClick={onClose} className="absolute top-6 right-6 p-2 text-zinc-600 hover:text-white transition-colors">
+      <button onClick={onClose} className="absolute top-6 right-6 p-2 text-zinc-400 hover:text-white transition-colors">
         <X size={18} />
       </button>
       <div className="w-20 h-20 bg-zinc-900 rounded-full flex items-center justify-center mx-auto mb-6 border border-[#FFD300]/20 shadow-xl">
@@ -73,7 +73,7 @@ export const SuccessFeedbackModal = ({ message, onClose }: { message: string; on
       <h2 style={TYPOGRAPHY.screenTitle} className="text-2xl text-white mb-3 italic">
         Sucesso!
       </h2>
-      <p className="text-zinc-500 text-xs leading-relaxed mb-8 px-4">{message}</p>
+      <p className="text-zinc-400 text-xs leading-relaxed mb-8 px-4">{message}</p>
       <button
         onClick={onClose}
         className="w-full py-4 bg-[#FFD300] text-black font-bold text-xs uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all"
@@ -181,7 +181,7 @@ export const AppModals: React.FC<AppModalsProps> = ({
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-white text-xs font-bold leading-none">Nova versão disponível</p>
-          <p className="text-zinc-500 text-[10px] mt-0.5">Atualize para a versão mais recente.</p>
+          <p className="text-zinc-400 text-[10px] mt-0.5">Atualize para a versão mais recente.</p>
         </div>
         <button
           onClick={pwa.applyUpdate}
@@ -197,7 +197,7 @@ export const AppModals: React.FC<AppModalsProps> = ({
         <img loading="lazy" src="/icon-192.png" alt="VANTA" className="w-8 h-8 rounded-xl shrink-0" />
         <div className="flex-1 min-w-0">
           <p className="text-white text-xs font-bold leading-none">Adicionar à tela inicial</p>
-          <p className="text-zinc-500 text-[10px] mt-0.5">Acesse o VANTA como app nativo.</p>
+          <p className="text-zinc-400 text-[10px] mt-0.5">Acesse o VANTA como app nativo.</p>
         </div>
         <button
           onClick={pwa.installApp}

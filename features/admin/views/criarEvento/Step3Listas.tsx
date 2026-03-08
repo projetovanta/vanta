@@ -126,18 +126,18 @@ const VarCard: React.FC<{
             <span className={`px-1.5 py-0.5 rounded text-[7px] font-black border ${generoPillCls(v.genero)}`}>
               {genLabel(v.genero)}
             </span>
-            <span className="text-zinc-600 text-[7px] font-bold">{areaLabel}</span>
-            {horaLabel && <span className="text-zinc-600 text-[7px] font-bold">{horaLabel}</span>}
-            {valorLabel && <span className="text-zinc-500 text-[7px] font-bold">{valorLabel}</span>}
-            {v.limite && <span className="text-zinc-600 text-[7px]">{v.limite} nomes</span>}
+            <span className="text-zinc-400 text-[7px] font-bold">{areaLabel}</span>
+            {horaLabel && <span className="text-zinc-400 text-[7px] font-bold">{horaLabel}</span>}
+            {valorLabel && <span className="text-zinc-400 text-[7px] font-bold">{valorLabel}</span>}
+            {v.limite && <span className="text-zinc-400 text-[7px]">{v.limite} nomes</span>}
           </div>
         </button>
 
         <div className="flex items-center gap-0.5 shrink-0">
-          <button onClick={onDuplicate} className="p-1.5 text-zinc-600 active:text-blue-400 transition-colors">
+          <button aria-label="Copiar" onClick={onDuplicate} className="p-1.5 text-zinc-400 active:text-blue-400 transition-colors">
             <Copy size={11} />
           </button>
-          <button onClick={onRemove} className="p-1.5 text-zinc-700 active:text-red-400 transition-colors">
+          <button aria-label="Excluir" onClick={onRemove} className="p-1.5 text-zinc-700 active:text-red-400 transition-colors">
             <Trash2 size={11} />
           </button>
         </div>
@@ -154,7 +154,7 @@ const VarCard: React.FC<{
       {/* Linha 1: Tipo + Genero */}
       <div className="flex gap-2">
         <div className="flex-1">
-          <p className="text-zinc-500 text-[7px] font-bold uppercase tracking-wider mb-1">Tipo</p>
+          <p className="text-zinc-400 text-[7px] font-bold uppercase tracking-wider mb-1">Tipo</p>
           <VantaDropdown
             value={v.tipo}
             onChange={val => onChange('tipo', val)}
@@ -164,7 +164,7 @@ const VarCard: React.FC<{
           />
         </div>
         <div className="flex-1">
-          <p className="text-zinc-500 text-[7px] font-bold uppercase tracking-wider mb-1">Genero</p>
+          <p className="text-zinc-400 text-[7px] font-bold uppercase tracking-wider mb-1">Genero</p>
           <VantaDropdown
             value={v.genero}
             onChange={val => onChange('genero', val)}
@@ -178,7 +178,7 @@ const VarCard: React.FC<{
       {/* Linha 2: Area + Validade */}
       <div className="flex gap-2">
         <div className="flex-1">
-          <p className="text-zinc-500 text-[7px] font-bold uppercase tracking-wider mb-1">Area</p>
+          <p className="text-zinc-400 text-[7px] font-bold uppercase tracking-wider mb-1">Area</p>
           <VantaDropdown
             value={isCustomArea ? 'CUSTOM' : v.area}
             onChange={val => onChange('area', val === 'CUSTOM' ? '' : val)}
@@ -188,7 +188,7 @@ const VarCard: React.FC<{
           />
         </div>
         <div className="flex-1">
-          <p className="text-zinc-500 text-[7px] font-bold uppercase tracking-wider mb-1">Validade</p>
+          <p className="text-zinc-400 text-[7px] font-bold uppercase tracking-wider mb-1">Validade</p>
           <VantaDropdown
             value={v.validadeTipo}
             onChange={val => onChange('validadeTipo', val)}
@@ -203,7 +203,7 @@ const VarCard: React.FC<{
       <div className="flex gap-2 items-end flex-wrap">
         {isCustomArea && (
           <div className="flex-1">
-            <p className="text-zinc-500 text-[7px] font-bold mb-0.5">Area personalizada</p>
+            <p className="text-zinc-400 text-[7px] font-bold mb-0.5">Area personalizada</p>
             <input
               value={v.area}
               onChange={e => onChange('area', e.target.value)}
@@ -215,7 +215,7 @@ const VarCard: React.FC<{
         )}
         {v.tipo !== 'VIP' && (
           <div className="shrink-0">
-            <p className="text-zinc-500 text-[7px] font-bold mb-0.5">Valor</p>
+            <p className="text-zinc-400 text-[7px] font-bold mb-0.5">Valor</p>
             <div className="flex items-center gap-1">
               <span className="text-[#FFD300] text-[10px] font-bold">R$</span>
               <input
@@ -232,7 +232,7 @@ const VarCard: React.FC<{
         )}
         {v.validadeTipo === 'HORARIO' && (
           <div className="shrink-0">
-            <p className="text-zinc-500 text-[7px] font-bold mb-0.5">Ate</p>
+            <p className="text-zinc-400 text-[7px] font-bold mb-0.5">Ate</p>
             <VantaDropdown
               value={v.validadeHora}
               onChange={val => onChange('validadeHora', val)}
@@ -243,7 +243,7 @@ const VarCard: React.FC<{
           </div>
         )}
         <div className="shrink-0">
-          <p className="text-zinc-500 text-[7px] font-bold mb-0.5">Limite</p>
+          <p className="text-zinc-400 text-[7px] font-bold mb-0.5">Limite</p>
           <div className="flex items-center gap-1">
             <input
               value={v.limite}
@@ -253,7 +253,7 @@ const VarCard: React.FC<{
               placeholder="0"
               className={inputSmCls + ' w-14 text-center'}
             />
-            <span className="text-zinc-600 text-[7px]">nomes</span>
+            <span className="text-zinc-400 text-[7px]">nomes</span>
           </div>
         </div>
       </div>
@@ -265,7 +265,7 @@ const VarCard: React.FC<{
             onClick={() => onChange('ababoraAtivo', !v.ababoraAtivo)}
             className="w-full flex items-center justify-between py-1.5"
           >
-            <p className="text-zinc-500 text-[8px] font-bold">Virar paga apos {v.validadeHora || '__:__'}</p>
+            <p className="text-zinc-400 text-[8px] font-bold">Virar paga apos {v.validadeHora || '__:__'}</p>
             <div
               className={`w-7 h-4 rounded-full border relative transition-all shrink-0 ${v.ababoraAtivo ? 'bg-[#FFD300]/30 border-[#FFD300]/50' : 'bg-zinc-800 border-white/10'}`}
             >
@@ -298,10 +298,10 @@ const VarCard: React.FC<{
         >
           <Check size={11} /> Salvar
         </button>
-        <button onClick={onDuplicate} className="p-2 text-zinc-600 active:text-blue-400 transition-colors">
+        <button aria-label="Copiar" onClick={onDuplicate} className="p-2 text-zinc-400 active:text-blue-400 transition-colors">
           <Copy size={12} />
         </button>
-        <button onClick={onRemove} className="p-2 text-zinc-700 active:text-red-400 transition-colors">
+        <button aria-label="Excluir" onClick={onRemove} className="p-2 text-zinc-700 active:text-red-400 transition-colors">
           <Trash2 size={12} />
         </button>
       </div>
@@ -421,7 +421,7 @@ export const Step3Listas: React.FC<Props> = ({
     <div className="space-y-5">
       <div>
         <p className="text-white text-[8px] font-black uppercase tracking-widest mb-1">Lista de Convidados</p>
-        <p className="text-zinc-500 text-[10px] leading-relaxed">
+        <p className="text-zinc-400 text-[10px] leading-relaxed">
           Opcional. A lista nao gera venda — apenas permite que o convidado entre ao dar o nome na portaria.
         </p>
       </div>
@@ -434,7 +434,7 @@ export const Step3Listas: React.FC<Props> = ({
           <p className={`font-bold text-sm leading-none ${listasEnabled ? 'text-[#FFD300]' : 'text-white'}`}>
             Ativar Listas
           </p>
-          <p className="text-zinc-600 text-[10px] mt-1">Gerencie o acesso por convite e cotas</p>
+          <p className="text-zinc-400 text-[10px] mt-1">Gerencie o acesso por convite e cotas</p>
         </div>
         <div
           className={`w-12 h-6 rounded-full border relative transition-all shrink-0 ${listasEnabled ? 'bg-[#FFD300]/20 border-[#FFD300]/40' : 'bg-zinc-800 border-white/10'}`}
@@ -473,7 +473,7 @@ export const Step3Listas: React.FC<Props> = ({
           <div className="flex gap-2">
             <button
               onClick={addVar}
-              className="flex-1 flex items-center justify-center gap-2 py-3 border border-dashed border-white/10 rounded-xl text-zinc-600 text-[9px] font-black uppercase tracking-widest active:border-[#FFD300]/20 active:text-[#FFD300]/50 transition-all"
+              className="flex-1 flex items-center justify-center gap-2 py-3 border border-dashed border-white/10 rounded-xl text-zinc-400 text-[9px] font-black uppercase tracking-widest active:border-[#FFD300]/20 active:text-[#FFD300]/50 transition-all"
             >
               <Plus size={11} /> Adicionar
             </button>

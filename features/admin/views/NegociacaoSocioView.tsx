@@ -519,7 +519,7 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
       {/* ── Header ──────────────────────────────────────────────────────────── */}
       <div className="shrink-0 border-b border-white/5" style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}>
         <div className="flex items-center gap-3 px-4 py-3">
-          <button
+          <button aria-label="Voltar"
             onClick={onClose}
             className="w-9 h-9 rounded-full bg-zinc-900 border border-white/10 flex items-center justify-center active:scale-90 transition-all"
           >
@@ -527,7 +527,7 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
           </button>
           <div className="flex-1 min-w-0">
             <p className="text-white font-bold text-sm truncate">{convite.nome}</p>
-            <p className="text-zinc-500 text-[10px] truncate">Rodada {convite.rodada}/3</p>
+            <p className="text-zinc-400 text-[10px] truncate">Rodada {convite.rodada}/3</p>
           </div>
           <span
             className={`text-[8px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border ${statusColor}`}
@@ -544,7 +544,7 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
             <img src={convite.foto} alt="" className="w-10 h-10 rounded-lg object-cover shrink-0" />
           ) : (
             <div className="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center shrink-0">
-              <Calendar size={16} className="text-zinc-600" />
+              <Calendar size={16} className="text-zinc-400" />
             </div>
           )}
           <div className="min-w-0 flex-1">
@@ -553,8 +553,8 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
               <span className="truncate">{fmtData(convite.dataInicio)}</span>
             </div>
             {convite.local && (
-              <div className="flex items-center gap-2 text-[10px] text-zinc-500 mt-0.5">
-                <MapPin size={10} className="text-zinc-600 shrink-0" />
+              <div className="flex items-center gap-2 text-[10px] text-zinc-400 mt-0.5">
+                <MapPin size={10} className="text-zinc-400 shrink-0" />
                 <span className="truncate">{convite.local}</span>
               </div>
             )}
@@ -572,7 +572,7 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
       <div className="flex-1 overflow-y-auto no-scrollbar px-4 py-4 space-y-3">
         {convite.historico.length === 0 && (
           <div className="flex items-center justify-center py-12">
-            <p className="text-zinc-600 text-xs">Nenhuma proposta ainda</p>
+            <p className="text-zinc-400 text-xs">Nenhuma proposta ainda</p>
           </div>
         )}
 
@@ -584,7 +584,7 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
           if (isSistema) {
             return (
               <div key={i} className="flex justify-center">
-                <span className="text-[9px] text-zinc-600 bg-zinc-900/50 px-3 py-1 rounded-full">
+                <span className="text-[9px] text-zinc-400 bg-zinc-900/50 px-3 py-1 rounded-full">
                   {p.acao === 'expirar' ? 'Prazo expirado — negociação encerrada' : p.acao}
                 </span>
               </div>
@@ -611,22 +611,22 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
               >
                 <div className="flex items-center justify-between gap-3 mb-1.5">
                   <span
-                    className={`text-[9px] font-bold uppercase tracking-widest ${isMe ? 'text-[#FFD300]/70' : 'text-zinc-500'}`}
+                    className={`text-[9px] font-bold uppercase tracking-widest ${isMe ? 'text-[#FFD300]/70' : 'text-zinc-400'}`}
                   >
                     {isProdutor ? nomeProdutor : nomeSocio}
                   </span>
-                  <span className="text-[8px] text-zinc-600">{acaoLabel}</span>
+                  <span className="text-[8px] text-zinc-400">{acaoLabel}</span>
                 </div>
 
                 {p.percentual !== undefined && (
                   <div className={`text-2xl font-black mb-1 ${isMe ? 'text-[#FFD300]' : 'text-white'}`}>
-                    {p.percentual}%<span className="text-xs font-normal text-zinc-500 ml-1">pro sócio</span>
+                    {p.percentual}%<span className="text-xs font-normal text-zinc-400 ml-1">pro sócio</span>
                   </div>
                 )}
 
                 {p.mensagem && <p className="text-zinc-300 text-xs leading-relaxed mt-1 italic">"{p.mensagem}"</p>}
 
-                <p className="text-[8px] text-zinc-600 mt-2 text-right">{fmtData(p.created_at)}</p>
+                <p className="text-[8px] text-zinc-400 mt-2 text-right">{fmtData(p.created_at)}</p>
               </div>
             </div>
           );
@@ -678,7 +678,7 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
           className="shrink-0 px-4 py-4 border-t border-white/5 text-center"
           style={{ paddingBottom: 'calc(1rem + env(safe-area-inset-bottom, 0px))' }}
         >
-          <p className="text-zinc-500 text-xs">
+          <p className="text-zinc-400 text-xs">
             <Clock size={12} className="inline mr-1 -mt-0.5" />
             Aguardando resposta {papel === 'socio' ? 'do produtor' : 'do sócio'}...
           </p>
@@ -743,15 +743,15 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
                   onChange={e => setReiniciarPercentual(e.target.value)}
                   className="w-24 bg-zinc-900 border border-white/10 text-white text-lg font-bold px-3 py-2 rounded-xl text-center focus:outline-none focus:border-cyan-500/40"
                 />
-                <span className="text-zinc-500 text-sm font-bold">%</span>
-                <span className="text-zinc-600 text-xs ml-2">
+                <span className="text-zinc-400 text-sm font-bold">%</span>
+                <span className="text-zinc-400 text-xs ml-2">
                   Produtor: {100 - (parseInt(reiniciarPercentual, 10) || 0)}%
                 </span>
               </div>
             </div>
             <div>
               <label className="text-[9px] text-cyan-400/70 font-bold uppercase tracking-widest block mb-1">
-                Mensagem <span className="text-zinc-600">({reiniciarMensagem.length}/500)</span>
+                Mensagem <span className="text-zinc-400">({reiniciarMensagem.length}/500)</span>
               </label>
               <textarea
                 value={reiniciarMensagem}
@@ -801,15 +801,15 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
                   onChange={e => setNovoPercentual(e.target.value)}
                   className="w-24 bg-zinc-900 border border-white/10 text-white text-lg font-bold px-3 py-2 rounded-xl text-center focus:outline-none focus:border-cyan-500/40"
                 />
-                <span className="text-zinc-500 text-sm font-bold">%</span>
-                <span className="text-zinc-600 text-xs ml-2">
+                <span className="text-zinc-400 text-sm font-bold">%</span>
+                <span className="text-zinc-400 text-xs ml-2">
                   Produtor: {100 - (parseInt(novoPercentual, 10) || 0)}%
                 </span>
               </div>
             </div>
             <div>
               <label className="text-[9px] text-cyan-400 font-bold uppercase tracking-widest block mb-1">
-                Mensagem <span className="text-zinc-600">({novaMensagem.length}/500)</span>
+                Mensagem <span className="text-zinc-400">({novaMensagem.length}/500)</span>
               </label>
               <textarea
                 value={novaMensagem}
@@ -849,7 +849,7 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
                 Percentual do sócio
               </p>
               <p className="text-emerald-400 text-3xl font-black">{convite.splitSocio}%</p>
-              <p className="text-zinc-500 text-[10px] mt-1">Produtor: {convite.splitProdutor}%</p>
+              <p className="text-zinc-400 text-[10px] mt-1">Produtor: {convite.splitProdutor}%</p>
             </div>
             <p className="text-zinc-400 text-xs text-center">
               O evento será publicado automaticamente após a confirmação.
@@ -903,7 +903,7 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
               >
                 Voltar
               </button>
-              <button
+              <button aria-label="Carregando"
                 onClick={handleRecusar}
                 disabled={enviando}
                 className="flex-1 py-3 bg-red-500/20 border border-red-500/30 text-red-400 font-bold text-[10px] uppercase tracking-widest rounded-xl flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all disabled:opacity-40"

@@ -59,7 +59,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = React.memo(
       if (msg.isRead) {
         return <span className="text-[#FFD300] text-[9px] font-black ml-1">✓✓</span>;
       }
-      return <span className="text-zinc-600 text-[9px] font-black ml-1">✓</span>;
+      return <span className="text-zinc-400 text-[9px] font-black ml-1">✓</span>;
     };
 
     return (
@@ -79,7 +79,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = React.memo(
           <div
             className={`p-4 text-[13px] rounded-3xl ${
               isDeleted
-                ? 'bg-zinc-900/50 border border-white/5 text-zinc-600 italic'
+                ? 'bg-zinc-900/50 border border-white/5 text-zinc-400 italic'
                 : isMe
                   ? 'bg-gradient-to-br from-[#FFD300] to-yellow-600 text-black font-medium rounded-tr-sm'
                   : 'bg-zinc-900 border border-white/5 text-zinc-200 rounded-tl-sm'

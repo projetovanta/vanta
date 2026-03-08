@@ -19,7 +19,7 @@ export const CitySelector: React.FC<{
       <div className="absolute top-[4.5rem] left-1/2 -translate-x-1/2 w-[85%] bg-zinc-900/40 backdrop-blur-2xl rounded-[2rem] border border-white/10 overflow-hidden shadow-2xl animate-in slide-in-from-top-2 relative">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-1.5 bg-black/50 rounded-full text-zinc-500 hover:text-white transition-colors z-10"
+          className="absolute top-4 right-4 p-1.5 bg-black/50 rounded-full text-zinc-400 hover:text-white transition-colors z-10"
         >
           <X size={14} />
         </button>
@@ -33,7 +33,7 @@ export const CitySelector: React.FC<{
                 onSelectCity('');
                 onClose();
               }}
-              className={`w-full flex items-center justify-between py-2.5 px-3 rounded-xl ${!selectedCity ? 'bg-[#FFD300]/10 text-[#FFD300]' : 'text-zinc-500'}`}
+              className={`w-full flex items-center justify-between py-2.5 px-3 rounded-xl ${!selectedCity ? 'bg-[#FFD300]/10 text-[#FFD300]' : 'text-zinc-400'}`}
             >
               <div className="flex items-center">
                 <MapPin size={12} className="mr-2.5" />
@@ -48,7 +48,7 @@ export const CitySelector: React.FC<{
                   onSelectCity(city);
                   onClose();
                 }}
-                className={`w-full flex items-center justify-between py-2.5 px-3 rounded-xl ${selectedCity === city ? 'bg-[#FFD300]/10 text-[#FFD300]' : 'text-zinc-500'}`}
+                className={`w-full flex items-center justify-between py-2.5 px-3 rounded-xl ${selectedCity === city ? 'bg-[#FFD300]/10 text-[#FFD300]' : 'text-zinc-400'}`}
               >
                 <div className="flex items-center">
                   <MapPin size={12} className="mr-2.5" />
@@ -61,7 +61,7 @@ export const CitySelector: React.FC<{
         </div>
         <button
           onClick={onClose}
-          className="w-full py-3 bg-black/40 border-t border-white/5 text-[8px] font-black uppercase text-zinc-600"
+          className="w-full py-3 bg-black/40 border-t border-white/5 text-[8px] font-black uppercase text-zinc-400"
         >
           Fechar
         </button>

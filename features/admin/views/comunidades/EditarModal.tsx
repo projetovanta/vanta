@@ -259,7 +259,7 @@ export const EditarModal: React.FC<{
         <div className="flex-1 overflow-y-auto no-scrollbar p-6 space-y-5">
           {/* Imagens */}
           <div className="space-y-2.5">
-            <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Imagens</p>
+            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Imagens</p>
             <p className="text-[8px] text-zinc-700 font-black uppercase tracking-widest">
               Perfil: 400×400 · 1:1 — Capa: 1200×400 · 3:1
             </p>
@@ -278,7 +278,7 @@ export const EditarModal: React.FC<{
                     <Camera size={16} className="text-white" />
                   </div>
                 </button>
-                <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Perfil</p>
+                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Perfil</p>
                 <input
                   ref={fotoRef}
                   type="file"
@@ -302,7 +302,7 @@ export const EditarModal: React.FC<{
                     <Camera size={16} className="text-white" />
                   </div>
                 </button>
-                <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Capa</p>
+                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Capa</p>
                 <input
                   ref={capaRef}
                   type="file"
@@ -316,7 +316,7 @@ export const EditarModal: React.FC<{
 
           {/* Bio */}
           <div className="space-y-1.5">
-            <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Descrição / Bio</p>
+            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Descrição / Bio</p>
             <textarea
               value={descricao}
               onChange={e => setDescricao(e.target.value)}
@@ -327,7 +327,7 @@ export const EditarModal: React.FC<{
 
           {/* Endereço */}
           <div className="space-y-1.5">
-            <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Endereço / Local</p>
+            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Endereço / Local</p>
             {isMaster ? (
               <input
                 defaultValue={comunidade.endereco}
@@ -338,8 +338,8 @@ export const EditarModal: React.FC<{
                 onClick={() => setShowEndAlert(true)}
                 className="w-full flex items-center gap-3 bg-zinc-900/40 border border-white/5 rounded-xl px-4 py-3 text-left"
               >
-                <MapPin size={13} className="text-zinc-600 shrink-0" />
-                <p className="text-zinc-600 text-sm flex-1 truncate">{comunidade.endereco}</p>
+                <MapPin size={13} className="text-zinc-400 shrink-0" />
+                <p className="text-zinc-400 text-sm flex-1 truncate">{comunidade.endereco}</p>
                 <AlertTriangle size={12} className="text-zinc-700 shrink-0" />
               </button>
             )}
@@ -367,7 +367,7 @@ export const EditarModal: React.FC<{
           <div className="space-y-3 pt-1 border-t border-white/5">
             <div className="flex items-center gap-2">
               <Lock size={10} className="text-[#FFD300]/70 shrink-0" />
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Contrato Vanta</p>
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Contrato Vanta</p>
             </div>
             <p className="text-[8px] text-zinc-700 font-black uppercase tracking-widest leading-relaxed">
               Lucro do VANTA por ingresso vendido nesta comunidade. Definido pelo master.
@@ -375,7 +375,7 @@ export const EditarModal: React.FC<{
 
             {/* Taxa % — lucro da plataforma */}
             <div className="space-y-1.5">
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">
                 Taxa Vanta — Lucro por ingresso (%)
               </p>
               {isMaster ? (
@@ -390,7 +390,7 @@ export const EditarModal: React.FC<{
                     placeholder="5.0"
                     className="w-full bg-zinc-900/60 border border-white/5 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-[#FFD300]/30 placeholder-zinc-700 pr-10"
                   />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 text-sm font-bold">%</span>
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 text-sm font-bold">%</span>
                 </div>
               ) : (
                 <button
@@ -398,7 +398,7 @@ export const EditarModal: React.FC<{
                   className="w-full flex items-center gap-3 bg-zinc-900/40 border border-white/5 rounded-xl px-4 py-3 text-left"
                 >
                   <Lock size={12} className="text-zinc-700 shrink-0" />
-                  <p className="text-zinc-500 text-sm flex-1">
+                  <p className="text-zinc-400 text-sm flex-1">
                     {comunidade.vanta_fee_percent !== undefined
                       ? `${(comunidade.vanta_fee_percent * 100).toFixed(1)}%`
                       : '5.0% (padrão)'}
@@ -409,7 +409,7 @@ export const EditarModal: React.FC<{
 
             {/* Taxa Fixa — valor adicional por ingresso */}
             <div className="space-y-1.5">
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">
                 Taxa Fixa por ingresso (R$)
               </p>
               {isMaster ? (
@@ -423,7 +423,7 @@ export const EditarModal: React.FC<{
                     placeholder="0.00"
                     className="w-full bg-zinc-900/60 border border-white/5 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-[#FFD300]/30 placeholder-zinc-700 pr-12"
                   />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 text-xs font-bold">R$</span>
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 text-xs font-bold">R$</span>
                 </div>
               ) : (
                 <button
@@ -431,7 +431,7 @@ export const EditarModal: React.FC<{
                   className="w-full flex items-center gap-3 bg-zinc-900/40 border border-white/5 rounded-xl px-4 py-3 text-left"
                 >
                   <Lock size={12} className="text-zinc-700 shrink-0" />
-                  <p className="text-zinc-500 text-sm flex-1">
+                  <p className="text-zinc-400 text-sm flex-1">
                     {comunidade.vanta_fee_fixed !== undefined
                       ? `R$ ${comunidade.vanta_fee_fixed.toFixed(2)}`
                       : 'R$ 0,00'}
@@ -460,7 +460,7 @@ export const EditarModal: React.FC<{
 
             {/* Modo gateway — quem paga o processamento */}
             <div className="space-y-1.5">
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Quem paga o Gateway?</p>
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Quem paga o Gateway?</p>
               <div className="flex gap-2">
                 {(['ABSORVER', 'REPASSAR'] as const).map(mode => (
                   <button
@@ -469,7 +469,7 @@ export const EditarModal: React.FC<{
                     className={`flex-1 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all border ${
                       gatewayMode === mode
                         ? 'bg-[#FFD300]/15 border-[#FFD300]/40 text-[#FFD300]'
-                        : 'bg-zinc-900/40 border-white/5 text-zinc-500 active:text-zinc-300'
+                        : 'bg-zinc-900/40 border-white/5 text-zinc-400 active:text-zinc-300'
                     }`}
                   >
                     {mode === 'ABSORVER' ? 'Organizador absorve' : 'Repassa ao cliente'}
@@ -487,7 +487,7 @@ export const EditarModal: React.FC<{
           {/* Split Taxa VANTA — master only */}
           {isMaster && (
             <div className="space-y-3 pt-1 border-t border-white/5">
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Repasse da taxa VANTA</p>
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Repasse da taxa VANTA</p>
               <p className="text-zinc-700 text-[9px] leading-relaxed">
                 Percentual da taxa VANTA que o master repassa ao sócio/gerente desta comunidade.
               </p>
@@ -501,7 +501,7 @@ export const EditarModal: React.FC<{
                   onChange={e => setRepasseStr(e.target.value)}
                   className="w-24 bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-[#FFD300]/40"
                 />
-                <span className="text-zinc-500 text-xs">%</span>
+                <span className="text-zinc-400 text-xs">%</span>
                 <span className="text-zinc-700 text-[9px] ml-2">
                   {repasseStr === '0' ? 'Sem repasse' : `${repasseStr}% repassado`}
                 </span>
@@ -512,7 +512,7 @@ export const EditarModal: React.FC<{
           {/* Taxas Avançadas — master only */}
           {isMaster && (
             <div className="space-y-3 pt-1 border-t border-white/5">
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">
                 Taxas Avançadas (Padrão Comunidade)
               </p>
               <p className="text-zinc-700 text-[9px] leading-relaxed">
@@ -520,7 +520,7 @@ export const EditarModal: React.FC<{
               </p>
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-[7px] text-zinc-600 font-black uppercase tracking-widest">
+                  <label className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">
                     Taxa Processamento (%)
                   </label>
                   <input
@@ -535,7 +535,7 @@ export const EditarModal: React.FC<{
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[7px] text-zinc-600 font-black uppercase tracking-widest">
+                  <label className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">
                     Taxa Porta (%)
                   </label>
                   <input
@@ -550,7 +550,7 @@ export const EditarModal: React.FC<{
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[7px] text-zinc-600 font-black uppercase tracking-widest">
+                  <label className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">
                     Taxa Mínima (R$)
                   </label>
                   <input
@@ -564,7 +564,7 @@ export const EditarModal: React.FC<{
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[7px] text-zinc-600 font-black uppercase tracking-widest">
+                  <label className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">
                     Cota Nomes Lista
                   </label>
                   <input
@@ -578,7 +578,7 @@ export const EditarModal: React.FC<{
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[7px] text-zinc-600 font-black uppercase tracking-widest">
+                  <label className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">
                     R$/Nome Excedente
                   </label>
                   <input
@@ -592,7 +592,7 @@ export const EditarModal: React.FC<{
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[7px] text-zinc-600 font-black uppercase tracking-widest">
+                  <label className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">
                     Cota Cortesias
                   </label>
                   <input
@@ -606,7 +606,7 @@ export const EditarModal: React.FC<{
                   />
                 </div>
                 <div className="col-span-2 space-y-1">
-                  <label className="text-[7px] text-zinc-600 font-black uppercase tracking-widest">
+                  <label className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">
                     % Cortesia Excedente (sobre valor face)
                   </label>
                   <input
@@ -629,7 +629,7 @@ export const EditarModal: React.FC<{
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <PartyPopper size={10} className="text-purple-400/70 shrink-0" />
-                <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Evento Privado</p>
+                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Evento Privado</p>
               </div>
               <button
                 onClick={() => setEpAtivo(!epAtivo)}
@@ -644,7 +644,7 @@ export const EditarModal: React.FC<{
             {epAtivo && (
               <div className="space-y-3">
                 <div className="space-y-1">
-                  <label className="text-[7px] text-zinc-600 font-black uppercase tracking-widest">
+                  <label className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">
                     Texto de Apresentação
                   </label>
                   <textarea
@@ -658,7 +658,7 @@ export const EditarModal: React.FC<{
 
                 {/* Formatos */}
                 <div className="space-y-1">
-                  <label className="text-[7px] text-zinc-600 font-black uppercase tracking-widest">Formatos</label>
+                  <label className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">Formatos</label>
                   <div className="flex flex-wrap gap-1.5">
                     {epFormatos.map((f, i) => (
                       <span
@@ -705,7 +705,7 @@ export const EditarModal: React.FC<{
 
                 {/* Atrações */}
                 <div className="space-y-1">
-                  <label className="text-[7px] text-zinc-600 font-black uppercase tracking-widest">Atrações</label>
+                  <label className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">Atrações</label>
                   <div className="flex flex-wrap gap-1.5">
                     {epAtracoes.map((a, i) => (
                       <span
@@ -752,7 +752,7 @@ export const EditarModal: React.FC<{
 
                 {/* Faixas de Capacidade */}
                 <div className="space-y-1">
-                  <label className="text-[7px] text-zinc-600 font-black uppercase tracking-widest">
+                  <label className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">
                     Faixas de Capacidade
                   </label>
                   <div className="flex flex-wrap gap-1.5">
@@ -807,7 +807,7 @@ export const EditarModal: React.FC<{
             <div className="space-y-3 pt-1 border-t border-white/5">
               <div className="flex items-center gap-2">
                 <ArrowRightLeft size={10} className="text-amber-400/70 shrink-0" />
-                <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Transferir Titularidade</p>
+                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Transferir Titularidade</p>
               </div>
               <p className="text-zinc-700 text-[9px] leading-relaxed">
                 Transferir a propriedade desta comunidade para outro membro.

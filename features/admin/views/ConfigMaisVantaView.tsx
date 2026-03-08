@@ -26,7 +26,7 @@ const Section: React.FC<{ title: string; children: React.ReactNode; defaultOpen?
         className="w-full flex items-center justify-between px-5 py-4 active:bg-white/5 transition-all"
       >
         <p className="text-white text-xs font-bold uppercase tracking-wider">{title}</p>
-        {open ? <ChevronUp size={14} className="text-zinc-500" /> : <ChevronDown size={14} className="text-zinc-500" />}
+        {open ? <ChevronUp size={14} className="text-zinc-400" /> : <ChevronDown size={14} className="text-zinc-400" />}
       </button>
       {open && <div className="px-5 pb-5 space-y-4 border-t border-white/5 pt-4">{children}</div>}
     </div>
@@ -42,7 +42,7 @@ const Field: React.FC<{
   placeholder?: string;
 }> = ({ label, value, onChange, textarea, placeholder }) => (
   <div>
-    <label className="text-zinc-500 text-[9px] font-black uppercase tracking-widest block mb-1.5">{label}</label>
+    <label className="text-zinc-400 text-[9px] font-black uppercase tracking-widest block mb-1.5">{label}</label>
     {textarea ? (
       <textarea
         value={value}
@@ -71,7 +71,7 @@ const NumField: React.FC<{
   min?: number;
 }> = ({ label, value, onChange, suffix, min = 1 }) => (
   <div>
-    <label className="text-zinc-500 text-[9px] font-black uppercase tracking-widest block mb-1.5">{label}</label>
+    <label className="text-zinc-400 text-[9px] font-black uppercase tracking-widest block mb-1.5">{label}</label>
     <div className="flex items-center gap-2">
       <input
         type="number"
@@ -80,7 +80,7 @@ const NumField: React.FC<{
         onChange={e => onChange(Math.max(min, parseInt(e.target.value) || min))}
         className="w-20 bg-black/40 border border-white/10 rounded-xl px-3 py-2.5 text-white text-xs text-center focus:border-[#FFD300]/40 focus:outline-none transition-all"
       />
-      {suffix && <span className="text-zinc-600 text-[9px] font-bold">{suffix}</span>}
+      {suffix && <span className="text-zinc-400 text-[9px] font-bold">{suffix}</span>}
     </div>
   </div>
 );
@@ -102,7 +102,7 @@ const ChipsField: React.FC<{
   };
   return (
     <div>
-      <label className="text-zinc-500 text-[9px] font-black uppercase tracking-widest block mb-1.5">{label}</label>
+      <label className="text-zinc-400 text-[9px] font-black uppercase tracking-widest block mb-1.5">{label}</label>
       <div className="flex flex-wrap gap-1.5 mb-2">
         {values.map((v, i) => (
           <span
@@ -125,7 +125,7 @@ const ChipsField: React.FC<{
           onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), add())}
           className="flex-1 bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-white text-xs focus:border-[#FFD300]/40 focus:outline-none transition-all"
         />
-        <button
+        <button aria-label="Adicionar"
           onClick={add}
           disabled={!input.trim()}
           className="px-3 py-2 bg-[#FFD300]/10 border border-[#FFD300]/20 rounded-xl text-[#FFD300] text-[9px] font-black uppercase disabled:opacity-30"
@@ -173,14 +173,14 @@ const VantagensEditor: React.FC<{ values: VantagemTexto[]; onChange: (v: Vantage
               <button
                 onClick={() => move(i, -1)}
                 disabled={i === 0}
-                className="p-1 text-zinc-600 hover:text-zinc-400 disabled:opacity-20"
+                className="p-1 text-zinc-400 hover:text-zinc-400 disabled:opacity-20"
               >
                 <ChevronUp size={12} />
               </button>
               <button
                 onClick={() => move(i, 1)}
                 disabled={i === values.length - 1}
-                className="p-1 text-zinc-600 hover:text-zinc-400 disabled:opacity-20"
+                className="p-1 text-zinc-400 hover:text-zinc-400 disabled:opacity-20"
               >
                 <ChevronDown size={12} />
               </button>
@@ -200,7 +200,7 @@ const VantagensEditor: React.FC<{ values: VantagemTexto[]; onChange: (v: Vantage
       ))}
       <button
         onClick={add}
-        className="w-full py-2.5 border border-dashed border-white/10 rounded-xl text-zinc-500 text-[9px] font-black uppercase tracking-widest flex items-center justify-center gap-1.5 active:bg-white/5 transition-all"
+        className="w-full py-2.5 border border-dashed border-white/10 rounded-xl text-zinc-400 text-[9px] font-black uppercase tracking-widest flex items-center justify-center gap-1.5 active:bg-white/5 transition-all"
       >
         <Plus size={12} /> Adicionar
       </button>
@@ -264,7 +264,7 @@ const BeneficiosEditor: React.FC<{ values: BeneficioConfig[]; onChange: (v: Bene
       ))}
       <button
         onClick={add}
-        className="w-full py-2.5 border border-dashed border-white/10 rounded-xl text-zinc-500 text-[9px] font-black uppercase tracking-widest flex items-center justify-center gap-1.5 active:bg-white/5 transition-all"
+        className="w-full py-2.5 border border-dashed border-white/10 rounded-xl text-zinc-400 text-[9px] font-black uppercase tracking-widest flex items-center justify-center gap-1.5 active:bg-white/5 transition-all"
       >
         <Plus size={12} /> Novo benefício
       </button>
@@ -361,7 +361,7 @@ export const ConfigMaisVantaView: React.FC = () => {
         </Section>
 
         <Section title="Benefícios disponíveis">
-          <p className="text-zinc-600 text-[9px] leading-relaxed mb-2">
+          <p className="text-zinc-400 text-[9px] leading-relaxed mb-2">
             Benefícios que podem ser atribuídos a cada tier. Ao criar um novo, ele aparece como opção na edição de
             tiers.
           </p>
@@ -369,21 +369,21 @@ export const ConfigMaisVantaView: React.FC = () => {
         </Section>
 
         <Section title="Textos — Membro">
-          <p className="text-zinc-600 text-[9px] leading-relaxed mb-2">
+          <p className="text-zinc-400 text-[9px] leading-relaxed mb-2">
             Vantagens exibidas na tela de solicitação de entrada do membro.
           </p>
           <VantagensEditor values={config.vantagensMembro} onChange={v => update('vantagensMembro', v)} />
         </Section>
 
         <Section title="Textos — Venue">
-          <p className="text-zinc-600 text-[9px] leading-relaxed mb-2">
+          <p className="text-zinc-400 text-[9px] leading-relaxed mb-2">
             Vantagens exibidas na landing page para sócios/produtores.
           </p>
           <VantagensEditor values={config.vantagensVenue} onChange={v => update('vantagensVenue', v)} />
         </Section>
 
         <Section title="Termos de Uso">
-          <p className="text-zinc-600 text-[9px] leading-relaxed mb-2">
+          <p className="text-zinc-400 text-[9px] leading-relaxed mb-2">
             Termos customizados. Deixe vazio para usar os termos padrão.
           </p>
           <Field

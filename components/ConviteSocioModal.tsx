@@ -100,7 +100,7 @@ const ModalRecusa: React.FC<{
       >
         <div className="px-6 pt-4 pb-2">
           <p className="text-white font-bold text-base mb-1">Recusar convite</p>
-          <p className="text-zinc-500 text-sm mb-4">Opcionalmente, informe o motivo para o produtor.</p>
+          <p className="text-zinc-400 text-sm mb-4">Opcionalmente, informe o motivo para o produtor.</p>
           <textarea
             value={motivo}
             onChange={e => setMotivo(e.target.value)}
@@ -163,12 +163,12 @@ const ModalContraProposta: React.FC<{
         <div className="flex-1 overflow-y-auto no-scrollbar px-6 pt-6 pb-2 space-y-5">
           <div>
             <p className="text-white font-bold text-base mb-1">Contra-proposta</p>
-            <p className="text-zinc-500 text-sm">Ajuste o split e permissões. O produtor será notificado.</p>
+            <p className="text-zinc-400 text-sm">Ajuste o split e permissões. O produtor será notificado.</p>
           </div>
 
           {/* Split */}
           <div>
-            <p className="text-[8px] text-zinc-500 font-black uppercase tracking-widest mb-2">Split da Receita</p>
+            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">Split da Receita</p>
             <input
               type="range"
               min={10}
@@ -185,7 +185,7 @@ const ModalContraProposta: React.FC<{
 
           {/* Permissões */}
           <div>
-            <p className="text-[8px] text-zinc-500 font-black uppercase tracking-widest mb-2">Permissões do Produtor</p>
+            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">Permissões do Produtor</p>
             <div className="space-y-1.5">
               {PERMISSOES_DISPONIVEIS.map(p => (
                 <button
@@ -210,7 +210,7 @@ const ModalContraProposta: React.FC<{
 
           {/* Mensagem */}
           <div>
-            <p className="text-[8px] text-zinc-500 font-black uppercase tracking-widest mb-2">Mensagem (opcional)</p>
+            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">Mensagem (opcional)</p>
             <textarea
               value={mensagem}
               onChange={e => setMensagem(e.target.value)}
@@ -483,7 +483,7 @@ export const ConviteSocioModal: React.FC<Props> = ({ eventoId, userId, onClose, 
           </div>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/30 to-transparent" />
-        <button
+        <button aria-label="Voltar"
           onClick={onClose}
           className="absolute left-4 w-10 h-10 bg-black/60 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
           style={{ top: '1.25rem' }}
@@ -514,25 +514,25 @@ export const ConviteSocioModal: React.FC<Props> = ({ eventoId, userId, onClose, 
         <SectionBlock icon={<Clock size={14} className="text-amber-400" />} title="Informações do Evento">
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1">Data / Hora</p>
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1">Data / Hora</p>
               <p className="text-white text-xs font-bold leading-tight">{formatDateTime(convite.dataInicio)}</p>
             </div>
             <div>
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1">Local</p>
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1">Local</p>
               <p className="text-white text-xs font-bold truncate">{convite.local}</p>
             </div>
             <div>
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1">Produtor</p>
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1">Produtor</p>
               <p className="text-white text-xs font-bold truncate">{convite.criadorNome}</p>
             </div>
             <div>
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1">Comunidade</p>
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1">Comunidade</p>
               <p className="text-white text-xs font-bold truncate">{convite.comunidadeNome}</p>
             </div>
           </div>
           {convite.descricao && (
             <div>
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1">Descrição</p>
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1">Descrição</p>
               <p className="text-zinc-400 text-xs leading-relaxed line-clamp-4">{convite.descricao}</p>
             </div>
           )}
@@ -552,7 +552,7 @@ export const ConviteSocioModal: React.FC<Props> = ({ eventoId, userId, onClose, 
               <p className="text-emerald-400 text-2xl font-black">{convite.splitSocio}%</p>
             </div>
             <div className="bg-zinc-900/80 border border-white/5 rounded-xl px-4 py-3 text-center">
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1">Produtor</p>
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1">Produtor</p>
               <p className="text-zinc-400 text-2xl font-black">{convite.splitProdutor}%</p>
             </div>
           </div>
@@ -588,8 +588,8 @@ export const ConviteSocioModal: React.FC<Props> = ({ eventoId, userId, onClose, 
               ))}
             </div>
             <div className="flex items-start gap-2 bg-zinc-950/50 rounded-xl px-3 py-2">
-              <AlertTriangle size={11} className="text-zinc-600 shrink-0 mt-0.5" />
-              <p className="text-zinc-600 text-[9px] leading-relaxed">
+              <AlertTriangle size={11} className="text-zinc-400 shrink-0 mt-0.5" />
+              <p className="text-zinc-400 text-[9px] leading-relaxed">
                 O produtor terá acesso a esses módulos no evento. Você pode ajustar na contra-proposta.
               </p>
             </div>

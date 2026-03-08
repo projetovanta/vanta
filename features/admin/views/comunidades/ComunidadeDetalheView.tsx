@@ -70,7 +70,7 @@ export const ComunidadeDetalheView: React.FC<{
           style={{ background: 'linear-gradient(to top, #0A0A0A 0%, rgba(10,10,10,0.2) 55%, transparent 100%)' }}
         />
 
-        <button
+        <button aria-label="Voltar"
           onClick={onBack}
           className="absolute left-6 w-10 h-10 bg-black/40 backdrop-blur-md rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
           style={{ top: '2.5rem' }}
@@ -108,7 +108,7 @@ export const ComunidadeDetalheView: React.FC<{
                 key={t.id}
                 onClick={() => setTab(t.id)}
                 className={`flex-1 py-2 rounded-lg text-[7px] font-black uppercase tracking-wide transition-all ${
-                  tab === t.id ? 'bg-[#FFD300] text-black' : 'text-zinc-500 active:text-zinc-300'
+                  tab === t.id ? 'bg-[#FFD300] text-black' : 'text-zinc-400 active:text-zinc-300'
                 }`}
               >
                 {t.label}

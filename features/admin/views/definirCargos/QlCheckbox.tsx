@@ -20,7 +20,7 @@ export const QlCheckbox: React.FC<{
     </span>
     <div className="min-w-0">
       <p className={`text-sm font-bold leading-none ${checked ? 'text-white' : 'text-zinc-400'}`}>{label}</p>
-      {sublabel && <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest mt-0.5">{sublabel}</p>}
+      {sublabel && <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mt-0.5">{sublabel}</p>}
     </div>
   </button>
 );

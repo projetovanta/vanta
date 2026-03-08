@@ -136,7 +136,7 @@ export const TicketQRModal: React.FC<TicketQRModalProps> = ({ ticket, onClose })
 
           {/* Nome do titular */}
           {ticket.nomeTitular?.trim() && (
-            <p className="text-zinc-600 text-[9px] font-bold mt-2 truncate max-w-full">{ticket.nomeTitular}</p>
+            <p className="text-zinc-400 text-[9px] font-bold mt-2 truncate max-w-full">{ticket.nomeTitular}</p>
           )}
 
           {/* Botão abrir comprovante meia-entrada */}
@@ -177,7 +177,7 @@ export const TicketQRModal: React.FC<TicketQRModalProps> = ({ ticket, onClose })
                     key={f.label}
                     onClick={() => setCompFotoIdx(i)}
                     className={`px-3 py-1.5 rounded-lg text-[9px] font-bold uppercase tracking-wider transition-all ${
-                      compFotoIdx === i ? 'bg-white/10 text-white' : 'text-zinc-500'
+                      compFotoIdx === i ? 'bg-white/10 text-white' : 'text-zinc-400'
                     }`}
                   >
                     {f.label === 'frente'

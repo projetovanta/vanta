@@ -77,7 +77,7 @@ export const MessagesView: React.FC<MessagesViewProps> = ({ onOpenChat }) => {
         </div>
         <div className="relative group">
           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <Search size={18} className="text-zinc-600 transition-colors" />
+            <Search size={18} className="text-zinc-400 transition-colors" />
           </div>
           <input
             type="text"
@@ -124,9 +124,9 @@ export const MessagesView: React.FC<MessagesViewProps> = ({ onOpenChat }) => {
         ) : (
           <div className="py-32 text-center animate-in fade-in duration-700">
             <div className="w-16 h-16 bg-zinc-900 rounded-full flex items-center justify-center mx-auto mb-6 border border-white/5 opacity-40">
-              <MessageSquare size={24} className="text-zinc-500" />
+              <MessageSquare size={24} className="text-zinc-400" />
             </div>
-            <p className="text-zinc-600 italic text-sm">
+            <p className="text-zinc-400 italic text-sm">
               {query ? 'Nenhuma conversa encontrada.' : 'Sua caixa está vazia. Comece uma conexão!'}
             </p>
           </div>

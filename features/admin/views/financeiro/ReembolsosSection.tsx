@@ -16,7 +16,7 @@ export const ReembolsosSection: React.FC<Props> = ({ reembolsos, onAprovar, onRe
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <RotateCcw size={13} className="text-orange-400 shrink-0" />
-          <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Reembolsos</p>
+          <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Reembolsos</p>
         </div>
         {reembolsos.length > 0 && (
           <p className="text-orange-400 font-black text-sm">{fmtBRL(reembolsos.reduce((s, r) => s + r.valor, 0))}</p>
@@ -55,8 +55,8 @@ export const ReembolsosSection: React.FC<Props> = ({ reembolsos, onAprovar, onRe
                     <p className="text-orange-300 text-xs font-bold truncate">
                       {r.tipo === 'AUTOMATICO' ? 'Reembolso Automático' : 'Reembolso Manual'} — {r.status}
                     </p>
-                    <p className="text-zinc-600 text-[9px] mt-0.5 truncate">{data}</p>
-                    <p className="text-zinc-600 text-[9px] mt-0.5 line-clamp-2">Motivo: {r.motivo}</p>
+                    <p className="text-zinc-400 text-[9px] mt-0.5 truncate">{data}</p>
+                    <p className="text-zinc-400 text-[9px] mt-0.5 line-clamp-2">Motivo: {r.motivo}</p>
                   </div>
                   <div className="text-right shrink-0">
                     <p className="text-orange-400 font-black text-sm">{fmtBRL(r.valor)}</p>

@@ -71,14 +71,14 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
           <button
             key={t}
             onClick={() => onTabChange(t as any)}
-            className={`py-3.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${activeTab === t ? 'bg-[#FFD300] text-black' : 'text-zinc-500'}`}
+            className={`py-3.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${activeTab === t ? 'bg-[#FFD300] text-black' : 'text-zinc-400'}`}
           >
             {t === 'EVENTS' ? 'Eventos' : 'Pessoas'}
           </button>
         ))}
       </div>
       <div className="relative mb-4">
-        <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-600" />
+        <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
         <input
           type="text"
           className="w-full pl-11 pr-11 py-4 bg-zinc-900/80 border border-zinc-800 rounded-2xl text-white text-sm"
@@ -99,28 +99,28 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
         <div className="flex flex-wrap gap-2">
           <button
             onClick={onOpenCityFilter}
-            className={`px-3 py-2 rounded-xl text-[9px] font-bold uppercase border flex items-center gap-2 ${selectedCities.length > 0 ? 'bg-[#FFD300] text-black' : 'bg-zinc-900 text-zinc-500 border-white/5'}`}
+            className={`px-3 py-2 rounded-xl text-[9px] font-bold uppercase border flex items-center gap-2 ${selectedCities.length > 0 ? 'bg-[#FFD300] text-black' : 'bg-zinc-900 text-zinc-400 border-white/5'}`}
           >
             <MapPin size={10} />
             {cityLabel}
           </button>
           <button
             onClick={onOpenEstiloFilter}
-            className={`px-3 py-2 rounded-xl text-[9px] font-bold uppercase border flex items-center gap-2 ${selectedCategories.length > 0 ? 'bg-[#FFD300] text-black' : 'bg-zinc-900 text-zinc-500 border-white/5'}`}
+            className={`px-3 py-2 rounded-xl text-[9px] font-bold uppercase border flex items-center gap-2 ${selectedCategories.length > 0 ? 'bg-[#FFD300] text-black' : 'bg-zinc-900 text-zinc-400 border-white/5'}`}
           >
             <Sparkles size={10} />
             Estilo
           </button>
-          <button
+          <button aria-label="Calendário"
             onClick={onOpenTimeFilter}
-            className={`px-3 py-2 rounded-xl text-[9px] font-bold uppercase border flex items-center gap-2 ${selectedTimeFilter ? 'bg-[#FFD300] text-black' : 'bg-zinc-900 text-zinc-500 border-white/5'}`}
+            className={`px-3 py-2 rounded-xl text-[9px] font-bold uppercase border flex items-center gap-2 ${selectedTimeFilter ? 'bg-[#FFD300] text-black' : 'bg-zinc-900 text-zinc-400 border-white/5'}`}
           >
             <Calendar size={10} />
             {timeLabel}
           </button>
           <button
             onClick={onOpenPriceFilter}
-            className={`px-3 py-2 rounded-xl text-[9px] font-bold uppercase border flex items-center gap-2 ${maxPrice !== null ? 'bg-[#FFD300] text-black' : 'bg-zinc-900 text-zinc-500 border-white/5'}`}
+            className={`px-3 py-2 rounded-xl text-[9px] font-bold uppercase border flex items-center gap-2 ${maxPrice !== null ? 'bg-[#FFD300] text-black' : 'bg-zinc-900 text-zinc-400 border-white/5'}`}
           >
             <DollarSign size={10} />
             {maxPrice !== null ? `Até R$ ${maxPrice}` : 'Preço'}
@@ -128,7 +128,7 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
           {onToggleBeneficios && (
             <button
               onClick={onToggleBeneficios}
-              className={`px-3 py-2 rounded-xl text-[9px] font-bold uppercase border flex items-center gap-2 ${beneficiosFilter ? 'bg-[#FFD300] text-black' : 'bg-zinc-900 text-zinc-500 border-white/5'}`}
+              className={`px-3 py-2 rounded-xl text-[9px] font-bold uppercase border flex items-center gap-2 ${beneficiosFilter ? 'bg-[#FFD300] text-black' : 'bg-zinc-900 text-zinc-400 border-white/5'}`}
             >
               <Crown size={10} />
               Benefícios

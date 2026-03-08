@@ -31,7 +31,7 @@ export const TabNovosMembros: React.FC<{
       <div className="px-5 pt-4 pb-2 shrink-0">
         <div className="flex items-center gap-2">
           <div className="flex-1 flex items-center gap-3 bg-zinc-900/60 border border-white/5 rounded-xl px-4 py-2.5 min-w-0">
-            <Search size={14} className="text-zinc-600 shrink-0" />
+            <Search size={14} className="text-zinc-400 shrink-0" />
             <input
               value={query}
               onChange={e => onQueryChange(e.target.value)}
@@ -44,7 +44,7 @@ export const TabNovosMembros: React.FC<{
             className={`flex items-center gap-1.5 px-3 py-2.5 rounded-xl border transition-all active:scale-95 shrink-0 ${
               filterDestaque
                 ? 'bg-[#FFD300]/15 border-[#FFD300]/30 text-[#FFD300]'
-                : 'bg-zinc-900/60 border-white/5 text-zinc-600'
+                : 'bg-zinc-900/60 border-white/5 text-zinc-400'
             }`}
           >
             <Star size={12} className={filterDestaque ? 'fill-[#FFD300]' : ''} />
@@ -64,7 +64,7 @@ export const TabNovosMembros: React.FC<{
             <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center">
               <Users size={28} className="text-zinc-700" />
             </div>
-            <p className="text-zinc-600 text-[10px] font-black uppercase tracking-widest text-center">
+            <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest text-center">
               {query || filterDestaque ? 'Nenhum resultado.' : 'Nenhum membro pendente.'}
             </p>
             {!query && !filterDestaque && (
@@ -99,7 +99,7 @@ export const TabNovosMembros: React.FC<{
                 </div>
                 <div className="flex-1 min-w-0 pt-1">
                   <p className="text-white font-bold text-base leading-tight mb-1 truncate">{m.nome}</p>
-                  <p className="text-zinc-600 text-[10px] mb-1 truncate">{m.email}</p>
+                  <p className="text-zinc-400 text-[10px] mb-1 truncate">{m.email}</p>
                   {(m.cidade || m.estado) && (
                     <p className="text-zinc-700 text-[9px] truncate mb-1">
                       {[m.cidade, m.estado].filter(Boolean).join(', ')}
@@ -107,7 +107,7 @@ export const TabNovosMembros: React.FC<{
                   )}
                   {m.instagram && (
                     <div className="flex items-center gap-1.5 min-w-0">
-                      <p className="text-zinc-500 text-[10px] truncate">@{m.instagram.replace(/^@/, '')}</p>
+                      <p className="text-zinc-400 text-[10px] truncate">@{m.instagram.replace(/^@/, '')}</p>
                       {m.seguidoresInstagram != null && (
                         <span className="shrink-0 text-[8px] font-black text-[#FFD300] bg-[#FFD300]/10 border border-[#FFD300]/20 px-1.5 py-0.5 rounded-full">
                           {formatFollowers(m.seguidoresInstagram)}

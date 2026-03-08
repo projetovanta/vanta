@@ -65,7 +65,7 @@ export const CidadesMaisVantaView: React.FC = () => {
         <div className="flex items-center gap-2">
           <MapPin size={18} className="text-[#FFD300]" />
           <h2 className="text-white font-bold text-sm">Cidades do Programa</h2>
-          <span className="text-zinc-500 text-xs">({cidades.length})</span>
+          <span className="text-zinc-400 text-xs">({cidades.length})</span>
         </div>
         <button
           onClick={() => {
@@ -89,13 +89,13 @@ export const CidadesMaisVantaView: React.FC = () => {
             value={nome}
             onChange={e => setNome(e.target.value)}
             placeholder="Nome da cidade (ex: São Paulo)"
-            className="w-full bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-[#FFD300]/50"
+            className="w-full bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/50"
           />
           <input
             value={estado}
             onChange={e => setEstado(e.target.value)}
             placeholder="Estado (ex: SP)"
-            className="w-full bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-600 focus:outline-none focus:border-[#FFD300]/50"
+            className="w-full bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/50"
           />
           <div className="flex gap-2">
             <button
@@ -125,7 +125,7 @@ export const CidadesMaisVantaView: React.FC = () => {
       ) : cidades.length === 0 ? (
         <div className="text-center py-12">
           <MapPin size={32} className="text-zinc-700 mx-auto mb-2" />
-          <p className="text-zinc-500 text-xs">Nenhuma cidade cadastrada</p>
+          <p className="text-zinc-400 text-xs">Nenhuma cidade cadastrada</p>
         </div>
       ) : (
         <div className="space-y-2">
@@ -141,7 +141,7 @@ export const CidadesMaisVantaView: React.FC = () => {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-white text-sm font-semibold truncate">{c.nome}</p>
-                <div className="flex items-center gap-2 text-[10px] text-zinc-500">
+                <div className="flex items-center gap-2 text-[10px] text-zinc-400">
                   {c.estado && <span>{c.estado}</span>}
                   {c.gerenteId && (
                     <span className="flex items-center gap-0.5">
@@ -166,7 +166,7 @@ export const CidadesMaisVantaView: React.FC = () => {
                   {c.ativo ? (
                     <ToggleRight size={14} className="text-green-400" />
                   ) : (
-                    <ToggleLeft size={14} className="text-zinc-500" />
+                    <ToggleLeft size={14} className="text-zinc-400" />
                   )}
                 </button>
               </div>

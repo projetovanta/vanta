@@ -19,11 +19,11 @@ const Row: React.FC<{ label: string; value: string; icon: React.ElementType; acc
 }) => (
   <div className="flex items-center justify-between py-2">
     <div className="flex items-center gap-2 min-w-0">
-      <Icon size={13} className={accent ? 'text-[#FFD300]' : muted ? 'text-zinc-700' : 'text-zinc-500'} />
-      <p className={`text-[11px] font-semibold truncate ${muted ? 'text-zinc-600' : 'text-zinc-400'}`}>{label}</p>
+      <Icon size={13} className={accent ? 'text-[#FFD300]' : muted ? 'text-zinc-700' : 'text-zinc-400'} />
+      <p className={`text-[11px] font-semibold truncate ${muted ? 'text-zinc-400' : 'text-zinc-400'}`}>{label}</p>
     </div>
     <p
-      className={`text-[12px] font-black tabular-nums shrink-0 ${accent ? 'text-[#FFD300]' : muted ? 'text-zinc-600' : 'text-white'}`}
+      className={`text-[12px] font-black tabular-nums shrink-0 ${accent ? 'text-[#FFD300]' : muted ? 'text-zinc-400' : 'text-white'}`}
     >
       {value}
     </p>

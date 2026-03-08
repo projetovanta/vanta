@@ -343,12 +343,12 @@ export const AdminDashboardHome: React.FC<{
           Bem-vindo, {adminNome}
         </h1>
         {tenantNome && (
-          <p className="text-zinc-500 text-[10px] font-black uppercase tracking-widest mt-1.5">
+          <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest mt-1.5">
             Você está em: <span className="text-zinc-300">{tenantNome}</span>
           </p>
         )}
         {isMaster && !tenantNome && (
-          <p className="text-zinc-600 text-[10px] font-black uppercase tracking-widest mt-1.5">
+          <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest mt-1.5">
             Visão global da plataforma
           </p>
         )}
@@ -403,7 +403,7 @@ export const AdminDashboardHome: React.FC<{
                   <p className="text-white font-bold text-sm truncate">
                     {ativa ? 'MAIS VANTA Ativo' : 'Ative o MAIS VANTA'}
                   </p>
-                  <p className="text-zinc-500 text-[10px] mt-0.5 truncate">
+                  <p className="text-zinc-400 text-[10px] mt-0.5 truncate">
                     {ativa
                       ? `Plano ${assinaturaService.getInfoPlano(assinatura!).nome} · ${assinaturaService.getInfoPlano(assinatura!).membros} membros`
                       : 'Atraia influenciadores para seus eventos'}
@@ -513,7 +513,7 @@ export const AdminDashboardHome: React.FC<{
                         className={`px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-wider transition-all ${
                           periodo === p.value
                             ? 'bg-[#FFD300] text-black'
-                            : 'bg-zinc-900/60 text-zinc-500 border border-white/5 active:bg-white/5'
+                            : 'bg-zinc-900/60 text-zinc-400 border border-white/5 active:bg-white/5'
                         }`}
                       >
                         {p.label}
@@ -586,11 +586,11 @@ export const AdminDashboardHome: React.FC<{
                 <div className="flex items-baseline gap-4">
                   <div>
                     <p className="text-white font-black text-2xl leading-none">{ativas}</p>
-                    <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest mt-1">ativas</p>
+                    <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mt-1">ativas</p>
                   </div>
                   <div>
                     <p className="text-[#FFD300] font-black text-xl leading-none">{fmtBRL(mrr)}</p>
-                    <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest mt-1">MRR</p>
+                    <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mt-1">MRR</p>
                   </div>
                 </div>
               </button>
@@ -752,7 +752,7 @@ export const AdminDashboardHome: React.FC<{
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-white font-bold text-sm leading-tight truncate">{btn.label}</p>
-                      <p className="text-zinc-600 text-[10px] mt-0.5 truncate">{btn.sublabel}</p>
+                      <p className="text-zinc-400 text-[10px] mt-0.5 truncate">{btn.sublabel}</p>
                     </div>
                     {hasBadge && (
                       <span
@@ -773,7 +773,7 @@ export const AdminDashboardHome: React.FC<{
         {buttons.length === 0 && !isMaster && (
           <div className="flex flex-col items-center justify-center gap-3 py-16 text-center">
             <Shield size={28} className="text-zinc-700" />
-            <p className="text-zinc-600 text-[10px] font-black uppercase tracking-widest">Nenhuma ação disponível</p>
+            <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">Nenhuma ação disponível</p>
           </div>
         )}
       </div>

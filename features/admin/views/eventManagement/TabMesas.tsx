@@ -99,7 +99,7 @@ export const TabMesas: React.FC<Props> = ({ eventoId, mesasAtivo, plantaMesas, o
       <div className="flex items-center justify-between p-4 bg-zinc-900/40 border border-white/5 rounded-2xl">
         <div>
           <p className="text-white font-bold text-sm">Mesas / Camarotes</p>
-          <p className="text-zinc-600 text-[9px]">Habilitar seleção de mesa neste evento</p>
+          <p className="text-zinc-400 text-[9px]">Habilitar seleção de mesa neste evento</p>
         </div>
         <button
           onClick={() => {
@@ -118,7 +118,7 @@ export const TabMesas: React.FC<Props> = ({ eventoId, mesasAtivo, plantaMesas, o
         <>
           {/* Upload de planta */}
           <div className="space-y-2">
-            <p className="text-[9px] text-zinc-500 font-black uppercase tracking-widest ml-1">Planta do Local</p>
+            <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest ml-1">Planta do Local</p>
             {planta ? (
               <div className="relative rounded-2xl overflow-hidden border border-white/5">
                 <img
@@ -138,10 +138,10 @@ export const TabMesas: React.FC<Props> = ({ eventoId, mesasAtivo, plantaMesas, o
               <button
                 onClick={() => fileRef.current?.click()}
                 disabled={uploading}
-                className="w-full aspect-[16/9] border-2 border-dashed border-white/10 rounded-2xl flex flex-col items-center justify-center gap-2 text-zinc-600 active:border-[#FFD300]/30 transition-all"
+                className="w-full aspect-[16/9] border-2 border-dashed border-white/10 rounded-2xl flex flex-col items-center justify-center gap-2 text-zinc-400 active:border-[#FFD300]/30 transition-all"
               >
                 {uploading ? (
-                  <Loader2 size={20} className="animate-spin text-zinc-500" />
+                  <Loader2 size={20} className="animate-spin text-zinc-400" />
                 ) : (
                   <>
                     <Upload size={20} />
@@ -157,7 +157,7 @@ export const TabMesas: React.FC<Props> = ({ eventoId, mesasAtivo, plantaMesas, o
           {planta && (
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <p className="text-[9px] text-zinc-500 font-black uppercase tracking-widest ml-1">Posicionar Mesas</p>
+                <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest ml-1">Posicionar Mesas</p>
                 <p className="text-[8px] text-zinc-700">Clique na imagem para adicionar</p>
               </div>
               <div
@@ -207,7 +207,7 @@ export const TabMesas: React.FC<Props> = ({ eventoId, mesasAtivo, plantaMesas, o
             <div className="bg-zinc-900/60 border border-[#FFD300]/20 rounded-2xl p-4 space-y-3">
               <div className="flex items-center justify-between">
                 <p className="text-[#FFD300] font-bold text-sm">Editar Mesa</p>
-                <button onClick={() => setEditMesa(null)} className="text-zinc-600 active:text-zinc-400">
+                <button onClick={() => setEditMesa(null)} className="text-zinc-400 active:text-zinc-400">
                   <X size={16} />
                 </button>
               </div>
@@ -220,7 +220,7 @@ export const TabMesas: React.FC<Props> = ({ eventoId, mesasAtivo, plantaMesas, o
                 />
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Capacidade</label>
+                    <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Capacidade</label>
                     <input
                       value={formCap}
                       onChange={e => setFormCap(e.target.value)}
@@ -230,7 +230,7 @@ export const TabMesas: React.FC<Props> = ({ eventoId, mesasAtivo, plantaMesas, o
                     />
                   </div>
                   <div>
-                    <label className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Valor (R$)</label>
+                    <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Valor (R$)</label>
                     <input
                       value={formValor}
                       onChange={e => setFormValor(e.target.value)}
@@ -262,11 +262,11 @@ export const TabMesas: React.FC<Props> = ({ eventoId, mesasAtivo, plantaMesas, o
           {/* Lista de mesas */}
           {loading ? (
             <div className="flex items-center justify-center py-8">
-              <Loader2 size={20} className="text-zinc-600 animate-spin" />
+              <Loader2 size={20} className="text-zinc-400 animate-spin" />
             </div>
           ) : mesas.length > 0 ? (
             <div className="space-y-2">
-              <p className="text-[9px] text-zinc-500 font-black uppercase tracking-widest ml-1">
+              <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest ml-1">
                 Mesas ({mesas.length})
               </p>
               {mesas.map((m, i) => {
@@ -281,7 +281,7 @@ export const TabMesas: React.FC<Props> = ({ eventoId, mesasAtivo, plantaMesas, o
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-white text-sm font-bold truncate">{m.label}</p>
-                      <p className="text-zinc-600 text-[9px]">
+                      <p className="text-zinc-400 text-[9px]">
                         {m.capacidade} pessoas · {fmtBrl(m.valor)}
                       </p>
                     </div>
@@ -301,7 +301,7 @@ export const TabMesas: React.FC<Props> = ({ eventoId, mesasAtivo, plantaMesas, o
           ) : planta ? (
             <div className="text-center py-6">
               <Plus size={20} className="text-zinc-700 mx-auto mb-2" />
-              <p className="text-zinc-600 text-[10px]">Clique na planta para adicionar mesas</p>
+              <p className="text-zinc-400 text-[10px]">Clique na planta para adicionar mesas</p>
             </div>
           ) : null}
         </>

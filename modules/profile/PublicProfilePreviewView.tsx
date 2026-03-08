@@ -138,7 +138,7 @@ export const PublicProfilePreviewView: React.FC<{
         <Lock size={18} className="text-[#FFD300]" />
       </div>
       <p className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Conteúdo Restrito</p>
-      <p className="text-[8px] font-medium text-zinc-600 mt-1">Disponível apenas para amigos</p>
+      <p className="text-[8px] font-medium text-zinc-400 mt-1">Disponível apenas para amigos</p>
     </div>
   );
 
@@ -179,7 +179,7 @@ export const PublicProfilePreviewView: React.FC<{
           style={{ paddingTop: '1rem' }}
         >
           <div className="flex items-center justify-between">
-            <button
+            <button aria-label="Voltar"
               onClick={onBack}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
             >
@@ -200,7 +200,7 @@ export const PublicProfilePreviewView: React.FC<{
 
       {(!isOwner || (isOwner && !setProfilePreviewStatus)) && (
         <div className="shrink-0 p-6 flex items-center" style={{ paddingTop: '1.5rem' }}>
-          <button
+          <button aria-label="Voltar"
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
           >
@@ -218,7 +218,7 @@ export const PublicProfilePreviewView: React.FC<{
               className="w-36 h-36 rounded-full p-[2px] bg-zinc-800 shadow-2xl active:scale-95 transition-transform"
             >
               <div className="w-full h-full rounded-full border-4 border-[#050505] overflow-hidden bg-black">
-                <img
+                <img alt=""
                   loading="lazy"
                   src={profile.foto}
                   className="w-full h-full object-cover"
@@ -231,7 +231,7 @@ export const PublicProfilePreviewView: React.FC<{
           <h2 style={TYPOGRAPHY.screenTitle} className="text-3xl mb-1 italic text-center">
             {profile.nome}
           </h2>
-          <p className="text-zinc-500 text-[9px] font-black uppercase tracking-[0.3em] mb-3 opacity-60 text-center">
+          <p className="text-zinc-400 text-[9px] font-black uppercase tracking-[0.3em] mb-3 opacity-60 text-center">
             Membro Confirmado
           </p>
 
@@ -391,7 +391,7 @@ export const PublicProfilePreviewView: React.FC<{
               </Section>
 
               <Section title="Eventos Confirmados" icon={Calendar} visible={isVisible(privacy?.verEventos)}>
-                <div className="py-4 text-zinc-600 text-[10px] uppercase font-bold tracking-widest italic">
+                <div className="py-4 text-zinc-400 text-[10px] uppercase font-bold tracking-widest italic">
                   Nenhum evento público confirmado
                 </div>
               </Section>
@@ -456,7 +456,7 @@ export const PublicProfilePreviewView: React.FC<{
                               >
                                 {cfg.label}
                               </p>
-                              <p className="text-[9px] text-zinc-500 text-center truncate w-full">
+                              <p className="text-[9px] text-zinc-400 text-center truncate w-full">
                                 {ach.comunidadeNome}
                               </p>
                             </div>
@@ -505,7 +505,7 @@ export const PublicProfilePreviewView: React.FC<{
             <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-3 italic">
               Cancelar pedido?
             </h2>
-            <p className="text-zinc-500 text-xs leading-relaxed mb-8 px-4">
+            <p className="text-zinc-400 text-xs leading-relaxed mb-8 px-4">
               Deseja desfazer a solicitação de amizade enviada para {profile.nome}?
             </p>
             <div className="space-y-3">
@@ -520,7 +520,7 @@ export const PublicProfilePreviewView: React.FC<{
               </button>
               <button
                 onClick={() => setShowCancelModal(false)}
-                className="w-full py-4 text-zinc-500 font-bold text-[10px] uppercase active:opacity-60 transition-all"
+                className="w-full py-4 text-zinc-400 font-bold text-[10px] uppercase active:opacity-60 transition-all"
               >
                 Cancelar
               </button>
@@ -544,7 +544,7 @@ export const PublicProfilePreviewView: React.FC<{
             <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-3 italic">
               Remover amigo?
             </h2>
-            <p className="text-zinc-500 text-xs leading-relaxed mb-8 px-4">
+            <p className="text-zinc-400 text-xs leading-relaxed mb-8 px-4">
               Você deixará de ser amigo de {profile.nome}.
             </p>
             <div className="space-y-3">
@@ -559,7 +559,7 @@ export const PublicProfilePreviewView: React.FC<{
               </button>
               <button
                 onClick={() => setShowUnfriendModal(false)}
-                className="w-full py-4 text-zinc-500 font-bold text-[10px] uppercase active:opacity-60 transition-all"
+                className="w-full py-4 text-zinc-400 font-bold text-[10px] uppercase active:opacity-60 transition-all"
               >
                 Cancelar
               </button>
@@ -582,7 +582,7 @@ export const PublicProfilePreviewView: React.FC<{
             <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-3 italic">
               Conexão Confirmada!
             </h2>
-            <p className="text-zinc-500 text-xs leading-relaxed mb-8 px-4">
+            <p className="text-zinc-400 text-xs leading-relaxed mb-8 px-4">
               Agora você e {profile.nome} são amigos mútuos.
             </p>
             <button
@@ -604,12 +604,12 @@ export const PublicProfilePreviewView: React.FC<{
           />
           <div className="relative w-full max-w-[85%] bg-[#0A0A0A] border border-[#FFD300]/20 rounded-[2.5rem] p-8 text-center shadow-[0_0_50px_rgba(255,211,0,0.08)] animate-in zoom-in-95 duration-300">
             <div className="w-20 h-20 bg-zinc-900 rounded-full flex items-center justify-center mx-auto mb-6 border border-[#FFD300]/20 shadow-xl">
-              <UserMinus size={28} className="text-zinc-500" />
+              <UserMinus size={28} className="text-zinc-400" />
             </div>
             <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-3 italic">
               Pedido Recusado
             </h2>
-            <p className="text-zinc-500 text-xs leading-relaxed mb-8 px-4">
+            <p className="text-zinc-400 text-xs leading-relaxed mb-8 px-4">
               A solicitação de {profile.nome} foi removida.
             </p>
             <button
@@ -735,7 +735,7 @@ const PhotoLightbox: React.FC<{
           <X size={18} className="text-white" />
         </button>
         {photos.length > 1 && (
-          <p className="text-zinc-500 text-[10px] font-black uppercase tracking-widest">
+          <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">
             {index + 1} / {photos.length}
           </p>
         )}
@@ -751,7 +751,7 @@ const PhotoLightbox: React.FC<{
         onTouchEnd={onTouchEnd}
         onClick={handleTap}
       >
-        <img
+        <img alt=""
           src={photos[index]}
           className="max-w-full max-h-full object-contain select-none transition-transform duration-100"
           style={{ transform: `translate(${translate.x}px, ${translate.y}px) scale(${scale})` }}

@@ -143,7 +143,7 @@ export const PedidosSubView: React.FC<{
         className="shrink-0 flex items-center gap-3 px-4 pb-3 border-b border-white/5"
         style={{ paddingTop: '0.75rem' }}
       >
-        <button
+        <button aria-label="Voltar"
           onClick={onBack}
           className="w-9 h-9 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
         >
@@ -151,10 +151,10 @@ export const PedidosSubView: React.FC<{
         </button>
         <div className="flex-1 min-w-0">
           <p className="text-white text-sm font-bold truncate">Pedidos</p>
-          <p className="text-zinc-600 text-[9px] font-bold uppercase tracking-widest truncate">{eventoNome}</p>
+          <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-widest truncate">{eventoNome}</p>
         </div>
         {filtered.length > 0 && (
-          <button
+          <button aria-label="Baixar"
             onClick={exportCSV}
             className="w-9 h-9 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
           >
@@ -167,11 +167,11 @@ export const PedidosSubView: React.FC<{
       {!loading && (
         <div className="shrink-0 grid grid-cols-2 md:grid-cols-4 gap-2 px-4 py-3">
           <div className="bg-zinc-900/50 border border-white/5 rounded-lg px-3 py-2">
-            <p className="text-[8px] text-zinc-600 font-bold uppercase">Total</p>
+            <p className="text-[8px] text-zinc-400 font-bold uppercase">Total</p>
             <p className="text-white text-lg font-bold">{resumo.total}</p>
           </div>
           <div className="bg-zinc-900/50 border border-white/5 rounded-lg px-3 py-2">
-            <p className="text-[8px] text-zinc-600 font-bold uppercase">Receita</p>
+            <p className="text-[8px] text-zinc-400 font-bold uppercase">Receita</p>
             <p className="text-[#FFD300] text-lg font-bold">{fmtBRL(resumo.receita)}</p>
           </div>
           <div className="bg-zinc-900/50 border border-white/5 rounded-lg px-3 py-2">
@@ -188,7 +188,7 @@ export const PedidosSubView: React.FC<{
       {/* Filtros */}
       <div className="shrink-0 flex items-center gap-2 px-4 pb-3 flex-wrap">
         <div className="flex-1 min-w-32 relative">
-          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-600" />
+          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
           <input
             type="text"
             value={busca}
@@ -198,7 +198,7 @@ export const PedidosSubView: React.FC<{
           />
           {busca && (
             <button onClick={() => setBusca('')} className="absolute right-2.5 top-1/2 -translate-y-1/2">
-              <X size={12} className="text-zinc-600" />
+              <X size={12} className="text-zinc-400" />
             </button>
           )}
         </div>
@@ -279,11 +279,11 @@ export const PedidosSubView: React.FC<{
       <div className="flex-1 overflow-y-auto no-scrollbar px-4 pb-6">
         {loading ? (
           <div className="flex items-center justify-center py-12">
-            <Loader2 size={20} className="text-zinc-600 animate-spin" />
+            <Loader2 size={20} className="text-zinc-400 animate-spin" />
           </div>
         ) : filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 gap-2">
-            <p className="text-zinc-600 text-xs">Nenhum pedido encontrado</p>
+            <p className="text-zinc-400 text-xs">Nenhum pedido encontrado</p>
             {(busca || statusFilter !== 'TODOS' || variacaoFilter !== 'TODOS') && (
               <button
                 onClick={() => {
@@ -304,17 +304,17 @@ export const PedidosSubView: React.FC<{
                 <div className="flex items-start gap-3">
                   <div className="flex-1 min-w-0">
                     <p className="text-white text-sm font-bold truncate">{t.nomeTitular || '—'}</p>
-                    <p className="text-zinc-500 text-[10px] truncate">{t.email}</p>
+                    <p className="text-zinc-400 text-[10px] truncate">{t.email}</p>
                     <div className="flex items-center gap-2 mt-1 flex-wrap">
-                      <span className="text-[9px] text-zinc-500 font-semibold">{t.variacaoLabel}</span>
-                      <span className="text-[9px] text-zinc-600">·</span>
+                      <span className="text-[9px] text-zinc-400 font-semibold">{t.variacaoLabel}</span>
+                      <span className="text-[9px] text-zinc-400">·</span>
                       <span className="text-[9px] text-[#FFD300] font-bold">{fmtBRL(t.valor)}</span>
-                      <span className="text-[9px] text-zinc-600">·</span>
-                      <span className="text-[9px] text-zinc-600">{fmtDate(t.emitidoEm)}</span>
+                      <span className="text-[9px] text-zinc-400">·</span>
+                      <span className="text-[9px] text-zinc-400">{fmtDate(t.emitidoEm)}</span>
                     </div>
                   </div>
                   <span
-                    className={`shrink-0 text-[8px] font-black uppercase px-2 py-0.5 rounded-full ${STATUS_COLORS[t.status] ?? 'text-zinc-500 bg-zinc-800'}`}
+                    className={`shrink-0 text-[8px] font-black uppercase px-2 py-0.5 rounded-full ${STATUS_COLORS[t.status] ?? 'text-zinc-400 bg-zinc-800'}`}
                   >
                     {t.status}
                   </span>
@@ -324,7 +324,7 @@ export const PedidosSubView: React.FC<{
                 <div className="flex items-center gap-2 mt-2 pt-2 border-t border-white/5">
                   <button
                     onClick={() => setDetalheTicket(t)}
-                    className="flex items-center gap-1 text-[9px] text-zinc-500 hover:text-white transition-colors"
+                    className="flex items-center gap-1 text-[9px] text-zinc-400 hover:text-white transition-colors"
                   >
                     <Eye size={11} /> Detalhes
                   </button>
@@ -333,7 +333,7 @@ export const PedidosSubView: React.FC<{
                       <button
                         onClick={() => handleReenviar(t.id)}
                         disabled={actionLoading === t.id}
-                        className="flex items-center gap-1 text-[9px] text-zinc-500 hover:text-blue-400 transition-colors disabled:opacity-50"
+                        className="flex items-center gap-1 text-[9px] text-zinc-400 hover:text-blue-400 transition-colors disabled:opacity-50"
                       >
                         {actionLoading === t.id ? <Loader2 size={11} className="animate-spin" /> : <Send size={11} />}{' '}
                         Reenviar
@@ -341,7 +341,7 @@ export const PedidosSubView: React.FC<{
                       <button
                         onClick={() => setConfirmarCancelarId(t.id)}
                         disabled={actionLoading === t.id}
-                        className="flex items-center gap-1 text-[9px] text-zinc-500 hover:text-red-400 transition-colors disabled:opacity-50"
+                        className="flex items-center gap-1 text-[9px] text-zinc-400 hover:text-red-400 transition-colors disabled:opacity-50"
                       >
                         {actionLoading === t.id ? <Loader2 size={11} className="animate-spin" /> : <Ban size={11} />}{' '}
                         Cancelar
@@ -368,7 +368,7 @@ export const PedidosSubView: React.FC<{
             <div className="flex items-center justify-between mb-4">
               <p className="text-white text-sm font-bold">Detalhe do Pedido</p>
               <button onClick={() => setDetalheTicket(null)}>
-                <X size={16} className="text-zinc-500" />
+                <X size={16} className="text-zinc-400" />
               </button>
             </div>
             <div className="space-y-3">
@@ -385,14 +385,14 @@ export const PedidosSubView: React.FC<{
                 ] as [string, string][]
               ).map(([label, val]) => (
                 <div key={label} className="flex items-center justify-between">
-                  <span className="text-[10px] text-zinc-500 font-semibold">{label}</span>
+                  <span className="text-[10px] text-zinc-400 font-semibold">{label}</span>
                   <span className="text-[10px] text-white font-bold truncate max-w-[60%] text-right">{val}</span>
                 </div>
               ))}
             </div>
             {detalheTicket.selfieUrl && (
               <div className="mt-4">
-                <p className="text-[8px] text-zinc-600 font-bold uppercase mb-1">Selfie</p>
+                <p className="text-[8px] text-zinc-400 font-bold uppercase mb-1">Selfie</p>
                 <img
                   loading="lazy"
                   src={detalheTicket.selfieUrl}

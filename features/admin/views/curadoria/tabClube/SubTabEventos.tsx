@@ -50,7 +50,7 @@ export const SubTabEventos: React.FC<Props> = ({
 
         if (reservasEvento.length === 0) {
           return (
-            <p className="text-zinc-600 text-xs text-center py-10">Nenhum membro reservou benefício neste evento</p>
+            <p className="text-zinc-400 text-xs text-center py-10">Nenhum membro reservou benefício neste evento</p>
           );
         }
 
@@ -81,7 +81,7 @@ export const SubTabEventos: React.FC<Props> = ({
                 let statusColor = 'border-zinc-700';
                 let statusBg = 'bg-zinc-900/60';
                 let statusLabel = 'Reservado';
-                let statusLabelColor = 'text-zinc-500';
+                let statusLabelColor = 'text-zinc-400';
 
                 if (postou) {
                   statusColor = 'border-emerald-500/30';
@@ -113,14 +113,14 @@ export const SubTabEventos: React.FC<Props> = ({
                           <img loading="lazy" src={p.foto} alt="" className="w-full h-full object-cover" />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center">
-                            <User size={14} className="text-zinc-600" />
+                            <User size={14} className="text-zinc-400" />
                           </div>
                         )}
                       </button>
                       <div className="flex-1 min-w-0">
                         <p className="text-white text-xs font-bold truncate">{p?.nome || r.userId.slice(0, 8)}</p>
                         {membro?.instagramHandle && (
-                          <p className="text-zinc-500 text-[9px]">@{membro.instagramHandle}</p>
+                          <p className="text-zinc-400 text-[9px]">@{membro.instagramHandle}</p>
                         )}
                       </div>
                       <span className={`text-[8px] font-black uppercase px-2 py-0.5 rounded ${statusLabelColor}`}>

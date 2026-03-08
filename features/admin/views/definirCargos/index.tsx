@@ -204,7 +204,7 @@ export const DefinirCargosView: React.FC<DefinirCargosProps> = ({ onBack, curren
       {/* Header */}
       <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-6 pt-10 pb-4 shrink-0">
         <div className="flex items-center gap-4 mb-4">
-          <button
+          <button aria-label="Voltar"
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
           >
@@ -214,7 +214,7 @@ export const DefinirCargosView: React.FC<DefinirCargosProps> = ({ onBack, curren
             <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic leading-none text-white">
               Definir Cargos
             </h1>
-            <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest mt-1">Permissões de acesso</p>
+            <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mt-1">Permissões de acesso</p>
           </div>
         </div>
         {/* Abas Adicionar / Importar */}
@@ -224,7 +224,7 @@ export const DefinirCargosView: React.FC<DefinirCargosProps> = ({ onBack, curren
               key={m}
               onClick={() => setModo(m)}
               className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-[9px] font-black uppercase tracking-wide transition-all ${
-                modo === m ? 'bg-[#FFD300] text-black' : 'text-zinc-500 active:text-zinc-300'
+                modo === m ? 'bg-[#FFD300] text-black' : 'text-zinc-400 active:text-zinc-300'
               }`}
             >
               {m === 'IMPORTAR' && <Download size={10} />}
@@ -240,7 +240,7 @@ export const DefinirCargosView: React.FC<DefinirCargosProps> = ({ onBack, curren
           <p className="text-emerald-300 text-xs font-bold flex-1 min-w-0">
             {importDone} membro{importDone > 1 ? 's' : ''} importado{importDone > 1 ? 's' : ''} com sucesso.
           </p>
-          <button onClick={() => setImportDone(0)} className="text-zinc-600 active:text-white transition-all shrink-0">
+          <button onClick={() => setImportDone(0)} className="text-zinc-400 active:text-white transition-all shrink-0">
             <X size={13} />
           </button>
         </div>
@@ -251,7 +251,7 @@ export const DefinirCargosView: React.FC<DefinirCargosProps> = ({ onBack, curren
           {/* Precisa selecionar destino primeiro */}
           {!selectedDestino ? (
             <div className="space-y-3">
-              <p className="text-zinc-500 text-xs leading-relaxed">
+              <p className="text-zinc-400 text-xs leading-relaxed">
                 Selecione o evento ou comunidade de <span className="text-white font-semibold">destino</span> para
                 importar o staff.
               </p>
@@ -302,7 +302,7 @@ export const DefinirCargosView: React.FC<DefinirCargosProps> = ({ onBack, curren
                 <p className="text-white text-sm font-medium truncate min-w-0 flex-1">{selectedDestino.nome}</p>
                 <button
                   onClick={() => setSelectedDestino(null)}
-                  className="ml-auto shrink-0 text-zinc-600 text-[9px] font-black uppercase tracking-wider active:text-white transition-all"
+                  className="ml-auto shrink-0 text-zinc-400 text-[9px] font-black uppercase tracking-wider active:text-white transition-all"
                 >
                   Trocar
                 </button>
@@ -336,14 +336,14 @@ export const DefinirCargosView: React.FC<DefinirCargosProps> = ({ onBack, curren
                 />
                 <div className="min-w-0">
                   <p className="text-white text-sm font-bold truncate">{selectedMembro.nome}</p>
-                  <p className="text-zinc-500 text-[10px] truncate">{selectedMembro.email}</p>
+                  <p className="text-zinc-400 text-[10px] truncate">{selectedMembro.email}</p>
                 </div>
                 <button
                   onClick={() => {
                     setSelectedMembro(null);
                     setEmailQuery('');
                   }}
-                  className="ml-auto shrink-0 text-zinc-600 text-[9px] font-black uppercase tracking-wider active:text-white transition-all"
+                  className="ml-auto shrink-0 text-zinc-400 text-[9px] font-black uppercase tracking-wider active:text-white transition-all"
                 >
                   Trocar
                 </button>
@@ -375,14 +375,14 @@ export const DefinirCargosView: React.FC<DefinirCargosProps> = ({ onBack, curren
                         />
                         <div className="min-w-0">
                           <p className="text-white text-sm font-medium truncate">{m.nome}</p>
-                          <p className="text-zinc-500 text-[10px] truncate">{m.email}</p>
+                          <p className="text-zinc-400 text-[10px] truncate">{m.email}</p>
                         </div>
                       </button>
                     ))}
                   </div>
                 )}
                 {emailQuery.length >= 2 && membrosFiltrados.length === 0 && (
-                  <p className="text-zinc-600 text-xs mt-2 pl-1">Nenhum membro encontrado.</p>
+                  <p className="text-zinc-400 text-xs mt-2 pl-1">Nenhum membro encontrado.</p>
                 )}
               </>
             )}
@@ -401,7 +401,7 @@ export const DefinirCargosView: React.FC<DefinirCargosProps> = ({ onBack, curren
                 <p className="text-white text-sm font-medium truncate min-w-0">{selectedDestino.nome}</p>
                 <button
                   onClick={() => setSelectedDestino(null)}
-                  className="ml-auto shrink-0 text-zinc-600 text-[9px] font-black uppercase tracking-wider active:text-white transition-all"
+                  className="ml-auto shrink-0 text-zinc-400 text-[9px] font-black uppercase tracking-wider active:text-white transition-all"
                 >
                   Trocar
                 </button>
@@ -458,7 +458,7 @@ export const DefinirCargosView: React.FC<DefinirCargosProps> = ({ onBack, curren
                   >
                     {c.label}
                   </p>
-                  <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest">{c.desc}</p>
+                  <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">{c.desc}</p>
                 </button>
               ))}
 
@@ -479,7 +479,7 @@ export const DefinirCargosView: React.FC<DefinirCargosProps> = ({ onBack, curren
                 >
                   ＋ Personalizado
                 </p>
-                <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest">Permissões customizadas</p>
+                <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">Permissões customizadas</p>
               </button>
             </div>
 

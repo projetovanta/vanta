@@ -449,14 +449,14 @@ export const CheckoutPage: React.FC = () => {
   if (pageLoading)
     return (
       <div className="min-h-[100dvh] bg-black flex items-center justify-center gap-3">
-        <Loader2 size={24} className="text-zinc-600 animate-spin" />
+        <Loader2 size={24} className="text-zinc-400 animate-spin" />
       </div>
     );
 
   if (!evento)
     return (
       <div className="min-h-[100dvh] bg-black flex items-center justify-center">
-        <p className="text-zinc-600 text-sm">Evento não encontrado.</p>
+        <p className="text-zinc-400 text-sm">Evento não encontrado.</p>
       </div>
     );
 
@@ -483,9 +483,9 @@ export const CheckoutPage: React.FC = () => {
       <div className="flex-1 overflow-y-auto px-5 -mt-4 space-y-6 pb-4">
         {/* Info */}
         <div>
-          <p className="text-[8px] text-zinc-500 font-black uppercase tracking-widest mb-1">{evento.formato}</p>
+          <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1">{evento.formato}</p>
           <h1 className="font-serif italic text-2xl text-white leading-tight truncate">{evento.titulo}</h1>
-          <p className="text-zinc-500 text-xs mt-1">
+          <p className="text-zinc-400 text-xs mt-1">
             {evento.data} · {evento.horario} · {evento.local}
           </p>
         </div>
@@ -493,7 +493,7 @@ export const CheckoutPage: React.FC = () => {
         {/* Seleção */}
         <div className="space-y-3">
           <div className="flex items-center gap-2 flex-wrap">
-            <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Selecionar ingressos</p>
+            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Selecionar ingressos</p>
             {totalLotes > 1 && loteOrdem === 0 && (
               <span className="text-[7px] font-black uppercase tracking-wider text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full flex items-center gap-1">
                 <Zap size={8} /> Early Bird
@@ -541,7 +541,7 @@ export const CheckoutPage: React.FC = () => {
                         )}
                       </div>
                       <div className="flex items-baseline gap-1.5 mt-0.5">
-                        {cupomAplicado && <p className="text-xs text-zinc-600 line-through">{fmtBrl(v.valor)}</p>}
+                        {cupomAplicado && <p className="text-xs text-zinc-400 line-through">{fmtBrl(v.valor)}</p>}
                         <p className={`text-base font-black ${q > 0 ? 'text-[#FFD300]' : 'text-zinc-400'}`}>
                           {cupomAplicado
                             ? fmtBrl(Math.max(0, v.valor - cuponsService.calcDesconto(cupomAplicado, v.valor)))
@@ -609,13 +609,13 @@ export const CheckoutPage: React.FC = () => {
         {totalItems >= 2 && (
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <UserPlus size={12} className="text-zinc-600" />
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Acompanhantes</p>
+              <UserPlus size={12} className="text-zinc-400" />
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Acompanhantes</p>
             </div>
-            <p className="text-zinc-600 text-[10px]">Algum ingresso é para acompanhante? Informe o nome.</p>
+            <p className="text-zinc-400 text-[10px]">Algum ingresso é para acompanhante? Informe o nome.</p>
             {Array.from({ length: totalItems }, (_, idx) => (
               <div key={idx} className="flex items-center gap-3">
-                <span className="text-zinc-600 text-[9px] font-bold shrink-0 w-16">#{idx + 1}</span>
+                <span className="text-zinc-400 text-[9px] font-bold shrink-0 w-16">#{idx + 1}</span>
                 <input
                   type="text"
                   placeholder={idx === 0 ? 'Para mim (deixe vazio)' : 'Nome do acompanhante'}
@@ -638,7 +638,7 @@ export const CheckoutPage: React.FC = () => {
         {/* Mesas / Camarotes */}
         {evento.mesasAtivo && evento.plantaMesas && mesas.length > 0 && (
           <div className="space-y-3">
-            <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Selecionar mesa</p>
+            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Selecionar mesa</p>
             <div className="relative rounded-2xl overflow-hidden border border-white/5">
               <img
                 loading="lazy"
@@ -694,7 +694,7 @@ export const CheckoutPage: React.FC = () => {
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-white font-bold text-sm">{m.label}</p>
-                        <p className="text-zinc-500 text-[9px]">{m.capacidade} pessoas</p>
+                        <p className="text-zinc-400 text-[9px]">{m.capacidade} pessoas</p>
                       </div>
                       <div className="text-right">
                         <p className={`font-black text-base ${selected ? 'text-[#FFD300]' : 'text-zinc-400'}`}>
@@ -715,7 +715,7 @@ export const CheckoutPage: React.FC = () => {
             <>
               <button
                 onClick={() => setCupomOpen(p => !p)}
-                className="flex items-center gap-2 text-zinc-500 active:text-zinc-300 transition-colors"
+                className="flex items-center gap-2 text-zinc-400 active:text-zinc-300 transition-colors"
               >
                 <Tag size={12} />
                 <span className="text-[9px] font-bold uppercase tracking-widest">
@@ -758,7 +758,7 @@ export const CheckoutPage: React.FC = () => {
               </div>
               <button
                 onClick={removerCupom}
-                className="p-1 text-zinc-600 active:text-red-400 transition-colors shrink-0"
+                className="p-1 text-zinc-400 active:text-red-400 transition-colors shrink-0"
               >
                 <X size={12} />
               </button>
@@ -771,17 +771,17 @@ export const CheckoutPage: React.FC = () => {
       <div className="shrink-0 p-4 bg-[#0A0A0A] border-t border-white/5 space-y-3">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-[9px] text-zinc-600 uppercase font-black tracking-widest">Total</p>
+            <p className="text-[9px] text-zinc-400 uppercase font-black tracking-widest">Total</p>
             <div className="flex items-baseline gap-2">
               {desconto > 0 && totalItems > 0 && !evento.ocultarValor && (
-                <p className="text-sm text-zinc-600 line-through">{fmtBrl(subtotal)}</p>
+                <p className="text-sm text-zinc-400 line-through">{fmtBrl(subtotal)}</p>
               )}
               <p className="text-xl font-black text-[#FFD300]">
                 {evento.ocultarValor ? 'Sob Consulta' : totalItems > 0 ? fmtBrl(totalPreco) : '—'}
               </p>
             </div>
             {totalItems > 0 && (
-              <p className="text-zinc-600 text-[9px]">
+              <p className="text-zinc-400 text-[9px]">
                 {totalItems} ingresso{totalItems !== 1 ? 's' : ''}
                 {desconto > 0 && <span className="text-emerald-400 ml-1">· −{fmtBrl(desconto)} cupom</span>}
               </p>
@@ -834,9 +834,9 @@ export const CheckoutPage: React.FC = () => {
           >
             <div className="w-10 h-1 bg-zinc-700 rounded-full mx-auto" />
             <div>
-              <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest">Identificação</p>
+              <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">Identificação</p>
               <p className="text-white font-bold text-lg mt-0.5">Entrar com sua conta VANTA</p>
-              <p className="text-zinc-500 text-xs mt-1">Use os mesmos dados do aplicativo</p>
+              <p className="text-zinc-400 text-xs mt-1">Use os mesmos dados do aplicativo</p>
             </div>
             {/* Resumo da sacola */}
             <div className="bg-zinc-900/60 border border-white/5 rounded-xl px-4 py-3 flex items-center justify-between">

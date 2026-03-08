@@ -94,7 +94,7 @@ export const PremiumCalendar: React.FC<PremiumCalendarProps> = ({ onSelectDate, 
         </div>
         <div className="grid grid-cols-7 gap-1 mb-2 text-center">
           {['D', 'S', 'T', 'Q', 'Q', 'S', 'S'].map((d, idx) => (
-            <span key={idx} className="text-[10px] text-zinc-600 font-bold">
+            <span key={idx} className="text-[10px] text-zinc-400 font-bold">
               {d}
             </span>
           ))}

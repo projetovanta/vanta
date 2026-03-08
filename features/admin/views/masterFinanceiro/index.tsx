@@ -221,21 +221,21 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification 
             </h1>
           </div>
           <div className="flex items-center gap-2">
-            <button
+            <button aria-label="Baixar"
               onClick={handleExportCSV}
               title="CSV"
               className="w-9 h-9 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
             >
               <Download size={14} className="text-zinc-400" />
             </button>
-            <button
+            <button aria-label="Documento"
               onClick={handleExportPDF}
               title="PDF"
               className="w-9 h-9 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
             >
               <FileText size={14} className="text-zinc-400" />
             </button>
-            <button
+            <button aria-label="Voltar"
               onClick={onBack}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
             >
@@ -257,12 +257,12 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification 
 
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">No Bolso</p>
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">No Bolso</p>
               <p className="text-emerald-400 font-black text-2xl leading-none">{fmtBRL(Math.max(lucroNoBolso, 0))}</p>
               <p className="text-zinc-700 text-[8px]">liquidado no gateway</p>
             </div>
             <div className="space-y-1">
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">A Receber</p>
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">A Receber</p>
               <p className="text-[#FFD300] font-black text-2xl leading-none">{fmtBRL(lucroAReceber)}</p>
               <p className="text-zinc-700 text-[8px]">processando</p>
             </div>
@@ -272,14 +272,14 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification 
             <div className="flex items-center gap-2 bg-zinc-900/60 rounded-xl px-3 py-2">
               <Zap size={12} className="text-emerald-400 shrink-0" />
               <div className="min-w-0">
-                <p className="text-[8px] text-zinc-500 font-black uppercase tracking-widest">Pix · D+1</p>
+                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Pix · D+1</p>
                 <p className="text-zinc-300 text-xs font-bold">{(GATEWAY_PIX_PERCENT * 100).toFixed(0)}% por venda</p>
               </div>
             </div>
             <div className="flex items-center gap-2 bg-zinc-900/60 rounded-xl px-3 py-2">
               <CreditCard size={12} className="text-sky-400 shrink-0" />
               <div className="min-w-0">
-                <p className="text-[8px] text-zinc-500 font-black uppercase tracking-widest">Cartão · D+30</p>
+                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Cartão · D+30</p>
                 <p className="text-zinc-300 text-xs font-bold">
                   {(GATEWAY_CREDITO_PERCENT * 100).toFixed(1)}% + R${GATEWAY_CREDITO_FIXO.toFixed(2)}
                 </p>
@@ -289,24 +289,24 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification 
 
           <div className="space-y-1.5 pt-2">
             <div className="flex justify-between text-[9px]">
-              <span className="text-zinc-600">Total taxas VANTA</span>
+              <span className="text-zinc-400">Total taxas VANTA</span>
               <span className="text-zinc-400 font-bold">{fmtBRL(receitaTotalTaxas)}</span>
             </div>
             {gatewayCost.totalCusto > 0 && (
               <div className="flex justify-between text-[9px]">
-                <span className="text-zinc-600">Custo gateway plataforma (info)</span>
-                <span className="text-zinc-600 font-bold">{fmtBRL(gatewayCost.totalCusto)}</span>
+                <span className="text-zinc-400">Custo gateway plataforma (info)</span>
+                <span className="text-zinc-400 font-bold">{fmtBRL(gatewayCost.totalCusto)}</span>
               </div>
             )}
             {totalChargebacks > 0 && (
               <div className="flex justify-between text-[9px]">
-                <span className="text-zinc-600">Chargebacks (produtor)</span>
+                <span className="text-zinc-400">Chargebacks (produtor)</span>
                 <span className="text-red-400/50 font-bold">{fmtBRL(totalChargebacks)}</span>
               </div>
             )}
             {totalReembolsado > 0 && (
               <div className="flex justify-between text-[9px]">
-                <span className="text-zinc-600">Reembolsos (produtor)</span>
+                <span className="text-zinc-400">Reembolsos (produtor)</span>
                 <span className="text-orange-400/50 font-bold">{fmtBRL(totalReembolsado)}</span>
               </div>
             )}
@@ -332,16 +332,16 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification 
               label: 'Chargeback',
               value: `${taxaChargeback}%`,
               sub: `${chargebacks.length} caso${chargebacks.length !== 1 ? 's' : ''}`,
-              color: totalChargebacks > 0 ? 'text-red-400' : 'text-zinc-600',
+              color: totalChargebacks > 0 ? 'text-red-400' : 'text-zinc-400',
             },
           ].map(kpi => (
             <div
               key={kpi.label}
               className="bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center space-y-0.5"
             >
-              <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider truncate">{kpi.label}</p>
+              <p className="text-[9px] text-zinc-400 font-bold uppercase tracking-wider truncate">{kpi.label}</p>
               <p className={`font-black text-base leading-none ${kpi.color}`}>{kpi.value}</p>
-              <p className="text-zinc-600 text-[9px] truncate">{kpi.sub}</p>
+              <p className="text-zinc-400 text-[9px] truncate">{kpi.sub}</p>
             </div>
           ))}
         </div>
@@ -361,7 +361,7 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification 
 
         {/* Pedidos Pendentes de Saque */}
         <div>
-          <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-3">
+          <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-3">
             Pedidos Pendentes ({pendentes.length})
           </p>
           {pendentes.length === 0 ? (
@@ -383,15 +383,15 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification 
                     <div className="flex items-start gap-3">
                       <div className="flex-1 min-w-0">
                         <p className="text-white font-bold text-base leading-none truncate">{s.produtorNome}</p>
-                        <p className="text-zinc-600 text-[9px] mt-0.5 truncate">{s.eventoNome}</p>
-                        <p className="text-zinc-600 text-[8px] font-black uppercase tracking-widest mt-0.5">
+                        <p className="text-zinc-400 text-[9px] mt-0.5 truncate">{s.eventoNome}</p>
+                        <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mt-0.5">
                           PIX {s.pixTipo}: <span className="text-zinc-400">{s.pixChave}</span>
                         </p>
                         <p className="text-zinc-700 text-[8px] mt-0.5">{data}</p>
                       </div>
                       <div className="text-right shrink-0">
                         <p className="text-white font-black text-xl leading-none">{fmtBRL(s.valor)}</p>
-                        <p className="text-zinc-500 text-[8px] mt-0.5">Líquido: {fmtBRL(s.valorLiquido)}</p>
+                        <p className="text-zinc-400 text-[8px] mt-0.5">Líquido: {fmtBRL(s.valorLiquido)}</p>
                         <p className="text-amber-400/70 text-[8px]">Taxa: {fmtBRL(s.valorTaxa)}</p>
                       </div>
                     </div>
@@ -422,7 +422,7 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification 
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <RotateCcw size={13} className="text-orange-400 shrink-0" />
-                <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Histórico de Reembolsos</p>
+                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Histórico de Reembolsos</p>
               </div>
               {totalReembolsado > 0 && <p className="text-orange-400 font-black text-sm">{fmtBRL(totalReembolsado)}</p>}
             </div>
@@ -450,11 +450,11 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification 
                             <p className="text-orange-300 text-xs font-bold truncate">
                               {r.tipo === 'AUTOMATICO' ? 'Automático (CDC)' : 'Reembolso Manual'} — {r.eventoNome}
                             </p>
-                            <p className="text-zinc-600 text-[9px] mt-0.5 truncate">
+                            <p className="text-zinc-400 text-[9px] mt-0.5 truncate">
                               {r.tipo === 'AUTOMATICO' ? 'Sistema' : `Aprovado por ${r.aprovadoPor || 'master'}`} ·{' '}
                               {data}
                             </p>
-                            <p className="text-zinc-600 text-[9px] mt-0.5 line-clamp-2">Motivo: {r.motivo}</p>
+                            <p className="text-zinc-400 text-[9px] mt-0.5 line-clamp-2">Motivo: {r.motivo}</p>
                           </div>
                           <div className="text-right shrink-0">
                             <p className="text-orange-400 font-black text-sm">{fmtBRL(r.valor)}</p>
@@ -481,19 +481,19 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification 
                   <p className="text-emerald-400 text-xs font-bold">
                     {reembolsos.filter(r => r.tipo === 'AUTOMATICO').length}
                   </p>
-                  <p className="text-zinc-600 text-[9px] font-bold uppercase tracking-wider">Automáticos</p>
+                  <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider">Automáticos</p>
                 </div>
                 <div className="text-center">
                   <p className="text-orange-400 text-xs font-bold">
                     {reembolsos.filter(r => r.tipo === 'MANUAL' && r.status === 'APROVADO').length}
                   </p>
-                  <p className="text-zinc-600 text-[9px] font-bold uppercase tracking-wider">Manuais OK</p>
+                  <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider">Manuais OK</p>
                 </div>
                 <div className="text-center">
                   <p className="text-red-400 text-xs font-bold">
                     {reembolsos.filter(r => r.status === 'REJEITADO').length}
                   </p>
-                  <p className="text-zinc-600 text-[9px] font-bold uppercase tracking-wider">Rejeitados</p>
+                  <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider">Rejeitados</p>
                 </div>
               </div>
             )}
@@ -506,7 +506,7 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification 
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <AlertTriangle size={13} className="text-red-400 shrink-0" />
-                <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Chargebacks</p>
+                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Chargebacks</p>
               </div>
               <p className="text-red-400 font-black text-sm">{fmtBRL(totalChargebacks)}</p>
             </div>
@@ -523,16 +523,16 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification 
                     ? 'text-red-400 bg-red-500/10 border-red-500/20'
                     : cb.status === 'DEDUZIDO'
                       ? 'text-amber-400 bg-amber-500/10 border-amber-500/20'
-                      : 'text-zinc-500 bg-zinc-800/50 border-white/5';
+                      : 'text-zinc-400 bg-zinc-800/50 border-white/5';
                 return (
                   <div key={cb.id} className="bg-red-500/5 border border-red-500/10 rounded-xl p-3">
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex-1 min-w-0">
                         <p className="text-zinc-300 text-xs font-bold truncate">{cb.eventoNome}</p>
-                        <p className="text-zinc-600 text-[9px] mt-0.5 truncate">
+                        <p className="text-zinc-400 text-[9px] mt-0.5 truncate">
                           {cb.comunidadeNome} · {data}
                         </p>
-                        <p className="text-zinc-600 text-[9px] mt-0.5 truncate">Ref: {cb.gatewayRef}</p>
+                        <p className="text-zinc-400 text-[9px] mt-0.5 truncate">Ref: {cb.gatewayRef}</p>
                       </div>
                       <div className="text-right shrink-0">
                         <p className="text-red-400 font-black text-sm">{fmtBRL(cb.valor)}</p>
@@ -553,8 +553,8 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification 
         {/* Modo de Taxa por Evento */}
         <div>
           <div className="flex items-center gap-2 mb-3">
-            <Settings2 size={11} className="text-zinc-600" />
-            <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Gateway por Evento</p>
+            <Settings2 size={11} className="text-zinc-400" />
+            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Gateway por Evento</p>
           </div>
           <div className="space-y-2">
             {allEventos.map(ev => {
@@ -578,7 +578,7 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification 
                     className={`text-[8px] font-black uppercase tracking-wider px-2 py-1 rounded-full border shrink-0 ${
                       gwRepassar
                         ? 'text-sky-400 bg-sky-500/10 border-sky-500/20'
-                        : 'text-zinc-500 bg-zinc-800/50 border-white/5'
+                        : 'text-zinc-400 bg-zinc-800/50 border-white/5'
                     }`}
                   >
                     {gwRepassar ? 'GW Cliente' : 'GW Absorvido'}
@@ -595,7 +595,7 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification 
         {/* Histórico de Saques */}
         {historico.length > 0 && (
           <div>
-            <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-3">Histórico</p>
+            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-3">Histórico</p>
             <div className="space-y-2">
               {[...historico].reverse().map(s => {
                 const statusColor =
@@ -610,7 +610,7 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification 
                   >
                     <div className="flex-1 min-w-0">
                       <p className="text-zinc-300 font-bold text-sm truncate">{s.produtorNome}</p>
-                      <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest">
+                      <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">
                         {s.pixTipo} · {data}
                       </p>
                     </div>

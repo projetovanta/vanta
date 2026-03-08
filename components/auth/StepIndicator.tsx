@@ -16,7 +16,7 @@ export const StepIndicator: React.FC<{ step: number }> = ({ step }) => (
               ? 'bg-[#FFD300] border-[#FFD300]'
               : s === step
                 ? 'bg-[#FFD300]/10 border-[#FFD300] text-[#FFD300]'
-                : 'bg-zinc-900 border-white/10 text-zinc-600'
+                : 'bg-zinc-900 border-white/10 text-zinc-400'
           }`}
         >
           {s < step ? <Check size={14} className="text-black" /> : <span className="text-[10px] font-black">{s}</span>}

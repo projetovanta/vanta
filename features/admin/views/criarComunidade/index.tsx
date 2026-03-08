@@ -228,7 +228,7 @@ export const CriarComunidadeView: React.FC<{
           <h2 style={TYPOGRAPHY.screenTitle} className="text-2xl italic mb-2">
             {nome}
           </h2>
-          <p className="text-zinc-500 text-sm leading-relaxed">
+          <p className="text-zinc-400 text-sm leading-relaxed">
             Comunidade criada com sucesso.
             <br />
             Já aparece no painel e está pronta para receber eventos.
@@ -257,7 +257,7 @@ export const CriarComunidadeView: React.FC<{
               {STEP_LABELS[step - 1]}
             </h1>
           </div>
-          <button
+          <button aria-label="Voltar"
             onClick={safeBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0 mt-1"
           >
@@ -275,7 +275,7 @@ export const CriarComunidadeView: React.FC<{
                     ? 'bg-[#FFD300] border-[#FFD300] text-black'
                     : step > s
                       ? 'bg-[#FFD300]/15 border-[#FFD300]/30 text-[#FFD300]'
-                      : 'bg-zinc-900 border-white/10 text-zinc-600'
+                      : 'bg-zinc-900 border-white/10 text-zinc-400'
                 }`}
               >
                 {step > s ? <Check size={10} /> : s}

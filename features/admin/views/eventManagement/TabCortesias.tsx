@@ -106,7 +106,7 @@ const TransferirCortesiaModal: React.FC<{
               <Check size={28} className="text-emerald-400" />
             </div>
             <p className="text-white font-bold text-lg text-center">Cortesia enviada!</p>
-            <p className="text-zinc-500 text-[11px] text-center leading-relaxed">
+            <p className="text-zinc-400 text-[11px] text-center leading-relaxed">
               {destinatario?.nome} receberá o ingresso na carteira em instantes.
             </p>
           </div>
@@ -116,7 +116,7 @@ const TransferirCortesiaModal: React.FC<{
               <h2 style={TYPOGRAPHY.screenTitle} className="text-lg italic">
                 Transferir Cortesia
               </h2>
-              <p className="text-zinc-600 text-[10px] mt-1">
+              <p className="text-zinc-400 text-[10px] mt-1">
                 Saldo disponível: <span className="text-[#FFD300] font-black">{saldo}</span> cortesia
                 {saldo !== 1 ? 's' : ''}
               </p>
@@ -126,7 +126,7 @@ const TransferirCortesiaModal: React.FC<{
               {/* Tipo de ingresso */}
               {config && config.variacoes.length > 0 && (
                 <div>
-                  <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-2">Tipo de ingresso</p>
+                  <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">Tipo de ingresso</p>
                   <div className="flex flex-wrap gap-2">
                     {config.variacoes.map(v => (
                       <button
@@ -147,7 +147,7 @@ const TransferirCortesiaModal: React.FC<{
 
               {/* Destinatário */}
               <div>
-                <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-2">Destinatário</p>
+                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">Destinatário</p>
                 {destinatario ? (
                   <div className="flex items-center gap-3 p-3.5 bg-zinc-900/60 border border-[#FFD300]/20 rounded-xl">
                     <img
@@ -161,7 +161,7 @@ const TransferirCortesiaModal: React.FC<{
                         setDestinatario(null);
                         setQuery('');
                       }}
-                      className="text-zinc-600 active:text-red-400 transition-colors shrink-0"
+                      className="text-zinc-400 active:text-red-400 transition-colors shrink-0"
                     >
                       <X size={14} />
                     </button>
@@ -169,7 +169,7 @@ const TransferirCortesiaModal: React.FC<{
                 ) : (
                   <div className="relative">
                     <div className="flex items-center gap-3 bg-zinc-900/60 border border-white/5 rounded-xl px-4 py-2.5 focus-within:border-[#FFD300]/30">
-                      <Search size={14} className="text-zinc-600 shrink-0" />
+                      <Search size={14} className="text-zinc-400 shrink-0" />
                       <input
                         value={query}
                         onChange={e => {
@@ -200,7 +200,7 @@ const TransferirCortesiaModal: React.FC<{
                             />
                             <div className="min-w-0">
                               <p className="text-white font-bold text-sm leading-none truncate">{m.nome}</p>
-                              <p className="text-zinc-600 text-[10px] mt-0.5 truncate">{m.email}</p>
+                              <p className="text-zinc-400 text-[10px] mt-0.5 truncate">{m.email}</p>
                             </div>
                           </button>
                         ))}
@@ -212,7 +212,7 @@ const TransferirCortesiaModal: React.FC<{
 
               {/* Quantidade */}
               <div>
-                <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-2">Quantidade</p>
+                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">Quantidade</p>
                 <input
                   value={quantidade}
                   onChange={e => setQuantidade(e.target.value)}
@@ -269,7 +269,7 @@ export const TabCortesias: React.FC<{
           <Gift size={28} className="text-zinc-700" />
         </div>
         <div className="text-center">
-          <p className="text-zinc-600 text-[10px] font-black uppercase tracking-widest">Sem cortesias configuradas.</p>
+          <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">Sem cortesias configuradas.</p>
           <p className="text-zinc-700 text-[10px] italic mt-1">Ative cortesias ao criar o evento no próximo evento.</p>
         </div>
       </div>
@@ -287,15 +287,15 @@ export const TabCortesias: React.FC<{
     <div className="space-y-4">
       {/* Saldo hero */}
       <div className="p-6 bg-zinc-900/40 border border-white/5 rounded-3xl">
-        <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest mb-4">Cortesias do Evento</p>
+        <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mb-4">Cortesias do Evento</p>
         <div className="flex items-end justify-between mb-4">
           <div className="flex items-baseline gap-2">
             <span className="text-white font-black text-5xl leading-none">{saldo}</span>
-            <span className="text-zinc-600 text-xl font-light">/{config.limite}</span>
+            <span className="text-zinc-400 text-xl font-light">/{config.limite}</span>
           </div>
           <div className="text-right pb-1">
             <p className="text-[#FFD300] font-black text-3xl leading-none">{usados}</p>
-            <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest">enviadas</p>
+            <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">enviadas</p>
           </div>
         </div>
         <div className="w-full h-4 bg-zinc-800 rounded-full overflow-hidden mb-3">
@@ -304,7 +304,7 @@ export const TabCortesias: React.FC<{
             style={{ width: `${Math.min(pct, 100)}%` }}
           />
         </div>
-        <p className="text-zinc-600 text-[10px] font-black uppercase tracking-widest">
+        <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">
           {saldo} disponíve{saldo !== 1 ? 'is' : 'l'}
         </p>
         {temPerTipo &&
@@ -315,7 +315,7 @@ export const TabCortesias: React.FC<{
                 {Object.entries(saldoTipo).map(([tipo, { limite, usado, saldo: s }]) => (
                   <div key={tipo} className="flex items-center justify-between gap-2">
                     <p className="text-zinc-400 text-[10px] font-bold truncate flex-1 min-w-0">{tipo}</p>
-                    <p className="text-zinc-600 text-[9px] shrink-0">
+                    <p className="text-zinc-400 text-[9px] shrink-0">
                       {usado}/{limite}
                     </p>
                     <p className={`text-[10px] font-black shrink-0 ${s > 0 ? 'text-emerald-400' : 'text-red-400'}`}>

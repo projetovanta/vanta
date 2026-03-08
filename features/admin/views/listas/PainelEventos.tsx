@@ -20,27 +20,27 @@ const EventoCard: React.FC<{ lista: ListaEvento; onSelect: (lista: ListaEvento) 
         className={`w-12 shrink-0 rounded-xl border flex flex-col items-center py-2 ${isPassed ? 'border-white/5 bg-zinc-900/50' : 'border-[#FFD300]/20 bg-[#FFD300]/5'}`}
       >
         <span
-          className={`text-[9px] font-black uppercase tracking-widest ${isPassed ? 'text-zinc-600' : 'text-[#FFD300]/60'}`}
+          className={`text-[9px] font-black uppercase tracking-widest ${isPassed ? 'text-zinc-400' : 'text-[#FFD300]/60'}`}
         >
           {lista.eventoData.slice(5, 7)}/{lista.eventoData.slice(0, 4).slice(-2)}
         </span>
-        <span className={`font-black text-xl leading-none mt-0.5 ${isPassed ? 'text-zinc-500' : 'text-white'}`}>
+        <span className={`font-black text-xl leading-none mt-0.5 ${isPassed ? 'text-zinc-400' : 'text-white'}`}>
           {lista.eventoData.slice(8, 10)}
         </span>
       </div>
 
       <div className="flex-1 min-w-0">
-        <p className={`font-bold text-sm leading-tight line-clamp-2 ${isPassed ? 'text-zinc-500' : 'text-white'}`}>
+        <p className={`font-bold text-sm leading-tight line-clamp-2 ${isPassed ? 'text-zinc-400' : 'text-white'}`}>
           {lista.eventoNome}
         </p>
-        <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest mt-1 truncate">
+        <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mt-1 truncate">
           {lista.eventoLocal}
         </p>
         <div className="mt-2.5 flex items-center gap-2">
           <div className="flex-1 h-1 bg-zinc-800 rounded-full overflow-hidden">
             <div className="h-full bg-[#FFD300] rounded-full" style={{ width: `${Math.min(pct, 100)}%` }} />
           </div>
-          <span className="text-zinc-600 text-[8px] font-black shrink-0">
+          <span className="text-zinc-400 text-[8px] font-black shrink-0">
             {total}/{lista.tetoGlobalTotal}
           </span>
         </div>
@@ -96,7 +96,7 @@ export const PainelEventos: React.FC<{
               Listas
             </h1>
           </div>
-          <button
+          <button aria-label="Voltar"
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all mt-1"
           >

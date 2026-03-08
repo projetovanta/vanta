@@ -14,7 +14,7 @@ interface Props {
 export const SubTabPassaportes: React.FC<Props> = ({ passportsPendentes, perfis, onAprovar, onRejeitar }) => (
   <div className="space-y-3">
     {passportsPendentes.length === 0 ? (
-      <p className="text-zinc-600 text-xs text-center py-10">Nenhum passaporte pendente</p>
+      <p className="text-zinc-400 text-xs text-center py-10">Nenhum passaporte pendente</p>
     ) : (
       passportsPendentes.map(p => (
         <div key={p.id} className="bg-zinc-900/60 border border-white/5 rounded-2xl p-4">
@@ -22,7 +22,7 @@ export const SubTabPassaportes: React.FC<Props> = ({ passportsPendentes, perfis,
             <div className="flex-1 min-w-0">
               <p className="text-white font-bold text-sm truncate">{perfis[p.userId]?.nome || p.userId.slice(0, 8)}</p>
               <div className="flex items-center gap-1.5 mt-1">
-                <Globe size={10} className="text-zinc-500" />
+                <Globe size={10} className="text-zinc-400" />
                 <span className="text-zinc-400 text-[10px]">Solicitou acesso a nova cidade</span>
               </div>
               <p className="text-zinc-700 text-[8px] mt-1">{formatDate(p.solicitadoEm)}</p>

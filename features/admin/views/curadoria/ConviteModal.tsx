@@ -56,12 +56,12 @@ export const ConviteModal: React.FC<{ onClose: () => void; adminNome: string }> 
                 </div>
                 <div>
                   <p className="text-white font-bold text-base leading-none">Convidar Membro</p>
-                  <p className="text-zinc-600 text-[10px] mt-0.5">Envia link de cadastro por e-mail</p>
+                  <p className="text-zinc-400 text-[10px] mt-0.5">Envia link de cadastro por e-mail</p>
                 </div>
               </div>
               <div className="space-y-3 mb-5">
                 <div>
-                  <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1.5">Nome</p>
+                  <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5">Nome</p>
                   <input
                     value={nome}
                     onChange={e => setNome(e.target.value)}
@@ -70,7 +70,7 @@ export const ConviteModal: React.FC<{ onClose: () => void; adminNome: string }> 
                   />
                 </div>
                 <div>
-                  <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1.5">E-mail</p>
+                  <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5">E-mail</p>
                   <input
                     value={email}
                     onChange={e => setEmail(e.target.value)}
@@ -121,7 +121,7 @@ export const ConviteModal: React.FC<{ onClose: () => void; adminNome: string }> 
               </div>
               <div className="text-center">
                 <p className="text-white font-bold text-lg leading-none mb-2">Convite Enviado!</p>
-                <p className="text-zinc-500 text-sm leading-relaxed">
+                <p className="text-zinc-400 text-sm leading-relaxed">
                   Um link de acesso foi enviado para
                   <br />
                   <span className="text-white font-bold">{email}</span>

@@ -230,7 +230,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
             {stepLabels[step - 1]}
           </h1>
         </div>
-        <button
+        <button aria-label="Voltar"
           onClick={handleBack}
           className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
         >
@@ -248,7 +248,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
         {step === 1 && (
           <div className="space-y-4">
             <div>
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1.5">Nome Completo</p>
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5">Nome Completo</p>
               <input
                 value={nome}
                 onChange={e => setNome(e.target.value)}
@@ -260,7 +260,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
             </div>
 
             <div>
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1.5">Data de Nascimento</p>
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5">Data de Nascimento</p>
               <input
                 value={dataNasc}
                 onChange={e => setDataNasc(fmtDataNasc(e.target.value))}
@@ -273,7 +273,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
             </div>
 
             <div>
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1.5">Gênero</p>
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5">Gênero</p>
               <div className="flex gap-2">
                 {(['MASCULINO', 'FEMININO'] as const).map(g => (
                   <button
@@ -282,7 +282,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
                     className={`flex-1 py-3 rounded-xl border text-[10px] font-black uppercase tracking-wider transition-all ${
                       genero === g
                         ? 'bg-[#FFD300]/10 border-[#FFD300]/40 text-[#FFD300]'
-                        : 'bg-zinc-900/60 border-white/5 text-zinc-500 active:border-white/20'
+                        : 'bg-zinc-900/60 border-white/5 text-zinc-400 active:border-white/20'
                     }`}
                   >
                     {g === 'MASCULINO' ? 'Masculino' : 'Feminino'}
@@ -293,7 +293,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
             </div>
 
             <div>
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1.5">Estado</p>
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5">Estado</p>
               <VantaPickerModal
                 items={ESTADOS.map(uf => ({ value: uf, label: uf }))}
                 value={estado}
@@ -307,7 +307,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
             </div>
 
             <div>
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1.5">Cidade</p>
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5">Cidade</p>
               <VantaPickerModal
                 items={cidades.map(c => ({ value: c, label: c }))}
                 value={cidade}
@@ -374,9 +374,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
         {step === 2 && (
           <div className="space-y-4">
             <div>
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1.5">Instagram</p>
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5">Instagram</p>
               <div className="relative flex items-center">
-                <span className="absolute left-4 text-zinc-600 text-sm select-none">@</span>
+                <span className="absolute left-4 text-zinc-400 text-sm select-none">@</span>
                 <input
                   value={instagram}
                   onChange={e => setInstagram(e.target.value.replace('@', '').replace(/\s/g, ''))}
@@ -389,7 +389,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
             </div>
 
             <div>
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1.5">E-mail</p>
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5">E-mail</p>
               <input
                 type="email"
                 value={email}
@@ -403,7 +403,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
             </div>
 
             <div>
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1.5">Telefone</p>
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5">Telefone</p>
               <div className="flex gap-2">
                 <div className="w-24 shrink-0">
                   <VantaPickerModal
@@ -430,7 +430,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
             </div>
 
             <div>
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1.5">Senha</p>
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5">Senha</p>
               <div className="relative">
                 <input
                   type={showSenha ? 'text' : 'password'}
@@ -442,7 +442,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
                 />
                 <button
                   onClick={() => setShowSenha(p => !p)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-600 active:text-zinc-400"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 active:text-zinc-400"
                 >
                   {showSenha ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
@@ -451,7 +451,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
             </div>
 
             <div>
-              <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest mb-1.5">Confirmar Senha</p>
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5">Confirmar Senha</p>
               <div className="relative">
                 <input
                   type={showConfirma ? 'text' : 'password'}
@@ -463,7 +463,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
                 />
                 <button
                   onClick={() => setShowConfirma(p => !p)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-600 active:text-zinc-400"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 active:text-zinc-400"
                 >
                   {showConfirma ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>

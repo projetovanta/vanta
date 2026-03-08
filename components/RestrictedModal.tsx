@@ -50,7 +50,7 @@ export const RestrictedModal: React.FC<RestrictedModalProps> = ({
             </button>
             <button
               onClick={onClose}
-              className="w-full py-2 text-zinc-600 text-xs active:text-zinc-300 transition-colors"
+              className="w-full py-2 text-zinc-400 text-xs active:text-zinc-300 transition-colors"
             >
               Voltar
             </button>

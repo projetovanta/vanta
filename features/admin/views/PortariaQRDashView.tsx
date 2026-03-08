@@ -101,13 +101,13 @@ export const PortariaQRDashView: React.FC<PortQRDashProps> = ({
   return (
     <div className="absolute inset-0 bg-[#0A0A0A] flex flex-col overflow-hidden">
       <div className="shrink-0 px-6 pt-6 pb-4">
-        <button onClick={onBack} className="text-zinc-500 text-xs mb-2">
+        <button onClick={onBack} className="text-zinc-400 text-xs mb-2">
           &larr; Voltar
         </button>
         <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic leading-none text-white">
           {isGerente ? 'Ger. Portaria QR' : 'Portaria QR'}
         </h1>
-        <p className="text-[10px] text-zinc-500 font-black uppercase tracking-wider mt-1">
+        <p className="text-[10px] text-zinc-400 font-black uppercase tracking-wider mt-1">
           {qrNodes.length} evento{qrNodes.length !== 1 ? 's' : ''}
         </p>
       </div>
@@ -121,7 +121,7 @@ export const PortariaQRDashView: React.FC<PortQRDashProps> = ({
             <span>
               {filtroEventoId ? metricas.find(m => m.eventoId === filtroEventoId)?.eventoNome : 'Todos os eventos'}
             </span>
-            <ChevronDown size={14} className="text-zinc-500" />
+            <ChevronDown size={14} className="text-zinc-400" />
           </button>
           {showDropdown && (
             <div className="absolute left-6 right-6 top-full z-20 bg-zinc-900 border border-white/10 rounded-xl overflow-hidden shadow-xl">
@@ -162,28 +162,28 @@ export const PortariaQRDashView: React.FC<PortQRDashProps> = ({
               <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-3 flex flex-col gap-1">
                 <div className="flex items-center gap-1.5">
                   <UserCheck size={11} className="text-cyan-400 shrink-0" />
-                  <p className="text-[8px] text-zinc-500 font-black uppercase tracking-wider">QRs Validados</p>
+                  <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider">QRs Validados</p>
                 </div>
                 <p className="text-lg font-bold text-cyan-400 leading-none">{dados.totalQRs}</p>
               </div>
               <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-3 flex flex-col gap-1">
                 <div className="flex items-center gap-1.5">
                   <QrCode size={11} className="text-orange-400 shrink-0" />
-                  <p className="text-[8px] text-zinc-500 font-black uppercase tracking-wider">Pendentes</p>
+                  <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider">Pendentes</p>
                 </div>
                 <p className="text-lg font-bold text-orange-400 leading-none">{dados.totalPendentes}</p>
               </div>
               <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-3 flex flex-col gap-1">
                 <div className="flex items-center gap-1.5">
                   <Users size={11} className="text-blue-400 shrink-0" />
-                  <p className="text-[8px] text-zinc-500 font-black uppercase tracking-wider">Total Ingressos</p>
+                  <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider">Total Ingressos</p>
                 </div>
                 <p className="text-lg font-bold text-white leading-none">{dados.totalIngressos}</p>
               </div>
               <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-3 flex flex-col gap-1">
                 <div className="flex items-center gap-1.5">
                   <TrendingUp size={11} className="text-[#FFD300] shrink-0" />
-                  <p className="text-[8px] text-zinc-500 font-black uppercase tracking-wider">Validado</p>
+                  <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider">Validado</p>
                 </div>
                 <p className="text-lg font-bold text-[#FFD300] leading-none">{dados.pctValidado}%</p>
               </div>
@@ -202,7 +202,7 @@ export const PortariaQRDashView: React.FC<PortQRDashProps> = ({
                   <p className={`text-xs font-bold ${tendencia === 'acima' ? 'text-emerald-400' : 'text-orange-400'}`}>
                     {tendencia === 'acima' ? 'Acima' : 'Abaixo'} da média
                   </p>
-                  <p className="text-[10px] text-zinc-500">
+                  <p className="text-[10px] text-zinc-400">
                     ({eventoSelecionado?.qrsValidados} vs média {dados.media.toFixed(0)})
                   </p>
                 </div>
@@ -211,7 +211,7 @@ export const PortariaQRDashView: React.FC<PortQRDashProps> = ({
 
             {metricas.length > 1 && !filtroEventoId && (
               <div className="mb-4">
-                <p className="text-[8px] text-zinc-500 font-black uppercase tracking-wider mb-2">
+                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider mb-2">
                   Comparativo por Evento
                 </p>
                 <div className="space-y-2">
@@ -229,7 +229,7 @@ export const PortariaQRDashView: React.FC<PortQRDashProps> = ({
                             style={{ width: `${Math.min(pct, 200)}%` }}
                           />
                         </div>
-                        <p className="text-[9px] text-zinc-600 mt-1">{m.pendentes} pendentes</p>
+                        <p className="text-[9px] text-zinc-400 mt-1">{m.pendentes} pendentes</p>
                       </div>
                     );
                   })}
@@ -238,7 +238,7 @@ export const PortariaQRDashView: React.FC<PortQRDashProps> = ({
             )}
 
             <div className="space-y-2">
-              <p className="text-[8px] text-zinc-500 font-black uppercase tracking-wider">Ações rápidas</p>
+              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider">Ações rápidas</p>
               <button
                 onClick={onOpenScanner}
                 className="w-full flex items-center justify-between bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 active:scale-[0.98] transition-all"
@@ -247,7 +247,7 @@ export const PortariaQRDashView: React.FC<PortQRDashProps> = ({
                   <QrCode size={16} className="text-cyan-400 shrink-0" />
                   <p className="text-sm text-white font-bold">Abrir Scanner QR</p>
                 </div>
-                <ArrowRight size={14} className="text-zinc-500 shrink-0" />
+                <ArrowRight size={14} className="text-zinc-400 shrink-0" />
               </button>
               {isGerente && onOpenEquipe && (
                 <button
@@ -258,7 +258,7 @@ export const PortariaQRDashView: React.FC<PortQRDashProps> = ({
                     <Users size={16} className="text-blue-400 shrink-0" />
                     <p className="text-sm text-white font-bold">Gerenciar Equipe</p>
                   </div>
-                  <ArrowRight size={14} className="text-zinc-500 shrink-0" />
+                  <ArrowRight size={14} className="text-zinc-400 shrink-0" />
                 </button>
               )}
             </div>

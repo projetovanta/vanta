@@ -7,7 +7,7 @@ type ModalType = 'TITULAR' | 'CANCELAR' | null;
 
 const STATUS_STYLE: Record<TicketCaixa['status'], { label: string; cls: string }> = {
   DISPONIVEL: { label: 'Disponível', cls: 'bg-emerald-500/15 text-emerald-400' },
-  USADO: { label: 'Usado', cls: 'bg-zinc-700/40 text-zinc-500' },
+  USADO: { label: 'Usado', cls: 'bg-zinc-700/40 text-zinc-400' },
   CANCELADO: { label: 'Cancelado', cls: 'bg-red-500/15 text-red-400' },
   REEMBOLSADO: { label: 'Reembolsado', cls: 'bg-orange-500/15 text-orange-400' },
 };
@@ -125,18 +125,18 @@ export const ParticipantesView: React.FC<{
             <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic truncate">
               Participantes
             </h1>
-            <p className="text-zinc-600 text-[9px] truncate mt-0.5">{eventoNome}</p>
+            <p className="text-zinc-400 text-[9px] truncate mt-0.5">{eventoNome}</p>
           </div>
           <div className="flex items-center gap-2 shrink-0 mt-1">
             {tickets.length > 0 && (
-              <button
+              <button aria-label="Baixar"
                 onClick={exportCSV}
                 className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
               >
                 <Download size={16} className="text-zinc-400" />
               </button>
             )}
-            <button
+            <button aria-label="Voltar"
               onClick={onBack}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
             >
@@ -175,8 +175,8 @@ export const ParticipantesView: React.FC<{
                         {st.label}
                       </span>
                     </div>
-                    {ticket.nomeTitular && <p className="text-zinc-500 text-[9px] truncate mb-0.5">{ticket.email}</p>}
-                    <p className="text-zinc-600 text-[9px] truncate">
+                    {ticket.nomeTitular && <p className="text-zinc-400 text-[9px] truncate mb-0.5">{ticket.email}</p>}
+                    <p className="text-zinc-400 text-[9px] truncate">
                       {ticket.variacaoLabel} · R$ {ticket.valor}
                     </p>
                     <p className="text-zinc-700 text-[8px] mt-0.5">
@@ -254,7 +254,7 @@ export const ParticipantesView: React.FC<{
 
             <div className="space-y-3 mb-5">
               <div>
-                <label className="text-zinc-500 text-[9px] font-black uppercase tracking-widest block mb-1.5">
+                <label className="text-zinc-400 text-[9px] font-black uppercase tracking-widest block mb-1.5">
                   Nome do Titular
                 </label>
                 <input
@@ -265,7 +265,7 @@ export const ParticipantesView: React.FC<{
                 />
               </div>
               <div>
-                <label className="text-zinc-500 text-[9px] font-black uppercase tracking-widest block mb-1.5">
+                <label className="text-zinc-400 text-[9px] font-black uppercase tracking-widest block mb-1.5">
                   E-mail
                 </label>
                 <input

@@ -102,7 +102,7 @@ export const Step1Evento: React.FC<Props> = p => {
           className="w-full flex items-center gap-3 p-4 bg-zinc-900/40 border border-dashed border-white/10 rounded-2xl active:border-[#FFD300]/30 active:bg-[#FFD300]/5 transition-all"
         >
           <div className="w-9 h-9 rounded-xl bg-zinc-800 border border-white/5 flex items-center justify-center shrink-0">
-            <Copy size={14} className="text-zinc-500" />
+            <Copy size={14} className="text-zinc-400" />
           </div>
           <div className="text-left">
             <p className="text-zinc-400 font-bold text-sm leading-none">Importar dados de evento anterior</p>
@@ -128,9 +128,9 @@ export const Step1Evento: React.FC<Props> = p => {
           ) : (
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
               <div className="w-14 h-14 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center">
-                <Upload size={22} className="text-zinc-600" />
+                <Upload size={22} className="text-zinc-400" />
               </div>
-              <p className="text-zinc-600 text-[9px] font-black uppercase tracking-widest">
+              <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">
                 Toque para escolher a foto
               </p>
             </div>
@@ -198,28 +198,28 @@ export const Step1Evento: React.FC<Props> = p => {
               </span>
             )}
             {!p.formato && openSection !== 'formato' && (
-              <span className="text-zinc-600 text-[9px]">Nenhum selecionado</span>
+              <span className="text-zinc-400 text-[9px]">Nenhum selecionado</span>
             )}
           </div>
           <ChevronDown
             size={14}
-            className={`text-zinc-500 shrink-0 transition-transform ${openSection === 'formato' ? 'rotate-180' : ''}`}
+            className={`text-zinc-400 shrink-0 transition-transform ${openSection === 'formato' ? 'rotate-180' : ''}`}
           />
         </button>
         {openSection === 'formato' && (
           <div className="px-4 pb-3 space-y-2">
-            <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">
+            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">
               O que é / Onde acontece · selecione 1
             </p>
             {loading ? (
               <div className="flex items-center gap-2 py-2">
-                <Loader2 size={14} className="text-zinc-600 animate-spin" />
-                <span className="text-zinc-600 text-xs">Carregando...</span>
+                <Loader2 size={14} className="text-zinc-400 animate-spin" />
+                <span className="text-zinc-400 text-xs">Carregando...</span>
               </div>
             ) : (
               <>
                 <div className="relative">
-                  <Search size={12} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-600" />
+                  <Search size={12} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
                   <input
                     value={searchFormato}
                     onChange={e => setSearchFormato(e.target.value)}
@@ -274,17 +274,17 @@ export const Step1Evento: React.FC<Props> = p => {
               </div>
             )}
             {p.estilos.length === 0 && openSection !== 'estilo' && (
-              <span className="text-zinc-600 text-[9px]">Nenhum selecionado</span>
+              <span className="text-zinc-400 text-[9px]">Nenhum selecionado</span>
             )}
           </div>
           <ChevronDown
             size={14}
-            className={`text-zinc-500 shrink-0 transition-transform ${openSection === 'estilo' ? 'rotate-180' : ''}`}
+            className={`text-zinc-400 shrink-0 transition-transform ${openSection === 'estilo' ? 'rotate-180' : ''}`}
           />
         </button>
         {openSection === 'estilo' && (
           <div className="px-4 pb-3 space-y-2">
-            <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">Som / Vibe · min. 1, max. 5</p>
+            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Som / Vibe · min. 1, max. 5</p>
             <p
               className={`text-[8px] font-black uppercase tracking-widest ${p.estilos.length < 1 ? 'text-amber-500' : p.estilos.length >= 5 ? 'text-blue-400' : 'text-emerald-500'}`}
             >
@@ -293,7 +293,7 @@ export const Step1Evento: React.FC<Props> = p => {
             {!loading && (
               <>
                 <div className="relative">
-                  <Search size={12} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-600" />
+                  <Search size={12} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
                   <input
                     value={searchEstilo}
                     onChange={e => setSearchEstilo(e.target.value)}
@@ -358,17 +358,17 @@ export const Step1Evento: React.FC<Props> = p => {
               </div>
             )}
             {p.experiencias.length === 0 && openSection !== 'experiencia' && (
-              <span className="text-zinc-600 text-[9px]">Nenhum selecionado</span>
+              <span className="text-zinc-400 text-[9px]">Nenhum selecionado</span>
             )}
           </div>
           <ChevronDown
             size={14}
-            className={`text-zinc-500 shrink-0 transition-transform ${openSection === 'experiencia' ? 'rotate-180' : ''}`}
+            className={`text-zinc-400 shrink-0 transition-transform ${openSection === 'experiencia' ? 'rotate-180' : ''}`}
           />
         </button>
         {openSection === 'experiencia' && (
           <div className="px-4 pb-3 space-y-2">
-            <p className="text-[8px] text-zinc-600 font-black uppercase tracking-widest">
+            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">
               Modelo / Diferencial · min. 1, max. 5
             </p>
             <p
@@ -379,7 +379,7 @@ export const Step1Evento: React.FC<Props> = p => {
             {!loading && (
               <>
                 <div className="relative">
-                  <Search size={12} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-600" />
+                  <Search size={12} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
                   <input
                     value={searchExperiencia}
                     onChange={e => setSearchExperiencia(e.target.value)}
@@ -452,7 +452,7 @@ export const Step1Evento: React.FC<Props> = p => {
           </div>
         </div>
         {p.dataInicio && p.horaInicio && p.horaFim && p.horaFim <= p.horaInicio && (
-          <p className="text-zinc-500 text-[9px] italic">
+          <p className="text-zinc-400 text-[9px] italic">
             Encerramento no dia seguinte (
             {(() => {
               const d = new Date(p.dataInicio + 'T00:00:00');

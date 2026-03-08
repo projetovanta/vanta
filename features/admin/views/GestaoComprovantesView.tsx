@@ -58,7 +58,6 @@ export const GestaoComprovantesView: React.FC<Props> = ({ onBack, masterId }) =>
     return () => {
       cancelled = true;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const filtered = comprovantes.filter(c => {

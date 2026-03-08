@@ -26,10 +26,9 @@ export const ChatRoomView: React.FC<ChatRoomViewProps> = ({ chat, onBack }) => {
   const isOnline = onlineUsers.has(chat.participantId);
   const onSendMessage = (text: string) => sendMessage(chat.participantId, text);
   const onDeleteMessage = (msgId: string) => deleteMessage(msgId, chat.participantId);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const onReactMessage = useCallback(
     (msgId: string, emoji: string) => toggleReaction(msgId, emoji, chat.participantId),
-    [chat.participantId],
+    [chat.participantId, toggleReaction],
   );
   const [inputText, setInputText] = useState('');
   const [showProfileModal, setShowProfileModal] = useState(false);

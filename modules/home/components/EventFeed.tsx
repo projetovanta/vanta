@@ -20,6 +20,7 @@ export const EventFeed: React.FC<{
   onComunidadeClick?: (id: string) => void;
 }> = React.memo(({ currentCity, eventos: allEventos, onEventClick, onViewAll, onComunidadeClick }) => {
   const [formatoRows, setFormatoRows] = useState<FormatoRow[]>([]);
+  const [formatosLoaded, setFormatosLoaded] = useState(false);
   const currentUserId = useAuthStore(s => s.currentAccount?.id);
 
   useEffect(() => {
@@ -29,9 +30,12 @@ export const EventFeed: React.FC<{
       .eq('ativo', true)
       .order('ordem', { ascending: true })
       .then(
-        ({ data }) => setFormatoRows((data ?? []) as FormatoRow[]),
+        ({ data }) => {
+          setFormatoRows((data ?? []) as FormatoRow[]);
+          setFormatosLoaded(true);
+        },
         () => {
-          /* audit-ok */
+          setFormatosLoaded(true);
         },
       );
   }, []);
@@ -78,7 +82,7 @@ export const EventFeed: React.FC<{
     }
   }, [categorized, currentUserId]);
 
-  if (categorized.length === 0 && formatoRows.length === 0) {
+  if (!formatosLoaded) {
     // Skeleton loading enquanto carrega categorias do Supabase
     return (
       <div className="py-4 w-full space-y-8">

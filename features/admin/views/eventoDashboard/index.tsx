@@ -65,6 +65,7 @@ import { PedidosSubView } from './PedidosSubView';
 import { EditarLotesSubView } from './EditarLotesSubView';
 import { EditarListaSubView } from './EditarListaSubView';
 import { ComemoracaoConfigSubView } from './ComemoracaoConfigSubView';
+import { SerieChips } from './SerieChips';
 import { reviewsService } from '../../services/reviewsService';
 import type { ReviewEvento } from '../../../../types';
 
@@ -88,7 +89,8 @@ export const EventoDashboard: React.FC<{
   currentUserId: string;
   currentUserRole: ContaVanta;
   adminNome?: string;
-}> = ({ eventoId, onBack, currentUserId, currentUserRole, adminNome = '' }) => {
+  onNavigateEvento?: (eventoId: string) => void;
+}> = ({ eventoId, onBack, currentUserId, currentUserRole, adminNome = '', onNavigateEvento }) => {
   const [subView, setSubView] = useState<SubView>('DASHBOARD');
   const [gestaoTab, setGestaoTab] = useState<Tab>('LOTACAO');
 
@@ -540,6 +542,18 @@ export const EventoDashboard: React.FC<{
           </div>
         </div>
       </div>
+
+      {/* ── Série Recorrente ─────────────────────────────────────────────── */}
+      {evento && (
+        <div className="shrink-0 px-6 pt-2 max-w-3xl mx-auto w-full">
+          <SerieChips
+            eventoId={eventoId}
+            eventoOrigemId={evento.eventoOrigemId}
+            recorrencia={evento.recorrencia}
+            onSelectOcorrencia={(id) => onNavigateEvento?.(id)}
+          />
+        </div>
+      )}
 
       <div className="flex-1 overflow-y-auto no-scrollbar px-6 pb-6 max-w-3xl mx-auto w-full">
         {/* ── 6 KPIs ──────────────────────────────────────────────────────── */}

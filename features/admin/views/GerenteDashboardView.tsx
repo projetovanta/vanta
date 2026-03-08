@@ -466,6 +466,10 @@ export const GerenteDashboardView: React.FC<{
         onBack={() => setEventoAberto(null)}
         currentUserId={currentUserId}
         currentUserRole={adminRole}
+        onNavigateEvento={(id) => {
+          const ev = eventosAdminService.getEvento(id);
+          if (ev) setEventoAberto(ev);
+        }}
       />
     );
   }

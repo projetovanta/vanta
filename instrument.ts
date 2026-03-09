@@ -7,9 +7,7 @@ if (SENTRY_DSN) {
     dsn: SENTRY_DSN,
     environment: import.meta.env.MODE,
     enabled: import.meta.env.PROD,
-    integrations: [Sentry.browserTracingIntegration(), Sentry.replayIntegration()],
+    integrations: [Sentry.browserTracingIntegration()],
     tracesSampleRate: 0.1,
-    replaysSessionSampleRate: 0,
-    replaysOnErrorSampleRate: 1.0,
   });
 }

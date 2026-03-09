@@ -86,8 +86,11 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         },
       );
     });
-    void comprovanteService.refresh(m.id);
-    useExtrasStore.getState().initClubeData();
+    // Defer: comprovante e clube não são necessários no primeiro render
+    setTimeout(() => {
+      void comprovanteService.refresh(m.id);
+      useExtrasStore.getState().initClubeData();
+    }, 3000);
     if (m.role === 'vanta_member') {
       void rbacService.refresh().then(() => {
         const nodes = getAccessNodes(m.id);
@@ -179,8 +182,11 @@ export const useAuthStore = create<AuthState>((set, get) => ({
           );
         });
 
-        void comprovanteService.refresh(membro.id);
-        useExtrasStore.getState().initClubeData();
+        // Defer: comprovante e clube não são necessários no primeiro render
+        setTimeout(() => {
+          void comprovanteService.refresh(membro.id);
+          useExtrasStore.getState().initClubeData();
+        }, 3000);
 
         // compute accessNodes — só vanta_member precisa (derivar portais via RBAC)
         // Roles com portal direto (ROLES_COM_PORTAL_DIRETO) já acessam sem nodes.
@@ -212,16 +218,34 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       applySession(membro);
     });
 
+    // Fallback 1: tenta getSession após 2s se onAuthStateChange não disparou
     const fallbackTimer = setTimeout(async () => {
       if (!resolved) {
-        const session = await authService.getSession();
-        resolved = true;
-        applySession(session);
+        try {
+          const session = await authService.getSession();
+          resolved = true;
+          applySession(session);
+        } catch {
+          // Se getSession também falhar, força guest
+          if (!resolved) {
+            resolved = true;
+            applySession(null);
+          }
+        }
       }
     }, 2000);
 
+    // Fallback 2: timeout absoluto — se NADA resolveu em 6s, libera como guest
+    const absoluteTimer = setTimeout(() => {
+      if (!resolved) {
+        resolved = true;
+        applySession(null);
+      }
+    }, 6000);
+
     return () => {
       clearTimeout(fallbackTimer);
+      clearTimeout(absoluteTimer);
       unsubscribe();
     };
   },

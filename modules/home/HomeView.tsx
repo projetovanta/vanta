@@ -11,6 +11,7 @@ import { NewOnPlatformSection } from './components/NewOnPlatformSection';
 import { QuickActions } from './components/QuickActions';
 import { ForYouSection } from './components/ForYouSection';
 import { FriendsGoingSection } from './components/FriendsGoingSection';
+import { LazySection } from './components/LazySection';
 import { isEventHappeningNow, sortEvents } from '../../utils';
 import { TYPOGRAPHY } from '../../constants';
 import { MapPin, Search } from 'lucide-react';
@@ -192,35 +193,46 @@ export const HomeView: React.FC<HomeViewProps> = ({
       {/* Amigos vão — só aparece se tem amigos com ingresso */}
       <FriendsGoingSection eventos={eventos} onEventClick={onEventClick} onComunidadeClick={onComunidadeClick} />
 
-      {/* Perto de Você */}
-      <NearYouSection eventos={cityEventos} onEventClick={onEventClick} onComunidadeClick={onComunidadeClick} />
+      {/* Seções below-the-fold — renderizam quando o scroll se aproxima */}
+      <LazySection>
+        <NearYouSection eventos={cityEventos} onEventClick={onEventClick} onComunidadeClick={onComunidadeClick} />
+      </LazySection>
 
-      {/* Esta Semana */}
-      <ThisWeekSection eventos={thisWeekEventos} onEventClick={onEventClick} onComunidadeClick={onComunidadeClick} />
+      <LazySection>
+        <ThisWeekSection eventos={thisWeekEventos} onEventClick={onEventClick} onComunidadeClick={onComunidadeClick} />
+      </LazySection>
 
-      {/* Eventos Salvos */}
-      <SavedEventsSection eventos={savedEventos} onEventClick={onEventClick} onComunidadeClick={onComunidadeClick} />
+      <LazySection>
+        <SavedEventsSection eventos={savedEventos} onEventClick={onEventClick} onComunidadeClick={onComunidadeClick} />
+      </LazySection>
 
-      {/* Novos na Plataforma */}
-      <NewOnPlatformSection eventos={newOnPlatform} onEventClick={onEventClick} onComunidadeClick={onComunidadeClick} />
+      <LazySection>
+        <NewOnPlatformSection
+          eventos={newOnPlatform}
+          onEventClick={onEventClick}
+          onComunidadeClick={onComunidadeClick}
+        />
+      </LazySection>
 
-      {/* Para Você — recomendação personalizada */}
-      <ForYouSection
-        eventos={eventos}
-        tickets={tickets}
-        presencaIds={presencaIds}
-        onEventClick={onEventClick}
-        onComunidadeClick={onComunidadeClick}
-      />
+      <LazySection>
+        <ForYouSection
+          eventos={eventos}
+          tickets={tickets}
+          presencaIds={presencaIds}
+          onEventClick={onEventClick}
+          onComunidadeClick={onComunidadeClick}
+        />
+      </LazySection>
 
-      {/* Feed de Eventos */}
-      <EventFeed
-        currentCity={selectedCity}
-        eventos={eventos}
-        onEventClick={onEventClick}
-        onViewAll={onNavigateToSearch}
-        onComunidadeClick={onComunidadeClick}
-      />
+      <LazySection>
+        <EventFeed
+          currentCity={selectedCity}
+          eventos={eventos}
+          onEventClick={onEventClick}
+          onViewAll={onNavigateToSearch}
+          onComunidadeClick={onComunidadeClick}
+        />
+      </LazySection>
 
       {/* Loading skeleton durante carregamento inicial */}
       {!hasAnyContent && eventos.length === 0 && eventsLoading && (

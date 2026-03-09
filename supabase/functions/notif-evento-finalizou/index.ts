@@ -68,11 +68,12 @@ serve(async (req: Request) => {
     const now = new Date();
     const tenMinutesAgo = new Date(now.getTime() - 10 * 60000);
 
-    const { data: eventos } = await supabase
+    const { data: eventos, error: errEv } = await supabase
       .from('eventos_admin')
       .select('id, nome, data_fim')
       .gte('data_fim', tenMinutesAgo.toISOString())
       .lte('data_fim', now.toISOString());
+    if (errEv) console.error('[edge/notif-evento-finalizou] eventos:', errEv.message);
 
     if (!eventos || eventos.length === 0) {
       return new Response(JSON.stringify({ ok: true, avisos_enviados: 0 }), {
@@ -98,21 +99,23 @@ serve(async (req: Request) => {
       const deadline = new Date(new Date(dataFim).getTime() + 24 * 3600000 - 3 * 3600000).toISOString().replace('Z', '-03:00');
 
       // Buscar reservas: status USADO (compareceu) mas post não verificado
-      const { data: comCheckIn } = await supabase
+      const { data: comCheckIn, error: errCk } = await supabase
         .from('reservas_mais_vanta')
         .select('id, user_id')
         .eq('evento_id', eventoId)
         .eq('status', 'USADO')
         .eq('post_verificado', false);
+      if (errCk) console.error('[edge/notif-evento-finalizou] reservas:', errCk.message);
 
       if (comCheckIn && comCheckIn.length > 0) {
         const userIds = [...new Set((comCheckIn as Array<{ user_id: string }>).map(r => r.user_id))];
 
         // Buscar tokens FCM
-        const { data: subs } = await supabase
+        const { data: subs, error: errSubs } = await supabase
           .from('push_subscriptions')
           .select('fcm_token, user_id')
           .in('user_id', userIds);
+        if (errSubs) console.error('[edge/notif-evento-finalizou] push_subscriptions:', errSubs.message);
 
         if (subs && subs.length > 0 && FIREBASE_PROJECT_ID) {
           const titulo = 'Opa! 📸';
@@ -159,10 +162,11 @@ serve(async (req: Request) => {
 
         // UPDATE reservas: set post_deadline_em (agenda lembrete T+12h e infração T+24h)
         for (const reserva of comCheckIn) {
-          await supabase
+          const { error: errDl } = await supabase
             .from('reservas_mais_vanta')
             .update({ post_deadline_em: deadline })
             .eq('id', (reserva as { id: string }).id);
+          if (errDl) console.error('[edge/notif-evento-finalizou] deadline update:', errDl.message);
         }
       }
     }

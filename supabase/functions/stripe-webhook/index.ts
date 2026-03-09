@@ -104,7 +104,7 @@ serve(async (req: Request) => {
         const plano = session.metadata?.plano;
         if (comunidadeId) {
           const now = new Date(Date.now() - 3 * 3600000).toISOString().replace('Z', '-03:00');
-          await supabase.from('assinaturas_mais_vanta').upsert(
+          const { error: errUpsert } = await supabase.from('assinaturas_mais_vanta').upsert(
             {
               comunidade_id: comunidadeId,
               plano: plano || 'BASICO',
@@ -116,6 +116,7 @@ serve(async (req: Request) => {
             },
             { onConflict: 'comunidade_id' },
           );
+          if (errUpsert) console.error('[stripe-webhook] upsert assinatura:', errUpsert.message);
           console.log('[stripe-webhook] checkout.session.completed processed', { comunidadeId, plano: plano || 'BASICO', subscriptionId: session.subscription });
         }
         break;
@@ -125,10 +126,11 @@ serve(async (req: Request) => {
         const invoice = event.data.object;
         const subscriptionId = invoice.subscription;
         if (subscriptionId) {
-          await supabase
+          const { error: errPaid } = await supabase
             .from('assinaturas_mais_vanta')
             .update({ status: 'ATIVA' })
             .eq('stripe_subscription_id', subscriptionId);
+          if (errPaid) console.error('[stripe-webhook] invoice.paid update:', errPaid.message);
           console.log('[stripe-webhook] invoice.paid processed', { subscriptionId });
         }
         break;
@@ -138,13 +140,14 @@ serve(async (req: Request) => {
         const subscription = event.data.object;
         const comunidadeId = subscription.metadata?.comunidade_id;
         if (comunidadeId) {
-          await supabase
+          const { error: errCancel } = await supabase
             .from('assinaturas_mais_vanta')
             .update({
               status: 'CANCELADA',
               fim: new Date(Date.now() - 3 * 3600000).toISOString().replace('Z', '-03:00'),
             })
             .eq('comunidade_id', comunidadeId);
+          if (errCancel) console.error('[stripe-webhook] subscription.deleted update:', errCancel.message);
           console.log('[stripe-webhook] subscription.deleted processed', { comunidadeId });
         }
         break;

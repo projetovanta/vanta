@@ -65,10 +65,11 @@ async function enviarNotificacao(
   FIREBASE_PROJECT_ID: string
 ): Promise<boolean> {
   // Buscar token FCM
-  const { data: subs } = await supabase
+  const { data: subs, error: errSubs } = await supabase
     .from('push_subscriptions')
     .select('fcm_token')
     .eq('user_id', userId);
+  if (errSubs) console.error('[edge/notif-infraccao] push_subscriptions:', errSubs.message);
 
   if (!subs || subs.length === 0) return false;
 
@@ -102,13 +103,14 @@ serve(async (req: Request) => {
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
     // Query: reservas com deadline expirado, post não verificado, infração ainda não registrada
-    const { data: reservasVencidas } = await supabase
+    const { data: reservasVencidas, error: errReservas } = await supabase
       .from('reservas_mais_vanta')
       .select('id, user_id, evento_id')
       .not('post_deadline_em', 'is', null)
       .lte('post_deadline_em', new Date().toLocaleString('sv-SE', { timeZone: 'America/Sao_Paulo' }).replace(' ', 'T') + '-03:00')
       .is('infraction_registered_em', null)
       .eq('post_verificado', false);
+    if (errReservas) console.error('[edge/notif-infraccao] reservas_mais_vanta:', errReservas.message);
 
     if (!reservasVencidas || reservasVencidas.length === 0) {
       return new Response(JSON.stringify({ ok: true, infraccoes_registradas: 0 }), {
@@ -157,17 +159,18 @@ serve(async (req: Request) => {
       const eventoNome = eventoData ? (eventoData as { nome: string }).nome : 'Evento';
 
       // Buscar total de infrações do usuário
-      const { data: infraccoes } = await supabase
+      const { data: infraccoes, error: errInfr } = await supabase
         .from('infracoes_mais_vanta')
         .select('id')
         .eq('user_id', userId)
         .eq('tipo', 'NAO_POSTOU');
+      if (errInfr) console.error('[edge/notif-infraccao] infracoes count:', errInfr.message);
 
       const countInfracoes = (infraccoes?.length ?? 0) + 1; // +1 = a que vamos criar
 
       // Criar infração
       const now = new Date().toLocaleString('sv-SE', { timeZone: 'America/Sao_Paulo' }).replace(' ', 'T') + '-03:00';
-      const { data: novaInfracao } = await supabase
+      const { data: novaInfracao, error: errIns } = await supabase
         .from('infracoes_mais_vanta')
         .insert({
           user_id: userId,
@@ -180,6 +183,7 @@ serve(async (req: Request) => {
         .select()
         .single();
 
+      if (errIns) console.error('[edge/notif-infraccao] insert infração:', errIns.message);
       if (!novaInfracao) continue;
 
       infraccoesCriadas++;
@@ -196,10 +200,11 @@ serve(async (req: Request) => {
         proximaBloqueio = bloqueioAte;
 
         // Atualizar membro
-        await supabase
+        const { error: errBloq1 } = await supabase
           .from('membros_clube')
           .update({ bloqueio_nivel: 1, bloqueio_ate: bloqueioAte })
           .eq('user_id', userId);
+        if (errBloq1) console.error('[edge/notif-infraccao] bloqueio_1:', errBloq1.message);
       } else if (countInfracoes === config.limite * 2) {
         // 6ª infração = bloqueio 2º
         acao = 'BLOQUEIO_2';
@@ -207,18 +212,20 @@ serve(async (req: Request) => {
           .toISOString().replace('Z', '-03:00');
         proximaBloqueio = bloqueioAte;
 
-        await supabase
+        const { error: errBloq2 } = await supabase
           .from('membros_clube')
           .update({ bloqueio_nivel: 2, bloqueio_ate: bloqueioAte })
           .eq('user_id', userId);
+        if (errBloq2) console.error('[edge/notif-infraccao] bloqueio_2:', errBloq2.message);
       } else if (countInfracoes === config.limite * 3) {
         // 9ª infração = ban permanente
         acao = 'BAN_PERMANENTE';
 
-        await supabase
+        const { error: errBan } = await supabase
           .from('membros_clube')
           .update({ banido_permanente: true, banido_em: now })
           .eq('user_id', userId);
+        if (errBan) console.error('[edge/notif-infraccao] ban:', errBan.message);
       }
 
       // Construir mensagem contextualizada
@@ -252,10 +259,11 @@ serve(async (req: Request) => {
       }
 
       // Marcar como processada
-      await supabase
+      const { error: errMark } = await supabase
         .from('reservas_mais_vanta')
         .update({ infraction_registered_em: now })
         .eq('id', reservaId);
+      if (errMark) console.error('[edge/notif-infraccao] marcar processada:', errMark.message);
 
       // Log
       try {

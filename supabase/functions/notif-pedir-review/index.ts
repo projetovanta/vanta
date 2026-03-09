@@ -68,12 +68,13 @@ serve(async (req: Request) => {
     const from = new Date(now.getTime() - 36 * 3600000);
     const to = new Date(now.getTime() - 12 * 3600000);
 
-    const { data: eventos } = await supabase
+    const { data: eventos, error: errEventos } = await supabase
       .from('eventos_admin')
       .select('id, nome')
       .gte('data_fim', from.toLocaleString('sv-SE', { timeZone: 'America/Sao_Paulo' }).replace(' ', 'T') + '-03:00')
       .lte('data_fim', to.toLocaleString('sv-SE', { timeZone: 'America/Sao_Paulo' }).replace(' ', 'T') + '-03:00')
       .eq('publicado', true);
+    if (errEventos) console.error('[edge/notif-pedir-review] eventos:', errEventos.message);
 
     if (!eventos || eventos.length === 0) {
       return new Response(JSON.stringify({ ok: true, reviews_pedidos: 0 }), {
@@ -97,37 +98,41 @@ serve(async (req: Request) => {
       const eventoNome = (evento as { nome: string }).nome;
 
       // Verificar se já pediu review para este evento (evitar duplicatas)
-      const { data: jaEnviado } = await supabase
+      const { data: jaEnviado, error: errJa } = await supabase
         .from('notificacoes_posevento')
         .select('id')
         .eq('evento_id', eventoId)
         .eq('tipo', 'PEDIR_REVIEW')
         .limit(1);
+      if (errJa) console.error('[edge/notif-pedir-review] check duplicata:', errJa.message);
 
       if (jaEnviado && jaEnviado.length > 0) continue;
 
       // Buscar usuários que fizeram check-in (ingressos com status USADO)
-      const { data: tickets } = await supabase
+      const { data: tickets, error: errTk } = await supabase
         .from('tickets_caixa')
         .select('user_id')
         .eq('evento_admin_id', eventoId)
         .eq('status', 'USADO');
+      if (errTk) console.error('[edge/notif-pedir-review] tickets:', errTk.message);
 
       // Buscar check-ins de lista também
-      const { data: listas } = await supabase
+      const { data: listas, error: errListas } = await supabase
         .from('listas_evento')
         .select('id')
         .eq('evento_admin_id', eventoId);
+      if (errListas) console.error('[edge/notif-pedir-review] listas:', errListas.message);
 
       const listaIds = (listas ?? []).map((l: { id: string }) => l.id);
       let listaUserIds: string[] = [];
       if (listaIds.length > 0) {
-        const { data: convidados } = await supabase
+        const { data: convidados, error: errConv } = await supabase
           .from('convidados_lista')
           .select('user_id')
           .in('lista_id', listaIds)
           .eq('checked_in', true)
           .not('user_id', 'is', null);
+        if (errConv) console.error('[edge/notif-pedir-review] convidados:', errConv.message);
         listaUserIds = (convidados ?? []).map((c: { user_id: string }) => c.user_id);
       }
 
@@ -138,11 +143,12 @@ serve(async (req: Request) => {
       if (allUserIds.length === 0) continue;
 
       // Excluir quem já avaliou
-      const { data: jaAvaliou } = await supabase
+      const { data: jaAvaliou, error: errRev } = await supabase
         .from('reviews_evento')
         .select('user_id')
         .eq('evento_id', eventoId)
         .in('user_id', allUserIds);
+      if (errRev) console.error('[edge/notif-pedir-review] reviews:', errRev.message);
 
       const jaAvalSet = new Set((jaAvaliou ?? []).map((r: { user_id: string }) => r.user_id));
       const userIds = allUserIds.filter(uid => !jaAvalSet.has(uid));
@@ -160,14 +166,16 @@ serve(async (req: Request) => {
         criado_em: nowBrt,
       }));
 
-      await supabase.from('notifications').insert(notifs);
+      const { error: errNotifs } = await supabase.from('notifications').insert(notifs);
+      if (errNotifs) console.error('[edge/notif-pedir-review] insert notifications:', errNotifs.message);
 
       // Push FCM
       if (FIREBASE_PROJECT_ID && accessToken) {
-        const { data: subs } = await supabase
+        const { data: subs, error: errSubs } = await supabase
           .from('push_subscriptions')
           .select('fcm_token, user_id')
           .in('user_id', userIds);
+        if (errSubs) console.error('[edge/notif-pedir-review] push_subscriptions:', errSubs.message);
 
         if (subs && subs.length > 0) {
           const fcmUrl = `https://fcm.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/messages:send`;

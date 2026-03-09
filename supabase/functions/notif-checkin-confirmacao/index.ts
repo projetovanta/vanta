@@ -54,10 +54,11 @@ serve(async (req: Request) => {
     const corpo = `Você está confirmado no evento "${eventoNome}"! Pode postar ANTES, DURANTE ou até 12h DEPOIS do evento. Marca a gente @maisvanta e nos diz como foi! 📸`;
 
     // Enviar push notification
-    const { data: subs } = await supabase
+    const { data: subs, error: errSubs } = await supabase
       .from('push_subscriptions')
       .select('fcm_token')
       .eq('user_id', userId);
+    if (errSubs) console.error('[edge/notif-checkin] push_subscriptions:', errSubs.message);
 
     if (subs && subs.length > 0) {
       const FIREBASE_PROJECT_ID = Deno.env.get('FIREBASE_PROJECT_ID') ?? '';

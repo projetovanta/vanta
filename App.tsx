@@ -65,6 +65,7 @@ const ParceiroDashboardPage = lazy(() =>
 const EventLandingPage = lazy(() =>
   import('./modules/landing/EventLandingPage').then(m => ({ default: m.EventLandingPage })),
 );
+const NotFoundView = lazy(() => import('./components/NotFoundView').then(m => ({ default: m.NotFoundView })));
 
 // ── Limpeza única de localStorage ao inicializar (dados de desenvolvimento) ──
 const _LS_CLEAN_KEY = 'vanta_ls_clean_v1';
@@ -415,7 +416,7 @@ export default function App() {
 
             {/* ── App shell (com tab bar) ────────────────────────────── */}
             <Route
-              path="*"
+              path="/"
               element={
                 <AppShell
                   nav={nav}
@@ -427,6 +428,9 @@ export default function App() {
                 />
               }
             />
+
+            {/* ── 404 catch-all ────────────────────────────────────── */}
+            <Route path="*" element={<NotFoundView />} />
           </Routes>
           <AppModals
             isGuest={h.isGuest}

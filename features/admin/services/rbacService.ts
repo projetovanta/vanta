@@ -401,7 +401,11 @@ export const rbacService = {
     const match = ATRIBUICOES.find(a => a.id === id);
 
     // Atualiza no Supabase (soft delete: ativo = false)
-    await supabase.from('atribuicoes_rbac').update({ ativo: false }).eq('id', id);
+    const { error: errRev } = await supabase.from('atribuicoes_rbac').update({ ativo: false }).eq('id', id);
+    if (errRev) {
+      console.error('[rbacService] revogar:', errRev);
+      return;
+    }
 
     // Remove do cache local
     ATRIBUICOES = ATRIBUICOES.filter(a => a.id !== id);
@@ -450,7 +454,7 @@ export const rbacService = {
     if (slot.autorizado.has(userId)) return;
     slot.pendente.add(userId);
 
-    await supabase.from('soberania_acesso').upsert(
+    const { error: errSov } = await supabase.from('soberania_acesso').upsert(
       {
         evento_id: eventoId,
         solicitante_id: userId,
@@ -458,6 +462,7 @@ export const rbacService = {
       },
       { onConflict: 'evento_id,solicitante_id' },
     );
+    if (errSov) console.error('[rbacService] solicitarAcesso:', errSov);
   },
 
   /** GE-E autoriza o acesso de um GG-C específico — persiste no Supabase */

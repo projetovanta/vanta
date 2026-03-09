@@ -20,6 +20,7 @@ import { VANTA_FEE, calcGatewayCost } from './eventosAdminTypes';
 import { comunidadesService } from './comunidadesService';
 import { listasService } from './listasService';
 import { notify, notifyMany } from '../../../services/notifyService';
+import { logger } from '../../../services/logger';
 
 // ── Contracted Fees ─────────────────────────────────────────────────────────
 
@@ -234,7 +235,12 @@ export const solicitarSaque = async (
     .single();
 
   if (error || !inserted) {
-    console.error('[eventosAdminService] solicitarSaque erro:', error);
+    logger.error('[financeiro] solicitarSaque failed', {
+      produtorId: data.produtorId,
+      eventoId: data.eventoId,
+      valor: data.valor,
+      error,
+    });
     return '';
   }
 
@@ -323,7 +329,7 @@ export const confirmarSaque = async (saqueId: string, operadorId?: string): Prom
     .from('solicitacoes_saque')
     .select('produtor_id, valor_liquido, evento_id, eventos_admin!inner(nome)')
     .eq('id', saqueId)
-    .single();
+    .maybeSingle();
 
   const { error: errConfirm } = await supabase
     .from('solicitacoes_saque')
@@ -362,7 +368,7 @@ export const estornarSaque = async (saqueId: string, operadorId?: string): Promi
     .from('solicitacoes_saque')
     .select('produtor_id, valor_liquido, evento_id, eventos_admin!inner(nome)')
     .eq('id', saqueId)
-    .single();
+    .maybeSingle();
 
   const { error: errEstorno } = await supabase
     .from('solicitacoes_saque')
@@ -425,7 +431,7 @@ export const processarReembolsoAutomatico = async (ticketId: string, solicitadoP
     .from('tickets_caixa')
     .select('id, evento_id, variacao_id, valor, status, criado_em')
     .eq('id', ticketId)
-    .single();
+    .maybeSingle();
 
   if (!ticketRow || ticketRow.status !== 'DISPONIVEL') return false;
 
@@ -534,7 +540,7 @@ export const solicitarReembolso = async (
     .from('tickets_caixa')
     .select('id, evento_id, variacao_id, valor, email')
     .eq('id', ticketId)
-    .single();
+    .maybeSingle();
 
   if (!ticketRow) return { ok: false, erro: 'Ticket não encontrado.' };
 
@@ -642,7 +648,7 @@ export const executarReembolsoFinal = async (reembolsoId: string, executorId: st
     .from('reembolsos')
     .select('ticket_id, evento_id, valor, solicitado_por')
     .eq('id', reembolsoId)
-    .single();
+    .maybeSingle();
 
   if (!reembolsoRow) return false;
 
@@ -690,7 +696,7 @@ export const executarReembolsoFinal = async (reembolsoId: string, executorId: st
     .from('tickets_caixa')
     .select('evento_id, variacao_id')
     .eq('id', ticketId)
-    .single();
+    .maybeSingle();
 
   if (ticketRow?.evento_id && ticketRow?.variacao_id) {
     try {
@@ -716,7 +722,7 @@ export const recusarReembolso = async (
     .from('reembolsos')
     .select('solicitado_por, evento_id, valor')
     .eq('id', reembolsoId)
-    .single();
+    .maybeSingle();
 
   const { error } = await supabase
     .from('reembolsos')
@@ -762,7 +768,7 @@ export const aprovarReembolsoManual = async (
     .from('tickets_caixa')
     .select('id, evento_id, variacao_id, valor, email')
     .eq('id', ticketId)
-    .single();
+    .maybeSingle();
 
   if (!ticketRow) return false;
 
@@ -872,7 +878,7 @@ export const registrarChargeback = async (ticketId: string, motivo: string, gate
     .from('tickets_caixa')
     .select('id, evento_id, valor')
     .eq('id', ticketId)
-    .single();
+    .maybeSingle();
 
   if (!ticketRow) return false;
 
@@ -889,7 +895,7 @@ export const registrarChargeback = async (ticketId: string, motivo: string, gate
 
   // Marca ticket como cancelado (chargeback = perda)
   const { error: errCancel } = await supabase.from('tickets_caixa').update({ status: 'CANCELADO' }).eq('id', ticketId);
-  if (errCancel) console.error('[chargeback] ticket cancelamento falhou:', errCancel);
+  if (errCancel) logger.error('[chargeback] ticket cancelamento falhou', errCancel);
 
   // Alerta masteradm
   const ev = EVENTOS_ADMIN.find(e => e.id === ticketRow.evento_id);
@@ -1013,7 +1019,7 @@ export const autorizarSaqueGerente = async (saqueId: string, gerenteId: string):
     .from('solicitacoes_saque')
     .select('produtor_id, valor_liquido, evento_id, eventos_admin!inner(nome, comunidade_id)')
     .eq('id', saqueId)
-    .single();
+    .maybeSingle();
 
   const { error } = await supabase
     .from('solicitacoes_saque')
@@ -1071,7 +1077,7 @@ export const recusarSaque = async (saqueId: string, recusadoPorId: string, motiv
     .from('solicitacoes_saque')
     .select('produtor_id, evento_id, eventos_admin!inner(nome)')
     .eq('id', saqueId)
-    .single();
+    .maybeSingle();
 
   const { error } = await supabase
     .from('solicitacoes_saque')

@@ -21,7 +21,7 @@ export const TosAcceptModal: React.FC<TosAcceptModalProps> = ({ userId, userName
     setSalvando(true);
     try {
       const now = new Date().toLocaleString('sv-SE', { timeZone: 'America/Sao_Paulo' }).replace(' ', 'T') + '-03:00';
-      await supabase
+      const { error } = await supabase
         .from('profiles')
         .update({
           tos_accepted_at: now,
@@ -29,6 +29,11 @@ export const TosAcceptModal: React.FC<TosAcceptModalProps> = ({ userId, userName
           tos_ip: 'client', // IP real seria capturado server-side
         })
         .eq('id', userId);
+      if (error) {
+        console.error('[TosAcceptModal] aceitar TOS:', error);
+        setSalvando(false);
+        return;
+      }
 
       onAccepted();
     } catch {
@@ -116,7 +121,11 @@ export const TosAcceptModal: React.FC<TosAcceptModalProps> = ({ userId, userName
 
 /** Verifica se o usuário já aceitou o ToS atual */
 export async function checkTosAccepted(userId: string): Promise<boolean> {
-  const { data } = await supabase.from('profiles').select('tos_accepted_at, tos_version').eq('id', userId).single();
+  const { data } = await supabase
+    .from('profiles')
+    .select('tos_accepted_at, tos_version')
+    .eq('id', userId)
+    .maybeSingle();
 
   if (!data) return false;
   return data.tos_version === TOS_VERSION && !!data.tos_accepted_at;

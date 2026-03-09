@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import {
   X,
@@ -21,6 +21,7 @@ import { cuponsService } from '../../features/admin/services/cuponsService';
 import { comprovanteService } from '../../features/admin/services/comprovanteService';
 import { notify } from '../../services/notifyService';
 import { comemoracaoService } from '../../services/comemoracaoService';
+import { logger } from '../../services/logger';
 import { SuccessScreen } from './SuccessScreen';
 import { WaitlistModal } from './WaitlistModal';
 
@@ -98,6 +99,7 @@ export const CheckoutPage: React.FC = () => {
 
   useEffect(() => {
     if (eventoId) localStorage.setItem('vanta_checkout_eventoId', eventoId);
+    let cancelled = false;
 
     const loadEvento = async () => {
       try {
@@ -109,6 +111,8 @@ export const CheckoutPage: React.FC = () => {
           .eq('id', eventoId)
           .eq('publicado', true)
           .maybeSingle();
+
+        if (cancelled) return;
 
         if (!row) {
           setPageLoading(false);
@@ -150,6 +154,8 @@ export const CheckoutPage: React.FC = () => {
           .eq('evento_id', eventoId)
           .order('ordem', { ascending: true });
 
+        if (cancelled) return;
+
         if (lotes && lotes.length > 0) {
           setTotalLotes(lotes.length);
           const loteAtivo = lotes.find((l: Record<string, unknown>) => l.ativo) ?? lotes[lotes.length - 1];
@@ -160,6 +166,8 @@ export const CheckoutPage: React.FC = () => {
             .from('variacoes_ingresso')
             .select('id, area, area_custom, genero, valor, limite, vendidos, requer_comprovante, tipo_comprovante')
             .eq('lote_id', loteAtivo.id);
+
+          if (cancelled) return;
 
           if (vars && vars.length > 0) {
             setVariacoes(
@@ -177,14 +185,17 @@ export const CheckoutPage: React.FC = () => {
             );
           }
         }
-      } catch {
-        // silently fail
+      } catch (err) {
+        logger.error('[checkout] loadEvento failed', err);
       } finally {
-        setPageLoading(false);
+        if (!cancelled) setPageLoading(false);
       }
     };
 
     void loadEvento();
+    return () => {
+      cancelled = true;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -194,6 +205,7 @@ export const CheckoutPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [loading, setLoading] = useState(false);
+  const submittingRef = useRef(false);
   const [erro, setErro] = useState('');
   const [tickets, setTickets] = useState<Ingresso[]>([]);
 
@@ -204,12 +216,14 @@ export const CheckoutPage: React.FC = () => {
 
   useEffect(() => {
     if (!evento?.mesasAtivo) return;
+    let cancelled = false;
     supabase
       .from('mesas')
       .select('*')
       .eq('evento_id', eventoId)
       .then(
         ({ data }) => {
+          if (cancelled) return;
           if (data)
             setMesas(
               data.map((r: Record<string, unknown>) => ({
@@ -229,6 +243,9 @@ export const CheckoutPage: React.FC = () => {
           /* audit-ok */
         },
       );
+    return () => {
+      cancelled = true;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [evento?.mesasAtivo]);
 
@@ -252,13 +269,16 @@ export const CheckoutPage: React.FC = () => {
   // Comprovante meia-entrada — check de elegibilidade do user logado
   const [meiaElegivel, setMeiaElegivel] = useState(false);
   useEffect(() => {
+    let cancelled = false;
     supabase.auth.getUser().then(({ data: { user } }) => {
-      if (user) {
-        comprovanteService.refresh(user.id).then(() => {
-          setMeiaElegivel(comprovanteService.isElegivel(user.id));
-        });
-      }
+      if (cancelled || !user) return;
+      comprovanteService.refresh(user.id).then(() => {
+        if (!cancelled) setMeiaElegivel(comprovanteService.isElegivel(user.id));
+      });
     });
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const setQtd = (key: string, value: number) =>
@@ -304,20 +324,27 @@ export const CheckoutPage: React.FC = () => {
   // Auto-aplicar cupom da URL (?cupom=VANTA10)
   useEffect(() => {
     if (!cupomUrl || !eventoId || cupomAplicado) return;
+    let cancelled = false;
     cuponsService.validarCupom(cupomUrl, eventoId).then(result => {
+      if (cancelled) return;
       if (result.valido && result.cupom) {
         setCupomAplicado(result.cupom);
         setCupomCode(result.cupom.codigo);
       }
     });
+    return () => {
+      cancelled = true;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cupomUrl, eventoId]);
 
   const handleLogin = async () => {
+    if (submittingRef.current) return;
     if (!email.trim() || !senha.trim()) {
       setErro('Preencha email e senha.');
       return;
     }
+    submittingRef.current = true;
     setLoading(true);
     setErro('');
 
@@ -333,6 +360,7 @@ export const CheckoutPage: React.FC = () => {
           : (authError?.message ?? 'Erro ao autenticar.'),
       );
       setLoading(false);
+      submittingRef.current = false;
       return;
     }
     const compradorId = authData.user.id;
@@ -357,15 +385,19 @@ export const CheckoutPage: React.FC = () => {
       });
 
       if (rpcError) {
+        logger.error('[checkout] compra RPC failed', { eventoId, variacaoId: v.id, error: rpcError });
         setErro(`Erro ao processar compra: ${rpcError.message}`);
         setLoading(false);
+        submittingRef.current = false;
         return;
       }
 
       const result = rpcResult as { ok: boolean; erro?: string; tickets?: { ticketId: string }[] };
       if (!result?.ok) {
+        logger.warn('[checkout] compra RPC result not ok', { eventoId, variacaoId: v.id, erro: result?.erro });
         setErro(result?.erro ?? 'Erro ao processar compra.');
         setLoading(false);
+        submittingRef.current = false;
         return;
       }
 
@@ -409,6 +441,7 @@ export const CheckoutPage: React.FC = () => {
     }
     setTickets(gerados);
     setLoading(false);
+    submittingRef.current = false;
     setStep('success');
 
     // Notificar comprador (3 canais: in-app + push + email)
@@ -429,7 +462,7 @@ export const CheckoutPage: React.FC = () => {
             .select('id, solicitante_id, vendas_count')
             .eq('ref_code', refCode)
             .eq('status', 'APROVADA')
-            .single();
+            .maybeSingle();
           if (com?.solicitante_id) {
             void notify({
               userId: com.solicitante_id,

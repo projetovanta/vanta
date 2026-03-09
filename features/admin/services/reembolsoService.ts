@@ -7,7 +7,7 @@
 
 import { supabase } from '../../../services/supabaseClient';
 import type { Reembolso } from './eventosAdminTypes';
-
+import { logger } from '../../../services/logger';
 import { tsBR } from '../../../utils';
 
 // ── Mapeador: snake_case (Supabase) → camelCase (TS) ─────────────────────
@@ -43,7 +43,7 @@ export async function podeReembolsoAutomatico(
       .from('tickets_caixa')
       .select('emitido_em, status')
       .eq('id', ticketId)
-      .single();
+      .maybeSingle();
 
     if (ticketErr || !ticket) {
       return { pode: false, motivo: 'Ingresso não encontrado' };
@@ -57,7 +57,7 @@ export async function podeReembolsoAutomatico(
       .from('eventos_admin')
       .select('data_inicio')
       .eq('id', eventoId)
-      .single();
+      .maybeSingle();
 
     if (eventoErr || !evento) {
       return { pode: false, motivo: 'Evento não encontrado' };
@@ -80,7 +80,7 @@ export async function podeReembolsoAutomatico(
 
     return { pode: true };
   } catch (err) {
-    console.error('Erro ao validar reembolso automático:', err);
+    logger.error('[reembolso] validar automático failed', { ticketId, eventoId, err });
     return { pode: false, motivo: 'Erro interno' };
   }
 }
@@ -101,7 +101,7 @@ export async function solicitarReembolsoAutomatico(
       .from('tickets_caixa')
       .select('valor')
       .eq('id', ticketId)
-      .single();
+      .maybeSingle();
 
     if (ticketErr || !ticket) {
       return { success: false, error: 'Erro ao buscar ticket' };
@@ -130,7 +130,7 @@ export async function solicitarReembolsoAutomatico(
 
     return { success: true, reembolsoId: data.id };
   } catch (err) {
-    console.error('Erro ao solicitar reembolso automático:', err);
+    logger.error('[reembolso] solicitar automático failed', { ticketId, eventoId, userId, err });
     return { success: false, error: 'Erro interno' };
   }
 }
@@ -148,7 +148,7 @@ export async function solicitarReembolsoManual(
       .from('tickets_caixa')
       .select('valor, status')
       .eq('id', ticketId)
-      .single();
+      .maybeSingle();
 
     if (ticketErr || !ticket) {
       return { success: false, error: 'Ingresso não encontrado' };
@@ -183,7 +183,7 @@ export async function solicitarReembolsoManual(
 
     return { success: true, reembolsoId: data.id };
   } catch (err) {
-    console.error('Erro ao solicitar reembolso manual:', err);
+    logger.error('[reembolso] solicitar manual failed', { ticketId, eventoId, userId, err });
     return { success: false, error: 'Erro interno' };
   }
 }
@@ -200,7 +200,7 @@ export async function aprovarReembolsoManual(
       .from('reembolsos')
       .select('id, ticket_id, tipo, status')
       .eq('id', reembolsoId)
-      .single();
+      .maybeSingle();
 
     if (reembolsoErr || !reembolso) {
       return { success: false, error: 'Reembolso não encontrado' };
@@ -234,7 +234,7 @@ export async function aprovarReembolsoManual(
 
     return { success: true };
   } catch (err) {
-    console.error('Erro ao aprovar reembolso manual:', err);
+    logger.error('[reembolso] aprovar manual failed', { reembolsoId, masterAdmId, err });
     return { success: false, error: 'Erro interno' };
   }
 }
@@ -252,7 +252,7 @@ export async function rejeitarReembolsoManual(
       .from('reembolsos')
       .select('id, tipo, status')
       .eq('id', reembolsoId)
-      .single();
+      .maybeSingle();
 
     if (reembolsoErr || !reembolso) {
       return { success: false, error: 'Reembolso não encontrado' };
@@ -284,7 +284,7 @@ export async function rejeitarReembolsoManual(
 
     return { success: true };
   } catch (err) {
-    console.error('Erro ao rejeitar reembolso manual:', err);
+    logger.error('[reembolso] rejeitar manual failed', { reembolsoId, masterAdmId, motivo, err });
     return { success: false, error: 'Erro interno' };
   }
 }
@@ -318,13 +318,13 @@ export async function getReembolsosPorEvento(eventoId: string): Promise<Reembols
       .limit(1000);
 
     if (error) {
-      console.error('Erro ao buscar reembolsos:', error);
+      logger.error('[reembolso] buscar por evento failed', error);
       return [];
     }
 
     return (data || []).map(mapReembolsoFromDB);
   } catch (err) {
-    console.error('Erro ao buscar reembolsos do evento:', err);
+    logger.error('[reembolso] buscar por evento exception', err);
     return [];
   }
 }
@@ -357,7 +357,7 @@ export async function getReembolsosPendentes(): Promise<Reembolso[]> {
       .limit(1000);
 
     if (error) {
-      console.error('Erro ao buscar reembolsos pendentes:', error);
+      logger.error('[reembolso] buscar pendentes failed', error);
       return [];
     }
 
@@ -371,7 +371,7 @@ export async function getReembolsosPendentes(): Promise<Reembolso[]> {
       };
     });
   } catch (err) {
-    console.error('Erro ao buscar reembolsos pendentes:', err);
+    logger.error('[reembolso] buscar pendentes exception', err);
     return [];
   }
 }
@@ -400,13 +400,13 @@ export async function getReembolsosAprovados(): Promise<Reembolso[]> {
       .limit(2000);
 
     if (error) {
-      console.error('Erro ao buscar reembolsos aprovados:', error);
+      logger.error('[reembolso] buscar aprovados failed', error);
       return [];
     }
 
     return (data || []).map(mapReembolsoFromDB);
   } catch (err) {
-    console.error('Erro ao buscar reembolsos aprovados:', err);
+    logger.error('[reembolso] buscar aprovados exception', err);
     return [];
   }
 }
@@ -436,13 +436,13 @@ export async function getReembolsosRejeitados(): Promise<Reembolso[]> {
       .limit(2000);
 
     if (error) {
-      console.error('Erro ao buscar reembolsos rejeitados:', error);
+      logger.error('[reembolso] buscar rejeitados failed', error);
       return [];
     }
 
     return (data || []).map(mapReembolsoFromDB);
   } catch (err) {
-    console.error('Erro ao buscar reembolsos rejeitados:', err);
+    logger.error('[reembolso] buscar rejeitados exception', err);
     return [];
   }
 }

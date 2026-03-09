@@ -213,7 +213,7 @@ export const messagesService = {
   ): Promise<Array<{ emoji: string; userId: string }> | null> => {
     try {
       // Busca reactions atual
-      const { data, error } = await supabase.from('messages').select('reactions').eq('id', messageId).single();
+      const { data, error } = await supabase.from('messages').select('reactions').eq('id', messageId).maybeSingle();
 
       if (error || !data) return null;
 

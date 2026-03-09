@@ -274,7 +274,7 @@ export const useAppHandlers = (nav: Nav, pwa: PWA) => {
             .from('eventos_admin')
             .select('created_by')
             .eq('id', evId)
-            .single()
+            .maybeSingle()
             .then(({ data }) => {
               setNegociacaoPapel(data?.created_by === currentAccount?.id ? 'produtor' : 'socio');
             });

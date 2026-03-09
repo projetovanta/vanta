@@ -199,7 +199,11 @@ const EventoCaixaView: React.FC<{
         .maybeSingle();
 
       if (profile?.id) {
-        await supabase.from('tickets_caixa').update({ owner_id: profile.id }).eq('id', newId);
+        const { error: errOwner } = await supabase
+          .from('tickets_caixa')
+          .update({ owner_id: profile.id })
+          .eq('id', newId);
+        if (errOwner) console.error('[EventoCaixaView] owner_id update:', errOwner);
       }
 
       if (selfiePreview) {

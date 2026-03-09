@@ -322,16 +322,20 @@ export const listasService = {
     if (!regra || regra.saldoBanco < quantidade) return false;
 
     // Atualiza saldo_banco da regra no Supabase
-    await supabase
+    const { error: errSaldo } = await supabase
       .from('regras_lista')
       .update({ saldo_banco: regra.saldoBanco - quantidade })
       .eq('id', regraId);
+    if (errSaldo) {
+      console.error('[listasService] alocarCota saldo:', errSaldo);
+      return false;
+    }
 
     // Upsert cota no Supabase
     const cotaExistente = lista.cotas.find(c => c.promoterId === promoterId && c.regraId === regraId);
     const novoAlocado = (cotaExistente?.alocado ?? 0) + quantidade;
 
-    await supabase.from('cotas_promoter').upsert(
+    const { error: errCota } = await supabase.from('cotas_promoter').upsert(
       {
         lista_id: listaId,
         regra_id: regraId,
@@ -341,6 +345,7 @@ export const listasService = {
       },
       { onConflict: 'lista_id,regra_id,promoter_id' },
     );
+    if (errCota) console.error('[listasService] alocarCota upsert:', errCota);
 
     // Atualiza cache local
     regra.saldoBanco -= quantidade;
@@ -781,7 +786,7 @@ export const listasService = {
       const existing = lista.regras[i];
       if (existing) {
         // Update existente
-        await supabase
+        const { error: errRU } = await supabase
           .from('regras_lista')
           .update({
             label: r.label,
@@ -791,6 +796,7 @@ export const listasService = {
             hora_corte: r.horaCorte ?? null,
           })
           .eq('id', existing.id);
+        if (errRU) console.error('[listasService] updateLista regra:', errRU);
         // Atualiza cache
         existing.label = r.label;
         existing.tetoGlobal = r.tetoGlobal;
@@ -892,7 +898,11 @@ export const listasService = {
 
       if (abIns) {
         // Linkar regra VIP → abóbora
-        await supabase.from('regras_lista').update({ abobora_regra_id: abIns.id }).eq('id', regraId);
+        const { error: errAb } = await supabase
+          .from('regras_lista')
+          .update({ abobora_regra_id: abIns.id })
+          .eq('id', regraId);
+        if (errAb) console.error('[listasService] link abobora:', errAb);
 
         lista.regras.push({
           id: abIns.id as string,

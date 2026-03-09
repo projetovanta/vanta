@@ -106,7 +106,7 @@ export const maisVantaConfigService = {
 
   async refresh(): Promise<void> {
     try {
-      const { data, error } = await supabase.from('mais_vanta_config').select('*').eq('id', 'global').single();
+      const { data, error } = await supabase.from('mais_vanta_config').select('*').eq('id', 'global').maybeSingle();
 
       if (error || !data) {
         console.warn('[maisVantaConfigService] refresh: usando defaults', error);

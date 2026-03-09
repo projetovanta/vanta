@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import {
   ArrowLeft,
   Banknote,
@@ -139,31 +139,42 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification 
   const selectedEvento = selectedEventoId ? allEventos.find(e => e.id === selectedEventoId) : null;
 
   // ── Handlers ───────────────────────────────────────────────────────────────
+  const financialActionRef = useRef(false);
   const confirmar = async (saqueId: string) => {
     const s = saques.find(sq => sq.id === saqueId);
-    if (!s) return;
-    await eventosAdminService.confirmarSaque(saqueId);
-    addNotification({
-      titulo: 'Saque Confirmado',
-      mensagem: `Pagamento de ${fmtBRL(s.valorLiquido)} para ${s.produtorNome} confirmado.`,
-      tipo: 'SISTEMA',
-      lida: false,
-      link: '',
-      timestamp: tsBR(),
-    });
+    if (!s || financialActionRef.current) return;
+    financialActionRef.current = true;
+    try {
+      await eventosAdminService.confirmarSaque(saqueId);
+      addNotification({
+        titulo: 'Saque Confirmado',
+        mensagem: `Pagamento de ${fmtBRL(s.valorLiquido)} para ${s.produtorNome} confirmado.`,
+        tipo: 'SISTEMA',
+        lida: false,
+        link: '',
+        timestamp: tsBR(),
+      });
+    } finally {
+      financialActionRef.current = false;
+    }
   };
   const estornar = async (saqueId: string) => {
     const s = saques.find(sq => sq.id === saqueId);
-    if (!s) return;
-    await eventosAdminService.estornarSaque(saqueId);
-    addNotification({
-      titulo: 'Saque Estornado',
-      mensagem: `Saque de ${fmtBRL(s.valor)} de ${s.produtorNome} foi estornado.`,
-      tipo: 'SISTEMA',
-      lida: false,
-      link: '',
-      timestamp: tsBR(),
-    });
+    if (!s || financialActionRef.current) return;
+    financialActionRef.current = true;
+    try {
+      await eventosAdminService.estornarSaque(saqueId);
+      addNotification({
+        titulo: 'Saque Estornado',
+        mensagem: `Saque de ${fmtBRL(s.valor)} de ${s.produtorNome} foi estornado.`,
+        tipo: 'SISTEMA',
+        lida: false,
+        link: '',
+        timestamp: tsBR(),
+      });
+    } finally {
+      financialActionRef.current = false;
+    }
   };
 
   // ── Export ─────────────────────────────────────────────────────────────────

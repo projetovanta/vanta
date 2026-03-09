@@ -243,7 +243,7 @@ export const getTicketsCaixaByEvento = async (eventoId: string): Promise<TicketC
 };
 
 export const addTicketToCaixa = async (ticket: Omit<TicketCaixa, 'emitidoEm'>): Promise<void> => {
-  await supabase.from('tickets_caixa').insert({
+  const { error } = await supabase.from('tickets_caixa').insert({
     id: ticket.id,
     evento_id: ticket.eventoId,
     variacao_id: ticket.variacaoId || null,
@@ -252,6 +252,10 @@ export const addTicketToCaixa = async (ticket: Omit<TicketCaixa, 'emitidoEm'>): 
     valor: ticket.valor,
     status: ticket.status,
   });
+  if (error) {
+    console.error('[eventosAdminTickets] addTicketToCaixa:', error);
+    return;
+  }
   bumpVersion();
 };
 
@@ -277,7 +281,8 @@ export const editarTitular = async (
 };
 
 export const atualizarSelfieUrl = async (ticketId: string, url: string): Promise<void> => {
-  await supabase.from('tickets_caixa').update({ selfie_url: url }).eq('id', ticketId);
+  const { error } = await supabase.from('tickets_caixa').update({ selfie_url: url }).eq('id', ticketId);
+  if (error) console.error('[eventosAdminTickets] atualizarSelfieUrl:', error);
 };
 
 export const reenviarIngresso = async (ticketId: string, operadorId?: string): Promise<boolean> => {
@@ -291,7 +296,7 @@ export const reenviarIngresso = async (ticketId: string, operadorId?: string): P
         .from('tickets_caixa')
         .select('owner_id, evento_id, variacao_label')
         .eq('id', ticketId)
-        .single();
+        .maybeSingle();
       const ownerId = ticket?.owner_id as string | undefined;
       if (!ownerId) return;
       const eventoNome = EVENTOS_ADMIN.find(e => e.id === ticket.evento_id)?.nome ?? 'Evento';
@@ -322,7 +327,7 @@ export const cancelarIngresso = async (ticketId: string, operadorId?: string): P
     .from('tickets_caixa')
     .select('evento_id, variacao_id')
     .eq('id', ticketId)
-    .single();
+    .maybeSingle();
 
   const { error } = await supabase.from('tickets_caixa').update({ status: 'CANCELADO' }).eq('id', ticketId);
 

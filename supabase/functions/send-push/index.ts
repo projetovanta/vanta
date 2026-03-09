@@ -131,6 +131,8 @@ serve(async (req: Request) => {
       data?: Record<string, string>;
     };
 
+    console.log('[send-push] invoked', { targetCount: userIds?.length ?? 0, title });
+
     if (!userIds?.length || !title?.trim() || !body?.trim()) {
       return new Response(JSON.stringify({ error: 'userIds, title e body são obrigatórios.' }), {
         status: 400, headers: { ...corsHeaders(req), 'Content-Type': 'application/json' },
@@ -190,8 +192,8 @@ serve(async (req: Request) => {
           if (code === 'UNREGISTERED' || code === 'NOT_FOUND' || code === 'INVALID_ARGUMENT') {
             deadTokens.push(fcmToken);
           }
-        } catch {
-          // resposta não-JSON — ignorar
+        } catch (err) {
+          console.error('[send-push] erro ao parsear resposta FCM:', err);
         }
       }
     }
@@ -206,6 +208,9 @@ serve(async (req: Request) => {
     if (aliveTokens.length > 0) {
       await supabase.from('push_subscriptions').update({ last_used_at: new Date().toLocaleString('sv-SE', { timeZone: 'America/Sao_Paulo' }).replace(' ', 'T') + '-03:00' }).in('fcm_token', aliveTokens);
     }
+
+    const failed = tokens.length - sent - deadTokens.length;
+    console.log('[send-push] results', { sent, failed, deadTokens: deadTokens.length, total: tokens.length });
 
     return new Response(JSON.stringify({ ok: true, sent, total: tokens.length, cleaned: deadTokens.length }), {
       status: 200, headers: { ...corsHeaders(req), 'Content-Type': 'application/json' },

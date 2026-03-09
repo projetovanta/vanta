@@ -68,13 +68,14 @@ export async function registrarInfracao(
   eventoId?: string,
   eventoNome?: string,
 ): Promise<{ acao: 'AVISO' | 'BLOQUEIO_1' | 'BLOQUEIO_2' | 'BAN_PERMANENTE'; count: number }> {
-  await supabase.from('infracoes_mais_vanta').insert({
+  const { error: errInf } = await supabase.from('infracoes_mais_vanta').insert({
     user_id: userId,
     tipo,
     evento_id: eventoId ?? null,
     evento_nome: eventoNome ?? null,
     criado_por: adminId,
   });
+  if (errInf) console.error('[clubeInfracoes] registrarInfracao:', errInf);
 
   const count = await getInfracoesCount(userId);
   const m = _membros.get(userId);
@@ -86,7 +87,11 @@ export async function registrarInfracao(
     const ate = new Date(Date.now() + config.bloqueio1Dias * 24 * 3600000 - 3 * 3600000)
       .toISOString()
       .replace('Z', '-03:00');
-    await supabase.from('membros_clube').update({ bloqueio_nivel: 1, bloqueio_ate: ate }).eq('user_id', userId);
+    const { error: errB1 } = await supabase
+      .from('membros_clube')
+      .update({ bloqueio_nivel: 1, bloqueio_ate: ate })
+      .eq('user_id', userId);
+    if (errB1) console.error('[clubeInfracoes] bloqueio nivel 1:', errB1);
     m.bloqueioNivel = 1;
     m.bloqueioAte = ate;
     bump();
@@ -97,7 +102,11 @@ export async function registrarInfracao(
     const ate = new Date(Date.now() + config.bloqueio2Dias * 24 * 3600000 - 3 * 3600000)
       .toISOString()
       .replace('Z', '-03:00');
-    await supabase.from('membros_clube').update({ bloqueio_nivel: 2, bloqueio_ate: ate }).eq('user_id', userId);
+    const { error: errB2 } = await supabase
+      .from('membros_clube')
+      .update({ bloqueio_nivel: 2, bloqueio_ate: ate })
+      .eq('user_id', userId);
+    if (errB2) console.error('[clubeInfracoes] bloqueio nivel 2:', errB2);
     m.bloqueioNivel = 2;
     m.bloqueioAte = ate;
     bump();

@@ -255,7 +255,16 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
       const { supabase } = await import('../../services/supabaseClient');
       // Marca perfil como excluído (soft delete)
       const agora = new Date().toLocaleString('sv-SE', { timeZone: 'America/Sao_Paulo' }).replace(' ', 'T') + '-03:00';
-      await supabase.from('profiles').update({ excluido: true, excluido_em: agora }).eq('id', profile.id);
+      const { error: errDel } = await supabase
+        .from('profiles')
+        .update({ excluido: true, excluido_em: agora })
+        .eq('id', profile.id);
+      if (errDel) {
+        console.error('[ProfileView] deleteAccount:', errDel);
+        onSuccess?.('Erro ao excluir conta. Tente novamente.');
+        setIsDeleting(false);
+        return;
+      }
       await supabase.auth.signOut();
       onLogout?.();
     } catch {

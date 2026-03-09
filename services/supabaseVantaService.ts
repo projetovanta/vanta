@@ -254,7 +254,7 @@ export class SupabaseVantaService implements IVantaService {
           'id, slug, nome, descricao, data_inicio, data_fim, local, endereco, cidade, foto, formato, estilos, experiencias, categoria, subcategorias, coords, comunidade_id, venda_vanta, link_externo, comunidades(id, nome, foto, cidade, endereco), lotes(id, nome, ativo, variacoes_ingresso(valor))',
         )
         .eq('id', id)
-        .single();
+        .maybeSingle();
 
       if (error || !data) return null;
       const mapped = this._mapEventos([data]);
@@ -497,7 +497,8 @@ export const uploadBiometria = async (base64DataUrl: string, userId: string): Pr
 
     // Bucket privado — salva apenas o path (não URL pública)
     // Signed URL é gerada on-demand no painel de curadoria
-    await supabase.from('profiles').update({ biometria_url: path }).eq('id', userId);
+    const { error: errBio } = await supabase.from('profiles').update({ biometria_url: path }).eq('id', userId);
+    if (errBio) console.error('[supabaseVantaService] uploadBiometria profile update:', errBio);
 
     return { path, publicUrl: null };
   } catch (e: unknown) {

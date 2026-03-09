@@ -31,7 +31,8 @@ export async function upsertLotesMaisVanta(
   eventoId: string,
   lotes: Array<Omit<LoteMaisVanta, 'id' | 'eventoId' | 'reservados'>>,
 ): Promise<LoteMaisVanta[]> {
-  await supabase.from('lotes_mais_vanta').delete().eq('evento_id', eventoId);
+  const { error: errDel } = await supabase.from('lotes_mais_vanta').delete().eq('evento_id', eventoId);
+  if (errDel) console.error('[clubeLotes] upsertLotes delete:', errDel);
   const idxs = _lotes.reduce<number[]>((acc, l, i) => (l.eventoId === eventoId ? [...acc, i] : acc), []);
   for (let i = idxs.length - 1; i >= 0; i--) _lotes.splice(idxs[i], 1);
 
@@ -112,7 +113,8 @@ export async function upsertLoteMaisVanta(
 }
 
 export async function removeLotesMaisVanta(eventoId: string): Promise<void> {
-  await supabase.from('lotes_mais_vanta').delete().eq('evento_id', eventoId);
+  const { error } = await supabase.from('lotes_mais_vanta').delete().eq('evento_id', eventoId);
+  if (error) console.error('[clubeLotes] removeLotes:', error);
   const idxs = _lotes.reduce<number[]>((acc, l, i) => (l.eventoId === eventoId ? [...acc, i] : acc), []);
   for (let i = idxs.length - 1; i >= 0; i--) _lotes.splice(idxs[i], 1);
   bump();

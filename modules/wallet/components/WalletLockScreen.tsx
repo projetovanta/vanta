@@ -17,12 +17,13 @@ const hashPin = async (pin: string): Promise<string> => {
 
 // ── Supabase PIN storage ────────────────────────────────────────────────
 const getSupabasePin = async (userId: string): Promise<string | null> => {
-  const { data } = await supabase.from('profiles').select('wallet_pin_hash').eq('id', userId).single();
+  const { data } = await supabase.from('profiles').select('wallet_pin_hash').eq('id', userId).maybeSingle();
   return data?.wallet_pin_hash ?? null;
 };
 
 const saveSupabasePin = async (userId: string, hash: string): Promise<void> => {
-  await supabase.from('profiles').update({ wallet_pin_hash: hash }).eq('id', userId);
+  const { error } = await supabase.from('profiles').update({ wallet_pin_hash: hash }).eq('id', userId);
+  if (error) console.error('[WalletLockScreen] savePin:', error);
 };
 
 // ── Types ───────────────────────────────────────────────────────────────

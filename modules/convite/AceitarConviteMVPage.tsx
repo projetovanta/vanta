@@ -35,12 +35,16 @@ export const AceitarConviteMVPage: React.FC = () => {
       return;
     }
 
+    let cancelled = false;
+
     const fetchConvite = async () => {
       const { data, error } = await supabase
         .from('convites_mais_vanta')
         .select('id, tipo, tier, parceiro_nome, status, expira_em')
         .eq('token', token)
-        .single();
+        .maybeSingle();
+
+      if (cancelled) return;
 
       if (error || !data) {
         setErrorMsg('Convite não encontrado');
@@ -72,6 +76,9 @@ export const AceitarConviteMVPage: React.FC = () => {
     };
 
     void fetchConvite();
+    return () => {
+      cancelled = true;
+    };
   }, [token, currentAccount?.id]);
 
   const handleAceitar = async () => {

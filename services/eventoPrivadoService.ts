@@ -131,7 +131,7 @@ export const eventoPrivadoService = {
     const {
       data: { user },
     } = await supabase.auth.getUser();
-    const { data: ep } = await supabase.from('eventos_privados').select('solicitante_id').eq('id', id).single();
+    const { data: ep } = await supabase.from('eventos_privados').select('solicitante_id').eq('id', id).maybeSingle();
     const { error } = await supabase
       .from('eventos_privados')
       .update({ status: 'APROVADA', avaliado_por: user?.id, avaliado_em: brNow(), mensagem_gerente: mensagem || null })
@@ -152,7 +152,7 @@ export const eventoPrivadoService = {
     const {
       data: { user },
     } = await supabase.auth.getUser();
-    const { data: ep } = await supabase.from('eventos_privados').select('solicitante_id').eq('id', id).single();
+    const { data: ep } = await supabase.from('eventos_privados').select('solicitante_id').eq('id', id).maybeSingle();
     const { error } = await supabase
       .from('eventos_privados')
       .update({

@@ -103,27 +103,47 @@ export const notificationsService = {
 
   /** Marca uma notificação como lida */
   markAsRead: async (id: string): Promise<void> => {
-    await supabase.from('notifications').update({ lida: true }).eq('id', id);
+    const { error } = await supabase.from('notifications').update({ lida: true }).eq('id', id);
+    if (error) {
+      console.error('[notificationsService] markAsRead:', error);
+      return;
+    }
     _notifs = _notifs.map(n => (n.id === id ? { ...n, lida: true } : n));
   },
 
   /** Marca todas como lidas */
   markAllAsRead: async (): Promise<void> => {
     if (!_userId) return;
-    await supabase.from('notifications').update({ lida: true }).eq('user_id', _userId).eq('lida', false);
+    const { error } = await supabase
+      .from('notifications')
+      .update({ lida: true })
+      .eq('user_id', _userId)
+      .eq('lida', false);
+    if (error) {
+      console.error('[notificationsService] markAllAsRead:', error);
+      return;
+    }
     _notifs = _notifs.map(n => ({ ...n, lida: true }));
   },
 
   /** Remove uma notificação por ID */
   remove: async (id: string): Promise<void> => {
-    await supabase.from('notifications').delete().eq('id', id);
+    const { error } = await supabase.from('notifications').delete().eq('id', id);
+    if (error) {
+      console.error('[notificationsService] remove:', error);
+      return;
+    }
     _notifs = _notifs.filter(n => n.id !== id);
   },
 
   /** Remove todas as notificações de um determinado link */
   removeByLink: async (link: string): Promise<void> => {
     if (!_userId) return;
-    await supabase.from('notifications').delete().eq('user_id', _userId).eq('link', link);
+    const { error } = await supabase.from('notifications').delete().eq('user_id', _userId).eq('link', link);
+    if (error) {
+      console.error('[notificationsService] removeByLink:', error);
+      return;
+    }
     _notifs = _notifs.filter(n => n.link !== link);
   },
 

@@ -80,7 +80,7 @@ export const PassaportesMaisVantaView: React.FC<{
     setLoading(id);
     try {
       // Marcar como rejeitado (revogação é uma rejeição posterior)
-      await supabase
+      const { error: errRev } = await supabase
         .from('passport_aprovacoes')
         .update({
           status: 'REJEITADO',
@@ -88,6 +88,7 @@ export const PassaportesMaisVantaView: React.FC<{
           resolvido_por: masterId,
         })
         .eq('id', id);
+      if (errRev) console.error('[PassaportesMaisVantaView] revogar:', errRev);
       await clubeService.refresh();
       setTick(t => t + 1);
     } catch (e) {

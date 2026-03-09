@@ -49,7 +49,7 @@ export const parceiroService = {
       )
       .eq('user_id', userId)
       .eq('ativo', true)
-      .single();
+      .maybeSingle();
 
     if (error || !data) return null;
 

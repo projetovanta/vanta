@@ -13,6 +13,7 @@ import { supabase } from './supabaseClient';
 import { Membro, ContaVanta } from '../types';
 import type { Database } from '../types/supabase';
 import { DEFAULT_AVATARS } from '../data/avatars';
+import { logger } from './logger';
 
 type ProfileRow = Database['public']['Tables']['profiles']['Row'];
 
@@ -87,7 +88,7 @@ export const authService = {
       }
 
       // Busca profile completo com role real — evita delay de onAuthStateChange
-      const { data: profile } = await supabase.from('profiles').select('*').eq('id', data.user.id).single();
+      const { data: profile } = await supabase.from('profiles').select('*').eq('id', data.user.id).maybeSingle();
 
       const membro: Membro = profile
         ? profileToMembro(profile)
@@ -109,6 +110,7 @@ export const authService = {
 
       return { ok: true, membro };
     } catch (e: unknown) {
+      logger.error('[auth] login failed', e);
       return { ok: false, erro: e instanceof Error ? e.message : 'Erro ao conectar.' };
     }
   },
@@ -226,6 +228,7 @@ export const authService = {
       const needsConfirmation = !data.session;
       return { ok: true, membro, needsConfirmation };
     } catch (e: unknown) {
+      logger.error('[auth] signUp failed', e);
       return { ok: false, erro: e instanceof Error ? e.message : 'Erro ao criar conta.' };
     }
   },
@@ -238,11 +241,12 @@ export const authService = {
       } = await supabase.auth.getSession();
       if (!session?.user) return null;
 
-      const { data: profile } = await supabase.from('profiles').select('*').eq('id', session.user.id).single();
+      const { data: profile } = await supabase.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
 
       if (!profile) return null;
       return profileToMembro(profile);
-    } catch {
+    } catch (err) {
+      logger.error('[auth] getSession failed', err);
       return null;
     }
   },
@@ -296,7 +300,7 @@ export const authService = {
         return;
       }
       try {
-        const { data: profile } = await supabase.from('profiles').select('*').eq('id', session.user.id).single();
+        const { data: profile } = await supabase.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
 
         callback(profile ? profileToMembro(profile) : null);
       } catch {
@@ -318,7 +322,7 @@ export const enrichInstagramFollowers = (userId: string, instagram: string | und
     .from('profiles')
     .select('instagram_followers')
     .eq('id', userId)
-    .single()
+    .maybeSingle()
     .then(({ data }) => {
       if (data?.instagram_followers != null) return; // já enriquecido
       supabase.functions
@@ -329,7 +333,9 @@ export const enrichInstagramFollowers = (userId: string, instagram: string | und
               .from('profiles')
               .update({ instagram_followers: igData.followers })
               .eq('id', userId)
-              .then(() => {});
+              .then(({ error: errIg }) => {
+                if (errIg) console.error('[authService] instagram_followers update:', errIg);
+              });
           }
         })
         .catch(() => {

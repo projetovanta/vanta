@@ -8,6 +8,7 @@ import { realtimeManager } from '../services/realtimeManager';
 import { comprovanteService } from '../features/admin/services/comprovanteService';
 import { getAccessNodes } from '../features/admin/permissoes';
 import { rbacService } from '../features/admin/services/rbacService';
+import { logger } from '../services/logger';
 import { useExtrasStore } from './extrasStore';
 
 const GUEST_PLACEHOLDER: Membro = {
@@ -225,8 +226,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
           const session = await authService.getSession();
           resolved = true;
           applySession(session);
-        } catch {
-          // Se getSession também falhar, força guest
+        } catch (err) {
+          logger.warn('[authStore] getSession fallback failed', err);
           if (!resolved) {
             resolved = true;
             applySession(null);
@@ -238,6 +239,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     // Fallback 2: timeout absoluto — se NADA resolveu em 6s, libera como guest
     const absoluteTimer = setTimeout(() => {
       if (!resolved) {
+        logger.error('[authStore] absolute timeout 6s — forced guest');
         resolved = true;
         applySession(null);
       }

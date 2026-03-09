@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import {
   ArrowLeft,
   Banknote,
@@ -55,13 +55,18 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
   const [showReembolsoModal, setShowReembolsoModal] = useState(false);
   const [reembolsoMotivo, setReembolsoMotivo] = useState('');
   const [reembolsoLoadingId, setReembolsoLoadingId] = useState<string | null>(null);
+  const financialActionRef = useRef(false);
 
   // Carregar PIX persistido do Supabase
   useEffect(() => {
     if (!currentUserId) return;
     void (async () => {
       try {
-        const { data } = await supabase.from('profiles').select('pix_tipo, pix_chave').eq('id', currentUserId).single();
+        const { data } = await supabase
+          .from('profiles')
+          .select('pix_tipo, pix_chave')
+          .eq('id', currentUserId)
+          .maybeSingle();
         if (data?.pix_tipo) setPixTipo(data.pix_tipo as PixTipo);
         if (data?.pix_chave) {
           setPixChave(data.pix_chave as string);
@@ -294,28 +299,33 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
   const liquidoValor = valorNum;
 
   const confirmarSaque = async () => {
-    if (!podeConfirmar) return;
-    await eventosAdminService.solicitarSaque({
-      produtorId: currentUserId,
-      produtorNome,
-      eventoId: eventoSaque?.id ?? '',
-      eventoNome: eventoSaque?.nome ?? 'Evento',
-      valor: valorNum,
-      pixTipo,
-      pixChave,
-    });
-    addNotification({
-      titulo: 'Saque Solicitado',
-      mensagem: `Pedido de ${fmtBRL(valorNum)} enviado ao Master Admin. Processamento em até 2 dias úteis.`,
-      tipo: 'SISTEMA',
-      lida: false,
-      link: '',
-      timestamp: tsBR(),
-    });
-    setShowModal(false);
-    setSaqueOk(true);
-    setValorSaque('');
-    setTimeout(() => setSaqueOk(false), 4000);
+    if (!podeConfirmar || financialActionRef.current) return;
+    financialActionRef.current = true;
+    try {
+      await eventosAdminService.solicitarSaque({
+        produtorId: currentUserId,
+        produtorNome,
+        eventoId: eventoSaque?.id ?? '',
+        eventoNome: eventoSaque?.nome ?? 'Evento',
+        valor: valorNum,
+        pixTipo,
+        pixChave,
+      });
+      addNotification({
+        titulo: 'Saque Solicitado',
+        mensagem: `Pedido de ${fmtBRL(valorNum)} enviado ao Master Admin. Processamento em até 2 dias úteis.`,
+        tipo: 'SISTEMA',
+        lida: false,
+        link: '',
+        timestamp: tsBR(),
+      });
+      setShowModal(false);
+      setSaqueOk(true);
+      setValorSaque('');
+      setTimeout(() => setSaqueOk(false), 4000);
+    } finally {
+      financialActionRef.current = false;
+    }
   };
 
   const solicitarReembolsoManualHandler = async (ticketId: string) => {
@@ -360,7 +370,8 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
   };
 
   const aprovarReembolsoHandler = async (reembolsoId: string) => {
-    if (!eventoSaque) return;
+    if (!eventoSaque || financialActionRef.current) return;
+    financialActionRef.current = true;
     setReembolsoLoadingId(reembolsoId);
     try {
       const { aprovarReembolsoManual } = await import('../../services/reembolsoService');
@@ -395,12 +406,15 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
         link: '',
         timestamp: tsBR(),
       });
+    } finally {
+      financialActionRef.current = false;
     }
     setReembolsoLoadingId(null);
   };
 
   const rejeitarReembolsoHandler = async (reembolsoId: string) => {
-    if (!eventoSaque) return;
+    if (!eventoSaque || financialActionRef.current) return;
+    financialActionRef.current = true;
     setReembolsoLoadingId(reembolsoId);
     try {
       const { rejeitarReembolsoManual } = await import('../../services/reembolsoService');
@@ -435,6 +449,8 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
         link: '',
         timestamp: tsBR(),
       });
+    } finally {
+      financialActionRef.current = false;
     }
     setReembolsoLoadingId(null);
   };
@@ -682,7 +698,10 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
               void supabase
                 .from('profiles')
                 .update({ pix_tipo: pixTipo, pix_chave: pixChave.trim() })
-                .eq('id', currentUserId);
+                .eq('id', currentUserId)
+                .then(({ error }) => {
+                  if (error) console.error('[Financeiro] salvar PIX:', error);
+                });
             }}
             disabled={pixChave.trim().length < 3}
             className="w-full py-3 bg-zinc-800 border border-white/5 rounded-xl text-[9px] font-black uppercase tracking-widest text-zinc-400 active:text-white active:bg-zinc-700 transition-all disabled:opacity-30 flex items-center justify-center gap-2"

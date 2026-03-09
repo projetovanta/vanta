@@ -106,9 +106,14 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
   // Carrega reviews do evento
   const isPast = new Date(evento.dataReal + 'T23:59:59-03:00') < new Date();
   useEffect(() => {
-    if (isPast) {
-      reviewsService.getMediaEvento(evento.id).then(setReviewStats);
-    }
+    if (!isPast) return;
+    let cancelled = false;
+    reviewsService.getMediaEvento(evento.id).then(stats => {
+      if (!cancelled) setReviewStats(stats);
+    });
+    return () => {
+      cancelled = true;
+    };
   }, [evento.id, isPast]);
 
   const isNextDay =

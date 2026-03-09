@@ -37,10 +37,11 @@ export async function _fetchAndUpdateFollowers(userId: string, handle: string): 
     const res = await supabase.functions.invoke('instagram-followers', { body: { username: handle } });
     const followers = res.data?.followers;
     if (typeof followers === 'number' && followers > 0) {
-      await supabase
+      const { error: errIg } = await supabase
         .from('membros_clube')
         .update({ instagram_seguidores: followers, instagram_verificado_em: tsBR() })
         .eq('user_id', userId);
+      if (errIg) console.error('[clubeInstagram] refreshFollowers:', errIg);
       const cached = _membros.get(userId);
       if (cached) cached.instagramSeguidores = followers;
     }

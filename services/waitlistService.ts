@@ -63,7 +63,7 @@ class WaitlistService {
     if (!data || data.length === 0) return 0;
 
     // Buscar nome do evento para a notificação
-    const { data: evRow } = await supabase.from('eventos_admin').select('nome').eq('id', eventoId).single();
+    const { data: evRow } = await supabase.from('eventos_admin').select('nome').eq('id', eventoId).maybeSingle();
     const eventoNome = (evRow?.nome as string) ?? '';
 
     const { notificationsService } = await import('../features/admin/services/notificationsService');
@@ -86,7 +86,8 @@ class WaitlistService {
       }
 
       // Marca como notificado
-      await supabase.from('waitlist').update({ notificado_em: tsBR() }).eq('id', row.id);
+      const { error: errWl } = await supabase.from('waitlist').update({ notificado_em: tsBR() }).eq('id', row.id);
+      if (errWl) console.error('[waitlistService] notificar update:', errWl);
 
       notificados++;
     }

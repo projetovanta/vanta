@@ -65,6 +65,8 @@ export const EventLandingPage: React.FC = () => {
       return;
     }
 
+    let cancelled = false;
+
     const fetch = async () => {
       const { data, error } = await supabase
         .from('eventos_admin')
@@ -77,7 +79,9 @@ export const EventLandingPage: React.FC = () => {
         )
         .eq('slug', slug)
         .eq('publicado', true)
-        .single();
+        .maybeSingle();
+
+      if (cancelled) return;
 
       if (error || !data) {
         setNotFound(true);
@@ -128,6 +132,9 @@ export const EventLandingPage: React.FC = () => {
     };
 
     fetch().catch(console.error);
+    return () => {
+      cancelled = true;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

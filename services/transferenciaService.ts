@@ -1,6 +1,6 @@
 import { supabase } from './supabaseClient';
 import type { Ingresso, TransferenciaPendente } from '../types';
-
+import { logger } from './logger';
 import { tsBR } from '../utils';
 const mkQR = () => `VNT-${Math.random().toString(36).slice(2, 10).toUpperCase()}`;
 
@@ -48,7 +48,7 @@ export const transferenciaService = {
     });
 
     if (error) {
-      console.error('[transferenciaService] transferir:', error);
+      logger.error('[transferenciaService] transferir:', error);
       return false;
     }
 
@@ -58,9 +58,14 @@ export const transferenciaService = {
       .update({ status: 'TRANSFERIDO' })
       .eq('id', ticket.id);
     if (errUpdate) {
-      console.error('[transferenciaService] marcar TRANSFERIDO:', errUpdate);
+      logger.error('[transferenciaService] marcar TRANSFERIDO:', errUpdate);
       // Rollback: remover transferência criada
-      await supabase.from('transferencias_ingresso').delete().eq('ticket_id', ticket.id).eq('status', 'PENDENTE');
+      const { error: errRb } = await supabase
+        .from('transferencias_ingresso')
+        .delete()
+        .eq('ticket_id', ticket.id)
+        .eq('status', 'PENDENTE');
+      if (errRb) logger.error('[transferenciaService] rollback delete:', errRb);
       return false;
     }
 
@@ -105,7 +110,7 @@ export const transferenciaService = {
       .eq('id', transferenciaId)
       .eq('destinatario_id', userId)
       .eq('status', 'PENDENTE')
-      .single();
+      .maybeSingle();
 
     if (!row) return null;
 
@@ -115,7 +120,7 @@ export const transferenciaService = {
       .update({ status: 'ACEITO' })
       .eq('id', transferenciaId);
     if (errAceitar) {
-      console.error('[transferenciaService] aceitar status:', errAceitar);
+      logger.error('[transferenciaService] aceitar status:', errAceitar);
       return null;
     }
 
@@ -126,7 +131,7 @@ export const transferenciaService = {
       .from('tickets_caixa')
       .select('lote_id, variacao_id')
       .eq('id', t.ticketId)
-      .single();
+      .maybeSingle();
 
     // 3. Criar novo ingresso para o destinatário (colunas alinhadas com schema)
     const { data: novoTicket, error: errInsert } = await supabase
@@ -144,9 +149,13 @@ export const transferenciaService = {
       .single();
 
     if (errInsert || !novoTicket) {
-      console.error('[transferenciaService] criar ticket:', errInsert);
+      logger.error('[transferenciaService] criar ticket:', errInsert);
       // Rollback: reverter transferência para PENDENTE
-      await supabase.from('transferencias_ingresso').update({ status: 'PENDENTE' }).eq('id', transferenciaId);
+      const { error: errRb2 } = await supabase
+        .from('transferencias_ingresso')
+        .update({ status: 'PENDENTE' })
+        .eq('id', transferenciaId);
+      if (errRb2) logger.error('[transferenciaService] rollback aceitar:', errRb2);
       return null;
     }
 
@@ -177,7 +186,7 @@ export const transferenciaService = {
       .eq('id', transferenciaId)
       .eq('destinatario_id', userId)
       .eq('status', 'PENDENTE')
-      .single();
+      .maybeSingle();
 
     if (!row) return false;
 
@@ -186,7 +195,7 @@ export const transferenciaService = {
       .update({ status: 'RECUSADO' })
       .eq('id', transferenciaId);
     if (errRecusar) {
-      console.error('[transferenciaService] recusar:', errRecusar);
+      logger.error('[transferenciaService] recusar:', errRecusar);
       return false;
     }
 
@@ -196,7 +205,7 @@ export const transferenciaService = {
       .update({ status: 'DISPONIVEL' })
       .eq('id', row.ticket_id as string);
     if (errRestore) {
-      console.error('[transferenciaService] restaurar ticket:', errRestore);
+      logger.error('[transferenciaService] restaurar ticket:', errRestore);
       // Transferência já foi recusada mas ticket não voltou — log para investigar
     }
 

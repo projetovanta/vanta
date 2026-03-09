@@ -31,7 +31,7 @@ export const clubeCidadesService = {
   },
 
   async buscarPorId(id: string): Promise<CidadeMaisVanta | null> {
-    const { data } = await supabase.from('cidades_mais_vanta').select('*').eq('id', id).single();
+    const { data } = await supabase.from('cidades_mais_vanta').select('*').eq('id', id).maybeSingle();
     return data ? rowToCidade(data as Record<string, unknown>) : null;
   },
 

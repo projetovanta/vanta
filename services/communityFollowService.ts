@@ -14,11 +14,17 @@ export const communityFollowService = {
   },
 
   async follow(userId: string, comunidadeId: string): Promise<void> {
-    await supabase.from('community_follows').insert({ user_id: userId, comunidade_id: comunidadeId });
+    const { error } = await supabase.from('community_follows').insert({ user_id: userId, comunidade_id: comunidadeId });
+    if (error) console.error('[communityFollowService] follow:', error);
   },
 
   async unfollow(userId: string, comunidadeId: string): Promise<void> {
-    await supabase.from('community_follows').delete().eq('user_id', userId).eq('comunidade_id', comunidadeId);
+    const { error } = await supabase
+      .from('community_follows')
+      .delete()
+      .eq('user_id', userId)
+      .eq('comunidade_id', comunidadeId);
+    if (error) console.error('[communityFollowService] unfollow:', error);
   },
 
   async getFollowers(comunidadeId: string): Promise<string[]> {

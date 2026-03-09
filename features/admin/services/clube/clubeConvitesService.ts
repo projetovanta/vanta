@@ -90,7 +90,7 @@ export const clubeConvitesService = {
   },
 
   async buscarPorToken(token: string): Promise<ConviteMaisVanta | null> {
-    const { data, error } = await supabase.from('convites_mais_vanta').select('*').eq('token', token).single();
+    const { data, error } = await supabase.from('convites_mais_vanta').select('*').eq('token', token).maybeSingle();
 
     if (error) return null;
     return data as unknown as ConviteMaisVanta;

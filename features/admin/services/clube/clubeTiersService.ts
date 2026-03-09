@@ -64,7 +64,8 @@ export async function editarTier(
   if (data.limiteMensal !== undefined) row.limite_mensal = data.limiteMensal;
   if (data.ativo !== undefined) row.ativo = data.ativo;
 
-  await supabase.from('tiers_mais_vanta').update(row).eq('id', tierId);
+  const { error } = await supabase.from('tiers_mais_vanta').update(row).eq('id', tierId);
+  if (error) console.error('[clubeTiers] updateTier:', error);
   const cached = _tiersDef.get(tierId);
   if (cached) Object.assign(cached, data);
   bump();

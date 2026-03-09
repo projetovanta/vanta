@@ -79,7 +79,11 @@ export async function convidarParaMaisVanta(
     data?: Record<string, string>;
   }) => Promise<void>,
 ): Promise<SolicitacaoClube> {
-  const { data: profileData } = await supabase.from('profiles').select('instagram').eq('id', membroUserId).single();
+  const { data: profileData } = await supabase
+    .from('profiles')
+    .select('instagram')
+    .eq('id', membroUserId)
+    .maybeSingle();
   const igHandle = (profileData?.instagram as string) ?? '';
 
   const row = {
@@ -141,7 +145,11 @@ export async function aceitarConviteMaisVanta(
     instagram_verificado_em: verificacao?.verificadoEm ?? null,
     codigo_verificacao: verificacao?.codigo ?? null,
   };
-  await supabase.from('solicitacoes_clube').update(updatePayload).eq('id', solId);
+  const { error: errSol } = await supabase.from('solicitacoes_clube').update(updatePayload).eq('id', solId);
+  if (errSol) {
+    console.error('[clubeSolicitacoes] completarInstagram:', errSol);
+    return;
+  }
 
   sol.instagramHandle = instagramHandle;
   sol.instagramVerificado = verificacao?.verificado ?? false;
@@ -188,13 +196,14 @@ export async function aprovarSolicitacao(
     ativo: true,
     comunidade_origem: comunidadeId ?? null,
   };
-  await supabase.from('membros_clube').insert(membroRow);
+  const { error: errMembro } = await supabase.from('membros_clube').insert(membroRow);
+  if (errMembro) console.error('[clubeSolicitacoes] aprovar membro insert:', errMembro);
 
   if (comunidadeId) {
     const comOrigem = comunidadesService.getAll().find((c: { id: string }) => c.id === comunidadeId);
     const cidadeOrigem = comOrigem?.cidade;
     if (cidadeOrigem) {
-      await supabase.from('passport_aprovacoes').upsert(
+      const { error: errPass } = await supabase.from('passport_aprovacoes').upsert(
         {
           user_id: sol.userId,
           cidade: cidadeOrigem,
@@ -205,6 +214,7 @@ export async function aprovarSolicitacao(
         },
         { onConflict: 'user_id,cidade' },
       );
+      if (errPass) console.error('[clubeSolicitacoes] passport upsert:', errPass);
       _passports.push({
         id: `auto_${sol.userId}_${cidadeOrigem}`,
         userId: sol.userId,

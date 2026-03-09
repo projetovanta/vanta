@@ -1,7 +1,6 @@
+import './instrument';
 import './app.css';
 
-// Sentry lazy — carrega após o primeiro render pra não bloquear o boot (-316KB)
-setTimeout(() => import('./instrument'), 2000);
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';

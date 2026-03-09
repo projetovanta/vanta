@@ -46,7 +46,11 @@ export async function reservar(loteId: string, eventoId: string, userId: string)
   if (error) return null;
 
   lote.reservados++;
-  await supabase.from('lotes_mais_vanta').update({ reservados: lote.reservados }).eq('id', loteId);
+  const { error: errLote } = await supabase
+    .from('lotes_mais_vanta')
+    .update({ reservados: lote.reservados })
+    .eq('id', loteId);
+  if (errLote) console.error('[clubeReservas] criarReserva lote update:', errLote);
 
   const reserva = rowToReserva(data);
   _reservas.unshift(reserva);
@@ -60,12 +64,23 @@ export async function cancelarReserva(reservaId: string): Promise<boolean> {
   const reserva = _reservas[idx];
   if (reserva.status === 'CANCELADO') return false;
 
-  await supabase.from('reservas_mais_vanta').update({ status: 'CANCELADO' }).eq('id', reservaId);
+  const { error: errCancel } = await supabase
+    .from('reservas_mais_vanta')
+    .update({ status: 'CANCELADO' })
+    .eq('id', reservaId);
+  if (errCancel) {
+    console.error('[clubeReservas] cancelarReserva:', errCancel);
+    return false;
+  }
 
   const lote = _lotes.find(l => l.id === reserva.loteMaisVantaId);
   if (lote) {
     lote.reservados = Math.max(0, lote.reservados - 1);
-    await supabase.from('lotes_mais_vanta').update({ reservados: lote.reservados }).eq('id', lote.id);
+    const { error: errLote2 } = await supabase
+      .from('lotes_mais_vanta')
+      .update({ reservados: lote.reservados })
+      .eq('id', lote.id);
+    if (errLote2) console.error('[clubeReservas] cancelar lote update:', errLote2);
   }
 
   reserva.status = 'CANCELADO';
@@ -74,7 +89,11 @@ export async function cancelarReserva(reservaId: string): Promise<boolean> {
 }
 
 export async function confirmarPost(reservaId: string, postUrl: string): Promise<void> {
-  await supabase.from('reservas_mais_vanta').update({ post_url: postUrl, status: 'PENDENTE_POST' }).eq('id', reservaId);
+  const { error } = await supabase
+    .from('reservas_mais_vanta')
+    .update({ post_url: postUrl, status: 'PENDENTE_POST' })
+    .eq('id', reservaId);
+  if (error) console.error('[clubeReservas] confirmarPost:', error);
   const reserva = _reservas.find(r => r.id === reservaId);
   if (reserva) {
     reserva.postUrl = postUrl;
@@ -84,7 +103,11 @@ export async function confirmarPost(reservaId: string, postUrl: string): Promise
 }
 
 export async function verificarPost(reservaId: string, _masterId: string): Promise<void> {
-  await supabase.from('reservas_mais_vanta').update({ post_verificado: true, status: 'USADO' }).eq('id', reservaId);
+  const { error } = await supabase
+    .from('reservas_mais_vanta')
+    .update({ post_verificado: true, status: 'USADO' })
+    .eq('id', reservaId);
+  if (error) console.error('[clubeReservas] verificarPost:', error);
   const reserva = _reservas.find(r => r.id === reservaId);
   if (reserva) {
     reserva.postVerificado = true;

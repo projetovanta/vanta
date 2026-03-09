@@ -49,7 +49,7 @@ export const clubeParceirosService = {
   },
 
   async buscarPorId(id: string): Promise<ParceiroMaisVanta | null> {
-    const { data } = await supabase.from('parceiros_mais_vanta').select('*').eq('id', id).single();
+    const { data } = await supabase.from('parceiros_mais_vanta').select('*').eq('id', id).maybeSingle();
     return data ? rowToParceiro(data as Record<string, unknown>) : null;
   },
 
@@ -118,6 +118,10 @@ export const clubeParceirosService = {
   },
 
   async resetarResgatesMensais(): Promise<void> {
-    await supabase.from('parceiros_mais_vanta').update({ resgates_mes_usados: 0 }).gt('resgates_mes_usados', 0);
+    const { error } = await supabase
+      .from('parceiros_mais_vanta')
+      .update({ resgates_mes_usados: 0 })
+      .gt('resgates_mes_usados', 0);
+    if (error) console.error('[clubeParceiros] resetarResgatesMensais:', error);
   },
 };

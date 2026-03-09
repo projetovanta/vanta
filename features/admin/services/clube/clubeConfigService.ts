@@ -4,7 +4,7 @@ import { tsBR } from '../../../../utils';
 import { rowToConfig } from './clubeCache';
 
 export async function getConfig(comunidadeId: string): Promise<ClubeConfig | null> {
-  const { data } = await supabase.from('clube_config').select('*').eq('comunidade_id', comunidadeId).single();
+  const { data } = await supabase.from('clube_config').select('*').eq('comunidade_id', comunidadeId).maybeSingle();
   if (!data) return null;
   return rowToConfig(data);
 }

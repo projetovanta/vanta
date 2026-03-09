@@ -449,12 +449,13 @@ export const CriarEventoView: React.FC<{
 
       // Evento recorrente — gerar ocorrências futuras (copia lotes, equipe e listas)
       if (recorrencia !== 'UNICO' && recorrenciaAte) {
-        await supabase.rpc('gerar_ocorrencias_recorrente', {
+        const { error: errRec } = await supabase.rpc('gerar_ocorrencias_recorrente', {
           p_evento_id: eventoId,
           p_copiar_lotes: true,
           p_copiar_equipe: true,
           p_copiar_listas: true,
         });
+        if (errRec) console.error('[CriarEventoView] gerar_ocorrencias_recorrente:', errRec);
       }
 
       // MAIS VANTA — criar lotes por tier se habilitado

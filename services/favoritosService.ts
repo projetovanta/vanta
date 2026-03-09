@@ -20,7 +20,8 @@ class FavoritosService {
     if (removed && removed.length > 0) return false; // removeu = desfavoritou
 
     // Não existia → insere
-    await supabase.from('evento_favoritos').insert({ user_id: userId, evento_id: eventoId });
+    const { error } = await supabase.from('evento_favoritos').insert({ user_id: userId, evento_id: eventoId });
+    if (error) console.error('[favoritosService] toggle insert:', error);
 
     return true; // favoritou
   }

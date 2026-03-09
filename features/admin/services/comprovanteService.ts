@@ -265,7 +265,11 @@ export const comprovanteService = {
 
     // Notificar usuário
     try {
-      const { data: comp } = await supabase.from('comprovantes_meia').select('user_id, tipo').eq('id', id).single();
+      const { data: comp } = await supabase
+        .from('comprovantes_meia')
+        .select('user_id, tipo')
+        .eq('id', id)
+        .maybeSingle();
 
       if (comp) {
         const { notificationsService } = await import('./notificationsService');
@@ -304,7 +308,11 @@ export const comprovanteService = {
 
     // Notificar usuário
     try {
-      const { data: comp } = await supabase.from('comprovantes_meia').select('user_id, tipo').eq('id', id).single();
+      const { data: comp } = await supabase
+        .from('comprovantes_meia')
+        .select('user_id, tipo')
+        .eq('id', id)
+        .maybeSingle();
 
       if (comp) {
         const { notificationsService } = await import('./notificationsService');

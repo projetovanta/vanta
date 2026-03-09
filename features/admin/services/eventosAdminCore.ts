@@ -198,10 +198,24 @@ const rowToEventoAdmin = (
 
 // ── refresh ─────────────────────────────────────────────────────────────────
 
+let _inflight: Promise<void> | null = null;
+
 /**
  * Carrega todos os eventos do Supabase com lotes, variacoes e equipe.
+ * Single-flight: chamadas concorrentes reusam a mesma promise em andamento.
  */
-export const refresh = async (): Promise<void> => {
+export const refresh = (): Promise<void> => {
+  if (_inflight) {
+    console.info('[eventosAdminCore] refresh already in-flight, reusing');
+    return _inflight;
+  }
+  _inflight = _doRefresh().finally(() => {
+    _inflight = null;
+  });
+  return _inflight;
+};
+
+const _doRefresh = async (): Promise<void> => {
   try {
     // P1: eventos recentes (90 dias) ou não-finalizados + comunidades + profiles
     const cutoff = new Date(Date.now() - 90 * 86400000).toISOString();

@@ -96,8 +96,8 @@ serve(async (req: Request) => {
             const data = await res.json();
             followers = data.followers_count ?? null;
           }
-        } catch {
-          // fallback para scraping
+        } catch (err) {
+          console.error('[ig-followers] Graph API falhou:', err);
         }
       }
 
@@ -117,8 +117,8 @@ serve(async (req: Request) => {
             const igData = await igRes.json();
             followers = igData?.data?.user?.edge_followed_by?.count ?? null;
           }
-        } catch {
-          // fallback para HTML parsing
+        } catch (err) {
+          console.error('[ig-followers] scraping API falhou:', err);
         }
       }
 
@@ -148,8 +148,8 @@ serve(async (req: Request) => {
               if (spanMatch) followers = parseFollowerString(spanMatch[1] + spanMatch[2]);
             }
           }
-        } catch {
-          // ignorar — não conseguiu atualizar este membro
+        } catch (err) {
+          console.error('[ig-followers] HTML parsing falhou:', err);
         }
       }
 

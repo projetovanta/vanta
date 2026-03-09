@@ -105,11 +105,13 @@ export const cuponsService = {
 
   /** Ativa/desativa cupom */
   async toggleCupom(cupomId: string, ativo: boolean): Promise<void> {
-    await supabase.from('cupons').update({ ativo }).eq('id', cupomId);
+    const { error } = await supabase.from('cupons').update({ ativo }).eq('id', cupomId);
+    if (error) console.error('[cuponsService] toggleCupom:', error);
   },
 
   /** Remove cupom */
   async removeCupom(cupomId: string): Promise<void> {
-    await supabase.from('cupons').delete().eq('id', cupomId);
+    const { error } = await supabase.from('cupons').delete().eq('id', cupomId);
+    if (error) console.error('[cuponsService] removeCupom:', error);
   },
 };

@@ -137,7 +137,7 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
           .select('*')
           .eq('evento_id', eventoId)
           .limit(1)
-          .single();
+          .maybeSingle();
         if (e1 || !socioRow) {
           setErro('Nenhum sócio encontrado neste evento.');
           setLoading(false);
@@ -149,7 +149,7 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
             'id, nome, foto, descricao, data_inicio, local, cidade, comunidade_id, created_by, status_evento, comunidades(nome)',
           )
           .eq('id', eventoId)
-          .single();
+          .maybeSingle();
         if (e2 || !evento) {
           setErro('Evento não encontrado.');
           setLoading(false);
@@ -159,7 +159,7 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
           .from('profiles')
           .select('full_name, nome')
           .eq('id', socioRow.socio_id)
-          .single();
+          .maybeSingle();
 
         const com = evento.comunidades as unknown as { nome: string } | null;
         setConvite({

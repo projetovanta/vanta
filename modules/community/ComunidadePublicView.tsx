@@ -86,7 +86,7 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
         'id, nome, foto, foto_capa, descricao, cidade, estado, endereco, coords, horario_funcionamento, horario_overrides, evento_privado_ativo',
       )
       .eq('id', comunidadeId)
-      .single()
+      .maybeSingle()
       .then(
         ({ data }) => {
           if (cancelled) return;

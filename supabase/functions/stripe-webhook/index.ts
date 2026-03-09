@@ -83,6 +83,7 @@ serve(async (req: Request) => {
 
     const valid = await verifyStripeSignature(body, sig, STRIPE_WEBHOOK_SECRET);
     if (!valid) {
+      console.warn('[stripe-webhook] invalid signature');
       return new Response(JSON.stringify({ error: 'Assinatura inválida.' }), {
         status: 401,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -92,6 +93,8 @@ serve(async (req: Request) => {
     // ── 3. Parsear body ──
     const event = JSON.parse(body);
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+
+    console.log('[stripe-webhook] received', { type: event.type, id: event.id });
 
     // ── 4. Processar eventos ──
     switch (event.type) {
@@ -113,6 +116,7 @@ serve(async (req: Request) => {
             },
             { onConflict: 'comunidade_id' },
           );
+          console.log('[stripe-webhook] checkout.session.completed processed', { comunidadeId, plano: plano || 'BASICO', subscriptionId: session.subscription });
         }
         break;
       }
@@ -125,6 +129,7 @@ serve(async (req: Request) => {
             .from('assinaturas_mais_vanta')
             .update({ status: 'ATIVA' })
             .eq('stripe_subscription_id', subscriptionId);
+          console.log('[stripe-webhook] invoice.paid processed', { subscriptionId });
         }
         break;
       }
@@ -140,6 +145,7 @@ serve(async (req: Request) => {
               fim: new Date(Date.now() - 3 * 3600000).toISOString().replace('Z', '-03:00'),
             })
             .eq('comunidade_id', comunidadeId);
+          console.log('[stripe-webhook] subscription.deleted processed', { comunidadeId });
         }
         break;
       }

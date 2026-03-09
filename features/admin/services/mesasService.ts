@@ -105,7 +105,8 @@ export const mesasService = {
     const { data } = supabase.storage.from('eventos').getPublicUrl(path);
     const url = data.publicUrl;
     // Salvar URL na tabela eventos_admin
-    await supabase.from('eventos_admin').update({ planta_mesas: url }).eq('id', eventoId);
+    const { error: errMesa } = await supabase.from('eventos_admin').update({ planta_mesas: url }).eq('id', eventoId);
+    if (errMesa) console.error('[mesasService] uploadPlanta update:', errMesa);
     return url;
   },
 

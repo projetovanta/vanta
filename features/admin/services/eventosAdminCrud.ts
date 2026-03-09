@@ -577,7 +577,7 @@ export const rejeitarEdicao = async (eventoId: string, rejeitadorId: string, mot
 };
 
 export const getNomeById = async (userId: string): Promise<string> => {
-  const { data } = await supabase.from('profiles').select('nome').eq('id', userId).single();
+  const { data } = await supabase.from('profiles').select('nome').eq('id', userId).maybeSingle();
   return (data?.nome as string) ?? 'Produtor';
 };
 

@@ -166,7 +166,11 @@ export const assinaturaService = {
     if (data.destaque !== undefined) row.destaque = data.destaque;
     if (data.ordem !== undefined) row.ordem = data.ordem;
 
-    await supabase.from('planos_mais_vanta').update(row).eq('id', planoId);
+    const { error } = await supabase.from('planos_mais_vanta').update(row).eq('id', planoId);
+    if (error) {
+      console.error('[assinaturaService] updatePlano:', error);
+      return;
+    }
     const cached = _planos.get(planoId);
     if (cached) {
       Object.assign(cached, data, { atualizadoEm: row.atualizado_em });
@@ -180,7 +184,14 @@ export const assinaturaService = {
     if (ativos.length > 0) {
       return { ok: false, reason: `${ativos.length} assinante(s) ativo(s) neste plano. Não é possível desativar.` };
     }
-    await supabase.from('planos_mais_vanta').update({ ativo: false, atualizado_em: tsBR() }).eq('id', planoId);
+    const { error } = await supabase
+      .from('planos_mais_vanta')
+      .update({ ativo: false, atualizado_em: tsBR() })
+      .eq('id', planoId);
+    if (error) {
+      console.error('[assinaturaService] desativarPlano:', error);
+      return { ok: false, reason: 'Erro ao desativar plano.' };
+    }
     const cached = _planos.get(planoId);
     if (cached) cached.ativo = false;
     bump();
@@ -260,7 +271,14 @@ export const assinaturaService = {
     const a = _assinaturas.get(comunidadeId);
     if (!a) return;
     const novo = (a.eventosMVUsados ?? 0) + 1;
-    await supabase.from('assinaturas_mais_vanta').update({ eventos_mv_usados: novo }).eq('comunidade_id', comunidadeId);
+    const { error } = await supabase
+      .from('assinaturas_mais_vanta')
+      .update({ eventos_mv_usados: novo })
+      .eq('comunidade_id', comunidadeId);
+    if (error) {
+      console.error('[assinaturaService] incrementarEventosMV:', error);
+      return;
+    }
     a.eventosMVUsados = novo;
     bump();
   },
@@ -269,7 +287,14 @@ export const assinaturaService = {
     const a = _assinaturas.get(comunidadeId);
     if (!a) return;
     const novo = Math.max(0, (a.eventosMVUsados ?? 0) - 1);
-    await supabase.from('assinaturas_mais_vanta').update({ eventos_mv_usados: novo }).eq('comunidade_id', comunidadeId);
+    const { error } = await supabase
+      .from('assinaturas_mais_vanta')
+      .update({ eventos_mv_usados: novo })
+      .eq('comunidade_id', comunidadeId);
+    if (error) {
+      console.error('[assinaturaService] decrementarEventosMV:', error);
+      return;
+    }
     a.eventosMVUsados = novo;
     bump();
   },

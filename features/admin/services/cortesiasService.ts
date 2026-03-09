@@ -102,7 +102,8 @@ export const cortesiasService = {
       variacao_label: 'DEVOLUÇÃO',
       quantidade: -1, // negativo = devolução (restaura saldo)
     };
-    await supabase.from('cortesias_log').insert(logRow);
+    const { error: errLog } = await supabase.from('cortesias_log').insert(logRow);
+    if (errLog) console.error('[cortesiasService] devolver log:', errLog);
 
     // Atualiza cache
     const arr = _logs.get(eventoAdminId) ?? [];
@@ -136,7 +137,11 @@ export const cortesiasService = {
         variacoes: config.variacoes,
       };
       if (config.limitesPorTipo) row.limites_por_tipo = config.limitesPorTipo;
-      await supabase.from('cortesias_config').update(row).eq('evento_id', eventoAdminId);
+      const { error: errUpd } = await supabase.from('cortesias_config').update(row).eq('evento_id', eventoAdminId);
+      if (errUpd) {
+        console.error('[cortesiasService] initCortesia update:', errUpd);
+        return;
+      }
       _configs.set(eventoAdminId, { ...config, listaId: _configs.get(eventoAdminId)?.listaId });
       _saldos.set(eventoAdminId, calcSaldo(eventoAdminId));
       return;
@@ -161,7 +166,11 @@ export const cortesiasService = {
 
   registerListaMapping: async (listaId: string, eventoAdminId: string): Promise<void> => {
     _listaMap.set(listaId, eventoAdminId);
-    await supabase.from('cortesias_config').update({ lista_id: listaId }).eq('evento_id', eventoAdminId);
+    const { error: errMap } = await supabase
+      .from('cortesias_config')
+      .update({ lista_id: listaId })
+      .eq('evento_id', eventoAdminId);
+    if (errMap) console.error('[cortesiasService] registerListaMapping:', errMap);
   },
 
   getEventoAdminId: (listaId: string): string | undefined => _listaMap.get(listaId),
@@ -242,7 +251,7 @@ export const cortesiasService = {
     eventosAdminService.registrarCortesia(eventoAdminId);
 
     // Criar cortesia PENDENTE (destinatário precisa aceitar)
-    await supabase.from('cortesias_pendentes').insert({
+    const { error: errPend } = await supabase.from('cortesias_pendentes').insert({
       evento_id: eventoAdminId,
       destinatario_id: destinatarioId,
       remetente_nome: remetenteNome,
@@ -252,6 +261,7 @@ export const cortesiasService = {
       quantidade,
       status: 'PENDENTE',
     });
+    if (errPend) console.error('[cortesiasService] enviarParaDestinatario pendente:', errPend);
 
     // Notificar destinatário (in-app)
     try {
@@ -324,18 +334,26 @@ export const cortesiasService = {
 
     if (!row) return false;
 
-    await supabase.from('cortesias_pendentes').update({ status: 'RECUSADO' }).eq('id', cortesiaId);
+    const { error: errRecusa } = await supabase
+      .from('cortesias_pendentes')
+      .update({ status: 'RECUSADO' })
+      .eq('id', cortesiaId);
+    if (errRecusa) {
+      console.error('[cortesiasService] recusar status:', errRecusa);
+      return false;
+    }
 
     const cp = rowToCortesiaPendente(row);
 
     // Log de devolução (quantidade negativa restaura saldo)
-    await supabase.from('cortesias_log').insert({
+    const { error: errRecLog } = await supabase.from('cortesias_log').insert({
       evento_id: cp.eventoId,
       remetente_nome: 'Sistema (recusa)',
       destinatario_nome: 'Pool de Cortesias',
       variacao_label: cp.variacaoLabel,
       quantidade: -cp.quantidade,
     });
+    if (errRecLog) console.error('[cortesiasService] recusar log:', errRecLog);
 
     // Atualiza cache
     const logArr = _logs.get(cp.eventoId) ?? [];

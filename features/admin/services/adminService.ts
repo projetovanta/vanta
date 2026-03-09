@@ -74,12 +74,17 @@ const setTagsCuradoria = async (membroId: string, tags: string[]): Promise<{ err
 
 /** Conclui curadoria — membro migra para a lista de Membros */
 const concluirCuradoria = async (membroId: string): Promise<void> => {
-  await supabase.from('profiles').update({ curadoria_concluida: true }).eq('id', membroId);
+  const { error } = await supabase.from('profiles').update({ curadoria_concluida: true }).eq('id', membroId);
+  if (error) console.error('[adminService] concluirCuradoria:', error);
 };
 
 /** Conclui curadoria com tags selecionadas */
 const concluirCuradoriaComTags = async (_membroId: string, _tagIds: string[], tagNomes: string[]): Promise<void> => {
-  await supabase.from('profiles').update({ curadoria_concluida: true, tags_curadoria: tagNomes }).eq('id', _membroId);
+  const { error } = await supabase
+    .from('profiles')
+    .update({ curadoria_concluida: true, tags_curadoria: tagNomes })
+    .eq('id', _membroId);
+  if (error) console.error('[adminService] concluirCuradoriaComTags:', error);
 };
 
 /** Retorna membros classificados (curadoria_concluida = true) */
@@ -108,12 +113,14 @@ const getMembrosClassificados = async (): Promise<Membro[]> => {
 
 /** Salva nota do admin no Supabase */
 const setNota = async (membroId: string, nota: string): Promise<void> => {
-  await supabase.from('profiles').update({ notas_admin: nota }).eq('id', membroId);
+  const { error } = await supabase.from('profiles').update({ notas_admin: nota }).eq('id', membroId);
+  if (error) console.error('[adminService] setNota:', error);
 };
 
 /** Toggle destaque do membro (curadoria) */
 const toggleDestaque = async (membroId: string, valor: boolean): Promise<void> => {
-  await supabase.from('profiles').update({ destaque_curadoria: valor }).eq('id', membroId);
+  const { error } = await supabase.from('profiles').update({ destaque_curadoria: valor }).eq('id', membroId);
+  if (error) console.error('[adminService] toggleDestaque:', error);
 };
 
 export const adminService = {

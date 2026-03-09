@@ -221,7 +221,7 @@ export const comemoracaoService = {
     const {
       data: { user },
     } = await supabase.auth.getUser();
-    const { data: com } = await supabase.from('comemoracoes').select('solicitante_id').eq('id', id).single();
+    const { data: com } = await supabase.from('comemoracoes').select('solicitante_id').eq('id', id).maybeSingle();
     const { error } = await supabase
       .from('comemoracoes')
       .update({
@@ -329,7 +329,8 @@ export const comemoracaoService = {
     }
 
     // Recriar faixas
-    await supabase.from('comemoracoes_faixas').delete().eq('config_id', configId);
+    const { error: errFaixas } = await supabase.from('comemoracoes_faixas').delete().eq('config_id', configId);
+    if (errFaixas) console.error('[comemoracaoService] delete faixas:', errFaixas);
 
     if (faixas.length > 0) {
       const rows = faixas.map((f, i) => ({

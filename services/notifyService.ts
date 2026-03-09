@@ -32,7 +32,7 @@ export interface NotifyPayload {
  * Retorna null se não encontrar.
  */
 async function getUserInfo(userId: string): Promise<{ nome: string; email: string } | null> {
-  const { data } = await supabase.from('profiles').select('nome, email').eq('id', userId).single();
+  const { data } = await supabase.from('profiles').select('nome, email').eq('id', userId).maybeSingle();
   if (!data) return null;
   return { nome: data.nome ?? '', email: data.email ?? '' };
 }

@@ -51,7 +51,7 @@ export const VantaPieChart: React.FC<Props> = ({
     <div className="flex items-center gap-4">
       {/* Pizza */}
       <div className="shrink-0" style={{ width: height, height }}>
-        <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
+        <ResponsiveContainer width="100%" height="100%" minWidth={height} minHeight={height}>
           <PieChart>
             <Pie
               data={data}

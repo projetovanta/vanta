@@ -436,4 +436,14 @@ Todas têm referências em types, mappers, joins, RPCs ou services:
 | 4 | `71b9553` | Error handling em 26 queries de 6 edge functions |
 | 5 | `c2d0472` | `select('*')` → selects específicos em 5 services |
 | 6 | `6255ff1` | Documentação: 40 tabelas analisadas (38 ativas, 1 RPC, 1 sem uso) |
-| 7 | — | Assets: icon-1024.png 962→275KB, icon-512.png 340→107KB (pngquant) |
+| 7 | `a7045b0` | Assets: icon-1024.png 962→275KB, icon-512.png 340→107KB (pngquant) |
+| 8 | `deb1bb3` | npm audit fix — 1 vuln corrigida, 17 restantes em devDeps sem fix |
+| 9 | — | Verificação final: TSC 0, ESLint 0, 0 vulns produção |
+
+### Verificação Final (Fase 9)
+```
+TSC:          ✅ 0 erros
+ESLint:       ✅ 0 warnings
+npm audit:    ✅ 0 vulnerabilidades em produção (17 em devDeps, sem fix disponível)
+Build:        ✅ sucesso
+```

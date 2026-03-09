@@ -38,6 +38,7 @@ const ACAO_LABEL: Record<TipoAcaoIndica, string> = {
   evento: 'ID do evento',
   cupom: 'Código do cupom',
   rota: 'Rota interna',
+  comemorar: 'ID da comunidade',
 };
 
 const Toggle: React.FC<{ active: boolean; onChange: () => void }> = ({ active, onChange }) => (
@@ -787,7 +788,7 @@ const CardModal: React.FC<{
                 <VantaSelect
                   value={form.acaoTipo}
                   onChange={v => set('acaoTipo', v)}
-                  options={(['link', 'rota', 'cupom'] as TipoAcaoIndica[]).map(t => ({
+                  options={(['link', 'rota', 'cupom', 'comemorar'] as TipoAcaoIndica[]).map(t => ({
                     value: t,
                     label: ACAO_LABEL[t],
                   }))}
@@ -798,7 +799,7 @@ const CardModal: React.FC<{
                   value={form.acaoValor}
                   onChange={e => set('acaoValor', e.target.value)}
                   placeholder={
-                    form.acaoTipo === 'cupom' ? 'VANTA20' : form.acaoTipo === 'rota' ? '/rota-interna' : 'https://...'
+                    form.acaoTipo === 'cupom' ? 'VANTA20' : form.acaoTipo === 'rota' ? '/rota-interna' : form.acaoTipo === 'comemorar' ? 'uuid da comunidade' : 'https://...'
                   }
                   className={inputCls}
                 />

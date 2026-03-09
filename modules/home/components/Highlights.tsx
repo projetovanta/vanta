@@ -7,9 +7,10 @@ import { OptimizedImage } from '../../../components/OptimizedImage';
 interface HighlightsProps {
   currentCity: string;
   onEventoClick?: (eventoId: string) => void;
+  onComemorarClick?: (comunidadeId?: string) => void;
 }
 
-export const Highlights: React.FC<HighlightsProps> = React.memo(({ currentCity, onEventoClick }) => {
+export const Highlights: React.FC<HighlightsProps> = React.memo(({ currentCity, onEventoClick, onComemorarClick }) => {
   const [allCards, setAllCards] = useState<VantaIndicaCard[]>([]);
 
   useEffect(() => {
@@ -69,6 +70,8 @@ export const Highlights: React.FC<HighlightsProps> = React.memo(({ currentCity, 
   const handleCardClick = (item: (typeof slides)[0]) => {
     if (item.acao?.tipo === 'evento' && onEventoClick) {
       onEventoClick(item.acao.valor);
+    } else if (item.acao?.tipo === 'comemorar' && onComemorarClick) {
+      onComemorarClick(item.acao.valor);
     } else if (item.acaoLink) {
       window.open(item.acaoLink, '_blank', 'noopener,noreferrer');
     }

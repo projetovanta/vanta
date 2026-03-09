@@ -14,7 +14,7 @@ import { useChatStore } from './stores/chatStore';
 import { useSocialStore } from './stores/socialStore';
 import { useExtrasStore } from './stores/extrasStore';
 import { TYPOGRAPHY } from './constants';
-import { Shield } from 'lucide-react';
+import { Shield, PartyPopper, Gift, Star, ChevronRight, X } from 'lucide-react';
 import { NotificationPanel } from './components/Home/NotificationPanel';
 import { CitySelector } from './components/Home/CitySelector';
 import { AppModals } from './components/AppModals';
@@ -125,6 +125,9 @@ export default function App() {
   useEffect(() => {
     registerCortesiaCallbacks(h.addNotification);
   }, [registerCortesiaCallbacks, h.addNotification]);
+
+  // ── Comemorar Aniversário (Vanta Indica) ──────────────────────────────────
+  const [comemorarComunidadeId, setComemorarComunidadeId] = useState<string | null>(null);
 
   // ── Analytics: track app open + PMF survey ────────────────────────────────
   const [showPmf, setShowPmf] = useState(false);
@@ -255,6 +258,13 @@ export default function App() {
                 if (ev) nav.openEventDetail(ev);
               }}
               onComunidadeClick={nav.openComunidade}
+              onComemorarClick={comId => {
+                if (h.isGuest) {
+                  h.setShowGuestModal(true);
+                  return;
+                }
+                setComemorarComunidadeId(comId || null);
+              }}
             />
           </ModuleErrorBoundary>
         );
@@ -431,6 +441,56 @@ export default function App() {
           )}
           {showPmf && currentAccountId && (
             <PmfSurveyModal userId={currentAccountId} onClose={() => setShowPmf(false)} />
+          )}
+          {comemorarComunidadeId && (
+            <div className="absolute inset-0 z-[200] bg-black/80 backdrop-blur-sm flex items-center justify-center p-6">
+              <div className="w-full max-w-sm bg-zinc-900 rounded-3xl border border-white/10 overflow-hidden shadow-2xl">
+                <div className="relative bg-gradient-to-br from-[#FFD300]/20 via-zinc-900 to-zinc-900 p-6 pb-4 text-center">
+                  <button onClick={() => setComemorarComunidadeId(null)} className="absolute top-4 right-4 text-zinc-500 hover:text-white transition-colors">
+                    <X size={20} />
+                  </button>
+                  <div className="w-16 h-16 rounded-full bg-[#FFD300]/10 flex items-center justify-center mx-auto mb-4">
+                    <PartyPopper size={32} className="text-[#FFD300]" />
+                  </div>
+                  <h2 style={TYPOGRAPHY.screenTitle} className="text-xl mb-1">Comemore com a gente</h2>
+                  <p className="text-zinc-400 text-xs">Seu aniversário merece ser especial</p>
+                </div>
+                <div className="p-5 space-y-3">
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 rounded-full bg-[#FFD300]/10 flex items-center justify-center shrink-0 mt-0.5">
+                      <Gift size={16} className="text-[#FFD300]" />
+                    </div>
+                    <div>
+                      <p className="text-white text-sm font-semibold">Cortesias exclusivas</p>
+                      <p className="text-zinc-500 text-xs">Ganhe ingressos de cortesia pra você e seus convidados</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 rounded-full bg-[#FFD300]/10 flex items-center justify-center shrink-0 mt-0.5">
+                      <Star size={16} className="text-[#FFD300]" />
+                    </div>
+                    <div>
+                      <p className="text-white text-sm font-semibold">Tratamento VIP</p>
+                      <p className="text-zinc-500 text-xs">Fila exclusiva e entrada antecipada no evento</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="p-5 pt-2">
+                  <button
+                    onClick={() => {
+                      const comId = comemorarComunidadeId;
+                      setComemorarComunidadeId(null);
+                      nav.openComunidade(comId);
+                    }}
+                    className="w-full bg-[#FFD300] text-black font-black text-sm py-3.5 rounded-2xl flex items-center justify-center gap-2 active:scale-[0.97] transition-transform"
+                  >
+                    Quero comemorar
+                    <ChevronRight size={18} />
+                  </button>
+                  <p className="text-zinc-600 text-[10px] text-center mt-3">Você será levado à página do espaço para preencher sua solicitação</p>
+                </div>
+              </div>
+            </div>
           )}
           {h.conviteSocioEventoId && (
             <NegociacaoSocioView

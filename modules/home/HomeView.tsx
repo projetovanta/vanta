@@ -25,6 +25,7 @@ interface HomeViewProps {
   onOpenNotifications?: () => void;
   onEventoIndicaClick?: (eventoId: string) => void;
   onComunidadeClick?: (id: string) => void;
+  onComemorarClick?: (comunidadeId?: string) => void;
 }
 
 const getGreeting = (): string => {
@@ -42,6 +43,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
   onOpenNotifications,
   onEventoIndicaClick,
   onComunidadeClick,
+  onComemorarClick,
 }) => {
   const selectedCity = useAuthStore(s => s.selectedCity);
   const userName = useAuthStore(s => s.currentAccount.nome);
@@ -182,7 +184,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
       {/* Notificação inline */}
 
       {/* Bloco de Destaques Horizontal */}
-      <Highlights currentCity={selectedCity} onEventoClick={onEventoIndicaClick} />
+      <Highlights currentCity={selectedCity} onEventoClick={onEventoIndicaClick} onComemorarClick={onComemorarClick} />
 
       {/* Acontecendo Agora */}
       <LiveNowSection eventos={liveEventos} onEventClick={onEventClick} />

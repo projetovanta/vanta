@@ -203,26 +203,55 @@ const rowToEventoAdmin = (
  */
 export const refresh = async (): Promise<void> => {
   try {
-    // Queries em paralelo
-    const [evRes, lotesRes, varRes, equipeRes, comRes, profRes, lotesMvRes, sociosRes] = await Promise.all([
-      supabase.from('eventos_admin').select('*').limit(1000),
-      supabase.from('lotes').select('*').limit(2000),
-      supabase.from('variacoes_ingresso').select('*').limit(2000),
-      supabase.from('equipe_evento').select('evento_id, membro_id, papel, permissoes').limit(2000),
+    // P1: eventos recentes (90 dias) ou não-finalizados + comunidades + profiles
+    const cutoff = new Date(Date.now() - 90 * 86400000).toISOString();
+    const [evRes, comRes, profRes] = await Promise.all([
+      supabase
+        .from('eventos_admin')
+        .select('*')
+        .or(`data_inicio.gte.${cutoff},status_evento.neq.FINALIZADO`)
+        .order('data_inicio', { ascending: false })
+        .limit(500),
       supabase.from('comunidades').select('id, nome, foto').eq('ativa', true).limit(500),
       supabase.from('profiles').select('id, nome').limit(2000),
-      supabase.from('lotes_mais_vanta').select('*').limit(1000),
-      supabase.from('socios_evento').select('*').limit(2000),
     ]);
 
     const eventos = evRes.data ?? [];
-    const lotesData = lotesRes.data ?? [];
-    const variacoesData = varRes.data ?? [];
-    const equipeData = equipeRes.data ?? [];
+    const eventoIds = eventos.map(e => e.id);
+
+    // P2: dados relacionados — só dos eventos carregados
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let lotesData: any[] = [],
+      variacoesData: any[] = [],
+      equipeData: any[] = [],
+      lotesMvData: any[] = [],
+      sociosData: any[] = [];
+
+    if (eventoIds.length > 0) {
+      const [lotesRes, equipeRes, lotesMvRes, sociosRes] = await Promise.all([
+        supabase.from('lotes').select('*').in('evento_id', eventoIds).limit(2000),
+        supabase
+          .from('equipe_evento')
+          .select('evento_id, membro_id, papel, permissoes')
+          .in('evento_id', eventoIds)
+          .limit(2000),
+        supabase.from('lotes_mais_vanta').select('*').in('evento_id', eventoIds).limit(1000),
+        supabase.from('socios_evento').select('*').in('evento_id', eventoIds).limit(2000),
+      ]);
+      lotesData = lotesRes.data ?? [];
+      equipeData = equipeRes.data ?? [];
+      lotesMvData = lotesMvRes.data ?? [];
+      sociosData = sociosRes.data ?? [];
+      // Variações depende dos lotes carregados
+      const loteIds = lotesData.map((l: { id: string }) => l.id);
+      if (loteIds.length > 0) {
+        const varRes = await supabase.from('variacoes_ingresso').select('*').in('lote_id', loteIds).limit(5000);
+        variacoesData = varRes.data ?? [];
+      }
+    }
+
     const comunidades = comRes.data ?? [];
     const profiles = profRes.data ?? [];
-    const lotesMvData = lotesMvRes.data ?? [];
-    const sociosData = sociosRes.data ?? [];
 
     // Lookup de socios por evento_id
     const sociosMap = new Map<string, SocioEvento[]>();

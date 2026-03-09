@@ -140,7 +140,7 @@ E o segundo bloco fundamental — depende de comunidade, alimenta todo o resto.
 
 ### eventosAdminService (features/admin/services/eventosAdminService.ts)
 **Core:**
-- `refresh()` — carrega todos eventos do Supabase em cache
+- `refresh()` — carrega eventos recentes (90 dias) ou não-finalizados do Supabase em cache (2 fases: P1 eventos+comunidades+profiles, P2 lotes/variacoes/equipe/socios filtrados por eventoIds)
 - `getEventos()` — retorna cache
 - `getEvento(id)` — busca por ID
 - `getEventosByComunidade(id)` — filtro por comunidade
@@ -197,7 +197,7 @@ E o segundo bloco fundamental — depende de comunidade, alimenta todo o resto.
 
 ### CRIAR EVENTO
 **Quem**: Gerente ou socio com permissao
-**Navegacao**: Bottom nav Admin -> AdminGateway -> AdminDashboardView -> Comunidade -> Central Eventos -> Botao "Criar Evento" -> TipoEventoScreen -> CriarEventoView (5 steps)
+**Navegacao**: Bottom nav Admin -> AdminGateway (só rbacService+comunidadesService) -> AdminDashboardView (lazy init: eventosAdminService imediato, listas/cortesias/clube/assinatura/maisVantaConfig com delay 2s via dynamic import) -> Comunidade -> Central Eventos -> Botao "Criar Evento" -> TipoEventoScreen -> CriarEventoView (5 steps)
 
 **Steps do wizard** (CriarEventoView.tsx, 868L):
 - Step 1 DADOS: nome, descricao, foto (upload+crop), data inicio/fim, categoria, subcategorias, estilos, experiencias
@@ -324,7 +324,7 @@ E o segundo bloco fundamental — depende de comunidade, alimenta todo o resto.
 | Dashboard Admin | features/admin/views/eventoDashboard/ | 8 sub-views |
 | Aprovacao | features/admin/views/EventosPendentesView.tsx | Eventos pendentes |
 | Criar Evento | features/admin/views/CriarEventoView.tsx | Copiar de anterior |
-| Vanta Indica | features/admin/views/VantaIndicaView.tsx | Card do evento |
+| Vanta Indica | features/admin/views/VantaIndicaView.tsx | Card do evento (snap magnético, cqw proporcional, ações: link/evento/cupom/rota/comemorar) |
 | Perfil/Historico | modules/profile/HistoricoView.tsx | Eventos passados |
 | Conquistas | services/achievementsService.ts | Badge por evento |
 | Campanhas | features/admin/services/campanhasService.ts | Segmentar por evento |

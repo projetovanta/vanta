@@ -4,12 +4,6 @@ import { TYPOGRAPHY } from '../../constants';
 import { ContaVanta } from '../../types';
 import { rbacService, CARGO_TO_PORTAL } from './services/rbacService';
 import { comunidadesService } from './services/comunidadesService';
-import { cortesiasService } from './services/cortesiasService';
-import { listasService } from './services/listasService';
-import { eventosAdminService } from './services/eventosAdminService';
-import { clubeService } from './services/clubeService';
-import { assinaturaService } from './services/assinaturaService';
-import { maisVantaConfigService } from './services/maisVantaConfigService';
 import { AdminDashboardView } from './AdminDashboardView';
 import { useAuthStore } from '../../stores/authStore';
 import { supabase } from '../../services/supabaseClient';
@@ -74,15 +68,10 @@ export const AdminGateway: React.FC<Props> = ({ onBack }) => {
         return;
       }
       setAccessData(data as unknown as AdminAccessData);
-      // Fase 2 — services pro painel interno (não bloqueia o gate)
+      // Fase 2 — só essencial pro gateway (menu + RBAC)
       rbacService.refresh();
       comunidadesService.refresh();
-      cortesiasService.refresh();
-      eventosAdminService.refresh();
-      listasService.refresh();
-      clubeService.refresh();
-      assinaturaService.refresh();
-      maisVantaConfigService.refresh();
+      // Demais services carregam sob demanda quando a view abre
     });
   }, [currentUserId, currentUserRole]);
 

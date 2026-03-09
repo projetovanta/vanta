@@ -182,27 +182,63 @@ export const listasService = {
 
   async refresh(): Promise<void> {
     try {
-      const [listasRes, regrasRes, cotasRes, evRes] = await Promise.all([
-        supabase.from('listas_evento').select('*').limit(1000),
-        supabase.from('regras_lista').select('*').limit(1000),
-        supabase.from('cotas_promoter').select('*').limit(2000),
-        supabase.from('eventos_admin').select('id, nome, data_inicio, data_fim, local').limit(1000),
-      ]);
+      // Só eventos recentes (90 dias) ou não-finalizados
+      const cutoff = new Date(Date.now() - 90 * 86400000).toISOString();
+      const evRes = await supabase
+        .from('eventos_admin')
+        .select('id, nome, data_inicio, data_fim, local')
+        .or(`data_inicio.gte.${cutoff},status_evento.neq.FINALIZADO`)
+        .limit(500);
 
-      // Paginação para convidados_lista (>1000 registros)
+      const eventoIds = (evRes.data ?? []).map(e => e.id);
+
+      // Listas + regras + cotas só dos eventos relevantes
+      const [listasRes, regrasRes, cotasRes] =
+        eventoIds.length > 0
+          ? await Promise.all([
+              supabase.from('listas_evento').select('*').in('evento_id', eventoIds).limit(1000),
+              supabase
+                .from('regras_lista')
+                .select('*')
+                .in(
+                  'lista_id',
+                  (await supabase.from('listas_evento').select('id').in('evento_id', eventoIds).limit(1000)).data?.map(
+                    l => l.id,
+                  ) ?? [],
+                )
+                .limit(2000),
+              supabase
+                .from('cotas_promoter')
+                .select('*')
+                .in(
+                  'lista_id',
+                  (await supabase.from('listas_evento').select('id').in('evento_id', eventoIds).limit(1000)).data?.map(
+                    l => l.id,
+                  ) ?? [],
+                )
+                .limit(2000),
+            ])
+          : [{ data: [] }, { data: [] }, { data: [] }];
+
+      const listaIds = (listasRes.data ?? []).map((l: Record<string, unknown>) => l.id as string);
+
+      // Convidados paginados — só das listas carregadas
       const PAGE = 1000;
       const allConv: ConvidadoRow[] = [];
-      let from = 0;
 
-      while (true) {
-        const { data: page } = await supabase
-          .from('convidados_lista')
-          .select('*')
-          .range(from, from + PAGE - 1);
-        if (!page || page.length === 0) break;
-        allConv.push(...page);
-        if (page.length < PAGE) break;
-        from += PAGE;
+      if (listaIds.length > 0) {
+        let from = 0;
+        while (true) {
+          const { data: page } = await supabase
+            .from('convidados_lista')
+            .select('*')
+            .in('lista_id', listaIds)
+            .range(from, from + PAGE - 1);
+          if (!page || page.length === 0) break;
+          allConv.push(...page);
+          if (page.length < PAGE) break;
+          from += PAGE;
+        }
       }
 
       const eventosLookup = new Map<string, { nome: string; data: string; dataFim?: string; local: string }>();

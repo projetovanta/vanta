@@ -103,6 +103,7 @@ Funciona como "promoter temporario" mas sistema TOTALMENTE SEPARADO do promoter.
 | Membro insere nomes cortesias | OK — MinhasSolicitacoesView.tsx (UI inline nome+celular + salvar) |
 | Voucher QR | OK — MinhasSolicitacoesView.tsx (QRCodeSVG modal, formato vanta://cortesia/{id}) |
 | Botao no EventDetailView | OK — EventDetailView.tsx (botao "Comemorar aqui") |
+| Link via Vanta Indica | OK — acao tipo 'comemorar' com comunidadeId, modal explicativo na Home (App.tsx) |
 | Aba "Comemoracoes" no perfil membro | OK — MinhasSolicitacoesView.tsx (aba COMEMORACOES) |
 | Vinculo automatico comunidade->evento | OK — trigger trg_vincular_comemoracao_evento (INSERT eventos_admin) |
 | Notificacoes push/in-app | OK — notify() em solicitar (gerentes), aprovar/recusar (solicitante) |

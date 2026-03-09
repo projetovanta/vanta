@@ -799,7 +799,13 @@ const CardModal: React.FC<{
                   value={form.acaoValor}
                   onChange={e => set('acaoValor', e.target.value)}
                   placeholder={
-                    form.acaoTipo === 'cupom' ? 'VANTA20' : form.acaoTipo === 'rota' ? '/rota-interna' : form.acaoTipo === 'comemorar' ? 'uuid da comunidade' : 'https://...'
+                    form.acaoTipo === 'cupom'
+                      ? 'VANTA20'
+                      : form.acaoTipo === 'rota'
+                        ? '/rota-interna'
+                        : form.acaoTipo === 'comemorar'
+                          ? 'uuid da comunidade'
+                          : 'https://...'
                   }
                   className={inputCls}
                 />

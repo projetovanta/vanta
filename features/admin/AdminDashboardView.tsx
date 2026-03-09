@@ -157,6 +157,21 @@ export const AdminDashboardView: React.FC<{
     setTimeout(() => setToastMsg(''), 3000);
   };
 
+  // Lazy service init — priorizado: eventos primeiro (Home precisa), resto em background
+  useEffect(() => {
+    // P1: essencial pro dashboard home (contadores, cards)
+    void eventosAdminService.refresh();
+    // P2: background — só quando acessar a view correspondente já terá cache
+    const timer = setTimeout(() => {
+      void import('./services/listasService').then(m => m.listasService.refresh());
+      void import('./services/cortesiasService').then(m => m.cortesiasService.refresh());
+      void import('./services/clubeService').then(m => m.clubeService.refresh());
+      void import('./services/assinaturaService').then(m => m.assinaturaService.refresh());
+      void import('./services/maisVantaConfigService').then(m => m.maisVantaConfigService.refresh());
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
   // Detectar desktop (≥768px) para sidebar sempre expandido + max-w-4xl
   const [isDesktop, setIsDesktop] = useState(() => window.matchMedia('(min-width: 768px)').matches);
   useEffect(() => {

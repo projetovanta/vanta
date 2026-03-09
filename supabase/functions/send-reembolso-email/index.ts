@@ -20,9 +20,12 @@
  */
 
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.49.1';
 
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY') ?? '';
 const APP_URL        = Deno.env.get('APP_URL') ?? 'https://vanta.app';
+const SUPABASE_URL   = Deno.env.get('SUPABASE_URL') ?? '';
+const SUPABASE_ANON_KEY = Deno.env.get('SUPABASE_ANON_KEY') ?? '';
 
 function getCorsOrigin(req: Request): string {
   const origin = req.headers.get('origin') ?? '';
@@ -44,6 +47,25 @@ serve(async (req: Request) => {
   }
 
   try {
+    // ── Auth gate — rejeita requests sem JWT válido ──
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      return new Response(JSON.stringify({ error: 'Missing authorization' }), {
+        status: 401,
+        headers: { ...corsHeaders(req), 'Content-Type': 'application/json' },
+      });
+    }
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      global: { headers: { Authorization: authHeader } },
+    });
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (authError || !user) {
+      return new Response(JSON.stringify({ error: 'Invalid token' }), {
+        status: 401,
+        headers: { ...corsHeaders(req), 'Content-Type': 'application/json' },
+      });
+    }
+
     const { email, nome, eventoNome, valor, status, motivo } = await req.json() as {
       email: string;
       nome: string;

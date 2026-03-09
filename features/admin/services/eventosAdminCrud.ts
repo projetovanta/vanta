@@ -100,7 +100,7 @@ export const criarEvento = async (
   // Insere socios (multi-socio) — se tiver socios[] usa array, senao fallback pro socio unico legado
   if (data.socios?.length) {
     for (const s of data.socios) {
-      await supabase.from('socios_evento').insert({
+      const { error: errSocio } = await supabase.from('socios_evento').insert({
         evento_id: eventoId,
         socio_id: s.socioId,
         split_percentual: s.splitPercentual,
@@ -108,9 +108,10 @@ export const criarEvento = async (
         status: 'PENDENTE',
         rodada_negociacao: 1,
       });
+      if (errSocio) console.error('[criarEvento] insert socio:', errSocio);
     }
   } else if (data.tipoFluxo === 'COM_SOCIO' && data.socioConvidadoId) {
-    await supabase.from('socios_evento').insert({
+    const { error: errSocio } = await supabase.from('socios_evento').insert({
       evento_id: eventoId,
       socio_id: data.socioConvidadoId,
       split_percentual: data.splitSocio ?? 70,
@@ -118,6 +119,7 @@ export const criarEvento = async (
       status: 'PENDENTE',
       rodada_negociacao: 1,
     });
+    if (errSocio) console.error('[criarEvento] insert socio legado:', errSocio);
   }
 
   // Insere lotes e variacoes
@@ -138,7 +140,7 @@ export const criarEvento = async (
     if (loteInserted) {
       const loteId = loteInserted.id as string;
       for (const v of lote.variacoes) {
-        await supabase.from('variacoes_ingresso').insert({
+        const { error: errVar } = await supabase.from('variacoes_ingresso').insert({
           lote_id: loteId,
           area: v.area,
           area_custom: v.areaCustom ?? null,
@@ -149,6 +151,7 @@ export const criarEvento = async (
           requer_comprovante: v.requerComprovante ?? false,
           tipo_comprovante: v.tipoComprovante ?? null,
         });
+        if (errVar) console.error('[criarEvento] insert variacao:', errVar);
       }
     }
   }
@@ -312,7 +315,7 @@ export const updateEvento = async (
       const lote = updates.lotes[i];
       if (dbLoteIds.has(lote.id)) {
         // Update lote existente
-        await supabase
+        const { error: errLotUpd } = await supabase
           .from('lotes')
           .update({
             nome: lote.nome,
@@ -322,6 +325,7 @@ export const updateEvento = async (
             virar_pct: lote.virarPct ?? null,
           })
           .eq('id', lote.id);
+        if (errLotUpd) console.error('[updateEvento] update lote:', errLotUpd);
       } else {
         // Insert novo lote
         const { data: loteInserted } = await supabase
@@ -347,12 +351,13 @@ export const updateEvento = async (
       // Deletar variações removidas
       const varsToDelete = [...dbVarIds].filter(vid => !newVarIds.has(vid));
       if (varsToDelete.length > 0) {
-        await supabase.from('variacoes_ingresso').delete().in('id', varsToDelete);
+        const { error: errVarDel2 } = await supabase.from('variacoes_ingresso').delete().in('id', varsToDelete);
+        if (errVarDel2) console.error('[updateEvento] delete variacoes:', errVarDel2);
       }
 
       for (const v of lote.variacoes) {
         if (dbVarIds.has(v.id)) {
-          await supabase
+          const { error: errVarUpd } = await supabase
             .from('variacoes_ingresso')
             .update({
               area: v.area,
@@ -364,8 +369,9 @@ export const updateEvento = async (
               tipo_comprovante: v.tipoComprovante ?? null,
             })
             .eq('id', v.id);
+          if (errVarUpd) console.error('[updateEvento] update variacao:', errVarUpd);
         } else {
-          await supabase.from('variacoes_ingresso').insert({
+          const { error: errVarIns } = await supabase.from('variacoes_ingresso').insert({
             lote_id: lote.id,
             area: v.area,
             area_custom: v.areaCustom ?? null,
@@ -376,6 +382,7 @@ export const updateEvento = async (
             requer_comprovante: v.requerComprovante ?? false,
             tipo_comprovante: v.tipoComprovante ?? null,
           });
+          if (errVarIns) console.error('[updateEvento] insert variacao:', errVarIns);
         }
       }
     }
@@ -433,7 +440,7 @@ export const submeterEdicao = async (
       if (v !== undefined) snapshot[k] = v;
     }
 
-    await supabase
+    const { error: errEdPend } = await supabase
       .from('eventos_admin')
       .update({
         edicao_pendente: snapshot as unknown as Json,
@@ -441,6 +448,7 @@ export const submeterEdicao = async (
         edicao_motivo: null,
       })
       .eq('id', eventoId);
+    if (errEdPend) console.error('[submeterEdicao] update edicao_pendente:', errEdPend);
 
     // Atualiza cache local
     const idx = EVENTOS_ADMIN.findIndex(e => e.id === eventoId);
@@ -485,7 +493,7 @@ export const aprovarEdicao = async (eventoId: string, aprovadorId: string): Prom
   await updateEvento(eventoId, ev.edicaoPendente as Partial<Omit<EventoAdmin, 'id' | 'criadoEm'>>);
 
   // Limpa campos de edição
-  await supabase
+  const { error: errAprEd } = await supabase
     .from('eventos_admin')
     .update({
       edicao_pendente: null,
@@ -493,6 +501,7 @@ export const aprovarEdicao = async (eventoId: string, aprovadorId: string): Prom
       edicao_motivo: null,
     })
     .eq('id', eventoId);
+  if (errAprEd) console.error('[aprovarEdicao] limpar edicao:', errAprEd);
 
   const idx = EVENTOS_ADMIN.findIndex(e => e.id === eventoId);
   if (idx !== -1) {
@@ -527,7 +536,7 @@ export const aprovarEdicao = async (eventoId: string, aprovadorId: string): Prom
  * Rejeita edição pendente com motivo.
  */
 export const rejeitarEdicao = async (eventoId: string, rejeitadorId: string, motivo: string): Promise<void> => {
-  await supabase
+  const { error: errRejEd } = await supabase
     .from('eventos_admin')
     .update({
       edicao_pendente: null,
@@ -535,6 +544,7 @@ export const rejeitarEdicao = async (eventoId: string, rejeitadorId: string, mot
       edicao_motivo: motivo,
     })
     .eq('id', eventoId);
+  if (errRejEd) console.error('[rejeitarEdicao]:', errRejEd);
 
   const ev = EVENTOS_ADMIN.find(e => e.id === eventoId);
   const idx = EVENTOS_ADMIN.findIndex(e => e.id === eventoId);

@@ -116,7 +116,7 @@ serve(async (req: Request) => {
       .from('profiles')
       .select('role')
       .eq('id', user.id)
-      .single();
+      .maybeSingle();
 
     if (!profile || profile.role !== 'vanta_masteradm') {
       return new Response(JSON.stringify({ error: 'Acesso restrito a masteradm.' }), {

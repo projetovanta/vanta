@@ -63,7 +63,7 @@ serve(async (req: Request) => {
       .from('profiles')
       .select('role, nome')
       .eq('id', user.id)
-      .single();
+      .maybeSingle();
 
     const rolesPermitidos = ['vanta_masteradm', 'vanta_gerente', 'vanta_socio'];
     if (!profile || !rolesPermitidos.includes(profile.role)) {

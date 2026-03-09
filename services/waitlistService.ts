@@ -38,7 +38,8 @@ class WaitlistService {
 
   /** Contagem de inscritos por variação (para admin) */
   async getContagem(eventoId: string): Promise<Record<string, number>> {
-    const { data } = await supabase.from('waitlist').select('variacao_id').eq('evento_id', eventoId).limit(2000);
+    const { data, error } = await supabase.from('waitlist').select('variacao_id').eq('evento_id', eventoId).limit(2000);
+    if (error) console.error('[waitlistService.getContagem]', error.message);
 
     const result: Record<string, number> = {};
     if (!data) return result;

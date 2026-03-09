@@ -3,7 +3,12 @@ import { supabase } from './supabaseClient';
 class FavoritosService {
   /** Retorna IDs dos eventos favoritados pelo usuário */
   async getMyFavoritos(userId: string): Promise<string[]> {
-    const { data } = await supabase.from('evento_favoritos').select('evento_id').eq('user_id', userId).limit(1000);
+    const { data, error } = await supabase
+      .from('evento_favoritos')
+      .select('evento_id')
+      .eq('user_id', userId)
+      .limit(1000);
+    if (error) console.error('[favoritosService.getMyFavoritos]', error.message);
     return (data ?? []).map((r: { evento_id: string }) => r.evento_id);
   }
 

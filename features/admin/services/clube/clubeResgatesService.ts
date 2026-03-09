@@ -94,7 +94,7 @@ export const clubeResgatesService = {
       .from('resgates_mais_vanta')
       .select('*, deals_mais_vanta(titulo), parceiros_mais_vanta(nome), profiles(nome_completo, instagram_handle)')
       .eq('qr_token', qrToken)
-      .single();
+      .maybeSingle();
     if (!data) return { ok: false, erro: 'QR inválido' };
     const resgate = rowWithJoinToResgate(data as Record<string, unknown>);
     if (resgate.status !== 'SELECIONADO') {
@@ -197,7 +197,7 @@ export const clubeResgatesService = {
       .from('resgates_mais_vanta')
       .select('*, deals_mais_vanta(titulo), parceiros_mais_vanta(nome), profiles(nome_completo, instagram_handle)')
       .eq('qr_token', qrToken)
-      .single();
+      .maybeSingle();
     return data ? rowWithJoinToResgate(data as Record<string, unknown>) : null;
   },
 };

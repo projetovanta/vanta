@@ -19,7 +19,13 @@ const rowToCupom = (r: Record<string, unknown>): Cupom => ({
 export const cuponsService = {
   /** Valida cupom por código + eventoId. Retorna cupom se válido ou erro descritivo. */
   async validarCupom(codigo: string, eventoId: string): Promise<{ valido: boolean; cupom?: Cupom; erro?: string }> {
-    const { data, error } = await supabase.from('cupons').select('*').ilike('codigo', codigo.trim()).maybeSingle();
+    const { data, error } = await supabase
+      .from('cupons')
+      .select(
+        'id, codigo, tipo, valor, limite_usos, usos, evento_id, comunidade_id, valido_ate, ativo, criado_por, criado_em',
+      )
+      .ilike('codigo', codigo.trim())
+      .maybeSingle();
 
     if (error || !data) return { valido: false, erro: 'Cupom não encontrado' };
 
@@ -97,7 +103,13 @@ export const cuponsService = {
 
   /** Lista cupons de um evento (ou todos se eventoId undefined) */
   async getCupons(eventoId?: string): Promise<Cupom[]> {
-    let q = supabase.from('cupons').select('*').order('criado_em', { ascending: false }).limit(1000);
+    let q = supabase
+      .from('cupons')
+      .select(
+        'id, codigo, tipo, valor, limite_usos, usos, evento_id, comunidade_id, valido_ate, ativo, criado_por, criado_em',
+      )
+      .order('criado_em', { ascending: false })
+      .limit(1000);
     if (eventoId) q = q.eq('evento_id', eventoId);
     const { data } = await q;
     return (data ?? []).map(rowToCupom);

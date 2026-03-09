@@ -28,24 +28,31 @@ export const communityFollowService = {
   },
 
   async getFollowers(comunidadeId: string): Promise<string[]> {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('community_follows')
       .select('user_id')
       .eq('comunidade_id', comunidadeId)
       .limit(5000);
+    if (error) console.error('[communityFollowService.getFollowers]', error.message);
     return (data ?? []).map(r => r.user_id as string);
   },
 
   async getFollowCount(comunidadeId: string): Promise<number> {
-    const { count } = await supabase
+    const { count, error } = await supabase
       .from('community_follows')
       .select('id', { count: 'exact', head: true })
       .eq('comunidade_id', comunidadeId);
+    if (error) console.error('[communityFollowService.getFollowCount]', error.message);
     return count ?? 0;
   },
 
   async getMyFollows(userId: string): Promise<string[]> {
-    const { data } = await supabase.from('community_follows').select('comunidade_id').eq('user_id', userId).limit(1000);
+    const { data, error } = await supabase
+      .from('community_follows')
+      .select('comunidade_id')
+      .eq('user_id', userId)
+      .limit(1000);
+    if (error) console.error('[communityFollowService.getMyFollows]', error.message);
     return (data ?? []).map(r => r.comunidade_id as string);
   },
 };

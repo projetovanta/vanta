@@ -105,6 +105,11 @@ export const achievementsService = {
       supabase.from('reviews_evento').select('id').eq('user_id', userId),
     ]);
 
+    if (ticketsRes.error) console.error('[achievementsService.getBadges] tickets:', ticketsRes.error.message);
+    if (categoriasRes.error) console.error('[achievementsService.getBadges] categorias:', categoriasRes.error.message);
+    if (amigosRes.error) console.error('[achievementsService.getBadges] amigos:', amigosRes.error.message);
+    if (reviewsRes.error) console.error('[achievementsService.getBadges] reviews:', reviewsRes.error.message);
+
     const totalEventos = new Set((ticketsRes.data ?? []).map((r: any) => r.evento_id)).size;
     const categorias = new Set(
       (categoriasRes.data ?? [])

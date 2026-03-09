@@ -65,11 +65,12 @@ serve(async (req: Request) => {
     const now = new Date();
     const fiveMinutesAgo = new Date(now.getTime() - 5 * 60000);
 
-    const { data: eventos } = await supabase
+    const { data: eventos, error: errEv } = await supabase
       .from('eventos_admin')
       .select('id, nome, data_inicio')
       .gte('data_inicio', fiveMinutesAgo.toISOString())
       .lte('data_inicio', now.toISOString());
+    if (errEv) console.error('[edge/notif-evento-iniciou] eventos:', errEv.message);
 
     if (!eventos || eventos.length === 0) {
       return new Response(JSON.stringify({ ok: true, enviadas: 0 }), {
@@ -85,20 +86,22 @@ serve(async (req: Request) => {
       const eventoNome = (evento as { nome: string }).nome;
 
       // Buscar todas as reservas MAIS VANTA deste evento
-      const { data: reservas } = await supabase
+      const { data: reservas, error: errRes } = await supabase
         .from('reservas_mais_vanta')
         .select('user_id, id')
         .eq('evento_id', eventoId);
+      if (errRes) console.error('[edge/notif-evento-iniciou] reservas:', errRes.message);
 
       if (!reservas || reservas.length === 0) continue;
 
       const userIds = [...new Set((reservas as Array<{ user_id: string }>).map(r => r.user_id))];
 
       // Buscar tokens FCM
-      const { data: subs } = await supabase
+      const { data: subs, error: errSubs } = await supabase
         .from('push_subscriptions')
         .select('fcm_token')
         .in('user_id', userIds);
+      if (errSubs) console.error('[edge/notif-evento-iniciou] push_subscriptions:', errSubs.message);
 
       if (!subs || subs.length === 0) continue;
 

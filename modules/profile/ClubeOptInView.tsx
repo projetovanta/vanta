@@ -104,7 +104,7 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
             sb.from('profiles')
               .select('nome')
               .eq('id', sol.convidadoPor!)
-              .single()
+              .maybeSingle()
               .then(({ data }) => {
                 if (data?.nome) setConviteNomeMaster(data.nome as string);
               });

@@ -71,9 +71,10 @@ export const registrarVendaEfetiva = async (
 
   // Verifica virada de lote por % vendido (Early Bird)
   try {
-    await supabase.rpc('verificar_virada_lote', { p_evento_id: eventoId });
+    const { error: errVirada } = await supabase.rpc('verificar_virada_lote', { p_evento_id: eventoId });
+    if (errVirada) console.error('[eventosAdminTickets.verificarViradaLote]', errVirada.message);
   } catch {
-    /* silencioso */
+    // fire-and-forget: não bloqueia fluxo de venda
   }
 
   // Refresh cache para atualizar contadores vendidos

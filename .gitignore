@@ -23,6 +23,13 @@ android/
 
 # Audit reports
 audit-reports/
+audit-scripts/
+
+# Secrets Vercel
+.env.vercel
+
+# Lighthouse CI
+.lighthouseci/
 
 # Screenshots e planilhas soltas
 *.png

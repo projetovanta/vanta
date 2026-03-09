@@ -112,10 +112,6 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onRegister, onC
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') handleLogin();
-  };
-
   const handleResetSend = async () => {
     if (!resetEmail.trim()) {
       setResetErro('Informe seu e-mail.');
@@ -178,14 +174,19 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onRegister, onC
         {/* Card de login — padding lateral menor para botões não ficarem full-width */}
         <div className="shrink-0 px-8 pb-8 pt-6 space-y-4">
           {!resetMode ? (
-            <>
+            <form
+              onSubmit={e => {
+                e.preventDefault();
+                handleLogin();
+              }}
+              className="contents"
+            >
               <div>
                 <p className="text-[11px] text-white/70 font-black uppercase tracking-widest mb-1.5">E-mail</p>
                 <input
                   type="email"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
-                  onKeyDown={handleKeyDown}
                   placeholder="seu@email.com"
                   className={inputCls}
                   autoCapitalize="none"
@@ -197,6 +198,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onRegister, onC
                 <div className="flex items-center justify-between mb-1.5">
                   <p className="text-[11px] text-white/70 font-black uppercase tracking-widest">Senha</p>
                   <button
+                    type="button"
                     onClick={() => {
                       setResetMode(true);
                       setResetEmail(email);
@@ -211,12 +213,12 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onRegister, onC
                     type={showSenha ? 'text' : 'password'}
                     value={senha}
                     onChange={e => setSenha(e.target.value)}
-                    onKeyDown={handleKeyDown}
                     placeholder="Sua senha"
                     className={`${inputCls} pr-12`}
                     autoComplete="current-password"
                   />
                   <button
+                    type="button"
                     onClick={() => setShowSenha(p => !p)}
                     className="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 active:text-white transition-colors"
                   >
@@ -242,7 +244,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onRegister, onC
 
               <div className="flex flex-col items-center gap-3 mt-1 px-4">
                 <button
-                  onClick={handleLogin}
+                  type="submit"
                   disabled={loading || isLocked}
                   className="w-full py-3 bg-[#FFD300] text-black font-bold text-[11px] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                 >
@@ -256,13 +258,14 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onRegister, onC
                 </button>
 
                 <button
+                  type="button"
                   onClick={onRegister}
                   className="w-full py-2.5 border border-white/25 rounded-xl text-white font-bold text-[11px] uppercase tracking-[0.18em] active:scale-95 transition-all text-center"
                 >
                   Não tenho conta — Cadastrar
                 </button>
               </div>
-            </>
+            </form>
           ) : (
             /* ── Modo recuperação de senha ── */
             <>

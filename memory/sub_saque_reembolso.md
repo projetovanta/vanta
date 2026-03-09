@@ -122,3 +122,5 @@ Admin abre ModalReembolsoManual -> seleciona ticket -> motivo
 | 11 | Chargeback | OK | registrarChargeback |
 | 12 | Comprovante de pagamento saque | NAO EXISTE | Sem upload de comprovante |
 | 13 | Extrato financeiro | NAO EXISTE | Sem extrato detalhado |
+| 14 | Double-click guard | OK | useRef + try/finally em confirmarSaque, estornarSaque (masterFinanceiro) e aprovarReembolso, rejeitarReembolso (financeiro) |
+| 15 | Observabilidade | OK | logger.error (Sentry) em reembolsoService + eventosAdminFinanceiro com IDs contextuais |

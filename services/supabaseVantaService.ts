@@ -197,7 +197,7 @@ export class SupabaseVantaService implements IVantaService {
             const minVal = Math.min(...vars.map((v: any) => Number(v.valor) || 0));
             return [{ nome: l.nome, preco: minVal }];
           }),
-        imagem: foto ?? `https://picsum.photos/seed/${id}/400/400`,
+        imagem: foto ?? '/icon-192.png',
         formato: row.formato ?? row.categoria ?? 'Festa',
         estilos: row.estilos ?? undefined,
         experiencias: row.experiencias ?? undefined,

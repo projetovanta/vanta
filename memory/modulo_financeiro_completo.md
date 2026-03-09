@@ -226,3 +226,6 @@ Registro financeiro de cada venda. Colunas: valor_bruto, valor_liquido, taxa_apl
 | 19 | Relatorio exportavel financeiro | NAO EXISTE | Sem CSV/PDF dedicado do financeiro |
 | 20 | Notificacao ao aprovar saque | OK | SAQUE_APROVADO em eventosAdminFinanceiro.ts + useAppHandlers |
 | 21 | Notificacao ao aprovar reembolso | OK | REEMBOLSO_APROVADO em eventosAdminFinanceiro.ts + email via send-reembolso-email Edge Function |
+| 22 | Observabilidade (logger.ts) | OK | reembolsoService + eventosAdminFinanceiro com logger.error (Sentry) + metadata contextual (IDs) |
+| 23 | Double-click guard financeiro | OK | useRef em financeiro/index.tsx (3 handlers) e masterFinanceiro/index.tsx (2 handlers) — try/finally |
+| 24 | .maybeSingle() padrão | OK | Todas queries SELECT por chave usam .maybeSingle() |

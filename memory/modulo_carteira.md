@@ -80,6 +80,7 @@ Usada por cortesiasService para registrar cada cortesia emitida.
 - `transferir({ticketId, eventoId, remetenteId, ...})` — INSERT transferencias_ingresso + UPDATE ticket status TRANSFERIDO
 - `aceitar(transferenciaId, userId)` — UPDATE transferencia ACEITO + cria novo ticket pro destinatario
 - `recusar(transferenciaId, userId)` — UPDATE transferencia RECUSADO + restaura ticket original
+- **Observabilidade**: todos errors via `logger.error()` (Sentry). .maybeSingle() em queries por chave
 
 ### cortesiasService (features/admin/services/cortesiasService.ts)
 - `initCortesia(eventoId, config)` — INSERT cortesias_config

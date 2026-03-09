@@ -34,6 +34,19 @@ React Router v6 funciona nos dois. Ver `memory/plataformas.md` para regra comple
 | `npm run knip` | Código morto |
 | `npm run deep-audit` | Auditoria profunda |
 
+## Observabilidade (Sentry + Logger)
+- **Sentry**: init síncrono em `index.tsx` (`import './instrument'`). `instrument.ts` configura DSN, tracesSampleRate 0.1, environment via `import.meta.env.MODE`, enabled apenas em PROD
+- **Logger**: `services/logger.ts` — wrapper Sentry. `logger.error(msg, err)` → `Sentry.captureException()` + console.error. `logger.warn(msg, data)` → `Sentry.addBreadcrumb()` + console.warn
+- **Ativo em**: authService, authStore, CheckoutPage, transferenciaService, reembolsoService, eventosAdminFinanceiro
+- **Edge functions**: entry/result logging em stripe-webhook e send-push (console.log/warn)
+- **Sourcemaps**: `hidden` (não expostos ao browser, disponíveis para Sentry)
+
+## Hardening Patterns
+- **`.maybeSingle()`**: padrão para SELECTs por chave (52 queries convertidas). Evita PGRST116 em 0 rows
+- **Cancelled flag**: `let cancelled = false` em useEffects async (7 locais). Cleanup: `return () => { cancelled = true; }`
+- **Double-click guard**: `useRef(false)` + try/finally em ações financeiras (confirmarSaque, estornarSaque, aprovarReembolso, rejeitarReembolso — financeiro/index.tsx e masterFinanceiro/index.tsx)
+- **Single-flight refresh**: eventosAdminCore.refresh() com guard `isRefreshing` para evitar race conditions
+
 ## Build
 - `vite.config.ts`: logLevel `error`
 - `npm run build` → dist/

@@ -203,3 +203,6 @@ Ja documentada em modulo_evento.md (CuponsSubView). Usado aqui via cuponsService
 | 19 | Boleto como metodo | NAO EXISTE | Apenas Stripe (cartao) |
 | 20 | Limite de compra por usuario | NAO EXISTE | Usuario pode comprar infinitos |
 | 21 | Timeout de reserva | NAO EXISTE | Sem lock temporario de variacao durante compra |
+| 22 | Observabilidade (logger.ts) | OK | logger.error em loadEvento, compra RPC fail; logger.warn em compra RPC not ok |
+| 23 | Cancelled flags useEffects | OK | 4 useEffects com cancelled flag + cleanup (loadEvento, loadLotes, loadVariacoes, compra) |
+| 24 | .maybeSingle() padrão | OK | Todas queries SELECT por chave usam .maybeSingle() |

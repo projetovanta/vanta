@@ -23,6 +23,7 @@
 - NUNCA commit sem pedir
 - NUNCA rodar supabase db push sem confirmar (mas CLAUDE.md diz autonomia total — seguir MEMORY.md regra 8)
 - NUNCA ignorar um problema so porque nao foi causado pela minha edicao. Se o usuario pede pra corrigir algo, corrigir — independente de quem ou quando criou. Tem duvida? Perguntar. O USUARIO decide. Sem excecao.
+- **NUNCA ignorar NENHUM erro, warning ou problema.** Fase final de producao e testes. Zero solucoes momentaneas. Zero aceitar erros como "esperado" ou "normal". Qualquer erro encontrado → consultar regras_usuario.md → perguntar ao usuario o que fazer usando AskUserQuestion. Sem excecao.
 
 ## REGRA CRITICA — Perguntas Interativas (definida 2026-03-06, atualizada 2026-03-07, CONFIRMADA 2026-03-07)
 - **MODELO DEFINITIVO**: SEMPRE usar AskUserQuestion. SEM EXCECAO. NUNCA MAIS errar isso.

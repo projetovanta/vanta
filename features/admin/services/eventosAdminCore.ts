@@ -220,7 +220,6 @@ export const refresh = async (): Promise<void> => {
     const eventoIds = eventos.map(e => e.id);
 
     // P2: dados relacionados — só dos eventos carregados
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let lotesData: any[] = [],
       variacoesData: any[] = [],
       equipeData: any[] = [],

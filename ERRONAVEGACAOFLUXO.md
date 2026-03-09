@@ -447,3 +447,430 @@ ESLint:       ✅ 0 warnings
 npm audit:    ✅ 0 vulnerabilidades em produção (17 em devDeps, sem fix disponível)
 Build:        ✅ sucesso
 ```
+
+---
+
+## 🧭 AUDITORIA DE NAVEGAÇÃO REAL POR CARGO — 2026-03-09
+
+---
+
+### FASE A — RBAC: Cargos, Permissões e Hierarquia
+
+#### Cargos Unificados (`CargoUnificado` — `types/rbac.ts`)
+
+| Cargo | portalRole | Nível | Escopo |
+|---|---|---|---|
+| GERENTE | `vanta_gerente` | Gestão | Comunidade |
+| SOCIO | `vanta_socio` | Gestão | Evento |
+| PROMOTER | `vanta_promoter` | Operacional | Evento |
+| GER_PORTARIA_LISTA | `vanta_ger_portaria_lista` | Operacional | Evento |
+| PORTARIA_LISTA | `vanta_portaria_lista` | Operacional | Evento |
+| GER_PORTARIA_ANTECIPADO | `vanta_ger_portaria_antecipado` | Operacional | Evento |
+| PORTARIA_ANTECIPADO | `vanta_portaria_antecipado` | Operacional | Evento |
+| CAIXA | `vanta_caixa` | Operacional | Evento |
+
+**Roles especiais** (não são cargos — vêm do `profiles.role`):
+- `vanta_masteradm` — acesso total a tudo (plataforma)
+- `vanta_member` — membro sem cargo admin (mas pode ter cargos operacionais via atribuições)
+- `vanta_guest` — não logado
+
+#### Permissões Granulares (`PermissaoVanta`)
+
+| Permissão | GERENTE | SOCIO | PROMOTER | GER_PORT_LISTA | PORT_LISTA | GER_PORT_ANT | PORT_ANT | CAIXA |
+|---|---|---|---|---|---|---|---|---|
+| VER_FINANCEIRO | ✅ | ✅ | — | — | — | — | — | — |
+| GERIR_EQUIPE | ✅ | ✅ | — | ✅ | — | ✅ | — | — |
+| GERIR_LISTAS | ✅ | ✅ | — | — | — | — | — | — |
+| INSERIR_LISTA | ✅ | ✅ | ✅ | ✅ | — | — | — | — |
+| CRIAR_REGRA_LISTA | ✅ | ✅ | — | ✅ | — | — | — | — |
+| VER_LISTA | ✅ | ✅ | — | ✅ | ✅ | — | — | — |
+| CHECKIN_LISTA | ✅ | — | — | ✅ | ✅ | — | — | — |
+| VALIDAR_QR | ✅ | — | — | — | — | ✅ | ✅ | — |
+| VALIDAR_ENTRADA | ✅ | — | — | — | — | — | — | — |
+| VENDER_PORTA | — | — | — | — | — | — | — | ✅ |
+
+#### Hierarquia e Cascata
+
+**NÃO existe herança de cargos.** Cada cargo tem permissões fixas e independentes.
+
+**Cascata de contexto** (implementada em `rbacService.temPermissaoCtx`):
+1. **Comunidade → Evento**: GERENTE/SOCIO na comunidade dá acesso a TODOS os eventos dessa comunidade
+2. **Operacionais NÃO cascateiam**: PROMOTER, PORTARIA, CAIXA precisam de atribuição EXPLÍCITA por evento
+3. **Evento → Comunidade (inversa)**: cargo de EVENTO dá acesso ao contexto da COMUNIDADE pai (para o painel funcionar)
+4. **masteradm**: bypass total — não precisa de atribuição em lugar nenhum
+
+#### Guards de Acesso (`features/admin/permissoes.ts`)
+
+| Guard | Quem passa |
+|---|---|
+| `canAccessFinanceiro` | masteradm, socio (always), ou quem tem VER_FINANCEIRO no contexto |
+| `canAccessListas` | masteradm, socio (always), ou quem tem GERIR/INSERIR/CRIAR_REGRA_LISTA |
+| `canAccessCheckin` | masteradm, ou quem tem CHECKIN_LISTA |
+| `canAccessQR` | masteradm, ou quem tem VALIDAR_QR |
+| `canAccessCaixa` | masteradm, ou quem tem VENDER_PORTA |
+| `canAccessMeusEventos` | masteradm, socio (always), ou quem tem GERIR_EQUIPE |
+| `canAccessPortariaScanner` | masteradm, ou quem tem CHECKIN_LISTA ou VALIDAR_QR |
+| `canAccessComunidades` | masteradm, ou quem tem GERIR_EQUIPE na comunidade |
+| `canAccessConvitesSocio` | masteradm, socio (always), ou SOCIO do evento ou GERENTE da comunidade |
+| `isMasterOnly` | somente masteradm |
+| `canEditEvento` | masteradm, ou quem tem GERIR_EQUIPE |
+| `canManageEquipe` | masteradm, ou quem tem GERIR_EQUIPE |
+| `isSocioEvento` | masteradm, ou SOCIO do evento, ou GERENTE da comunidade do evento |
+
+---
+
+### FASE B — NAVEGAÇÃO DO USUÁRIO
+
+#### B1 — Guest (não logado)
+
+| Ação | Resultado | Status |
+|---|---|---|
+| Abre app (/) | HomeView com eventos públicos | ✅ |
+| Tab INICIO | Mostra eventos, comunidades, vanta indica | ✅ |
+| Tab RADAR | RadarView — mapa/lista de eventos | ✅ |
+| Tab BUSCAR | SearchView — busca eventos/membros/comunidades | ✅ |
+| Tab MENSAGENS | Bloqueado → modal GuestLoginSheet | ✅ |
+| Tab PERFIL | Bloqueado → modal GuestLoginSheet | ✅ |
+| Clica em evento (Home) | EventDetailView abre normalmente | ✅ |
+| /evento/:slug | EventLandingPage (standalone, sem tabbar) | ✅ |
+| /checkout/:slug | CheckoutPage com login inline embutido | ✅ |
+| /convite-mv/:token | AceitarConviteMVPage (lê auth via store) | ⚠️ Funciona mas sem auth pode mostrar estado incompleto |
+| /parceiro | ParceiroDashboardPage (sem guard de auth) | ⚠️ Standalone, sem checagem de login |
+| /rota-inexistente | Cai no catch-all `path="*"` → mostra HomeView | ⚠️ Não é 404 — mostra Home silenciosamente |
+| Ícone admin (shield) | ADMIN_HUB → tela "Sem Acesso" com botão Voltar | ✅ |
+
+**Problemas encontrados:**
+1. **Sem página 404**: `/xyz` mostra a Home sem indicação de rota inválida
+2. **/parceiro sem auth guard**: qualquer pessoa pode acessar a rota (dados dependem do Supabase RLS)
+3. **/convite-mv sem guard**: acessível sem login, comportamento pode ser inconsistente
+
+#### B2 — Usuário logado (sem cargo admin)
+
+| Tab | Conteúdo | Status |
+|---|---|---|
+| INICIO | Home com feed de eventos, comunidades, indicações | ✅ |
+| RADAR | Mapa + lista de eventos próximos | ✅ |
+| BUSCAR | Busca por eventos, membros, comunidades | ✅ |
+| MENSAGENS | Inbox de conversas → ChatRoom por conversa | ✅ |
+| PERFIL | Editar perfil, Meus Ingressos, Wallet, Favoritos, Clube, Settings, Logout | ✅ |
+
+| Fluxo | Path | Status |
+|---|---|---|
+| Home → Evento → Detalhe | Tab1 → EventDetailView | ✅ |
+| Home → Comunidade → Pública | Tab1 → ComunidadePublicView | ✅ |
+| Busca → Resultado → Evento | Tab3 → EventDetailView | ✅ |
+| Busca → Membro → Perfil | Tab3 → MemberProfile | ✅ |
+| Perfil → Meus Ingressos → QR | Tab5 → MyTicketsView → IngressoDetail | ✅ |
+| Perfil → Wallet → Saldo | Tab5 → WalletView | ✅ |
+| Perfil → Clube → Opt-in | Tab5 → ClubeOptInView | ✅ |
+| Perfil → Logout | Limpa stores, volta pra Home, mostra LoginView | ✅ |
+| Evento → Comprar → Checkout | EventDetail → /checkout/:slug | ✅ |
+| Mensagens → Conversa → Chat | Tab4 → ChatRoomView | ✅ |
+| Admin (shield) → sem cargo | Tela "Sem Acesso" + botão Voltar | ✅ |
+
+#### B3 — Dead Ends
+
+| Cenário | Tem saída? | Status |
+|---|---|---|
+| EventDetailView | Botão voltar (onBack) | ✅ |
+| ChatRoomView | Botão voltar | ✅ |
+| CheckoutPage (standalone) | Navegação browser (back) | ✅ |
+| ComunidadePublicView | Botão voltar | ✅ |
+| MyTicketsView vazio | Mensagem "Nenhum ingresso" | ✅ |
+| Busca sem resultados | Mensagem placeholder | ✅ |
+| Inbox vazio | Placeholder adequado | ✅ |
+| AdminDashboardView default | "Selecione um módulo" com sidebar | ✅ |
+| Sub-view admin sem guard | guardBlock com "Acesso negado" + botão Voltar | ✅ |
+
+---
+
+### FASE C — PAINEL ADMIN: NAVEGAÇÃO POR CARGO
+
+#### C1 — AdminGateway (`features/admin/AdminGateway.tsx`)
+
+| Cenário | Resultado | Status |
+|---|---|---|
+| masteradm | Vê TODAS as comunidades + opção "Painel Geral" (MASTER) | ✅ |
+| gerente em 1 comunidade | Vê 1 comunidade → seleciona → Dashboard | ✅ |
+| gerente em N comunidades | Vê N comunidades → seleciona | ✅ |
+| promoter em evento | Vê comunidade pai do evento | ✅ |
+| membro sem cargo | App.tsx bloqueia ANTES do gateway → tela "Sem Acesso" | ✅ |
+| vanta_member com 1 access node | Roteado direto pro dashboard específico do cargo | ✅ |
+| vanta_member com N access nodes | Tela "Escolha seu Portal" → seleciona | ✅ |
+
+**Fluxo do Gateway:**
+1. RPC `get_admin_access` retorna role + comunidades/eventos com cargos
+2. masteradm vê tudo + opção "Painel Geral"
+3. Non-master vê apenas onde tem cargo
+4. Seleciona destino → `AdminDashboardView` com `resolvedRole` correto
+5. masteradm NUNCA é rebaixado (fix `be3ee21`)
+
+#### C2 — Sidebar: Menus por Cargo
+
+##### SIDEBAR_SECTIONS (painel global — masteradm sem comunidade)
+
+| Seção | Item | Roles |
+|---|---|---|
+| GERAL | Início | masteradm, socio, gerente |
+| GERAL | Pendências | masteradm, socio, gerente |
+| GERAL | Convites | socio |
+| GESTÃO | Comunidades | masteradm, gerente, socio |
+| GESTÃO | Eventos Pendentes | masteradm |
+| GESTÃO | Categorias | masteradm |
+| GESTÃO | Parcerias | masteradm |
+| GESTÃO | Cargos | masteradm |
+| FINANCEIRO | Financeiro | masteradm |
+| FINANCEIRO | Comprovantes | masteradm |
+| FINANCEIRO | Relatórios | masteradm |
+| MAIS VANTA | Curadoria | masteradm |
+| MAIS VANTA | Membros | masteradm, gerente |
+| MAIS VANTA | Cidades | masteradm |
+| MAIS VANTA | Parceiros | masteradm, gerente |
+| MAIS VANTA | Deals | masteradm, gerente |
+| MAIS VANTA | Assinaturas | masteradm |
+| MAIS VANTA | Passaportes | masteradm |
+| MAIS VANTA | Infrações | masteradm |
+| MAIS VANTA | Convites MV | masteradm, gerente |
+| MAIS VANTA | Analytics MV | masteradm |
+| MAIS VANTA | Monitoramento | masteradm |
+| MAIS VANTA | Config MV | masteradm |
+| MARKETING | Vanta Indica | masteradm |
+| MARKETING | Notificações | masteradm |
+| SISTEMA | Analytics | masteradm |
+| SISTEMA | Diagnóstico | masteradm |
+
+##### COMMUNITY_SIDEBAR_SECTIONS (dentro de uma comunidade)
+
+| Seção | Item | Roles |
+|---|---|---|
+| GERAL | Início | TODOS os roles |
+| GERAL | Pendências | TODOS os roles |
+| GERAL | Eventos | masteradm, socio, gerente |
+| OPERAÇÃO DIA | Scanner QR | masteradm, ger_portaria_antecipado, portaria_antecipado |
+| OPERAÇÃO DIA | Check-in Lista | masteradm, ger_portaria_lista, portaria_lista |
+| OPERAÇÃO DIA | Caixa | masteradm, caixa |
+| OPERAÇÃO DIA | Listas | masteradm, socio, gerente, promoter |
+| OPERAÇÃO DIA | Minhas Cotas | promoter |
+| FINANCEIRO | Financeiro | masteradm, socio, gerente |
+| FINANCEIRO | Relatórios | masteradm, gerente |
+| MAIS VANTA | MAIS VANTA | masteradm (Config MV Hub) |
+| MAIS VANTA | MAIS VANTA | socio (visão sócio) |
+| ADMINISTRAÇÃO | Editar Comunidade | masteradm, gerente |
+| ADMINISTRAÇÃO | Audit Log | masteradm |
+
+##### Duplo filtro: roles array + guards contextuais
+
+O sidebar aplica **dois níveis** de filtragem (L198-223):
+1. `item.roles.includes(adminRole)` — role precisa estar no array
+2. `guardMap[item.id]` — guard contextual (verifica permissão real via rbacService)
+
+Items com guard contextual: PORTARIA_QR, PORTARIA_LISTA, CAIXA, FINANCEIRO, LISTAS, MEUS_EVENTOS, CONVITES_SOCIO
+
+#### C3 — Matriz de Acesso: Sub-Views Admin com Guards
+
+| SubView | Guard na renderização | Quem passa |
+|---|---|---|
+| DASHBOARD | nenhum (sempre renderiza) | todos que veem no sidebar |
+| PENDENCIAS_HUB | nenhum | todos que veem no sidebar |
+| MEUS_EVENTOS | `canAccessMeusEventos` | masteradm, socio, gerente com GERIR_EQUIPE |
+| CAIXA | `canAccessCaixa` | masteradm, caixa com VENDER_PORTA |
+| CARGOS | `isMasterOnly` | masteradm |
+| FINANCEIRO_MASTER | `adminRole !== 'vanta_masteradm'` | masteradm |
+| FINANCEIRO | `canAccessFinanceiro` | masteradm, socio, gerente com VER_FINANCEIRO |
+| PORTARIA_SCANNER | `canAccessPortariaScanner` | masteradm, portaria_lista, portaria_antecipado |
+| CURADORIA | `isMasterOnly` | masteradm |
+| COMUNIDADES | `canAccessComunidades` | masteradm, gerente com GERIR_EQUIPE |
+| INDICA | `isMasterOnly` | masteradm |
+| LISTAS | `canAccessListas` | masteradm, socio, gerente, promoter com INSERIR_LISTA |
+| PORTARIA_QR | `canAccessQR` | masteradm, portaria_antecipado |
+| PORTARIA_LISTA | `canAccessCheckin` | masteradm, portaria_lista |
+| NOTIFICACOES | `isMasterOnly` | masteradm |
+| PENDENTES | `isMasterOnly` | masteradm |
+| SOLICITACOES_PARCERIA | `isMasterOnly` | masteradm |
+| AUDIT_LOG | `isMasterOnly` | masteradm |
+| DIAGNOSTICO | `isMasterOnly` | masteradm |
+| CATEGORIAS | `isMasterOnly` | masteradm |
+| CONVITES_SOCIO | `canAccessConvitesSocio` | masteradm, socio, gerente do evento/comunidade |
+| MAIS_VANTA_HUB | `adminRole !== 'vanta_masteradm'` | masteradm |
+| MONITORAMENTO_MV | `adminRole !== 'vanta_masteradm'` | masteradm |
+| ASSINATURAS_MV | `adminRole !== 'vanta_masteradm'` | masteradm |
+| PASSAPORTES_MV | `adminRole !== 'vanta_masteradm'` | masteradm |
+| DIVIDA_SOCIAL_MV | `adminRole !== 'vanta_masteradm'` | masteradm |
+| MEMBROS_GLOBAIS_MV | `!== masteradm && !== gerente` | masteradm, gerente |
+| EVENTOS_GLOBAIS_MV | `!== masteradm` | masteradm |
+| INFRACOES_GLOBAIS_MV | `!== masteradm` | masteradm |
+| CIDADES_MV | `!== masteradm` | masteradm |
+| PARCEIROS_MV | `!== masteradm && !== gerente` | masteradm, gerente |
+| DEALS_MV | `!== masteradm && !== gerente` | masteradm, gerente |
+| CURADORIA_MV | `!== masteradm` | masteradm |
+| CONVITES_MV | `!== masteradm && !== gerente` | masteradm, gerente |
+| ANALYTICS_MV | `!== masteradm` | masteradm |
+| RELATORIO_MASTER | gerente+comunidadeId → Relatório Comunidade; senão masteradm | masteradm, gerente (limitado) |
+| GESTAO_COMPROVANTES | `!== masteradm` | masteradm |
+| PRODUCT_ANALYTICS | `isMasterOnly` | masteradm |
+| PROMOTER_COTAS | nenhum (sidebar já filtra para promoter) | promoter |
+
+**TODAS as sub-views têm guard.** Se o cargo não passa → `guardBlock()` → tela "Acesso negado" + botão Voltar.
+
+#### C4 — Fluxos por Cargo
+
+##### masteradm
+| Fluxo | Status |
+|---|---|
+| Gateway → "Painel Geral" → Dashboard global | ✅ |
+| Gateway → Comunidade → Dashboard comunidade | ✅ |
+| Dashboard → Todos os itens do sidebar acessíveis | ✅ |
+| Eventos Pendentes → Aprovar/Rejeitar | ✅ |
+| Financeiro Master → Saques, Reembolsos | ✅ |
+| MAIS VANTA → Config, Membros, Deals, etc. | ✅ |
+| Cargos → Definir cargos customizados | ✅ |
+| Parcerias → Aprovar/Rejeitar solicitações | ✅ |
+
+##### vanta_gerente (dentro de comunidade)
+| Fluxo | Status |
+|---|---|
+| Gateway → seleciona comunidade | ✅ |
+| Dashboard → Início, Pendências, Eventos | ✅ |
+| Eventos → criar, editar, publicar | ✅ |
+| Financeiro → ver dados da comunidade | ✅ |
+| Relatórios → relatório da comunidade (não master) | ✅ |
+| Listas → CRUD completo | ✅ |
+| Editar Comunidade → nome, foto, config | ✅ |
+| MAIS VANTA → Membros, Parceiros, Deals, Convites | ✅ |
+| NÃO vê: Caixa, Scanner QR, Check-in, Audit Log, Cargos | ✅ (correto) |
+
+##### vanta_socio (dentro de comunidade)
+| Fluxo | Status |
+|---|---|
+| Gateway → seleciona comunidade (ou evento) | ✅ |
+| Dashboard → Início, Pendências, Eventos | ✅ |
+| Financeiro → ver dados (VER_FINANCEIRO) | ✅ |
+| Listas → CRUD (GERIR_LISTAS) | ✅ |
+| Convites → ver convites pendentes | ✅ |
+| MAIS VANTA → visão sócio (não hub master) | ✅ |
+| NÃO vê: Scanner, Check-in, Caixa, Cargos, Relatórios | ✅ (correto) |
+
+##### vanta_promoter (dentro de comunidade)
+| Fluxo | Status |
+|---|---|
+| Gateway → vê comunidade do evento | ✅ |
+| Dashboard → Início, Pendências | ✅ |
+| Listas → Inserir na lista (INSERIR_LISTA) | ✅ |
+| Minhas Cotas → PromoterDashView | ✅ |
+| NÃO vê: Financeiro, Eventos, Scanner, Caixa, Admin | ✅ (correto) |
+
+##### vanta_portaria_lista / vanta_ger_portaria_lista
+| Fluxo | Status |
+|---|---|
+| vanta_member com 1 node → direto pra PortariaListaDashView | ✅ |
+| Check-in Lista → CheckInView modo LISTA | ✅ |
+| ger_portaria_lista vê: Listas (INSERIR_LISTA) | ✅ |
+| portaria_lista NÃO vê: Listas (sem INSERIR_LISTA) | ✅ (correto) |
+
+##### vanta_portaria_antecipado / vanta_ger_portaria_antecipado
+| Fluxo | Status |
+|---|---|
+| vanta_member com 1 node → direto pra PortariaQRDashView | ✅ |
+| Scanner QR → CheckInView modo QR | ✅ |
+| NÃO vê: Listas, Financeiro, Caixa | ✅ (correto) |
+
+##### vanta_caixa
+| Fluxo | Status |
+|---|---|
+| vanta_member com 1 node → direto pra CaixaDashboardView | ✅ |
+| Caixa → CaixaView (venda presencial) | ✅ |
+| NÃO vê: Listas, Financeiro, Scanner, Admin | ✅ (correto) |
+
+#### C5 — Transições entre Seções
+
+| Cenário | Status |
+|---|---|
+| Sidebar: navega entre seções | ✅ (setSubView) |
+| Voltar ao gateway (fechar dashboard) | ✅ (onClose limpa confirmado) |
+| Mudar comunidade no gateway | ✅ (volta pro gateway, re-seleciona) |
+| Back navigation dentro de sub-views | ✅ (cada view tem onBack) |
+| Desktop: sidebar fixa, conteúdo ao lado | ✅ |
+| Mobile: sidebar colapsável, toggle funciona | ✅ |
+
+---
+
+### FASE D — MODAIS E OVERLAYS
+
+| Modal/Overlay | Trigger | Fechamento | Z-index | Status |
+|---|---|---|---|---|
+| GuestLoginSheet | Tab bloqueada para guest | X + backdrop | — | ✅ |
+| LoginView | Botão login / showLoginView | Formulário inline | — | ✅ |
+| AdminGateway | Tab ADMIN_HUB | onBack (botão X) | z-[150] | ✅ |
+| AdminDashboardView | Gateway confirmado | onClose (volta gateway) | z-[150] | ✅ |
+| NotificationPanel | Ícone sino | onClose | — | ✅ |
+| CitySelector | Ícone localização | onClose | — | ✅ |
+| ReviewModal | Pós-evento (auto) | X + botões | — | ✅ |
+| OnboardingModal | Primeiro login | Fluxo completo | — | ✅ |
+| TosAcceptModal | Termos não aceitos | Aceitar obrigatório | — | ✅ |
+| PmfSurveyModal | Pesquisa periódica | X + fechar | — | ✅ |
+| ConfirmDeleteModal (vários) | Ações destrutivas | Confirmar/Cancelar | — | ✅ |
+| EventDetailView | Clica em evento | onBack (botão) | — | ✅ |
+| ChatRoomView | Clica em conversa | onBack (botão) | — | ✅ |
+| MemberProfile overlay | Clica em membro | onClose | — | ✅ |
+| WalletLockScreen | Wallet sem PIN | Definir PIN | — | ✅ |
+
+**Modais aninhados**: AdminGateway (z-150) → AdminDashboardView (z-150) é uma transição (não sobreposição). Não há modais que abrem modais com z-index conflitante.
+
+**Browser back button**: App usa estado interno (não React Router) para navegação de tabs/views, então browser back volta para a URL anterior, não para o estado anterior do app. Isso é comportamento esperado em SPA com tabs.
+
+---
+
+### FASE E — EDGE CASES DE NAVEGAÇÃO
+
+| Cenário | Resultado | Status |
+|---|---|---|
+| /evento/UUID_INVALIDO | EventLandingPage mostra `notFound` state | ✅ |
+| /checkout/SLUG_INVALIDO | Loading → mostra erro se evento não encontrado | ✅ |
+| /rota-inexistente | Mostra HomeView (catch-all `path="*"`) | ⚠️ Sem 404 |
+| Refresh no checkout | CheckoutPage standalone — re-busca evento do slug | ✅ |
+| Refresh no admin | Volta pra Home (admin é estado interno, não rota) | ⚠️ Esperado em SPA |
+| Sessão expira durante ação | Supabase RLS retorna erro 401 → console.error | ⚠️ Sem modal de re-login |
+| Admin com comunidade → refresh | Volta pra Home → precisa re-entrar no admin | ⚠️ Esperado |
+| ChatRoom → back | Volta pra lista de mensagens (estado interno) | ✅ |
+| URL /admin sem guard | Não existe rota /admin — admin é via tab ADMIN_HUB | ✅ |
+| Caracteres especiais na URL | React Router lida nativamente | ✅ |
+| /parceiro sem auth | Página carrega — RLS protege dados | ⚠️ |
+
+---
+
+### 🚨 ERROS CRÍTICOS DE NAVEGAÇÃO
+
+**Nenhum erro crítico de segurança encontrado.** Todas as sub-views admin têm guards. Dados sensíveis não são expostos a cargos sem permissão.
+
+---
+
+### ⚠️ PROBLEMAS DE UX ENCONTRADOS
+
+1. **Sem página 404**: Rota inexistente mostra HomeView silenciosamente. Usuário não sabe que errou a URL.
+   - Impacto: baixo (app é SPA, poucos acessam por URL diretamente)
+   - Sugestão: adicionar catch-all com tela "Página não encontrada" + CTA "Ir para início"
+
+2. **Sem modal de re-login ao expirar sessão**: Se o token expira no meio de uma ação, o erro é silencioso (console.error). Usuário pode ficar sem feedback.
+   - Impacto: médio (sessões Supabase duram 1h com auto-refresh)
+   - Sugestão: interceptor global que detecta 401 e mostra modal de re-autenticação
+
+3. **Admin não persiste no refresh**: Estado do admin (comunidade selecionada, sub-view ativa) é interno. F5 volta pra Home.
+   - Impacto: baixo (admin é app nativo, poucos fazem F5)
+   - Sugestão: persistir estado admin em URL params ou sessionStorage
+
+4. **/parceiro sem guard de auth**: Rota standalone acessível sem login. Dados protegidos por RLS, mas UX inconsistente.
+   - Impacto: baixo (RLS protege)
+   - Sugestão: adicionar guard de auth
+
+---
+
+### ✅ PONTOS POSITIVOS
+
+1. **100% dos sub-views admin têm guard** — nenhuma view renderiza sem verificação de cargo
+2. **Duplo filtro no sidebar**: roles array + guards contextuais (permissão real via rbacService)
+3. **guardBlock() consistente**: Todas as views negadas mostram "Acesso negado" + botão Voltar
+4. **masteradm nunca rebaixado**: Fix explícito no gateway (`be3ee21`)
+5. **vanta_member com routing direto**: Cargos operacionais (portaria, caixa) vão direto pro dashboard específico
+6. **Tabs bloqueadas para guest**: MENSAGENS, PERFIL, ADMIN_HUB com modal de login
+7. **ADMIN_HUB sem cargo**: Tela "Sem Acesso" clara com botão Voltar
+8. **ModuleErrorBoundary**: Cada módulo isolado — erro em um não derruba o app

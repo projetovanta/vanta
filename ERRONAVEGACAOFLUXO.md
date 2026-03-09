@@ -403,10 +403,10 @@ Todas têm referências em types, mappers, joins, RPCs ou services:
 2. ~~~20+ `.single()` que deveriam ser `.maybeSingle()`~~ — ✅ CORRIGIDO: 14 reads convertidos (Fase 2)
 3. ~~30+ `select('*')` em queries~~ — ✅ CORRIGIDO parcial: 5 services otimizados (Fase 5). 3 mantidos (authService, comunidadesService, transferenciaService — usam 14-20+ campos)
 4. ~~40 tabelas definidas sem `.from()` no código~~ — ✅ DOCUMENTADO (Fase 6): 38 usadas ativamente, 1 via RPC, 1 sem uso (niveis_prestigio)
-5. **exceljs (910KB) + jspdf (377KB)** — considerar dynamic import mais granular
-6. **Main chunk 534KB** — próximo do limite recomendado (500KB)
+5. ~~exceljs (910KB) + jspdf (377KB)~~ — ✅ JÁ ESTÃO com dynamic import (chunks separados). Sem ação necessária
+6. **Main chunk 535KB** — próximo do limite (500KB). 65+ componentes já lazy-loaded. Ganho marginal sem refatoração significativa
 7. ~~`verificar_virada_lote` e `incrementar_usos_cupom`~~ — ✅ CORRIGIDO (Fases 3-4)
-8. **icon-1024.png (962KB)** — considerar compressão/webp
+8. ~~icon-1024.png (962KB)~~ — ✅ CORRIGIDO (Fase 7): 962KB → 275KB (pngquant). icon-512.png: 340KB → 107KB
 
 ### ✅ SAUDÁVEL
 - TSC: 0 erros
@@ -435,4 +435,5 @@ Todas têm referências em types, mappers, joins, RPCs ou services:
 | 3 | `92ca8b3` | Error handling em 15 queries frontend + 2 RPCs |
 | 4 | `71b9553` | Error handling em 26 queries de 6 edge functions |
 | 5 | `c2d0472` | `select('*')` → selects específicos em 5 services |
-| 6 | — | Documentação: 40 tabelas analisadas (38 ativas, 1 RPC, 1 sem uso) |
+| 6 | `6255ff1` | Documentação: 40 tabelas analisadas (38 ativas, 1 RPC, 1 sem uso) |
+| 7 | — | Assets: icon-1024.png 962→275KB, icon-512.png 340→107KB (pngquant) |

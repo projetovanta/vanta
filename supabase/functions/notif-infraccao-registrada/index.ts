@@ -130,7 +130,7 @@ serve(async (req: Request) => {
       .from('clube_config')
       .select('infracoes_limite, bloqueio1_dias, bloqueio2_dias')
       .limit(1)
-      .single();
+      .maybeSingle();
 
     const config = configData ? {
       limite: (configData as { infracoes_limite: number }).infracoes_limite ?? 3,
@@ -152,7 +152,7 @@ serve(async (req: Request) => {
         .from('eventos_admin')
         .select('nome')
         .eq('id', eventoId)
-        .single();
+        .maybeSingle();
 
       const eventoNome = eventoData ? (eventoData as { nome: string }).nome : 'Evento';
 

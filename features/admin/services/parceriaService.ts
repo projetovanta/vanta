@@ -220,7 +220,7 @@ export const parceriaService = {
       .from('solicitacoes_parceria')
       .select('user_id, nome')
       .eq('id', solicitacaoId)
-      .single();
+      .maybeSingle();
 
     const { error } = await supabase
       .from('solicitacoes_parceria')
@@ -261,7 +261,7 @@ export const parceriaService = {
       .from('solicitacoes_parceria')
       .select('user_id, nome')
       .eq('id', solicitacaoId)
-      .single();
+      .maybeSingle();
 
     const { error } = await supabase
       .from('solicitacoes_parceria')

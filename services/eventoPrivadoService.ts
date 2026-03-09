@@ -213,9 +213,10 @@ export const eventoPrivadoService = {
         'evento_privado_ativo, evento_privado_texto, evento_privado_fotos, evento_privado_formatos, evento_privado_atracoes, evento_privado_faixas_capacidade',
       )
       .eq('id', comunidadeId)
-      .single();
+      .maybeSingle();
 
     if (error) throw error;
+    if (!data) throw new Error('Comunidade não encontrada');
     return {
       ativo: data?.evento_privado_ativo ?? false,
       texto: data?.evento_privado_texto ?? null,

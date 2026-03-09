@@ -192,7 +192,7 @@ export const comemoracaoService = {
       .from('comemoracoes')
       .select('nome_completo, solicitante_id')
       .eq('id', id)
-      .single();
+      .maybeSingle();
     const refCode = generateRefCode(com?.nome_completo ?? 'VANTA');
 
     const { error } = await supabase
@@ -383,7 +383,7 @@ export const comemoracaoService = {
       .from('comemoracoes_cortesias')
       .select('id, nome_convidado, resgatado, comemoracao_id')
       .eq('id', cortesiaId)
-      .single();
+      .maybeSingle();
 
     if (error || !data) return { ok: false, nome: null, erro: 'Cortesia não encontrada' };
     if (data.resgatado) return { ok: false, nome: data.nome_convidado, erro: 'Já resgatada' };
@@ -400,7 +400,7 @@ export const comemoracaoService = {
       .from('comemoracoes')
       .select('solicitante_id, nome_completo')
       .eq('id', data.comemoracao_id)
-      .single();
+      .maybeSingle();
     if (com?.solicitante_id) {
       notify({
         userId: com.solicitante_id,

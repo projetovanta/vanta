@@ -83,7 +83,7 @@ export const clubeDealsService = {
       .from('deals_mais_vanta')
       .select('*, parceiros_mais_vanta(nome, foto_url), cidades_mais_vanta(nome)')
       .eq('id', id)
-      .single();
+      .maybeSingle();
     return data ? rowWithJoinToDeal(data as Record<string, unknown>) : null;
   },
 

@@ -330,7 +330,7 @@ export const cortesiasService = {
       .eq('id', cortesiaId)
       .eq('destinatario_id', userId)
       .eq('status', 'PENDENTE')
-      .single();
+      .maybeSingle();
 
     if (!row) return false;
 

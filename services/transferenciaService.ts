@@ -92,13 +92,14 @@ export const transferenciaService = {
 
   /** Lista transferências pendentes recebidas pelo usuário */
   async getPendentes(userId: string): Promise<TransferenciaPendente[]> {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('transferencias_ingresso')
       .select('*')
       .eq('destinatario_id', userId)
       .eq('status', 'PENDENTE')
       .order('criado_em', { ascending: false })
       .limit(500);
+    if (error) logger.error('[transferenciaService.getPendentes]', error);
     return (data ?? []).map(rowToTransferencia);
   },
 

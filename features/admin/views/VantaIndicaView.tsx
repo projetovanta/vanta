@@ -851,7 +851,7 @@ const CardModal: React.FC<{
           <div
             ref={previewRef}
             className="relative w-full rounded-[2rem] overflow-hidden border border-white/10 shadow-lg select-none touch-none"
-            style={{ aspectRatio: '5 / 3' }}
+            style={{ aspectRatio: '5 / 3', containerType: 'inline-size' }}
           >
             {form.imagem ? (
               <img
@@ -930,7 +930,7 @@ const CardModal: React.FC<{
                 className="active:cursor-grabbing z-10"
               >
                 <span
-                  style={{ fontSize: '8px', lineHeight: 1 }}
+                  style={{ fontSize: '2.1cqw', lineHeight: 1 }}
                   className="bg-[#FFD300] text-black font-black px-2.5 py-1 rounded-full uppercase tracking-widest shadow-[0_0_15px_rgba(255,211,0,0.4)] whitespace-nowrap"
                 >
                   {form.badge}
@@ -952,7 +952,7 @@ const CardModal: React.FC<{
                 className="active:cursor-grabbing z-10 max-w-[90%]"
               >
                 <h2
-                  style={{ ...TYPOGRAPHY.screenTitle, fontSize: '20px', lineHeight: '28px', fontStyle: 'italic' }}
+                  style={{ ...TYPOGRAPHY.screenTitle, fontSize: '5.3cqw', lineHeight: '7.4cqw', fontStyle: 'italic' }}
                   className="drop-shadow-lg text-white whitespace-nowrap"
                 >
                   {form.titulo}
@@ -974,7 +974,7 @@ const CardModal: React.FC<{
                 className="active:cursor-grabbing z-10 max-w-[90%]"
               >
                 <p
-                  style={{ fontSize: '10px', lineHeight: '16px', fontStyle: 'italic' }}
+                  style={{ fontSize: '2.6cqw', lineHeight: '4.2cqw', fontStyle: 'italic' }}
                   className="text-[#FFD300] font-semibold leading-relaxed drop-shadow-md whitespace-nowrap"
                 >
                   {form.subtitulo}

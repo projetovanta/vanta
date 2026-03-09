@@ -106,7 +106,7 @@ export const Highlights: React.FC<HighlightsProps> = React.memo(({ currentCity, 
             >
               <div
                 className={`relative w-full rounded-[2rem] overflow-hidden glass-card shadow-lg transition-transform duration-200 ${item.acaoLink ? 'active:scale-[0.98] cursor-pointer' : ''}`}
-                style={{ aspectRatio: '5 / 3' }}
+                style={{ aspectRatio: '5 / 3', containerType: 'inline-size' }}
               >
                 {item.imagem ? (
                   <OptimizedImage
@@ -133,14 +133,14 @@ export const Highlights: React.FC<HighlightsProps> = React.memo(({ currentCity, 
                           }
                         : {
                             position: 'absolute' as const,
-                            bottom: '3.5rem',
-                            left: '1.5rem',
+                            bottom: '18%',
+                            left: '5%',
                             transform: `translateY(${item.layoutConfig?.badgeY ?? 0}px)`,
                           }
                     }
                   >
                     <span
-                      style={{ fontSize: '8px', lineHeight: 1 }}
+                      style={{ fontSize: '2.1cqw', lineHeight: 1 }}
                       className="bg-[#FFD300] text-black font-black px-2.5 py-1 rounded-full uppercase tracking-widest shadow-[0_0_15px_rgba(255,211,0,0.4)]"
                     >
                       {item.badge}
@@ -160,15 +160,20 @@ export const Highlights: React.FC<HighlightsProps> = React.memo(({ currentCity, 
                           }
                         : {
                             position: 'absolute' as const,
-                            bottom: '1.5rem',
-                            left: '1.5rem',
+                            bottom: '8%',
+                            left: '5%',
                             transform: `translateY(${item.layoutConfig?.tituloY ?? 0}px)`,
                           }
                     }
                     className="max-w-[90%]"
                   >
                     <h2
-                      style={{ ...TYPOGRAPHY.screenTitle, fontSize: '20px', lineHeight: '28px', fontStyle: 'italic' }}
+                      style={{
+                        ...TYPOGRAPHY.screenTitle,
+                        fontSize: '5.3cqw',
+                        lineHeight: '7.4cqw',
+                        fontStyle: 'italic',
+                      }}
                       className="drop-shadow-lg truncate"
                     >
                       {item.titulo}
@@ -188,15 +193,15 @@ export const Highlights: React.FC<HighlightsProps> = React.memo(({ currentCity, 
                           }
                         : {
                             position: 'absolute' as const,
-                            bottom: '0.5rem',
-                            left: '1.5rem',
+                            bottom: '2%',
+                            left: '5%',
                             transform: `translateY(${item.layoutConfig?.subtituloY ?? 0}px)`,
                           }
                     }
                     className="max-w-[90%]"
                   >
                     <p
-                      style={{ fontSize: '10px', lineHeight: '16px', fontStyle: 'italic' }}
+                      style={{ fontSize: '2.6cqw', lineHeight: '4.2cqw', fontStyle: 'italic' }}
                       className="text-[#FFD300] font-semibold leading-relaxed line-clamp-2 drop-shadow-md"
                     >
                       {item.subtitulo}

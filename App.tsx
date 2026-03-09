@@ -24,6 +24,7 @@ import { trackAppOpen, checkPmfEligible } from './services/analyticsService';
 import { PmfSurveyModal } from './components/PmfSurveyModal';
 import { ResetPasswordView } from './components/ResetPasswordView';
 import { nativePushService } from './services/nativePushService';
+import { logger } from './services/logger';
 
 // ── Lazy-loaded views (code splitting) ───────────────────────────────────────
 const EventDetailView = lazy(() =>
@@ -117,6 +118,19 @@ export default function App() {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => initAuth(), [initAuth]);
+
+  // Guard: se authLoading ficar true por mais de 8s, força liberação como guest
+  useEffect(() => {
+    if (!authLoading) return;
+    const guard = setTimeout(() => {
+      if (useAuthStore.getState().authLoading) {
+        logger.error('[App] authLoading stuck for 8s — forcing guest');
+        useAuthStore.setState({ authLoading: false });
+      }
+    }, 8000);
+    return () => clearTimeout(guard);
+  }, [authLoading]);
+
   useEffect(() => ticketsInit(currentAccountId), [currentAccountId, ticketsInit]);
   useEffect(() => chatInit(currentAccountId), [currentAccountId, chatInit]);
   useEffect(() => socialInit(currentAccountId), [currentAccountId, socialInit]);
@@ -376,7 +390,7 @@ export default function App() {
   return (
     <div
       className="fixed inset-0 bg-[#050505] flex flex-col items-center text-white selection:bg-[#FFD300] selection:text-black overflow-hidden"
-      style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
+      style={{ paddingTop: 'env(safe-area-inset-top, 0px)', paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
     >
       <div
         className={`w-full flex-1 bg-[#0A0A0A] relative overflow-hidden flex flex-col ${nav.activeTab === 'ADMIN_HUB' ? 'max-w-4xl' : 'max-w-md'}`}
@@ -446,13 +460,18 @@ export default function App() {
             <div className="absolute inset-0 z-[200] bg-black/80 backdrop-blur-sm flex items-center justify-center p-6">
               <div className="w-full max-w-sm bg-zinc-900 rounded-3xl border border-white/10 overflow-hidden shadow-2xl">
                 <div className="relative bg-gradient-to-br from-[#FFD300]/20 via-zinc-900 to-zinc-900 p-6 pb-4 text-center">
-                  <button onClick={() => setComemorarComunidadeId(null)} className="absolute top-4 right-4 text-zinc-500 hover:text-white transition-colors">
+                  <button
+                    onClick={() => setComemorarComunidadeId(null)}
+                    className="absolute top-4 right-4 text-zinc-500 hover:text-white transition-colors"
+                  >
                     <X size={20} />
                   </button>
                   <div className="w-16 h-16 rounded-full bg-[#FFD300]/10 flex items-center justify-center mx-auto mb-4">
                     <PartyPopper size={32} className="text-[#FFD300]" />
                   </div>
-                  <h2 style={TYPOGRAPHY.screenTitle} className="text-xl mb-1">Comemore com a gente</h2>
+                  <h2 style={TYPOGRAPHY.screenTitle} className="text-xl mb-1">
+                    Comemore com a gente
+                  </h2>
                   <p className="text-zinc-400 text-xs">Seu aniversário merece ser especial</p>
                 </div>
                 <div className="p-5 space-y-3">
@@ -487,7 +506,9 @@ export default function App() {
                     Quero comemorar
                     <ChevronRight size={18} />
                   </button>
-                  <p className="text-zinc-600 text-[10px] text-center mt-3">Você será levado à página do espaço para preencher sua solicitação</p>
+                  <p className="text-zinc-600 text-[10px] text-center mt-3">
+                    Você será levado à página do espaço para preencher sua solicitação
+                  </p>
                 </div>
               </div>
             </div>

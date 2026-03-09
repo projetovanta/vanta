@@ -241,7 +241,13 @@ export const authService = {
       } = await supabase.auth.getSession();
       if (!session?.user) return null;
 
-      const { data: profile } = await supabase.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
+      // Timeout de 4s — evita trava em rede lenta
+      const profilePromise = supabase.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
+      const result = await Promise.race([
+        profilePromise,
+        new Promise<{ data: null }>(resolve => setTimeout(() => resolve({ data: null }), 4000)),
+      ]);
+      const profile = result.data as any;
 
       if (!profile) return null;
       return profileToMembro(profile);
@@ -300,9 +306,15 @@ export const authService = {
         return;
       }
       try {
-        const { data: profile } = await supabase.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
+        // Timeout de 4s no fetch de profile — evita trava se rede estiver lenta
+        const profilePromise = supabase.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
+        const result = await Promise.race([
+          profilePromise,
+          new Promise<{ data: null }>(resolve => setTimeout(() => resolve({ data: null }), 4000)),
+        ]);
+        const profile = result.data;
 
-        callback(profile ? profileToMembro(profile) : null);
+        callback(profile ? profileToMembro(profile as any) : null);
       } catch {
         callback(null);
       }

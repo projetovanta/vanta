@@ -152,6 +152,11 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   },
 
   init: () => {
+    // Singleton: se já inicializou, retorna cleanup noop (evita double-init do StrictMode)
+    if (_initUnsub) {
+      return () => {};
+    }
+
     let resolved = false;
 
     const applySession = (membro: Membro | null) => {
@@ -245,10 +250,16 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       }
     }, 6000);
 
-    return () => {
+    _initUnsub = () => {
       clearTimeout(fallbackTimer);
       clearTimeout(absoluteTimer);
       unsubscribe();
+      _initUnsub = null;
     };
+
+    return _initUnsub;
   },
 }));
+
+// Singleton guard — evita double-init do StrictMode
+let _initUnsub: (() => void) | null = null;

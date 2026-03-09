@@ -18,7 +18,7 @@ export const TabBar: React.FC<{
     { id: 'PERFIL', icon: User, label: 'Perfil' },
   ];
   return (
-    <nav className="shrink-0 w-full z-[100]" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) * 0.5)' }}>
+    <nav className="shrink-0 w-full z-[100]">
       <div className="flex justify-around items-center h-11 bg-[#050505] border-t border-white/5">
         {tabs.map(tab => (
           <button

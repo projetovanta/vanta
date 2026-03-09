@@ -23,7 +23,7 @@ export const mesasService = {
   async getMesas(eventoId: string): Promise<Mesa[]> {
     const { data, error } = await supabase
       .from('mesas')
-      .select('*')
+      .select('id, evento_id, label, x, y, capacidade, valor, status, reservado_por, created_at')
       .eq('evento_id', eventoId)
       .order('created_at', { ascending: true })
       .limit(500);

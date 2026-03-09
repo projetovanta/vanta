@@ -109,7 +109,7 @@ export const messagesService = {
     try {
       const { data, error } = await supabase
         .from('messages')
-        .select('*')
+        .select('id, sender_id, recipient_id, text, created_at, is_read, read_at, deleted_at, reactions')
         .or(
           `and(sender_id.eq.${userId},recipient_id.eq.${participantId}),` +
             `and(sender_id.eq.${participantId},recipient_id.eq.${userId})`,
@@ -132,7 +132,7 @@ export const messagesService = {
     try {
       const { data, error } = await supabase
         .from('messages')
-        .select('*')
+        .select('id, sender_id, recipient_id, text, created_at, is_read, read_at, deleted_at, reactions')
         .or(`sender_id.eq.${userId},recipient_id.eq.${userId}`)
         .is('deleted_at', null)
         .order('created_at', { ascending: false })

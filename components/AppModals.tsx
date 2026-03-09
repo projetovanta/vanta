@@ -1,8 +1,9 @@
 import React, { lazy } from 'react';
 import { TYPOGRAPHY } from '../constants';
-import { Check, X, Shield } from 'lucide-react';
+import { Check, X, Shield, Lock } from 'lucide-react';
 import { PushPermissionBanner } from './PushPermissionBanner';
 import type { usePWA } from '../hooks/usePWA';
+import { useAuthStore } from '../stores/authStore';
 
 const LoginView = lazy(() => import('./LoginView').then(m => ({ default: m.LoginView })));
 const ReviewModal = lazy(() => import('./ReviewModal'));
@@ -84,6 +85,29 @@ export const SuccessFeedbackModal = ({ message, onClose }: { message: string; on
   </div>
 );
 
+const SessionExpiredModal = ({ onLogin }: { onLogin: () => void }) => (
+  <div className="absolute inset-0 z-[200] flex items-center justify-center p-6 animate-in fade-in duration-300">
+    <div className="absolute inset-0 bg-black/90 backdrop-blur-xl" role="presentation" />
+    <div className="relative w-full max-w-[85%] bg-[#0A0A0A] border border-white/10 rounded-[2.5rem] p-8 text-center shadow-[0_0_50px_rgba(0,0,0,0.5)] animate-in zoom-in-95 duration-300">
+      <div className="w-20 h-20 bg-zinc-900 rounded-full flex items-center justify-center mx-auto mb-6 border border-white/10 shadow-xl">
+        <Lock size={28} className="text-[#FFD300]" />
+      </div>
+      <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-3 italic">
+        Sessão expirada
+      </h2>
+      <p className="text-zinc-400 text-xs leading-relaxed mb-8 px-2">
+        Sua sessão expirou. Faça login novamente para continuar.
+      </p>
+      <button
+        onClick={onLogin}
+        className="w-full py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all"
+      >
+        Fazer login
+      </button>
+    </div>
+  </div>
+);
+
 // ── Agregador de modais ────────────────────────────────────────────────────
 interface AppModalsProps {
   isGuest: boolean;
@@ -133,88 +157,101 @@ export const AppModals: React.FC<AppModalsProps> = ({
   handleLoginSuccess,
   handleOnboardingComplete,
   onRegisterFcm,
-}) => (
-  <>
-    {showLoginView && (
-      <div className="absolute inset-0 z-[340] flex flex-col bg-[#0A0A0A] animate-in slide-in-from-bottom duration-300">
-        <LoginView
-          onSuccess={handleLoginSuccess}
-          onRegister={() => {
-            setShowLoginView(false);
+}) => {
+  const sessionExpired = useAuthStore(s => s.sessionExpired);
+  const setSessionExpired = useAuthStore(s => s.setSessionExpired);
+
+  return (
+    <>
+      {sessionExpired && (
+        <SessionExpiredModal
+          onLogin={() => {
+            setSessionExpired(false);
+            setShowLoginView(true);
+          }}
+        />
+      )}
+      {showLoginView && (
+        <div className="absolute inset-0 z-[340] flex flex-col bg-[#0A0A0A] animate-in slide-in-from-bottom duration-300">
+          <LoginView
+            onSuccess={handleLoginSuccess}
+            onRegister={() => {
+              setShowLoginView(false);
+              setShowAuthModal(true);
+            }}
+            onClose={() => setShowLoginView(false)}
+          />
+        </div>
+      )}
+      {showGuestModal && (
+        <GuestAreaModal
+          onLogin={() => {
+            setShowGuestModal(false);
+            setShowLoginView(true);
+          }}
+          onCadastrar={() => {
+            setShowGuestModal(false);
             setShowAuthModal(true);
           }}
-          onClose={() => setShowLoginView(false)}
+          onCancel={() => setShowGuestModal(false)}
         />
-      </div>
-    )}
-    {showGuestModal && (
-      <GuestAreaModal
-        onLogin={() => {
-          setShowGuestModal(false);
-          setShowLoginView(true);
-        }}
-        onCadastrar={() => {
-          setShowGuestModal(false);
-          setShowAuthModal(true);
-        }}
-        onCancel={() => setShowGuestModal(false)}
-      />
-    )}
-    {showSuccessModal && <SuccessFeedbackModal message={successMessage} onClose={() => setShowSuccessModal(false)} />}
-    {showProfileSuccess && (
-      <SuccessFeedbackModal message="Perfil atualizado com sucesso!" onClose={() => setShowProfileSuccess(false)} />
-    )}
-    {showOnboarding && <OnboardingView onComplete={handleOnboardingComplete} />}
-    {reviewTarget && (
-      <ReviewModal
-        eventoId={reviewTarget.eventoId}
-        eventoNome={reviewTarget.eventoNome}
-        userId={userId}
-        onClose={() => setReviewTarget(null)}
-      />
-    )}
-    {/* PWA update banner */}
-    {pwa.updateAvailable && (
-      <div className="absolute bottom-20 left-3 right-3 z-[500] bg-zinc-900 border border-[#FFD300]/30 rounded-2xl p-4 flex items-center gap-3 shadow-2xl animate-in slide-in-from-bottom-4 duration-300">
-        <div className="w-8 h-8 rounded-xl bg-[#FFD300]/10 flex items-center justify-center shrink-0">
-          <Check size={14} className="text-[#FFD300]" />
+      )}
+      {showSuccessModal && <SuccessFeedbackModal message={successMessage} onClose={() => setShowSuccessModal(false)} />}
+      {showProfileSuccess && (
+        <SuccessFeedbackModal message="Perfil atualizado com sucesso!" onClose={() => setShowProfileSuccess(false)} />
+      )}
+      {showOnboarding && <OnboardingView onComplete={handleOnboardingComplete} />}
+      {reviewTarget && (
+        <ReviewModal
+          eventoId={reviewTarget.eventoId}
+          eventoNome={reviewTarget.eventoNome}
+          userId={userId}
+          onClose={() => setReviewTarget(null)}
+        />
+      )}
+      {/* PWA update banner */}
+      {pwa.updateAvailable && (
+        <div className="absolute bottom-20 left-3 right-3 z-[500] bg-zinc-900 border border-[#FFD300]/30 rounded-2xl p-4 flex items-center gap-3 shadow-2xl animate-in slide-in-from-bottom-4 duration-300">
+          <div className="w-8 h-8 rounded-xl bg-[#FFD300]/10 flex items-center justify-center shrink-0">
+            <Check size={14} className="text-[#FFD300]" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-white text-xs font-bold leading-none">Nova versão disponível</p>
+            <p className="text-zinc-400 text-[10px] mt-0.5">Atualize para a versão mais recente.</p>
+          </div>
+          <button
+            onClick={pwa.applyUpdate}
+            className="shrink-0 px-3 py-1.5 bg-[#FFD300] text-black text-[10px] font-black uppercase tracking-wider rounded-lg active:scale-95 transition-all"
+          >
+            Atualizar
+          </button>
         </div>
-        <div className="flex-1 min-w-0">
-          <p className="text-white text-xs font-bold leading-none">Nova versão disponível</p>
-          <p className="text-zinc-400 text-[10px] mt-0.5">Atualize para a versão mais recente.</p>
+      )}
+      {/* PWA install banner */}
+      {pwa.canInstall && !pwa.isInstalled && (
+        <div className="absolute bottom-20 left-3 right-3 z-[499] bg-zinc-900 border border-white/10 rounded-2xl p-4 flex items-center gap-3 shadow-2xl animate-in slide-in-from-bottom-4 duration-300">
+          <img loading="lazy" src="/icon-192.png" alt="VANTA" className="w-8 h-8 rounded-xl shrink-0" />
+          <div className="flex-1 min-w-0">
+            <p className="text-white text-xs font-bold leading-none">Adicionar à tela inicial</p>
+            <p className="text-zinc-400 text-[10px] mt-0.5">Acesse o VANTA como app nativo.</p>
+          </div>
+          <button
+            onClick={pwa.installApp}
+            className="shrink-0 px-3 py-1.5 bg-zinc-800 border border-white/10 text-white text-[10px] font-black uppercase tracking-wider rounded-lg active:scale-95 transition-all"
+          >
+            Instalar
+          </button>
         </div>
-        <button
-          onClick={pwa.applyUpdate}
-          className="shrink-0 px-3 py-1.5 bg-[#FFD300] text-black text-[10px] font-black uppercase tracking-wider rounded-lg active:scale-95 transition-all"
-        >
-          Atualizar
-        </button>
-      </div>
-    )}
-    {/* PWA install banner */}
-    {pwa.canInstall && !pwa.isInstalled && (
-      <div className="absolute bottom-20 left-3 right-3 z-[499] bg-zinc-900 border border-white/10 rounded-2xl p-4 flex items-center gap-3 shadow-2xl animate-in slide-in-from-bottom-4 duration-300">
-        <img loading="lazy" src="/icon-192.png" alt="VANTA" className="w-8 h-8 rounded-xl shrink-0" />
-        <div className="flex-1 min-w-0">
-          <p className="text-white text-xs font-bold leading-none">Adicionar à tela inicial</p>
-          <p className="text-zinc-400 text-[10px] mt-0.5">Acesse o VANTA como app nativo.</p>
-        </div>
-        <button
-          onClick={pwa.installApp}
-          className="shrink-0 px-3 py-1.5 bg-zinc-800 border border-white/10 text-white text-[10px] font-black uppercase tracking-wider rounded-lg active:scale-95 transition-all"
-        >
-          Instalar
-        </button>
-      </div>
-    )}
-    {/* Push permission banner */}
-    {!isGuest && (
-      <PushPermissionBanner
-        permission={pwa.notifPermission}
-        isInstalled={pwa.isInstalled}
-        onRequestPermission={pwa.requestNotifPermission}
-        onRegisterFcm={onRegisterFcm}
-      />
-    )}
-  </>
-);
+      )}
+      {/* Push permission banner */}
+      {!isGuest && (
+        <PushPermissionBanner
+          permission={pwa.notifPermission}
+          isInstalled={pwa.isInstalled}
+          onRequestPermission={pwa.requestNotifPermission}
+          onRegisterFcm={onRegisterFcm}
+        />
+      )}
+    </>
+  );
+};

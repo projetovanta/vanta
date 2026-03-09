@@ -32,10 +32,12 @@ interface AuthState {
   selectedCity: string;
   notifications: Notificacao[];
   unreadNotifications: number;
+  sessionExpired: boolean;
 
   // ações
   loginWithMembro: (m: Membro) => void;
   logout: () => Promise<void>;
+  setSessionExpired: (v: boolean) => void;
   updateProfile: (data: Partial<Membro>) => boolean;
   registerUser: (m: Membro) => void;
   setSelectedCity: (city: string) => void;
@@ -59,9 +61,14 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   selectedCity: localStorage.getItem('vanta_selected_city') || '',
   notifications: [],
   unreadNotifications: 0,
+  sessionExpired: false,
   accessNodes: [],
 
+  setSessionExpired: v => set({ sessionExpired: v }),
+
   loginWithMembro: m => {
+    // Re-login após sessão expirada: limpa flag
+    set({ sessionExpired: false });
     set({ currentAccount: m, profile: m, authLoading: false });
     // Disparar inicializações imediatamente (sem esperar onAuthStateChange)
     enrichInstagramFollowers(m.id, m.instagram);
@@ -103,7 +110,14 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   },
 
   logout: async () => {
+    _isVoluntaryLogout = true;
     await authService.signOut();
+    _isVoluntaryLogout = false;
+    try {
+      sessionStorage.removeItem('vanta_admin_tenant');
+    } catch {
+      /* silencioso */
+    }
     clearAllCache();
     realtimeManager.unsubscribeAll();
     set({ currentAccount: GUEST_PLACEHOLDER, profile: GUEST_PLACEHOLDER });
@@ -207,11 +221,18 @@ export const useAuthStore = create<AuthState>((set, get) => ({
           set({ accessNodes: [] });
         }
       } else {
+        // Sessão expirada (não voluntária) — user era logado mas perdeu sessão
+        const wasLoggedIn = get().currentAccount.id !== '';
+        if (wasLoggedIn && !_isVoluntaryLogout) {
+          set({ sessionExpired: true, authLoading: false });
+          return; // NÃO limpa dados — user pode re-logar e continuar
+        }
         set({
           currentAccount: GUEST_PLACEHOLDER,
           profile: GUEST_PLACEHOLDER,
           authLoading: false,
           accessNodes: [],
+          sessionExpired: false,
         });
         notificationsService.setUserId(null);
         realtimeManager.unsubscribeAll();
@@ -263,3 +284,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
 // Singleton guard — evita double-init do StrictMode
 let _initUnsub: (() => void) | null = null;
+
+// Flag para diferenciar logout voluntário de sessão expirada
+let _isVoluntaryLogout = false;

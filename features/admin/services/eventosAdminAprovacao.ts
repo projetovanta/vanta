@@ -313,7 +313,6 @@ export const contraPropostaConvite = async (
     rodada_negociacao: novaRodada,
     split_produtor: proposta.splitProdutor,
     split_socio: proposta.splitSocio,
-    mensagem_negociacao: proposta.mensagem ?? null,
   };
   if (proposta.permissoesProdutor !== undefined) updates.permissoes_produtor = proposta.permissoesProdutor;
 
@@ -322,6 +321,17 @@ export const contraPropostaConvite = async (
   if (error) {
     console.error('[eventosAdminAprovacao] contraPropostaConvite erro:', error);
     return { ok: false, erro: error.message };
+  }
+
+  // mensagem_negociacao pertence a socios_evento
+  if (socioMatch) {
+    await supabase
+      .from('socios_evento')
+      .update({
+        mensagem_negociacao: proposta.mensagem ?? null,
+        rodada_negociacao: novaRodada,
+      })
+      .eq('id', socioMatch.id);
   }
 
   // Notifica produtor
@@ -541,13 +551,27 @@ export const reenviarConvite = async (
   if (proposta.splitProdutor !== undefined) updates.split_produtor = proposta.splitProdutor;
   if (proposta.splitSocio !== undefined) updates.split_socio = proposta.splitSocio;
   if (proposta.permissoesProdutor !== undefined) updates.permissoes_produtor = proposta.permissoesProdutor;
-  if (proposta.mensagem !== undefined) updates.mensagem_negociacao = proposta.mensagem;
 
   const { error } = await supabase.from('eventos_admin').update(updates).eq('id', eventoId);
 
   if (error) {
     console.error('[eventosAdminAprovacao] reenviarConvite erro:', error);
     return { ok: false, erro: error.message };
+  }
+
+  // mensagem_negociacao pertence a socios_evento
+  if (proposta.mensagem !== undefined) {
+    const socioId = ev.socioConvidadoId ?? ev.socios?.[0]?.socioId;
+    if (socioId) {
+      await supabase
+        .from('socios_evento')
+        .update({
+          mensagem_negociacao: proposta.mensagem,
+          rodada_negociacao: novaRodada,
+        })
+        .eq('evento_id', eventoId)
+        .eq('socio_id', socioId);
+    }
   }
 
   // Notifica sócio

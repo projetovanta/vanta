@@ -172,7 +172,7 @@ const rowToEventoAdmin = (
     splitSocio: row.split_socio != null ? Number(row.split_socio) : undefined,
     permissoesProdutor: row.permissoes_produtor ?? undefined,
     rodadaNegociacao: row.rodada_negociacao != null ? Number(row.rodada_negociacao) : undefined,
-    mensagemNegociacao: (row as any).mensagem_negociacao ?? undefined,
+    mensagemNegociacao: undefined,
     formato: row.formato ?? row.categoria ?? undefined,
     estilos: row.estilos ?? undefined,
     experiencias: row.experiencias ?? undefined,

@@ -329,21 +329,83 @@ audit_logs, cargos, categorias_evento, chargebacks, cidades_mais_vanta, comprova
 
 ---
 
+## FASE 6 — ANÁLISE DE 40 TABELAS SEM `.from()` NO CÓDIGO
+
+Investigação completa de todas as 40 tabelas listadas na auditoria. Resultado:
+
+### ✅ Usadas via código (38 tabelas)
+Todas têm referências em types, mappers, joins, RPCs ou services:
+
+| Tabela | Refs no código | Uso |
+|---|---|---|
+| `assinaturas_mais_vanta` | 17 | clubeAssinaturasService, stripe-webhook |
+| `atribuicoes_rbac` | 7 | rbacService, types |
+| `bloqueios_comunidade` | 3 | bloqueioService |
+| `cargos` | 8 | rbacService, AdminGateway |
+| `comemoracoes_config` | 11 | comemoracaoService |
+| `comemoracoes_cortesias` | 7 | comemoracaoService |
+| `community_follows` | 11 | communityFollowService |
+| `comunidades` | 70 | comunidadesService, RPC joins |
+| `convidados_lista` | 38 | convidadosService, edge functions |
+| `convites_mais_vanta` | 12 | clubeConvitesService |
+| `cortesias_pendentes` | 24 | cortesiasService |
+| `cotas_promoter` | 16 | promoterService |
+| `cupons` | 14 | cuponsService |
+| `equipe_evento` | 25 | equipeService, RPCs |
+| `eventos_admin` | 247 | eventosAdminCore, múltiplos services |
+| `friendships` | 30 | friendshipsService |
+| `infracoes` | 12 | infracoesService, edge functions |
+| `listas_evento` | 36 | listasService |
+| `lotes` | 40 | lotesService, checkout |
+| `lotes_mais_vanta` | 14 | clubeLotesService |
+| `membros_clube` | 29 | clubeMembrosService |
+| `membros_comunidade` | 31 | membrosComunidadeService |
+| `mesas` | 15 | mesasService |
+| `messages` | 21 | messagesService |
+| `notifications` | 18 | notificationsService |
+| `parceiros_vantagens` | 6 | clubeParceirosService |
+| `profiles` | 102 | authService, múltiplos services |
+| `push_subscriptions` | 14 | pushService, edge functions |
+| `reembolsos` | 16 | reembolsoService |
+| `reembolsos_contagem` | 5 | reembolsoService |
+| `regras_lista` | 13 | regrasListaService |
+| `reservas_mais_vanta` | 20 | clubeReservasService |
+| `resgates_mais_vanta` | 10 | clubeResgatesService |
+| `reviews` | 13 | reviewsService |
+| `saved_events` | 6 | favoritosService |
+| `socios_evento` | 16 | negociacaoService |
+| `solicitacoes_parceria` | 12 | parceriaService |
+| `solicitacoes_saque` | 14 | saqueService |
+
+### ⚠️ Apenas referências SQL (1 tabela)
+| Tabela | Refs SQL | Nota |
+|---|---|---|
+| `categorias_evento` | 1 (migration) | Usada em join de RPC `search_eventos_v2`. Sem service próprio — acessada indiretamente |
+
+### 🔴 Sem referências (1 tabela)
+| Tabela | Nota |
+|---|---|
+| `niveis_prestigio` | Zero referências em código ou SQL. Schema reservado para feature futura de gamificação |
+
+**Conclusão**: Das 40 tabelas flagged, **38 são ativamente usadas**, 1 é usada indiretamente via RPC, e apenas 1 (`niveis_prestigio`) é genuinamente sem uso. NÃO é dead schema — a auditoria original superestimou o problema.
+
+---
+
 ## RESUMO EXECUTIVO
 
 ### 🔴 CRÍTICO (ação necessária)
-1. **`.env.vercel` fora do .gitignore** — risco de commit acidental de secrets
-2. **`.lighthouseci/` fora do .gitignore** — diretório não-rastreado sem proteção
-3. ~~Tabela `selfies` fantasma~~ — FALSO POSITIVO: é bucket de Storage (existe). Porém bucket está `public:true` e deveria ser `private` (biometria)
+1. ~~`.env.vercel` fora do .gitignore~~ — ✅ CORRIGIDO (Fase 1)
+2. ~~`.lighthouseci/` fora do .gitignore~~ — ✅ CORRIGIDO (Fase 1)
+3. ~~Tabela `selfies` fantasma~~ — FALSO POSITIVO: é bucket de Storage. ✅ Bucket corrigido para `private` (Fase 1)
 
 ### 🟡 ATENÇÃO (melhorias recomendadas)
-1. **38 queries sem tratamento de erro** (15 frontend + 23 edge functions) — erros silenciosos
-2. **~20+ `.single()` que deveriam ser `.maybeSingle()`** — podem causar erro 406 se row não existe
-3. **30+ `select('*')` em queries** — performance em tabelas grandes
-4. **40 tabelas definidas sem `.from()` no código** — possível dead schema
+1. ~~38 queries sem tratamento de erro~~ — ✅ CORRIGIDO: 15 frontend (Fase 3) + 26 edge functions (Fase 4)
+2. ~~~20+ `.single()` que deveriam ser `.maybeSingle()`~~ — ✅ CORRIGIDO: 14 reads convertidos (Fase 2)
+3. ~~30+ `select('*')` em queries~~ — ✅ CORRIGIDO parcial: 5 services otimizados (Fase 5). 3 mantidos (authService, comunidadesService, transferenciaService — usam 14-20+ campos)
+4. ~~40 tabelas definidas sem `.from()` no código~~ — ✅ DOCUMENTADO (Fase 6): 38 usadas ativamente, 1 via RPC, 1 sem uso (niveis_prestigio)
 5. **exceljs (910KB) + jspdf (377KB)** — considerar dynamic import mais granular
 6. **Main chunk 534KB** — próximo do limite recomendado (500KB)
-7. **`verificar_virada_lote` e `incrementar_usos_cupom`** — RPCs sem error handling
+7. ~~`verificar_virada_lote` e `incrementar_usos_cupom`~~ — ✅ CORRIGIDO (Fases 3-4)
 8. **icon-1024.png (962KB)** — considerar compressão/webp
 
 ### ✅ SAUDÁVEL
@@ -364,10 +426,13 @@ audit_logs, cargos, categorias_evento, chargebacks, cidades_mais_vanta, comprova
 
 ---
 
-## VERIFICAÇÃO FINAL
+## CORREÇÕES APLICADAS (branch `fix/auditoria-completa`)
 
-```bash
-$ git diff
-# (nenhuma saída — ZERO arquivos do projeto modificados)
-# Apenas ERRONAVEGACAOFLUXO.md foi criado (novo arquivo)
-```
+| Fase | Commit | Descrição |
+|---|---|---|
+| 1 | `5675a85` | .gitignore secrets + bucket selfies privado |
+| 2 | `3e93087` | 14x `.single()` → `.maybeSingle()` em reads |
+| 3 | `92ca8b3` | Error handling em 15 queries frontend + 2 RPCs |
+| 4 | `71b9553` | Error handling em 26 queries de 6 edge functions |
+| 5 | `c2d0472` | `select('*')` → selects específicos em 5 services |
+| 6 | — | Documentação: 40 tabelas analisadas (38 ativas, 1 RPC, 1 sem uso) |

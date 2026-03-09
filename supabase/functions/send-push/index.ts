@@ -34,6 +34,7 @@ function corsHeaders(req: Request) {
   return {
     'Access-Control-Allow-Origin': getCorsOrigin(req),
     'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
   };
 }
 
@@ -92,23 +93,23 @@ serve(async (req: Request) => {
   }
 
   try {
-    // Verificar autenticação
-    const authHeader = req.headers.get('Authorization');
-    if (!authHeader) {
-      return new Response(JSON.stringify({ error: 'Não autorizado.' }), {
-        status: 401, headers: { ...corsHeaders(req), 'Content-Type': 'application/json' },
-      });
-    }
+    // Autenticação: criar client com token do request (gateway já validou JWT)
+    const authHeader = req.headers.get('Authorization') ?? '';
+    const supabaseAuth = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+      global: { headers: { Authorization: authHeader } },
+    });
 
-    const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
-    const token = authHeader.replace('Bearer ', '');
-    const { data: { user }, error: authErr } = await supabase.auth.getUser(token);
+    const { data: { user }, error: authErr } = await supabaseAuth.auth.getUser();
 
     if (authErr || !user) {
-      return new Response(JSON.stringify({ error: 'Token inválido.' }), {
+      console.error('[send-push] auth failed:', authErr?.message ?? 'no user', 'hasAuth:', !!authHeader);
+      return new Response(JSON.stringify({ error: 'Não autorizado.', detail: authErr?.message }), {
         status: 401, headers: { ...corsHeaders(req), 'Content-Type': 'application/json' },
       });
     }
+
+    // Service role client para queries sem RLS
+    const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
     // Verificar role — apenas masteradm pode enviar push
     const { data: profile } = await supabase

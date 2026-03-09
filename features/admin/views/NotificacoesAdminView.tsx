@@ -583,6 +583,9 @@ export const NotificacoesAdminView: React.FC<{ onBack: () => void }> = ({ onBack
                     <p className="text-zinc-400 text-[10px]">
                       Push: {resultado.push.enviados} enviados
                       {resultado.push.erros > 0 ? `, ${resultado.push.erros} erros` : ''}
+                      {resultado.push.enviados === 0 && resultado.push.erros === 0
+                        ? ' (nenhum usuário com push ativado)'
+                        : ''}
                     </p>
                   )}
                   {canais.includes('EMAIL') && (

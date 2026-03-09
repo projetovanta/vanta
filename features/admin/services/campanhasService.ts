@@ -249,7 +249,9 @@ export const campanhasService = {
           resultado.push.erros = destinatarios.length;
         } else {
           resultado.push.enviados = (body?.sent as number) ?? 0;
-          resultado.push.erros = userIds.length - resultado.push.enviados;
+          const total = (body?.total as number) ?? 0;
+          // Erros reais = tokens que falharam, não usuários sem token
+          resultado.push.erros = total > 0 ? total - resultado.push.enviados : 0;
         }
       } catch {
         resultado.push.erros = destinatarios.length;

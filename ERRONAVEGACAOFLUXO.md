@@ -846,21 +846,10 @@ Items com guard contextual: PORTARIA_QR, PORTARIA_LISTA, CAIXA, FINANCEIRO, LIST
 
 ### ⚠️ PROBLEMAS DE UX ENCONTRADOS
 
-1. **Sem página 404**: Rota inexistente mostra HomeView silenciosamente. Usuário não sabe que errou a URL.
-   - Impacto: baixo (app é SPA, poucos acessam por URL diretamente)
-   - Sugestão: adicionar catch-all com tela "Página não encontrada" + CTA "Ir para início"
-
-2. **Sem modal de re-login ao expirar sessão**: Se o token expira no meio de uma ação, o erro é silencioso (console.error). Usuário pode ficar sem feedback.
-   - Impacto: médio (sessões Supabase duram 1h com auto-refresh)
-   - Sugestão: interceptor global que detecta 401 e mostra modal de re-autenticação
-
-3. **Admin não persiste no refresh**: Estado do admin (comunidade selecionada, sub-view ativa) é interno. F5 volta pra Home.
-   - Impacto: baixo (admin é app nativo, poucos fazem F5)
-   - Sugestão: persistir estado admin em URL params ou sessionStorage
-
-4. **/parceiro sem guard de auth**: Rota standalone acessível sem login. Dados protegidos por RLS, mas UX inconsistente.
-   - Impacto: baixo (RLS protege)
-   - Sugestão: adicionar guard de auth
+1. ~~**Sem página 404**~~ — ✅ CORRIGIDO: `NotFoundView` com catch-all route `path="*"` (`aaa0e40`)
+2. ~~**Sem modal de re-login ao expirar sessão**~~ — ✅ CORRIGIDO: `SessionExpiredModal` + `sessionExpired` flag no authStore (`8fe0766`)
+3. ~~**Admin não persiste no refresh**~~ — ✅ CORRIGIDO: sessionStorage com revalidação via `get_admin_access` (`d10d04c`)
+4. ~~**/parceiro sem guard de auth**~~ — ✅ CORRIGIDO: `authLoading` check + guard existente já tratava guest (`aacb1dc`)
 
 ---
 

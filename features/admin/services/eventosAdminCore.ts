@@ -206,7 +206,7 @@ let _inflight: Promise<void> | null = null;
  */
 export const refresh = (): Promise<void> => {
   if (_inflight) {
-    console.info('[eventosAdminCore] refresh already in-flight, reusing');
+    console.debug('[eventosAdminCore] refresh already in-flight, reusing');
     return _inflight;
   }
   _inflight = _doRefresh().finally(() => {

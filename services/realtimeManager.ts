@@ -81,7 +81,7 @@ function scheduleReconnect(entry: ManagedChannel): void {
     channels.delete(entry.name);
 
     // Recriar via subscribe normal (mantém setup e opts originais)
-    console.info(`[realtimeManager] ${entry.name}: reconnecting (attempt #${attempt})`);
+    console.debug(`[realtimeManager] ${entry.name}: reconnecting (attempt #${attempt})`);
     const cleanup = realtimeManager.subscribe(entry.name, entry.setup, entry.channelOpts);
 
     // Propagar o contador de tentativas para o novo entry
@@ -100,7 +100,7 @@ function createStatusHandler(entry: ManagedChannel) {
     if (status === 'SUBSCRIBED') {
       // Sucesso — resetar contador de reconexão
       if (entry.reconnectAttempts > 0) {
-        console.info(`[realtimeManager] ${entry.name}: reconnected successfully`);
+        console.debug(`[realtimeManager] ${entry.name}: reconnected successfully`);
       }
       entry.reconnectAttempts = 0;
       return;

@@ -1,7 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /admin
-Disallow: /checkout
-Disallow: /parceiro
-
-Sitemap: https://maisvanta.com/api/sitemap.xml

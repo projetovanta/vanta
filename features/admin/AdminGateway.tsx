@@ -111,8 +111,9 @@ export const AdminGateway: React.FC<Props> = ({ onBack }) => {
   if (destinoEfetivo) {
     const isMasterGlobal = destinoEfetivo.tipo === 'MASTER';
     // Resolver adminRole pelo cargo da RPC (zero dependência de cache)
-    let resolvedRole: ContaVanta = role;
-    if (!isMasterGlobal && destinoEfetivo.tenantId && accessData) {
+    // IMPORTANTE: masteradm NUNCA é rebaixado — mantém acesso total mesmo entrando via comunidade
+    let resolvedRole: ContaVanta = isMaster ? 'vanta_masteradm' : role;
+    if (!isMaster && !isMasterGlobal && destinoEfetivo.tenantId && accessData) {
       const comData = accessData.comunidades.find(c => c.id === destinoEfetivo.tenantId);
       if (comData?.cargo) {
         const cargoKey = comData.cargo as keyof typeof CARGO_TO_PORTAL;
@@ -130,7 +131,7 @@ export const AdminGateway: React.FC<Props> = ({ onBack }) => {
               }
         }
         adminNome={adminNome}
-        adminRole={isMasterGlobal ? 'vanta_masteradm' : resolvedRole}
+        adminRole={resolvedRole}
         currentUserId={currentUserId}
         addNotification={addNotification}
         initialTenantId={isMasterGlobal ? undefined : destinoEfetivo.tenantId || undefined}

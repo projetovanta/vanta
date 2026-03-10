@@ -26,7 +26,7 @@ export async function solicitarEntrada(
   userId: string,
   instagramHandle: string,
   seguidores?: number,
-  verificacao?: { verificado: boolean; verificadoEm?: string; codigo?: string },
+  verificacao?: { verificado: boolean; verificadoEm?: string; codigo?: string; comoConheceu?: string },
 ): Promise<SolicitacaoClube> {
   const row = {
     user_id: userId,
@@ -35,6 +35,7 @@ export async function solicitarEntrada(
     instagram_verificado: verificacao?.verificado ?? false,
     instagram_verificado_em: verificacao?.verificadoEm ?? null,
     codigo_verificacao: verificacao?.codigo ?? null,
+    como_conheceu: verificacao?.comoConheceu ?? null,
     status: 'PENDENTE',
     criado_em: tsBR(),
   };

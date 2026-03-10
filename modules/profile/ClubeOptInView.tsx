@@ -74,6 +74,9 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
   const [optInFase, setOptInFase] = useState<1 | 2>(conviteId ? 2 : 1);
   const [aceitouTermos, setAceitouTermos] = useState(false);
   const [mostrarTermos, setMostrarTermos] = useState(false);
+  const [mostrarTermosModal, setMostrarTermosModal] = useState(false);
+  const [comoConheceu, setComoConheceu] = useState('');
+  const [comoConheceuAberto, setComoConheceuAberto] = useState(false);
 
   // ── Instagram verificação ──────────────────────────────────────────────────
   type IgStep = 'INPUT' | 'CHECKING' | 'BIO_CHECK' | 'VERIFIED' | 'SKIPPED';
@@ -195,6 +198,7 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
         verificado: igVerified,
         verificadoEm: igVerified ? tsBR() : undefined,
         codigo: verificationCode,
+        comoConheceu: comoConheceu || undefined,
       });
       setSolicitacaoStatus('PENDENTE');
       onSuccess?.('Solicitação enviada! Aguarde aprovação.');
@@ -795,6 +799,45 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
           )}
         </div>
 
+        {/* Como conheceu o VANTA */}
+        <div className="mb-4">
+          <label className="text-[9px] font-black uppercase tracking-widest text-zinc-400 mb-2 block">
+            Como conheceu o VANTA?
+          </label>
+          <div className="relative">
+            <button
+              onClick={() => setComoConheceuAberto(v => !v)}
+              className="w-full flex items-center justify-between px-4 py-3 bg-zinc-900/80 border border-zinc-800 rounded-xl text-sm transition-colors"
+            >
+              <span className={comoConheceu ? 'text-white' : 'text-zinc-500'}>
+                {comoConheceu || 'Selecione uma opção'}
+              </span>
+              <ChevronRight
+                size={12}
+                className={`text-zinc-400 transition-transform ${comoConheceuAberto ? 'rotate-90' : ''}`}
+              />
+            </button>
+            {comoConheceuAberto && (
+              <div className="absolute z-20 top-full left-0 right-0 mt-1 bg-zinc-900 border border-zinc-700 rounded-xl overflow-hidden shadow-xl">
+                {['Redes sociais', 'Amigo', 'Evento', 'Outro'].map(opcao => (
+                  <button
+                    key={opcao}
+                    onClick={() => {
+                      setComoConheceu(opcao);
+                      setComoConheceuAberto(false);
+                    }}
+                    className={`w-full text-left px-4 py-3 text-sm active:bg-white/10 transition-colors ${
+                      comoConheceu === opcao ? 'text-[#FFD300] bg-[#FFD300]/5' : 'text-zinc-300'
+                    }`}
+                  >
+                    {opcao}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
         {/* Aviso importante */}
         <div className="bg-amber-500/5 border border-amber-500/15 rounded-xl p-3 mb-4">
           <div className="flex items-start gap-2">
@@ -809,25 +852,15 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
         {/* Termos de uso */}
         <div className="bg-zinc-900/60 border border-white/5 rounded-xl mb-4">
           <button
-            onClick={() => setMostrarTermos(v => !v)}
+            onClick={() => setMostrarTermosModal(true)}
             className="w-full flex items-center justify-between px-4 py-3 active:bg-white/5 transition-all"
           >
             <div className="flex items-center gap-2">
               <Shield size={12} className="text-zinc-400" />
               <span className="text-zinc-300 text-xs font-semibold">Termos de Uso e Privacidade (LGPD)</span>
             </div>
-            <ChevronRight
-              size={12}
-              className={`text-zinc-400 transition-transform ${mostrarTermos ? 'rotate-90' : ''}`}
-            />
+            <ChevronRight size={12} className="text-zinc-400" />
           </button>
-          {mostrarTermos && (
-            <div className="px-4 pb-4 max-h-60 overflow-y-auto no-scrollbar">
-              <pre className="text-zinc-400 text-[9px] leading-relaxed whitespace-pre-wrap font-sans">
-                {maisVantaConfigService.getConfig().termosCustomizados || TERMOS_PADRAO}
-              </pre>
-            </div>
-          )}
         </div>
 
         {/* Checkbox aceite */}
@@ -862,6 +895,37 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
           {maisVantaConfigService.getConfig().emailContato}.
         </p>
       </div>
+
+      {/* Modal Termos MAIS VANTA */}
+      {mostrarTermosModal && (
+        <div
+          className="absolute inset-0 z-[80] flex items-end"
+          role="presentation"
+          onClick={() => setMostrarTermosModal(false)}
+        >
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+          <div
+            className="relative w-full max-h-[85%] bg-[#111111] border-t border-white/10 rounded-t-3xl flex flex-col animate-in slide-in-from-bottom duration-300"
+            style={{ paddingBottom: 'max(1.5rem, env(safe-area-inset-bottom, 1.5rem))' }}
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between px-5 pt-5 pb-3 shrink-0">
+              <div className="flex items-center gap-2">
+                <Shield size={14} className="text-[#FFD300]" />
+                <span className="text-white text-sm font-bold">Termos de Uso — MAIS VANTA</span>
+              </div>
+              <button onClick={() => setMostrarTermosModal(false)} className="p-1.5 text-zinc-400 active:text-white">
+                <ArrowLeft size={16} />
+              </button>
+            </div>
+            <div className="flex-1 overflow-y-auto no-scrollbar px-5 pb-4">
+              <pre className="text-zinc-400 text-[9px] leading-relaxed whitespace-pre-wrap font-sans">
+                {maisVantaConfigService.getConfig().termosCustomizados || TERMOS_PADRAO}
+              </pre>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

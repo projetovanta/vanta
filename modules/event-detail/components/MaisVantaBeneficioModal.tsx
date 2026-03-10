@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Crown, AlertTriangle, Check, ExternalLink } from 'lucide-react';
+import { X, Crown, AlertTriangle, Check, ExternalLink, ArrowLeft, Shield } from 'lucide-react';
 import type { BeneficioMV } from '../../../features/admin/services/clube/clubeLotesService';
 import { maisVantaConfigService } from '../../../features/admin/services/maisVantaConfigService';
 
@@ -26,6 +26,7 @@ export const MaisVantaBeneficioModal: React.FC<Props> = ({
   onConfirmar,
 }) => {
   const [aceiteTermos, setAceiteTermos] = useState(false);
+  const [mostrarTermos, setMostrarTermos] = useState(false);
 
   if (!isOpen) return null;
 
@@ -36,6 +37,8 @@ export const MaisVantaBeneficioModal: React.FC<Props> = ({
     onConfirmar();
     setAceiteTermos(false);
   };
+
+  const termosTexto = config.termosCustomizados || 'Consulte os termos completos do programa MAIS VANTA no aplicativo.';
 
   return (
     <div className="absolute inset-0 z-[70] flex items-end" role="presentation" onClick={onClose}>
@@ -123,7 +126,7 @@ export const MaisVantaBeneficioModal: React.FC<Props> = ({
 
         {/* Link para termos */}
         <button
-          onClick={() => window.open('/termos-mais-vanta', '_blank')}
+          onClick={() => setMostrarTermos(true)}
           className="flex items-center gap-1.5 mb-4 text-zinc-400 text-[10px] active:text-[#FFD300] transition-colors"
         >
           <ExternalLink size={10} /> Ver termos completos do MAIS VANTA
@@ -152,6 +155,37 @@ export const MaisVantaBeneficioModal: React.FC<Props> = ({
           Confirmar Resgate
         </button>
       </div>
+
+      {/* Modal de termos */}
+      {mostrarTermos && (
+        <div
+          className="absolute inset-0 z-[80] flex items-end"
+          role="presentation"
+          onClick={() => setMostrarTermos(false)}
+        >
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+          <div
+            className="relative w-full max-h-[85%] bg-[#111111] border-t border-white/10 rounded-t-3xl flex flex-col animate-in slide-in-from-bottom duration-300"
+            style={{ paddingBottom: 'max(1.5rem, env(safe-area-inset-bottom, 1.5rem))' }}
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between px-5 pt-5 pb-3 shrink-0">
+              <div className="flex items-center gap-2">
+                <Shield size={14} className="text-[#FFD300]" />
+                <span className="text-white text-sm font-bold">Termos de Uso — MAIS VANTA</span>
+              </div>
+              <button onClick={() => setMostrarTermos(false)} className="p-1.5 text-zinc-400 active:text-white">
+                <ArrowLeft size={16} />
+              </button>
+            </div>
+            <div className="flex-1 overflow-y-auto no-scrollbar px-5 pb-4">
+              <pre className="text-zinc-400 text-[9px] leading-relaxed whitespace-pre-wrap font-sans">
+                {termosTexto}
+              </pre>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

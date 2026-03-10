@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { X, Calendar, Check, ChevronLeft, ChevronRight } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
+import { useModalBack } from '../../../hooks/useModalStack';
 
 // Filtros predefinidos
 const PRESET_FILTERS = [
@@ -133,6 +134,7 @@ export const TimeFilterModal: React.FC<{
   selectedTimeFilter: string | null;
   onSelectTimeFilter: (f: string | null) => void;
 }> = ({ isOpen, onClose, selectedTimeFilter, onSelectTimeFilter }) => {
+  useModalBack(isOpen, onClose, 'time-filter');
   const [showCalendar, setShowCalendar] = useState(false);
   const [rangeStart, setRangeStart] = useState<string | null>(null);
   const [rangeEnd, setRangeEnd] = useState<string | null>(null);

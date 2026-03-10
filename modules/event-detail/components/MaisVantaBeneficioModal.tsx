@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { X, Crown, AlertTriangle, Check, ExternalLink, ArrowLeft, Shield } from 'lucide-react';
 import type { BeneficioMV } from '../../../features/admin/services/clube/clubeLotesService';
 import { maisVantaConfigService } from '../../../features/admin/services/maisVantaConfigService';
+import { useModalBack } from '../../../hooks/useModalStack';
 
 interface Props {
   isOpen: boolean;
@@ -25,6 +26,7 @@ export const MaisVantaBeneficioModal: React.FC<Props> = ({
   venueInstagram,
   onConfirmar,
 }) => {
+  useModalBack(isOpen, onClose, 'mais-vanta-beneficio');
   const [aceiteTermos, setAceiteTermos] = useState(false);
   const [mostrarTermos, setMostrarTermos] = useState(false);
 

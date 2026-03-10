@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { waitlistService } from '../../services/waitlistService';
+import { useModalBack } from '../../hooks/useModalStack';
 
 interface Props {
   eventoId: string;
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export const WaitlistModal: React.FC<Props> = ({ eventoId, variacaoId, onClose, onSuccess }) => {
+  useModalBack(true, onClose, 'waitlist');
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
 

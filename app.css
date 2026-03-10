@@ -20,3 +20,42 @@
 @keyframes ping {
   75%, 100% { transform: scale(2); opacity: 0; }
 }
+
+/* VantaSlider — estilização do range input */
+.vanta-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 9999px;
+  outline: none;
+  cursor: pointer;
+}
+.vanta-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #FFD300;
+  border: 2px solid #0A0A0A;
+  box-shadow: 0 0 8px rgba(255, 211, 0, 0.4);
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+.vanta-slider::-webkit-slider-thumb:active {
+  transform: scale(1.2);
+}
+.vanta-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #FFD300;
+  border: 2px solid #0A0A0A;
+  box-shadow: 0 0 8px rgba(255, 211, 0, 0.4);
+  cursor: pointer;
+}
+.vanta-slider::-moz-range-track {
+  height: 6px;
+  border-radius: 9999px;
+  background: transparent;
+}

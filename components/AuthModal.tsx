@@ -10,6 +10,7 @@ import { authService } from '../services/authService';
 import { ESTADOS_CIDADES, ESTADOS, DDDS } from '../data/brData';
 import { VantaPickerModal } from './VantaPickerModal';
 import { LegalView, useLegalView } from './LegalView';
+import { useModalBack } from '../hooks/useModalStack';
 
 // ── Módulos extraídos ────────────────────────────────────────────────────────
 import { inputCls, isValidDate, isAdult, isValidEmail, fmtDataNasc, fmtTelefone } from './auth/authHelpers';
@@ -25,6 +26,7 @@ interface AuthModalProps {
 }
 
 export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => {
+  useModalBack(isOpen, onClose, 'auth-modal');
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const { legalPage, openTermos, openPrivacidade, closeLegal } = useLegalView();
 
@@ -230,7 +232,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
             {stepLabels[step - 1]}
           </h1>
         </div>
-        <button aria-label="Voltar"
+        <button
+          aria-label="Voltar"
           onClick={handleBack}
           className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
         >

@@ -19,6 +19,7 @@ import { EventoAdmin } from '../../../types';
 import { eventosAdminService } from '../services/eventosAdminService';
 import { supabase } from '../../../services/supabaseClient';
 import { useToast, ToastContainer } from '../../../components/Toast';
+import { VantaSlider } from '../../../components/VantaSlider';
 
 // ── Utils ─────────────────────────────────────────────────────────────────────
 const formatDateTime = (iso: string): string => {
@@ -131,14 +132,7 @@ const ModalContraProposta: React.FC<{
           {/* Split */}
           <div>
             <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">Split da Receita</p>
-            <input
-              type="range"
-              min={10}
-              max={90}
-              value={splitSocio}
-              onChange={e => setSplitSocio(Number(e.target.value))}
-              className="w-full accent-emerald-400"
-            />
+            <VantaSlider min={10} max={90} value={splitSocio} onChange={setSplitSocio} className="w-full" />
             <div className="flex justify-between mt-1">
               <span className="text-emerald-400 text-xs font-bold">Sócio: {splitSocio}%</span>
               <span className="text-zinc-400 text-xs font-bold">Produtor: {splitProdutor}%</span>

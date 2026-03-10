@@ -20,6 +20,7 @@ import { createEventIcon, createUserIcon } from './utils/mapIcons';
 import { useRadarLogic } from './hooks/useRadarLogic';
 import { useAuthStore } from '../../stores/authStore';
 import { useGeolocationPermission } from '../../hooks/usePermission';
+import { globalToast } from '../../components/Toast';
 
 interface RadarViewProps {
   onEventSelect: (evento: Evento) => void;
@@ -200,7 +201,7 @@ export const RadarView: React.FC<RadarViewProps> = ({ onEventSelect }) => {
               onClick={() => {
                 geo.request({ enableHighAccuracy: true, timeout: 10000 }).then(coords => {
                   if (coords) radar.setUserLocation({ lat: coords.latitude, lng: coords.longitude });
-                  else alert('Permita o acesso à localização nas configurações do navegador.');
+                  else globalToast('aviso', 'Permita o acesso à localização nas configurações do navegador.');
                 });
               }}
               className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#FFD300] text-black text-[8px] font-black uppercase tracking-widest border border-[#FFD300] shadow-[0_0_8px_rgba(255,211,0,0.3)] active:scale-95 transition-all"

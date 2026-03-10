@@ -1,6 +1,7 @@
 import React from 'react';
 import { X, Check } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
+import { useModalBack } from '../../../hooks/useModalStack';
 
 export const CityFilterModal: React.FC<{
   isOpen: boolean;
@@ -10,6 +11,7 @@ export const CityFilterModal: React.FC<{
   onToggleCity: (city: string) => void;
   onClear: () => void;
 }> = ({ isOpen, onClose, allCities, selectedCities, onToggleCity, onClear }) => {
+  useModalBack(isOpen, onClose, 'city-filter');
   if (!isOpen) return null;
   return (
     <div className="absolute inset-0 z-[200] animate-in fade-in duration-300">

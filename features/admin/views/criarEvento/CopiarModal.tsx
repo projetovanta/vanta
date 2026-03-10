@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Check, Copy } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../../constants';
+import { useModalBack } from '../../../../hooks/useModalStack';
 import { eventosAdminService } from '../../services/eventosAdminService';
 import { listasService } from '../../services/listasService';
 import type { LoteForm, VarListaForm, EquipeForm, TipoLista, GeneroLista, ValidadeTipo } from './types';
@@ -22,6 +23,7 @@ interface Props {
 }
 
 export const CopiarModal: React.FC<Props> = ({ onCopiar, onClose }) => {
+  useModalBack(true, onClose, 'copiar-evento');
   const eventos = eventosAdminService.getEventos();
   const [sel, setSel] = useState<string | null>(null);
   const [copDados, setCopDados] = useState(false);

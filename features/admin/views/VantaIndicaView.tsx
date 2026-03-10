@@ -8,6 +8,7 @@ import { VantaIndicaCard, TipoIndicaCard, TipoAcaoIndica } from '../../../types'
 import { adminService } from '../services/adminService';
 import { dataURLtoBlob } from '../../../utils';
 import { useToast, ToastContainer } from '../../../components/Toast';
+import { VantaSlider } from '../../../components/VantaSlider';
 
 const TIPO_CONFIG: Record<TipoIndicaCard, { label: string; dot: string; bg: string; text: string; border: string }> = {
   DESTAQUE_EVENTO: {
@@ -996,14 +997,13 @@ const CardModal: React.FC<{
             {form.badge.trim() && (
               <div className="flex items-center gap-3">
                 <span className="text-[9px] text-zinc-400 w-16 shrink-0">Selo</span>
-                <input
-                  type="range"
-                  min="0.5"
-                  max="2.5"
-                  step="0.1"
+                <VantaSlider
+                  min={0.5}
+                  max={2.5}
+                  step={0.1}
                   value={badgeScale}
-                  onChange={e => setBadgeScale(Number(e.target.value))}
-                  className="flex-1 accent-[#FFD300] h-1"
+                  onChange={setBadgeScale}
+                  className="flex-1"
                 />
                 <span className="text-[9px] text-zinc-500 w-8 text-right">{Math.round(badgeScale * 100)}%</span>
               </div>
@@ -1011,14 +1011,13 @@ const CardModal: React.FC<{
             {form.titulo.trim() && (
               <div className="flex items-center gap-3">
                 <span className="text-[9px] text-zinc-400 w-16 shrink-0">Título</span>
-                <input
-                  type="range"
-                  min="0.5"
-                  max="2.5"
-                  step="0.1"
+                <VantaSlider
+                  min={0.5}
+                  max={2.5}
+                  step={0.1}
                   value={tituloScale}
-                  onChange={e => setTituloScale(Number(e.target.value))}
-                  className="flex-1 accent-[#FFD300] h-1"
+                  onChange={setTituloScale}
+                  className="flex-1"
                 />
                 <span className="text-[9px] text-zinc-500 w-8 text-right">{Math.round(tituloScale * 100)}%</span>
               </div>
@@ -1026,14 +1025,13 @@ const CardModal: React.FC<{
             {form.subtitulo.trim() && (
               <div className="flex items-center gap-3">
                 <span className="text-[9px] text-zinc-400 w-16 shrink-0">Subtítulo</span>
-                <input
-                  type="range"
-                  min="0.5"
-                  max="2.5"
-                  step="0.1"
+                <VantaSlider
+                  min={0.5}
+                  max={2.5}
+                  step={0.1}
                   value={subtituloScale}
-                  onChange={e => setSubtituloScale(Number(e.target.value))}
-                  className="flex-1 accent-[#FFD300] h-1"
+                  onChange={setSubtituloScale}
+                  className="flex-1"
                 />
                 <span className="text-[9px] text-zinc-500 w-8 text-right">{Math.round(subtituloScale * 100)}%</span>
               </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Lock } from 'lucide-react';
+import { useModalBack } from '../hooks/useModalStack';
 
 interface RestrictedModalProps {
   isOpen: boolean;
@@ -16,6 +17,7 @@ export const RestrictedModal: React.FC<RestrictedModalProps> = ({
   onCadastro,
   mensagem = 'Esta função é exclusiva para membros.',
 }) => {
+  useModalBack(isOpen, onClose, 'restricted-modal');
   if (!isOpen) return null;
 
   return (

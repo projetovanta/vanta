@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Shield } from 'lucide-react';
 import { TYPOGRAPHY } from '../constants';
 import { supabase } from '../services/supabaseClient';
+import { useModalBack } from '../hooks/useModalStack';
 
 const TOS_VERSION = '1.0';
 
@@ -13,6 +14,7 @@ interface TosAcceptModalProps {
 }
 
 export const TosAcceptModal: React.FC<TosAcceptModalProps> = ({ userId, userName, onAccepted, onBack }) => {
+  useModalBack(true, onBack, 'tos-accept');
   const [aceito, setAceito] = useState(false);
   const [salvando, setSalvando] = useState(false);
 

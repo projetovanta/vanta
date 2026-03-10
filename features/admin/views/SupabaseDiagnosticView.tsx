@@ -34,6 +34,7 @@ import { TYPOGRAPHY } from '../../../constants';
 
 import { EXPECTED_TABLES, EXPECTED_RPCS, EXPECTED_BUCKETS } from './supabaseDiagnosticSchema';
 import type { ExpectedTable } from './supabaseDiagnosticSchema';
+import { globalToast } from '../../../components/Toast';
 
 // ── Tipos do diagnóstico ────────────────────────────────────────────────────
 
@@ -312,7 +313,7 @@ export const SupabaseDiagnosticView: React.FC<{ onBack: () => void }> = ({ onBac
     setExecuting(label);
     const res = await execDDL(sql, pat, projectRef);
     if (!res.ok) {
-      alert(`Erro ao executar: ${res.error}`);
+      globalToast('erro', `Erro ao executar: ${res.error}`);
     }
     setExecuting(null);
     await runDiagnostic();

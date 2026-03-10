@@ -6,6 +6,7 @@ import { supabase } from '../../../../services/supabaseClient';
 import { todayBR } from '../../../../utils';
 import { inputCls, inputDateCls, labelCls } from './constants';
 import { VantaDropdown } from '../../../../components/VantaDropdown';
+import { VantaDatePicker } from '../../../../components/VantaDatePicker';
 
 // Horarios de 30 em 30 min (00:00 ate 23:30)
 const ALL_HORA_OPTS = (() => {
@@ -421,14 +422,7 @@ export const Step1Evento: React.FC<Props> = p => {
 
       <div className="space-y-3">
         <label className={labelCls}>Data do Evento *</label>
-        <input
-          value={p.dataInicio}
-          onChange={e => p.setDataInicio(e.target.value)}
-          type="date"
-          min={hoje}
-          className={inputDateCls}
-          style={{ colorScheme: 'dark' }}
-        />
+        <VantaDatePicker value={p.dataInicio} onChange={v => p.setDataInicio(v)} min={hoje} className={inputDateCls} />
         <div className="grid grid-cols-2 gap-2">
           <div>
             <label className={labelCls}>Inicio *</label>
@@ -481,13 +475,11 @@ export const Step1Evento: React.FC<Props> = p => {
           {p.recorrencia !== 'UNICO' && (
             <div>
               <label className={labelCls}>Repetir ate</label>
-              <input
+              <VantaDatePicker
                 value={p.recorrenciaAte}
-                onChange={e => p.setRecorrenciaAte(e.target.value)}
-                type="date"
+                onChange={v => p.setRecorrenciaAte(v)}
                 min={p.dataInicio || hoje}
                 className={inputDateCls}
-                style={{ colorScheme: 'dark' }}
               />
               {!p.recorrenciaAte && (
                 <p className="text-amber-500/70 text-[9px] mt-1">Escolha ate quando o evento se repete</p>

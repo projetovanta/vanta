@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { X, DollarSign, Check } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
+import { useModalBack } from '../../../hooks/useModalStack';
+import { VantaSlider } from '../../../components/VantaSlider';
 
 interface PriceFilterModalProps {
   isOpen: boolean;
@@ -17,6 +19,7 @@ const QUICK_PRICES = [
 ];
 
 export const PriceFilterModal: React.FC<PriceFilterModalProps> = ({ isOpen, onClose, maxPrice, onSelectMaxPrice }) => {
+  useModalBack(isOpen, onClose, 'price-filter');
   const [tempPrice, setTempPrice] = useState<number>(maxPrice || 1000);
 
   if (!isOpen) return null;
@@ -61,14 +64,13 @@ export const PriceFilterModal: React.FC<PriceFilterModalProps> = ({ isOpen, onCl
               </div>
 
               <div className="relative pt-2">
-                <input
-                  type="range"
-                  min="0"
-                  max="5000"
-                  step="50"
+                <VantaSlider
+                  min={0}
+                  max={5000}
+                  step={50}
                   value={tempPrice}
-                  onChange={e => setTempPrice(Number(e.target.value))}
-                  className="w-full h-1.5 bg-zinc-800 rounded-full appearance-none cursor-pointer accent-[#FFD300]"
+                  onChange={setTempPrice}
+                  className="w-full"
                 />
               </div>
 

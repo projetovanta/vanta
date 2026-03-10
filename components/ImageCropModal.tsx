@@ -12,6 +12,8 @@
 import React, { useState, useCallback } from 'react';
 import Cropper, { Area } from 'react-easy-crop';
 import { X, Check, ZoomIn, ZoomOut } from 'lucide-react';
+import { useModalBack } from '../hooks/useModalStack';
+import { VantaSlider } from './VantaSlider';
 
 // ── Gera o canvas recortado e retorna dataURL ──────────────────────────────────
 const getCroppedImg = (imageSrc: string, pixelCrop: Area, maxPx = 1600, quality = 0.78): Promise<string> =>
@@ -62,6 +64,7 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
   onClose,
   autoSkipWhenFit = true,
 }) => {
+  useModalBack(true, onClose, 'image-crop');
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedArea, setCroppedArea] = useState<Area | null>(null);
@@ -237,15 +240,7 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
             >
               <ZoomOut size={14} className="text-zinc-400" />
             </button>
-            <input
-              type="range"
-              min={1}
-              max={3}
-              step={0.01}
-              value={zoom}
-              onChange={e => setZoom(Number(e.target.value))}
-              className="flex-1 accent-[#FFD300] h-1"
-            />
+            <VantaSlider min={1} max={3} step={0.01} value={zoom} onChange={setZoom} className="flex-1" />
             <button
               onClick={() => setZoom(z => Math.min(3, z + 0.1))}
               className="w-8 h-8 rounded-full bg-zinc-900 border border-white/10 flex items-center justify-center active:scale-90 transition-all shrink-0"
@@ -255,7 +250,8 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
           </div>
 
           {perfectFit && (
-            <button aria-label="Confirmar"
+            <button
+              aria-label="Confirmar"
               onClick={handleUseOriginal}
               disabled={confirming}
               className="w-full py-4 bg-emerald-600 text-white font-bold text-[10px] uppercase tracking-[0.25em] rounded-xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all disabled:opacity-40 mb-2"
@@ -265,7 +261,8 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
             </button>
           )}
 
-          <button aria-label="Confirmar"
+          <button
+            aria-label="Confirmar"
             onClick={handleConfirm}
             disabled={confirming || !croppedArea}
             className="w-full py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-[0.25em] rounded-xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all disabled:opacity-40"

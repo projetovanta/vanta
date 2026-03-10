@@ -1,6 +1,8 @@
 import React from 'react';
 import { Plus, Trash2 } from 'lucide-react';
 import type { HorarioOverride } from '../types';
+import { VantaDatePicker } from './VantaDatePicker';
+import { VantaTimePicker } from './VantaTimePicker';
 
 const inputCls =
   'w-full bg-zinc-900/60 border border-white/5 rounded-lg px-2 py-1.5 text-white text-xs outline-none focus:border-[#FFD300]/30';
@@ -36,10 +38,9 @@ export const HorarioOverridesEditor: React.FC<{
         {sorted.map((o, idx) => (
           <div key={idx} className="bg-zinc-900/60 border border-white/5 rounded-xl p-3 space-y-2">
             <div className="flex items-center gap-2">
-              <input
-                type="date"
+              <VantaDatePicker
                 value={o.data}
-                onChange={e => update(idx, 'data', e.target.value)}
+                onChange={v => update(idx, 'data', v)}
                 className={inputCls + ' flex-1 min-w-0'}
               />
               <button
@@ -66,17 +67,15 @@ export const HorarioOverridesEditor: React.FC<{
 
             {o.aberto && (
               <div className="flex items-center gap-1.5">
-                <input
-                  type="time"
+                <VantaTimePicker
                   value={o.abertura ?? '18:00'}
-                  onChange={e => update(idx, 'abertura', e.target.value)}
+                  onChange={v => update(idx, 'abertura', v)}
                   className={inputCls + ' flex-1 min-w-0 text-center'}
                 />
                 <span className="text-zinc-400 text-[10px] shrink-0">às</span>
-                <input
-                  type="time"
+                <VantaTimePicker
                   value={o.fechamento ?? '02:00'}
-                  onChange={e => update(idx, 'fechamento', e.target.value)}
+                  onChange={v => update(idx, 'fechamento', v)}
                   className={inputCls + ' flex-1 min-w-0 text-center'}
                 />
               </div>

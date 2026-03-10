@@ -3,6 +3,7 @@ import { X, Search, UserPlus, ShieldCheck } from 'lucide-react';
 import { Membro } from '../../../types';
 import { TYPOGRAPHY } from '../../../constants';
 import { useDebounce } from '../../../hooks/useDebounce';
+import { useModalBack } from '../../../hooks/useModalStack';
 
 export const NewChatModal: React.FC<{
   isOpen: boolean;
@@ -10,6 +11,7 @@ export const NewChatModal: React.FC<{
   friends: Membro[];
   onSelectFriend: (m: Membro) => void;
 }> = ({ isOpen, onClose, friends, onSelectFriend }) => {
+  useModalBack(isOpen, onClose, 'new-chat');
   const [query, setQuery] = useState('');
   const debouncedQuery = useDebounce(query, 300);
   const filteredFriends = useMemo(

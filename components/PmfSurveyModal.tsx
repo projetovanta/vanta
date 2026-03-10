@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, Loader2 } from 'lucide-react';
 import { submitPmfResponse } from '../services/analyticsService';
+import { useModalBack } from '../hooks/useModalStack';
 
 const OPTIONS = [
   { label: 'Muito decepcionado', value: 'MUITO_DECEPCIONADO', color: '#ef4444' },
@@ -9,6 +10,7 @@ const OPTIONS = [
 ] as const;
 
 export const PmfSurveyModal: React.FC<{ userId: string; onClose: () => void }> = ({ userId, onClose }) => {
+  useModalBack(true, onClose, 'pmf-survey');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(false);
 

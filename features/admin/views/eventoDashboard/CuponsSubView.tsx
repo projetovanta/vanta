@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Plus, X, ToggleLeft, ToggleRight, Trash2, Loader2, Tag, Link2, Check } from 'lucide-react';
 import type { Cupom } from '../../../../types';
 import { cuponsService } from '../../services/cuponsService';
+import { VantaDatePicker } from '../../../../components/VantaDatePicker';
 
 export const CuponsSubView: React.FC<{
   eventoId: string;
@@ -207,12 +208,11 @@ export const CuponsSubView: React.FC<{
                 onChange={e => setLimiteUsos(e.target.value)}
                 className="bg-zinc-900/60 border border-white/5 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-[#FFD300]/30 placeholder-zinc-700"
               />
-              <input
-                type="date"
+              <VantaDatePicker
                 placeholder="Validade"
                 value={validoAte}
-                onChange={e => setValidoAte(e.target.value)}
-                className="bg-zinc-900/60 border border-white/5 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-[#FFD300]/30 placeholder-zinc-700"
+                onChange={setValidoAte}
+                className="bg-zinc-900/60 border border-white/5 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-[#FFD300]/30"
               />
             </div>
             <button

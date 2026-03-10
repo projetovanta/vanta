@@ -106,6 +106,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     await authService.signOut();
     clearAllCache();
     realtimeManager.unsubscribeAll();
+    sessionStorage.removeItem('vanta_admin_destino');
+    sessionStorage.removeItem('vanta_admin_subview');
     set({ currentAccount: GUEST_PLACEHOLDER, profile: GUEST_PLACEHOLDER });
   },
 

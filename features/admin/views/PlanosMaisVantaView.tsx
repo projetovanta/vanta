@@ -17,6 +17,7 @@ import {
 import { TYPOGRAPHY } from '../../../constants';
 import { assinaturaService } from '../services/assinaturaService';
 import { VantaDropdown } from '../../../components/VantaDropdown';
+import { VantaColorPicker } from '../../../components/VantaColorPicker';
 import { clubeService } from '../services/clubeService';
 import { maisVantaConfigService } from '../services/maisVantaConfigService';
 import type { PlanoMaisVantaDef, TierMaisVantaDef, BeneficioId } from '../../../types';
@@ -335,12 +336,7 @@ const TierModal: React.FC<{
           <div>
             <p className={labelCls}>Cor</p>
             <div className="flex items-center gap-2">
-              <input
-                type="color"
-                value={cor}
-                onChange={e => setCor(e.target.value)}
-                className="w-8 h-8 rounded-lg border-0 cursor-pointer bg-transparent"
-              />
+              <VantaColorPicker value={cor} onChange={setCor} />
               <input
                 aria-label="Cor do plano"
                 className={inputCls}

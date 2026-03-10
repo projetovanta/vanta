@@ -25,6 +25,7 @@ import { useToast, ToastContainer } from '../../components/Toast';
 import { ESTADOS_CIDADES, ESTADOS, DDDS } from '../../data/brData';
 import { DEFAULT_AVATARS } from '../../data/avatars';
 import { VantaPickerModal } from '../../components/VantaPickerModal';
+import { VantaDatePicker } from '../../components/VantaDatePicker';
 
 // ── Privacidade Inline ──────────────────────────────────────────────────────
 
@@ -434,10 +435,9 @@ export const EditProfileView: React.FC<{
                   <label className={labelCls}>Nascimento</label>
                   <PrivacyToggle value={privacy.verAniversario} onChange={v => updatePrivacy('verAniversario', v)} />
                 </div>
-                <input
-                  type="date"
+                <VantaDatePicker
                   value={formData.dataNascimento}
-                  onChange={e => setFormData(p => ({ ...p, dataNascimento: e.target.value }))}
+                  onChange={v => setFormData(p => ({ ...p, dataNascimento: v }))}
                   className={inputCls}
                 />
               </div>

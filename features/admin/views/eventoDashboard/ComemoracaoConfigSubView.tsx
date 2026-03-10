@@ -3,6 +3,8 @@ import { ArrowLeft, Loader2, Plus, X, Cake, Check, Trash2 } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../../constants';
 import { comemoracaoService, ComemoracaoConfig, ComemoracaoFaixa } from '../../../../services/comemoracaoService';
 import { eventosAdminService } from '../../services/eventosAdminService';
+import { VantaDatePicker } from '../../../../components/VantaDatePicker';
+import { VantaTimePicker } from '../../../../components/VantaTimePicker';
 
 interface FaixaForm {
   min_vendas: string;
@@ -160,10 +162,9 @@ export const ComemoracaoConfigSubView: React.FC<Props> = ({ eventoId, onBack }) 
               <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">
                 Horário limite para vendas contarem (vazio = até início do evento)
               </label>
-              <input
-                type="time"
+              <VantaTimePicker
                 value={deadlineHora}
-                onChange={e => setDeadlineHora(e.target.value)}
+                onChange={setDeadlineHora}
                 className="w-full bg-zinc-900/60 border border-white/5 rounded-xl px-3 py-2.5 text-white text-sm outline-none focus:border-[#FFD300]/30"
               />
             </div>
@@ -174,10 +175,9 @@ export const ComemoracaoConfigSubView: React.FC<Props> = ({ eventoId, onBack }) 
                 Datas bloqueadas (não aceitar comemoração)
               </label>
               <div className="flex gap-2">
-                <input
-                  type="date"
+                <VantaDatePicker
                   value={novaDataBloq}
-                  onChange={e => setNovaDataBloq(e.target.value)}
+                  onChange={setNovaDataBloq}
                   className="flex-1 bg-zinc-900/60 border border-white/5 rounded-xl px-3 py-2.5 text-white text-sm outline-none focus:border-[#FFD300]/30"
                 />
                 <button

@@ -3,12 +3,15 @@ import Cropper from 'react-easy-crop';
 import { X, Check, ZoomIn } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
 import { getCroppedImg } from '../utils/imageUtils';
+import { VantaSlider } from '../../../components/VantaSlider';
+import { useModalBack } from '../../../hooks/useModalStack';
 
 export const ImageCropperModal: React.FC<{ image: string; onConfirm: (img: string) => void; onCancel: () => void }> = ({
   image,
   onConfirm,
   onCancel,
 }) => {
+  useModalBack(true, onCancel, 'image-cropper');
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [pixels, setPixels] = useState<any>(null);
@@ -98,15 +101,7 @@ export const ImageCropperModal: React.FC<{ image: string; onConfirm: (img: strin
               </span>
               <span className="text-[10px] text-[#FFD300] font-mono">{Math.round(zoom * 100)}%</span>
             </div>
-            <input
-              type="range"
-              value={zoom}
-              min={1}
-              max={3}
-              step={0.1}
-              onChange={e => setZoom(Number(e.target.value))}
-              className="w-full h-1 bg-zinc-800 accent-[#FFD300] appearance-none cursor-pointer"
-            />
+            <VantaSlider value={zoom} min={1} max={3} step={0.1} onChange={setZoom} className="w-full" />
           </div>
           <div className="flex gap-4">
             <button

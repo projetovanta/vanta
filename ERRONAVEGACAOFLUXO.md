@@ -794,47 +794,115 @@ Items com guard contextual: PORTARIA_QR, PORTARIA_LISTA, CAIXA, FINANCEIRO, LIST
 
 ---
 
-### FASE D — MODAIS E OVERLAYS
+### FASE D — MODAIS E OVERLAYS (Auditoria Profunda)
 
-| Modal/Overlay | Trigger | Fechamento | Z-index | Status |
+#### D.1 — Modais Globais (`AppModals.tsx`)
+
+| Modal | Trigger | Fechamento | z-index | Backdrop click |
 |---|---|---|---|---|
-| GuestLoginSheet | Tab bloqueada para guest | X + backdrop | — | ✅ |
-| LoginView | Botão login / showLoginView | Formulário inline | — | ✅ |
-| AdminGateway | Tab ADMIN_HUB | onBack (botão X) | z-[150] | ✅ |
-| AdminDashboardView | Gateway confirmado | onClose (volta gateway) | z-[150] | ✅ |
-| NotificationPanel | Ícone sino | onClose | — | ✅ |
-| CitySelector | Ícone localização | onClose | — | ✅ |
-| ReviewModal | Pós-evento (auto) | X + botões | — | ✅ |
-| OnboardingModal | Primeiro login | Fluxo completo | — | ✅ |
-| TosAcceptModal | Termos não aceitos | Aceitar obrigatório | — | ✅ |
-| PmfSurveyModal | Pesquisa periódica | X + fechar | — | ✅ |
-| ConfirmDeleteModal (vários) | Ações destrutivas | Confirmar/Cancelar | — | ✅ |
-| EventDetailView | Clica em evento | onBack (botão) | — | ✅ |
-| ChatRoomView | Clica em conversa | onBack (botão) | — | ✅ |
-| MemberProfile overlay | Clica em membro | onClose | — | ✅ |
-| WalletLockScreen | Wallet sem PIN | Definir PIN | — | ✅ |
+| `LoginView` | `showLoginView` | `setShowLoginView(false)` | `z-[340]` | Não (fullscreen) |
+| `GuestAreaModal` | `showGuestModal` | `setShowGuestModal(false)` + 3 botões | `z-[300]` | Sim |
+| `SuccessFeedbackModal` | `showSuccessModal` | `setShowSuccessModal(false)` | `z-[300]` | Sim |
+| `SuccessFeedbackModal (profile)` | `showProfileSuccess` | `setShowProfileSuccess(false)` | `z-[300]` | Sim |
+| `OnboardingView` | `showOnboarding` | `handleOnboardingComplete` | — | Não (fullscreen) |
+| `ReviewModal` | `reviewTarget !== null` | `setReviewTarget(null)` | `z-[60]` | Sim |
+| PWA Update Banner | `pwa.updateAvailable` | Ação: atualizar | `z-[500]` | Não |
+| PWA Install Banner | `pwa.canInstall` | Ação: instalar | `z-[499]` | Não |
+| `PushPermissionBanner` | `!isGuest` | Interno | — | N/A |
 
-**Modais aninhados**: AdminGateway (z-150) → AdminDashboardView (z-150) é uma transição (não sobreposição). Não há modais que abrem modais com z-index conflitante.
+Outros modais globais no App.tsx:
+- `ResetPasswordView`: `z-[500]`, absolute inset-0
+- `AuthModal`: `z-[350]`, absolute inset-0
 
-**Browser back button**: App usa estado interno (não React Router) para navegação de tabs/views, então browser back volta para a URL anterior, não para o estado anterior do app. Isso é comportamento esperado em SPA com tabs.
+#### D.2 — Mapa Completo de z-index
+
+| z-index | Componente(s) | Contexto |
+|---|---|---|
+| `z-[600]` | `VantaPickerModal`, `Toast` | Picker wheel + toasts |
+| `z-[500]` | `UnsavedChangesModal`, `ImageCropModal`, `ImageCropperModal`, `ResetPasswordView`, PWA Update Banner, `EditarModal` (crop) | Modais críticos/bloqueantes |
+| `z-[499]` | PWA Install Banner | Banner abaixo do update |
+| `z-[400]` | `ImageCropperModal` (profile) | Crop de imagem do perfil |
+| `z-[350]` | `AuthModal` | Cadastro/login |
+| `z-[340]` | `LoginView` (via AppModals) | Login fullscreen |
+| `z-[300]` | `GuestAreaModal`, `SuccessFeedbackModal` | Modais informativos globais |
+| `z-[250]` | `PresencaConfirmationModal` | Confirmar presença |
+| `z-[210]` | `TicketQRModal` (compartilhar) | Sub-modal do QR |
+| `z-[200]` | `RestrictedModal`, `TicketQRModal`, `NewChatModal`, Filtros busca | Modais de segundo nível |
+| `z-[150]` | Admin blocked screen | Tela "Sem acesso" admin |
+| `z-[100]` | `ModalInserirLote` | Admin: inserir lote |
+| `z-[80]` | `MaisVantaBeneficioModal` (confirmação) | Sub-modal de benefício |
+| `z-[70]` | `MaisVantaBeneficioModal`, `MaisVantaReservaModal`, `CapacidadeModal` | Modais detalhe evento |
+| `z-[60]` | `ReviewModal`, `ConviteSocioModal`, `CopiarModal`, `CargoModal` | Modais contextuais |
+| `z-50` | `ConfirmacaoModal`, `ModalFechamento`, `ModalSaque`, `ModalReembolso`, `DuplicarModal`, `EditarModal`, `AdicionarMembro`, `CaixaDrilldown`, `WaitlistModal`, `PmfSurveyModal`, `TosAcceptModal`, `FeedbackOverlay` | Modais padrão admin |
+| `z-[50]` | `InviteFriendsModal` | Convidar amigos (fullscreen) |
+
+#### D.3 — Conflitos de z-index Potenciais
+
+| Conflito | Severidade | Descrição |
+|---|---|---|
+| `z-[300]` GuestModal vs SuccessModal | BAIXA | Nunca abrem simultaneamente (um exige guest, outro exige ação logada) |
+| `z-[500]` UnsavedChanges vs ImageCrop vs PWA Banner | MÉDIA | Se usuário edita imagem e tenta sair, modais competem no mesmo z |
+| `z-[600]` Toast vs VantaPicker | BAIXA | Toast tem `pointer-events-none` — mitiga parcialmente |
+
+#### D.4 — `fixed inset-0` (Proibido pelo CLAUDE.md)
+
+**NENHUM modal usa `fixed inset-0`.** Todos os 35+ modais usam `absolute inset-0` corretamente.
+Apenas App.tsx usa `fixed inset-0` para: loading screen (authLoading) e container master — ambos permitidos pela regra (páginas standalone).
+
+#### D.5 — Mecanismos de Fechamento
+
+| Mecanismo | Implementam | NÃO implementam |
+|---|---|---|
+| Botão X / Fechar | Todos os modais com UI | — |
+| Backdrop click | ~25 modais (maioria) | `OnboardingView`, `LoginView`, `AuthModal`, `InviteFriendsModal`, `NewChatModal` (fullscreen) |
+| **Tecla Escape** | **TODOS** (via `useModalBack` hook) | — ✅ RESOLVIDO |
+| **Browser back** | **TODOS** (via `useModalBack` hook + history.pushState) | — ✅ RESOLVIDO |
 
 ---
 
-### FASE E — EDGE CASES DE NAVEGAÇÃO
+### FASE E — EDGE CASES DE NAVEGAÇÃO (Auditoria Profunda)
 
-| Cenário | Resultado | Status |
+#### E.1 — Rotas Inválidas
+
+| Cenário | Tratamento | Status |
 |---|---|---|
-| /evento/UUID_INVALIDO | EventLandingPage mostra `notFound` state | ✅ |
-| /checkout/SLUG_INVALIDO | Loading → mostra erro se evento não encontrado | ✅ |
-| /rota-inexistente | Mostra HomeView (catch-all `path="*"`) | ⚠️ Sem 404 |
-| Refresh no checkout | CheckoutPage standalone — re-busca evento do slug | ✅ |
-| Refresh no admin | Volta pra Home (admin é estado interno, não rota) | ⚠️ Esperado em SPA |
-| Sessão expira durante ação | Supabase RLS retorna erro 401 → console.error | ⚠️ Sem modal de re-login |
-| Admin com comunidade → refresh | Volta pra Home → precisa re-entrar no admin | ⚠️ Esperado |
-| ChatRoom → back | Volta pra lista de mensagens (estado interno) | ✅ |
-| URL /admin sem guard | Não existe rota /admin — admin é via tab ADMIN_HUB | ✅ |
-| Caracteres especiais na URL | React Router lida nativamente | ✅ |
-| /parceiro sem auth | Página carrega — RLS protege dados | ⚠️ |
+| `/rota-inexistente` | `path="*"` renderiza AppShell → cai na tab INICIO | ⚠️ Sem 404, mas sem tela branca |
+| `/evento/UUID_INVALIDO` | `setNotFound(true)` → "Evento não encontrado" + link `/` | ✅ |
+| `/checkout/ID_INVALIDO` | Mostra "Evento não encontrado." (texto simples) | ⚠️ Sem link de volta |
+| `/convite-mv/TOKEN_INVALIDO` | Depende de `AceitarConviteMVPage` interno | ⚠️ |
+| `/parceiro` sem auth | Página carrega — RLS protege dados | ⚠️ |
+
+#### E.2 — Session Expiration
+
+| Cenário | Tratamento | Status |
+|---|---|---|
+| `SIGNED_OUT` | `callback(null)` → guest, limpa cache, unsubscribe realtime | ✅ |
+| `TOKEN_REFRESHED` | Re-busca profile, re-aplica sessão (fix `f6ddaa0`) | ✅ |
+| `PASSWORD_RECOVERY` | Evento custom `vanta:password-recovery` | ✅ |
+| Fallback onAuthStateChange não dispara | Timer 2s → `getSession()` manual | ✅ |
+| **API 401 / sessão expirada** | `SessionExpiredModal` via evento `vanta:session-expired` — distingue logout intencional de expiração | ✅ RESOLVIDO |
+
+#### E.3 — Browser Back/Forward
+
+| Cenário | Comportamento | Status |
+|---|---|---|
+| Tabs (INICIO/RADAR/BUSCAR/etc) | URLs via React Router — back/forward funciona | ✅ |
+| `/evento/:slug` | Rota própria, `navigate(-1)` no close | ✅ |
+| **Sub-views admin** (subView state) | `sessionStorage` persiste subView + gateway destino | ✅ RESOLVIDO |
+| **profileSubView** | URL sync via `useNavigation` (`/perfil/carteira`, `/perfil/ingressos`, etc.) | ✅ RESOLVIDO |
+| **Modais abertos** | `useModalBack` hook — `history.pushState` + `popstate` listener fecha modal no back | ✅ RESOLVIDO |
+
+#### E.4 — Refresh (F5)
+
+| Cenário | Comportamento | Status |
+|---|---|---|
+| Tab ativa | Preservada pela URL (React Router) | ✅ |
+| Cidade selecionada | `localStorage` — persiste | ✅ |
+| Sessão (auth) | Supabase session auto-restore | ✅ |
+| **Admin comunidade** | `sessionStorage('vanta_admin_destino')` — persiste no refresh | ✅ RESOLVIDO |
+| **Admin subView** | `sessionStorage('vanta_admin_subview')` — persiste no refresh | ✅ RESOLVIDO |
+| **profileSubView** | URL sync — `/perfil/carteira`, `/perfil/ingressos`, `/perfil/preview` restauram no refresh | ✅ RESOLVIDO |
+| Checkout | `localStorage` salva eventoId — re-fetcha | ✅ |
 
 ---
 
@@ -842,25 +910,40 @@ Items com guard contextual: PORTARIA_QR, PORTARIA_LISTA, CAIXA, FINANCEIRO, LIST
 
 **Nenhum erro crítico de segurança encontrado.** Todas as sub-views admin têm guards. Dados sensíveis não são expostos a cargos sem permissão.
 
+**Código morto detectado:**
+- `ProtectedRoute` — importado em App.tsx:5 mas nunca usado no JSX
+- `NotFoundView` — lazy import em App.tsx:68 mas nunca renderizado (`path="*"` vai pro AppShell)
+
 ---
 
 ### ⚠️ PROBLEMAS DE UX ENCONTRADOS
 
-1. **Sem página 404**: Rota inexistente mostra HomeView silenciosamente. Usuário não sabe que errou a URL.
-   - Impacto: baixo (app é SPA, poucos acessam por URL diretamente)
-   - Sugestão: adicionar catch-all com tela "Página não encontrada" + CTA "Ir para início"
+#### MÉDIA prioridade
 
-2. **Sem modal de re-login ao expirar sessão**: Se o token expira no meio de uma ação, o erro é silencioso (console.error). Usuário pode ficar sem feedback.
-   - Impacto: médio (sessões Supabase duram 1h com auto-refresh)
-   - Sugestão: interceptor global que detecta 401 e mostra modal de re-autenticação
+1. ~~Zero modais escutam Escape~~ — ✅ RESOLVIDO: `useModalBack` hook aplicado a ~33 modais (Escape + browser back)
 
-3. **Admin não persiste no refresh**: Estado do admin (comunidade selecionada, sub-view ativa) é interno. F5 volta pra Home.
-   - Impacto: baixo (admin é app nativo, poucos fazem F5)
-   - Sugestão: persistir estado admin em URL params ou sessionStorage
+2. ~~Zero modais interceptam browser back~~ — ✅ RESOLVIDO: `useModalBack` hook com `history.pushState`/`popstate`
 
-4. **/parceiro sem guard de auth**: Rota standalone acessível sem login. Dados protegidos por RLS, mas UX inconsistente.
-   - Impacto: baixo (RLS protege)
+3. ~~Sem interceptor global de 401~~ — ✅ RESOLVIDO: `SessionExpiredModal` + evento `vanta:session-expired` no `authService`
+
+4. ~~Admin/Profile subView não persiste~~ — ✅ RESOLVIDO: Admin via `sessionStorage`, Profile via URL sync
+
+#### BAIXA prioridade
+
+5. **Sem página 404** — rota inexistente mostra HomeView silenciosamente
+   - Impacto: baixo (app SPA, poucos acessam por URL)
+   - Sugestão: usar NotFoundView que já existe (lazy import ok, só precisa renderizar)
+
+6. **CheckoutPage sem link de volta** quando evento não encontrado — tela morta
+   - Impacto: baixo
+   - Sugestão: adicionar botão "Voltar ao início"
+
+7. **/parceiro sem guard de auth** — rota standalone acessível sem login (RLS protege dados)
+   - Impacto: baixo
    - Sugestão: adicionar guard de auth
+
+8. **z-[500] compartilhado** entre 5 componentes (UnsavedChanges, ImageCrop x2, ResetPassword, PWA Banner)
+   - Impacto: baixo (cenários de overlap improváveis)
 
 ---
 
@@ -874,3 +957,5 @@ Items com guard contextual: PORTARIA_QR, PORTARIA_LISTA, CAIXA, FINANCEIRO, LIST
 6. **Tabs bloqueadas para guest**: MENSAGENS, PERFIL, ADMIN_HUB com modal de login
 7. **ADMIN_HUB sem cargo**: Tela "Sem Acesso" clara com botão Voltar
 8. **ModuleErrorBoundary**: Cada módulo isolado — erro em um não derruba o app
+9. **Todos os modais usam `absolute inset-0`** — zero violações da regra `fixed inset-0`
+10. **Auth session resiliente**: 3-layer timeout + TOKEN_REFRESHED não desloga + fallback getSession

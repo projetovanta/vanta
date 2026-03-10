@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { X, Search, Check } from 'lucide-react';
+import { useModalBack } from '../hooks/useModalStack';
 
 export interface PickerItem {
   value: string;
@@ -112,6 +113,7 @@ export const VantaPickerModal: React.FC<VantaPickerModalProps> = ({
   error = false,
 }) => {
   const [open, setOpen] = useState(false);
+  useModalBack(open, () => setOpen(false), 'vanta-picker');
   const selected = items.find(i => i.value === value);
 
   return (

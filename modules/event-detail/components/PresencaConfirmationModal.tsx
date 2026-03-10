@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { X, Link, Users, Check } from 'lucide-react';
 import { Evento } from '../../../types';
 import { TYPOGRAPHY } from '../../../constants';
+import { useModalBack } from '../../../hooks/useModalStack';
 
 interface PresencaConfirmationModalProps {
   isOpen: boolean;
@@ -18,6 +19,7 @@ export const PresencaConfirmationModal: React.FC<PresencaConfirmationModalProps>
   userName,
   onInviteFriends,
 }) => {
+  useModalBack(isOpen, onClose, 'presenca-confirmation');
   const [copied, setCopied] = useState(false);
   if (!isOpen) return null;
 

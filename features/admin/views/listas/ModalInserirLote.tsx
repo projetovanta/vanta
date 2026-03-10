@@ -4,6 +4,7 @@ import { TYPOGRAPHY } from '../../../../constants';
 import type { ListaEvento } from '../../../../types';
 import { listasService } from '../../services/listasService';
 import { inputCls, type RoleListaNova } from './listasUtils';
+import { useModalBack } from '../../../../hooks/useModalStack';
 
 export const ModalInserirLote: React.FC<{
   lista: ListaEvento;
@@ -13,6 +14,7 @@ export const ModalInserirLote: React.FC<{
   onClose: () => void;
   onConfirm: (count: number) => void;
 }> = ({ lista, role, userId, userNome, onClose, onConfirm }) => {
+  useModalBack(true, onClose, 'inserir-lote');
   const regrasDisponiveis = useMemo(() => {
     if (role === 'gerente') return lista.regras.filter(r => r.saldoBanco > 0);
     return lista.regras.filter(r => listasService.getSaldoDisponivel(lista.id, userId, r.id) > 0);

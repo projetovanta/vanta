@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { X, Check } from 'lucide-react';
 import type { EventoAdmin } from '../../../../types';
 import { eventosAdminService } from '../../services/eventosAdminService';
+import { VantaDatePicker } from '../../../../components/VantaDatePicker';
+import { VantaTimePicker } from '../../../../components/VantaTimePicker';
 
 export const DuplicarModal: React.FC<{
   evento: EventoAdmin;
@@ -110,37 +112,33 @@ export const DuplicarModal: React.FC<{
         <div className="grid grid-cols-2 gap-2">
           <div>
             <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mb-1">Data Início</p>
-            <input
-              type="date"
+            <VantaDatePicker
               value={dataInicio}
-              onChange={e => setDataInicio(e.target.value)}
+              onChange={setDataInicio}
               className="w-full bg-zinc-900/60 border border-white/5 rounded-xl px-3 py-3 text-white text-sm outline-none focus:border-[#FFD300]/30"
             />
           </div>
           <div>
             <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mb-1">Hora Início</p>
-            <input
-              type="time"
+            <VantaTimePicker
               value={horaInicio}
-              onChange={e => setHoraInicio(e.target.value)}
+              onChange={setHoraInicio}
               className="w-full bg-zinc-900/60 border border-white/5 rounded-xl px-3 py-3 text-white text-sm outline-none focus:border-[#FFD300]/30"
             />
           </div>
           <div>
             <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mb-1">Data Fim</p>
-            <input
-              type="date"
+            <VantaDatePicker
               value={dataFim}
-              onChange={e => setDataFim(e.target.value)}
+              onChange={setDataFim}
               className="w-full bg-zinc-900/60 border border-white/5 rounded-xl px-3 py-3 text-white text-sm outline-none focus:border-[#FFD300]/30"
             />
           </div>
           <div>
             <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mb-1">Hora Fim</p>
-            <input
-              type="time"
+            <VantaTimePicker
               value={horaFim}
-              onChange={e => setHoraFim(e.target.value)}
+              onChange={setHoraFim}
               className="w-full bg-zinc-900/60 border border-white/5 rounded-xl px-3 py-3 text-white text-sm outline-none focus:border-[#FFD300]/30"
             />
           </div>

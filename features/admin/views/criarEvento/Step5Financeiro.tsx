@@ -2,6 +2,7 @@ import React from 'react';
 import { AlertTriangle } from 'lucide-react';
 import type { SplitForm, SocioConviteForm } from './types';
 import { labelCls } from './constants';
+import { VantaSlider } from '../../../../components/VantaSlider';
 
 interface Props {
   split: SplitForm;
@@ -91,14 +92,7 @@ export const Step5Financeiro: React.FC<Props> = ({ split, setSplit, socio }) => 
 
         {/* Slider */}
         <div className="space-y-2">
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value={pSocio}
-            onChange={e => handleSlider(parseInt(e.target.value))}
-            className="w-full h-2 bg-zinc-800 rounded-full appearance-none cursor-pointer accent-[#FFD300]"
-          />
+          <VantaSlider min={0} max={100} value={pSocio} onChange={v => handleSlider(v)} className="w-full" />
           <div className="flex justify-between text-[8px] font-black uppercase tracking-widest">
             <span className="text-zinc-400">0% Sócio</span>
             <span className="text-zinc-400">100% Sócio</span>

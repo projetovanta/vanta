@@ -3,6 +3,7 @@ import { X, Search, Send, Check } from 'lucide-react';
 import { Membro, Evento } from '../../../types';
 import { TYPOGRAPHY } from '../../../constants';
 import { useDebounce } from '../../../hooks/useDebounce';
+import { useModalBack } from '../../../hooks/useModalStack';
 
 interface InviteFriendsModalProps {
   isOpen: boolean;
@@ -19,6 +20,7 @@ export const InviteFriendsModal: React.FC<InviteFriendsModalProps> = ({
   evento,
   onSendInvite,
 }) => {
+  useModalBack(isOpen, onClose, 'invite-friends');
   const [query, setQuery] = useState('');
   const debouncedQuery = useDebounce(query, 300);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());

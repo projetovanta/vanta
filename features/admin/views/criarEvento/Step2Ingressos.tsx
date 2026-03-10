@@ -8,6 +8,8 @@ import type { LoteForm, VariacaoForm, VarListaForm } from './types';
 import { inputCls, inputSmCls, inputDateCls, labelCls, AREA_LABELS } from './constants';
 import { uid, novaVar, buildLabel } from './utils';
 import { VantaDropdown } from '../../../../components/VantaDropdown';
+import { VantaDatePicker } from '../../../../components/VantaDatePicker';
+import { VantaTimePicker } from '../../../../components/VantaTimePicker';
 
 /** Benefício MV por tier — liga tier → lote real ou lista real do evento */
 export interface BeneficioMVForm {
@@ -239,19 +241,15 @@ export const Step2Ingressos: React.FC<Props> = ({
               <div>
                 <label className={labelCls}>Válido até (opcional)</label>
                 <div className="grid grid-cols-2 gap-2">
-                  <input
+                  <VantaDatePicker
                     value={lote.dataValidade}
-                    onChange={e => updateLote(lote.id, 'dataValidade', e.target.value)}
-                    type="date"
+                    onChange={v => updateLote(lote.id, 'dataValidade', v)}
                     className={inputDateCls}
-                    style={{ colorScheme: 'dark' }}
                   />
-                  <input
+                  <VantaTimePicker
                     value={lote.horaValidade}
-                    onChange={e => updateLote(lote.id, 'horaValidade', e.target.value)}
-                    type="time"
+                    onChange={v => updateLote(lote.id, 'horaValidade', v)}
                     className={inputDateCls}
-                    style={{ colorScheme: 'dark' }}
                   />
                 </div>
                 <p className="text-[8px] text-zinc-700 mt-1 font-black uppercase tracking-widest">

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { TYPOGRAPHY } from '../constants';
+import { useModalBack } from '../hooks/useModalStack';
 
 // ── Termos de Uso ────────────────────────────────────────────────────────────
 
@@ -401,6 +402,7 @@ export const LegalView: React.FC<{
   page: LegalPage;
   onBack: () => void;
 }> = ({ page, onBack }) => {
+  useModalBack(true, onBack, 'legal-view');
   const titulo = page === 'TERMOS' ? 'Termos de Uso' : 'Política de Privacidade';
   const conteudo = page === 'TERMOS' ? TERMOS_CONTEUDO : PRIVACIDADE_CONTEUDO;
 
@@ -410,7 +412,8 @@ export const LegalView: React.FC<{
         className="shrink-0 bg-[#0a0a0a]/90 backdrop-blur-xl border-b border-white/5 px-6 pb-4 flex items-center justify-between"
         style={{ paddingTop: '1rem' }}
       >
-        <button aria-label="Voltar"
+        <button
+          aria-label="Voltar"
           onClick={onBack}
           className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
         >

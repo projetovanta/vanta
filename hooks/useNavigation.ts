@@ -42,7 +42,23 @@ export const useNavigation = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [profileSubView, setProfileSubView] = useState<ProfileSubView>('MAIN');
+  const [profileSubView, _setProfileSubView] = useState<ProfileSubView>('MAIN');
+  const setProfileSubView = useCallback(
+    (v: ProfileSubView) => {
+      _setProfileSubView(v);
+      const pathMap: Partial<Record<ProfileSubView, string>> = {
+        WALLET: '/perfil/carteira',
+        MY_TICKETS: '/perfil/ingressos',
+        PREVIEW_PUBLIC: '/perfil/preview',
+      };
+      const target = pathMap[v] ?? '/perfil';
+      // Só navega se não estamos já na URL correta (evita push desnecessário)
+      if (window.location.pathname !== target) {
+        navigate(target, { replace: true });
+      }
+    },
+    [navigate],
+  );
   const [selectedMember, setSelectedMember] = useState<Membro | null>(null);
   const [isCityModalOpen, setIsCityModalOpen] = useState(false);
   const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);

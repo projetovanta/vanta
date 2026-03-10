@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { X, Check, Loader2 } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
 import { supabase } from '../../../services/supabaseClient';
+import { useModalBack } from '../../../hooks/useModalStack';
 
 interface VibeFilters {
   formatos: string[];
@@ -19,6 +20,7 @@ export const VibeFilterModal: React.FC<{
   vibeFilters?: VibeFilters;
   onVibeFiltersChange?: (filters: VibeFilters) => void;
 }> = ({ isOpen, onClose, selectedCategories, onToggleCategory, onClear, vibeFilters, onVibeFiltersChange }) => {
+  useModalBack(isOpen, onClose, 'vibe-filter');
   const [dbFormatos, setDbFormatos] = useState<string[]>([]);
   const [dbEstilos, setDbEstilos] = useState<string[]>([]);
   const [dbExperiencias, setDbExperiencias] = useState<string[]>([]);

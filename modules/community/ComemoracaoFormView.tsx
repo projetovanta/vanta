@@ -4,6 +4,8 @@ import { TYPOGRAPHY } from '../../constants';
 import { comemoracaoService, ComemoracaoForm } from '../../services/comemoracaoService';
 import { useAuthStore } from '../../stores/authStore';
 import { VantaDropdown } from '../../components/VantaDropdown';
+import { VantaDatePicker } from '../../components/VantaDatePicker';
+import { globalToast } from '../../components/Toast';
 
 const MOTIVO_OPTS = [
   { value: 'ANIVERSARIO', label: 'Aniversário' },
@@ -66,7 +68,7 @@ export const ComemoracaoFormView: React.FC<Props> = ({
       await comemoracaoService.solicitar(form);
       setSent(true);
     } catch {
-      alert('Erro ao enviar solicitação. Tente novamente.');
+      globalToast('erro', 'Erro ao enviar solicitação. Tente novamente.');
     } finally {
       setSending(false);
     }
@@ -162,23 +164,13 @@ export const ComemoracaoFormView: React.FC<Props> = ({
           {motivo === 'ANIVERSARIO' && (
             <div>
               <p className={labelClass}>Data de aniversário *</p>
-              <input
-                type="date"
-                value={dataAniversario}
-                onChange={e => setDataAniversario(e.target.value)}
-                className={inputClass}
-              />
+              <VantaDatePicker value={dataAniversario} onChange={setDataAniversario} className={inputClass} />
             </div>
           )}
 
           <div>
             <p className={labelClass}>Data da comemoração *</p>
-            <input
-              type="date"
-              value={dataComemoracao}
-              onChange={e => setDataComemoracao(e.target.value)}
-              className={inputClass}
-            />
+            <VantaDatePicker value={dataComemoracao} onChange={setDataComemoracao} className={inputClass} />
             {!eventoId && (
               <p className="text-[9px] text-zinc-400 mt-1">
                 Se ainda não tem evento nessa data, vincularemos quando ele for criado.

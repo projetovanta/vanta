@@ -17,6 +17,9 @@ import { logger } from './logger';
 
 type ProfileRow = Database['public']['Tables']['profiles']['Row'];
 
+// Flag para distinguir logout intencional de sessão expirada
+let _intentionalLogout = false;
+
 // ── Avatares padrão por gênero ─────────────────────────────────────────────
 const AVATAR_FEMININO = 'https://i.imgur.com/XY8rZZf.png';
 const AVATAR_MASCULINO = 'https://i.imgur.com/kXFU8vy.png';
@@ -259,6 +262,7 @@ export const authService = {
 
   /** Logout — invalida sessão no Supabase. */
   signOut: async (): Promise<void> => {
+    _intentionalLogout = true;
     await supabase.auth.signOut();
   },
 
@@ -302,7 +306,11 @@ export const authService = {
         window.dispatchEvent(new CustomEvent('vanta:password-recovery'));
       }
       if (!session?.user) {
-        // Logout real (SIGNED_OUT) ou sessão expirada sem refresh
+        // Sessão expirada (não intencional) → notificar UI
+        if (!_intentionalLogout && event === 'SIGNED_OUT') {
+          window.dispatchEvent(new CustomEvent('vanta:session-expired'));
+        }
+        _intentionalLogout = false;
         callback(null);
         return;
       }

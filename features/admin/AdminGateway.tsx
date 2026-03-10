@@ -46,7 +46,22 @@ export const AdminGateway: React.FC<Props> = ({ onBack }) => {
   const addNotification = useAuthStore(s => s.addNotification);
   const [selecionadoId, setSelecionadoId] = useState<string>('');
   const [listaAberta, setListaAberta] = useState(false);
-  const [confirmado, setConfirmado] = useState<GatewayDestino | null>(null);
+  const [confirmado, _setConfirmado] = useState<GatewayDestino | null>(() => {
+    try {
+      const saved = sessionStorage.getItem('vanta_admin_destino');
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
+  const setConfirmado = (v: GatewayDestino | null) => {
+    if (v) sessionStorage.setItem('vanta_admin_destino', JSON.stringify(v));
+    else {
+      sessionStorage.removeItem('vanta_admin_destino');
+      sessionStorage.removeItem('vanta_admin_subview');
+    }
+    _setConfirmado(v);
+  };
 
   // Detectar desktop para max-w-4xl
   const [isDesktop, setIsDesktop] = useState(() => window.matchMedia('(min-width: 768px)').matches);

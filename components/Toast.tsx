@@ -89,3 +89,36 @@ export function useToast() {
     Toast: () => <ToastContainer toasts={ref.current.toasts} onDismiss={ref.current.dismiss} />,
   };
 }
+
+/* ── Toast Global (singleton — chamável sem hook/contexto) ────────── */
+
+type GlobalListener = (t: ToastData) => void;
+let _globalListener: GlobalListener | null = null;
+
+/** Registra o listener do componente GlobalToastContainer. Chamado 1x no App. */
+export function _registerGlobalToast(fn: GlobalListener) {
+  _globalListener = fn;
+}
+
+/** Toast global — pode ser chamado de qualquer lugar (service, handler, etc.) */
+export function globalToast(tipo: ToastType, msg: string) {
+  const t: ToastData = { id: _nextId++, tipo, msg };
+  if (_globalListener) {
+    _globalListener(t);
+  }
+}
+
+/** Container global — montar 1x no App.tsx */
+export const GlobalToastContainer: React.FC = () => {
+  const [toasts, setToasts] = useState<ToastData[]>([]);
+  const dismiss = useCallback((id: number) => setToasts(prev => prev.filter(t => t.id !== id)), []);
+
+  useEffect(() => {
+    _registerGlobalToast(t => setToasts(prev => [...prev.slice(-4), t]));
+    return () => {
+      _globalListener = null;
+    };
+  }, []);
+
+  return <ToastContainer toasts={toasts} onDismiss={dismiss} />;
+};

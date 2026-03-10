@@ -2,6 +2,7 @@ import React, { lazy } from 'react';
 import { TYPOGRAPHY } from '../constants';
 import { Check, X, Shield } from 'lucide-react';
 import { PushPermissionBanner } from './PushPermissionBanner';
+import { useModalBack } from '../hooks/useModalStack';
 import type { usePWA } from '../hooks/usePWA';
 
 const LoginView = lazy(() => import('./LoginView').then(m => ({ default: m.LoginView })));
@@ -133,88 +134,97 @@ export const AppModals: React.FC<AppModalsProps> = ({
   handleLoginSuccess,
   handleOnboardingComplete,
   onRegisterFcm,
-}) => (
-  <>
-    {showLoginView && (
-      <div className="absolute inset-0 z-[340] flex flex-col bg-[#0A0A0A] animate-in slide-in-from-bottom duration-300">
-        <LoginView
-          onSuccess={handleLoginSuccess}
-          onRegister={() => {
-            setShowLoginView(false);
+}) => {
+  useModalBack(showLoginView, () => setShowLoginView(false), 'login-view');
+  useModalBack(showGuestModal, () => setShowGuestModal(false), 'guest-modal');
+  useModalBack(showSuccessModal, () => setShowSuccessModal(false), 'success-modal');
+  useModalBack(showProfileSuccess, () => setShowProfileSuccess(false), 'profile-success-modal');
+  useModalBack(showOnboarding, handleOnboardingComplete, 'onboarding');
+  useModalBack(!!reviewTarget, () => setReviewTarget(null), 'review-modal');
+
+  return (
+    <>
+      {showLoginView && (
+        <div className="absolute inset-0 z-[340] flex flex-col bg-[#0A0A0A] animate-in slide-in-from-bottom duration-300">
+          <LoginView
+            onSuccess={handleLoginSuccess}
+            onRegister={() => {
+              setShowLoginView(false);
+              setShowAuthModal(true);
+            }}
+            onClose={() => setShowLoginView(false)}
+          />
+        </div>
+      )}
+      {showGuestModal && (
+        <GuestAreaModal
+          onLogin={() => {
+            setShowGuestModal(false);
+            setShowLoginView(true);
+          }}
+          onCadastrar={() => {
+            setShowGuestModal(false);
             setShowAuthModal(true);
           }}
-          onClose={() => setShowLoginView(false)}
+          onCancel={() => setShowGuestModal(false)}
         />
-      </div>
-    )}
-    {showGuestModal && (
-      <GuestAreaModal
-        onLogin={() => {
-          setShowGuestModal(false);
-          setShowLoginView(true);
-        }}
-        onCadastrar={() => {
-          setShowGuestModal(false);
-          setShowAuthModal(true);
-        }}
-        onCancel={() => setShowGuestModal(false)}
-      />
-    )}
-    {showSuccessModal && <SuccessFeedbackModal message={successMessage} onClose={() => setShowSuccessModal(false)} />}
-    {showProfileSuccess && (
-      <SuccessFeedbackModal message="Perfil atualizado com sucesso!" onClose={() => setShowProfileSuccess(false)} />
-    )}
-    {showOnboarding && <OnboardingView onComplete={handleOnboardingComplete} />}
-    {reviewTarget && (
-      <ReviewModal
-        eventoId={reviewTarget.eventoId}
-        eventoNome={reviewTarget.eventoNome}
-        userId={userId}
-        onClose={() => setReviewTarget(null)}
-      />
-    )}
-    {/* PWA update banner */}
-    {pwa.updateAvailable && (
-      <div className="absolute bottom-20 left-3 right-3 z-[500] bg-zinc-900 border border-[#FFD300]/30 rounded-2xl p-4 flex items-center gap-3 shadow-2xl animate-in slide-in-from-bottom-4 duration-300">
-        <div className="w-8 h-8 rounded-xl bg-[#FFD300]/10 flex items-center justify-center shrink-0">
-          <Check size={14} className="text-[#FFD300]" />
+      )}
+      {showSuccessModal && <SuccessFeedbackModal message={successMessage} onClose={() => setShowSuccessModal(false)} />}
+      {showProfileSuccess && (
+        <SuccessFeedbackModal message="Perfil atualizado com sucesso!" onClose={() => setShowProfileSuccess(false)} />
+      )}
+      {showOnboarding && <OnboardingView onComplete={handleOnboardingComplete} />}
+      {reviewTarget && (
+        <ReviewModal
+          eventoId={reviewTarget.eventoId}
+          eventoNome={reviewTarget.eventoNome}
+          userId={userId}
+          onClose={() => setReviewTarget(null)}
+        />
+      )}
+      {/* PWA update banner */}
+      {pwa.updateAvailable && (
+        <div className="absolute bottom-20 left-3 right-3 z-[500] bg-zinc-900 border border-[#FFD300]/30 rounded-2xl p-4 flex items-center gap-3 shadow-2xl animate-in slide-in-from-bottom-4 duration-300">
+          <div className="w-8 h-8 rounded-xl bg-[#FFD300]/10 flex items-center justify-center shrink-0">
+            <Check size={14} className="text-[#FFD300]" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-white text-xs font-bold leading-none">Nova versão disponível</p>
+            <p className="text-zinc-400 text-[10px] mt-0.5">Atualize para a versão mais recente.</p>
+          </div>
+          <button
+            onClick={pwa.applyUpdate}
+            className="shrink-0 px-3 py-1.5 bg-[#FFD300] text-black text-[10px] font-black uppercase tracking-wider rounded-lg active:scale-95 transition-all"
+          >
+            Atualizar
+          </button>
         </div>
-        <div className="flex-1 min-w-0">
-          <p className="text-white text-xs font-bold leading-none">Nova versão disponível</p>
-          <p className="text-zinc-400 text-[10px] mt-0.5">Atualize para a versão mais recente.</p>
+      )}
+      {/* PWA install banner */}
+      {pwa.canInstall && !pwa.isInstalled && (
+        <div className="absolute bottom-20 left-3 right-3 z-[499] bg-zinc-900 border border-white/10 rounded-2xl p-4 flex items-center gap-3 shadow-2xl animate-in slide-in-from-bottom-4 duration-300">
+          <img loading="lazy" src="/icon-192.png" alt="VANTA" className="w-8 h-8 rounded-xl shrink-0" />
+          <div className="flex-1 min-w-0">
+            <p className="text-white text-xs font-bold leading-none">Adicionar à tela inicial</p>
+            <p className="text-zinc-400 text-[10px] mt-0.5">Acesse o VANTA como app nativo.</p>
+          </div>
+          <button
+            onClick={pwa.installApp}
+            className="shrink-0 px-3 py-1.5 bg-zinc-800 border border-white/10 text-white text-[10px] font-black uppercase tracking-wider rounded-lg active:scale-95 transition-all"
+          >
+            Instalar
+          </button>
         </div>
-        <button
-          onClick={pwa.applyUpdate}
-          className="shrink-0 px-3 py-1.5 bg-[#FFD300] text-black text-[10px] font-black uppercase tracking-wider rounded-lg active:scale-95 transition-all"
-        >
-          Atualizar
-        </button>
-      </div>
-    )}
-    {/* PWA install banner */}
-    {pwa.canInstall && !pwa.isInstalled && (
-      <div className="absolute bottom-20 left-3 right-3 z-[499] bg-zinc-900 border border-white/10 rounded-2xl p-4 flex items-center gap-3 shadow-2xl animate-in slide-in-from-bottom-4 duration-300">
-        <img loading="lazy" src="/icon-192.png" alt="VANTA" className="w-8 h-8 rounded-xl shrink-0" />
-        <div className="flex-1 min-w-0">
-          <p className="text-white text-xs font-bold leading-none">Adicionar à tela inicial</p>
-          <p className="text-zinc-400 text-[10px] mt-0.5">Acesse o VANTA como app nativo.</p>
-        </div>
-        <button
-          onClick={pwa.installApp}
-          className="shrink-0 px-3 py-1.5 bg-zinc-800 border border-white/10 text-white text-[10px] font-black uppercase tracking-wider rounded-lg active:scale-95 transition-all"
-        >
-          Instalar
-        </button>
-      </div>
-    )}
-    {/* Push permission banner */}
-    {!isGuest && (
-      <PushPermissionBanner
-        permission={pwa.notifPermission}
-        isInstalled={pwa.isInstalled}
-        onRequestPermission={pwa.requestNotifPermission}
-        onRegisterFcm={onRegisterFcm}
-      />
-    )}
-  </>
-);
+      )}
+      {/* Push permission banner */}
+      {!isGuest && (
+        <PushPermissionBanner
+          permission={pwa.notifPermission}
+          isInstalled={pwa.isInstalled}
+          onRequestPermission={pwa.requestNotifPermission}
+          onRegisterFcm={onRegisterFcm}
+        />
+      )}
+    </>
+  );
+};

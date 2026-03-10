@@ -1,5 +1,6 @@
 import React from 'react';
 import type { HorarioSemanal } from '../types';
+import { VantaTimePicker } from './VantaTimePicker';
 
 const DIAS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'] as const;
 
@@ -56,17 +57,15 @@ export const HorarioFuncionamentoEditor: React.FC<{
 
             {h.aberto ? (
               <div className="flex items-center gap-1.5 flex-1 min-w-0">
-                <input
-                  type="time"
+                <VantaTimePicker
                   value={h.abertura}
-                  onChange={e => update(h.dia, 'abertura', e.target.value)}
+                  onChange={v => update(h.dia, 'abertura', v)}
                   className={inputCls + ' flex-1 min-w-0'}
                 />
                 <span className="text-zinc-400 text-[10px] shrink-0">às</span>
-                <input
-                  type="time"
+                <VantaTimePicker
                   value={h.fechamento}
-                  onChange={e => update(h.dia, 'fechamento', e.target.value)}
+                  onChange={v => update(h.dia, 'fechamento', v)}
                   className={inputCls + ' flex-1 min-w-0'}
                 />
               </div>

@@ -4,6 +4,8 @@ import { TYPOGRAPHY } from '../../constants';
 import { eventoPrivadoService, EventoPrivadoForm } from '../../services/eventoPrivadoService';
 import { useAuthStore } from '../../stores/authStore';
 import { VantaDropdown } from '../../components/VantaDropdown';
+import { VantaDatePicker } from '../../components/VantaDatePicker';
+import { globalToast } from '../../components/Toast';
 
 const HORARIO_OPTS = [
   { value: 'DIURNO', label: 'Diurno' },
@@ -94,7 +96,7 @@ export const EventoPrivadoFormView: React.FC<Props> = ({ comunidadeId, comunidad
       await eventoPrivadoService.solicitar(form);
       setSent(true);
     } catch {
-      alert('Erro ao enviar solicitação. Tente novamente.');
+      globalToast('erro', 'Erro ao enviar solicitação. Tente novamente.');
     } finally {
       setSending(false);
     }
@@ -234,12 +236,7 @@ export const EventoPrivadoFormView: React.FC<Props> = ({ comunidadeId, comunidad
 
           <div>
             <p className={labelClass}>Data do evento *</p>
-            <input
-              type="date"
-              value={dataEvento}
-              onChange={e => setDataEvento(e.target.value)}
-              className={inputClass}
-            />
+            <VantaDatePicker value={dataEvento} onChange={setDataEvento} className={inputClass} />
             <p className="text-[9px] text-zinc-400 mt-1">Ou descreva uma estimativa:</p>
             <input
               type="text"

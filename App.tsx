@@ -18,6 +18,8 @@ import { Shield, PartyPopper, Gift, Star, ChevronRight, X } from 'lucide-react';
 import { NotificationPanel } from './components/Home/NotificationPanel';
 import { CitySelector } from './components/Home/CitySelector';
 import { AppModals } from './components/AppModals';
+import { SessionExpiredModal } from './components/SessionExpiredModal';
+import { GlobalToastContainer } from './components/Toast';
 import { usePWA } from './hooks/usePWA';
 import { DevQuickLogin } from './components/DevQuickLogin';
 import { trackAppOpen, checkPmfEligible } from './services/analyticsService';
@@ -451,6 +453,8 @@ export default function App() {
             handleOnboardingComplete={h.handleOnboardingComplete}
             onRegisterFcm={() => pwa.registerFcmPush(h.currentAccount.id)}
           />
+          <GlobalToastContainer />
+          <SessionExpiredModal onLogin={() => h.setShowAuthModal(true)} />
           {h.showAuthModal && (
             <AuthModal isOpen onClose={() => h.setShowAuthModal(false)} onSuccess={h.handleAuthSuccess} />
           )}

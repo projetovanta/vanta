@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useModalBack } from '../../../hooks/useModalStack';
 
 interface PremiumCalendarProps {
   onSelectDate: (date: Date) => void;
@@ -9,6 +10,7 @@ interface PremiumCalendarProps {
 }
 
 export const PremiumCalendar: React.FC<PremiumCalendarProps> = ({ onSelectDate, onClose, eventDates }) => {
+  useModalBack(true, onClose, 'premium-calendar');
   const [currentDate, setCurrentDate] = useState(new Date());
   const today = new Date();
   today.setHours(0, 0, 0, 0);

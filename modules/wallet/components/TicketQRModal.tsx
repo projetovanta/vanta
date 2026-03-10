@@ -5,6 +5,7 @@ import { Ingresso } from '../../../types';
 import { signTicketToken } from '../../../features/admin/services/jwtService';
 import { comprovanteService } from '../../../features/admin/services/comprovanteService';
 import { supabase } from '../../../services/supabaseClient';
+import { useModalBack } from '../../../hooks/useModalStack';
 
 interface TicketQRModalProps {
   ticket: Ingresso;
@@ -14,6 +15,7 @@ interface TicketQRModalProps {
 const REFRESH_INTERVAL = 15_000; // 15 segundos
 
 export const TicketQRModal: React.FC<TicketQRModalProps> = ({ ticket, onClose }) => {
+  useModalBack(true, onClose, 'ticket-qr');
   const [token, setToken] = useState<string | null>(null);
   const [clockTime, setClockTime] = useState('');
   const [secondsLeft, setSecondsLeft] = useState(REFRESH_INTERVAL / 1000);

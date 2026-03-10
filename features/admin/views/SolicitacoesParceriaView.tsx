@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
 import { parceriaService, SolicitacaoParceria } from '../services/parceriaService';
+import { globalToast } from '../../../components/Toast';
 
 type AbaStatus = 'PENDENTE' | 'APROVADA' | 'REJEITADA';
 
@@ -216,7 +217,7 @@ export const SolicitacoesParceriaView: React.FC<{
             <button
               onClick={() => {
                 // TODO: abrir fluxo de criar comunidade pré-preenchida
-                alert('Funcionalidade: criar comunidade a partir da solicitação. Em desenvolvimento.');
+                globalToast('info', 'Funcionalidade em desenvolvimento: criar comunidade a partir da solicitação.');
               }}
               className="flex-1 py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all"
             >

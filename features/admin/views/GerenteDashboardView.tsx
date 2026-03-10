@@ -29,6 +29,8 @@ import { getAcessoComunidades } from '../permissoes';
 import { comunidadesService } from '../services/comunidadesService';
 import { rbacService } from '../services/rbacService';
 import { reviewsService } from '../services/reviewsService';
+import { globalToast } from '../../../components/Toast';
+import { VantaSlider } from '../../../components/VantaSlider';
 import { fmtBRL, tsBR } from '../../../utils';
 import { CriarEventoView } from './CriarEventoView';
 import { EventoDashboard } from './eventoDashboard';
@@ -108,14 +110,7 @@ const ModalReenvio: React.FC<{
           {/* Split */}
           <div>
             <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">Split da Receita</p>
-            <input
-              type="range"
-              min={10}
-              max={90}
-              value={splitProdutor}
-              onChange={e => setSplitProdutor(Number(e.target.value))}
-              className="w-full accent-[#FFD300]"
-            />
+            <VantaSlider min={10} max={90} value={splitProdutor} onChange={setSplitProdutor} className="w-full" />
             <div className="flex justify-between mt-1">
               <span className="text-zinc-400 text-xs font-bold">Produtor: {splitProdutor}%</span>
               <span className="text-emerald-400 text-xs font-bold">Sócio: {splitSocio}%</span>
@@ -449,7 +444,7 @@ export const GerenteDashboardView: React.FC<{
     setReenviando(null);
     setReenvioModal(null);
     if (!result.ok) {
-      alert(result.erro ?? 'Erro ao reenviar convite');
+      globalToast('erro', result.erro ?? 'Erro ao reenviar convite');
     }
   };
 

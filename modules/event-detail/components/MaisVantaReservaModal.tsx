@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { X, Crown, AlertTriangle, Check, UserPlus } from 'lucide-react';
 import { LoteMaisVanta } from '../../../types';
 import { maisVantaConfigService } from '../../../features/admin/services/maisVantaConfigService';
+import { useModalBack } from '../../../hooks/useModalStack';
 
 interface Props {
   isOpen: boolean;
@@ -22,6 +23,7 @@ export const MaisVantaReservaModal: React.FC<Props> = ({
   venueInstagram,
   onConfirmar,
 }) => {
+  useModalBack(isOpen, onClose, 'mais-vanta-reserva');
   const [aceiteTermos, setAceiteTermos] = useState(false);
   const [comAcompanhante, setComAcompanhante] = useState(false);
   const [qtdAcomp, setQtdAcomp] = useState(1);

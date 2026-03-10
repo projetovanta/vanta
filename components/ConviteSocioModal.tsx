@@ -19,6 +19,8 @@ import {
 } from 'lucide-react';
 import { supabase } from '../services/supabaseClient';
 import type { Notificacao } from '../types';
+import { useModalBack } from '../hooks/useModalStack';
+import { VantaSlider } from './VantaSlider';
 
 // ── Types ────────────────────────────────────────────────────────────────────
 interface ConviteData {
@@ -169,14 +171,7 @@ const ModalContraProposta: React.FC<{
           {/* Split */}
           <div>
             <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">Split da Receita</p>
-            <input
-              type="range"
-              min={10}
-              max={90}
-              value={splitSocio}
-              onChange={e => setSplitSocio(Number(e.target.value))}
-              className="w-full accent-emerald-400"
-            />
+            <VantaSlider min={10} max={90} value={splitSocio} onChange={setSplitSocio} className="w-full" />
             <div className="flex justify-between mt-1">
               <span className="text-emerald-400 text-xs font-bold">Sócio: {splitSocio}%</span>
               <span className="text-zinc-400 text-xs font-bold">Produtor: {splitProdutor}%</span>
@@ -268,6 +263,7 @@ const SectionBlock: React.FC<{
 
 // ── Modal Principal ─────────────────────────────────────────────────────────
 export const ConviteSocioModal: React.FC<Props> = ({ eventoId, userId, onClose, onSuccess }) => {
+  useModalBack(true, onClose, 'convite-socio');
   const [convite, setConvite] = useState<ConviteData | null>(null);
   const [loading, setLoading] = useState(true);
   const [erro, setErro] = useState<string | null>(null);
@@ -483,7 +479,8 @@ export const ConviteSocioModal: React.FC<Props> = ({ eventoId, userId, onClose, 
           </div>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/30 to-transparent" />
-        <button aria-label="Voltar"
+        <button
+          aria-label="Voltar"
           onClick={onClose}
           className="absolute left-4 w-10 h-10 bg-black/60 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
           style={{ top: '1.25rem' }}

@@ -26,6 +26,7 @@ import { fmtBRL, tsBR } from '../../../../utils';
 
 import { ModalReembolsoManual } from './ModalReembolsoManual';
 import { ModalFechamento } from './ModalFechamento';
+import { useModalBack } from '../../../../hooks/useModalStack';
 import { ModalSaque } from './ModalSaque';
 import { ReembolsosSection } from './ReembolsosSection';
 import { HistoricoSaques } from './HistoricoSaques';
@@ -53,6 +54,7 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
   const [pixSaved, setPixSaved] = useState(false);
   const [reembolsos, setReembolsos] = useState<Reembolso[]>([]);
   const [showReembolsoModal, setShowReembolsoModal] = useState(false);
+  useModalBack(showReembolsoModal, () => setShowReembolsoModal(false), 'reembolso-modal');
   const [reembolsoMotivo, setReembolsoMotivo] = useState('');
   const [reembolsoLoadingId, setReembolsoLoadingId] = useState<string | null>(null);
   const financialActionRef = useRef(false);
@@ -78,9 +80,11 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
     })();
   }, [currentUserId]);
   const [showModal, setShowModal] = useState(false);
+  useModalBack(showModal, () => setShowModal(false), 'saque-modal');
   const [valorSaque, setValorSaque] = useState('');
   const [saqueOk, setSaqueOk] = useState(false);
   const [showFechaModal, setShowFechaModal] = useState(false);
+  useModalBack(showFechaModal, () => setShowFechaModal(false), 'fechamento-modal');
 
   // Taxas efetivas do primeiro evento do produtor (resolvidas no momento de abrir o modal)
   const meusEventos = useMemo(

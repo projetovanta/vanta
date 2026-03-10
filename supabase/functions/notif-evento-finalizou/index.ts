@@ -100,7 +100,7 @@ serve(async (req: Request) => {
 
       // Buscar reservas: status USADO (compareceu) mas post não verificado
       const { data: comCheckIn, error: errCk } = await supabase
-        .from('reservas_mais_vanta')
+        .from('resgates_mv_evento')
         .select('id, user_id')
         .eq('evento_id', eventoId)
         .eq('status', 'USADO')
@@ -163,7 +163,7 @@ serve(async (req: Request) => {
         // UPDATE reservas: set post_deadline_em (agenda lembrete T+12h e infração T+24h)
         for (const reserva of comCheckIn) {
           const { error: errDl } = await supabase
-            .from('reservas_mais_vanta')
+            .from('resgates_mv_evento')
             .update({ post_deadline_em: deadline })
             .eq('id', (reserva as { id: string }).id);
           if (errDl) console.error('[edge/notif-evento-finalizou] deadline update:', errDl.message);

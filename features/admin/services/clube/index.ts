@@ -2,6 +2,7 @@
  * clubeService — Clube de Influência (MAIS VANTA).
  * Facade que compõe todos os sub-services.
  */
+import type { ReservaMaisVanta } from '../../../../types';
 import { supabase } from '../../../../services/supabaseClient';
 import {
   _membros,
@@ -148,17 +149,35 @@ export const clubeService = {
   removeLotesMaisVanta: lotes.removeLotesMaisVanta,
   removeLoteMaisVanta: lotes.removeLoteMaisVanta,
 
-  // ── Reservas ────────────────────────────────────────────────────────────
-  getReservasUsuario: reservas.getReservasUsuario,
-  getReservasEvento: reservas.getReservasEvento,
-  getReservasPendentePost: reservas.getReservasPendentePost,
+  // ── Resgates MV de evento (resgates_mv_evento) ─────────────────────────
+  resgatarBeneficio: reservas.resgatarBeneficio,
+  getResgate: reservas.getResgate,
+  getResgatesUsuarioAsync: reservas.getResgatesUsuario,
+  getResgatesEventoAsync: reservas.getResgatesEvento,
+  cancelarResgate: reservas.cancelarResgate,
+  getResgatesPendentePostAsync: reservas.getResgatesPendentePost,
+  verificarPostResgate: reservas.verificarPost,
+
+  // ── Reservas (stubs legados — consumers síncronos) ─────────────────────
+  /** @deprecated Use getResgatesUsuarioAsync */
+  getReservasUsuario: (_userId: string): ReservaMaisVanta[] => [],
+  /** @deprecated Use getResgatesEventoAsync */
+  getReservasEvento: (_eventoId: string): ReservaMaisVanta[] => [],
+  /** @deprecated Use getResgatesPendentePostAsync */
+  getReservasPendentePost: (): ReservaMaisVanta[] => [],
   temDividaSocial: infracoes.temDividaSocial,
-  reservar: reservas.reservar,
-  cancelarReserva: reservas.cancelarReserva,
-  confirmarPost: reservas.confirmarPost,
-  verificarPost: reservas.verificarPost,
-  getEventosComBeneficio: reservas.getEventosComBeneficio,
-  temBeneficio: reservas.temBeneficio,
+  /** @deprecated Use resgatarBeneficio */
+  reservar: async (): Promise<ReservaMaisVanta | null> => null,
+  /** @deprecated Use cancelarResgate */
+  cancelarReserva: async (_reservaId: string): Promise<boolean> => false,
+  /** @deprecated */
+  confirmarPost: async (_reservaId: string, _postUrl: string): Promise<void> => {},
+  /** @deprecated Use verificarPostResgate */
+  verificarPost: async (_resgateId: string, _masterId: string): Promise<void> => {},
+  /** @deprecated */
+  getEventosComBeneficio: (): string[] => [],
+  /** @deprecated */
+  temBeneficio: (_id: string): boolean => false,
 
   // ── Infrações ───────────────────────────────────────────────────────────
   estaBloqueado: infracoes.estaBloqueado,

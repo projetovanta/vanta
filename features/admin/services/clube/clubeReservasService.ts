@@ -1,48 +1,106 @@
 /**
- * clubeReservasService — STUB
- * reservas_mais_vanta foi dropada.
- * Exports mantidos como stubs para não quebrar consumers.
- * TODO: reimplementar sobre mais_vanta_lotes_evento na Fase 2.
+ * clubeReservasService — Resgates MV de evento.
+ * Usa tabela resgates_mv_evento (substitui reservas_mais_vanta dropada).
  */
-import type { ReservaMaisVanta } from '../../../../types';
+import { supabase } from '../../../../services/supabaseClient';
+import type { Database } from '../../../../types/supabase';
 
-/** @deprecated */
-export function getReservasUsuario(_userId: string): ReservaMaisVanta[] {
-  return [];
+type ResgateMVEvento = Database['public']['Tables']['resgates_mv_evento']['Row'];
+
+export interface ResgateMV {
+  id: string;
+  beneficioId: string;
+  eventoId: string;
+  userId: string;
+  status: 'RESGATADO' | 'USADO' | 'PENDENTE_POST' | 'NO_SHOW' | 'CANCELADO';
+  postVerificado: boolean;
+  postUrl?: string;
+  postDeadlineEm?: string;
+  resgatadoEm: string;
 }
 
-/** @deprecated */
-export function getReservasEvento(_eventoId: string): ReservaMaisVanta[] {
-  return [];
+const rowToResgate = (r: ResgateMVEvento): ResgateMV => ({
+  id: r.id,
+  beneficioId: r.beneficio_id,
+  eventoId: r.evento_id,
+  userId: r.user_id,
+  status: r.status as ResgateMV['status'],
+  postVerificado: r.post_verificado,
+  postUrl: r.post_url ?? undefined,
+  postDeadlineEm: r.post_deadline_em ?? undefined,
+  resgatadoEm: r.resgatado_em,
+});
+
+/** Resgatar benefício MV de evento */
+export async function resgatarBeneficio(
+  beneficioId: string,
+  eventoId: string,
+  userId: string,
+): Promise<ResgateMV | null> {
+  const { data, error } = await supabase
+    .from('resgates_mv_evento')
+    .insert({ beneficio_id: beneficioId, evento_id: eventoId, user_id: userId })
+    .select('*')
+    .single();
+  if (error) {
+    console.error('[clubeReservas] resgatarBeneficio:', error.message);
+    return null;
+  }
+  return rowToResgate(data);
 }
 
-/** @deprecated */
-export function getReservasPendentePost(): ReservaMaisVanta[] {
-  return [];
+/** Buscar resgate do usuário num benefício específico */
+export async function getResgate(beneficioId: string, userId: string): Promise<ResgateMV | null> {
+  const { data } = await supabase
+    .from('resgates_mv_evento')
+    .select('*')
+    .eq('beneficio_id', beneficioId)
+    .eq('user_id', userId)
+    .maybeSingle();
+  return data ? rowToResgate(data) : null;
 }
 
-/** @deprecated */
-export async function reservar(_loteId: string, _eventoId: string, _userId: string): Promise<ReservaMaisVanta | null> {
-  return null;
+/** Resgates do usuário (todos os eventos) */
+export async function getResgatesUsuario(userId: string): Promise<ResgateMV[]> {
+  const { data } = await supabase
+    .from('resgates_mv_evento')
+    .select('*')
+    .eq('user_id', userId)
+    .order('resgatado_em', { ascending: false });
+  return (data ?? []).map(rowToResgate);
 }
 
-/** @deprecated */
-export async function cancelarReserva(_reservaId: string): Promise<boolean> {
-  return false;
+/** Resgates de um evento (admin) */
+export async function getResgatesEvento(eventoId: string): Promise<ResgateMV[]> {
+  const { data } = await supabase
+    .from('resgates_mv_evento')
+    .select('*')
+    .eq('evento_id', eventoId)
+    .order('resgatado_em', { ascending: false });
+  return (data ?? []).map(rowToResgate);
 }
 
-/** @deprecated */
-export async function confirmarPost(_reservaId: string, _postUrl: string): Promise<void> {}
-
-/** @deprecated */
-export async function verificarPost(_reservaId: string, _masterId: string): Promise<void> {}
-
-/** @deprecated */
-export function getEventosComBeneficio(_userId: string): string[] {
-  return [];
+/** Cancelar resgate */
+export async function cancelarResgate(resgateId: string): Promise<boolean> {
+  const now = new Date().toLocaleString('sv-SE', { timeZone: 'America/Sao_Paulo' }).replace(' ', 'T') + '-03:00';
+  const { error } = await supabase
+    .from('resgates_mv_evento')
+    .update({ status: 'CANCELADO', cancelado_em: now })
+    .eq('id', resgateId);
+  return !error;
 }
 
-/** @deprecated */
-export function temBeneficio(_eventoId: string): boolean {
-  return false;
+/** Resgates pendentes de post (admin) */
+export async function getResgatesPendentePost(): Promise<ResgateMV[]> {
+  const { data } = await supabase
+    .from('resgates_mv_evento')
+    .select('*')
+    .eq('status', 'PENDENTE_POST')
+    .eq('post_verificado', false);
+  return (data ?? []).map(rowToResgate);
+}
+
+/** Verificar post de resgate (admin) */
+export async function verificarPost(resgateId: string, postUrl: string): Promise<void> {
+  await supabase.from('resgates_mv_evento').update({ post_verificado: true, post_url: postUrl }).eq('id', resgateId);
 }

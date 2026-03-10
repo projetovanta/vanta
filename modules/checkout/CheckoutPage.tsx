@@ -268,6 +268,8 @@ export const CheckoutPage: React.FC = () => {
 
   // Comprovante meia-entrada — check de elegibilidade do user logado
   const [meiaElegivel, setMeiaElegivel] = useState(false);
+  // Desconto MAIS VANTA — tier desconto aplica % direto no preço
+  const [descontoMV, setDescontoMV] = useState<number>(0); // 0-100
   useEffect(() => {
     let cancelled = false;
     supabase.auth.getUser().then(({ data: { user } }) => {
@@ -275,11 +277,31 @@ export const CheckoutPage: React.FC = () => {
       comprovanteService.refresh(user.id).then(() => {
         if (!cancelled) setMeiaElegivel(comprovanteService.isElegivel(user.id));
       });
+      // Verificar desconto MAIS VANTA
+      if (eventoId) {
+        Promise.all([
+          supabase.from('membros_clube').select('tier').eq('user_id', user.id).eq('ativo', true).maybeSingle(),
+          supabase
+            .from('mais_vanta_lotes_evento')
+            .select('tier_minimo, desconto_percentual')
+            .eq('evento_id', eventoId)
+            .eq('tier_minimo', 'desconto')
+            .eq('ativo', true)
+            .maybeSingle(),
+        ]).then(([membroRes, benefRes]) => {
+          if (cancelled) return;
+          const membro = membroRes.data;
+          const benef = benefRes.data;
+          if (membro && benef && (benef as { desconto_percentual: number | null }).desconto_percentual) {
+            setDescontoMV((benef as { desconto_percentual: number }).desconto_percentual);
+          }
+        });
+      }
     });
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [eventoId]);
 
   const setQtd = (key: string, value: number) =>
     setQtdMap(prev => {
@@ -298,7 +320,8 @@ export const CheckoutPage: React.FC = () => {
       ? variacoes.reduce((s, v) => s + (qtd[v.id] ?? 0) * v.valor, 0)
       : (evento?.lotes ?? []).reduce((s, l, i) => s + (qtd[`lote-${i}`] ?? 0) * l.preco, 0);
   const subtotal = precoIngressos + (mesaSelecionada?.valor ?? 0);
-  const desconto = cupomAplicado ? cuponsService.calcDesconto(cupomAplicado, subtotal) : 0;
+  const descontoMVValor = descontoMV > 0 ? Math.round((precoIngressos * descontoMV) / 100) : 0;
+  const desconto = (cupomAplicado ? cuponsService.calcDesconto(cupomAplicado, subtotal) : 0) + descontoMVValor;
   const totalPreco = Math.max(0, subtotal - desconto);
 
   const handleAplicarCupom = async () => {
@@ -816,7 +839,12 @@ export const CheckoutPage: React.FC = () => {
             {totalItems > 0 && (
               <p className="text-zinc-400 text-[9px]">
                 {totalItems} ingresso{totalItems !== 1 ? 's' : ''}
-                {desconto > 0 && <span className="text-emerald-400 ml-1">· −{fmtBrl(desconto)} cupom</span>}
+                {descontoMVValor > 0 && (
+                  <span className="text-[#FFD300] ml-1">· −{fmtBrl(descontoMVValor)} MAIS VANTA</span>
+                )}
+                {cupomAplicado && desconto - descontoMVValor > 0 && (
+                  <span className="text-emerald-400 ml-1">· −{fmtBrl(desconto - descontoMVValor)} cupom</span>
+                )}
               </p>
             )}
           </div>

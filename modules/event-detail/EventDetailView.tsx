@@ -464,8 +464,14 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
           eventoNome={evento.titulo}
           venueName={evento.comunidade?.nome ?? evento.local}
           venueInstagram={eventoAdmin?.comunidade?.nome}
-          onConfirmar={() => {
-            onSuccess?.('Benefício resgatado! Lembre-se da contrapartida.');
+          onConfirmar={async () => {
+            if (!profile?.id || !beneficioElegivel) return;
+            const resgate = await clubeService.resgatarBeneficio(beneficioElegivel.id, evento.id, profile.id);
+            if (resgate) {
+              onSuccess?.('Benefício resgatado! Lembre-se da contrapartida.');
+            } else {
+              onSuccess?.('Erro ao resgatar benefício. Tente novamente.');
+            }
             setShowMaisVantaModal(false);
           }}
         />

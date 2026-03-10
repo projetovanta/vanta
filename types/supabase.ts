@@ -3123,6 +3123,70 @@ export type Database = {
           },
         ];
       };
+      resgates_mv_evento: {
+        Row: {
+          beneficio_id: string;
+          cancelado_em: string | null;
+          evento_id: string;
+          id: string;
+          infraction_registered_em: string | null;
+          post_deadline_em: string | null;
+          post_url: string | null;
+          post_verificado: boolean;
+          resgatado_em: string;
+          status: string;
+          user_id: string;
+        };
+        Insert: {
+          beneficio_id: string;
+          cancelado_em?: string | null;
+          evento_id: string;
+          id?: string;
+          infraction_registered_em?: string | null;
+          post_deadline_em?: string | null;
+          post_url?: string | null;
+          post_verificado?: boolean;
+          resgatado_em?: string;
+          status?: string;
+          user_id: string;
+        };
+        Update: {
+          beneficio_id?: string;
+          cancelado_em?: string | null;
+          evento_id?: string;
+          id?: string;
+          infraction_registered_em?: string | null;
+          post_deadline_em?: string | null;
+          post_url?: string | null;
+          post_verificado?: boolean;
+          resgatado_em?: string;
+          status?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'resgates_mv_evento_beneficio_id_fkey';
+            columns: ['beneficio_id'];
+            isOneToOne: false;
+            referencedRelation: 'mais_vanta_lotes_evento';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'resgates_mv_evento_evento_id_fkey';
+            columns: ['evento_id'];
+            isOneToOne: false;
+            referencedRelation: 'eventos_admin';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'resgates_mv_evento_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
       reviews_evento: {
         Row: {
           comentario: string | null;

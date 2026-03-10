@@ -104,13 +104,13 @@ serve(async (req: Request) => {
 
     // Query: reservas com deadline expirado, post não verificado, infração ainda não registrada
     const { data: reservasVencidas, error: errReservas } = await supabase
-      .from('reservas_mais_vanta')
+      .from('resgates_mv_evento')
       .select('id, user_id, evento_id')
       .not('post_deadline_em', 'is', null)
       .lte('post_deadline_em', new Date().toLocaleString('sv-SE', { timeZone: 'America/Sao_Paulo' }).replace(' ', 'T') + '-03:00')
       .is('infraction_registered_em', null)
       .eq('post_verificado', false);
-    if (errReservas) console.error('[edge/notif-infraccao] reservas_mais_vanta:', errReservas.message);
+    if (errReservas) console.error('[edge/notif-infraccao] resgates_mv_evento:', errReservas.message);
 
     if (!reservasVencidas || reservasVencidas.length === 0) {
       return new Response(JSON.stringify({ ok: true, infraccoes_registradas: 0 }), {
@@ -260,7 +260,7 @@ serve(async (req: Request) => {
 
       // Marcar como processada
       const { error: errMark } = await supabase
-        .from('reservas_mais_vanta')
+        .from('resgates_mv_evento')
         .update({ infraction_registered_em: now })
         .eq('id', reservaId);
       if (errMark) console.error('[edge/notif-infraccao] marcar processada:', errMark.message);

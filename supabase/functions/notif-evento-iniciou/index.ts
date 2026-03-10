@@ -87,7 +87,7 @@ serve(async (req: Request) => {
 
       // Buscar todas as reservas MAIS VANTA deste evento
       const { data: reservas, error: errRes } = await supabase
-        .from('reservas_mais_vanta')
+        .from('resgates_mv_evento')
         .select('user_id, id')
         .eq('evento_id', eventoId);
       if (errRes) console.error('[edge/notif-evento-iniciou] reservas:', errRes.message);

@@ -308,3 +308,11 @@ export async function rejeitarSolicitacao(solId: string, masterId: string): Prom
   }
   bump();
 }
+
+/** Adiar solicitação — remove da fila de pendentes sem aprovar nem rejeitar */
+export async function adiarSolicitacao(solId: string): Promise<void> {
+  await supabase.from('solicitacoes_clube').update({ status: 'ADIADO' }).eq('id', solId);
+  const sol = _solicitacoes.find(s => s.id === solId);
+  if (sol) sol.status = 'ADIADO' as SolicitacaoClube['status'];
+  bump();
+}

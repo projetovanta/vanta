@@ -73,7 +73,7 @@ export interface SolicitacaoClube {
   instagramVerificadoEm?: string; // ISO 8601 -03:00
   codigoVerificacao?: string; // ex: 'VANTA-K8M2' (para auditoria)
   convidadoPor?: string;
-  status: 'PENDENTE' | 'APROVADO' | 'REJEITADO' | 'CONVIDADO';
+  status: 'PENDENTE' | 'APROVADO' | 'REJEITADO' | 'CONVIDADO' | 'ADIADO';
   criadoEm: string; // ISO 8601 -03:00
   resolvidoEm?: string;
   resolvidoPor?: string;

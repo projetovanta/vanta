@@ -142,6 +142,16 @@ export const TabClube: React.FC<Props> = ({ adminId, toastFn, comunidadeId }) =>
     }
   };
 
+  const handleAdiar = async (solId: string) => {
+    try {
+      await clubeService.adiarSolicitacao(solId);
+      toastFn('sucesso', 'Solicitação adiada');
+      await refresh();
+    } catch {
+      toastFn('erro', 'Erro ao adiar');
+    }
+  };
+
   const handleAlterarTier = async (userId: string, novoTier: TierMaisVanta) => {
     try {
       await clubeService.alterarTier(userId, novoTier, adminId);
@@ -291,6 +301,7 @@ export const TabClube: React.FC<Props> = ({ adminId, toastFn, comunidadeId }) =>
           onNotaInternaChange={(id, nota) => setNotasInternas(p => ({ ...p, [id]: nota }))}
           onAprovar={handleAprovar}
           onRejeitar={handleRejeitar}
+          onAdiar={handleAdiar}
           onOpenPerfil={setPerfilDetalhe}
           onOpenInstagram={openInstagram}
         />

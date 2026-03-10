@@ -135,6 +135,7 @@ export const clubeService = {
     );
   },
   rejeitarSolicitacao: solicitacoes.rejeitarSolicitacao,
+  adiarSolicitacao: solicitacoes.adiarSolicitacao,
 
   // ── Benefícios MV por evento (mais_vanta_lotes_evento) ──────────────────
   getBeneficiosEvento: lotes.getBeneficiosEvento,

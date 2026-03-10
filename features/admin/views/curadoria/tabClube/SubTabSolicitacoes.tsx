@@ -11,6 +11,7 @@ import {
   HelpCircle,
   Tag,
   FileText,
+  Clock,
 } from 'lucide-react';
 import type { SolicitacaoClube, TierMaisVanta } from '../../../../../types';
 import { clubeService } from '../../../services/clubeService';
@@ -30,6 +31,7 @@ interface Props {
   onNotaInternaChange: (id: string, nota: string) => void;
   onAprovar: (solId: string) => void;
   onRejeitar: (solId: string) => void;
+  onAdiar: (solId: string) => void;
   onOpenPerfil: (userId: string) => void;
   onOpenInstagram: (handle: string) => void;
 }
@@ -45,6 +47,7 @@ export const SubTabSolicitacoes: React.FC<Props> = ({
   onNotaInternaChange,
   onAprovar,
   onRejeitar,
+  onAdiar,
   onOpenPerfil,
   onOpenInstagram,
 }) => (
@@ -222,6 +225,12 @@ export const SubTabSolicitacoes: React.FC<Props> = ({
                   className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 bg-emerald-500/20 border border-emerald-500/30 rounded-xl text-emerald-400 text-[10px] font-black uppercase active:scale-90 transition-all"
                 >
                   <Check size={12} /> Aprovar
+                </button>
+                <button
+                  onClick={() => onAdiar(sol.id)}
+                  className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 bg-zinc-500/20 border border-zinc-500/30 rounded-xl text-zinc-400 text-[10px] font-black uppercase active:scale-90 transition-all"
+                >
+                  <Clock size={12} /> Adiar
                 </button>
                 <button
                   onClick={() => onRejeitar(sol.id)}

@@ -20,6 +20,9 @@ export interface MembroClubeVanta {
   bloqueioAte?: string; // ISO — se set e > now, bloqueado
   banidoPermanente: boolean; // true = excluído definitivamente do MAIS VANTA
   banidoEm?: string; // ISO — quando foi banido
+  tags?: string[]; // tags livres (free text)
+  notaInterna?: string; // nota interna visível só para admin
+  status?: string; // 'ativo' | 'bloqueado' | 'banido' etc.
 }
 
 export interface LoteMaisVanta {
@@ -159,14 +162,15 @@ export type BeneficioId =
 export interface ClubeConfig {
   id: string;
   comunidadeId: string;
-  beneficiosBronze: BeneficioId[];
-  beneficiosPrata: BeneficioId[];
-  beneficiosOuro: BeneficioId[];
-  beneficiosDiamante: BeneficioId[];
-  limiteBronze: number;
-  limitePrata: number;
-  limiteOuro: number;
-  limiteDiamante: number;
+  /** Benefícios por tier (convidado/presenca/creator/vanta_black) */
+  beneficiosConvidado: BeneficioId[];
+  beneficiosPresenca: BeneficioId[];
+  beneficiosCreator: BeneficioId[];
+  beneficiosVantaBlack: BeneficioId[];
+  limiteConvidado: number;
+  limitePresenca: number;
+  limiteCreator: number;
+  limiteVantaBlack: number;
   prazoPostHoras: number;
   infracoesLimite: number; // quantas infrações até próximo bloqueio (default 3)
   bloqueio1Dias: number; // dias do 1º bloqueio (default 30)

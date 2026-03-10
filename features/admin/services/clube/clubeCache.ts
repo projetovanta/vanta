@@ -77,6 +77,9 @@ export const rowToMembro = (r: MembroRow): MembroClubeVanta => ({
   banidoEm: r.banido_em ?? undefined,
   instagramVerificado: r.instagram_verificado ?? false,
   instagramVerificadoEm: r.instagram_verificado_em ?? undefined,
+  tags: (r.tags as string[]) ?? undefined,
+  notaInterna: r.nota_interna ?? undefined,
+  status: r.status ?? undefined,
 });
 
 export const rowToPassport = (r: PassportRow): PassportAprovacao => ({
@@ -134,14 +137,15 @@ export const rowToSolicitacao = (r: SolicitacaoRow): SolicitacaoClube => ({
 export const rowToConfig = (r: ClubeConfigRow) => ({
   id: r.id,
   comunidadeId: r.comunidade_id,
-  beneficiosBronze: (r.beneficios_bronze as BeneficioId[]) ?? [],
-  beneficiosPrata: (r.beneficios_prata as BeneficioId[]) ?? [],
-  beneficiosOuro: (r.beneficios_ouro as BeneficioId[]) ?? [],
-  beneficiosDiamante: (r.beneficios_diamante as BeneficioId[]) ?? [],
-  limiteBronze: r.limite_bronze ?? 0,
-  limitePrata: r.limite_prata ?? 0,
-  limiteOuro: r.limite_ouro ?? 0,
-  limiteDiamante: r.limite_diamante ?? 0,
+  // DB columns bronze/prata/ouro/diamante → app tiers convidado/presenca/creator/vanta_black
+  beneficiosConvidado: (r.beneficios_bronze as BeneficioId[]) ?? [],
+  beneficiosPresenca: (r.beneficios_prata as BeneficioId[]) ?? [],
+  beneficiosCreator: (r.beneficios_ouro as BeneficioId[]) ?? [],
+  beneficiosVantaBlack: (r.beneficios_diamante as BeneficioId[]) ?? [],
+  limiteConvidado: r.limite_bronze ?? 0,
+  limitePresenca: r.limite_prata ?? 0,
+  limiteCreator: r.limite_ouro ?? 0,
+  limiteVantaBlack: r.limite_diamante ?? 0,
   prazoPostHoras: r.prazo_post_horas ?? 12,
   infracoesLimite: r.infracoes_limite ?? 3,
   bloqueio1Dias: r.bloqueio1_dias ?? 30,

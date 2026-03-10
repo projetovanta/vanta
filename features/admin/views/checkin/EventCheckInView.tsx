@@ -80,7 +80,7 @@ export const EventCheckInView: React.FC<{
       const result = await offlineEventService.validateAndBurn(ticketId, evId);
       void refreshPendingCount();
 
-      // TODO: notificação de check-in MV será reimplementada sobre mais_vanta_lotes_evento
+      // Notificação MV no check-in requer userId no CachedTicket (não disponível offline)
 
       return result;
     },

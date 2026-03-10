@@ -82,6 +82,7 @@ export const clubeService = {
   getAllMembros: membros.getAllMembros,
   getAlcanceEstimado: membros.getAlcanceEstimado,
   alterarTier: membros.alterarTier,
+  atualizarMembroMeta: membros.atualizarMembroMeta,
 
   // ── Tiers ───────────────────────────────────────────────────────────────
   getTiers: tiers.getTiers,

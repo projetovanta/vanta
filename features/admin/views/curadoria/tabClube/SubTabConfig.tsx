@@ -40,12 +40,20 @@ export const SubTabConfig: React.FC<Props> = ({
   const cfg = clubeConfig;
   const d = configDraft;
 
+  const TIER_CONFIG_KEY: Record<TierMaisVanta, { benef: keyof ClubeConfig; lim: keyof ClubeConfig }> = {
+    desconto: { benef: 'beneficiosConvidado', lim: 'limiteConvidado' },
+    convidado: { benef: 'beneficiosConvidado', lim: 'limiteConvidado' },
+    presenca: { benef: 'beneficiosPresenca', lim: 'limitePresenca' },
+    creator: { benef: 'beneficiosCreator', lim: 'limiteCreator' },
+    vanta_black: { benef: 'beneficiosVantaBlack', lim: 'limiteVantaBlack' },
+  };
+
   const getBeneficios = (tier: TierMaisVanta): BeneficioId[] => {
-    const key = `beneficios${tier.charAt(0) + tier.slice(1).toLowerCase()}` as keyof ClubeConfig;
+    const key = TIER_CONFIG_KEY[tier].benef;
     return (d[key] as BeneficioId[] | undefined) ?? (cfg?.[key] as BeneficioId[] | undefined) ?? [];
   };
   const getLimite = (tier: TierMaisVanta) => {
-    const key = `limite${tier.charAt(0) + tier.slice(1).toLowerCase()}` as keyof ClubeConfig;
+    const key = TIER_CONFIG_KEY[tier].lim;
     return (d[key] as number | undefined) ?? (cfg?.[key] as number | undefined) ?? 0;
   };
   const setDraft = (key: string, value: unknown) => setConfigDraft(p => ({ ...p, [key]: value }));
@@ -68,9 +76,8 @@ export const SubTabConfig: React.FC<Props> = ({
   // ── Modal edição de Tier ──
   if (editandoTier) {
     const tier = editandoTier;
-    const tierKey = tier.charAt(0) + tier.slice(1).toLowerCase();
-    const benefKey = `beneficios${tierKey}` as keyof ClubeConfig;
-    const limKey = `limite${tierKey}` as keyof ClubeConfig;
+    const benefKey = TIER_CONFIG_KEY[tier].benef;
+    const limKey = TIER_CONFIG_KEY[tier].lim;
     const beneficiosAtivos: BeneficioId[] =
       (d[benefKey] as BeneficioId[] | undefined) ?? (cfg?.[benefKey] as BeneficioId[] | undefined) ?? [];
     const limite = (d[limKey] as number | undefined) ?? (cfg?.[limKey] as number | undefined) ?? 0;

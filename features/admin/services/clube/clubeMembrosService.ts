@@ -53,3 +53,22 @@ export async function alterarTier(userId: string, novoTier: TierMaisVanta, _mast
   if (m) m.tier = novoTier;
   bump();
 }
+
+/** Atualizar tags e/ou nota interna de um membro existente */
+export async function atualizarMembroMeta(
+  userId: string,
+  updates: { tags?: string[]; notaInterna?: string },
+): Promise<void> {
+  const row: Record<string, unknown> = {};
+  if (updates.tags !== undefined) row.tags = updates.tags;
+  if (updates.notaInterna !== undefined) row.nota_interna = updates.notaInterna;
+  if (Object.keys(row).length === 0) return;
+  const { error } = await supabase.from('membros_clube').update(row).eq('user_id', userId);
+  if (error) console.error('[clubeMembros] atualizarMembroMeta:', error);
+  const m = _membros.get(userId);
+  if (m) {
+    if (updates.tags !== undefined) m.tags = updates.tags;
+    if (updates.notaInterna !== undefined) m.notaInterna = updates.notaInterna;
+  }
+  bump();
+}

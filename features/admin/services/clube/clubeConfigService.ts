@@ -14,14 +14,15 @@ export async function saveConfig(
   config: Partial<Omit<ClubeConfig, 'id' | 'comunidadeId'>>,
 ): Promise<ClubeConfig> {
   const row: Record<string, unknown> = { comunidade_id: comunidadeId, atualizado_em: tsBR() };
-  if (config.beneficiosBronze !== undefined) row.beneficios_bronze = config.beneficiosBronze;
-  if (config.beneficiosPrata !== undefined) row.beneficios_prata = config.beneficiosPrata;
-  if (config.beneficiosOuro !== undefined) row.beneficios_ouro = config.beneficiosOuro;
-  if (config.beneficiosDiamante !== undefined) row.beneficios_diamante = config.beneficiosDiamante;
-  if (config.limiteBronze !== undefined) row.limite_bronze = config.limiteBronze;
-  if (config.limitePrata !== undefined) row.limite_prata = config.limitePrata;
-  if (config.limiteOuro !== undefined) row.limite_ouro = config.limiteOuro;
-  if (config.limiteDiamante !== undefined) row.limite_diamante = config.limiteDiamante;
+  // App tiers → DB columns (convidado→bronze, presenca→prata, creator→ouro, vanta_black→diamante)
+  if (config.beneficiosConvidado !== undefined) row.beneficios_bronze = config.beneficiosConvidado;
+  if (config.beneficiosPresenca !== undefined) row.beneficios_prata = config.beneficiosPresenca;
+  if (config.beneficiosCreator !== undefined) row.beneficios_ouro = config.beneficiosCreator;
+  if (config.beneficiosVantaBlack !== undefined) row.beneficios_diamante = config.beneficiosVantaBlack;
+  if (config.limiteConvidado !== undefined) row.limite_bronze = config.limiteConvidado;
+  if (config.limitePresenca !== undefined) row.limite_prata = config.limitePresenca;
+  if (config.limiteCreator !== undefined) row.limite_ouro = config.limiteCreator;
+  if (config.limiteVantaBlack !== undefined) row.limite_diamante = config.limiteVantaBlack;
   if (config.prazoPostHoras !== undefined) row.prazo_post_horas = config.prazoPostHoras;
   if (config.infracoesLimite !== undefined) row.infracoes_limite = config.infracoesLimite;
   if (config.bloqueio1Dias !== undefined) row.bloqueio1_dias = config.bloqueio1Dias;

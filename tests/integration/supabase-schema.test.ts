@@ -54,12 +54,12 @@ const TABELAS_OBRIGATORIAS = [
   'clube_config',
   'planos_mais_vanta',
   'tiers_mais_vanta',
-  'lotes_mais_vanta',
+  'mais_vanta_lotes_evento',
   'solicitacoes_clube',
   'membros_clube',
   'assinaturas_mais_vanta',
   'infracoes_mais_vanta',
-  'reservas_mais_vanta',
+  'resgates_mv_evento',
   'passport_aprovacoes',
 ];
 

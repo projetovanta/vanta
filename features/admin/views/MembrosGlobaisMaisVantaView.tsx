@@ -147,10 +147,14 @@ export const MembrosGlobaisMaisVantaView: React.FC<{
     }
   };
 
-  const handleResolverDivida = async (_userId: string) => {
-    setLoading(_userId);
+  const handleResolverDivida = async (userId: string) => {
+    setLoading(userId);
     try {
-      // TODO: reimplementar sobre mais_vanta_lotes_evento na Fase 2
+      const resgates = await clubeService.getResgatesUsuarioAsync(userId);
+      const pendentes = resgates.filter(r => r.status === 'PENDENTE_POST' && !r.postVerificado);
+      for (const r of pendentes) {
+        await clubeService.verificarPostResgate(r.id, 'ADMIN_OVERRIDE');
+      }
       handleRefresh();
     } catch (e) {
       console.error(e);

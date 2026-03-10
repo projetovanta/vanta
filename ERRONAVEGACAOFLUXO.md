@@ -156,8 +156,9 @@ audit_logs, cargos, categorias_evento, chargebacks, cidades_mais_vanta, comprova
 |---|---|---|
 | `send-push` | Push FCM | --no-verify-jwt |
 | `send-invite` | Email convite | verify-jwt |
-| `create-checkout` | Stripe checkout | verify-jwt |
-| `stripe-webhook` | Webhook Stripe | --no-verify-jwt |
+| `create-checkout` | Stripe checkout (MAIS VANTA) | verify-jwt |
+| `create-ticket-checkout` | Stripe checkout (ingressos) | verify-jwt |
+| `stripe-webhook` | Webhook Stripe (ingressos + MAIS VANTA) | --no-verify-jwt |
 | `update-instagram-followers` | Instagram API | verify-jwt |
 | `notif-*` (5 funções) | Notificações automáticas | verify-jwt |
 
@@ -924,9 +925,9 @@ Items com guard contextual: PORTARIA_QR, PORTARIA_LISTA, CAIXA, FINANCEIRO, LIST
 |-------|--------|----------|---------|--------|---------|-------|-------|-------|
 | Detalhe do Evento | ✅ | EventDetailView.tsx | supabase.from('eventos_admin') + lotes + variações | eventos_admin, lotes, variacoes_ingresso | ✅ skeleton | ✅ error states | ✅ | Exibe: título, data, local, descrição, banner, lotes/preços. Botões: Comprar → CheckoutPage, Compartilhar → navigator.share (Web Share API), Salvar → extrasStore.toggleSaveEvent() → saved_events. Evento passado: visual diferente. Lote esgotado: badge visual |
 | Landing (/e/:slug) | ✅ | EventLandingPage.tsx | supabase.from('eventos_admin').eq('slug', slug) | eventos_admin | ✅ | ✅ | ✅ 404 | Página pública sem auth. Meta tags OG dinâmicas via `api/og.ts` (Vercel serverless). CTA → /checkout/:id |
-| Checkout | 🟡 | CheckoutPage.tsx | supabase.rpc('processar_compra_checkout') + cuponsService | processar_compra_checkout RPC, incrementar_usos_cupom | ✅ Loader2 + submittingRef (double-click guard) | ✅ setErro() | — | **Completo para evento gratuito e compra direta (RPC gera tickets).** Cupom: validação + auto-apply via URL (?cupom=X). Mesas: seleção funcional. Meia-entrada: check de elegibilidade. Acompanhantes: campo nome. **PARCIAL: Stripe payment flow → create-checkout edge function é para assinaturas MAIS VANTA, NÃO para compra de ingressos. Compra de ingressos usa RPC direta (sem gateway de pagamento externo). PIX/cartão real depende de integração futura** |
+| Checkout | ✅ | CheckoutPage.tsx + CheckoutSuccessPage.tsx | dual: RPC direto (gratuito) ou Stripe Checkout (pago) | processar_compra_checkout RPC, create-ticket-checkout EF, stripe-webhook EF | ✅ Loader2 + submittingRef (double-click guard) | ✅ setErro() + banner cancelado | ✅ | **Code-complete.** Gratuito: RPC direto. Pago: create-ticket-checkout → Stripe Checkout → webhook → RPC. Feature flag `VITE_STRIPE_PAYMENTS_ENABLED`. Cupom, mesas, meia-entrada, acompanhantes funcionais. Tela sucesso com polling 2s/30s. **Falta: configurar secrets Stripe (CNPJ) + deploy EFs.** |
 
-**Nota Checkout**: O fluxo de compra de ingressos funciona E2E via RPC `processar_compra_checkout` (registra tickets, debita vagas do lote, gera QR). Porém, não há gateway de pagamento real (Stripe/PIX) para ingressos pagos — o RPC confia no frontend. Para eventos gratuitos: 100% funcional. Para eventos pagos: funcional como registro, mas sem cobrança real.
+**Nota Checkout**: Fluxo dual implementado — gratuito: RPC direto (100% funcional). Pago: Stripe Checkout redirect → webhook confirma → RPC gera tickets. Feature flag `VITE_STRIPE_PAYMENTS_ENABLED`. Code-complete. Falta: configurar secrets Stripe (CNPJ) + deploy edge functions.
 
 ---
 
@@ -1037,7 +1038,7 @@ Items com guard contextual: PORTARIA_QR, PORTARIA_LISTA, CAIXA, FINANCEIRO, LIST
 
 | Feature | UI existe em | O que falta | Impacto |
 |---------|-------------|-------------|---------|
-| Pagamento real de ingressos | CheckoutPage.tsx | Gateway de pagamento (Stripe/PIX) para ingressos pagos. RPC registra compra mas não cobra | Alto — eventos pagos dependem de cobrança manual fora do app |
+| ~~Pagamento real de ingressos~~ | ~~CheckoutPage.tsx~~ | ✅ IMPLEMENTADO — Stripe Checkout integrado. Falta: config secrets (CNPJ) | — |
 
 ### FEATURES COM BACKEND SEM UI
 
@@ -1051,8 +1052,8 @@ Items com guard contextual: PORTARIA_QR, PORTARIA_LISTA, CAIXA, FINANCEIRO, LIST
 
 | Item | Localização | Estado | Dependência |
 |------|------------|--------|-------------|
-| Stripe Secret Key | create-checkout edge function | Placeholder — registra PENDENTE sem key | CNPJ → conta Stripe |
-| Stripe Webhook | stripe-webhook edge function | Código completo, funciona com key | CNPJ → conta Stripe |
+| Stripe Secret Key | create-checkout + create-ticket-checkout EFs | Code-complete — funciona com test keys | CNPJ → conta Stripe (live keys) |
+| Stripe Webhook Secret | stripe-webhook EF | Code-complete — funciona com test keys | CNPJ → conta Stripe (live keys) |
 | Firebase Config | services/firebaseConfig.ts | Funcional — env vars configuradas, fallback PLACEHOLDER se ausente | ✅ Configurado |
 | Instagram API | verify-instagram-post edge function | Placeholder sem Graph API key | Meta Developer App |
 | Instagram Followers | update-instagram-followers edge function | Scraping fallback funcional | Meta Developer App (opcional) |
@@ -1061,7 +1062,7 @@ Items com guard contextual: PORTARIA_QR, PORTARIA_LISTA, CAIXA, FINANCEIRO, LIST
 
 ### 🚨 FLUXOS CRÍTICOS INCOMPLETOS
 
-1. **Pagamento real de ingressos pagos** — O checkout registra a compra via RPC (tickets são gerados), mas não há cobrança real. Para eventos pagos, o produtor precisa coletar pagamento fora do app. **Impacto: ALTO** — core business. **O que falta**: integrar Stripe Checkout (ou similar) antes do RPC de compra, com webhook para confirmar pagamento.
+1. ~~**Pagamento real de ingressos pagos**~~ — ✅ IMPLEMENTADO. Stripe Checkout integrado (branch `feat/stripe-ingressos`). Code-complete. Falta: secrets Stripe (CNPJ) + deploy EFs.
 
 ### 🟡 FLUXOS PARCIAIS
 
@@ -1071,13 +1072,13 @@ Items com guard contextual: PORTARIA_QR, PORTARIA_LISTA, CAIXA, FINANCEIRO, LIST
 
 3. **Instagram verification** — Edge function retorna placeholder sem Graph API key. **Falta**: Meta Developer App + config. Esforço: config externa.
 
-4. **Checkout com pagamento Stripe para ingressos** — O fluxo de compra funciona E2E mas sem cobrança real. **Falta**: integrar gateway de pagamento ao fluxo de checkout de ingressos. Esforço: médio-alto.
+4. ~~**Checkout com pagamento Stripe para ingressos**~~ — ✅ IMPLEMENTADO. Code-complete. Falta: config Stripe (CNPJ).
 
 ### 📋 BACKLOG SUGERIDO (em ordem de prioridade)
 
 | # | Fluxo | O que falta | Esforço | Impacto |
 |---|-------|-------------|---------|---------|
-| 1 | Checkout ingressos pagos | Integrar Stripe Checkout antes do RPC, webhook para confirmar | Alto | Crítico — core business |
+| ~~1~~ | ~~Checkout ingressos pagos~~ | ✅ IMPLEMENTADO | — | — |
 | 2 | Assinatura MAIS VANTA | Configurar STRIPE_SECRET_KEY (conta Stripe + CNPJ) | Config externa | Alto — monetização |
 | ~~3~~ | ~~SEO: sitemap + robots.txt~~ | ✅ CORRIGIDO | — | — |
 | 4 | Instagram Graph API | Configurar Meta Developer App + secrets | Config externa | Baixo — feature secundária |

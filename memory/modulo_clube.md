@@ -255,7 +255,7 @@ Constraint: tipo=ingresso → lote_id NOT NULL + lista_id NULL; tipo=lista → l
 | 1 | Solicitar entrada | OK | solicitacoes_clube |
 | 2 | Aprovar/rejeitar membro | OK | Admin flow |
 | 3 | Tiers (5: DESCONTO→VANTA_BLACK) | OK | CHECK constraint + tiers_mais_vanta |
-| 4 | Benefícios MV por evento | OK | mais_vanta_lotes_evento (liga tier → lote ou lista real) |
+| 4 | Benefícios MV por evento (Fase 2 frontend) | OK | mais_vanta_lotes_evento + UI toggle/config no Step2Ingressos, CriarEventoView, EditarEventoView, EditarLotesSubView |
 | 5 | Reservar ingresso MV | PENDENTE | Precisa recriar reservas sobre mais_vanta_lotes_evento |
 | 6 | Post verificacao | OK | post_url + post_verificado |
 | 7 | Infracoes progressivas | OK | infracoes_mais_vanta + castigo |

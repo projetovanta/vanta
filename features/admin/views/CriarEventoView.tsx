@@ -19,7 +19,7 @@ import type {
   PermissaoToggle,
   SplitForm,
 } from './criarEvento/types';
-import type { LoteMaisVantaForm } from './criarEvento/Step2Ingressos';
+import type { MaisVantaEventoForm } from './criarEvento/Step2Ingressos';
 import { AREA_LABELS } from './criarEvento/constants';
 import { novoLote, novaVarLista, buildLabel } from './criarEvento/utils';
 
@@ -83,13 +83,9 @@ export const CriarEventoView: React.FC<{
   const [lotes, setLotes] = useState<LoteForm[]>([novoLote()]);
 
   // ── MAIS VANTA ──
-  const [maisVanta, setMaisVanta] = useState<LoteMaisVantaForm>({
+  const [maisVantaEvento, setMaisVantaEvento] = useState<MaisVantaEventoForm>({
     enabled: false,
-    tierMinimo: 'BRONZE',
-    quantidade: '',
-    prazo: '',
-    descricao: '',
-    comAcompanhante: false,
+    beneficios: [],
   });
 
   // ── Step 3 ──
@@ -458,34 +454,21 @@ export const CriarEventoView: React.FC<{
         if (errRec) console.error('[CriarEventoView] gerar_ocorrencias_recorrente:', errRec);
       }
 
-      // MAIS VANTA — criar lotes por tier se habilitado
-      if (maisVanta.enabled) {
-        const tiersAtivos = (maisVanta.tiers ?? []).filter(t => t.ativo && parseInt(t.quantidade) > 0);
-        if (tiersAtivos.length > 0) {
-          await clubeService.upsertLotesMaisVanta(
+      // MAIS VANTA — salvar benefícios por tier (mais_vanta_lotes_evento)
+      if (maisVantaEvento.enabled) {
+        const ativos = maisVantaEvento.beneficios.filter(b => b.ativo && (b.loteId || b.listaVarId));
+        if (ativos.length > 0) {
+          await clubeService.salvarBeneficiosEvento(
             eventoId,
-            tiersAtivos.map(t => ({
-              tierMinimo: t.tierId as any,
-              tierId: t.tierId,
-              quantidade: parseInt(t.quantidade) || 0,
-              prazo: maisVanta.prazo ? `${maisVanta.prazo}T23:59:00-03:00` : undefined,
-              descricao: maisVanta.descricao || undefined,
-              comAcompanhante: (parseInt(t.acompanhantes) || 0) > 0,
-              acompanhantes: parseInt(t.acompanhantes) || 0,
-              tipoAcesso: t.tipoAcesso || 'Pista',
+            ativos.map(b => ({
+              tierMinimo: b.tierId,
+              tipo: b.tipo,
+              loteId: b.tipo === 'ingresso' ? b.loteId : null,
+              listaId: b.tipo === 'lista' ? b.listaVarId : null,
+              descontoPercentual: b.tierId === 'DESCONTO' ? parseInt(b.descontoPercentual) || null : null,
+              ativo: true,
             })),
           );
-        } else if (parseInt(maisVanta.quantidade) > 0) {
-          // Fallback legado: lote único
-          await clubeService.upsertLoteMaisVanta(eventoId, {
-            tierMinimo: maisVanta.tierMinimo,
-            quantidade: parseInt(maisVanta.quantidade),
-            prazo: maisVanta.prazo ? `${maisVanta.prazo}T23:59:00-03:00` : undefined,
-            descricao: maisVanta.descricao || undefined,
-            comAcompanhante: maisVanta.comAcompanhante,
-            acompanhantes: 0,
-            tipoAcesso: 'Pista',
-          });
         }
       }
 
@@ -849,8 +832,9 @@ export const CriarEventoView: React.FC<{
             cortesiaLimites={cortesiaLimites}
             setCortesiaLimites={setCortesiaLimites}
             varTipos={varTipos}
-            maisVanta={maisVanta}
-            setMaisVanta={setMaisVanta}
+            maisVantaEvento={maisVantaEvento}
+            setMaisVantaEvento={setMaisVantaEvento}
+            varsLista={varsLista}
             comunidadeId={comunidade.id}
           />
         )}

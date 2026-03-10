@@ -1,31 +1,47 @@
 import React, { useMemo, useEffect } from 'react';
-import { Plus, Trash2, ChevronDown, ChevronUp, Gift, Crown, Users, Eye, Lock } from 'lucide-react';
+import { Plus, Trash2, ChevronDown, ChevronUp, Gift, Crown, Users, Eye, Lock, Percent } from 'lucide-react';
 import type { GeneroIngresso, TierMaisVanta } from '../../../../types';
 import { TIPOS_COMPROVANTE_MEIA } from '../../../../types';
 import { clubeService } from '../../services/clubeService';
 import { assinaturaService } from '../../services/assinaturaService';
-import type { LoteForm, VariacaoForm } from './types';
+import type { LoteForm, VariacaoForm, VarListaForm } from './types';
 import { inputCls, inputSmCls, inputDateCls, labelCls, AREA_LABELS } from './constants';
-import { uid, novaVar } from './utils';
+import { uid, novaVar, buildLabel } from './utils';
 import { VantaDropdown } from '../../../../components/VantaDropdown';
 
-/** Config de um tier no evento MAIS VANTA */
+/** Benefício MV por tier — liga tier → lote real ou lista real do evento */
+export interface BeneficioMVForm {
+  tierId: string;
+  ativo: boolean;
+  tipo: 'ingresso' | 'lista'; // qual referência usar
+  loteId: string; // ID do lote (se tipo=ingresso)
+  listaVarId: string; // ID da varLista (se tipo=lista) — resolverá para lista_id no save
+  descontoPercentual: string; // 0-100 (se tier=DESCONTO)
+}
+
+export interface MaisVantaEventoForm {
+  enabled: boolean;
+  beneficios: BeneficioMVForm[];
+}
+
+/** @deprecated manter para compat com imports legados */
 export interface TierEventoMV {
   tierId: string;
   ativo: boolean;
-  quantidade: string; // vagas
-  acompanhantes: string; // 0-5
-  tipoAcesso: string; // 'Pista', 'VIP', 'Camarote', etc.
+  quantidade: string;
+  acompanhantes: string;
+  tipoAcesso: string;
 }
 
+/** @deprecated manter para compat com imports legados */
 export interface LoteMaisVantaForm {
   enabled: boolean;
-  tierMinimo: TierMaisVanta; // @deprecated legado
-  quantidade: string; // @deprecated legado
+  tierMinimo: TierMaisVanta;
+  quantidade: string;
   prazo: string;
   descricao: string;
-  comAcompanhante: boolean; // @deprecated legado
-  tiers?: TierEventoMV[]; // novo: por tier
+  comAcompanhante: boolean;
+  tiers?: TierEventoMV[];
 }
 
 interface Props {
@@ -36,22 +52,29 @@ interface Props {
   cortesiaLimites?: Record<string, string>;
   setCortesiaLimites?: (v: Record<string, string>) => void;
   varTipos: string[];
-  maisVanta?: LoteMaisVantaForm;
-  setMaisVanta?: (v: LoteMaisVantaForm) => void;
+  maisVantaEvento?: MaisVantaEventoForm;
+  setMaisVantaEvento?: (v: MaisVantaEventoForm) => void;
+  /** Variações de lista do Step3 — para vincular benefício MV a lista */
+  varsLista?: VarListaForm[];
   comunidadeId?: string;
   /** Se true, bloqueia edição de preço em variações com vendidos > 0 */
   isPublished?: boolean;
+  /** @deprecated compat — usar maisVantaEvento */
+  maisVanta?: LoteMaisVantaForm;
+  /** @deprecated compat — usar setMaisVantaEvento */
+  setMaisVanta?: (v: LoteMaisVantaForm) => void;
 }
 
 // Tiers dinâmicos com fallback legado
-const getTierOptions = (): { id: TierMaisVanta; label: string }[] => {
+const getTierOptions = (): { id: string; label: string; cor: string }[] => {
   const dynamic = clubeService.getTiers();
-  if (dynamic.length > 0) return dynamic.map(t => ({ id: t.id as TierMaisVanta, label: t.nome }));
+  if (dynamic.length > 0) return dynamic.map(t => ({ id: t.id, label: t.nome, cor: t.cor ?? '#666' }));
   return [
-    { id: 'BRONZE', label: 'Bronze' },
-    { id: 'PRATA', label: 'Prata' },
-    { id: 'OURO', label: 'Ouro' },
-    { id: 'DIAMANTE', label: 'Diamante' },
+    { id: 'DESCONTO', label: 'Desconto', cor: '#888' },
+    { id: 'CONVIDADO', label: 'Convidado', cor: '#CD7F32' },
+    { id: 'PRESENCA', label: 'Presença', cor: '#C0C0C0' },
+    { id: 'CREATOR', label: 'Creator', cor: '#FFD700' },
+    { id: 'VANTA_BLACK', label: 'VANTA Black', cor: '#1a1a1a' },
   ];
 };
 
@@ -69,8 +92,9 @@ export const Step2Ingressos: React.FC<Props> = ({
   cortesiaLimites,
   setCortesiaLimites,
   varTipos,
-  maisVanta,
-  setMaisVanta,
+  maisVantaEvento,
+  setMaisVantaEvento,
+  varsLista,
   comunidadeId,
   isPublished,
 }) => {
@@ -82,33 +106,45 @@ export const Step2Ingressos: React.FC<Props> = ({
   const eventosMVUsados = comunidadeId ? assinaturaService.getEventosMVUsados(comunidadeId) : 0;
   const limiteEventosMV = comunidadeId ? assinaturaService.getLimiteEventosMV(comunidadeId) : 0;
   const cotaDisponivel = comunidadeId ? assinaturaService.cotaDisponivel(comunidadeId) : true;
-  // Inicializar tiers se não existem
-  const tiersConfig = useMemo(() => {
-    if (maisVanta?.tiers && maisVanta.tiers.length > 0) return maisVanta.tiers;
+
+  // Inicializar benefícios se não existem
+  const beneficios = useMemo(() => {
+    if (maisVantaEvento?.beneficios && maisVantaEvento.beneficios.length > 0) return maisVantaEvento.beneficios;
     return tierOptions.map(t => ({
       tierId: t.id,
       ativo: false,
-      quantidade: '5',
-      acompanhantes: '0',
-      tipoAcesso: 'Pista',
+      tipo: 'ingresso' as const,
+      loteId: '',
+      listaVarId: '',
+      descontoPercentual: '0',
     }));
-  }, [maisVanta?.tiers, tierOptions]);
+  }, [maisVantaEvento?.beneficios, tierOptions]);
+
+  // Opções de lotes para dropdown
+  const loteOptions = useMemo(() => {
+    return lotes.map((l, i) => ({ value: l.id, label: `Lote ${i + 1}` }));
+  }, [lotes]);
+
+  // Opções de listas para dropdown
+  const listaOptions = useMemo(() => {
+    if (!varsLista?.length) return [];
+    return varsLista.map(v => ({ value: v.id, label: buildLabel(v) }));
+  }, [varsLista]);
+
+  const temLotesOuListas = loteOptions.length > 0 || listaOptions.length > 0;
 
   const alcanceEstimado = useMemo(() => {
-    if (!maisVanta?.enabled) return null;
-    // Calcular alcance total dos tiers ativos
+    if (!maisVantaEvento?.enabled) return null;
     let totalMembros = 0,
       totalAlcance = 0;
-    for (const tc of tiersConfig) {
-      if (!tc.ativo) continue;
-      const est = clubeService.getAlcanceEstimado(tc.tierId as TierMaisVanta);
-      // getAlcanceEstimado retorna acumulado, queremos por tier exato
-      const membros = clubeService.getAllMembros().filter(m => m.ativo && m.tier === tc.tierId);
+    for (const b of beneficios) {
+      if (!b.ativo) continue;
+      const membros = clubeService.getAllMembros().filter(m => m.ativo && m.tier === b.tierId);
       totalMembros += membros.length;
       totalAlcance += membros.reduce((s, m) => s + (m.instagramSeguidores ?? 0), 0);
     }
     return totalMembros > 0 ? { membros: totalMembros, alcance: totalAlcance } : null;
-  }, [maisVanta?.enabled, tiersConfig]);
+  }, [maisVantaEvento?.enabled, beneficios]);
   // Sanitizar cortesiaLimites: remover tipos que não existem mais nos lotes
   useEffect(() => {
     if (!cortesiaEnabled || !setCortesiaLimites || varTipos.length === 0) return;
@@ -365,7 +401,7 @@ export const Step2Ingressos: React.FC<Props> = ({
       </button>
 
       {/* ── MAIS VANTA (Clube de Influência) ── */}
-      {maisVanta && setMaisVanta && !assinaturaAtiva && comunidadeId && (
+      {maisVantaEvento && setMaisVantaEvento && !assinaturaAtiva && comunidadeId && (
         <div className="border-t border-white/5 pt-5 mt-2">
           <div className="flex items-center gap-3 p-5 rounded-2xl border border-white/5 bg-zinc-900/40">
             <Lock size={16} className="text-zinc-400 shrink-0" />
@@ -378,32 +414,37 @@ export const Step2Ingressos: React.FC<Props> = ({
           </div>
         </div>
       )}
-      {maisVanta && setMaisVanta && (assinaturaAtiva || !comunidadeId) && (
+      {maisVantaEvento && setMaisVantaEvento && (assinaturaAtiva || !comunidadeId) && (
         <div className="border-t border-white/5 pt-5 mt-2">
           <button
-            onClick={() => setMaisVanta({ ...maisVanta, enabled: !maisVanta.enabled })}
-            className={`w-full flex items-center justify-between p-5 rounded-2xl border transition-all ${maisVanta.enabled ? 'bg-[#FFD300]/5 border-[#FFD300]/25' : 'bg-zinc-900/40 border-white/5'}`}
+            onClick={() => setMaisVantaEvento({ ...maisVantaEvento, enabled: !maisVantaEvento.enabled })}
+            className={`w-full flex items-center justify-between p-5 rounded-2xl border transition-all ${maisVantaEvento.enabled ? 'bg-[#FFD300]/5 border-[#FFD300]/25' : 'bg-zinc-900/40 border-white/5'}`}
           >
             <div className="flex items-center gap-3 flex-1 min-w-0">
-              <Crown size={16} className={maisVanta.enabled ? 'text-[#FFD300] shrink-0' : 'text-zinc-400 shrink-0'} />
+              <Crown
+                size={16}
+                className={maisVantaEvento.enabled ? 'text-[#FFD300] shrink-0' : 'text-zinc-400 shrink-0'}
+              />
               <div className="text-left">
-                <p className={`font-bold text-sm leading-none ${maisVanta.enabled ? 'text-[#FFD300]' : 'text-white'}`}>
+                <p
+                  className={`font-bold text-sm leading-none ${maisVantaEvento.enabled ? 'text-[#FFD300]' : 'text-white'}`}
+                >
                   MAIS VANTA
                 </p>
-                <p className="text-zinc-400 text-[10px] mt-1">Benefícios para membros do Clube de Influência</p>
+                <p className="text-zinc-400 text-[10px] mt-1">Vincule benefícios exclusivos a ingressos ou listas</p>
               </div>
             </div>
             <div
-              className={`w-12 h-6 rounded-full border relative transition-all shrink-0 ml-3 ${maisVanta.enabled ? 'bg-[#FFD300]/20 border-[#FFD300]/40' : 'bg-zinc-800 border-white/10'}`}
+              className={`w-12 h-6 rounded-full border relative transition-all shrink-0 ml-3 ${maisVantaEvento.enabled ? 'bg-[#FFD300]/20 border-[#FFD300]/40' : 'bg-zinc-800 border-white/10'}`}
             >
               <div
-                className={`absolute top-0.5 w-5 h-5 rounded-full transition-all ${maisVanta.enabled ? 'left-6 bg-[#FFD300]' : 'left-0.5 bg-zinc-600'}`}
+                className={`absolute top-0.5 w-5 h-5 rounded-full transition-all ${maisVantaEvento.enabled ? 'left-6 bg-[#FFD300]' : 'left-0.5 bg-zinc-600'}`}
               />
             </div>
           </button>
 
           {/* Contador de cota MV */}
-          {maisVanta.enabled && comunidadeId && assinaturaAtiva && limiteEventosMV !== -1 && (
+          {maisVantaEvento.enabled && comunidadeId && assinaturaAtiva && limiteEventosMV !== -1 && (
             <div className="mt-3 px-1">
               <div
                 className={`flex items-center justify-between p-3 rounded-xl border ${cotaDisponivel ? 'bg-[#FFD300]/5 border-[#FFD300]/15' : 'bg-red-500/5 border-red-500/15'}`}
@@ -422,87 +463,122 @@ export const Step2Ingressos: React.FC<Props> = ({
             </div>
           )}
 
-          {maisVanta.enabled && (
+          {maisVantaEvento.enabled && (
             <div className="space-y-3 px-1 mt-4">
-              {/* Tabela por tier */}
               <p className="text-[8px] font-black uppercase tracking-widest text-zinc-400">
                 Benefícios por nível de membro
               </p>
-              <div className="space-y-2">
-                {tiersConfig.map((tc, i) => {
-                  const tierDef = clubeService.getTierDef(tc.tierId);
-                  const cor = tierDef?.cor ?? '#666';
-                  const nome = tierDef?.nome ?? tc.tierId;
-                  const updateTier = (field: keyof TierEventoMV, value: string | boolean) => {
-                    const next = [...tiersConfig];
-                    next[i] = { ...next[i], [field]: value };
-                    setMaisVanta({ ...maisVanta, tiers: next });
-                  };
-                  return (
-                    <div
-                      key={tc.tierId}
-                      className={`rounded-xl border transition-all ${tc.ativo ? 'bg-zinc-900/60 border-white/10' : 'bg-zinc-900/30 border-white/5 opacity-50'}`}
-                    >
-                      {/* Header: toggle + nome tier */}
-                      <button
-                        onClick={() => updateTier('ativo', !tc.ativo)}
-                        className="w-full flex items-center gap-3 px-4 py-3"
+
+              {!temLotesOuListas && (
+                <p className="text-zinc-500 text-[10px] py-3">
+                  Crie ingressos (acima) ou listas (próximo passo) para vincular benefícios.
+                </p>
+              )}
+
+              {temLotesOuListas && (
+                <div className="space-y-2">
+                  {beneficios.map((b, i) => {
+                    const tierOpt = tierOptions.find(t => t.id === b.tierId);
+                    const cor = tierOpt?.cor ?? '#666';
+                    const nome = tierOpt?.label ?? b.tierId;
+                    const isDesconto = b.tierId === 'DESCONTO';
+
+                    const updateBeneficio = (field: keyof BeneficioMVForm, value: string | boolean) => {
+                      const next = [...beneficios];
+                      next[i] = { ...next[i], [field]: value };
+                      // Ao trocar tipo, limpar referência
+                      if (field === 'tipo') {
+                        next[i].loteId = '';
+                        next[i].listaVarId = '';
+                      }
+                      setMaisVantaEvento({ ...maisVantaEvento, beneficios: next });
+                    };
+
+                    return (
+                      <div
+                        key={b.tierId}
+                        className={`rounded-xl border transition-all ${b.ativo ? 'bg-zinc-900/60 border-white/10' : 'bg-zinc-900/30 border-white/5 opacity-50'}`}
                       >
-                        <div className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: cor }} />
-                        <span className="text-white text-xs font-bold flex-1 text-left">{nome}</span>
-                        <div
-                          className={`w-10 h-5 rounded-full border relative transition-all shrink-0 ${tc.ativo ? 'bg-[#FFD300]/20 border-[#FFD300]/40' : 'bg-zinc-800 border-white/10'}`}
+                        {/* Header: toggle + nome tier */}
+                        <button
+                          onClick={() => updateBeneficio('ativo', !b.ativo)}
+                          className="w-full flex items-center gap-3 px-4 py-3"
                         >
+                          <div className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: cor }} />
+                          <span className="text-white text-xs font-bold flex-1 text-left">{nome}</span>
                           <div
-                            className={`absolute top-0.5 w-4 h-4 rounded-full transition-all ${tc.ativo ? 'left-5 bg-[#FFD300]' : 'left-0.5 bg-zinc-600'}`}
-                          />
-                        </div>
-                      </button>
-                      {/* Campos expandidos */}
-                      {tc.ativo && (
-                        <div className="px-4 pb-3 grid grid-cols-3 gap-2">
-                          <div>
-                            <label className="text-zinc-400 text-[8px] font-black uppercase">Vagas</label>
-                            <input
-                              type="number"
-                              min="1"
-                              max="999"
-                              value={tc.quantidade}
-                              onChange={e => updateTier('quantidade', e.target.value)}
-                              className={inputSmCls + ' w-full text-center'}
+                            className={`w-10 h-5 rounded-full border relative transition-all shrink-0 ${b.ativo ? 'bg-[#FFD300]/20 border-[#FFD300]/40' : 'bg-zinc-800 border-white/10'}`}
+                          >
+                            <div
+                              className={`absolute top-0.5 w-4 h-4 rounded-full transition-all ${b.ativo ? 'left-5 bg-[#FFD300]' : 'left-0.5 bg-zinc-600'}`}
                             />
                           </div>
-                          <div>
-                            <label className="text-zinc-400 text-[8px] font-black uppercase">Acomp.</label>
-                            <input
-                              type="number"
-                              min="0"
-                              max="5"
-                              value={tc.acompanhantes}
-                              onChange={e => updateTier('acompanhantes', e.target.value)}
-                              className={inputSmCls + ' w-full text-center'}
-                            />
+                        </button>
+
+                        {/* Campos expandidos */}
+                        {b.ativo && (
+                          <div className="px-4 pb-3 space-y-2">
+                            {/* Tipo: ingresso ou lista */}
+                            <div>
+                              <label className="text-zinc-400 text-[8px] font-black uppercase">Tipo de benefício</label>
+                              <div className="flex gap-2 mt-1">
+                                <button
+                                  onClick={() => updateBeneficio('tipo', 'ingresso')}
+                                  className={`flex-1 py-2 rounded-lg text-[10px] font-bold border transition-all ${b.tipo === 'ingresso' ? 'bg-[#FFD300]/10 border-[#FFD300]/30 text-[#FFD300]' : 'bg-zinc-800/50 border-white/5 text-zinc-400'}`}
+                                >
+                                  Ingresso
+                                </button>
+                                {listaOptions.length > 0 && (
+                                  <button
+                                    onClick={() => updateBeneficio('tipo', 'lista')}
+                                    className={`flex-1 py-2 rounded-lg text-[10px] font-bold border transition-all ${b.tipo === 'lista' ? 'bg-[#FFD300]/10 border-[#FFD300]/30 text-[#FFD300]' : 'bg-zinc-800/50 border-white/5 text-zinc-400'}`}
+                                  >
+                                    Lista
+                                  </button>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Vincular a lote ou lista */}
+                            <div>
+                              <label className="text-zinc-400 text-[8px] font-black uppercase">
+                                {b.tipo === 'ingresso' ? 'Vincular a lote' : 'Vincular a lista'}
+                              </label>
+                              <VantaDropdown
+                                value={b.tipo === 'ingresso' ? b.loteId : b.listaVarId}
+                                onChange={val => updateBeneficio(b.tipo === 'ingresso' ? 'loteId' : 'listaVarId', val)}
+                                options={b.tipo === 'ingresso' ? loteOptions : listaOptions}
+                                placeholder="Selecione..."
+                                className="w-full mt-1"
+                              />
+                            </div>
+
+                            {/* Desconto (somente tier DESCONTO) */}
+                            {isDesconto && (
+                              <div>
+                                <label className="text-zinc-400 text-[8px] font-black uppercase flex items-center gap-1">
+                                  <Percent size={10} /> Desconto
+                                </label>
+                                <div className="flex items-center gap-2 mt-1">
+                                  <input
+                                    type="number"
+                                    min="1"
+                                    max="100"
+                                    value={b.descontoPercentual}
+                                    onChange={e => updateBeneficio('descontoPercentual', e.target.value)}
+                                    className={inputSmCls + ' w-20 text-center'}
+                                  />
+                                  <span className="text-zinc-400 text-[10px]">%</span>
+                                </div>
+                              </div>
+                            )}
                           </div>
-                          <div>
-                            <label className="text-zinc-400 text-[8px] font-black uppercase">Acesso</label>
-                            <VantaDropdown
-                              value={tc.tipoAcesso}
-                              onChange={val => updateTier('tipoAcesso', val)}
-                              options={[
-                                { value: 'Pista', label: 'Pista' },
-                                { value: 'VIP', label: 'VIP' },
-                                { value: 'Camarote', label: 'Camarote' },
-                                { value: 'Backstage', label: 'Backstage' },
-                              ]}
-                              className="w-full"
-                            />
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
 
               {/* Alcance estimado */}
               {alcanceEstimado && alcanceEstimado.membros > 0 && (
@@ -522,27 +598,6 @@ export const Step2Ingressos: React.FC<Props> = ({
                   </div>
                 </div>
               )}
-
-              {/* Prazo + descrição */}
-              <div>
-                <label className={labelCls}>Prazo para reserva (opcional)</label>
-                <input
-                  value={maisVanta.prazo}
-                  onChange={e => setMaisVanta({ ...maisVanta, prazo: e.target.value, tiers: tiersConfig })}
-                  type="date"
-                  className={inputDateCls}
-                  style={{ colorScheme: 'dark' }}
-                />
-              </div>
-              <div>
-                <label className={labelCls}>Descrição geral do benefício</label>
-                <input
-                  value={maisVanta.descricao}
-                  onChange={e => setMaisVanta({ ...maisVanta, descricao: e.target.value, tiers: tiersConfig })}
-                  placeholder="Ex: Experiência exclusiva para membros MAIS VANTA"
-                  className={inputCls}
-                />
-              </div>
             </div>
           )}
         </div>

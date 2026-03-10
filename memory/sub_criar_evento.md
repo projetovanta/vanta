@@ -33,8 +33,10 @@ TipoFluxoEvento: COM_SOCIO | FESTA_DA_CASA
 SplitForm: percentProdutor, percentSocio
 SocioConviteForm: membroId, nome, email, foto, permissoes[], splitPercentual
 SocioEvento: id, eventoId, socioId, splitPercentual, permissoes[], status, rodadaNegociacao, nome?
-TierEventoMV: tierId, ativo, quantidade, acompanhantes, tipoAcesso
-LoteMaisVantaForm: enabled, tierMinimo, quantidade, prazo, descricao, comAcompanhante, tiers[]
+BeneficioMVForm: tierId, ativo, tipo (ingresso|lista), loteId, listaVarId, descontoPercentual
+MaisVantaEventoForm: enabled, beneficios[]
+TierEventoMV: @deprecated (compat)
+LoteMaisVantaForm: @deprecated (compat)
 ```
 
 ## Fluxo detalhado step-by-step
@@ -63,7 +65,7 @@ LoteMaisVantaForm: enabled, tierMinimo, quantidade, prazo, descricao, comAcompan
 **Lote**: nome auto (1o Lote, 2o Lote...), data virada, % virada
 **Variacao**: area (PISTA/VIP/CAMAROTE/OUTRO + custom), genero (UNISEX/M/F), valor, limite
 **Meia-entrada**: requerComprovante + tipoComprovante por variacao
-**MAIS VANTA**: se MV ativo na comunidade, configura lotes exclusivos por tier (BRONZE-DIAMANTE), quantidade, acompanhantes, tipo acesso
+**MAIS VANTA**: se MV ativo, vincula benefícios por tier (DESCONTO→VANTA_BLACK) a lotes/listas reais do evento (mais_vanta_lotes_evento)
 
 ### PASSO 3 — LISTAS (Step3Listas, 252L)
 **Estrutura**: N regras de lista por evento
@@ -108,7 +110,7 @@ LoteMaisVantaForm: enabled, tierMinimo, quantidade, prazo, descricao, comAcompan
 2. INSERT lotes (por lote: nome, ordem, data_validade)
 3. INSERT variacoes_ingresso (por variacao: area, genero, valor, limite)
 4. cortesiasService.initCortesia (se habilitado)
-5. clubeService.upsertLotesMaisVanta (se MV ativo, por tier)
+5. clubeService.salvarBeneficiosEvento (se MV ativo, benefícios por tier → mais_vanta_lotes_evento)
 6. listasService.criarLista → INSERT listas_evento + regras_lista
    listasService.distribuirCota → INSERT cotas_promoter
 7. adminService.addCard → INSERT vanta_indica (card inativo auto)

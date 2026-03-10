@@ -123,7 +123,11 @@ export const clubeService = {
   },
   rejeitarSolicitacao: solicitacoes.rejeitarSolicitacao,
 
-  // ── Lotes ───────────────────────────────────────────────────────────────
+  // ── Benefícios MV por evento (mais_vanta_lotes_evento) ──────────────────
+  getBeneficiosEvento: lotes.getBeneficiosEvento,
+  salvarBeneficiosEvento: lotes.salvarBeneficiosEvento,
+  removerBeneficiosEvento: lotes.removerBeneficiosEvento,
+  // ── Lotes (stubs legados) ─────────────────────────────────────────────
   getLoteMaisVanta: lotes.getLoteMaisVanta,
   getLotesEvento: lotes.getLotesEvento,
   getLoteParaTier: lotes.getLoteParaTier,

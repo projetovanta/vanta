@@ -84,7 +84,7 @@ export const EventCheckInView: React.FC<{
 
       return result;
     },
-    [refreshPendingCount, eventoNome],
+    [refreshPendingCount],
   );
 
   const handleEntrada = async (ticket: CachedTicket) => {

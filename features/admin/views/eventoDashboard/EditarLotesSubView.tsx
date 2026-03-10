@@ -8,7 +8,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { ArrowLeft, Loader2, Check } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../../constants';
 import type { LoteForm } from '../criarEvento/types';
-import type { LoteMaisVantaForm } from '../criarEvento/Step2Ingressos';
+import type { MaisVantaEventoForm } from '../criarEvento/Step2Ingressos';
 import { Step2Ingressos } from '../criarEvento/Step2Ingressos';
 import { AREA_LABELS } from '../criarEvento/constants';
 import { novoLote } from '../criarEvento/utils';
@@ -27,13 +27,9 @@ export const EditarLotesSubView: React.FC<Props> = ({ eventoId, onBack, currentU
   const [lotes, setLotes] = useState<LoteForm[]>([novoLote()]);
   const [cortesiaEnabled, setCortesiaEnabled] = useState(false);
   const [cortesiaLimites, setCortesiaLimites] = useState<Record<string, string>>({});
-  const [maisVanta, setMaisVanta] = useState<LoteMaisVantaForm>({
+  const [maisVantaEvento, setMaisVantaEvento] = useState<MaisVantaEventoForm>({
     enabled: false,
-    tierMinimo: 'BRONZE',
-    quantidade: '',
-    prazo: '',
-    descricao: '',
-    comAcompanhante: false,
+    beneficios: [],
   });
   const [saving, setSaving] = useState(false);
   const [salvo, setSalvo] = useState(false);
@@ -75,16 +71,21 @@ export const EditarLotesSubView: React.FC<Props> = ({ eventoId, onBack, currentU
         setCortesiaLimites(lim);
       }
     }
-    if (ev.loteMaisVanta) {
-      setMaisVanta({
-        enabled: true,
-        tierMinimo: ev.loteMaisVanta.tierMinimo,
-        quantidade: String(ev.loteMaisVanta.quantidade),
-        prazo: ev.loteMaisVanta.prazo ? ev.loteMaisVanta.prazo.slice(0, 10) : '',
-        descricao: ev.loteMaisVanta.descricao || '',
-        comAcompanhante: ev.loteMaisVanta.comAcompanhante ?? false,
-      });
-    }
+    void clubeService.getBeneficiosEvento(eventoId).then(beneficiosDB => {
+      if (beneficiosDB.length > 0) {
+        setMaisVantaEvento({
+          enabled: true,
+          beneficios: beneficiosDB.map(b => ({
+            tierId: b.tierMinimo,
+            ativo: b.ativo,
+            tipo: b.tipo,
+            loteId: b.loteId ?? '',
+            listaVarId: b.listaId ?? '',
+            descontoPercentual: String(b.descontoPercentual ?? 0),
+          })),
+        });
+      }
+    });
   }, [eventoId, ev]);
 
   const varTipos = lotes
@@ -146,36 +147,22 @@ export const EditarLotesSubView: React.FC<Props> = ({ eventoId, onBack, currentU
       });
     }
 
-    // MAIS VANTA
-    if (maisVanta.enabled) {
-      const tiersAtivos = (maisVanta.tiers ?? []).filter(t => t.ativo && parseInt(t.quantidade) > 0);
-      if (tiersAtivos.length > 0) {
-        await clubeService.upsertLotesMaisVanta(
-          eventoId,
-          tiersAtivos.map(t => ({
-            tierMinimo: t.tierId as any,
-            tierId: t.tierId,
-            quantidade: parseInt(t.quantidade) || 0,
-            prazo: maisVanta.prazo ? `${maisVanta.prazo}T23:59:00-03:00` : undefined,
-            descricao: maisVanta.descricao || undefined,
-            comAcompanhante: (parseInt(t.acompanhantes) || 0) > 0,
-            acompanhantes: parseInt(t.acompanhantes) || 0,
-            tipoAcesso: t.tipoAcesso || 'Pista',
-          })),
-        );
-      } else if (parseInt(maisVanta.quantidade) > 0) {
-        await clubeService.upsertLoteMaisVanta(eventoId, {
-          tierMinimo: maisVanta.tierMinimo,
-          quantidade: parseInt(maisVanta.quantidade),
-          prazo: maisVanta.prazo ? `${maisVanta.prazo}T23:59:00-03:00` : undefined,
-          descricao: maisVanta.descricao || undefined,
-          comAcompanhante: maisVanta.comAcompanhante,
-          acompanhantes: 0,
-          tipoAcesso: 'Pista',
-        });
-      }
+    // MAIS VANTA — salvar benefícios por tier (mais_vanta_lotes_evento)
+    if (maisVantaEvento.enabled) {
+      const ativos = maisVantaEvento.beneficios.filter(b => b.ativo && (b.loteId || b.listaVarId));
+      await clubeService.salvarBeneficiosEvento(
+        eventoId,
+        ativos.map(b => ({
+          tierMinimo: b.tierId,
+          tipo: b.tipo,
+          loteId: b.tipo === 'ingresso' ? b.loteId : null,
+          listaId: b.tipo === 'lista' ? b.listaVarId : null,
+          descontoPercentual: b.tierId === 'DESCONTO' ? parseInt(b.descontoPercentual) || null : null,
+          ativo: true,
+        })),
+      );
     } else {
-      await clubeService.removeLotesMaisVanta(eventoId);
+      await clubeService.removerBeneficiosEvento(eventoId);
     }
 
     setSaving(false);
@@ -229,8 +216,8 @@ export const EditarLotesSubView: React.FC<Props> = ({ eventoId, onBack, currentU
           cortesiaLimites={cortesiaLimites}
           setCortesiaLimites={setCortesiaLimites}
           varTipos={varTipos}
-          maisVanta={maisVanta}
-          setMaisVanta={setMaisVanta}
+          maisVantaEvento={maisVantaEvento}
+          setMaisVantaEvento={setMaisVantaEvento}
           comunidadeId={comunidadeId}
         />
         {erro && <p className="mt-4 text-red-400 text-[10px] font-black uppercase tracking-widest">{erro}</p>}

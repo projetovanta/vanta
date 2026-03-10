@@ -139,15 +139,19 @@ Ja documentada em modulo_evento.md (CuponsSubView). Usado aqui via cuponsService
 **O que acontece**: waitlistService registra interesse do usuario
 **Consequencia**: se variacao reabrir (admin aumenta limite), usuario pode ser notificado
 
-### CHECKOUT VIA STRIPE (fluxo alternativo)
-**Quem**: Usuario (quando pagamento real estiver ativo)
-**Navegacao**: CheckoutPage -> create-checkout Edge Function -> Stripe Checkout -> stripe-webhook
+### CHECKOUT VIA STRIPE (fluxo pago)
+**Quem**: Usuario quando evento tem preco > 0
+**Navegacao**: CheckoutPage -> create-ticket-checkout Edge Function -> Stripe Checkout -> redirect -> CheckoutSuccessPage
 **O que acontece**:
-1. create-checkout cria sessao Stripe com line items
-2. Usuario paga no Stripe
-3. stripe-webhook recebe checkout.session.completed
-4. Webhook atualiza ticket status para ATIVA e transaction
-**Status atual**: Edge Functions existem mas pagamento real NAO ESTA ATIVO. Compra atual e via RPC direto (sem cobranca real).
+1. CheckoutPage detecta preco > 0 → chama Edge Function `create-ticket-checkout`
+2. `create-ticket-checkout` valida precos server-side, aplica cupom, cria pedido em `pedidos_checkout` (status=pendente), cria Stripe Checkout Session
+3. Redireciona usuario para Stripe
+4. Usuario paga no Stripe
+5. Stripe dispara webhook → `stripe-webhook` processa
+6. CheckoutSuccessPage faz polling em `pedidos_checkout` por status `pago`
+**⚠️ INCOMPLETO**: `stripe-webhook` atual SÓ processa assinaturas MAIS VANTA. NÃO tem handler para `pedidos_checkout` (ingressos). Polling do CheckoutSuccessPage vai dar timeout. CheckoutSuccessPage NÃO tem rota registrada no App.tsx.
+**Edge Functions**: `create-ticket-checkout` (cria sessão), `stripe-webhook` (precisa de handler para ingressos)
+**Tabela**: `pedidos_checkout` (migration `20260309200000_pedidos_checkout.sql`)
 
 ### MEIA-ENTRADA (comprovante)
 **Quem**: Usuario que selecionou variacao com requer_comprovante=true
@@ -197,7 +201,8 @@ Ja documentada em modulo_evento.md (CuponsSubView). Usado aqui via cuponsService
 | 13 | Waitlist | OK | WaitlistModal 60L |
 | 14 | Meia-entrada comprovante | OK | Upload + flag requer_comprovante |
 | 15 | Mesas/camarotes | OK | Selecao de mesa no checkout |
-| 16 | Pagamento real Stripe | NAO ATIVO | Edge Functions existem mas compra e via RPC direto sem cobranca |
+| 16 | Pagamento real Stripe | BRANCH | feat/stripe-ingressos — EFs + frontend prontos, aguarda CNPJ/secrets |
+| 25 | Desconto MV no checkout | OK | useEffect busca membros_clube + mais_vanta_lotes_evento, aplica desconto_percentual paralelo ao cupom |
 | 17 | Cadastro inline | NAO EXISTE | Apenas login, nao tem signup no checkout |
 | 18 | PIX como metodo | NAO EXISTE | Apenas Stripe (cartao) |
 | 19 | Boleto como metodo | NAO EXISTE | Apenas Stripe (cartao) |

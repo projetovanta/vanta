@@ -1,832 +1,583 @@
 # MAPA VANTA
 
-> Gerado em 2026-03-09. Baseado na leitura direta do código.
+Mapa completo do projeto VANTA gerado por leitura direta do codigo-fonte em 2026-03-10.
 
 ---
 
-## 1. TELAS DO USUÁRIO FINAL
+## 1. TELAS DO USUARIO FINAL
 
-### 1.1 HomeView (`modules/home/HomeView.tsx`)
-- **O que vê**: Feed de eventos com seções — Highlights (destaques), Live Now (acontecendo agora), This Week, For You (recomendados), Near You (geo), Friends Going, New on Platform, Saved Events. Quick Actions (atalhos para perfil, busca, ingressos, favoritos). Seletor de cidade no header. Ícone de notificações.
-- **Ações**:
-  - Clicar num evento → EventDetailView
-  - Clicar numa comunidade → ComunidadePublicView
-  - Comemorar aniversário → ComemoracaoFormView
-  - Abrir notificações → NotificationPanel
-  - Trocar cidade → CitySelector
-  - Ir para busca → SearchView
-  - Ir para perfil → ProfileView
-  - Scroll infinito (loadMoreEvents)
-- **Status**: Completo
+### 1.1 Home (Feed)
+- **Arquivo**: `modules/home/HomeView.tsx`
+- **O que o usuario ve**: Saudacao com nome do usuario, cidade selecionada, barra de busca rapida. Secoes em scroll vertical: Highlights (carrossel de destaques editoriais), AO VIVO agora, Amigos confirmados, Perto de voce, Esta semana, Novos na plataforma, Para voce (recomendados), Salvos, EventFeed (paginado infinite scroll).
+- **Acoes disponiveis**: Clicar em evento (abre detalhe), buscar, abrir notificacoes, navegar para perfil/carteira, clicar em comunidade, comemore seu aniversario.
+- **Navegacao**: Evento -> EventDetailView; Buscar -> SearchView; Perfil -> ProfileView; Comunidade -> ComunidadePublicView.
+- **Dados**: `useExtrasStore.allEvents` (paginacao server-side `getEventosPaginated`), `useTicketsStore.myTickets`, `useAuthStore.selectedCity`.
+- **Componentes filhos**: EventFeed, Highlights, ForYouSection, FriendsGoingSection, LiveNowSection, NearYouSection, ThisWeekSection, NewOnPlatformSection, SavedEventsSection, QuickActions, LazySection.
+- **Status**: [x] Completo
 
-### 1.2 EventDetailView (`modules/event-detail/EventDetailView.tsx`)
-- **O que vê**: Header com imagem do evento, nome, data/hora, local, descrição. Social proof (quem vai, amigos em comum). Footer com botão de compra/confirmar presença. Seção de reviews. Botão favoritar. Botão compartilhar. Botão convidar amigos. Reserva MAIS VANTA (se membro do clube).
-- **Ações**:
-  - Comprar ingresso → CheckoutPage
-  - Confirmar presença (evento gratuito) → PresencaConfirmationModal
-  - Favoritar/desfavoritar evento
-  - Compartilhar evento (Web Share API)
-  - Convidar amigos → InviteFriendsModal
-  - Ver perfil de quem vai → PublicProfilePreviewView
-  - Acessar comunidade organizadora → ComunidadePublicView
-  - Abrir reserva MAIS VANTA → MaisVantaReservaModal
-  - Enviar mensagem para amigo → ChatRoomView
-  - Dar review → ReviewModal
-- **Status**: Completo
+### 1.2 Detalhe do Evento
+- **Arquivo**: `modules/event-detail/EventDetailView.tsx`
+- **O que o usuario ve**: Imagem do evento em header com botoes back/share/favoritar, info do evento (data, horario, local, formato, comunidade), prova social (confirmados + amigos), footer com preco e botao "Comprar" ou "Confirmar Presenca".
+- **Acoes disponiveis**: Voltar, compartilhar evento, favoritar, comprar ingresso, confirmar presenca (evento gratuito), convidar amigos, ver membros confirmados, abrir perfil de membro, ver beneficio MAIS VANTA, avaliar evento (review), solicitar comemoracao.
+- **Navegacao**: Comprar -> abre URL `/checkout/{eventoId}` (standalone); Membro -> PublicProfilePreviewView; Comunidade -> ComunidadePublicView.
+- **Dados**: Evento recebido via props, `eventosAdminService` (detalhes adicionais), `reviewsService`, `clubeService` (beneficios MV), `useTicketsStore`, `useSocialStore.mutualFriends`.
+- **Componentes filhos**: EventHeader, EventInfo, EventFooter, EventSocialProof, PresencaConfirmationModal, InviteFriendsModal, MaisVantaBeneficioModal, MaisVantaReservaModal, ReviewModal, ComemoracaoFormView.
+- **Status**: [x] Completo
 
-### 1.3 CheckoutPage (`modules/checkout/CheckoutPage.tsx`)
-- **O que vê**: Seletor de lote, variações de ingresso (área, gênero, preço), quantidade. Campo de cupom de desconto. Campo de acompanhantes. Resumo do pedido com preço total. Comprovante de meia-entrada (se aplicável). Fluxo dual: gratuito direto / pago via Stripe redirect.
-- **Ações**:
-  - Selecionar lote/variação/quantidade
-  - Aplicar cupom de desconto
-  - Preencher acompanhantes
-  - Confirmar compra gratuita → SuccessScreen
-  - Pagar via Stripe → redirect externo → CheckoutSuccessPage
-  - Entrar na lista de espera → WaitlistModal
-- **Status**: Completo (Stripe depende de config CNPJ)
+### 1.3 Checkout (Standalone)
+- **Arquivo**: `modules/checkout/CheckoutPage.tsx`
+- **Rota**: `/checkout/:slug`
+- **O que o usuario ve**: Pagina standalone (sem tab bar) com imagem do evento, seletor de lotes e variacoes (area/genero/preco), stepper de quantidade, campo de cupom, campo de acompanhantes, resumo com total. Modal de login por email+senha no rodape.
+- **Acoes disponiveis**: Selecionar variacoes, ajustar quantidades, aplicar cupom, preencher nomes de acompanhantes, entrar na waitlist (se esgotado), fazer login e confirmar compra. Opcao de selecionar mesa (quando evento tem mesas ativas).
+- **Fluxo de compra (gratuito)**: Login -> RPC `processar_compra_checkout` (server-side) -> gera tickets -> tela de sucesso com QR codes.
+- **Fluxo de compra (pago via Stripe)**: Ainda em implementacao -- Edge Function `create-ticket-checkout` cria sessao Stripe Checkout e retorna URL de redirect. Pos-pagamento: `CheckoutSuccessPage` faz polling do `pedidos_checkout` ate status=pago.
+- **Navegacao**: Sucesso -> SuccessScreen (com share e botao "Voltar ao App").
+- **Dados**: `supabase.eventos_admin`, `supabase.lotes`, `supabase.variacoes_ingresso`, `cuponsService`, `comprovanteService`.
+- **Status**: [x] Completo para eventos gratuitos. [?] Incerto para pagos (Stripe) -- branch `feat/stripe-ingressos` com Edge Functions prontas, mas stripe-webhook nao trata `pedidos_checkout` (apenas assinaturas MV). Fluxo pago depende de config Stripe + webhook para confirmar.
 
-### 1.4 CheckoutSuccessPage (`modules/checkout/CheckoutSuccessPage.tsx`)
-- **O que vê**: Tela de sucesso após pagamento Stripe com polling de 2s por até 30s para confirmar processamento do webhook.
-- **Ações**:
-  - Voltar ao app
-- **Status**: Completo (depende de Stripe ativo)
+### 1.4 Checkout Success (Stripe)
+- **Arquivo**: `modules/checkout/CheckoutSuccessPage.tsx`
+- **Rota**: (acessada via redirect Stripe com `?pedido_id=`)
+- **O que o usuario ve**: Tela de polling com spinner, depois confirmacao com quantidade de ingressos e botao de compartilhar/voltar.
+- **Fluxo**: Polling a cada 2s na tabela `pedidos_checkout` ate status=pago. Timeout 30s.
+- **Status**: [x] Completo (frontend). [ ] Depende da Edge Function stripe-webhook processar `pedidos_checkout`.
 
-### 1.5 SuccessScreen (`modules/checkout/SuccessScreen.tsx`)
-- **O que vê**: Confirmação de ingresso(s) com QR codes decorativos, nome do evento, botão compartilhar, botão voltar.
-- **Ações**:
-  - Compartilhar evento
-  - Voltar ao app
-- **Status**: Completo
+### 1.5 Busca
+- **Arquivo**: `modules/search/SearchView.tsx`
+- **O que o usuario ve**: Header com barra de busca, tabs EVENTOS/PESSOAS, filtros (cidade, estilo/vibe, data/horario, preco, beneficios MV). Resultados em grid.
+- **Acoes disponiveis**: Buscar texto, filtrar por cidade/categoria/data/preco/beneficio MV, trocar entre aba Eventos e Pessoas, clicar em evento ou perfil.
+- **Navegacao**: Evento -> EventDetailView; Pessoa -> PublicProfilePreviewView; Comunidade -> ComunidadePublicView.
+- **Dados**: `useExtrasStore.allEvents` (local) + `searchEventsServerSide` (server-side), `authService.searchPeopleByName`.
+- **Componentes filhos**: SearchHeader, SearchResults, PeopleResults, CityFilterModal, VibeFilterModal, TimeFilterModal, PriceFilterModal.
+- **Status**: [x] Completo
 
-### 1.6 WaitlistModal (`modules/checkout/WaitlistModal.tsx`)
-- **O que vê**: Modal para entrar na lista de espera com campo de email.
-- **Ações**:
-  - Inserir email e entrar na fila
-  - Fechar modal
-- **Status**: Completo
+### 1.6 Carteira (Wallet)
+- **Arquivo**: `modules/wallet/WalletView.tsx`
+- **O que o usuario ve**: Tela com lock screen (biometria/PIN). Apos desbloqueio: carrossel de ingressos por evento com QR code, lista de presencas (futuras e passadas). Tabs: Ingressos / Presencas. Badge MAIS VANTA para membros do clube.
+- **Acoes disponiveis**: Desbloquear carteira, ver QR code de ingresso (anti-screenshot), devolver cortesia, transferir ingresso, editar titular (nome + CPF), ver comprovante de meia-entrada.
+- **Navegacao**: Interna (modais de QR, transferencia, devolucao).
+- **Dados**: `useTicketsStore.myTickets`, `useTicketsStore.myPresencas`, `useExtrasStore.allEvents`, `clubeService` (tier do membro).
+- **Componentes filhos**: EventTicketsCarousel, TicketList, PresencaList, TicketQRModal, WalletLockScreen.
+- **Status**: [x] Completo
 
-### 1.7 EventLandingPage (`modules/landing/EventLandingPage.tsx`)
-- **O que vê**: Landing page pública de evento (acessível sem login via URL `/event/:id`). Imagem, nome, data, local, descrição, botão CTA.
-- **Ações**:
-  - Abrir app / ir para checkout
-- **Status**: Completo
+### 1.7 Mensagens
+- **Arquivo**: `modules/messages/MessagesView.tsx`
+- **O que o usuario ve**: Lista de conversas com busca, status online, mood emoji, ultima mensagem, contagem de nao lidas.
+- **Acoes disponiveis**: Buscar conversas, iniciar novo chat (com amigos mutuos), abrir chat existente.
+- **Navegacao**: Chat -> ChatRoomView.
+- **Dados**: `useChatStore.chats`, `useSocialStore.mutualFriends`, `moodService`.
+- **Componentes filhos**: ChatListItem, NewChatModal.
+- **Status**: [x] Completo
 
-### 1.8 SearchView (`modules/search/SearchView.tsx`)
-- **O que vê**: Busca textual com tabs Eventos/Pessoas. Filtros: cidade, estilo/vibe, data/período, preço máximo, benefícios MAIS VANTA. Resultados de eventos (cards) e pessoas (avatares).
-- **Ações**:
-  - Buscar texto
-  - Filtrar por cidade → CityFilterModal
-  - Filtrar por estilo → VibeFilterModal
-  - Filtrar por data → TimeFilterModal
-  - Filtrar por preço → PriceFilterModal
-  - Toggle benefícios MAIS VANTA
-  - Clicar num evento → EventDetailView
-  - Clicar numa pessoa → PublicProfilePreviewView
-  - Clicar numa comunidade → ComunidadePublicView
-- **Status**: Completo
+### 1.8 Chat Room
+- **Arquivo**: `modules/messages/components/ChatRoomView.tsx`
+- **O que o usuario ve**: Conversa 1:1 com bolhas de mensagem, reacoes, busca interna, header com foto e nome do participante. Opcao de ver perfil publico.
+- **Acoes disponiveis**: Enviar mensagem, reagir com emoji, deletar propria mensagem, ver perfil do participante, buscar no chat.
+- **Dados**: `useChatStore` (mensagens em tempo real via Supabase Realtime), `useSocialStore`.
+- **Status**: [x] Completo
 
-### 1.9 RadarView (`modules/radar/RadarView.tsx`)
-- **O que vê**: Mapa Leaflet com pins de eventos geolocalizados. Calendário premium para filtrar por data. Filtro por raio. Localização do usuário.
-- **Ações**:
-  - Navegar pelo mapa (zoom, pan)
-  - Selecionar evento no mapa → EventDetailView
-  - Filtrar por data → PremiumCalendar
-  - Filtrar por raio
-  - Centralizar na localização do usuário
-- **Status**: Completo
+### 1.9 Perfil
+- **Arquivo**: `modules/profile/ProfileView.tsx`
+- **O que o usuario ve**: Foto + nome + bio + selos + interesses + mood. Menu com opcoes: Editar Perfil, Minha Carteira, Meus Ingressos, Historico, MAIS VANTA, Previews publico/amigos, Preferencias, Solicitar Parceria, Minhas Solicitacoes, Logout. Badge de admin (se tem cargo).
+- **Acoes disponiveis**: Editar perfil, ver carteira, ver ingressos, ver historico de frequencia, entrar no MAIS VANTA, pre-visualizar perfil publico, configurar preferencias, solicitar parceria, ver solicitacoes, logout.
+- **Subviews**: EditProfileView, PreferencesView, PublicProfilePreviewView, HistoricoView, ClubeOptInView, ComprovanteMeiaSection, SolicitarParceriaView, MinhasSolicitacoesView, DealsMembroSection.
+- **Dados**: `useAuthStore.profile`, `useTicketsStore`, `useExtrasStore`, `clubeService`, `comprovanteService`, `moodService`.
+- **Status**: [x] Completo
 
-### 1.10 WalletView (`modules/wallet/WalletView.tsx`)
-- **O que vê**: Carteira de ingressos com tabs Próximos/Passados. Carrossel de ingressos por evento. QR code de cada ingresso. Lista de presenças confirmadas. Lock screen de segurança. Badge MAIS VANTA se membro.
-- **Ações**:
-  - Ver QR do ingresso → TicketQRModal
-  - Transferir ingresso para outro usuário
-  - Devolver cortesia
-  - Atualizar nome do titular
-  - Aceitar/recusar cortesia pendente
-  - Aceitar/recusar transferência pendente
-  - Lock/unlock da carteira (WalletLockScreen com PIN/Face ID)
-- **Status**: Completo
+### 1.10 Editar Perfil
+- **Arquivo**: `modules/profile/EditProfileView.tsx`
+- **O que o usuario ve**: Form com foto (camera/upload + crop), nome, bio, genero, nascimento, telefone, cidade, estado, instagram, interesses.
+- **Acoes**: Alterar foto, editar todos os campos, salvar.
+- **Dados**: `useAuthStore.profile`, `photoService`.
+- **Status**: [x] Completo
 
-### 1.11 MessagesView (`modules/messages/MessagesView.tsx`)
-- **O que vê**: Lista de conversas com preview da última mensagem, contador de não lidas, status online, mood emoji. Busca por nome. Botão "Nova conversa".
-- **Ações**:
-  - Abrir conversa → ChatRoomView
-  - Nova conversa → NewChatModal (lista de amigos)
-  - Buscar conversas
-- **Status**: Completo
+### 1.11 Historico
+- **Arquivo**: `modules/profile/HistoricoView.tsx`
+- **O que o usuario ve**: Medalhas de frequencia por comunidade (ESTREANTE, FREQUENTADOR, HABITUE, LENDA), lista de conquistas, eventos passados.
+- **Dados**: `achievementsService`.
+- **Status**: [x] Completo
 
-### 1.12 ChatRoomView (`modules/messages/components/ChatRoomView.tsx`)
-- **O que vê**: Chat real-time com bolhas de mensagem, timestamp, reações emoji, indicador de online, perfil do participante.
-- **Ações**:
-  - Enviar mensagem
-  - Reagir com emoji
-  - Deletar própria mensagem
-  - Ver perfil do participante → PublicProfilePreviewView
-  - Solicitar/cancelar amizade
-  - Remover amigo
-  - Voltar
-- **Status**: Completo
+### 1.12 MAIS VANTA (Opt-In do Membro)
+- **Arquivo**: `modules/profile/ClubeOptInView.tsx`
+- **O que o usuario ve**: Tela de adesao ao clube MAIS VANTA. Se nao e membro: termos de uso LGPD completos, campo Instagram, botao de solicitar entrada. Se pendente: status da solicitacao. Se aprovado: painel do membro com tier, reservas ativas, deals disponiveis, tela de resgate, historico.
+- **Acoes**: Solicitar entrada, aceitar termos, preencher Instagram, ver deals, resgatar beneficios.
+- **Dados**: `clubeService.getMembratura`, `clubeService.getSolicitacao`, `maisVantaConfigService`.
+- **Status**: [x] Completo
 
-### 1.13 ProfileView (`modules/profile/ProfileView.tsx`)
-- **O que vê**: Foto, nome, cidade, bio, mood, interesses. Links para sub-views. Badge MAIS VANTA se membro. Botão admin (se tem acesso). Comprovante meia-entrada.
-- **Ações**:
-  - Editar perfil → EditProfileView
-  - Ver carteira → WalletView
-  - Ver histórico → HistoricoView
-  - Ver preferências → PreferencesView
-  - Preview público → PublicProfilePreviewView
-  - MAIS VANTA → ClubeOptInView
-  - Minhas solicitações → MinhasSolicitacoesView
-  - Solicitar parceria → SolicitarParceriaView
-  - Comprovante meia → ComprovanteMeiaSection
-  - Mood picker → MoodPicker
-  - Acessar painel admin
-  - Logout
-- **Status**: Completo
+### 1.13 Deals do Membro
+- **Arquivo**: `modules/profile/DealsMembroSection.tsx`
+- **O que o usuario ve**: Lista de deals (ofertas de parceiros) disponiveis para seu tier, com botao de resgatar.
+- **Dados**: `clubeDealsService`, `clubeResgatesService`, `clubeCidadesService`.
+- **Status**: [x] Completo
 
-### 1.14 EditProfileView (`modules/profile/EditProfileView.tsx`)
-- **O que vê**: Formulário completo — foto, álbum (4 fotos), nome, sobrenome, bio, data nascimento, cidade, UF, bairro, telefone, Instagram, interesses (multi-select).
-- **Ações**:
-  - Editar qualquer campo
-  - Upload/crop de foto → ImageCropperModal
-  - Selecionar interesses → InterestSelector
-  - Salvar alterações
-- **Status**: Completo
+### 1.14 Comprovante Meia-Entrada
+- **Arquivo**: `modules/profile/ComprovanteMeiaSection.tsx`
+- **O que o usuario ve**: Upload de comprovante de meia-entrada (estudante, ID jovem, etc.), status de aprovacao.
+- **Dados**: `comprovanteService`.
+- **Status**: [x] Completo
 
-### 1.15 HistoricoView (`modules/profile/HistoricoView.tsx`)
-- **O que vê**: Histórico de eventos frequentados com achievements/badges (frequência por comunidade). Tabs Presenças/Badges.
-- **Ações**:
-  - Ver evento passado → EventDetailView
-  - Ver badges conquistados
-- **Status**: Completo
+### 1.15 Radar (Mapa)
+- **Arquivo**: `modules/radar/RadarView.tsx`
+- **O que o usuario ve**: Mapa Leaflet com pins de eventos, calendario premium para filtrar por data, controles de zoom, localizacao do usuario.
+- **Acoes**: Navegar no mapa, filtrar por data, clicar em pin para abrir evento, pedir permissao de localizacao.
+- **Dados**: Eventos filtrados por coordenadas, `useRadarLogic` hook, `usePermission` (geolocalizacao).
+- **Status**: [x] Completo
 
-### 1.16 PreferencesView (`modules/profile/PreferencesView.tsx`)
-- **O que vê**: Configurações de privacidade e notificações (placeholders).
-- **Ações**: Toggles de preferência
-- **Status**: Incerto — parece ser placeholder com UI básica (87 linhas)
+### 1.16 Comunidade Publica
+- **Arquivo**: `modules/community/ComunidadePublicView.tsx`
+- **O que o usuario ve**: Pagina da comunidade com foto, descricao, horarios de funcionamento, proximos eventos, reviews, seguidores. Botoes: seguir, solicitar evento privado, solicitar comemoracao.
+- **Acoes**: Seguir/deixar de seguir comunidade, ver eventos, ver reviews, solicitar evento privado, solicitar comemoracao.
+- **Dados**: `vantaService`, `communityFollowService`, `reviewsService`, `supabase.eventos_admin`.
+- **Status**: [x] Completo
 
-### 1.17 PublicProfilePreviewView (`modules/profile/PublicProfilePreviewView.tsx`)
-- **O que vê**: Perfil público de outro usuário — foto, álbum, bio, cidade, interesses, achievements, mood, amigos em comum. Controles de amizade.
-- **Ações**:
-  - Solicitar amizade / cancelar / aceitar / recusar / remover
-  - Abrir chat
-  - Toggle PUBLIC/FRIENDS preview (quando é o próprio perfil)
-- **Status**: Completo
+### 1.17 Solicitar Evento Privado
+- **Arquivo**: `modules/community/EventoPrivadoFormView.tsx`
+- **O que o usuario ve**: Formulario para solicitar evento privado numa comunidade: nome, empresa, email, telefone, Instagram, data, capacidade, horario, formatos, atracoes, descricao.
+- **Dados**: `eventoPrivadoService`.
+- **Status**: [x] Completo
 
-### 1.18 ClubeOptInView (`modules/profile/ClubeOptInView.tsx`)
-- **O que vê**: Tela de adesão ao MAIS VANTA — planos disponíveis, benefícios, deals ativos, status de membro, passaporte digital. Se já é membro, mostra dashboard com deals e resgates.
-- **Ações**:
-  - Aceitar convite do clube
-  - Ver deals disponíveis → DealsMembroSection
-  - Usar deal / resgatar benefício
-  - Ver detalhes do plano
-- **Status**: Completo
+### 1.18 Solicitar Comemoracao
+- **Arquivo**: `modules/community/ComemoracaoFormView.tsx`
+- **O que o usuario ve**: Formulario para celebrar aniversario: motivo, nome, data, celular, Instagram, evento desejado.
+- **Dados**: `comemoracaoService`.
+- **Status**: [x] Completo
 
-### 1.19 DealsMembroSection (`modules/profile/DealsMembroSection.tsx`)
-- **O que vê**: Lista de deals/benefícios disponíveis para o membro do clube, filtrados por cidade. Status de cada resgate.
-- **Ações**:
-  - Resgatar deal
-  - Ver detalhes do deal
-  - Filtrar por cidade
-- **Status**: Completo
+### 1.19 Minhas Solicitacoes (Privado)
+- **Arquivo**: `modules/community/MinhasSolicitacoesPrivadoView.tsx`
+- **O que o usuario ve**: Lista das solicitacoes de eventos privados feitas pelo usuario, com status (ENVIADA, EM_ANALISE, APROVADA, RECUSADA).
+- **Status**: [x] Completo
 
-### 1.20 ComprovanteMeiaSection (`modules/profile/ComprovanteMeiaSection.tsx`)
-- **O que vê**: Upload e gestão de comprovante de meia-entrada (estudante). Status de aprovação.
-- **Ações**:
-  - Upload de documento
-  - Acompanhar status (pendente/aprovado/rejeitado)
-- **Status**: Completo
+### 1.20 Minhas Solicitacoes (Geral)
+- **Arquivo**: `modules/profile/MinhasSolicitacoesView.tsx`
+- **O que o usuario ve**: Lista unificada de solicitacoes (eventos privados + comemoracoes) com status.
+- **Dados**: `eventoPrivadoService`, `comemoracaoService`.
+- **Status**: [x] Completo
 
-### 1.21 MinhasSolicitacoesView (`modules/profile/MinhasSolicitacoesView.tsx`)
-- **O que vê**: Lista das solicitações do usuário — eventos privados e comemorações. Status de cada (ENVIADA, EM_ANALISE, APROVADA, RECUSADA).
-- **Ações**:
-  - Ver detalhes de cada solicitação
-  - Filtrar por tipo (privados/comemorações)
-- **Status**: Completo
+### 1.21 Landing Page do Evento
+- **Arquivo**: `modules/landing/EventLandingPage.tsx`
+- **Rota**: `/evento/:slug`
+- **O que o usuario ve**: Pagina publica (sem login) com info do evento, imagem, data, local, preco. Botao "Comprar Ingresso" redireciona para checkout.
+- **Dados**: `supabase.eventos_admin`.
+- **Status**: [x] Completo
 
-### 1.22 ComunidadePublicView (`modules/community/ComunidadePublicView.tsx`)
-- **O que vê**: Página pública da comunidade — foto, nome, descrição, horários, reviews, eventos próximos, membros. Botão seguir. Formulários de evento privado e comemoração.
-- **Ações**:
-  - Seguir/desseguir comunidade
-  - Ver eventos → EventDetailView
-  - Ver membros → PublicProfilePreviewView
-  - Solicitar evento privado → EventoPrivadoFormView
-  - Solicitar comemoração → ComemoracaoFormView
-  - Ver reviews
-- **Status**: Completo
+### 1.22 Aceitar Convite MAIS VANTA
+- **Arquivo**: `modules/convite/AceitarConviteMVPage.tsx`
+- **Rota**: `/convite-mv/:token`
+- **O que o usuario ve**: Pagina standalone para aceitar convite ao MAIS VANTA via link com token. Mostra info do convite, permite login e aceitar.
+- **Dados**: `supabase.convites_mais_vanta`, `useAuthStore`.
+- **Status**: [x] Completo
 
-### 1.23 ComemoracaoFormView (`modules/community/ComemoracaoFormView.tsx`)
-- **O que vê**: Formulário para solicitar comemoração (aniversário/despedida/outro) — nome, data, celular, Instagram, evento vinculado.
-- **Ações**:
-  - Preencher e enviar solicitação
-- **Status**: Completo
+### 1.23 Dashboard do Parceiro
+- **Arquivo**: `modules/parceiro/ParceiroDashboardPage.tsx`
+- **Rota**: `/parceiro`
+- **O que o usuario ve**: Dashboard para parceiros MAIS VANTA. Metricas (total resgates, resgates no mes, membros unicos), lista de deals ativos, resgates recentes com status.
+- **Dados**: `parceiroService`, `clubeResgatesService`.
+- **Status**: [x] Completo
 
-### 1.24 EventoPrivadoFormView (`modules/community/EventoPrivadoFormView.tsx`)
-- **O que vê**: Formulário para solicitar evento privado — dados pessoais, empresa, data, capacidade, horário, formatos, atrações, descrição.
-- **Ações**:
-  - Preencher e enviar solicitação
-- **Status**: Completo
+### 1.24 My Tickets View
+- **Arquivo**: `features/tickets/views/MyTicketsView.tsx`
+- **O que o usuario ve**: Carteira digital com cards por ingresso: nome do evento, data, local, variacao, status (DISPONIVEL/USADO/CANCELADO), QR code. Modal para editar titular (nome + CPF).
+- **Dados**: `vantaService.getMyTickets`, `useTicketsStore`.
+- **Status**: [x] Completo
 
-### 1.25 MinhasSolicitacoesPrivadoView (`modules/community/MinhasSolicitacoesPrivadoView.tsx`)
-- **O que vê**: Lista das solicitações de eventos privados feitas pelo usuário.
-- **Ações**:
-  - Ver detalhes/status de cada solicitação
-- **Status**: Completo
+### 1.25 Perfil Publico
+- **Arquivo**: `modules/profile/PublicProfilePreviewView.tsx`
+- **O que o usuario ve**: Preview do perfil de outro usuario: foto, nome, bio, selos, interesses, conquistas, mood. Botoes: adicionar amigo, enviar mensagem, bloquear.
+- **Acoes**: Enviar solicitacao de amizade, aceitar/recusar, remover amigo, abrir chat.
+- **Dados**: `useSocialStore.friendships`, `achievementsService`, `moodService`.
+- **Status**: [x] Completo
 
-### 1.26 AceitarConviteMVPage (`modules/convite/AceitarConviteMVPage.tsx`)
-- **O que vê**: Página standalone para aceitar convite do MAIS VANTA via link. Verifica token, mostra detalhes do convite.
-- **Ações**:
-  - Aceitar convite (se logado)
-  - Ir para login (se não logado)
-- **Status**: Completo
+### 1.26 Login
+- **Arquivo**: `components/LoginView.tsx`
+- **O que o usuario ve**: Tela de login com email + senha, opcao de "Esqueci minha senha", link para cadastro.
+- **Dados**: `authService.signIn`.
+- **Status**: [x] Completo
 
-### 1.27 ParceiroDashboardPage (`modules/parceiro/ParceiroDashboardPage.tsx`)
-- **O que vê**: Dashboard do parceiro MAIS VANTA — métricas (total resgates, resgates mês, membros únicos), deals ativos, histórico de resgates. Tabs Visão Geral / Deals / Resgates.
-- **Ações**:
-  - Ver métricas
-  - Ver deals ativos
-  - Ver resgates recebidos
-  - Confirmar check-in de resgate
-- **Status**: Completo
+### 1.27 Cadastro (AuthModal)
+- **Arquivo**: `components/AuthModal.tsx`
+- **O que o usuario ve**: Wizard multi-step: nome, email, senha, genero, nascimento, cidade, telefone, Instagram, interesses, selfie com camera (analise facial automatica), termos de uso.
+- **Dados**: `authService.signUp`, `supabaseVantaService.uploadBiometria`.
+- **Componentes filhos**: `components/auth/SelfieCameraComponent.tsx` (analise facial client-side), `StepIndicator`, `authHelpers`.
+- **Status**: [x] Completo
 
-### 1.28 MyTicketsView (`features/tickets/views/MyTicketsView.tsx`)
-- **O que vê**: Lista de ingressos do usuário com detalhes — evento, variação, código QR, status. Visualização diferente da WalletView (mais detalhada/lista).
-- **Ações**:
-  - Ver detalhes do ingresso
-  - Voltar
-- **Status**: Completo
+### 1.28 Onboarding
+- **Arquivo**: `components/OnboardingView.tsx`
+- **O que o usuario ve**: Tutorial pos-cadastro com slides explicando o app.
+- **Status**: [x] Completo
 
-### 1.29 LoginView (`components/LoginView.tsx`)
-- **O que vê**: Tela de login — email e senha, esqueci senha, link para cadastro.
-- **Ações**:
-  - Login com email/senha
-  - Esqueci senha → envia email de reset
-  - Ir para cadastro → AuthModal
-- **Status**: Completo
-
-### 1.30 AuthModal (`components/AuthModal.tsx`)
-- **O que vê**: Modal de cadastro em steps — dados pessoais, selfie com câmera, verificação, termos legais.
-- **Ações**:
-  - Preencher dados (nome, email, senha, data nascimento, cidade, telefone, Instagram)
-  - Tirar selfie → SelfieCameraComponent (análise facial local)
-  - Aceitar termos → LegalView
-  - Concluir cadastro
-- **Status**: Completo
-
-### 1.31 OnboardingView (`components/OnboardingView.tsx`)
-- **O que vê**: Tutorial de onboarding pós-cadastro — slides explicativos das funcionalidades do app.
-- **Ações**:
-  - Navegar pelos slides
-  - Pular / concluir
-- **Status**: Completo
-
-### 1.32 LegalView (`components/LegalView.tsx`)
-- **O que vê**: Termos de Uso e Política de Privacidade completos.
-- **Ações**:
-  - Ler termos
-  - Aceitar termos
-- **Status**: Completo
-
-### 1.33 ResetPasswordView (`components/ResetPasswordView.tsx`)
-- **O que vê**: Formulário para redefinir senha (quando usuário clica no link do email).
-- **Ações**:
-  - Inserir nova senha
-  - Confirmar
-- **Status**: Completo
-
-### 1.34 NotFoundView (`components/NotFoundView.tsx`)
-- **O que vê**: Página 404 — "Página não encontrada".
-- **Ações**:
-  - Link para voltar ao início
-- **Status**: Completo
-
-### 1.35 NotificationPanel (`components/Home/NotificationPanel.tsx`)
-- **O que vê**: Painel lateral de notificações — lista de todas as notificações com ícones, timestamps, ações pendentes (cortesias, amizades).
-- **Ações**:
-  - Marcar todas como lidas
-  - Clicar em notificação → ação contextual (ir para evento, aceitar amizade, etc.)
-  - Aceitar/recusar cortesia
-  - Aceitar/recusar amizade
-- **Status**: Completo
+### 1.29 Reset Password
+- **Arquivo**: `components/ResetPasswordView.tsx`
+- **O que o usuario ve**: Tela para redefinir senha (acessada via link de email).
+- **Status**: [x] Completo
 
 ---
 
 ## 2. CLUBE MAIS VANTA
 
-### 2.1 O que o usuário vê na UI
+### 2.1 Entrada no Clube
+- **Tela do usuario**: `modules/profile/ClubeOptInView.tsx` (subview do perfil)
+- **Fluxo**: Usuario acessa Perfil -> MAIS VANTA -> ve termos LGPD -> preenche Instagram -> Solicitar Entrada -> status PENDENTE -> curadoria admin analisa -> APROVADO ou REJEITADO.
+- **Convite**: Link `/convite-mv/:token` (`modules/convite/AceitarConviteMVPage.tsx`) -- aceita convite direto e pula curadoria.
+- **Tabelas**: `membros_clube`, `solicitacoes_clube`, `convites_mais_vanta`.
+- **Status**: [x] Completo
 
-**Entrada no clube** — ClubeOptInView (`modules/profile/ClubeOptInView.tsx`):
-- Planos disponíveis (BASICO, PRO, ENTERPRISE) com preços e benefícios
-- Aceitar convite (via link ou código)
-- Dashboard de membro se já associado
+### 2.2 Tiers
+- **Definicao**: `features/admin/views/curadoria/tabClube/tierUtils.ts` (TIER_LABELS, TIER_COLORS)
+- **Configuracao admin**: `features/admin/services/clubeService.ts`, `features/admin/services/clube/clubeCache.ts` (TIER_ORDER)
+- **Funcionamento**: Tiers sao definidos na tabela `tiers_mais_vanta`. Cada membro tem um tier atribuido pela curadoria. Tier define: acesso a lotes exclusivos, descontos, convites, limites de reserva.
+- **Status**: [x] Completo
 
-**Benefícios** — DealsMembroSection (`modules/profile/DealsMembroSection.tsx`):
-- Deals/ofertas de parceiros (descontos, cortesias, experiências)
-- Filtro por cidade
-- Resgate com confirmação
+### 2.3 Beneficios na Compra
+- **Desconto silencioso**: No checkout (`CheckoutPage.tsx`), `descontoMVValor` e calculado e aplicado automaticamente se o comprador e membro do clube.
+- **Lote exclusivo MV**: `features/admin/services/clube/clubeLotesService.ts` -- funcoes `getLoteMaisVanta`, `getLoteParaTier`, `getBeneficiosEvento`.
+- **Modal de beneficio**: `modules/event-detail/components/MaisVantaBeneficioModal.tsx` -- mostra ao membro qual beneficio ele tem naquele evento.
+- **Modal de reserva**: `modules/event-detail/components/MaisVantaReservaModal.tsx` -- permite reservar vaga com beneficio MV.
+- **Config por evento**: No criar evento (`Step2Ingressos.tsx`), produtor configura `MaisVantaEventoForm` com beneficios por tier (ingresso ou lista + desconto).
+- **Status**: [x] Completo
 
-**Reserva para eventos** — MaisVantaReservaModal (`modules/event-detail/components/MaisVantaReservaModal.tsx`):
-- Modal para reservar entrada em evento com benefício de membro
+### 2.4 Passaporte Regional
+- **Admin**: `features/admin/views/PassaportesMaisVantaView.tsx` -- lista e gerencia passaportes.
+- **Curadoria**: `features/admin/views/curadoria/tabClube/SubTabPassaportes.tsx` -- aprovar/rejeitar solicitacoes.
+- **Servico**: `clubeService` + `clubeCache.rowToPassport`.
+- **Funcionamento**: Membro solicita passaporte para outra cidade. Admin aprova. Passaporte permite acessar beneficios em comunidades daquela cidade.
+- **Status**: [x] Completo (UI e backend prontos)
 
-**Na busca** — SearchView tem toggle "benefícios MAIS VANTA" para filtrar eventos com vantagens
+### 2.5 Curadoria (Admin)
+- **Tela principal**: `features/admin/views/curadoria/tabClube/index.tsx`
+- **SubTabs**: Solicitacoes (aprovar/rejeitar com tags), Membros (listar, mudar tier, ver perfil enriquecido), Eventos (config MV por evento), Posts (verificar divulgacao), Passaportes, Config, Notificacoes.
+- **Componentes**: SubTabSolicitacoes, SubTabMembros, SubTabEventos, SubTabPosts, SubTabPassaportes, SubTabConfig, SubTabNotificacoes, PerfilMembroOverlay, TagsPredefinidas.
+- **Quem acessa**: vanta_masteradm (sidebar CURADORIA_MV).
+- **Status**: [x] Completo
 
-**Convite** — AceitarConviteMVPage (`modules/convite/AceitarConviteMVPage.tsx`):
-- Página standalone para aceitar convite via link
+### 2.6 Configuracao (Admin)
+- **Hub**: `features/admin/views/MaisVantaHubView.tsx` -- agrupa: Planos, Assinaturas, Passaportes, Config, Cidades, Parceiros, Deals.
+- **Config geral**: `features/admin/views/ConfigMaisVantaView.tsx` -- nome do programa, email, prazo post, mencoes obrigatorias, hashtags, limites de infracao, bloqueios, termos customizados, beneficios disponiveis.
+- **Planos/Assinaturas**: `PlanosMaisVantaView.tsx`, `AssinaturasMaisVantaView.tsx` -- BASICO (R$199), PRO (R$499), ENTERPRISE (R$999). Via Stripe Checkout.
+- **Servico**: `maisVantaConfigService.ts`.
+- **Status**: [x] Completo
 
-### 2.2 Como entra no clube
-1. Recebe convite (link ou direto no app) de admin/curadoria
-2. Acessa ClubeOptInView no perfil
-3. Aceita convite → vira membro
-4. Pagamento via Stripe Checkout (Edge Function `create-checkout`) — **depende de CNPJ/Stripe configurado**
+### 2.7 Deals e Parceiros
+- **Parceiros admin**: `features/admin/views/ParceirosMaisVantaView.tsx` -- cadastro e gestao de parceiros.
+- **Deals admin**: `features/admin/views/DealsMaisVantaView.tsx` -- criar/editar deals (ofertas) para membros.
+- **Dashboard parceiro**: `modules/parceiro/ParceiroDashboardPage.tsx` -- metricas e resgates.
+- **Servicos**: `clubeParceirosService`, `clubeDealsService`.
+- **Cidades**: `CidadesMaisVantaView.tsx`, `clubeCidadesService`.
+- **Status**: [x] Completo
 
-### 2.3 Benefícios que aparecem
-- Deals de parceiros (descontos, cortesias)
-- Reserva prioritária em eventos
-- Badge de membro na carteira e perfil
-- Filtro exclusivo na busca
-- Passaporte digital
+### 2.8 Convites MV
+- **Admin**: `features/admin/views/ConvitesMaisVantaView.tsx` -- criar convites tipo MEMBRO ou PARCEIRO com tier, cidade, expiracao.
+- **Aceitar**: `modules/convite/AceitarConviteMVPage.tsx` (rota `/convite-mv/:token`).
+- **Servico**: `clubeConvitesService`.
+- **Status**: [x] Completo
 
-### 2.4 Como usa cada benefício
-- **Deals**: DealsMembroSection → seleciona deal → resgata → parceiro confirma check-in (ParceiroDashboardPage)
-- **Reserva**: EventDetailView → MaisVantaReservaModal → reserva com obrigação social (post/story)
-- **Badge**: aparece automaticamente na WalletView e ProfileView
+### 2.9 Resgates
+- **Membro**: Via `DealsMembroSection.tsx` no perfil -- lista deals do tier, botao resgatar.
+- **Parceiro**: Ve resgates no `ParceiroDashboardPage.tsx`.
+- **Servico**: `clubeResgatesService`.
+- **Status**: [x] Completo
 
-### 2.5 Admin do clube (Painel)
-- **MaisVantaHubView** — hub central com 7 sub-módulos
-- **PlanosMaisVantaView** — CRUD de planos
-- **AssinaturasMaisVantaView** — gestão de assinaturas
-- **PassaportesMaisVantaView** — gestão de passaportes digitais
-- **ConfigMaisVantaView** — configurações gerais
-- **CidadesMaisVantaView** — cidades onde o clube opera
-- **ParceirosMaisVantaView** — CRUD de parceiros
-- **DealsMaisVantaView** — CRUD de deals/ofertas
-- **ConvitesMaisVantaView** — envio e gestão de convites
-- **AnalyticsMaisVantaView** — métricas do clube
-- **MonitoramentoMaisVantaView** — membros globais, eventos, infrações, dívida social
-- **MembrosGlobaisMaisVantaView** — todos os membros cross-comunidade
-- **EventosGlobaisMaisVantaView** — eventos com reservas ativas
-- **InfracoesGlobaisMaisVantaView** — infrações registradas
-- **DividaSocialMaisVantaView** — saldo de obrigações sociais
+### 2.10 Infracoes e Divida Social
+- **Infracoes**: `InfracoesGlobaisMaisVantaView.tsx` -- lista global de infracoes.
+- **Divida social**: `DividaSocialMaisVantaView.tsx` -- membros com debito de divulgacao.
+- **Monitoramento**: `MonitoramentoMaisVantaView.tsx` -- hub com membros globais, eventos, infracoes, divida social.
+- **Edge Functions**: `notif-evento-finalizou` (avisa para postar), `notif-infraccao-registrada` (registra infracao T+24h).
+- **Servico**: `clubeInfracoesService` -- `estaBloqueado`, `isBanidoPermanente`, `temDividaSocial`, `temCastigoNoShow`.
+- **Status**: [x] Completo
 
-### 2.6 Status geral
-- **UI do membro**: Completo
-- **UI do admin**: Completo
-- **Pagamento Stripe**: Depende de config externa (CNPJ + secrets)
-- **Verificação Instagram (post/story)**: Depende de META_ACCESS_TOKEN (Graph API)
-- **ParceiroDashboardPage**: Completo
+### 2.11 Analytics MV
+- **Tela**: `AnalyticsMaisVantaView.tsx` -- metricas do programa (membros, resgates, crescimento).
+- **Dados**: Queries diretas no Supabase.
+- **Status**: [x] Completo
 
 ---
 
 ## 3. PAINEL ADMIN
 
-### 3.1 GerenteDashboardView
-- **Acesso**: master, gerente
-- **Mostra**: Comunidades do usuário, próximos eventos, resumo financeiro, reviews, RBAC, criar evento
-- **Permite**: Criar evento, gerenciar comunidades, ver financeiro, gerenciar equipe
-- **Status**: Completo
+### 3.1 Arquitetura
+- **Gateway**: `features/admin/AdminGateway.tsx` -- resolve role/comunidade, renderiza `AdminDashboardView`.
+- **Dashboard**: `features/admin/AdminDashboardView.tsx` -- renderContent() mapeia subView -> componente lazy-loaded.
+- **Sidebar Global**: `SIDEBAR_SECTIONS` -- secoes GERAL, GESTAO, FINANCEIRO, MAIS VANTA, MARKETING, SISTEMA.
+- **Sidebar Comunidade**: `COMMUNITY_SIDEBAR_SECTIONS` -- secoes GERAL, OPERACAO DIA, FINANCEIRO, MAIS VANTA, ADMINISTRACAO.
 
-### 3.2 SocioDashboardView
-- **Acesso**: sócio de evento
-- **Mostra**: Eventos onde é sócio, métricas de vendas, listas
-- **Permite**: Ver vendas, gerenciar listas próprias
-- **Status**: Completo
+### 3.2 Views por SubView Key
 
-### 3.3 PromoterDashboardView
-- **Acesso**: promoter
-- **Mostra**: Eventos onde é promoter, cotas de nomes
-- **Permite**: Adicionar nomes nas listas, ver cotas
-- **Status**: Completo
+| SubView | Arquivo | Cargo | O que faz |
+|---|---|---|---|
+| DASHBOARD | AdminDashboardHome.tsx | master, gerente, socio | Home com KPIs, graficos, resumo financeiro, eventos recentes |
+| PENDENCIAS_HUB | PendenciasHubView.tsx | master, gerente, socio | Hub de itens pendentes (curadoria, reembolsos, saques, parcerias, comemoracoes) |
+| COMUNIDADES | comunidades/ComunidadesView.tsx | master, gerente, socio | Listar comunidades, abrir detalhe, criar nova |
+| PENDENTES | EventosPendentesView.tsx | master | Eventos aguardando aprovacao para publicacao |
+| CATEGORIAS | CategoriasAdminView.tsx | master | CRUD de categorias de eventos |
+| SOLICITACOES_PARCERIA | SolicitacoesParceriaView.tsx | master | Analisar solicitacoes de parceria (espacos/produtoras) |
+| CARGOS | definirCargos/index.tsx | master | Definir cargos customizados com permissoes granulares |
+| FINANCEIRO_MASTER | masterFinanceiro/index.tsx | master | Visao financeira global: lucro por comunidade, raio-x evento, simulador gateway |
+| GESTAO_COMPROVANTES | GestaoComprovantesView.tsx | master | Aprovar/rejeitar comprovantes de meia-entrada |
+| RELATORIO_MASTER | relatorios/RelatorioMasterView.tsx | master | Relatorios consolidados cross-comunidade |
+| CURADORIA_MV | curadoria/tabClube/index.tsx | master | Curadoria MAIS VANTA (solicitacoes, membros, eventos, posts, passaportes) |
+| MEMBROS_GLOBAIS_MV | MembrosGlobaisMaisVantaView.tsx | master, gerente | Lista global de membros do clube |
+| INFRACOES_GLOBAIS_MV | InfracoesGlobaisMaisVantaView.tsx | master | Infracoes de membros |
+| CONVITES_MV | ConvitesMaisVantaView.tsx | master, gerente | Criar e gerenciar convites MV |
+| ANALYTICS_MV | AnalyticsMaisVantaView.tsx | master | Analytics do programa MAIS VANTA |
+| MONITORAMENTO_MV | MonitoramentoMaisVantaView.tsx | master | Hub de monitoramento (membros, eventos, infracoes, divida) |
+| MAIS_VANTA_HUB | MaisVantaHubView.tsx | master | Config central MV (planos, assinaturas, passaportes, config, cidades, parceiros, deals) |
+| INDICA | VantaIndicaView.tsx | master | Gerenciar destaques editoriais (Highlights do home feed) |
+| NOTIFICACOES | NotificacoesAdminView.tsx | master | Enviar notificacoes em massa (campanhas in-app + push + email) |
+| PRODUCT_ANALYTICS | ProductAnalyticsView.tsx | master | Analytics de produto (usuarios ativos, retencao, funil) |
+| DIAGNOSTICO | DiagnosticoView.tsx | master | Health check do banco + diagnostico Supabase |
+| MEUS_EVENTOS | MeusEventosView.tsx | master, gerente, socio | Listar eventos do contexto da comunidade |
+| PORTARIA_QR | PortariaQRDashView.tsx | master, ger_portaria_antecipado, portaria_antecipado | Dashboard de portaria QR com contadores |
+| PORTARIA_LISTA | PortariaListaDashView.tsx | master, ger_portaria_lista, portaria_lista | Dashboard de portaria lista com contadores |
+| CAIXA | caixa/index.tsx | master, caixa | Vender ingressos na porta (caixa do evento) |
+| LISTAS | listas/index.tsx | master, socio, gerente, promoter | Gerenciar listas de convidados |
+| PROMOTER_COTAS | PromoterCotasView.tsx | promoter | Ver cotas pessoais do promoter |
+| FINANCEIRO | financeiro/index.tsx | master, socio, gerente | Financeiro do evento: vendas, saques, reembolsos, fechamento |
+| CONVITES_SOCIO | ConvitesSocioView.tsx | socio | Gerenciar convites de socio |
+| AUDIT_LOG | AuditLogView.tsx | master | Log de auditoria de acoes |
+| CRIAR_COMUNIDADE | criarComunidade/index.tsx | master | Wizard 3 steps: identidade, localizacao, fotos |
+| CRIAR_EVENTO | CriarEventoView.tsx | master, gerente, socio | Wizard 5 steps: dados, ingressos/lotes, listas, equipe, financeiro |
+| EDITAR_EVENTO | EditarEventoView.tsx | master, gerente, socio | Mesmos steps do criar, pre-populados |
+| EVENTO_DASHBOARD | eventoDashboard/index.tsx | master, gerente, socio | Dashboard do evento: KPIs, vendas, duplicar, analytics, cupons, pedidos, editar lotes/listas, comemoracao, serie recorrente |
+| CHECKIN | checkin/index.tsx | master, portaria | Selecionar evento e abrir check-in (QR ou lista) |
+| SCANNER | PortariaScannerView.tsx | master, portaria | Scanner QR com camera para validar ingressos |
+| NEGOCIACAO_SOCIO | NegociacaoSocioView.tsx | socio | Chat turn-based de negociacao socio (9 RPCs, 48h expiracao) |
+| GERENTE_DASHBOARD | GerenteDashboardView.tsx | gerente | Dashboard do gerente com criar evento integrado |
+| SOCIO_DASHBOARD | SocioDashboardView.tsx | socio | Dashboard do socio com metricas dos seus eventos |
+| PROMOTER_DASHBOARD | PromoterDashboardView.tsx | promoter | Dashboard do promoter com eventos e nomes inseridos |
+| CAIXA_DASHBOARD | CaixaDashboardView.tsx | master, caixa | Dashboard do caixa com eventos para operar |
+| SOLICITAR_PARCERIA | SolicitarParceriaView.tsx | qualquer usuario | Formulario de solicitacao de parceria |
 
-### 3.4 PromoterCotasView
-- **Acesso**: promoter
-- **Mostra**: Cotas de nomes por lista, exportação
-- **Permite**: Ver cotas, exportar dados
-- **Status**: Completo
+### 3.3 Comunidade Detalhe (Admin)
+- **Arquivo**: `features/admin/views/comunidades/ComunidadeDetalheView.tsx`
+- **Tabs**: Eventos (Central: criar, proximos, encerrados), Equipe (membros + cargos), Logs, Caixa (resumo financeiro), Relatorio, Eventos Privados, Comemoracoes.
+- **Status**: [x] Completo
 
-### 3.5 ComunidadesView (admin)
-- **Acesso**: master, gerente
-- **Mostra**: Lista de comunidades com detalhes
-- **Permite**: Criar comunidade → CriarComunidadeView, ver detalhe → ComunidadeDetalheView
-- **Status**: Completo
+### 3.4 Evento Dashboard (Admin)
+- **Arquivo**: `features/admin/views/eventoDashboard/index.tsx`
+- **Funcionalidades**: KPIs do evento, grafico vendas por dia, vendas acumuladas, pico de vendas, vendas por variacao/origem/canal. SubViews: Editar, Gerenciamento (lotacao, equipe, lista, cortesias, cargos, resumo caixa, relatorio, mesas, logs), Analytics, Cupons, Pedidos, Editar Lotes, Editar Listas, Config Comemoracao. Serie recorrente (SerieChips). Duplicar evento.
+- **Status**: [x] Completo
 
-### 3.6 CriarComunidadeView
-- **Acesso**: master
-- **Mostra**: Wizard 3 steps — Identidade, Localização, Fotos
-- **Permite**: Criar nova comunidade com nome, descrição, tipo, horários, CEP, fotos
-- **Status**: Completo
-
-### 3.7 ComunidadeDetalheView
-- **Acesso**: master, gerente
-- **Mostra**: Tabs — Próximos Eventos, Encerrados, Equipe, Caixa, Logs, Eventos Privados, Comemorações
-- **Permite**: Editar comunidade (EditarModal), gerenciar equipe (EquipeTab), ver financeiro (CaixaTab), central de eventos
-- **Status**: Completo
-
-### 3.8 CriarEventoView
-- **Acesso**: master, gerente
-- **Mostra**: Wizard 5-6 steps — Tipo, Dados, Ingressos, Listas, Equipe, Financeiro
-- **Permite**: Criar evento completo com lotes, variações, listas, equipe, split financeiro
-- **Status**: Completo
-
-### 3.9 EditarEventoView
-- **Acesso**: master, gerente, quem criou
-- **Mostra**: Mesmo wizard de criação, preenchido com dados existentes
-- **Permite**: Editar todos os campos do evento
-- **Status**: Completo
-
-### 3.10 EventoDashboard (via GerenteDashboardView → MeusEventosView)
-- **Acesso**: master, gerente, sócio (limitado)
-- **Mostra**: Tabs — Equipe/Promoter, Cargos/Permissões, Cortesias, Lotação, Mesas, Relatório, Logs. SerieChips para eventos recorrentes. DuplicarModal.
-- **Permite**: Gerenciar tudo do evento
-- **Status**: Completo
-
-### 3.11 MeusEventosView
-- **Acesso**: qualquer cargo com evento
-- **Mostra**: Lista dos eventos do usuário
-- **Permite**: Abrir dashboard do evento
-- **Status**: Completo
-
-### 3.12 EventosPendentesView
-- **Acesso**: master
-- **Mostra**: Eventos pendentes de aprovação (propostas de afiliado/sócio)
-- **Permite**: Aprovar, rejeitar, negociar proposta
-- **Status**: Completo
-
-### 3.13 CuradoriaView
-- **Acesso**: master, gerente
-- **Mostra**: Tabs — Novos Membros, Membros. Detalhe do membro com perfil, logs, convites.
-- **Permite**: Aprovar/rejeitar membros, enviar convites, convidar para MAIS VANTA
-- **Status**: Completo
-
-### 3.14 TabClube (curadoria)
-- **Acesso**: master
-- **Mostra**: Sub-tabs — Membros, Solicitações, Eventos, Passaportes, Posts, Notificações, Config
-- **Permite**: Gestão completa do clube por comunidade
-- **Status**: Completo
-
-### 3.15 CheckInView / EventCheckInView
-- **Acesso**: portaria (cargo portaria_qr)
-- **Mostra**: Lista de eventos para check-in, scanner QR, feedback visual
-- **Permite**: Escanear QR de ingresso, validar e queimar ingresso
-- **Status**: Completo
-
-### 3.16 PortariaScannerView
-- **Acesso**: portaria
-- **Mostra**: Scanner QR com câmera
-- **Permite**: Scan de QR code de ingresso, validação JWT
-- **Status**: Completo
-
-### 3.17 PortariaQRDashView
-- **Acesso**: portaria_qr
-- **Mostra**: Dashboard da portaria QR — eventos do dia, contadores
-- **Permite**: Abrir scanner, ver estatísticas
-- **Status**: Completo
-
-### 3.18 PortariaListaDashView
-- **Acesso**: portaria_lista
-- **Mostra**: Dashboard da portaria por lista — eventos, listas de nomes
-- **Permite**: Check-in por nome na lista
-- **Status**: Completo
-
-### 3.19 CaixaView / CaixaDashboardView / EventoCaixaView
-- **Acesso**: caixa
-- **Mostra**: Dashboard de vendas no caixa — eventos do dia, venda de ingressos presencial, modo offline
-- **Permite**: Vender ingresso na hora (caixa físico), funciona offline com sync
-- **Status**: Completo
-
-### 3.20 ListasView (features/admin/views/listas/)
-- **Acesso**: master, gerente, promoter (limitado)
-- **Mostra**: Tabs — Nomes, Equipe, Lotação. Inserção em lote (ModalInserirLote).
-- **Permite**: Adicionar/remover nomes, gerenciar promoters, ver ocupação
-- **Status**: Completo
-
-### 3.21 RelatoriosView (features/admin/views/relatorios/)
-- **Acesso**: master, gerente
-- **Mostra**: Tabs — Geral, Ingressos, Listas. Métricas de venda, ocupação, receita.
-- **Permite**: Visualizar relatórios, exportar dados
-- **Status**: Completo
-
-### 3.22 Financeiro (features/admin/views/financeiro/)
-- **Acesso**: master
-- **Mostra**: Saldo, histórico de saques, reembolsos, fechamento financeiro
-- **Permite**: Solicitar saque (ModalSaque), processar reembolso manual (ModalReembolsoManual), fazer fechamento (ModalFechamento), ver histórico
-- **Status**: Completo
-
-### 3.23 MasterFinanceiroView
-- **Acesso**: masteradm (super admin)
-- **Mostra**: Tabs — Lucro por Comunidade, Raio-X do Evento, Simulador Gateway
-- **Permite**: Visão cross-comunidade de receita e custos
-- **Status**: Completo (2L no arquivo raiz — re-exporta)
-
-### 3.24 NegociacaoSocioView
-- **Acesso**: master, sócio
-- **Mostra**: Chat turn-based de negociação entre dono e sócio — propostas e contrapropostas com deadline 48h
-- **Permite**: Enviar proposta, aceitar, recusar, contra-propor
-- **Status**: Completo
-
-### 3.25 ConvitesSocioView
-- **Acesso**: master, gerente
-- **Mostra**: Lista de convites para sócios de eventos
-- **Permite**: Enviar convite, ver status
-- **Status**: Completo
-
-### 3.26 VantaIndicaView
-- **Acesso**: master
-- **Mostra**: Gestão de destaques/indicações no feed — eventos em destaque, banners
-- **Permite**: Criar/editar/remover destaques, upload de imagens
-- **Status**: Completo
-
-### 3.27 NotificacoesAdminView
-- **Acesso**: master, gerente
-- **Mostra**: Central de envio de notificações — push, in-app, email
-- **Permite**: Enviar notificação segmentada para membros
-- **Status**: Completo
-
-### 3.28 CategoriasAdminView
-- **Acesso**: masteradm
-- **Mostra**: CRUD de categorias/estilos de evento
-- **Permite**: Criar, editar, deletar categorias
-- **Status**: Completo
-
-### 3.29 ParticipantesView
-- **Acesso**: master, gerente
-- **Mostra**: Lista de participantes de um evento
-- **Permite**: Visualizar quem comprou, status de check-in
-- **Status**: Completo
-
-### 3.30 GestaoComprovantesView
-- **Acesso**: master, gerente
-- **Mostra**: Comprovantes de meia-entrada pendentes de validação
-- **Permite**: Aprovar/rejeitar comprovantes
-- **Status**: Completo
-
-### 3.31 ProductAnalyticsView
-- **Acesso**: masteradm
-- **Mostra**: Métricas de produto — usuários, eventos, retenção, gráficos
-- **Permite**: Visualizar analytics
-- **Status**: Completo
-
-### 3.32 AuditLogView
-- **Acesso**: masteradm
-- **Mostra**: Log de auditoria — todas as ações do sistema
-- **Permite**: Filtrar e visualizar logs
-- **Status**: Completo
-
-### 3.33 DatabaseHealthView / SupabaseDiagnosticView / DiagnosticoView
-- **Acesso**: masteradm
-- **Mostra**: Saúde do banco, diagnóstico Supabase, estatísticas de tabelas
-- **Permite**: Visualizar saúde do sistema
-- **Status**: Completo
-
-### 3.34 PendenciasHubView
-- **Acesso**: master, gerente
-- **Mostra**: Hub de pendências — itens que precisam de ação (aprovações, reembolsos, etc.)
-- **Permite**: Navegar para cada pendência
-- **Status**: Completo
-
-### 3.35 SolicitacoesParceriaView
-- **Acesso**: master
-- **Mostra**: Solicitações de parceria recebidas
-- **Permite**: Aprovar/rejeitar parceria
-- **Status**: Completo
-
-### 3.36 SolicitarParceriaView
-- **Acesso**: qualquer usuário logado (via perfil)
-- **Mostra**: Formulário para solicitar parceria com comunidade
-- **Permite**: Enviar solicitação de parceria
-- **Status**: Completo
-
-### 3.37 MaisVantaHubView
-- **Acesso**: master
-- **Mostra**: Hub central do MAIS VANTA com acesso a 7 sub-módulos
-- **Permite**: Navegar entre módulos do clube
-- **Status**: Completo
+### 3.5 Gerenciamento do Evento
+- **Arquivo**: `features/admin/views/eventManagement/EventDetailManagement.tsx`
+- **Tabs**: LOTACAO, EQUIPE (promoter/socio), LISTA, LOGS, RESUMO (caixa), CORTESIAS, CARGOS_PERM, RELATORIO, MESAS.
+- **Status**: [x] Completo
 
 ---
 
 ## 4. FLUXOS COMPLETOS
 
-### 4.1 Descobrir evento → Comprar ingresso → Usar na entrada
+### 4.1 Descobrir evento -> comprar ingresso -> usar na entrada
 
-1. **HomeView** — usuário vê feed de eventos (seções: highlights, esta semana, perto, amigos)
-2. **SearchView** — alternativamente, busca por nome/filtros (cidade, estilo, data, preço)
-3. **RadarView** — ou encontra no mapa geolocalizado
-4. **EventDetailView** — abre detalhes: foto, info, social proof, reviews
-5. **CheckoutPage** — clica "Comprar":
-   - Seleciona lote → variação (área, gênero) → quantidade
-   - Aplica cupom (opcional)
-   - Se gratuito → RPC direto no Supabase → SuccessScreen
-   - Se pago → Edge Function `create-ticket-checkout` → Stripe Checkout → redirect
-6. **CheckoutSuccessPage** — (pago) polling 2s/30s até webhook confirmar
-7. **SuccessScreen** — exibe QR codes, botão compartilhar
-8. **WalletView** — ingresso aparece na carteira com QR
-9. **TicketQRModal** — no dia, abre QR do ingresso
-10. **PortariaScannerView** (admin) — porteiro escaneia QR → valida JWT → check-in confirmado
-11. **notif-checkin-confirmacao** (Edge Function) — notificação push/in-app ao usuário
+1. **Descoberta**: Usuario abre o app -> HomeView com feed de eventos filtrado por cidade. Pode buscar via SearchView ou navegar no RadarView (mapa).
+2. **Detalhe**: Clica no EventCard -> EventDetailView com info completa, social proof, reviews.
+3. **Compra**: Clica "Comprar" -> abre URL standalone `/checkout/{eventoId}` (CheckoutPage).
+4. **Selecao**: Seleciona lote ativo, variacoes (area/genero), quantidade. Aplica cupom se tiver.
+5. **Login**: Modal bottom-sheet pede email+senha (autentica via Supabase Auth).
+6. **Processamento (gratuito)**: RPC `processar_compra_checkout` gera tickets server-side. Tabelas: `tickets_caixa`, `vendas_log`, `transactions`.
+7. **Processamento (pago)**: Edge Function `create-ticket-checkout` -> Stripe Checkout -> redirect -> `CheckoutSuccessPage` polling `pedidos_checkout`.
+8. **Sucesso**: SuccessScreen com QR codes. BroadcastChannel notifica o app para atualizar carteira. Notificacao in-app + push + email.
+9. **Carteira**: Ingressos aparecem em WalletView (via `useTicketsStore`). Usuario pode editar titular (nome + CPF).
+10. **Entrada**: Na portaria, equipe usa PortariaScannerView (camera QR) -> `jwtService.verifyTicketToken` -> `validarEQueimarIngresso` -> FeedbackOverlay (verde/amarelo/vermelho). Offline: `offlineDB` + sync queue.
+- **Tabelas/RPCs**: `eventos_admin`, `lotes`, `variacoes_ingresso`, `tickets_caixa`, `vendas_log`, `transactions`, `pedidos_checkout`, `processar_compra_checkout`, `validar_e_queimar_ingresso`.
+- **Services**: `vantaService`, `eventosAdminService`, `cuponsService`, `comprovanteService`, `jwtService`, `offlineEventService`.
+- **Status**: [x] Completo (gratuito). [?] Pago via Stripe em finalizacao (branch feat/stripe-ingressos).
 
-### 4.2 Cadastro → Onboarding → Primeiro uso
+### 4.2 Cadastro -> onboarding -> primeiro uso
 
-1. **LoginView** — tela inicial, clica "Cadastrar"
-2. **AuthModal** — wizard multi-step:
-   - Step 1: Nome, email, senha
-   - Step 2: Data nascimento, cidade, UF, telefone
-   - Step 3: Instagram (opcional)
-   - Step 4: Selfie com câmera (SelfieCameraComponent analisa localmente)
-   - Step 5: Aceitar termos (LegalView)
-   - Concluir → cria conta no Supabase Auth + profile
-3. **OnboardingView** — slides explicativos do app
-4. **HomeView** — feed personalizado pela cidade selecionada
-5. **TosAcceptModal** — se termos atualizaram, pede re-aceite
+1. **Tela inicial**: Usuario guest ve HomeView com eventos publicos. Header mostra "Visitante".
+2. **Cadastro**: Clica em acao protegida -> AuthModal wizard: nome, email, senha, genero, nascimento, cidade, telefone, Instagram, interesses, selfie (analise facial client-side via `selfieAnalysis.ts`), aceitar termos de uso.
+3. **Criacao**: `authService.signUp` -> Supabase Auth + insert em `profiles`.
+4. **Onboarding**: OnboardingView com slides explicativos.
+5. **Primeiro uso**: Feed personalizado por cidade, botao de busca, notificacoes. Push permission banner.
+- **Tabelas**: `profiles`, `auth.users`.
+- **Services**: `authService`, `supabaseVantaService`.
+- **Status**: [x] Completo
 
-### 4.3 Produtor → Criar evento → Vender → Check-in → Financeiro
+### 4.3 Produtor -> criar evento -> vender -> check-in -> financeiro
 
-1. **ProfileView** → botão Admin → **AdminGateway**
-2. **GerenteDashboardView** — dashboard com comunidades
-3. **CriarEventoView** — wizard 5 steps:
-   - Step 1: Tipo (CASA ou SOCIO), dados básicos (nome, data, local, imagem, categoria)
-   - Step 2: Ingressos (lotes, variações por área/gênero/preço, limites, MAIS VANTA)
-   - Step 3: Listas (regras, cotas de promoter, variações)
-   - Step 4: Equipe (cargos, permissões, staff)
-   - Step 5: Financeiro (split sócio, taxas)
-4. Evento publicado → aparece no feed (HomeView, SearchView, RadarView)
-5. Vendas:
-   - Online: CheckoutPage → Stripe ou gratuito
-   - Presencial: CaixaView → EventoCaixaView (funciona offline)
-6. No dia do evento:
-   - **CheckInView** → **PortariaScannerView** (QR) ou **PortariaListaDashView** (nomes)
-   - Caixa ativo para vendas na porta
-7. Pós-evento:
-   - **RelatoriosView** — métricas de venda/ocupação
-   - **Financeiro** — saldo disponível, solicitar saque, processar reembolsos
-   - **notif-pedir-review** (cron) — pede review aos participantes
+1. **Acesso admin**: Produtor com cargo (vanta_masteradm, vanta_gerente, vanta_socio) acessa painel via Perfil -> icone admin.
+2. **Criar evento**: AdminGateway -> CriarEventoView wizard 5 steps:
+   - Step1: dados basicos (nome, descricao, data, local, categoria, foto, formato, recorrencia)
+   - Step2: ingressos (lotes com variacoes area/genero/preco/limite), config MV (beneficios por tier)
+   - Step3: listas de convidados (regras com horarios, capacidade, cortesia)
+   - Step4: equipe (socio ou casa, com cargos e permissoes)
+   - Step5: financeiro (taxa VANTA, gateway, quem paga servico)
+3. **Aprovacao**: Se evento novo, entra em PENDENTES -> master aprova via EventosPendentesView.
+4. **Publicacao**: Evento publicado aparece no feed.
+5. **Venda**: Usuarios compram via CheckoutPage. Equipe vende na porta via CaixaView.
+6. **Listas**: Promoters inserem nomes via ListasView. Portaria faz check-in por lista.
+7. **Check-in**: Portaria antecipado (QR) via PortariaScannerView. Portaria lista via EventCheckInView + TabLista. Offline: cache local + sync.
+8. **Financeiro**: FinanceiroView com resumo de vendas, saques (ModalSaque -> SolicitarSaque RPC), reembolsos (ModalReembolsoManual), historico de saques, fechamento.
+9. **Relatorio**: RelatorioEventoView / RelatorioMasterView com export Excel.
+- **Tabelas/RPCs**: `eventos_admin`, `lotes`, `variacoes_ingresso`, `tickets_caixa`, `vendas_log`, `transactions`, `listas_evento`, `regras_lista`, `convidados_lista`, `cotas_promoter`, `equipe_evento`, `solicitacoes_saque`, `reembolsos`.
+- **Status**: [x] Completo
 
-### 4.4 Usuário → Entrar no MAIS VANTA → Usar benefício
+### 4.4 Usuario -> entrar no clube MAIS VANTA -> usar beneficio
 
-1. Recebe convite (link ou notificação) OU acessa **ProfileView** → MAIS VANTA
-2. **AceitarConviteMVPage** (via link) ou **ClubeOptInView** (via perfil)
-3. Aceita convite → Stripe Checkout para pagamento (se plano pago)
-4. Vira membro → badge aparece no perfil e carteira
-5. **DealsMembroSection** — vê deals disponíveis na sua cidade
-6. Resgata deal → status muda para "aplicado"
-7. Vai ao parceiro → parceiro confirma no **ParceiroDashboardPage** → check-in
-8. Em eventos: **EventDetailView** → **MaisVantaReservaModal** → reserva com obrigação social
-9. Pós-evento: deve postar menção no Instagram
-10. **notif-evento-finalizou** (cron) — alerta para postar
-11. **notif-infraccao-registrada** (cron, T+24h) — se não postou, registra infração
+1. **Solicitacao**: Perfil -> MAIS VANTA -> ClubeOptInView -> preenche Instagram -> aceita termos LGPD -> envia solicitacao.
+2. **Curadoria**: Admin ve em curadoria/SubTabSolicitacoes -> analisa Instagram (seguidores via Edge Function `instagram-followers`), atribui tier e tags -> aprova ou rejeita.
+3. **Aprovacao**: Membro recebe notificacao. Status muda para APROVADO.
+4. **Beneficio em evento**: Ao acessar EventDetailView, MaisVantaBeneficioModal mostra o beneficio do tier (desconto ou lote exclusivo).
+5. **Reserva**: MaisVantaReservaModal permite reservar vaga com beneficio.
+6. **Pos-evento**: Membro deve postar divulgacao (mentions + hashtags). Edge Function `notif-evento-finalizou` cobra post em T+0. Se nao postar em T+24h, `notif-infraccao-registrada` registra infracao.
+7. **Deals**: Membro ve deals de parceiros em DealsMembroSection -> resgata beneficio.
+8. **Passaporte**: Solicita passaporte para outra cidade -> admin aprova -> acessa beneficios da nova cidade.
+- **Tabelas**: `membros_clube`, `solicitacoes_clube`, `tiers_mais_vanta`, `reservas_mais_vanta`, `lotes_mais_vanta`, `infracoes_mais_vanta`, `convites_mais_vanta`, `passaportes_regionais`, `deals_mais_vanta`, `resgates_mais_vanta`, `parceiros_mais_vanta`, `cidades_mais_vanta`.
+- **Status**: [x] Completo
 
 ---
 
 ## 5. EDGE FUNCTIONS
 
-### 5.1 create-checkout
-- **O que faz**: Cria sessão Stripe Checkout para assinatura MAIS VANTA
-- **Dispara**: Chamada HTTP POST pelo frontend (ClubeOptInView)
-- **Dependências**: Stripe (STRIPE_SECRET_KEY)
-- **Status**: Depende de config externa (CNPJ + Stripe secrets)
-
-### 5.2 create-ticket-checkout
-- **O que faz**: Cria sessão Stripe Checkout para compra de ingressos — valida preços server-side, cria pedido pendente
-- **Dispara**: Chamada HTTP POST pelo frontend (CheckoutPage)
-- **Dependências**: Stripe (STRIPE_SECRET_KEY)
-- **Status**: Depende de config externa (CNPJ + Stripe secrets)
-
-### 5.3 stripe-webhook
-- **O que faz**: Recebe webhooks do Stripe — atualiza status de assinaturas MAIS VANTA e pagamentos de ingressos. Verifica assinatura HMAC-SHA256.
-- **Dispara**: Webhook do Stripe (checkout.session.completed, session.expired, etc.)
-- **Dependências**: Stripe (STRIPE_WEBHOOK_SECRET)
-- **Status**: Depende de config externa
-
-### 5.4 send-push
-- **O que faz**: Envia push notifications via Firebase Cloud Messaging (HTTP v1 API)
-- **Dispara**: Chamada interna pelo backend ou por admin
-- **Dependências**: Firebase (FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, FIREBASE_PRIVATE_KEY)
-- **Status**: Pronta (secrets configurados)
-
-### 5.5 send-invite
-- **O que faz**: Envia email de convite VANTA via Resend
-- **Dispara**: Ação do admin (convite de membro/sócio)
-- **Dependências**: Resend (RESEND_API_KEY)
-- **Status**: Pronta
-
-### 5.6 send-notification-email
-- **O que faz**: Envia email de notificação genérica via Resend
-- **Dispara**: Chamada interna (notificações do sistema)
-- **Dependências**: Resend (RESEND_API_KEY)
-- **Status**: Pronta
-
-### 5.7 send-reembolso-email
-- **O que faz**: Envia email de notificação de reembolso (aprovado/rejeitado) via Resend
-- **Dispara**: Ação do master ao processar reembolso
-- **Dependências**: Resend (RESEND_API_KEY)
-- **Status**: Pronta
-
-### 5.8 instagram-followers
-- **O que faz**: Retorna contagem de seguidores de perfil público do Instagram (scraping server-side)
-- **Dispara**: Chamada do painel admin (curadoria)
-- **Dependências**: Instagram (scraping, sem API key)
-- **Status**: Pronta (pode ser instável por depender de scraping)
-
-### 5.9 verify-instagram-bio
-- **O que faz**: Verifica se código VANTA está na bio do Instagram
-- **Dispara**: Verificação de identidade no cadastro/curadoria
-- **Dependências**: Instagram (scraping)
-- **Status**: Pronta (instável — scraping)
-
-### 5.10 verify-instagram-post
-- **O que faz**: Verifica se post/story contém menções obrigatórias (obrigação social MAIS VANTA)
-- **Dispara**: Automático pós-evento ou manual
-- **Dependências**: Instagram Graph API (META_ACCESS_TOKEN) — fallback placeholder
-- **Status**: Depende de config externa (META_ACCESS_TOKEN)
-
-### 5.11 update-instagram-followers
-- **O que faz**: Atualiza seguidores de todos os membros do clube em batch
-- **Dispara**: Cron ou chamada manual
-- **Dependências**: Instagram Graph API ou fallback scraping
-- **Status**: Depende de config externa (META_ACCESS_TOKEN para API, scraping como fallback)
-
-### 5.12 notif-checkin-confirmacao
-- **O que faz**: Envia notificação ao usuário após check-in QR confirmado
-- **Dispara**: Chamada síncrona após validarEQueimarIngresso()
-- **Dependências**: FCM (send-push)
-- **Status**: Pronta
-
-### 5.13 notif-evento-iniciou
-- **O que faz**: Detecta eventos que começaram e envia notificação (cron cada 5 min)
-- **Dispara**: Cron job
-- **Dependências**: FCM
-- **Status**: Pronta
-
-### 5.14 notif-evento-finalizou
-- **O que faz**: Detecta eventos que terminaram, alerta membros para postar, agenda deadline T+24h
-- **Dispara**: Cron job (cada 10 min)
-- **Dependências**: FCM
-- **Status**: Pronta
-
-### 5.15 notif-infraccao-registrada
-- **O que faz**: Registra infrações para posts vencidos (T+24h expirado sem verificação)
-- **Dispara**: Cron job diário (03:00 UTC)
-- **Dependências**: Nenhuma externa
-- **Status**: Pronta
-
-### 5.16 notif-pedir-review
-- **O que faz**: Pede review aos participantes de eventos que terminaram nas últimas 24h
-- **Dispara**: Cron diário (17:00 UTC / 14h BRT)
-- **Dependências**: FCM
-- **Status**: Pronta
+| Nome | O que faz | Disparo | Dep. Externa | Status |
+|---|---|---|---|---|
+| `create-checkout` | Cria sessao Stripe Checkout para assinatura MAIS VANTA (BASICO/PRO/ENTERPRISE) | POST manual (admin assina comunidade) | Stripe | [x] Pronta (depende de STRIPE_SECRET_KEY) |
+| `create-ticket-checkout` | Cria sessao Stripe Checkout para compra de ingressos. Valida precos server-side, cria pedido pendente | POST (checkout page para evento pago) | Stripe | [x] Pronta (depende de STRIPE_SECRET_KEY) |
+| `stripe-webhook` | Recebe webhooks Stripe. Processa: checkout.session.completed (upsert assinatura MV), invoice.paid, customer.subscription.deleted | Webhook Stripe | Stripe | [?] Incerto -- processa apenas assinaturas MV, nao processa `pedidos_checkout` (ticket purchases). Precisa de handler adicional. |
+| `send-push` | Envia push notification via Firebase Cloud Messaging (HTTP v1 API) | POST (chamado por notifyService ou admin) | Firebase/FCM | [ ] Depende de FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, FIREBASE_PRIVATE_KEY |
+| `send-notification-email` | Envia email de notificacao generica via Resend API | POST (chamado por notifyService) | Resend | [ ] Depende de RESEND_API_KEY |
+| `send-reembolso-email` | Envia email de notificacao de reembolso (aprovado/rejeitado) | POST (chamado ao processar reembolso) | Resend | [ ] Depende de RESEND_API_KEY |
+| `send-invite` | Envia email de convite VANTA via Resend | POST (admin envia convite) | Resend | [ ] Depende de RESEND_API_KEY |
+| `instagram-followers` | Retorna contagem de seguidores de perfil publico Instagram (scraping server-side) | POST (curadoria ao analisar membro) | Instagram (scraping) | [x] Pronta |
+| `verify-instagram-bio` | Verifica se codigo VANTA esta na bio do Instagram | POST (verificacao de identidade) | Instagram (scraping) | [x] Pronta |
+| `verify-instagram-post` | Verifica se post/story contem mencoes obrigatorias | POST (pos-evento, verificar divulgacao) | Meta Graph API (opcional) | [ ] Depende de META_ACCESS_TOKEN |
+| `update-instagram-followers` | Atualiza seguidores de todos os membros do clube (batch) | Cron ou POST manual | Meta Graph API (opcional) | [ ] Depende de META_ACCESS_TOKEN |
+| `notif-checkin-confirmacao` | Notifica membro apos check-in QR | POST (chamado apos queimar ingresso) | FCM | [ ] Depende de config Firebase |
+| `notif-pedir-review` | Cron diario: envia pedido de review para quem fez check-in (eventos das ultimas 24h) | Cron (17:00 UTC) | FCM | [ ] Depende de config Firebase |
+| `notif-evento-iniciou` | Cron a cada 5 min: detecta eventos que comecaram e envia notificacao | Cron (5 min) | FCM | [ ] Depende de config Firebase |
+| `notif-evento-finalizou` | Cron a cada 10 min: detecta eventos finalizados, cobra post de membros MV | Cron (10 min) | FCM | [ ] Depende de config Firebase |
+| `notif-infraccao-registrada` | Cron diario 00:00 BRT: registra infracoes para posts vencidos (T+24h) | Cron (03:00 UTC) | FCM | [ ] Depende de config Firebase |
 
 ---
 
-## 6. SERVIÇOS
+## 6. SERVICOS
 
-| Serviço | O que faz |
+### 6.1 Services (`services/`)
+
+| Service | O que faz |
 |---|---|
-| `achievementsService.ts` | Calcula badges e níveis de frequência (ESTREANTE → LENDA) por comunidade |
-| `analyticsService.ts` | Tracking de abertura do app, visualização e abertura de evento |
-| `authService.ts` | Login, cadastro, recuperação de senha, refresh de sessão, mapeamento profile→Membro |
-| `cache.ts` | Cache in-memory stale-while-revalidate com invalidação por key/prefix |
-| `cepService.ts` | Busca de CEP (API ViaCEP), formatação e geocodificação de endereço |
-| `circuitBreaker.ts` | Circuit breaker para chamadas externas (CLOSED→OPEN→HALF_OPEN) |
-| `comemoracaoService.ts` | CRUD de solicitações de comemoração (aniversário/despedida) |
-| `communityFollowService.ts` | Seguir/desseguir comunidades |
-| `eventoPrivadoService.ts` | CRUD de solicitações de evento privado |
-| `favoritosService.ts` | Salvar/remover eventos favoritos |
-| `firebaseConfig.ts` | Inicialização lazy do Firebase App e Messaging |
-| `friendshipsService.ts` | CRUD de amizades (solicitar, aceitar, recusar, remover) com realtime |
-| `logger.ts` | Wrapper do Sentry (error→captureException, warn→breadcrumb) |
-| `messagesService.ts` | Chat: inbox, mensagens, envio, leitura, deleção, reações, realtime |
-| `moodService.ts` | CRUD de mood/status do usuário (emoji + texto com expiração) |
-| `nativePushService.ts` | Push notifications nativo via Capacitor (registro de token FCM) |
-| `notifyService.ts` | Cria notificação in-app e dispara push via Edge Function |
-| `offlineDB.ts` | IndexedDB para cache offline de tickets, convidados, lotes (portaria/caixa) |
-| `offlineEventService.ts` | Sync offline de dados de evento para operação sem internet |
-| `photoService.ts` | Upload/delete de avatar e álbum de fotos no Supabase Storage |
-| `pushService.ts` | Registro de token FCM no browser (Web Push) |
-| `rateLimiter.ts` | Rate limiter in-memory por chave (token bucket) |
-| `realtimeManager.ts` | Gerenciamento de channels Supabase Realtime (max 5, auto-cleanup) |
-| `reminderService.ts` | Lembretes locais de eventos (push local via Capacitor) |
-| `supabaseClient.ts` | Instância tipada do Supabase client (createClient<Database>) |
-| `supabaseVantaService.ts` | Service principal: busca de eventos, perfis, tickets, presenças, upload biometria |
-| `transferenciaService.ts` | Transferência de ingresso entre usuários |
-| `vantaService.ts` | Facade que re-exporta SupabaseVantaService |
-| `waitlistService.ts` | Entrada/gestão de lista de espera de ingressos |
+| `achievementsService` | Calcula nivel de frequencia (ESTREANTE/FREQUENTADOR/HABITUE/LENDA) e badges por comunidade |
+| `analyticsService` | Registra eventos de analytics: app open, event view, event open. Verifica elegibilidade PMF |
+| `authService` | Login, cadastro, logout, busca de perfil, busca de pessoas, enriquecimento Instagram |
+| `cache` | Cache in-memory stale-while-revalidate (eventos 60s, tickets 30s, inbox 30s, friendships 60s) |
+| `cepService` | Busca endereco por CEP (ViaCEP) + geocodificacao |
+| `circuitBreaker` | Circuit breaker para proteger chamadas a servicos externos |
+| `comemoracaoService` | CRUD de solicitacoes de comemoracao (aniversarios) -- criar, listar, aprovar, recusar, config faixas |
+| `communityFollowService` | Seguir/deixar de seguir comunidades |
+| `eventoPrivadoService` | CRUD de solicitacoes de eventos privados |
+| `favoritosService` | Salvar/remover eventos favoritos |
+| `firebaseConfig` | Inicializacao lazy do Firebase (app + messaging) |
+| `friendshipsService` | Amizades: enviar/aceitar/recusar/remover, listar amigos mutuos, realtime |
+| `logger` | Wrapper Sentry (error -> captureException, warn -> breadcrumb) |
+| `messagesService` | Chat 1:1: enviar, listar inbox, ler mensagens, reagir, deletar, realtime |
+| `moodService` | Definir/consultar mood (emoji + texto com expiracao) |
+| `nativePushService` | Push notifications nativas (Capacitor) -- registrar token, setup listeners |
+| `notifyService` | Servico unificado de notificacao: in-app + push + email (3 canais) |
+| `offlineDB` | IndexedDB para cache offline (tickets, convidados, lotes, sync queue) |
+| `offlineEventService` | Operacoes offline: cache de dados do evento, sync de acoes pendentes |
+| `photoService` | Upload/delete de avatar e album (Supabase Storage) |
+| `pushService` | Web push via Firebase Messaging (token, permission) |
+| `rateLimiter` | Rate limiter para proteger endpoints |
+| `realtimeManager` | Gerencia canais Supabase Realtime (max 5 channels) |
+| `reminderService` | Lembretes de eventos (notificacoes locais) |
+| `supabaseClient` | Cliente Supabase tipado (`createClient<Database>`) |
+| `supabaseVantaService` | Servico core: getEventosPaginated, searchEventos, getMyTickets, upload biometria |
+| `transferenciaService` | Transferencia de ingressos entre usuarios |
+| `vantaService` | Facade sobre supabaseVantaService |
+| `waitlistService` | Waitlist: entrar na fila quando variacao esgotada |
+
+### 6.2 Admin Services (`features/admin/services/`)
+
+| Service | O que faz |
+|---|---|
+| `adminService` | CRUD de destaques (Vanta Indica), categorias, dados de admin |
+| `assinaturaService` | Gestao de assinaturas MAIS VANTA (planos, status, Stripe) |
+| `auditService` | Log de auditoria: registrar e consultar acoes com actor, entity, old/new values |
+| `campanhasService` | Campanhas de notificacao em massa (in-app + push + email) por segmento |
+| `clubeService` | Servico central MAIS VANTA: membros, solicitacoes, tiers, aprovacao |
+| `clube/clubeCache` | Cache de dados MV: tiers, membros, lotes, reservas, passaportes |
+| `clube/clubeCidadesService` | CRUD cidades MAIS VANTA |
+| `clube/clubeConfigService` | Config do clube |
+| `clube/clubeConvitesService` | Convites MV: criar, listar, aceitar, cancelar |
+| `clube/clubeDealsService` | Deals: criar, editar, listar ofertas de parceiros |
+| `clube/clubeInfracoesService` | Infracoes: verificar bloqueio, banimento, divida social, castigo no-show |
+| `clube/clubeInstagramService` | Verificacao Instagram de membros |
+| `clube/clubeLotesService` | Lotes exclusivos MV: beneficios por evento/tier |
+| `clube/clubeParceirosService` | CRUD parceiros MAIS VANTA |
+| `clube/clubeResgatesService` | Resgates de deals por membros |
+| `comprovanteService` | Gestao de comprovantes (meia-entrada): upload, aprovar, rejeitar |
+| `comunidadesService` | CRUD de comunidades: criar, editar, listar, membros |
+| `cortesiasService` | Cortesias: enviar, listar pendentes, aceitar, recusar |
+| `cuponsService` | CRUD cupons de desconto: criar, validar, usar |
+| `dashboardAnalyticsService` | Analytics do dashboard admin (KPIs, deltas) |
+| `eventosAdminService` | Servico core de eventos: CRUD, publicar, aprovar, duplicar, recorrencia, equipe, pedidos |
+| `eventosAdminFinanceiro` | Financeiro por evento: saldo, taxas, gateway, fechamento |
+| `eventosAdminTickets` | Gestao de tickets: listar, cancelar, reenviar, estatisticas |
+| `eventosAdminTypes` | Tipos compartilhados (VendaLog, TicketCaixa, etc.) |
+| `IVantaService` | Interface do servico core (RegistrarVenda, ValidarIngresso, SolicitarSaque, Checkout) |
+| `jwtService` | Assinar e verificar tokens JWT de ingressos (anti-fraude) |
+| `listasService` | Gestao de listas: criar regras, inserir nomes, check-in lista, abobora (migracao regra) |
+| `maisVantaConfigService` | Configuracao global do programa MAIS VANTA |
+| `mesasService` | CRUD de mesas e reservas por evento |
+| `notificationsService` | CRUD notificacoes: inserir, marcar lida, listar |
+| `parceriaService` | Solicitacoes de parceria (espaco fixo ou produtora) |
+| `pendenciasService` | Contagem de pendencias por tipo para o hub |
+| `rbacService` | RBAC: cargos, atribuicoes, permissoes, verificacao de acesso |
+| `reembolsoService` | Reembolsos: solicitar, aprovar, rejeitar, listar |
+| `relatorioService` | Gerar relatorio completo de evento (vendas, check-in, reviews) |
+| `reviewsService` | Reviews: criar, listar, media por evento/comunidade |
 
 ---
 
-## 7. O QUE PARECE INCOMPLETO
+## 7. STORES ZUSTAND
 
-### 7.1 Depende de configuração externa
-- **Pagamento Stripe (ingressos)**: Edge Functions prontas, frontend pronto, mas VITE_STRIPE_PAYMENTS_ENABLED=false. Depende de CNPJ + secrets Stripe. Branch `feat/stripe-ingressos` com 6 commits não mergeados.
-- **Pagamento Stripe (MAIS VANTA)**: create-checkout + stripe-webhook prontos, mas sem Stripe secrets configurados.
-- **Verificação Instagram (Graph API)**: verify-instagram-post e update-instagram-followers dependem de META_ACCESS_TOKEN.
-- **Instagram scraping**: instagram-followers e verify-instagram-bio funcionam via scraping, mas podem ser instáveis.
+### 7.1 useAuthStore (`stores/authStore.ts`)
+- **Estado**: `currentAccount` (Membro), `profile` (Membro), `authLoading`, `selectedCity`, `notifications` (Notificacao[]), `unreadNotifications`, `accessNodes`.
+- **Acoes**: `loginWithMembro`, `logout`, `updateProfile`, `registerUser`, `setSelectedCity`, `setNotifications`, `addNotification`, `markAllNotificationsAsRead`, `handleNotificationAction`, `init`.
 
-### 7.2 UI com funcionalidade limitada
-- **PreferencesView** (`modules/profile/PreferencesView.tsx`, 87L): Parece ser placeholder básico — configurações de privacidade e notificações com UI mínima.
-- **CaixaView.tsx** (2L) e **MasterFinanceiroView.tsx** (2L): Apenas re-exports.
-- **ComunidadesView.tsx** (raiz, 3L) e **CriarComunidadeView.tsx** (raiz, 3L): Apenas re-exports.
+### 7.2 useTicketsStore (`stores/ticketsStore.ts`)
+- **Estado**: `myTickets` (Ingresso[]), `myPresencas` (string[]), `cortesiasPendentes`, `transferenciasPendentes`.
+- **Acoes**: `setMyTickets`, `setMyPresencas`, `devolverCortesia`, `transferirIngresso`, `updateTicketTitular`, `aceitarCortesiaPendente`, `recusarCortesiaPendente`, `aceitarTransferencia`, `recusarTransferencia`, `init`.
 
-### 7.3 Funcionalidades mencionadas mas não verificadas em profundidade
-- **Modo offline** (portaria/caixa): offlineDB + offlineEventService existem e são usados por EventoCaixaView e EventCheckInView. Parece completo mas a robustez do sync depende de testes reais.
-- **Evento recorrente**: Mencionado na memória (3 RPCs, SerieChips), UI existe. Incerto se totalmente testado.
+### 7.3 useChatStore (`stores/chatStore.ts`)
+- **Estado**: `chats` (Chat[]), `onlineUsers` (Set<string>), `activeChatParticipantId`, `totalUnreadMessages`.
+- **Acoes**: `ensureChatExists`, `sendMessage`, `markChatAsRead`, `deleteMessage`, `toggleReaction`, `init`.
 
-### 7.4 Nada parece abandonado
-Todos os módulos e services encontrados são referenciados e importados por componentes ativos. Não foram encontrados arquivos órfãos significativos nos diretórios principais.
+### 7.4 useSocialStore (`stores/socialStore.ts`)
+- **Estado**: `friendships` (Record<string, FriendshipStatus>), `mutualFriends` (Membro[]).
+- **Acoes**: `requestFriendship`, `cancelFriendshipRequest`, `handleAcceptFriend`, `handleDeclineFriend`, `removeFriend`, `init`.
+
+### 7.5 useExtrasStore (`stores/extrasStore.ts`)
+- **Estado**: `allEvents` (Evento[]), `savedEvents` (string[]), `hasMoreEvents`, `eventsLoading`.
+- **Acoes**: `refreshEvents`, `loadMoreEvents`, `searchEventsServerSide`, `toggleFavorito`, `confirmarPresenca`, `addExternalTicket`, `initEvents`, `initClubeData`, `initFavoritos`.
+
+---
+
+## 8. O QUE PARECE INCOMPLETO
+
+### 8.1 Stripe Webhook para Ingressos Pagos
+- **Problema**: A Edge Function `stripe-webhook` processa apenas eventos de assinatura MAIS VANTA (`assinaturas_mais_vanta`). Nao tem handler para `checkout.session.completed` de ingressos pagos (tabela `pedidos_checkout`). A Edge Function `create-ticket-checkout` cria pedidos e redireciona para Stripe, mas o webhook nao confirma o pagamento.
+- **Impacto**: Compra de ingressos pagos via Stripe fica incompleta -- `CheckoutSuccessPage` faz polling mas o status nunca muda para "pago" sem o webhook.
+- **Localizacao**: `supabase/functions/stripe-webhook/index.ts` (falta case para pedidos de ingresso), `supabase/functions/create-ticket-checkout/index.ts` (cria pedido), `modules/checkout/CheckoutSuccessPage.tsx` (polling).
+- **Branch**: `feat/stripe-ingressos` (work in progress).
+
+### 8.2 Edge Functions Dependentes de Config Externa
+- **send-push**, **notif-checkin-confirmacao**, **notif-pedir-review**, **notif-evento-iniciou**, **notif-evento-finalizou**, **notif-infraccao-registrada**: Todas dependem de secrets Firebase (FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, FIREBASE_PRIVATE_KEY). Se nao configurados, push nao funciona.
+- **send-notification-email**, **send-reembolso-email**, **send-invite**: Dependem de RESEND_API_KEY.
+- **verify-instagram-post**, **update-instagram-followers**: Dependem de META_ACCESS_TOKEN (Graph API). Sem token, retornam placeholder.
+
+### 8.3 CaixaView e MasterFinanceiroView (Re-exports)
+- `features/admin/views/CaixaView.tsx` -- 2 linhas, re-exporta de `caixa/index.tsx`.
+- `features/admin/views/MasterFinanceiroView.tsx` -- 2 linhas, re-exporta de `masterFinanceiro/index.tsx`.
+- `features/admin/views/ComunidadesView.tsx` -- 3 linhas, re-export.
+- `features/admin/views/CriarComunidadeView.tsx` -- 3 linhas, re-export.
+- **Observacao**: Estes sao barrel files intencionais, nao stubs vazios.
+
+### 8.4 SubTabNotificacoes (MV Curadoria)
+- **Arquivo**: `features/admin/views/curadoria/tabClube/SubTabNotificacoes.tsx` -- 42 linhas.
+- **Status**: [?] Incerto -- conteudo minimo, pode ser placeholder ou funcionalidade basica.
+
+### 8.5 Observacoes Gerais
+- **Selfie facial no cadastro**: Analise client-side (`selfieAnalysis.ts`) -- nao ha validacao server-side.
+- **Biometria upload**: `supabaseVantaService.uploadBiometria` envia para Storage, mas nao ha validacao automatica (apenas armazenamento).
+- **Instagram scraping**: Edge functions de Instagram usam scraping do HTML publico -- fragil e pode quebrar com mudancas do Instagram.
+- **Offline**: Sistema offline (IndexedDB + sync queue) implementado para check-in e caixa, depende de reconexao para sincronizar.

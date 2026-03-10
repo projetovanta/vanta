@@ -6,7 +6,17 @@
 MAIS VANTA = clube exclusivo do VANTA. Camada de benefícios silenciosa sobre eventos.
 Fluxo: usuario solicita entrada → curador aprova com tier (interno, nunca visível) → produtor configura benefícios por tier no evento → membro resgata benefício.
 Tiers: DESCONTO(0), CONVIDADO(1), PRESENCA(2), CREATOR(3), VANTA_BLACK(4). Tier NUNCA exibido ao membro.
-Sem cascata: produtor controla exatamente quais tiers recebem benefício em cada evento.
+Sem cascata: membro recebe APENAS benefício do SEU tier exato (`===`), não dos tiers abaixo.
+
+### Regras de negócio (confirmadas)
+- **Rejeição silenciosa**: ao rejeitar solicitação, NÃO envia notificação ao membro
+- **Desconto silencioso**: tier `desconto` mostra preço menor sem label "MAIS VANTA" (label genérica "desconto" em emerald)
+- **VANTA BLACK manual**: excluído do Step2Ingressos (config produtor), aparece como card read-only. Configurado só via curadoria
+- **Tags predefinidas**: 33 tags em 6 categorias (Influência, Perfil, Rede, Comportamento, Risco, Fit) — `TagsPredefinidas.tsx`
+- **Check-in MV**: marca resgate USADO para QUALQUER tier com resgate ativo (não só convidado/presença)
+- **Curadoria standalone**: CURADORIA_MV renderiza TabClube direto (sem wrapper Hub). 7 sub-abas
+- **Hub separado**: MaisVantaHubView tem 7 abas (Planos, Cidades, Parceiros, Deals, Assinaturas, Passaportes, Config) — sem CLUBE
+- **Passaporte = cidade**: campo principal é `cidade`, `comunidade_id` é deprecated. Label: "Passport Regional"
 
 ## Tabelas Supabase
 
@@ -55,6 +65,7 @@ Constraint: tipo=ingresso → lote_id NOT NULL + lista_id NULL; tipo=lista → l
 | status | TEXT | PENDENTE, APROVADO, REJEITADO, CONVIDADO |
 | profissao | TEXT | Profissão / o que faz (nullable) |
 | como_conheceu | TEXT | Como conheceu o VANTA (nullable) |
+| indicado_por_texto | TEXT | Quem indicou — texto livre (nullable, migration 20260311130000) |
 | criado_em | TIMESTAMPTZ | auto |
 | resolvido_em | TIMESTAMPTZ | Quando decidido |
 | resolvido_por | UUID | Quem decidiu |
@@ -191,15 +202,14 @@ Constraint: tipo=ingresso → lote_id NOT NULL + lista_id NULL; tipo=lista → l
 **Quem**: Admin/master
 **Navegacao**: Painel Admin -> MAIS VANTA -> Solicitacoes
 **O que acontece**:
-1. Admin define tier (BRONZE/PRATA/OURO/DIAMANTE)
-2. UPDATE solicitacao APROVADO + INSERT membros_clube
-**Consequencia**: membro ganha acesso a lotes exclusivos
+1. Admin define tier (desconto/convidado/presenca/creator/vanta_black)
+2. UPDATE solicitacao APROVADO + INSERT membros_clube (com tags e nota_interna opcionais)
+**Consequencia**: membro ganha acesso a benefícios do tier
 
-### RESERVAR INGRESSO MV
-**Quem**: Membro ativo com tier >= tier_minimo do lote
+### RESGATAR BENEFÍCIO MV
+**Quem**: Membro ativo com tier >= tier_minimo do benefício
 **O que acontece**:
-1. INSERT reservas_mais_vanta (status RESERVADO)
-2. UPDATE lotes_mais_vanta SET reservados + 1
+1. INSERT resgates_mv_evento (status RESGATADO)
 **Consequencia**: membro deve ir ao evento e postar no Instagram
 
 ### VERIFICAR POST
@@ -254,9 +264,16 @@ Constraint: tipo=ingresso → lote_id NOT NULL + lista_id NULL; tipo=lista → l
 |---|---|---|---|
 | 1 | Solicitar entrada | OK | solicitacoes_clube |
 | 2 | Aprovar/rejeitar membro | OK | Admin flow |
-| 3 | Tiers (5: DESCONTO→VANTA_BLACK) | OK | CHECK constraint + tiers_mais_vanta |
-| 4 | Benefícios MV por evento (Fase 2 frontend) | OK | mais_vanta_lotes_evento + UI toggle/config no Step2Ingressos, CriarEventoView, EditarEventoView, EditarLotesSubView |
-| 5 | Reservar ingresso MV | PENDENTE | Precisa recriar reservas sobre mais_vanta_lotes_evento |
+| 3 | Tiers (5 lowercase) | OK | desconto/convidado/presenca/creator/vanta_black. CHECK constraints lowercase no banco |
+| 4 | Benefícios MV por evento | OK | mais_vanta_lotes_evento + UI toggle/config. Labels humanas pro produtor. vanta_black = contato direto |
+| 5 | Resgatar benefício MV | OK | resgates_mv_evento + clubeReservasService CRUD real + EventDetailView salva no banco |
+| 28 | Termos MV | OK | Modal inline em ClubeOptInView e MaisVantaBeneficioModal. Contrapartidas CONAR antes do resgate |
+| 29 | Campo como conheceu | OK | Dropdown no formulário de solicitação (Redes sociais/Amigo/Evento/Outro) → como_conheceu |
+| 30 | Check-in encerra obrigação | OK | convidado/presenca: check-in marca resgate USADO automaticamente (query online) |
+| 31 | Botão Adiar curadoria | OK | Status ADIADO + migration CHECK. Solicitação sai da fila pendentes |
+| 32 | Relatório MV produtor | OK | Seção MAIS VANTA no TabRelatorio (resgates, comparecimento, posts, alcance) |
+| 33 | ClubeConfig lowercase | OK | Propriedades renomeadas (beneficiosConvidado/Presenca/Creator/VantaBlack) |
+| 34 | Tags/nota membro existente | OK | atualizarMembroMeta() + campos no MembroClubeVanta |
 | 6 | Post verificacao | OK | post_url + post_verificado |
 | 7 | Infracoes progressivas | OK | infracoes_mais_vanta + castigo |
 | 8 | Passaporte por cidade | OK | passport_aprovacoes + cidade |

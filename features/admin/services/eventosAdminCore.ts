@@ -290,7 +290,7 @@ const _doRefresh = async (): Promise<void> => {
       const lmv: LoteMaisVanta = {
         id: r.id ?? '',
         eventoId: r.evento_id ?? '',
-        tierMinimo: (r.tier_minimo as LoteMaisVanta['tierMinimo']) ?? 'CONVIDADO',
+        tierMinimo: (r.tier_minimo as LoteMaisVanta['tierMinimo']) ?? 'BRONZE',
         tierId: r.tier_id ?? undefined,
         quantidade: r.quantidade ?? 0,
         reservados: r.reservados ?? 0,

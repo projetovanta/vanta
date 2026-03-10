@@ -29,7 +29,7 @@ export const EditarLotesSubView: React.FC<Props> = ({ eventoId, onBack, currentU
   const [cortesiaLimites, setCortesiaLimites] = useState<Record<string, string>>({});
   const [maisVanta, setMaisVanta] = useState<LoteMaisVantaForm>({
     enabled: false,
-    tierMinimo: 'CONVIDADO',
+    tierMinimo: 'BRONZE',
     quantidade: '',
     prazo: '',
     descricao: '',

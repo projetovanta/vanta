@@ -25,10 +25,10 @@ type ClubeConfigRow = Database['public']['Tables']['clube_config']['Row'];
 // ── Hierarquia de tiers (legado para compat) ─────────────────────────────────
 /** @deprecated Use clubeService.getTiers() para tiers dinâmicos */
 export const TIER_ORDER: Record<TierMaisVanta, number> = {
-  CONVIDADO: 1,
-  PRESENCA: 2,
-  CREATOR: 3,
-  VANTA_BLACK: 4,
+  BRONZE: 1,
+  PRATA: 2,
+  OURO: 3,
+  DIAMANTE: 4,
 };
 
 // ── Cache de tiers dinâmicos ─────────────────────────────────────────────────
@@ -61,8 +61,7 @@ export const rowToTierDef = (r: TierRow): TierMaisVantaDef => ({
 
 export const rowToMembro = (r: MembroRow): MembroClubeVanta => ({
   userId: r.user_id ?? '',
-  tier: (r.tier as TierMaisVanta) ?? 'CONVIDADO',
-  categoria: (r.categoria as TierMaisVanta) ?? (r.tier as TierMaisVanta) ?? 'CONVIDADO',
+  tier: (r.tier as TierMaisVanta) ?? 'BRONZE',
   instagramHandle: r.instagram_handle ?? undefined,
   instagramSeguidores: r.instagram_seguidores ?? undefined,
   aprovadoPor: r.aprovado_por ?? '',
@@ -95,7 +94,7 @@ export const rowToPassport = (r: PassportRow): PassportAprovacao => ({
 export const rowToLote = (r: LoteRow): LoteMaisVanta => ({
   id: r.id ?? '',
   eventoId: r.evento_id ?? '',
-  tierMinimo: (r.tier_minimo as TierMaisVanta) ?? 'CONVIDADO',
+  tierMinimo: (r.tier_minimo as TierMaisVanta) ?? 'BRONZE',
   tierId: r.tier_id ?? undefined,
   quantidade: r.quantidade ?? 0,
   reservados: r.reservados ?? 0,

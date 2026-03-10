@@ -27,7 +27,6 @@ type Tab = 'DEALS' | 'RESGATES' | 'QR_SCAN';
 export const ParceiroDashboardPage: React.FC = () => {
   const navigate = useNavigate();
   const currentAccount = useAuthStore(s => s.currentAccount);
-  const authLoading = useAuthStore(s => s.authLoading);
 
   const [parceiro, setParceiro] = useState<ParceiroDados | null>(null);
   const [deals, setDeals] = useState<DealParceiro[]>([]);
@@ -218,14 +217,6 @@ export const ParceiroDashboardPage: React.FC = () => {
     return (
       <div className="absolute inset-0 bg-[#0A0A0A] flex items-center justify-center">
         <Loader2 size={24} className="text-[#FFD300] animate-spin" />
-      </div>
-    );
-  }
-
-  if (authLoading) {
-    return (
-      <div className="absolute inset-0 bg-[#0A0A0A] flex items-center justify-center">
-        <Loader2 size={24} className="text-zinc-600 animate-spin" />
       </div>
     );
   }

@@ -1,10 +1,9 @@
 // ── Clube de Influência (MAIS VANTA) ─────────────────────────────────────
-export type TierMaisVanta = 'CONVIDADO' | 'PRESENCA' | 'CREATOR' | 'VANTA_BLACK';
+export type TierMaisVanta = 'BRONZE' | 'PRATA' | 'OURO' | 'DIAMANTE';
 
 export interface MembroClubeVanta {
   userId: string;
   tier: TierMaisVanta;
-  categoria: TierMaisVanta; // = tier (define tipo de obrigação)
   instagramHandle?: string;
   instagramSeguidores?: number;
   instagramVerificado: boolean; // bio check passou na solicitação
@@ -27,7 +26,7 @@ export interface LoteMaisVanta {
   id: string;
   eventoId: string;
   tierMinimo: TierMaisVanta; // @deprecated: legado — usar tierId
-  tierId?: string; // tier específico deste lote (ex: 'CONVIDADO')
+  tierId?: string; // tier específico deste lote (ex: 'BRONZE')
   quantidade: number; // total de vagas
   reservados: number; // já reservados
   prazo?: string; // deadline para reserva (ISO)
@@ -92,7 +91,7 @@ export interface PlanoMaisVantaDef {
   limiteEventosMV: number; // -1 = ilimitado
   limiteMembros: number; // -1 = ilimitado
   limiteVagasEvento: number;
-  tierMinimo: string; // id do tier mínimo (ex: 'CONVIDADO')
+  tierMinimo: string; // id do tier mínimo (ex: 'BRONZE')
   acompanhante: boolean;
   prazoPostHoras: number;
   precoAvulso: number;

@@ -37,36 +37,6 @@ interface Props {
   onBack: () => void;
 }
 
-const ADMIN_TENANT_KEY = 'vanta_admin_tenant';
-
-const saveAdminTenant = (destino: GatewayDestino) => {
-  try {
-    sessionStorage.setItem(
-      ADMIN_TENANT_KEY,
-      JSON.stringify({ id: destino.id, tipo: destino.tipo, tenantId: destino.tenantId, nome: destino.nome }),
-    );
-  } catch {
-    /* silencioso — sessionStorage pode estar cheio ou bloqueado */
-  }
-};
-
-const clearAdminTenant = () => {
-  try {
-    sessionStorage.removeItem(ADMIN_TENANT_KEY);
-  } catch {
-    /* silencioso */
-  }
-};
-
-const loadAdminTenant = (): { id: string; tipo: 'COMUNIDADE' | 'MASTER'; tenantId: string; nome: string } | null => {
-  try {
-    const raw = sessionStorage.getItem(ADMIN_TENANT_KEY);
-    return raw ? JSON.parse(raw) : null;
-  } catch {
-    return null;
-  }
-};
-
 // ── Componente Principal ─────────────────────────────────────────────────────
 
 export const AdminGateway: React.FC<Props> = ({ onBack }) => {
@@ -76,12 +46,7 @@ export const AdminGateway: React.FC<Props> = ({ onBack }) => {
   const addNotification = useAuthStore(s => s.addNotification);
   const [selecionadoId, setSelecionadoId] = useState<string>('');
   const [listaAberta, setListaAberta] = useState(false);
-  const [confirmado, _setConfirmado] = useState<GatewayDestino | null>(null);
-  const setConfirmado = (d: GatewayDestino | null) => {
-    _setConfirmado(d);
-    if (d) saveAdminTenant(d);
-    else clearAdminTenant();
-  };
+  const [confirmado, setConfirmado] = useState<GatewayDestino | null>(null);
 
   // Detectar desktop para max-w-4xl
   const [isDesktop, setIsDesktop] = useState(() => window.matchMedia('(min-width: 768px)').matches);
@@ -121,26 +86,6 @@ export const AdminGateway: React.FC<Props> = ({ onBack }) => {
     nome: com.nome,
     foto: com.foto || undefined,
   }));
-
-  // Restaurar tenant salvo do sessionStorage (sobrevive ao F5)
-  useEffect(() => {
-    if (!accessData || confirmado) return;
-    // Deep link tem prioridade sobre sessionStorage
-    if (adminDeepLink.tenantId) return;
-    const saved = loadAdminTenant();
-    if (!saved) return;
-    // Validar que o user ainda tem acesso ao tenant salvo
-    if (saved.tipo === 'MASTER' && isMaster) {
-      setConfirmado({ id: saved.id, tipo: 'MASTER', tenantId: '', nome: 'Painel Geral' });
-      return;
-    }
-    const match = destinos.find(d => d.tenantId === saved.tenantId);
-    if (match) {
-      setConfirmado(match);
-    } else {
-      clearAdminTenant(); // Tenant não é mais acessível — limpar
-    }
-  }, [accessData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Pré-selecionar se veio deep link de notificação
   useEffect(() => {

@@ -5,16 +5,16 @@ import { clubeService } from '../../../services/clubeService';
 
 // Tiers dinâmicos (labels/cores) com fallback legado
 const TIER_LABELS_LEGACY: Record<string, string> = {
-  CONVIDADO: 'Convidado',
-  PRESENCA: 'Presença',
-  CREATOR: 'Creator',
-  VANTA_BLACK: 'Vanta Black',
+  BRONZE: 'Bronze',
+  PRATA: 'Prata',
+  OURO: 'Ouro',
+  DIAMANTE: 'Diamante',
 };
 const TIER_COLORS_LEGACY: Record<string, string> = {
-  CONVIDADO: '#A1A1AA',
-  PRESENCA: '#FB7185',
-  CREATOR: '#FFD300',
-  VANTA_BLACK: '#E8E8E8',
+  BRONZE: '#CD7F32',
+  PRATA: '#C0C0C0',
+  OURO: '#FFD300',
+  DIAMANTE: '#B9F2FF',
 };
 
 export const getTierLabel = (id: string): string => {
@@ -28,7 +28,7 @@ export const getTierColor = (id: string): string => {
 export const getTierOptions = (): TierMaisVanta[] => {
   const dynamic = clubeService.getTiers();
   if (dynamic.length > 0) return dynamic.map(t => t.id as TierMaisVanta);
-  return ['CONVIDADO', 'PRESENCA', 'CREATOR', 'VANTA_BLACK'];
+  return ['BRONZE', 'PRATA', 'OURO', 'DIAMANTE'];
 };
 
 // Compat accessors

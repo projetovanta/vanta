@@ -100,108 +100,6 @@ serve(async (req: Request) => {
     switch (event.type) {
       case 'checkout.session.completed': {
         const session = event.data.object;
-        const metadataType = session.metadata?.type;
-
-        // ── 4a. Pagamento de INGRESSO ──
-        if (metadataType === 'ingresso') {
-          const pedidoId = session.metadata?.pedido_id;
-          const userId = session.metadata?.user_id;
-          if (!pedidoId) {
-            console.error('[stripe-webhook] ingresso sem pedido_id');
-            break;
-          }
-
-          // Idempotência: checar se já processado
-          const { data: pedido } = await supabase
-            .from('pedidos_checkout')
-            .select('id, status, dados_compra, evento_id, lote_id')
-            .eq('id', pedidoId)
-            .maybeSingle();
-
-          if (!pedido) {
-            console.error('[stripe-webhook] pedido não encontrado:', pedidoId);
-            break;
-          }
-          if (pedido.status === 'pago') {
-            console.log('[stripe-webhook] pedido já processado (idempotente):', pedidoId);
-            break;
-          }
-
-          const dados = pedido.dados_compra as {
-            itens: { variacao_id: string; quantidade: number; valor_unit: number }[];
-            cupom_id?: string;
-            email: string;
-            ref_code?: string;
-          };
-
-          // Processar cada item via RPC
-          let allOk = true;
-          for (const item of dados.itens) {
-            const { data: rpcResult, error: rpcErr } = await supabase.rpc('processar_compra_checkout', {
-              p_evento_id: pedido.evento_id,
-              p_lote_id: pedido.lote_id,
-              p_variacao_id: item.variacao_id,
-              p_email: dados.email,
-              p_valor_unit: item.valor_unit,
-              p_quantidade: item.quantidade,
-              p_comprador_id: userId,
-              p_ref_code: dados.ref_code || null,
-            });
-
-            if (rpcErr) {
-              console.error('[stripe-webhook] RPC failed:', { pedidoId, variacaoId: item.variacao_id, error: rpcErr.message });
-              allOk = false;
-              break;
-            }
-            const result = rpcResult as { ok: boolean; erro?: string };
-            if (!result?.ok) {
-              console.error('[stripe-webhook] RPC not ok:', { pedidoId, variacaoId: item.variacao_id, erro: result?.erro });
-              allOk = false;
-              break;
-            }
-          }
-
-          // Registrar uso do cupom
-          if (allOk && dados.cupom_id) {
-            await supabase.rpc('incrementar_usos_cupom', { cupom_id: dados.cupom_id });
-          }
-
-          // Atualizar pedido
-          const now = new Date(Date.now() - 3 * 3600000).toISOString().replace('Z', '-03:00');
-          await supabase
-            .from('pedidos_checkout')
-            .update({
-              status: allOk ? 'pago' : 'cancelado',
-              paid_at: allOk ? now : null,
-              stripe_payment_intent_id: session.payment_intent || null,
-            })
-            .eq('id', pedidoId);
-
-          // Notificar user (in-app)
-          if (allOk && userId) {
-            const { data: evtData } = await supabase
-              .from('eventos_admin')
-              .select('nome')
-              .eq('id', pedido.evento_id)
-              .maybeSingle();
-
-            const totalItens = dados.itens.reduce((s, i) => s + i.quantidade, 0);
-            await supabase.from('notifications').insert({
-              user_id: userId,
-              tipo: 'COMPRA_CONFIRMADA',
-              titulo: 'Compra confirmada!',
-              mensagem: `${totalItens} ingresso(s) para ${evtData?.nome ?? 'evento'}. Confira na sua carteira.`,
-              link: 'WALLET',
-              lida: false,
-              timestamp: now,
-            });
-          }
-
-          console.log('[stripe-webhook] ingresso processed', { pedidoId, allOk });
-          break;
-        }
-
-        // ── 4b. Assinatura MAIS VANTA (existente) ──
         const comunidadeId = session.metadata?.comunidade_id;
         const plano = session.metadata?.plano;
         if (comunidadeId) {
@@ -220,20 +118,6 @@ serve(async (req: Request) => {
           );
           if (errUpsert) console.error('[stripe-webhook] upsert assinatura:', errUpsert.message);
           console.log('[stripe-webhook] checkout.session.completed processed', { comunidadeId, plano: plano || 'BASICO', subscriptionId: session.subscription });
-        }
-        break;
-      }
-
-      case 'checkout.session.expired': {
-        // Expirar pedidos de ingresso quando a session Stripe expira
-        const expiredSession = event.data.object;
-        if (expiredSession.metadata?.type === 'ingresso' && expiredSession.metadata?.pedido_id) {
-          await supabase
-            .from('pedidos_checkout')
-            .update({ status: 'expirado' })
-            .eq('id', expiredSession.metadata.pedido_id)
-            .eq('status', 'pendente');
-          console.log('[stripe-webhook] session expired, pedido:', expiredSession.metadata.pedido_id);
         }
         break;
       }

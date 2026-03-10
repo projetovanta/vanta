@@ -101,9 +101,6 @@
 - Antes de confirmar ao usuario: reler o arquivo e validar que o conteudo esta correto
 - Fluxo: fazer → stat → reler → validar → registrar no log → so entao confirmar ao usuario
 
-## Git — Merge
-- **Sempre usar `--no-ff`** ao mergear branches para main. Motivo: cria merge commit explicito, facilita reverter feature inteira com um unico `git revert`. Decisao do usuario em 2026-03-09.
-
 ## Scripts Obrigatorios
 - Antes de codificar: explore, deps, props, store-map
 - Durante: diff-check

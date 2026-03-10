@@ -39,7 +39,7 @@ const rowToPlano = (r: PlanoRow): PlanoMaisVantaDef => ({
   limiteEventosMV: r.limite_eventos_mv ?? 5,
   limiteMembros: r.limite_membros ?? 50,
   limiteVagasEvento: r.limite_vagas_evento ?? 10,
-  tierMinimo: r.tier_minimo ?? 'CONVIDADO',
+  tierMinimo: r.tier_minimo ?? 'BRONZE',
   acompanhante: r.acompanhante ?? false,
   prazoPostHoras: r.prazo_post_horas ?? 12,
   precoAvulso: r.preco_avulso || 0,

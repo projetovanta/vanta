@@ -138,7 +138,7 @@ export const AceitarConviteMVPage: React.FC = () => {
 
             <p className="text-zinc-400 text-sm mb-1">
               {convite.tipo === 'MEMBRO'
-                ? `Você foi convidado como membro ${convite.tier ?? 'CONVIDADO'}`
+                ? `Você foi convidado como membro ${convite.tier ?? 'BRONZE'}`
                 : `Você foi convidado como parceiro${convite.parceiro_nome ? ` (${convite.parceiro_nome})` : ''}`}
             </p>
 

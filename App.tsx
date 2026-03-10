@@ -56,9 +56,6 @@ const NegociacaoSocioView = lazy(() =>
   import('./features/admin/views/NegociacaoSocioView').then(m => ({ default: m.NegociacaoSocioView })),
 );
 const CheckoutPage = lazy(() => import('./modules/checkout/CheckoutPage').then(m => ({ default: m.CheckoutPage })));
-const CheckoutSuccessPage = lazy(() =>
-  import('./modules/checkout/CheckoutSuccessPage').then(m => ({ default: m.CheckoutSuccessPage })),
-);
 const AceitarConviteMVPage = lazy(() =>
   import('./modules/convite/AceitarConviteMVPage').then(m => ({ default: m.AceitarConviteMVPage })),
 );
@@ -412,7 +409,6 @@ export default function App() {
         <Suspense fallback={suspenseFallback}>
           <Routes>
             {/* ── Standalone pages (sem tab bar) ─────────────────────── */}
-            <Route path="/checkout/sucesso" element={<CheckoutSuccessPage />} />
             <Route path="/checkout/:slug" element={<CheckoutPage />} />
             <Route path="/evento/:slug" element={<EventLandingPage />} />
             <Route path="/convite-mv/:token" element={<AceitarConviteMVPage />} />
@@ -420,7 +416,7 @@ export default function App() {
 
             {/* ── App shell (com tab bar) ────────────────────────────── */}
             <Route
-              path="/"
+              path="*"
               element={
                 <AppShell
                   nav={nav}
@@ -432,9 +428,6 @@ export default function App() {
                 />
               }
             />
-
-            {/* ── 404 catch-all ────────────────────────────────────── */}
-            <Route path="*" element={<NotFoundView />} />
           </Routes>
           <AppModals
             isGuest={h.isGuest}

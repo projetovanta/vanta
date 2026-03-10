@@ -85,7 +85,7 @@ export const CriarEventoView: React.FC<{
   // ── MAIS VANTA ──
   const [maisVanta, setMaisVanta] = useState<LoteMaisVantaForm>({
     enabled: false,
-    tierMinimo: 'CONVIDADO',
+    tierMinimo: 'BRONZE',
     quantidade: '',
     prazo: '',
     descricao: '',

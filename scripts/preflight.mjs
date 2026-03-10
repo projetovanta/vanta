@@ -19,10 +19,11 @@ import { execSync } from 'node:child_process';
 
 const CHECKS = [
   { name: 'Prettier format', cmd: "prettier --write 'src/**/*.{ts,tsx}' 'modules/**/*.{ts,tsx}' 'features/**/*.{ts,tsx}' 'hooks/**/*.{ts,tsx}' 'services/**/*.{ts,tsx}'" },
-  { name: 'Prettier check', cmd: "prettier --check 'src/**/*.{ts,tsx}' 'modules/**/*.{ts,tsx}' 'features/**/*.{ts,tsx}' 'hooks/**/*.{ts,tsx}' 'services/**/*.{ts,tsx}'" },
   { name: 'TypeScript', cmd: 'tsc --noEmit', env: { NODE_OPTIONS: '--max-old-space-size=4096' } },
   { name: 'ESLint', cmd: 'eslint src/ modules/ features/ hooks/ services/ --quiet' },
   { name: 'lint:layout', cmd: 'node scripts/lint-layout.mjs' },
+  { name: 'Playwright navigation', cmd: 'playwright test navigation --project="Desktop Chrome"' },
+  { name: 'Playwright erros-globais', cmd: 'playwright test erros-globais --project="Desktop Chrome"' },
   { name: 'Vite build', cmd: 'vite build' },
   { name: 'Knip', cmd: 'knip' },
 ];

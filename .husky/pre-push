@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# ─── Playwright smoke tests antes do push ───
+npx playwright test navigation erros-globais --project="Desktop Chrome" 2>&1
+if [ $? -ne 0 ]; then
+  echo "❌ BLOCKED: Testes Playwright falharam! Push cancelado."
+  exit 1
+fi

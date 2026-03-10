@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useMemo } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import {
   X,
@@ -20,10 +20,11 @@ import { supabase } from '../../services/supabaseClient';
 import { cuponsService } from '../../features/admin/services/cuponsService';
 import { comprovanteService } from '../../features/admin/services/comprovanteService';
 import { notify } from '../../services/notifyService';
-import { comemoracaoService } from '../../services/comemoracaoService';
 import { logger } from '../../services/logger';
 import { SuccessScreen } from './SuccessScreen';
 import { WaitlistModal } from './WaitlistModal';
+
+const STRIPE_PAYMENTS_ENABLED = import.meta.env.VITE_STRIPE_PAYMENTS_ENABLED === 'true';
 
 // eventoId extraído via useParams dentro do componente
 
@@ -90,6 +91,7 @@ export const CheckoutPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const refCode = searchParams.get('ref') ?? '';
   const cupomUrl = searchParams.get('cupom') ?? '';
+  const cancelado = searchParams.get('cancelado') === 'true';
   const [evento, setEvento] = useState<CheckoutEvento | null>(null);
   const [variacoes, setVariacoes] = useState<CheckoutVariacao[]>([]);
   const [loteAtivoId, setLoteAtivoId] = useState('');
@@ -206,7 +208,7 @@ export const CheckoutPage: React.FC = () => {
   const [senha, setSenha] = useState('');
   const [loading, setLoading] = useState(false);
   const submittingRef = useRef(false);
-  const [erro, setErro] = useState('');
+  const [erro, setErro] = useState(cancelado ? 'Pagamento cancelado. Selecione os ingressos e tente novamente.' : '');
   const [tickets, setTickets] = useState<Ingresso[]>([]);
 
   // Mesas
@@ -338,34 +340,8 @@ export const CheckoutPage: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cupomUrl, eventoId]);
 
-  const handleLogin = async () => {
-    if (submittingRef.current) return;
-    if (!email.trim() || !senha.trim()) {
-      setErro('Preencha email e senha.');
-      return;
-    }
-    submittingRef.current = true;
-    setLoading(true);
-    setErro('');
-
-    // Auth real
-    const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
-      email: email.trim(),
-      password: senha.trim(),
-    });
-    if (authError || !authData.user) {
-      setErro(
-        authError?.message === 'Invalid login credentials'
-          ? 'Email ou senha incorretos.'
-          : (authError?.message ?? 'Erro ao autenticar.'),
-      );
-      setLoading(false);
-      submittingRef.current = false;
-      return;
-    }
-    const compradorId = authData.user.id;
-
-    // Processar compra via RPC para cada variação
+  // ── Processar compra gratuita (fluxo direto via RPC) ──
+  const processarCompraGratuita = async (compradorId: string) => {
     const gerados: Ingresso[] = [];
     let ticketIdx = 0;
 
@@ -387,8 +363,6 @@ export const CheckoutPage: React.FC = () => {
       if (rpcError) {
         logger.error('[checkout] compra RPC failed', { eventoId, variacaoId: v.id, error: rpcError });
         setErro(`Erro ao processar compra: ${rpcError.message}`);
-        setLoading(false);
-        submittingRef.current = false;
         return;
       }
 
@@ -396,8 +370,6 @@ export const CheckoutPage: React.FC = () => {
       if (!result?.ok) {
         logger.warn('[checkout] compra RPC result not ok', { eventoId, variacaoId: v.id, erro: result?.erro });
         setErro(result?.erro ?? 'Erro ao processar compra.');
-        setLoading(false);
-        submittingRef.current = false;
         return;
       }
 
@@ -439,9 +411,8 @@ export const CheckoutPage: React.FC = () => {
     } catch {
       /* BroadcastChannel not supported */
     }
+
     setTickets(gerados);
-    setLoading(false);
-    submittingRef.current = false;
     setStep('success');
 
     // Notificar comprador (3 canais: in-app + push + email)
@@ -476,6 +447,87 @@ export const CheckoutPage: React.FC = () => {
           /* fire-and-forget */
         }
       })();
+    }
+  };
+
+  // ── Processar compra paga (Stripe Checkout redirect) ──
+  const processarCompraPaga = async (session: { access_token: string }) => {
+    const itensPayload = variacoes
+      .filter(v => (qtd[v.id] ?? 0) > 0)
+      .map(v => ({ variacao_id: v.id, quantidade: qtd[v.id] ?? 0 }));
+
+    const { data, error: fnErr } = await supabase.functions.invoke('create-ticket-checkout', {
+      body: {
+        evento_id: eventoId,
+        lote_id: loteAtivoId,
+        itens: itensPayload,
+        cupom_codigo: cupomAplicado?.codigo ?? undefined,
+        mesa_id: selectedMesa ?? undefined,
+        acompanhantes: Object.keys(acompanhantes).length > 0 ? acompanhantes : undefined,
+        ref_code: refCode || undefined,
+      },
+      headers: {
+        Authorization: `Bearer ${session.access_token}`,
+      },
+    });
+
+    if (fnErr) {
+      logger.error('[checkout] create-ticket-checkout invoke failed', fnErr);
+      setErro('Erro ao iniciar pagamento. Tente novamente.');
+      return;
+    }
+
+    const result = data as { url?: string; error?: string };
+    if (result?.error) {
+      setErro(result.error);
+      return;
+    }
+
+    if (!result?.url) {
+      setErro('Erro ao criar sessão de pagamento.');
+      return;
+    }
+
+    // Redirecionar para Stripe Checkout
+    window.location.href = result.url;
+  };
+
+  const handleLogin = async () => {
+    if (submittingRef.current) return;
+    if (!email.trim() || !senha.trim()) {
+      setErro('Preencha email e senha.');
+      return;
+    }
+    submittingRef.current = true;
+    setLoading(true);
+    setErro('');
+
+    // Auth real
+    const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+      email: email.trim(),
+      password: senha.trim(),
+    });
+    if (authError || !authData.user) {
+      setErro(
+        authError?.message === 'Invalid login credentials'
+          ? 'Email ou senha incorretos.'
+          : (authError?.message ?? 'Erro ao autenticar.'),
+      );
+      setLoading(false);
+      submittingRef.current = false;
+      return;
+    }
+
+    try {
+      // Fluxo dual: pago → Stripe redirect, gratuito → RPC direto
+      if (STRIPE_PAYMENTS_ENABLED && totalPreco > 0) {
+        await processarCompraPaga(authData.session!);
+      } else {
+        await processarCompraGratuita(authData.user.id);
+      }
+    } finally {
+      setLoading(false);
+      submittingRef.current = false;
     }
   };
 
@@ -522,6 +574,14 @@ export const CheckoutPage: React.FC = () => {
             {evento.data} · {evento.horario} · {evento.local}
           </p>
         </div>
+
+        {/* Aviso pagamento cancelado */}
+        {cancelado && (
+          <div className="flex items-center gap-2 p-3 bg-amber-500/5 border border-amber-500/20 rounded-xl">
+            <AlertTriangle size={14} className="text-amber-400 shrink-0" />
+            <p className="text-amber-400 text-[10px]">Pagamento cancelado. Selecione os ingressos e tente novamente.</p>
+          </div>
+        )}
 
         {/* Seleção */}
         <div className="space-y-3">

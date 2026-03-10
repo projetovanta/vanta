@@ -111,19 +111,6 @@ serve(async (req: Request) => {
     // Service role client para queries sem RLS
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
-    // Verificar role — apenas masteradm pode enviar push
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('role')
-      .eq('id', user.id)
-      .maybeSingle();
-
-    if (!profile || profile.role !== 'vanta_masteradm') {
-      return new Response(JSON.stringify({ error: 'Acesso restrito a masteradm.' }), {
-        status: 403, headers: { ...corsHeaders(req), 'Content-Type': 'application/json' },
-      });
-    }
-
     // Parsear body
     const { userIds, title, body, data } = await req.json() as {
       userIds: string[];

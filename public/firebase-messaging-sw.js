@@ -10,12 +10,12 @@ importScripts('https://www.gstatic.com/firebasejs/10.14.0/firebase-app-compat.js
 importScripts('https://www.gstatic.com/firebasejs/10.14.0/firebase-messaging-compat.js');
 
 firebase.initializeApp({
-  apiKey: 'AIzaSyDs2p2ifLYhke1QjCBhjZkfSjptpEyR1l4',
-  authDomain: 'mais-vanta.firebaseapp.com',
-  projectId: 'mais-vanta',
-  storageBucket: 'mais-vanta.firebasestorage.app',
-  messagingSenderId: '274540560263',
-  appId: '1:274540560263:web:07faacbbea3c3029f1dd22',
+  apiKey: 'AIzaSyCb2DXFoGvF8z-Fl3uE3xjAIfM8rs59-5s',
+  authDomain: 'projetovanta-1c58a.firebaseapp.com',
+  projectId: 'projetovanta-1c58a',
+  storageBucket: 'projetovanta-1c58a.firebasestorage.app',
+  messagingSenderId: '57820969484',
+  appId: '1:57820969484:web:57463d47a99b9b90d28c29',
 });
 
 const messaging = firebase.messaging();

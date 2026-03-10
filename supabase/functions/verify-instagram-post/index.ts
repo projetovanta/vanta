@@ -50,31 +50,56 @@ serve(async (req: Request) => {
     }
 
     // ── 2. Parsear body ──
-    const { postUrl, requiredMentions } = await req.json() as {
+    const { reservaId, postUrl } = await req.json() as {
       reservaId: string;
       postUrl: string;
-      requiredMentions: string[];
     };
 
-    if (!postUrl) {
-      return new Response(JSON.stringify({ error: 'postUrl obrigatório.' }), {
+    if (!postUrl || !reservaId) {
+      return new Response(JSON.stringify({ error: 'reservaId e postUrl obrigatórios.' }), {
         status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    // ── 3. Verificar se Meta API está configurada ──
+    // ── 3. Buscar instagram do evento via reserva ──
+    const { data: reserva, error: errReserva } = await supabase
+      .from('reservas_mais_vanta')
+      .select('evento_id')
+      .eq('id', reservaId)
+      .maybeSingle();
+
+    if (errReserva || !reserva) {
+      return new Response(JSON.stringify({ verified: false, reason: 'Reserva não encontrada.' }), {
+        status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    const { data: evento } = await supabase
+      .from('eventos_admin')
+      .select('instagram')
+      .eq('id', (reserva as { evento_id: string }).evento_id)
+      .maybeSingle();
+
+    // ── 4. Montar marcações obrigatórias (imutáveis) ──
+    const FIXED_REQUIRED: string[] = ['@maisvanta', '#publi'];
+    const eventoInstagram = (evento as { instagram?: string } | null)?.instagram;
+    if (eventoInstagram) {
+      FIXED_REQUIRED.push(`@${eventoInstagram.replace(/^@/, '')}`);
+    }
+
+    // ── 5. Verificar se Meta API está configurada ──
     if (!META_ACCESS_TOKEN) {
       return new Response(JSON.stringify({
         verified: false,
         placeholder: true,
-        message: 'Meta API não configurada. Use verificação manual. Configure META_ACCESS_TOKEN no Dashboard do Supabase.',
+        requiredMentions: FIXED_REQUIRED,
+        message: 'Meta API não configurada. Use verificação manual.',
       }), {
         status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    // ── 4. Verificar via Instagram oEmbed + Graph API ──
-    // Step 1: Resolver media ID via oEmbed
+    // ── 6. Verificar via Instagram oEmbed ──
     const oembedUrl = `https://graph.facebook.com/v19.0/instagram_oembed?url=${encodeURIComponent(postUrl)}&access_token=${META_ACCESS_TOKEN}`;
     const oembedRes = await fetch(oembedUrl);
 
@@ -87,37 +112,32 @@ serve(async (req: Request) => {
       });
     }
 
-    const oembedData = await oembedRes.json();
-    const caption = (oembedData.title ?? '').toLowerCase();
+    const oembedData = await oembedRes.json() as { title?: string; html?: string };
+    // Verificar caption (title) e HTML do embed para cobertura máxima
+    const searchText = `${(oembedData.title ?? '')} ${(oembedData.html ?? '')}`.toLowerCase();
 
-    // Step 2: Verificar menções na caption
-    const mentions = requiredMentions ?? ['@maisvanta'];
-    const missingMentions = mentions.filter(m => !caption.includes(m.toLowerCase()));
+    // ── 7. Verificar todas as marcações obrigatórias ──
+    const missing = FIXED_REQUIRED.filter(m => !searchText.includes(m.toLowerCase()));
 
-    // Step 3: Verificar hashtags obrigatórias (#publi ou #parceria)
-    const hasPubliTag = caption.includes('#publi') || caption.includes('#parceria');
-
-    if (missingMentions.length > 0) {
+    if (missing.length > 0) {
       return new Response(JSON.stringify({
         verified: false,
-        reason: `Menções faltando: ${missingMentions.join(', ')}`,
+        reason: `Faltando: ${missing.join(', ')}`,
+        missing,
       }), {
         status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    if (!hasPubliTag) {
-      return new Response(JSON.stringify({
-        verified: false,
-        reason: 'Hashtag obrigatória faltando: #publi ou #parceria (CONAR)',
-      }), {
-        status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
-    }
+    // ── 8. Marcar post como verificado no banco ──
+    await supabase
+      .from('reservas_mais_vanta')
+      .update({ post_verificado: true })
+      .eq('id', reservaId);
 
     return new Response(JSON.stringify({
       verified: true,
-      reason: 'Post verificado automaticamente via Meta API.',
+      reason: 'Post verificado automaticamente.',
     }), {
       status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });

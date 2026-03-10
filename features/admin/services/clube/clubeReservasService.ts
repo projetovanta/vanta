@@ -1,7 +1,7 @@
 import type { ReservaMaisVanta } from '../../../../types';
 import { supabase } from '../../../../services/supabaseClient';
 import { tsBR } from '../../../../utils';
-import { _lotes, _reservas, bump, rowToReserva } from './clubeCache';
+import { _lotes, _membros, _reservas, bump, rowToReserva } from './clubeCache';
 import { getTier, tierSuficiente } from './clubeMembrosService';
 import { getTierOrdem } from './clubeTiersService';
 import { estaBloqueado, temDividaSocial } from './clubeInfracoesService';
@@ -55,6 +55,33 @@ export async function reservar(loteId: string, eventoId: string, userId: string)
   const reserva = rowToReserva(data);
   _reservas.unshift(reserva);
   bump();
+
+  // Notificação contextualizada por categoria
+  const membro = _membros.get(userId);
+  const cat = membro?.categoria ?? 'CONVIDADO';
+  const temObrigacaoPost = cat === 'CREATOR' || cat === 'VANTA_BLACK';
+
+  // Buscar nome do evento para a notificação
+  const { data: evData } = await supabase.from('eventos_admin').select('nome').eq('id', eventoId).maybeSingle();
+  const nomeEvento = (evData as { nome: string } | null)?.nome ?? 'evento';
+
+  const titulo = `Reserva confirmada — ${nomeEvento}`;
+  const corpo = temObrigacaoPost
+    ? `Lembre: você precisa postar com @maisvanta e #Publi após o evento.`
+    : `Sua presença foi confirmada. Não esqueça de passar pela portaria para fazer check-in.`;
+
+  try {
+    await supabase.from('notifications').insert({
+      user_id: userId,
+      tipo: 'MV_LEMBRETE_RESERVA',
+      titulo,
+      mensagem: corpo,
+      link: `/evento/${eventoId}`,
+    });
+  } catch (_e) {
+    // Não bloquear a reserva por falha em notificação
+  }
+
   return reserva;
 }
 
@@ -88,18 +115,63 @@ export async function cancelarReserva(reservaId: string): Promise<boolean> {
   return true;
 }
 
-export async function confirmarPost(reservaId: string, postUrl: string): Promise<void> {
+export async function confirmarPost(
+  reservaId: string,
+  postUrl: string,
+): Promise<{ verified: boolean; reason?: string; missing?: string[] }> {
+  // 1. Salvar link na reserva
   const { error } = await supabase
     .from('reservas_mais_vanta')
     .update({ post_url: postUrl, status: 'PENDENTE_POST' })
     .eq('id', reservaId);
   if (error) console.error('[clubeReservas] confirmarPost:', error);
+
   const reserva = _reservas.find(r => r.id === reservaId);
   if (reserva) {
     reserva.postUrl = postUrl;
     reserva.status = 'PENDENTE_POST';
   }
+
+  // 2. Chamar verificação automática via edge function
+  try {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    if (session?.access_token) {
+      const res = await supabase.functions.invoke('verify-instagram-post', {
+        body: { reservaId, postUrl },
+      });
+      const result = res.data as {
+        verified?: boolean;
+        reason?: string;
+        missing?: string[];
+        placeholder?: boolean;
+      } | null;
+
+      if (result?.verified) {
+        // Edge function já marcou post_verificado = true no banco
+        if (reserva) {
+          reserva.postVerificado = true;
+        }
+        bump();
+        return { verified: true };
+      }
+
+      // Se placeholder (Meta API não configurada), manter como pendente
+      if (result?.placeholder) {
+        bump();
+        return { verified: false, reason: 'Verificação manual pendente' };
+      }
+
+      bump();
+      return { verified: false, reason: result?.reason, missing: result?.missing };
+    }
+  } catch (e) {
+    console.error('[clubeReservas] verify-instagram-post:', e);
+  }
+
   bump();
+  return { verified: false, reason: 'Verificação pendente' };
 }
 
 export async function verificarPost(reservaId: string, _masterId: string): Promise<void> {

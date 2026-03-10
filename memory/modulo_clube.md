@@ -5,7 +5,8 @@
 ## O que e
 MAIS VANTA = programa de fidelidade/influencia. Membros com Instagram verificado ganham beneficios exclusivos.
 Fluxo: usuario solicita entrada → admin aprova com tier → membro reserva ingresso gratis → posta no Instagram → admin verifica.
-Tiers: BRONZE, PRATA, OURO, DIAMANTE. Cada tier desbloqueia lotes exclusivos.
+Tiers: CONVIDADO, PRESENCA, CREATOR, VANTA_BLACK. Cada tier desbloqueia lotes exclusivos.
+Categoria = Tier (mesmo valor). Define tipo de obrigação: CREATOR/VANTA_BLACK = obrigação de post, PRESENCA/CONVIDADO = check-in basta.
 
 ## Tabelas Supabase
 
@@ -14,7 +15,7 @@ Tiers: BRONZE, PRATA, OURO, DIAMANTE. Cada tier desbloqueia lotes exclusivos.
 |---|---|---|
 | id | UUID PK | auto |
 | user_id | UUID FK profiles UNIQUE | Membro |
-| tier | TEXT | BRONZE, PRATA, OURO, DIAMANTE |
+| tier | TEXT | CONVIDADO, PRESENCA, CREATOR, VANTA_BLACK |
 | instagram_handle | TEXT | @ do Instagram |
 | instagram_seguidores | INT | Qtd de seguidores |
 | aprovado_por | UUID | Quem aprovou |
@@ -30,7 +31,7 @@ Tiers: BRONZE, PRATA, OURO, DIAMANTE. Cada tier desbloqueia lotes exclusivos.
 |---|---|---|
 | id | UUID PK | auto |
 | evento_id | UUID FK eventos_admin UNIQUE | Evento |
-| tier_minimo | TEXT | BRONZE, PRATA, OURO, DIAMANTE |
+| tier_minimo | TEXT | CONVIDADO, PRESENCA, CREATOR, VANTA_BLACK |
 | quantidade | INT | Qtd disponivel (default 0) |
 | reservados | INT | Qtd reservada (default 0) |
 | prazo | TIMESTAMPTZ | Prazo para reservar |
@@ -194,9 +195,9 @@ Tiers: BRONZE, PRATA, OURO, DIAMANTE. Cada tier desbloqueia lotes exclusivos.
 **Quem**: Admin/master
 **Navegacao**: Painel Admin -> MAIS VANTA -> Solicitacoes
 **O que acontece**:
-1. Admin define tier (BRONZE/PRATA/OURO/DIAMANTE)
-2. UPDATE solicitacao APROVADO + INSERT membros_clube
-**Consequencia**: membro ganha acesso a lotes exclusivos
+1. Admin define tier/categoria (CONVIDADO/PRESENCA/CREATOR/VANTA_BLACK)
+2. UPDATE solicitacao APROVADO + INSERT membros_clube (tier + categoria sincronizados)
+**Consequencia**: membro ganha acesso a lotes exclusivos. Categoria define obrigação (post vs check-in)
 
 ### RESERVAR INGRESSO MV
 **Quem**: Membro ativo com tier >= tier_minimo do lote
@@ -206,9 +207,10 @@ Tiers: BRONZE, PRATA, OURO, DIAMANTE. Cada tier desbloqueia lotes exclusivos.
 **Consequencia**: membro deve ir ao evento e postar no Instagram
 
 ### VERIFICAR POST
-**Quem**: Admin
-**O que acontece**: admin verifica URL do post → UPDATE post_verificado = true
-**Se nao postou**: registra infracao NAO_POSTOU
+**Quem**: Automático (Meta oEmbed) ou Admin manual
+**O que acontece**: membro submete link → edge function verifica @maisvanta + @evento + #Publi → se OK, post_verificado = true automático
+**Obrigação condicional**: CREATOR/VANTA_BLACK = obrigação de post. PRESENCA/CONVIDADO = check-in basta (auto-verificado)
+**Se nao postou (CREATOR/VANTA_BLACK)**: registra infracao NAO_POSTOU
 
 ### INFRACAO (NO_SHOW / NAO_POSTOU)
 **Quem**: Admin
@@ -257,7 +259,7 @@ Tiers: BRONZE, PRATA, OURO, DIAMANTE. Cada tier desbloqueia lotes exclusivos.
 |---|---|---|---|
 | 1 | Solicitar entrada | OK | solicitacoes_clube |
 | 2 | Aprovar/rejeitar membro | OK | Admin flow |
-| 3 | Tiers (BRONZE-DIAMANTE) | OK | CHECK constraint |
+| 3 | Tiers (CONVIDADO-VANTA_BLACK) | OK | CHECK constraint. Migration 20260310100000 |
 | 4 | Lotes exclusivos MV | OK | lotes_mais_vanta |
 | 5 | Reservar ingresso MV | OK | reservas_mais_vanta |
 | 6 | Post verificacao | OK | post_url + post_verificado |

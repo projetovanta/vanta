@@ -48,10 +48,10 @@ const getTierOptions = (): { id: TierMaisVanta; label: string }[] => {
   const dynamic = clubeService.getTiers();
   if (dynamic.length > 0) return dynamic.map(t => ({ id: t.id as TierMaisVanta, label: t.nome }));
   return [
-    { id: 'BRONZE', label: 'Bronze' },
-    { id: 'PRATA', label: 'Prata' },
-    { id: 'OURO', label: 'Ouro' },
-    { id: 'DIAMANTE', label: 'Diamante' },
+    { id: 'CONVIDADO', label: 'Convidado' },
+    { id: 'PRESENCA', label: 'Presença' },
+    { id: 'CREATOR', label: 'Creator' },
+    { id: 'VANTA_BLACK', label: 'Vanta Black' },
   ];
 };
 

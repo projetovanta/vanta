@@ -45,7 +45,7 @@ const PlanoModal: React.FC<{
   const [limiteEventosMV, setLimiteEventosMV] = useState(plano?.limiteEventosMV ?? 5);
   const [limiteMembros, setLimiteMembros] = useState(plano?.limiteMembros ?? 50);
   const [limiteVagasEvento, setLimiteVagasEvento] = useState(plano?.limiteVagasEvento ?? 10);
-  const [tierMinimo, setTierMinimo] = useState(plano?.tierMinimo ?? 'BRONZE');
+  const [tierMinimo, setTierMinimo] = useState(plano?.tierMinimo ?? 'CONVIDADO');
   const [acompanhante, setAcompanhante] = useState(plano?.acompanhante ?? false);
   const [prazoPostHoras, setPrazoPostHoras] = useState(plano?.prazoPostHoras ?? 12);
   const [precoAvulso, setPrecoAvulso] = useState(plano?.precoAvulso ?? 79);

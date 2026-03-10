@@ -20,7 +20,7 @@ export function isPassportAprovado(userId: string, comunidadeId: string): boolea
   );
   if (!passport) return false;
   const membroOrder = TIER_ORDER[membro.tier] ?? 0;
-  const minOrder = TIER_ORDER[comunidade.tierMinimoMaisVanta ?? 'BRONZE'] ?? 1;
+  const minOrder = TIER_ORDER[comunidade.tierMinimoMaisVanta ?? 'CONVIDADO'] ?? 1;
   return membroOrder >= minOrder;
 }
 

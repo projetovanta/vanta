@@ -224,15 +224,29 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
     setSubmitting(false);
   };
 
+  const [postLoading, setPostLoading] = useState(false);
+  const [postError, setPostError] = useState<string | null>(null);
+
   const handleEnviarPost = async (reservaId: string) => {
     if (!postUrl.trim()) return;
+    setPostLoading(true);
+    setPostError(null);
     try {
-      await clubeService.confirmarPost(reservaId, postUrl.trim());
+      const result = await clubeService.confirmarPost(reservaId, postUrl.trim());
       setMinhasReservas(clubeService.getReservasUsuario(profile.id));
-      setPostUrl('');
-      onSuccess?.('Comprovação enviada!');
+      if (result.verified) {
+        setPostUrl('');
+        onSuccess?.('Post verificado!');
+      } else if (result.missing && result.missing.length > 0) {
+        setPostError(`Faltando: ${result.missing.join(', ')} — edite o post e envie novamente`);
+      } else {
+        setPostUrl('');
+        onSuccess?.('Comprovação enviada — aguardando verificação');
+      }
     } catch {
       onSuccess?.('Erro ao enviar comprovação');
+    } finally {
+      setPostLoading(false);
     }
   };
 
@@ -417,20 +431,26 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
                     {activeTab === 'ATIVOS' && isPendingPost && !r.postUrl && (
                       <div className="mt-3 space-y-2">
                         <p className="text-zinc-400 text-[10px]">Envie o link do seu post/story:</p>
+                        <p className="text-zinc-600 text-[9px]">Obrigatório: @maisvanta · @evento · #Publi</p>
                         <div className="flex gap-2">
                           <input
                             value={postUrl}
-                            onChange={e => setPostUrl(e.target.value)}
+                            onChange={e => {
+                              setPostUrl(e.target.value);
+                              setPostError(null);
+                            }}
                             placeholder="https://instagram.com/p/..."
                             className="flex-1 bg-black/40 border border-white/10 rounded-lg text-xs text-white px-3 py-2"
                           />
                           <button
                             onClick={() => handleEnviarPost(r.id)}
-                            className="px-3 py-2 bg-[#FFD300] text-black rounded-lg active:scale-90 transition-transform"
+                            disabled={postLoading}
+                            className="px-3 py-2 bg-[#FFD300] text-black rounded-lg active:scale-90 transition-transform disabled:opacity-50"
                           >
-                            <Send size={12} />
+                            {postLoading ? <Loader2 size={12} className="animate-spin" /> : <Send size={12} />}
                           </button>
                         </div>
+                        {postError && <p className="text-red-400 text-[9px]">{postError}</p>}
                       </div>
                     )}
 

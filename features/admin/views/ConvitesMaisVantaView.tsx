@@ -25,7 +25,7 @@ export const ConvitesMaisVantaView: React.FC<{
   // Form
   const [showForm, setShowForm] = useState(false);
   const [tipo, setTipo] = useState<TipoConvite>('MEMBRO');
-  const [tier, setTier] = useState('BRONZE');
+  const [tier, setTier] = useState('CONVIDADO');
   const [cidadeId, setCidadeId] = useState('');
   const [parceiroNome, setParceiroNome] = useState('');
 

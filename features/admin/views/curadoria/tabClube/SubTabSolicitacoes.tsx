@@ -113,7 +113,7 @@ export const SubTabSolicitacoes: React.FC<Props> = ({
                   <Instagram size={12} /> Instagram
                 </button>
                 <VantaDropdown
-                  value={tierSelects[sol.id] || 'BRONZE'}
+                  value={tierSelects[sol.id] || 'CONVIDADO'}
                   onChange={v => onTierSelectChange(sol.id, v as TierMaisVanta)}
                   options={getTierOptions().map(t => ({
                     value: t,

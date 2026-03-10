@@ -47,9 +47,15 @@ export function getAlcanceEstimado(tierMinimo: TierMaisVanta): { membros: number
 }
 
 export async function alterarTier(userId: string, novoTier: TierMaisVanta, _masterId: string): Promise<void> {
-  const { error } = await supabase.from('membros_clube').update({ tier: novoTier }).eq('user_id', userId);
+  const { error } = await supabase
+    .from('membros_clube')
+    .update({ tier: novoTier, categoria: novoTier })
+    .eq('user_id', userId);
   if (error) console.error('[clubeMembros] alterarTier:', error);
   const m = _membros.get(userId);
-  if (m) m.tier = novoTier;
+  if (m) {
+    m.tier = novoTier;
+    m.categoria = novoTier;
+  }
   bump();
 }

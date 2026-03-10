@@ -1,5 +1,5 @@
 import React from 'react';
-import { Crown, ChevronRight, Save, User, ToggleLeft, ToggleRight } from 'lucide-react';
+import { Crown, ChevronRight, Save, User, ToggleLeft, ToggleRight, Check } from 'lucide-react';
 import type { MembroClubeVanta, TierMaisVanta, ClubeConfig, BeneficioId } from '../../../../../types';
 import { clubeService } from '../../../services/clubeService';
 import { TIER_LABELS, TIER_COLORS, getTierOptions, BENEFICIOS_DISPONIVEIS } from './tierUtils';
@@ -336,6 +336,24 @@ export const SubTabConfig: React.FC<Props> = ({
           </button>
         );
       })}
+
+      {/* Obrigações de Post */}
+      <p className="text-zinc-400 text-[10px] uppercase font-black tracking-wider mt-2">Obrigações de Post</p>
+      <div className="bg-zinc-900/60 border border-white/5 rounded-2xl p-4 space-y-3">
+        <p className="text-zinc-500 text-[9px] font-black uppercase tracking-wider">Obrigatório em todos os posts</p>
+        {['@maisvanta', '@[conta do evento]', '#Publi'].map(tag => (
+          <div key={tag} className="flex items-center gap-2">
+            <div className="w-4 h-4 rounded bg-zinc-700/50 flex items-center justify-center">
+              <Check size={10} className="text-zinc-500" />
+            </div>
+            <span className="text-zinc-500 text-xs">{tag}</span>
+            {tag === '#Publi' && <span className="text-zinc-700 text-[8px]">exigência legal (CONAR)</span>}
+          </div>
+        ))}
+        <p className="text-zinc-700 text-[8px] italic">
+          Estas marcações são obrigatórias por política VANTA e lei brasileira. Não podem ser desativadas.
+        </p>
+      </div>
 
       {/* Regras gerais */}
       <p className="text-zinc-400 text-[10px] uppercase font-black tracking-wider mt-2">Regras Gerais</p>

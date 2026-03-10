@@ -118,7 +118,7 @@ export const TabClube: React.FC<Props> = ({ adminId, toastFn, comunidadeId }) =>
   }, [refresh]);
 
   const handleAprovar = async (solId: string) => {
-    const tier = tierSelects[solId] || 'BRONZE';
+    const tier = tierSelects[solId] || 'CONVIDADO';
     try {
       await clubeService.aprovarSolicitacao(solId, tier, adminId, comunidadeId);
       toastFn('sucesso', `Membro aprovado como ${TIER_LABELS[tier]}`);

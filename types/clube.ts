@@ -1,9 +1,10 @@
 // ── Clube de Influência (MAIS VANTA) ─────────────────────────────────────
-export type TierMaisVanta = 'BRONZE' | 'PRATA' | 'OURO' | 'DIAMANTE';
+export type TierMaisVanta = 'CONVIDADO' | 'PRESENCA' | 'CREATOR' | 'VANTA_BLACK';
 
 export interface MembroClubeVanta {
   userId: string;
   tier: TierMaisVanta;
+  categoria: TierMaisVanta; // = tier (define tipo de obrigação)
   instagramHandle?: string;
   instagramSeguidores?: number;
   instagramVerificado: boolean; // bio check passou na solicitação
@@ -26,7 +27,7 @@ export interface LoteMaisVanta {
   id: string;
   eventoId: string;
   tierMinimo: TierMaisVanta; // @deprecated: legado — usar tierId
-  tierId?: string; // tier específico deste lote (ex: 'BRONZE')
+  tierId?: string; // tier específico deste lote (ex: 'CONVIDADO')
   quantidade: number; // total de vagas
   reservados: number; // já reservados
   prazo?: string; // deadline para reserva (ISO)
@@ -91,7 +92,7 @@ export interface PlanoMaisVantaDef {
   limiteEventosMV: number; // -1 = ilimitado
   limiteMembros: number; // -1 = ilimitado
   limiteVagasEvento: number;
-  tierMinimo: string; // id do tier mínimo (ex: 'BRONZE')
+  tierMinimo: string; // id do tier mínimo (ex: 'CONVIDADO')
   acompanhante: boolean;
   prazoPostHoras: number;
   precoAvulso: number;
@@ -191,7 +192,16 @@ export type TipoParceiro = 'RESTAURANTE' | 'BAR' | 'CLUB' | 'GYM' | 'SALAO' | 'H
 export type PlanoParceiro = 'STARTER' | 'PRO' | 'ELITE';
 export type TipoDeal = 'BARTER' | 'DESCONTO';
 export type StatusDeal = 'RASCUNHO' | 'ATIVO' | 'PAUSADO' | 'ENCERRADO' | 'EXPIRADO';
-export type StatusResgate = 'APLICADO' | 'SELECIONADO' | 'RECUSADO' | 'CHECK_IN' | 'PENDENTE_POST' | 'CONCLUIDO' | 'NO_SHOW' | 'EXPIRADO' | 'CANCELADO';
+export type StatusResgate =
+  | 'APLICADO'
+  | 'SELECIONADO'
+  | 'RECUSADO'
+  | 'CHECK_IN'
+  | 'PENDENTE_POST'
+  | 'CONCLUIDO'
+  | 'NO_SHOW'
+  | 'EXPIRADO'
+  | 'CANCELADO';
 
 export interface CidadeMaisVanta {
   id: string;

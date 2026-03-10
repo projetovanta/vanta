@@ -156,7 +156,7 @@ export async function aceitarConviteMaisVanta(
   sol.instagramVerificadoEm = verificacao?.verificadoEm;
   sol.codigoVerificacao = verificacao?.codigo;
 
-  const tier = sol.tierPreAtribuido ?? ('BRONZE' as TierMaisVanta);
+  const tier = sol.tierPreAtribuido ?? ('CONVIDADO' as TierMaisVanta);
   const masterId = sol.convidadoPor ?? '';
   await aprovarSolicitacao(solId, tier, masterId, undefined, enviarNotificacaoClube);
 }
@@ -186,6 +186,7 @@ export async function aprovarSolicitacao(
   const membroRow = {
     user_id: sol.userId,
     tier,
+    categoria: tier,
     instagram_handle: sol.instagramHandle,
     instagram_seguidores: sol.instagramSeguidores ?? null,
     instagram_verificado: sol.instagramVerificado ?? false,
@@ -235,6 +236,7 @@ export async function aprovarSolicitacao(
   _membros.set(sol.userId, {
     userId: sol.userId,
     tier,
+    categoria: tier,
     instagramHandle: sol.instagramHandle,
     instagramSeguidores: sol.instagramSeguidores,
     instagramVerificado: sol.instagramVerificado ?? false,

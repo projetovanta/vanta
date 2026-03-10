@@ -110,63 +110,96 @@ serve(async (req: Request) => {
       if (comCheckIn && comCheckIn.length > 0) {
         const userIds = [...new Set((comCheckIn as Array<{ user_id: string }>).map(r => r.user_id))];
 
-        // Buscar tokens FCM
-        const { data: subs, error: errSubs } = await supabase
-          .from('push_subscriptions')
-          .select('fcm_token, user_id')
+        // Buscar categorias dos membros para diferenciar obrigação
+        const { data: membrosData } = await supabase
+          .from('membros_clube')
+          .select('user_id, categoria')
           .in('user_id', userIds);
-        if (errSubs) console.error('[edge/notif-evento-finalizou] push_subscriptions:', errSubs.message);
 
-        if (subs && subs.length > 0 && FIREBASE_PROJECT_ID) {
-          const titulo = 'Opa! 📸';
-          const corpo = `Vimos que você não postou ainda sobre o ${eventoNome}. Sem problema! Você ainda tem 12h pra postar marcando @maisvanta. Queremos compartilhar essa experiência com vocês!`;
-
-          const fcmUrl = `https://fcm.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/messages:send`;
-
-          for (const sub of subs) {
-            const fcmToken = (sub as { fcm_token: string }).fcm_token;
-            const userId = (sub as { user_id: string }).user_id;
-
-            const res = await fetch(fcmUrl, {
-              method: 'POST',
-              headers: {
-                'Authorization': `Bearer ${accessToken}`,
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                message: {
-                  token: fcmToken,
-                  notification: { title: titulo, body: corpo, image: '/icon-192.png' },
-                  data: { eventoId, tipo: 'EVENTO_TERMINOU' },
-                },
-              }),
-            });
-
-            if (res.ok) avisosEnviados++;
-          }
-
-          // Log
-          try {
-            await supabase.from('notificacoes_posevento').insert({
-              evento_id: eventoId,
-              tipo: 'EVENTO_TERMINOU',
-              membro_id: userIds[0],
-              status: 'ENVIADA',
-              canal: 'PUSH',
-              corpo_mensagem: corpo,
-            });
-          } catch (_e) {
-            // ignorar
+        const categoriaMap = new Map<string, string>();
+        if (membrosData) {
+          for (const m of membrosData) {
+            categoriaMap.set((m as { user_id: string }).user_id, (m as { categoria: string | null }).categoria ?? 'CONVIDADO');
           }
         }
 
-        // UPDATE reservas: set post_deadline_em (agenda lembrete T+12h e infração T+24h)
-        for (const reserva of comCheckIn) {
-          const { error: errDl } = await supabase
+        // Separar: CREATOR/VANTA_BLACK = obrigação de post, PRESENCA/CONVIDADO = check-in basta
+        const comObrigacaoPost = (comCheckIn as Array<{ id: string; user_id: string }>).filter(r => {
+          const cat = categoriaMap.get(r.user_id) ?? 'CONVIDADO';
+          return cat === 'CREATOR' || cat === 'VANTA_BLACK';
+        });
+        const semObrigacaoPost = (comCheckIn as Array<{ id: string; user_id: string }>).filter(r => {
+          const cat = categoriaMap.get(r.user_id) ?? 'CONVIDADO';
+          return cat === 'CONVIDADO' || cat === 'PRESENCA';
+        });
+
+        // PRESENÇA/CONVIDADO: check-in = obrigação cumprida → marcar post_verificado = true
+        for (const reserva of semObrigacaoPost) {
+          await supabase
             .from('reservas_mais_vanta')
-            .update({ post_deadline_em: deadline })
-            .eq('id', (reserva as { id: string }).id);
-          if (errDl) console.error('[edge/notif-evento-finalizou] deadline update:', errDl.message);
+            .update({ post_verificado: true })
+            .eq('id', reserva.id);
+        }
+
+        // CREATOR/VANTA_BLACK: enviar lembrete de post
+        if (comObrigacaoPost.length > 0) {
+          const postUserIds = [...new Set(comObrigacaoPost.map(r => r.user_id))];
+
+          const { data: subs, error: errSubs } = await supabase
+            .from('push_subscriptions')
+            .select('fcm_token, user_id')
+            .in('user_id', postUserIds);
+          if (errSubs) console.error('[edge/notif-evento-finalizou] push_subscriptions:', errSubs.message);
+
+          if (subs && subs.length > 0 && FIREBASE_PROJECT_ID) {
+            const titulo = 'Opa! 📸';
+            const corpo = `Vimos que você não postou ainda sobre o ${eventoNome}. Sem problema! Você ainda tem 12h pra postar marcando @maisvanta. Queremos compartilhar essa experiência com vocês!`;
+
+            const fcmUrl = `https://fcm.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/messages:send`;
+
+            for (const sub of subs) {
+              const fcmToken = (sub as { fcm_token: string }).fcm_token;
+
+              const res = await fetch(fcmUrl, {
+                method: 'POST',
+                headers: {
+                  'Authorization': `Bearer ${accessToken}`,
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  message: {
+                    token: fcmToken,
+                    notification: { title: titulo, body: corpo, image: '/icon-192.png' },
+                    data: { eventoId, tipo: 'EVENTO_TERMINOU' },
+                  },
+                }),
+              });
+
+              if (res.ok) avisosEnviados++;
+            }
+
+            try {
+              await supabase.from('notificacoes_posevento').insert({
+                evento_id: eventoId,
+                tipo: 'EVENTO_TERMINOU',
+                membro_id: postUserIds[0],
+                status: 'ENVIADA',
+                canal: 'PUSH',
+                corpo_mensagem: corpo,
+              });
+            } catch (_e) {
+              // ignorar
+            }
+          }
+
+          // SET post_deadline_em apenas para CREATOR/VANTA_BLACK
+          for (const reserva of comObrigacaoPost) {
+            const { error: errDl } = await supabase
+              .from('reservas_mais_vanta')
+              .update({ post_deadline_em: deadline })
+              .eq('id', reserva.id);
+            if (errDl) console.error('[edge/notif-evento-finalizou] deadline update:', errDl.message);
+          }
         }
       }
     }

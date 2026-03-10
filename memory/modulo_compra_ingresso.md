@@ -89,20 +89,37 @@ Ja documentada em modulo_evento.md (CuponsSubView). Usado aqui via cuponsService
 - `notify()` — dispara notificacao 3 canais (in-app + push + email)
 - Tipo COMPRA_CONFIRMADA enviado ao comprador
 
+### pedidos_checkout (pedidos pendentes Stripe)
+| Coluna | Tipo | Obrigatorio | Descricao |
+|---|---|---|---|
+| id | UUID PK | auto | gen_random_uuid() |
+| user_id | UUID FK auth.users | sim | Comprador |
+| evento_id | UUID | sim | Evento |
+| lote_id | UUID | sim | Lote |
+| dados_compra | JSONB | sim | { itens, cupom_id, mesa_id, acompanhantes, ref_code, email } |
+| valor_total_centavos | INTEGER | sim | Total em centavos |
+| stripe_session_id | TEXT | nao | Session ID do Stripe |
+| stripe_payment_intent_id | TEXT | nao | Payment Intent ID |
+| status | TEXT | sim | pendente, pago, cancelado, expirado |
+| created_at | TIMESTAMPTZ | auto | now() |
+| paid_at | TIMESTAMPTZ | nao | Quando pagamento confirmado |
+
 ## Arquivos
 
 ### Frontend
 | Arquivo | Linhas | Funcao |
 |---|---|---|
-| modules/checkout/CheckoutPage.tsx | 827 | Pagina de checkout standalone |
-| modules/checkout/SuccessScreen.tsx | 105 | Tela de sucesso pos-compra |
+| modules/checkout/CheckoutPage.tsx | ~920 | Pagina de checkout standalone (fluxo dual: gratuito/pago) |
+| modules/checkout/CheckoutSuccessPage.tsx | ~170 | Tela de sucesso pos-pagamento Stripe (polling pedido) |
+| modules/checkout/SuccessScreen.tsx | 105 | Tela de sucesso pos-compra gratuita |
 | modules/checkout/WaitlistModal.tsx | 60 | Modal lista de espera |
 
 ### Backend (Edge Functions)
 | Arquivo | Linhas | Funcao |
 |---|---|---|
-| supabase/functions/create-checkout/index.ts | 133 | Cria sessao Stripe Checkout |
-| supabase/functions/stripe-webhook/index.ts | 163 | Recebe webhook checkout.session.completed |
+| supabase/functions/create-checkout/index.ts | 133 | Cria sessao Stripe Checkout (MAIS VANTA) |
+| supabase/functions/create-ticket-checkout/index.ts | 310 | Cria sessao Stripe Checkout (ingressos pagos) |
+| supabase/functions/stripe-webhook/index.ts | 288 | Webhook Stripe (ingressos + MAIS VANTA) |
 
 ## Fluxos
 
@@ -110,17 +127,18 @@ Ja documentada em modulo_evento.md (CuponsSubView). Usado aqui via cuponsService
 **Quem**: Usuario logado ou nao-logado (login inline)
 **Navegacao**: EventDetailView -> Botao "Comprar" -> CheckoutPage (/checkout/:eventoId)
 
-**O que acontece**:
+**O que acontece (fluxo gratuito / feature flag off)**:
 1. Carrega evento (publicado=true) + lotes ativos + variacoes do lote ativo
 2. Usuario seleciona quantidade por variacao
 3. (Opcional) Aplica cupom de desconto → cuponsService.validarCupom
 4. (Opcional) Se mesas_ativo, seleciona mesa
 5. Usuario faz login inline (email + senha → supabase.auth.signInWithPassword)
-6. Para cada variacao com qtd > 0: supabase.rpc('processar_compra_checkout')
-7. Se cupom aplicado: cuponsService.usarCupom
-8. BroadcastChannel envia 'VANTA_TICKET_PURCHASED' para o app principal
-9. Notifica comprador (tipo COMPRA_CONFIRMADA, 3 canais)
-10. Redireciona para SuccessScreen
+6. handleLogin detecta totalPreco=0 ou flag off → processarCompraGratuita()
+7. Para cada variacao com qtd > 0: supabase.rpc('processar_compra_checkout')
+8. Se cupom aplicado: cuponsService.usarCupom
+9. BroadcastChannel envia 'VANTA_TICKET_PURCHASED' para o app principal
+10. Notifica comprador (tipo COMPRA_CONFIRMADA, 3 canais)
+11. Redireciona para SuccessScreen
 
 **Reacao no sistema (por variacao)**:
 - INSERT tickets_caixa (1 por ingresso, status DISPONIVEL, origem CHECKOUT)
@@ -139,15 +157,21 @@ Ja documentada em modulo_evento.md (CuponsSubView). Usado aqui via cuponsService
 **O que acontece**: waitlistService registra interesse do usuario
 **Consequencia**: se variacao reabrir (admin aumenta limite), usuario pode ser notificado
 
-### CHECKOUT VIA STRIPE (fluxo alternativo)
-**Quem**: Usuario (quando pagamento real estiver ativo)
-**Navegacao**: CheckoutPage -> create-checkout Edge Function -> Stripe Checkout -> stripe-webhook
+### CHECKOUT VIA STRIPE (ingressos pagos)
+**Quem**: Usuario quando totalPreco > 0 e VITE_STRIPE_PAYMENTS_ENABLED=true
+**Navegacao**: CheckoutPage -> login -> create-ticket-checkout EF -> Stripe Checkout -> stripe-webhook -> CheckoutSuccessPage
 **O que acontece**:
-1. create-checkout cria sessao Stripe com line items
-2. Usuario paga no Stripe
-3. stripe-webhook recebe checkout.session.completed
-4. Webhook atualiza ticket status para ATIVA e transaction
-**Status atual**: Edge Functions existem mas pagamento real NAO ESTA ATIVO. Compra atual e via RPC direto (sem cobranca real).
+1. CheckoutPage detecta totalPreco > 0 + feature flag ativo
+2. Apos login, chama supabase.functions.invoke('create-ticket-checkout')
+3. EF valida precos server-side, cria pedido_checkout pendente, cria Stripe Session
+4. Frontend redireciona para session.url (Stripe Checkout hosted)
+5. Usuario paga no Stripe
+6. stripe-webhook recebe checkout.session.completed (metadata.type=ingresso)
+7. Webhook verifica idempotencia (pedido.status != pago), chama processar_compra_checkout RPC
+8. Atualiza pedido para 'pago', notifica usuario
+9. CheckoutSuccessPage faz polling do status do pedido (2s/30s)
+10. Se session expirar: webhook marca pedido como 'expirado'
+**Status**: Code-complete. Falta: configurar secrets Stripe (CNPJ) + deploy EFs.
 
 ### MEIA-ENTRADA (comprovante)
 **Quem**: Usuario que selecionou variacao com requer_comprovante=true

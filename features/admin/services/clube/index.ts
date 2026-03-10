@@ -38,10 +38,8 @@ export const clubeService = {
 
   // ── Refresh ────────────────────────────────────────────────────────────────
   async refresh(): Promise<void> {
-    const [membrosRes, lotesRes, reservasRes, solRes, passRes, tiersRes] = await Promise.all([
+    const [membrosRes, solRes, passRes, tiersRes] = await Promise.all([
       supabase.from('membros_clube').select('*').limit(2000),
-      supabase.from('lotes_mais_vanta').select('*').limit(1000),
-      supabase.from('reservas_mais_vanta').select('*').order('reservado_em', { ascending: false }).limit(2000),
       supabase.from('solicitacoes_clube').select('*').order('criado_em', { ascending: false }).limit(2000),
       supabase.from('passport_aprovacoes').select('*').order('solicitado_em', { ascending: false }).limit(2000),
       supabase.from('tiers_mais_vanta').select('*').order('ordem').limit(100),
@@ -59,12 +57,6 @@ export const clubeService = {
         const m = rowToMembro(r);
         _membros.set(m.userId, m);
       }
-    }
-    if (lotesRes.data) {
-      for (const r of lotesRes.data) _lotes.push(rowToLote(r));
-    }
-    if (reservasRes.data) {
-      for (const r of reservasRes.data) _reservas.push(rowToReserva(r));
     }
     if (solRes.data) {
       for (const r of solRes.data) _solicitacoes.push(rowToSolicitacao(r));

@@ -237,23 +237,20 @@ const _doRefresh = async (): Promise<void> => {
     let lotesData: any[] = [],
       variacoesData: any[] = [],
       equipeData: any[] = [],
-      lotesMvData: any[] = [],
       sociosData: any[] = [];
 
     if (eventoIds.length > 0) {
-      const [lotesRes, equipeRes, lotesMvRes, sociosRes] = await Promise.all([
+      const [lotesRes, equipeRes, sociosRes] = await Promise.all([
         supabase.from('lotes').select('*').in('evento_id', eventoIds).limit(2000),
         supabase
           .from('equipe_evento')
           .select('evento_id, membro_id, papel, permissoes')
           .in('evento_id', eventoIds)
           .limit(2000),
-        supabase.from('lotes_mais_vanta').select('*').in('evento_id', eventoIds).limit(1000),
         supabase.from('socios_evento').select('*').in('evento_id', eventoIds).limit(2000),
       ]);
       lotesData = lotesRes.data ?? [];
       equipeData = equipeRes.data ?? [];
-      lotesMvData = lotesMvRes.data ?? [];
       sociosData = sociosRes.data ?? [];
       // Variações depende dos lotes carregados
       const loteIds = lotesData.map((l: { id: string }) => l.id);
@@ -284,24 +281,8 @@ const _doRefresh = async (): Promise<void> => {
       });
     }
 
-    // Lookup de lotes MAIS VANTA por evento_id
+    // lotes_mais_vanta dropada — mais_vanta_lotes_evento será carregado na Fase 2
     const lotesMvMap = new Map<string, LoteMaisVanta>();
-    for (const r of lotesMvData) {
-      const lmv: LoteMaisVanta = {
-        id: r.id ?? '',
-        eventoId: r.evento_id ?? '',
-        tierMinimo: (r.tier_minimo as LoteMaisVanta['tierMinimo']) ?? 'BRONZE',
-        tierId: r.tier_id ?? undefined,
-        quantidade: r.quantidade ?? 0,
-        reservados: r.reservados ?? 0,
-        prazo: r.prazo ?? undefined,
-        descricao: r.descricao ?? undefined,
-        comAcompanhante: r.com_acompanhante ?? false,
-        acompanhantes: r.acompanhantes ?? 0,
-        tipoAcesso: r.tipo_acesso ?? 'Pista',
-      };
-      lotesMvMap.set(lmv.eventoId, lmv);
-    }
 
     // Lookup de profiles (criadorNome)
     const profMap = new Map<string, string>();

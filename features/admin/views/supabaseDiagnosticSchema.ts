@@ -33,7 +33,6 @@ export const EXPECTED_TABLES: ExpectedTable[] = [
       { name: 'interesses', type: 'ARRAY' },
       { name: 'album_urls', type: 'ARRAY' },
       { name: 'privacidade', type: 'jsonb' },
-      { name: 'tags_curadoria', type: 'ARRAY' },
       { name: 'curadoria_concluida', type: 'boolean' },
       { name: 'notas_admin', type: 'text' },
       { name: 'biometria_url', type: 'text' },

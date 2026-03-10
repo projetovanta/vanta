@@ -47,7 +47,7 @@ const getMembrosParaCuradoria = async (): Promise<Membro[]> => {
   const { data, error } = await supabase
     .from('profiles')
     .select(
-      'id, nome, email, avatar_url, biometria_url, instagram, instagram_followers, cidade, estado, genero, data_nascimento, created_at, tags_curadoria, curadoria_concluida, notas_admin, role, destaque_curadoria',
+      'id, nome, email, avatar_url, biometria_url, instagram, instagram_followers, cidade, estado, genero, data_nascimento, created_at, curadoria_concluida, notas_admin, role, destaque_curadoria',
     )
     .or('curadoria_concluida.is.null,curadoria_concluida.eq.false')
     .not('email', 'is', null)
@@ -59,17 +59,14 @@ const getMembrosParaCuradoria = async (): Promise<Membro[]> => {
   return data.map(row => {
     const m = profileToMembro(row);
     m.curadoriaConcluida = false;
-    m.tagsCuradoria = (row.tags_curadoria as string[] | undefined) ?? [];
     m.cadastradoEm = (row.created_at as string | undefined) ?? '';
     return m;
   });
 };
 
-/** Adiciona/remove tags de curadoria no Supabase */
-const setTagsCuradoria = async (membroId: string, tags: string[]): Promise<{ error: unknown }> => {
-  const { error } = await supabase.from('profiles').update({ tags_curadoria: tags }).eq('id', membroId);
-  if (error) console.error('[adminService] setTagsCuradoria erro:', error);
-  return { error };
+/** @deprecated tags_curadoria movida para membros_clube.tags — manter stub para compat */
+const setTagsCuradoria = async (_membroId: string, _tags: string[]): Promise<{ error: unknown }> => {
+  return { error: null };
 };
 
 /** Conclui curadoria — membro migra para a lista de Membros */
@@ -79,11 +76,8 @@ const concluirCuradoria = async (membroId: string): Promise<void> => {
 };
 
 /** Conclui curadoria com tags selecionadas */
-const concluirCuradoriaComTags = async (_membroId: string, _tagIds: string[], tagNomes: string[]): Promise<void> => {
-  const { error } = await supabase
-    .from('profiles')
-    .update({ curadoria_concluida: true, tags_curadoria: tagNomes })
-    .eq('id', _membroId);
+const concluirCuradoriaComTags = async (_membroId: string, _tagIds: string[], _tagNomes: string[]): Promise<void> => {
+  const { error } = await supabase.from('profiles').update({ curadoria_concluida: true }).eq('id', _membroId);
   if (error) console.error('[adminService] concluirCuradoriaComTags:', error);
 };
 
@@ -92,7 +86,7 @@ const getMembrosClassificados = async (): Promise<Membro[]> => {
   const { data, error } = await supabase
     .from('profiles')
     .select(
-      'id, nome, email, avatar_url, biometria_url, instagram, instagram_followers, cidade, estado, genero, data_nascimento, created_at, tags_curadoria, curadoria_concluida, notas_admin, role, destaque_curadoria',
+      'id, nome, email, avatar_url, biometria_url, instagram, instagram_followers, cidade, estado, genero, data_nascimento, created_at, curadoria_concluida, notas_admin, role, destaque_curadoria',
     )
     .eq('curadoria_concluida', true)
     .not('email', 'is', null)
@@ -104,7 +98,6 @@ const getMembrosClassificados = async (): Promise<Membro[]> => {
   return data.map(row => {
     const m = profileToMembro(row);
     m.curadoriaConcluida = true;
-    m.tagsCuradoria = (row.tags_curadoria as string[] | undefined) ?? [];
     m.notas = (row.notas_admin as string | undefined) ?? '';
     m.cadastradoEm = (row.created_at as string | undefined) ?? '';
     return m;

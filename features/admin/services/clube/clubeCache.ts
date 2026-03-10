@@ -16,8 +16,6 @@ import type { Database } from '../../../../types/supabase';
 
 type TierRow = Database['public']['Tables']['tiers_mais_vanta']['Row'];
 type MembroRow = Database['public']['Tables']['membros_clube']['Row'];
-type LoteRow = Database['public']['Tables']['lotes_mais_vanta']['Row'];
-type ReservaRow = Database['public']['Tables']['reservas_mais_vanta']['Row'];
 type SolicitacaoRow = Database['public']['Tables']['solicitacoes_clube']['Row'];
 type PassportRow = Database['public']['Tables']['passport_aprovacoes']['Row'];
 type ClubeConfigRow = Database['public']['Tables']['clube_config']['Row'];
@@ -91,29 +89,26 @@ export const rowToPassport = (r: PassportRow): PassportAprovacao => ({
   resolvidoPor: r.resolvido_por ?? undefined,
 });
 
-export const rowToLote = (r: LoteRow): LoteMaisVanta => ({
-  id: r.id ?? '',
-  eventoId: r.evento_id ?? '',
-  tierMinimo: (r.tier_minimo as TierMaisVanta) ?? 'BRONZE',
-  tierId: r.tier_id ?? undefined,
-  quantidade: r.quantidade ?? 0,
-  reservados: r.reservados ?? 0,
-  prazo: r.prazo ?? undefined,
-  descricao: r.descricao ?? undefined,
-  comAcompanhante: r.com_acompanhante ?? false,
-  acompanhantes: r.acompanhantes ?? 0,
-  tipoAcesso: r.tipo_acesso ?? 'Pista',
+/** @deprecated lotes_mais_vanta dropada — substituída por mais_vanta_lotes_evento */
+export const rowToLote = (_r: Record<string, unknown>): LoteMaisVanta => ({
+  id: '',
+  eventoId: '',
+  tierMinimo: 'CONVIDADO' as TierMaisVanta,
+  quantidade: 0,
+  reservados: 0,
+  acompanhantes: 0,
+  tipoAcesso: 'Pista',
 });
 
-export const rowToReserva = (r: ReservaRow): ReservaMaisVanta => ({
-  id: r.id ?? '',
-  loteMaisVantaId: r.lote_mais_vanta_id ?? '',
-  eventoId: r.evento_id ?? '',
-  userId: r.user_id ?? '',
-  reservadoEm: r.reservado_em ?? '',
-  status: (r.status as ReservaMaisVanta['status']) ?? 'RESERVADO',
-  postVerificado: r.post_verificado ?? false,
-  postUrl: r.post_url ?? undefined,
+/** @deprecated reservas_mais_vanta dropada */
+export const rowToReserva = (_r: Record<string, unknown>): ReservaMaisVanta => ({
+  id: '',
+  loteMaisVantaId: '',
+  eventoId: '',
+  userId: '',
+  reservadoEm: '',
+  status: 'RESERVADO',
+  postVerificado: false,
 });
 
 export const rowToSolicitacao = (r: SolicitacaoRow): SolicitacaoClube => ({

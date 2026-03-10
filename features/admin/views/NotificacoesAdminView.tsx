@@ -62,18 +62,12 @@ export const NotificacoesAdminView: React.FC<{ onBack: () => void }> = ({ onBack
 
   // Carregar dados iniciais
   useEffect(() => {
-    // Tags distintas de curadoria
-    Promise.resolve(
-      supabase
-        .from('profiles')
-        .select('tags_curadoria')
-        .eq('curadoria_concluida', true)
-        .not('tags_curadoria', 'is', null),
-    )
+    // Tags distintas de membros_clube.tags
+    Promise.resolve(supabase.from('membros_clube').select('tags').not('tags', 'is', null))
       .then(({ data }) => {
         const set = new Set<string>();
         (data ?? []).forEach((r: Record<string, unknown>) => {
-          const arr = r.tags_curadoria as string[] | null;
+          const arr = r.tags as string[] | null;
           arr?.forEach(t => set.add(t));
         });
         setTags(Array.from(set).sort());

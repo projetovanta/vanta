@@ -80,31 +80,7 @@ export const EventCheckInView: React.FC<{
       const result = await offlineEventService.validateAndBurn(ticketId, evId);
       void refreshPendingCount();
 
-      if (result.resultado === 'VALIDO') {
-        try {
-          const { data: reservas } = await supabase
-            .from('reservas_mais_vanta')
-            .select('user_id, id')
-            .eq('evento_id', evId)
-            .limit(1);
-
-          if (reservas && reservas.length > 0) {
-            const reserva = reservas[0];
-            await fetch(`${window.location.origin}/functions/v1/notif-checkin-confirmacao`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                userId: reserva.user_id,
-                reservaId: reserva.id,
-                eventoId: evId,
-                eventoNome,
-              }),
-            });
-          }
-        } catch (e) {
-          console.warn('[CheckInView] Erro ao enviar notificação de check-in:', e);
-        }
-      }
+      // TODO: notificação de check-in MV será reimplementada sobre mais_vanta_lotes_evento
 
       return result;
     },

@@ -1,11 +1,12 @@
-# Criado: 2026-03-06 01:43 | Ultima edicao: 2026-03-06 01:43
+# Criado: 2026-03-06 01:43 | Ultima edicao: 2026-03-10
 
-# Modulo: MAIS VANTA (Clube de Influencia)
+# Modulo: MAIS VANTA (Clube Exclusivo)
 
 ## O que e
-MAIS VANTA = programa de fidelidade/influencia. Membros com Instagram verificado ganham beneficios exclusivos.
-Fluxo: usuario solicita entrada → admin aprova com tier → membro reserva ingresso gratis → posta no Instagram → admin verifica.
-Tiers: BRONZE, PRATA, OURO, DIAMANTE. Cada tier desbloqueia lotes exclusivos.
+MAIS VANTA = clube exclusivo do VANTA. Camada de benefícios silenciosa sobre eventos.
+Fluxo: usuario solicita entrada → curador aprova com tier (interno, nunca visível) → produtor configura benefícios por tier no evento → membro resgata benefício.
+Tiers: DESCONTO(0), CONVIDADO(1), PRESENCA(2), CREATOR(3), VANTA_BLACK(4). Tier NUNCA exibido ao membro.
+Sem cascata: produtor controla exatamente quais tiers recebem benefício em cada evento.
 
 ## Tabelas Supabase
 
@@ -14,7 +15,8 @@ Tiers: BRONZE, PRATA, OURO, DIAMANTE. Cada tier desbloqueia lotes exclusivos.
 |---|---|---|
 | id | UUID PK | auto |
 | user_id | UUID FK profiles UNIQUE | Membro |
-| tier | TEXT | BRONZE, PRATA, OURO, DIAMANTE |
+| tier | TEXT | DESCONTO, CONVIDADO, PRESENCA, CREATOR, VANTA_BLACK |
+| status | TEXT NOT NULL | PENDENTE, APROVADO, REJEITADO, BLOQUEADO, BANIDO (default APROVADO) |
 | instagram_handle | TEXT | @ do Instagram |
 | instagram_seguidores | INT | Qtd de seguidores |
 | aprovado_por | UUID | Quem aprovou |
@@ -24,30 +26,23 @@ Tiers: BRONZE, PRATA, OURO, DIAMANTE. Cada tier desbloqueia lotes exclusivos.
 | instagram_verificado_em | TIMESTAMPTZ | Ultima verificacao |
 | comunidade_origem | UUID FK comunidades | Onde foi aprovado primeiro |
 | castigo_motivo | TEXT | Motivo de castigo (no-show etc) |
+| nota_interna | TEXT | Nota interna (nunca visível ao membro) |
+| tags | TEXT[] | Tags internas padronizadas (nunca visíveis ao membro) |
+| categoria | TEXT | Sync com tier na aprovação (sem constraint) |
 
-### lotes_mais_vanta (lotes exclusivos por evento)
+### mais_vanta_lotes_evento (benefícios por tier no evento — substitui lotes_mais_vanta)
 | Coluna | Tipo | Descricao |
 |---|---|---|
 | id | UUID PK | auto |
-| evento_id | UUID FK eventos_admin UNIQUE | Evento |
-| tier_minimo | TEXT | BRONZE, PRATA, OURO, DIAMANTE |
-| quantidade | INT | Qtd disponivel (default 0) |
-| reservados | INT | Qtd reservada (default 0) |
-| prazo | TIMESTAMPTZ | Prazo para reservar |
-| descricao | TEXT | Descricao do beneficio |
-| com_acompanhante | BOOLEAN | Se pode levar +1 (default false) |
-
-### reservas_mais_vanta
-| Coluna | Tipo | Descricao |
-|---|---|---|
-| id | UUID PK | auto |
-| lote_mais_vanta_id | UUID FK lotes_mais_vanta | Lote |
 | evento_id | UUID FK eventos_admin | Evento |
-| user_id | UUID FK profiles | Membro |
-| reservado_em | TIMESTAMPTZ | auto |
-| status | TEXT | RESERVADO, USADO, CANCELADO, PENDENTE_POST |
-| post_verificado | BOOLEAN | Se post foi verificado (default false) |
-| post_url | TEXT | URL do post no Instagram |
+| tier_minimo | TEXT | DESCONTO, CONVIDADO, PRESENCA, CREATOR, VANTA_BLACK |
+| tipo | TEXT | 'ingresso' ou 'lista' |
+| lote_id | UUID FK lotes | Se tipo=ingresso |
+| lista_id | UUID FK listas_evento | Se tipo=lista |
+| desconto_percentual | INT 0-100 | Se tier=desconto |
+| ativo | BOOLEAN | Default true |
+| created_at | TIMESTAMPTZ | auto |
+Constraint: tipo=ingresso → lote_id NOT NULL + lista_id NULL; tipo=lista → lista_id NOT NULL + lote_id NULL
 
 ### solicitacoes_clube (pedidos de entrada)
 | Coluna | Tipo | Descricao |
@@ -57,7 +52,9 @@ Tiers: BRONZE, PRATA, OURO, DIAMANTE. Cada tier desbloqueia lotes exclusivos.
 | instagram_handle | TEXT | @ do Instagram |
 | instagram_seguidores | INT | Seguidores |
 | convidado_por | UUID | Convite |
-| status | TEXT | PENDENTE, APROVADO, REJEITADO |
+| status | TEXT | PENDENTE, APROVADO, REJEITADO, CONVIDADO |
+| profissao | TEXT | Profissão / o que faz (nullable) |
+| como_conheceu | TEXT | Como conheceu o VANTA (nullable) |
 | criado_em | TIMESTAMPTZ | auto |
 | resolvido_em | TIMESTAMPTZ | Quando decidido |
 | resolvido_por | UUID | Quem decidiu |
@@ -257,9 +254,9 @@ Tiers: BRONZE, PRATA, OURO, DIAMANTE. Cada tier desbloqueia lotes exclusivos.
 |---|---|---|---|
 | 1 | Solicitar entrada | OK | solicitacoes_clube |
 | 2 | Aprovar/rejeitar membro | OK | Admin flow |
-| 3 | Tiers (BRONZE-DIAMANTE) | OK | CHECK constraint |
-| 4 | Lotes exclusivos MV | OK | lotes_mais_vanta |
-| 5 | Reservar ingresso MV | OK | reservas_mais_vanta |
+| 3 | Tiers (5: DESCONTO→VANTA_BLACK) | OK | CHECK constraint + tiers_mais_vanta |
+| 4 | Benefícios MV por evento | OK | mais_vanta_lotes_evento (liga tier → lote ou lista real) |
+| 5 | Reservar ingresso MV | PENDENTE | Precisa recriar reservas sobre mais_vanta_lotes_evento |
 | 6 | Post verificacao | OK | post_url + post_verificado |
 | 7 | Infracoes progressivas | OK | infracoes_mais_vanta + castigo |
 | 8 | Passaporte por cidade | OK | passport_aprovacoes + cidade |

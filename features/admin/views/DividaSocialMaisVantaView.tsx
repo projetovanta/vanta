@@ -96,7 +96,7 @@ export const DividaSocialMaisVantaView: React.FC<{
   const handleResolverDivida = async (reservaId: string) => {
     setLoading(true);
     try {
-      await supabase.from('reservas_mais_vanta').update({ post_verificado: true }).eq('id', reservaId);
+      await supabase.from('infracoes_mais_vanta').update({ tipo: 'RESOLVIDO' }).eq('id', reservaId);
       handleRefresh();
     } catch (e) {
       console.error(e);

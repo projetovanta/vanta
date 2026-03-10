@@ -147,14 +147,10 @@ export const MembrosGlobaisMaisVantaView: React.FC<{
     }
   };
 
-  const handleResolverDivida = async (userId: string) => {
-    setLoading(userId);
+  const handleResolverDivida = async (_userId: string) => {
+    setLoading(_userId);
     try {
-      // Marcar todas as reservas como postVerificado
-      const reservasUser = clubeService.getReservasUsuario?.(userId) ?? [];
-      for (const r of reservasUser) {
-        await supabase.from('reservas_mais_vanta').update({ post_verificado: true }).eq('id', r.id);
-      }
+      // TODO: reimplementar sobre mais_vanta_lotes_evento na Fase 2
       handleRefresh();
     } catch (e) {
       console.error(e);

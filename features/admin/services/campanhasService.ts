@@ -61,15 +61,18 @@ export const campanhasService = {
       }
       case 'TAG': {
         const { data } = await supabase
-          .from('profiles')
-          .select('id, email, nome')
-          .contains('tags_curadoria', [segmento.tag])
+          .from('membros_clube')
+          .select('user_id, profiles!inner(email, nome)')
+          .contains('tags', [segmento.tag])
           .limit(2000);
-        return (data ?? []).map(r => ({
-          userId: r.id,
-          email: r.email ?? '',
-          nome: r.nome ?? '',
-        }));
+        return (data ?? []).map((r: Record<string, unknown>) => {
+          const p = r.profiles as Record<string, unknown> | null;
+          return {
+            userId: r.user_id as string,
+            email: (p?.email as string) ?? '',
+            nome: (p?.nome as string) ?? '',
+          };
+        });
       }
       case 'COMUNIDADE': {
         // FK para profiles dropada — buscar user_ids e depois profiles
@@ -129,9 +132,9 @@ export const campanhasService = {
       }
       case 'TAG': {
         const { count } = await supabase
-          .from('profiles')
+          .from('membros_clube')
           .select('id', { count: 'exact', head: true })
-          .contains('tags_curadoria', [segmento.tag]);
+          .contains('tags', [segmento.tag]);
         return count ?? 0;
       }
       case 'COMUNIDADE': {

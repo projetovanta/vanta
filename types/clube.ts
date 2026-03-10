@@ -81,6 +81,7 @@ export interface SolicitacaoClube {
   tierPreAtribuido?: TierMaisVanta; // tier escolhido pelo master ao convidar
   profissao?: string;
   comoConheceu?: string;
+  indicadoPorTexto?: string;
 }
 
 // ── MV2: Assinatura SaaS MAIS VANTA ────────────────────────────────────────

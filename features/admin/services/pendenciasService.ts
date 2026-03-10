@@ -1,5 +1,4 @@
 import { supabase } from '../../../services/supabaseClient';
-import { adminService } from './adminService';
 import { eventosAdminService } from './eventosAdminService';
 import { getReembolsosPendentes } from './reembolsoService';
 import { parceriaService } from './parceriaService';
@@ -40,17 +39,18 @@ export async function getPendencias(
 
   // ── MASTER ──────────────────────────────────────────────────────────────
   if (role === 'vanta_masteradm') {
-    // Curadoria
+    // Curadoria MAIS VANTA — solicitações pendentes
     promises.push(
-      adminService.getMembrosParaCuradoria().then(membros => {
-        if (membros.length > 0) {
+      import('./clubeService').then(({ clubeService }) => {
+        const solicitacoes = clubeService.getSolicitacoesPendentes();
+        if (solicitacoes.length > 0) {
           items.push({
             id: 'curadoria',
             tipo: 'CURADORIA',
-            titulo: 'Curadoria de membros',
-            descricao: `${membros.length} membro${membros.length > 1 ? 's' : ''} aguardando curadoria`,
-            criadoEm: membros[0]?.cadastradoEm ?? '',
-            destino: 'CURADORIA',
+            titulo: 'Curadoria MAIS VANTA',
+            descricao: `${solicitacoes.length} solicitaç${solicitacoes.length > 1 ? 'ões' : 'ão'} pendente${solicitacoes.length > 1 ? 's' : ''}`,
+            criadoEm: solicitacoes[0]?.criadoEm ?? '',
+            destino: 'CURADORIA_MV',
           });
         }
       }),

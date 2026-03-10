@@ -1,6 +1,3 @@
-export type CuradoriaTab = 'NOVOS_MEMBROS' | 'MEMBROS';
-export type ProfileTab = 'RESUMO' | 'ATIVIDADES';
-
 export const formatFollowers = (n: number): string => {
   if (n >= 1_000_000) {
     const m = n / 1_000_000;

@@ -75,7 +75,9 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
   const [aceitouTermos, setAceitouTermos] = useState(false);
   const [mostrarTermos, setMostrarTermos] = useState(false);
   const [mostrarTermosModal, setMostrarTermosModal] = useState(false);
+  const [profissao, setProfissao] = useState('');
   const [comoConheceu, setComoConheceu] = useState('');
+  const [indicadoPor, setIndicadoPor] = useState('');
   const [comoConheceuAberto, setComoConheceuAberto] = useState(false);
 
   // ── Instagram verificação ──────────────────────────────────────────────────
@@ -199,6 +201,8 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
         verificadoEm: igVerified ? tsBR() : undefined,
         codigo: verificationCode,
         comoConheceu: comoConheceu || undefined,
+        profissao: profissao.trim() || undefined,
+        indicadoPor: indicadoPor.trim() || undefined,
       });
       setSolicitacaoStatus('PENDENTE');
       onSuccess?.('Solicitação enviada! Aguarde aprovação.');
@@ -799,6 +803,19 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
           )}
         </div>
 
+        {/* Profissão / O que faz */}
+        <div className="mb-4">
+          <label className="text-[9px] font-black uppercase tracking-widest text-zinc-400 mb-2 block">
+            O que voce faz?
+          </label>
+          <input
+            value={profissao}
+            onChange={e => setProfissao(e.target.value)}
+            placeholder="Ex: Modelo, DJ, Fotógrafo..."
+            className="w-full px-4 py-3 bg-zinc-900/80 border border-zinc-800 rounded-xl text-white text-sm placeholder-zinc-500 focus:outline-none focus:border-[#FFD300]/20"
+          />
+        </div>
+
         {/* Como conheceu o VANTA */}
         <div className="mb-4">
           <label className="text-[9px] font-black uppercase tracking-widest text-zinc-400 mb-2 block">
@@ -836,6 +853,19 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
               </div>
             )}
           </div>
+        </div>
+
+        {/* Quem te indicou */}
+        <div className="mb-4">
+          <label className="text-[9px] font-black uppercase tracking-widest text-zinc-400 mb-2 block">
+            Quem te indicou? (opcional)
+          </label>
+          <input
+            value={indicadoPor}
+            onChange={e => setIndicadoPor(e.target.value)}
+            placeholder="Nome ou @ de quem te indicou"
+            className="w-full px-4 py-3 bg-zinc-900/80 border border-zinc-800 rounded-xl text-white text-sm placeholder-zinc-500 focus:outline-none focus:border-[#FFD300]/20"
+          />
         </div>
 
         {/* Aviso importante */}

@@ -98,9 +98,7 @@ export const EventCheckInView: React.FC<{
               .maybeSingle()
               .then(({ data: membro }) => {
                 if (!membro) return;
-                const tier = membro.tier as string;
-                if (tier !== 'convidado' && tier !== 'presenca') return;
-                // Marcar resgates RESGATADO como USADO
+                // Check-in encerra obrigação para qualquer tier com resgate ativo
                 supabase
                   .from('resgates_mv_evento')
                   .update({ status: 'USADO' })

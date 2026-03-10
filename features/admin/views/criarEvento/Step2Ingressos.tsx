@@ -65,11 +65,20 @@ interface Props {
   setMaisVanta?: (v: LoteMaisVantaForm) => void;
 }
 
-// Tiers dinâmicos com fallback legado
+// Tiers dinâmicos com fallback legado — vanta_black excluído (contato direto via curadoria)
+const TIER_LABELS_PRODUTOR: Record<string, string> = {
+  desconto: 'Desconto silencioso',
+  convidado: 'Perfil geral aprovado',
+  presenca: 'Presença & Ambiente',
+  creator: 'Criadores de conteúdo',
+};
 const getTierOptions = (): { id: string; label: string; cor: string }[] => {
   const dynamic = clubeService.getTiers();
-  if (dynamic.length > 0) return dynamic.map(t => ({ id: t.id, label: t.nome, cor: t.cor ?? '#666' }));
-  // vanta_black = contato direto via curadoria, não configurável pelo produtor
+  if (dynamic.length > 0) {
+    return dynamic
+      .filter(t => t.id !== 'vanta_black')
+      .map(t => ({ id: t.id, label: TIER_LABELS_PRODUTOR[t.id] ?? t.nome, cor: t.cor ?? '#666' }));
+  }
   return [
     { id: 'desconto', label: 'Desconto silencioso', cor: '#888' },
     { id: 'convidado', label: 'Perfil geral aprovado', cor: '#CD7F32' },
@@ -577,6 +586,14 @@ export const Step2Ingressos: React.FC<Props> = ({
                       </div>
                     );
                   })}
+                  {/* VANTA BLACK — read-only */}
+                  <div className="rounded-xl border bg-zinc-900/30 border-white/5 opacity-60 px-4 py-3 flex items-center gap-3">
+                    <div className="w-3 h-3 rounded-full shrink-0 bg-black border border-white/20" />
+                    <div className="flex-1 min-w-0">
+                      <span className="text-white text-xs font-bold">Perfil premium</span>
+                      <p className="text-zinc-500 text-[9px]">Contato direto — configurar via curadoria</p>
+                    </div>
+                  </div>
                 </div>
               )}
 

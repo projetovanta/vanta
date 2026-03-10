@@ -12,6 +12,7 @@ export const TabRelatorio: React.FC<{ eventoAdminId: string }> = ({ eventoAdminI
   const [mvStats, setMvStats] = useState<{
     totalResgates: number;
     usados: number;
+    postsEnviados: number;
     postsVerificados: number;
     postsObrigatorios: number;
     alcanceEstimado: number;
@@ -29,13 +30,14 @@ export const TabRelatorio: React.FC<{ eventoAdminId: string }> = ({ eventoAdminI
     // Buscar métricas MAIS VANTA
     supabase
       .from('resgates_mv_evento')
-      .select('id, user_id, status, post_verificado')
+      .select('id, user_id, status, post_verificado, post_url')
       .eq('evento_id', eventoAdminId)
       .limit(500)
       .then(({ data: resgates }) => {
         if (cancelled || !resgates || resgates.length === 0) return;
         const total = resgates.length;
         const usados = resgates.filter(r => r.status === 'USADO').length;
+        const postsEnv = resgates.filter(r => r.post_url).length;
         const postsVerif = resgates.filter(r => r.post_verificado).length;
         // Para tiers creator/vanta_black, post é obrigatório
         const userIds = [...new Set(resgates.map(r => r.user_id))];
@@ -62,6 +64,7 @@ export const TabRelatorio: React.FC<{ eventoAdminId: string }> = ({ eventoAdminI
               setMvStats({
                 totalResgates: total,
                 usados,
+                postsEnviados: postsEnv,
                 postsVerificados: postsVerif,
                 postsObrigatorios: postsObrig,
                 alcanceEstimado: alcance,
@@ -357,6 +360,12 @@ export const TabRelatorio: React.FC<{ eventoAdminId: string }> = ({ eventoAdminI
                 {mvStats.totalResgates > 0 ? Math.round((mvStats.usados / mvStats.totalResgates) * 100) : 0}%
               </p>
               <p className="text-zinc-500 text-[8px] uppercase tracking-widest">Comparecimento</p>
+            </div>
+            <div className="bg-black/30 rounded-xl p-3 text-center">
+              <p className="text-white text-lg font-black">
+                {mvStats.postsEnviados}/{mvStats.postsObrigatorios || '—'}
+              </p>
+              <p className="text-zinc-500 text-[8px] uppercase tracking-widest">Posts enviados</p>
             </div>
             <div className="bg-black/30 rounded-xl p-3 text-center">
               <p className="text-white text-lg font-black">

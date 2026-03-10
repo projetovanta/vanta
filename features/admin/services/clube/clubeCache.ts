@@ -132,6 +132,7 @@ export const rowToSolicitacao = (r: SolicitacaoRow): SolicitacaoClube => ({
   tierPreAtribuido: (r.tier_pre_atribuido as TierMaisVanta) ?? undefined,
   profissao: (r as Record<string, unknown>).profissao as string | undefined,
   comoConheceu: (r as Record<string, unknown>).como_conheceu as string | undefined,
+  indicadoPorTexto: (r as Record<string, unknown>).indicado_por_texto as string | undefined,
 });
 
 export const rowToConfig = (r: ClubeConfigRow) => ({

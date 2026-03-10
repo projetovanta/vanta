@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from 'react';
-import { ArrowLeft, Settings, Crown, Compass, Sparkles, SlidersHorizontal, MapPin, Store, Ticket } from 'lucide-react';
+import { ArrowLeft, Settings, Crown, Compass, SlidersHorizontal, MapPin, Store, Ticket } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
 import { PlanosMaisVantaView } from './PlanosMaisVantaView';
 import { AssinaturasMaisVantaView } from './AssinaturasMaisVantaView';
@@ -13,16 +13,14 @@ import { ConfigMaisVantaView } from './ConfigMaisVantaView';
 import { CidadesMaisVantaView } from './CidadesMaisVantaView';
 import { ParceirosMaisVantaView } from './ParceirosMaisVantaView';
 import { DealsMaisVantaView } from './DealsMaisVantaView';
-import { TabClube } from './curadoria/tabClube';
+type AbaHub = 'PLANOS' | 'ASSINATURAS' | 'PASSAPORTES' | 'CIDADES' | 'PARCEIROS' | 'DEALS' | 'CONFIG';
 
-type AbaHub = 'PLANOS' | 'ASSINATURAS' | 'PASSAPORTES' | 'CLUBE' | 'CIDADES' | 'PARCEIROS' | 'DEALS' | 'CONFIG';
-
-export const MaisVantaHubView: React.FC<{ onBack: () => void; masterId: string; comunidadeId?: string }> = ({
-  onBack,
-  masterId,
-  comunidadeId,
-}) => {
-  const [aba, setAba] = useState<AbaHub>('PLANOS');
+export const MaisVantaHubView: React.FC<{
+  onBack: () => void;
+  masterId: string;
+  initialTab?: AbaHub;
+}> = ({ onBack, masterId, initialTab }) => {
+  const [aba, setAba] = useState<AbaHub>(initialTab ?? 'PLANOS');
 
   const abas: { id: AbaHub; label: string; icon: typeof Settings }[] = [
     { id: 'PLANOS', label: 'Planos & Tiers', icon: Settings },
@@ -31,7 +29,6 @@ export const MaisVantaHubView: React.FC<{ onBack: () => void; masterId: string; 
     { id: 'DEALS', label: 'Deals', icon: Ticket },
     { id: 'ASSINATURAS', label: 'Assinaturas', icon: Crown },
     { id: 'PASSAPORTES', label: 'Passaportes', icon: Compass },
-    { id: 'CLUBE', label: 'Clube', icon: Sparkles },
     { id: 'CONFIG', label: 'Config', icon: SlidersHorizontal },
   ];
 
@@ -88,7 +85,6 @@ export const MaisVantaHubView: React.FC<{ onBack: () => void; masterId: string; 
         {aba === 'DEALS' && <DealsMaisVantaView />}
         {aba === 'ASSINATURAS' && <AssinaturasMaisVantaView onBack={() => {}} />}
         {aba === 'PASSAPORTES' && <PassaportesMaisVantaView onBack={() => {}} masterId={masterId} />}
-        {aba === 'CLUBE' && <TabClube adminId={masterId} toastFn={() => {}} comunidadeId={comunidadeId} />}
         {aba === 'CONFIG' && <ConfigMaisVantaView />}
       </div>
     </div>

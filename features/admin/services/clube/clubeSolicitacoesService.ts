@@ -26,7 +26,14 @@ export async function solicitarEntrada(
   userId: string,
   instagramHandle: string,
   seguidores?: number,
-  verificacao?: { verificado: boolean; verificadoEm?: string; codigo?: string; comoConheceu?: string },
+  verificacao?: {
+    verificado: boolean;
+    verificadoEm?: string;
+    codigo?: string;
+    comoConheceu?: string;
+    profissao?: string;
+    indicadoPor?: string;
+  },
 ): Promise<SolicitacaoClube> {
   const row = {
     user_id: userId,
@@ -36,6 +43,8 @@ export async function solicitarEntrada(
     instagram_verificado_em: verificacao?.verificadoEm ?? null,
     codigo_verificacao: verificacao?.codigo ?? null,
     como_conheceu: verificacao?.comoConheceu ?? null,
+    profissao: verificacao?.profissao ?? null,
+    indicado_por_texto: verificacao?.indicadoPor ?? null,
     status: 'PENDENTE',
     criado_em: tsBR(),
   };
@@ -291,20 +300,7 @@ export async function rejeitarSolicitacao(solId: string, masterId: string): Prom
     sol.status = 'REJEITADO';
     sol.resolvidoEm = now;
     sol.resolvidoPor = masterId;
-    notificationsService
-      .add(
-        {
-          titulo: 'Solicitação não aprovada',
-          mensagem:
-            'Sua solicitação ao MAIS VANTA não foi aprovada neste momento. Você pode tentar novamente no futuro.',
-          tipo: 'MAIS_VANTA' as any,
-          lida: false,
-          link: 'CLUBE',
-          timestamp: now,
-        },
-        sol.userId,
-      )
-      .catch(() => {});
+    // Rejeição silenciosa: NÃO notificar o membro (spec regra 2)
   }
   bump();
 }

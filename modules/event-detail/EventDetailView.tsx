@@ -92,21 +92,15 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
     };
   }, [evento.id]);
 
-  // Benefício elegível para o membro logado (tier >= tier_minimo do benefício)
+  // Benefício elegível para o membro logado (match exato de tier — sem cascata)
   const membroClube = useMemo(
     () => (profile?.id ? clubeService.getMembroClubeByUserId(profile.id) : null),
     [profile?.id],
   );
   const beneficioElegivel = useMemo(() => {
     if (!membroClube || !membroClube.ativo || beneficiosMV.length === 0) return null;
-    const membroOrdem = clubeService.getTierOrdem(membroClube.tier);
-    // Encontra o melhor benefício onde tier do membro >= tier_minimo
-    return (
-      beneficiosMV.find(b => {
-        const reqOrdem = clubeService.getTierOrdem(b.tierMinimo);
-        return membroOrdem >= reqOrdem;
-      }) ?? null
-    );
+    // Sem cascata: membro só acessa benefício configurado exatamente pro tier dele
+    return beneficiosMV.find(b => b.tierMinimo === membroClube.tier) ?? null;
   }, [membroClube, beneficiosMV]);
 
   const temBeneficiosMV = beneficiosMV.length > 0;

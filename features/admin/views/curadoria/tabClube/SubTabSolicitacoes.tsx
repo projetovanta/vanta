@@ -9,7 +9,6 @@ import {
   ChevronRight,
   Briefcase,
   HelpCircle,
-  Tag,
   FileText,
   Clock,
 } from 'lucide-react';
@@ -19,6 +18,7 @@ import { formatDate } from '../types';
 import { TIER_LABELS, TIER_COLORS, getTierOptions } from './tierUtils';
 import type { PerfilEnriquecido } from './tierUtils';
 import { VantaDropdown } from './VantaDropdown';
+import { TagsPredefinidas } from './TagsPredefinidas';
 
 interface Props {
   solicitacoes: SolicitacaoClube[];
@@ -109,9 +109,11 @@ export const SubTabSolicitacoes: React.FC<Props> = ({
                   )}
                   <span className="text-zinc-700 text-[8px]">{formatDate(sol.criadoEm)}</span>
                 </div>
-                {sol.convidadoPor && (
+                {(sol.convidadoPor || sol.indicadoPorTexto) && (
                   <p className="text-zinc-400 text-[9px] mt-0.5">
-                    Convidado por: {perfis[sol.convidadoPor]?.nome || sol.convidadoPor.slice(0, 8)}
+                    {sol.convidadoPor
+                      ? `Convidado por: ${perfis[sol.convidadoPor]?.nome || sol.convidadoPor.slice(0, 8)}`
+                      : `Indicado por: ${sol.indicadoPorTexto}`}
                   </p>
                 )}
                 {clubeService.getFlagReincidencia(sol.userId) && (
@@ -141,47 +143,8 @@ export const SubTabSolicitacoes: React.FC<Props> = ({
               </div>
             )}
 
-            {/* Tags — campo livre */}
-            <div className="px-1 space-y-1">
-              <p className="text-zinc-500 text-[9px] font-bold uppercase tracking-wider flex items-center gap-1">
-                <Tag size={9} /> Tags internas
-              </p>
-              {/* Tags já adicionadas */}
-              {(tagsSelects[sol.id] || []).length > 0 && (
-                <div className="flex flex-wrap gap-1.5 mb-1">
-                  {(tagsSelects[sol.id] || []).map(tag => (
-                    <button
-                      key={tag}
-                      onClick={() =>
-                        onTagsChange(
-                          sol.id,
-                          (tagsSelects[sol.id] || []).filter(t => t !== tag),
-                        )
-                      }
-                      className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold bg-[#FFD300]/15 border border-[#FFD300]/30 text-[#FFD300] active:scale-90 transition-all"
-                    >
-                      {tag} <X size={8} />
-                    </button>
-                  ))}
-                </div>
-              )}
-              {/* Input para adicionar tag */}
-              <input
-                type="text"
-                placeholder="Digite uma tag e pressione Enter..."
-                className="w-full bg-zinc-800/40 border border-white/5 rounded-xl px-3 py-1.5 text-zinc-300 text-[10px] placeholder-zinc-600 focus:outline-none focus:border-[#FFD300]/20"
-                onKeyDown={e => {
-                  if (e.key === 'Enter') {
-                    e.preventDefault();
-                    const val = (e.target as HTMLInputElement).value.trim();
-                    if (val && !(tagsSelects[sol.id] || []).includes(val)) {
-                      onTagsChange(sol.id, [...(tagsSelects[sol.id] || []), val]);
-                      (e.target as HTMLInputElement).value = '';
-                    }
-                  }
-                }}
-              />
-            </div>
+            {/* Tags predefinidas por categoria */}
+            <TagsPredefinidas selected={tagsSelects[sol.id] || []} onChange={tags => onTagsChange(sol.id, tags)} />
 
             {/* Nota interna */}
             <div className="px-1 space-y-1">

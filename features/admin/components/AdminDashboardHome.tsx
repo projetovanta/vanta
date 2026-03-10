@@ -456,7 +456,7 @@ export const AdminDashboardHome: React.FC<{
                 value={pendencias.curadoria}
                 total={pendencias.curadoria + 1}
                 color="#f59e0b"
-                onClick={pendencias.curadoria > 0 ? () => onNavigate('CURADORIA') : undefined}
+                onClick={pendencias.curadoria > 0 ? () => onNavigate('CURADORIA_MV') : undefined}
               />
               <KpiPieCard
                 label="Eventos Pendentes"
@@ -536,7 +536,7 @@ export const AdminDashboardHome: React.FC<{
                       metric={metrics.membrosCurados}
                       color="#f59e0b"
                       icon={Star}
-                      onClick={pendencias.curadoria > 0 ? () => onNavigate('CURADORIA') : undefined}
+                      onClick={pendencias.curadoria > 0 ? () => onNavigate('CURADORIA_MV') : undefined}
                     />
                     <KpiDeltaCard label="Vendas" metric={metrics.vendaConvites} color="#a78bfa" icon={ShoppingCart} />
                     <KpiDeltaCard
@@ -677,12 +677,12 @@ export const AdminDashboardHome: React.FC<{
               pendencias.curadoria > 0
                 ? {
                     icon: Star,
-                    label: `${pendencias.curadoria} membro${pendencias.curadoria > 1 ? 's' : ''} na curadoria`,
+                    label: `${pendencias.curadoria} solicitaç${pendencias.curadoria > 1 ? 'ões' : 'ão'} MAIS VANTA`,
                     count: pendencias.curadoria,
                     color: 'text-purple-400',
                     bg: 'bg-purple-500/5',
                     border: 'border-purple-500/15',
-                    nav: 'CURADORIA' as AdminSubView,
+                    nav: 'CURADORIA_MV' as AdminSubView,
                   }
                 : null!,
               pendencias.dividaSocial > 0

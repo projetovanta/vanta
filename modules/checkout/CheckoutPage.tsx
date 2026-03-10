@@ -840,7 +840,7 @@ export const CheckoutPage: React.FC = () => {
               <p className="text-zinc-400 text-[9px]">
                 {totalItems} ingresso{totalItems !== 1 ? 's' : ''}
                 {descontoMVValor > 0 && (
-                  <span className="text-[#FFD300] ml-1">· −{fmtBrl(descontoMVValor)} MAIS VANTA</span>
+                  <span className="text-emerald-400 ml-1">· −{fmtBrl(descontoMVValor)} desconto</span>
                 )}
                 {cupomAplicado && desconto - descontoMVValor > 0 && (
                   <span className="text-emerald-400 ml-1">· −{fmtBrl(desconto - descontoMVValor)} cupom</span>

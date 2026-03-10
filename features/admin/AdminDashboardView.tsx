@@ -1,6 +1,5 @@
 import React, { useState, useMemo, useEffect, Suspense, lazy } from 'react';
 import { ArrowLeft, ChevronRight, Loader2 } from 'lucide-react';
-import { adminService } from './services/adminService';
 import { eventosAdminService, SolicitacaoSaque } from './services/eventosAdminService';
 import { clubeService } from './services/clubeService';
 import { comunidadesService } from './services/comunidadesService';
@@ -30,7 +29,6 @@ import {
 } from './permissoes';
 
 // ── Lazy-loaded views (carregam sob demanda) ──────────────────────────────────
-const CuradoriaView = lazy(() => import('./views/CuradoriaView').then(m => ({ default: m.CuradoriaView })));
 const ComunidadesView = lazy(() => import('./views/ComunidadesView').then(m => ({ default: m.ComunidadesView })));
 const VantaIndicaView = lazy(() => import('./views/VantaIndicaView').then(m => ({ default: m.VantaIndicaView })));
 const NotificacoesAdminView = lazy(() =>
@@ -79,6 +77,7 @@ const CategoriasAdminView = lazy(() =>
 );
 const ConvitesSocioView = lazy(() => import('./views/ConvitesSocioView').then(m => ({ default: m.ConvitesSocioView })));
 const MaisVantaHubView = lazy(() => import('./views/MaisVantaHubView').then(m => ({ default: m.MaisVantaHubView })));
+const TabClubeCuradoria = lazy(() => import('./views/curadoria/tabClube').then(m => ({ default: m.TabClube })));
 const CidadesMaisVantaView = lazy(() =>
   import('./views/CidadesMaisVantaView').then(m => ({ default: m.CidadesMaisVantaView })),
 );
@@ -270,15 +269,10 @@ export const AdminDashboardView: React.FC<{
     initialTenantTipo === 'EVENTO' ? 'do evento' : initialTenantTipo === 'COMUNIDADE' ? 'da comunidade' : null;
 
   // Pendências calculadas para o DashboardView
-  const [curadoriaCount, setCuradoriaCount] = useState(0);
   const [saquesCount, setSaquesCount] = useState(0);
   const [reembolsosCount, setReembolsosCount] = useState(0);
   useEffect(() => {
     if (adminRole === 'vanta_masteradm') {
-      adminService
-        .getMembrosParaCuradoria()
-        .then(list => setCuradoriaCount(list.length))
-        .catch(() => setCuradoriaCount(0));
       eventosAdminService
         .getSolicitacoesSaque()
         .then(list => setSaquesCount(list.filter((s: SolicitacaoSaque) => s.status === 'PENDENTE').length))
@@ -291,12 +285,13 @@ export const AdminDashboardView: React.FC<{
 
   const dashPendencias = useMemo(() => {
     if (adminRole === 'vanta_masteradm') {
+      const solicitacoesMV = clubeService.getSolicitacoesPendentes().length;
       return {
-        curadoria: curadoriaCount,
+        curadoria: solicitacoesMV,
         pendentes: eventosAdminService.getEventosPendentes().length,
         saques: saquesCount,
         passaportesMV: clubeService.getPassportsPendentes().length,
-        solicitacoesMV: clubeService.getSolicitacoesPendentes().length,
+        solicitacoesMV,
         dividaSocial: new Set(clubeService.getReservasPendentePost().map(r => r.userId)).size,
         reembolsos: reembolsosCount,
       };
@@ -311,7 +306,7 @@ export const AdminDashboardView: React.FC<{
       reembolsos: 0,
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [adminRole, subView, curadoriaCount, saquesCount, reembolsosCount]);
+  }, [adminRole, subView, saquesCount, reembolsosCount]);
 
   // vanta_member: roteado via AccessNodes (mantém lógica específica)
   if (adminRole === 'vanta_member') {
@@ -548,10 +543,6 @@ export const AdminDashboardView: React.FC<{
         return guardBlock(back);
       return <PortariaScannerView onBack={back} eventoId={gatewayEventoId} />;
     }
-    if (subView === 'CURADORIA') {
-      if (!isMasterOnly(currentUserId, adminRole)) return guardBlock(back);
-      return <CuradoriaView onBack={back} adminNome={adminNome} adminId={currentUserId} comunidadeId={comunidadeId} />;
-    }
     if (subView === 'COMUNIDADES') {
       if (!canAccessComunidades(currentUserId, adminRole, { communityId: comunidadeId })) return guardBlock(back);
       return (
@@ -634,7 +625,7 @@ export const AdminDashboardView: React.FC<{
     }
     if (subView === 'MAIS_VANTA_HUB') {
       if (adminRole !== 'vanta_masteradm') return guardBlock(back);
-      return <MaisVantaHubView onBack={back} masterId={currentUserId} comunidadeId={comunidadeId} />;
+      return <MaisVantaHubView onBack={back} masterId={currentUserId} />;
     }
     if (subView === 'MONITORAMENTO_MV') {
       if (adminRole !== 'vanta_masteradm') return guardBlock(back);
@@ -678,7 +669,26 @@ export const AdminDashboardView: React.FC<{
     }
     if (subView === 'CURADORIA_MV') {
       if (adminRole !== 'vanta_masteradm') return guardBlock(back);
-      return <CuradoriaView onBack={back} />;
+      return (
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-6 pt-8 pb-4 shrink-0">
+            <div className="flex justify-between items-start">
+              <div className="flex-1 min-w-0 mr-3">
+                <p className="text-[9px] font-black uppercase tracking-[.25em] text-[#FFD300]/60 mb-1">MAIS VANTA</p>
+                <h1 className="text-xl font-bold italic text-white">Curadoria</h1>
+              </div>
+              <button
+                aria-label="Voltar"
+                onClick={back}
+                className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
+              >
+                <ArrowLeft size={18} className="text-zinc-400" />
+              </button>
+            </div>
+          </div>
+          <TabClubeCuradoria adminId={currentUserId} toastFn={(_tipo, msg) => toast(msg)} comunidadeId={comunidadeId} />
+        </div>
+      );
     }
     if (subView === 'CONVITES_MV') {
       if (adminRole !== 'vanta_masteradm' && adminRole !== 'vanta_gerente') return guardBlock(back);

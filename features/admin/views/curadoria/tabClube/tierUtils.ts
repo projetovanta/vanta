@@ -57,7 +57,7 @@ export const BENEFICIOS_DISPONIVEIS: { id: BeneficioId; label: string; desc: str
     desc: 'Acesso à reserva antes da abertura geral',
     icon: Clock,
   },
-  { id: 'PASSPORT_GLOBAL', label: 'Passport Global', desc: 'Acesso a eventos de outras comunidades', icon: Globe },
+  { id: 'PASSPORT_GLOBAL', label: 'Passport Regional', desc: 'Acesso a eventos em outras cidades', icon: Globe },
 ];
 
 /** Dados enriquecidos do perfil para exibição nos cards */

@@ -117,6 +117,24 @@ export const SubTabMembros: React.FC<Props> = ({
                 <Crown size={14} style={{ color: TIER_COLORS[m.tier] }} />
               </div>
             </div>
+            {/* Tags e nota interna do membro */}
+            {m.tags && m.tags.length > 0 && (
+              <div className="flex flex-wrap gap-1 mt-2">
+                {m.tags.map(tag => (
+                  <span
+                    key={tag}
+                    className="px-1.5 py-0.5 rounded-full text-[8px] font-bold bg-[#FFD300]/10 border border-[#FFD300]/20 text-[#FFD300]/70"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+            {m.notaInterna && (
+              <p className="text-zinc-500 text-[9px] mt-1 truncate" title={m.notaInterna}>
+                {m.notaInterna}
+              </p>
+            )}
             {clubeService.temDividaSocial(m.userId) && (
               <div className="flex items-center gap-1.5 mt-2 px-2 py-1 bg-amber-500/10 border border-amber-500/20 rounded-lg">
                 <AlertTriangle size={10} className="text-amber-400" />

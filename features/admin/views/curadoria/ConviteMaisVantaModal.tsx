@@ -11,7 +11,7 @@ export const ConviteMaisVantaModal: React.FC<{
   toastFn: (tipo: 'sucesso' | 'erro', msg: string) => void;
 }> = ({ membro, adminId, onClose, onSuccess, toastFn }) => {
   const tiers = clubeService.getTiers();
-  const [tier, setTier] = useState<TierMaisVanta>((tiers[0]?.id as TierMaisVanta) ?? ('BRONZE' as TierMaisVanta));
+  const [tier, setTier] = useState<TierMaisVanta>((tiers[0]?.id as TierMaisVanta) ?? ('desconto' as TierMaisVanta));
   const [sending, setSending] = useState(false);
 
   const handleConfirm = async () => {

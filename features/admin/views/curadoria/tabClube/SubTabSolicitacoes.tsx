@@ -1,5 +1,17 @@
 import React from 'react';
-import { Check, X, Instagram, AlertTriangle, MapPin, User, ChevronRight } from 'lucide-react';
+import {
+  Check,
+  X,
+  Instagram,
+  AlertTriangle,
+  MapPin,
+  User,
+  ChevronRight,
+  Briefcase,
+  HelpCircle,
+  Tag,
+  FileText,
+} from 'lucide-react';
 import type { SolicitacaoClube, TierMaisVanta } from '../../../../../types';
 import { clubeService } from '../../../services/clubeService';
 import { formatDate } from '../types';
@@ -11,7 +23,11 @@ interface Props {
   solicitacoes: SolicitacaoClube[];
   perfis: Record<string, PerfilEnriquecido>;
   tierSelects: Record<string, TierMaisVanta>;
+  tagsSelects: Record<string, string[]>;
+  notasInternas: Record<string, string>;
   onTierSelectChange: (id: string, tier: TierMaisVanta) => void;
+  onTagsChange: (id: string, tags: string[]) => void;
+  onNotaInternaChange: (id: string, nota: string) => void;
   onAprovar: (solId: string) => void;
   onRejeitar: (solId: string) => void;
   onOpenPerfil: (userId: string) => void;
@@ -22,7 +38,11 @@ export const SubTabSolicitacoes: React.FC<Props> = ({
   solicitacoes,
   perfis,
   tierSelects,
+  tagsSelects,
+  notasInternas,
   onTierSelectChange,
+  onTagsChange,
+  onNotaInternaChange,
   onAprovar,
   onRejeitar,
   onOpenPerfil,
@@ -102,6 +122,78 @@ export const SubTabSolicitacoes: React.FC<Props> = ({
               </div>
             </button>
 
+            {/* Profissão e Como conheceu */}
+            {(sol.profissao || sol.comoConheceu) && (
+              <div className="flex flex-wrap gap-2 px-1">
+                {sol.profissao && (
+                  <span className="flex items-center gap-1 text-zinc-400 text-[9px] bg-zinc-800/60 border border-white/5 rounded-lg px-2 py-1">
+                    <Briefcase size={9} className="shrink-0" /> {sol.profissao}
+                  </span>
+                )}
+                {sol.comoConheceu && (
+                  <span className="flex items-center gap-1 text-zinc-400 text-[9px] bg-zinc-800/60 border border-white/5 rounded-lg px-2 py-1">
+                    <HelpCircle size={9} className="shrink-0" /> {sol.comoConheceu}
+                  </span>
+                )}
+              </div>
+            )}
+
+            {/* Tags — campo livre */}
+            <div className="px-1 space-y-1">
+              <p className="text-zinc-500 text-[9px] font-bold uppercase tracking-wider flex items-center gap-1">
+                <Tag size={9} /> Tags internas
+              </p>
+              {/* Tags já adicionadas */}
+              {(tagsSelects[sol.id] || []).length > 0 && (
+                <div className="flex flex-wrap gap-1.5 mb-1">
+                  {(tagsSelects[sol.id] || []).map(tag => (
+                    <button
+                      key={tag}
+                      onClick={() =>
+                        onTagsChange(
+                          sol.id,
+                          (tagsSelects[sol.id] || []).filter(t => t !== tag),
+                        )
+                      }
+                      className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold bg-[#FFD300]/15 border border-[#FFD300]/30 text-[#FFD300] active:scale-90 transition-all"
+                    >
+                      {tag} <X size={8} />
+                    </button>
+                  ))}
+                </div>
+              )}
+              {/* Input para adicionar tag */}
+              <input
+                type="text"
+                placeholder="Digite uma tag e pressione Enter..."
+                className="w-full bg-zinc-800/40 border border-white/5 rounded-xl px-3 py-1.5 text-zinc-300 text-[10px] placeholder-zinc-600 focus:outline-none focus:border-[#FFD300]/20"
+                onKeyDown={e => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const val = (e.target as HTMLInputElement).value.trim();
+                    if (val && !(tagsSelects[sol.id] || []).includes(val)) {
+                      onTagsChange(sol.id, [...(tagsSelects[sol.id] || []), val]);
+                      (e.target as HTMLInputElement).value = '';
+                    }
+                  }
+                }}
+              />
+            </div>
+
+            {/* Nota interna */}
+            <div className="px-1 space-y-1">
+              <p className="text-zinc-500 text-[9px] font-bold uppercase tracking-wider flex items-center gap-1">
+                <FileText size={9} /> Nota interna
+              </p>
+              <textarea
+                value={notasInternas[sol.id] || ''}
+                onChange={e => onNotaInternaChange(sol.id, e.target.value)}
+                placeholder="Observações internas (só curadores veem)..."
+                rows={2}
+                className="w-full bg-zinc-800/40 border border-white/5 rounded-xl px-3 py-2 text-zinc-300 text-[10px] placeholder-zinc-600 resize-none focus:outline-none focus:border-[#FFD300]/20"
+              />
+            </div>
+
             {/* Ações — 2 linhas para caber em mobile */}
             <div className="space-y-2">
               {/* Linha 1: Instagram + Tier */}
@@ -113,7 +205,7 @@ export const SubTabSolicitacoes: React.FC<Props> = ({
                   <Instagram size={12} /> Instagram
                 </button>
                 <VantaDropdown
-                  value={tierSelects[sol.id] || 'BRONZE'}
+                  value={tierSelects[sol.id] || 'desconto'}
                   onChange={v => onTierSelectChange(sol.id, v as TierMaisVanta)}
                   options={getTierOptions().map(t => ({
                     value: t,

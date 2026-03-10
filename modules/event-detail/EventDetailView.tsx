@@ -18,10 +18,11 @@ import { useExtrasStore } from '../../stores/extrasStore';
 import { eventosAdminService } from '../../features/admin/services/eventosAdminService';
 import { reviewsService } from '../../features/admin/services/reviewsService';
 import { clubeService } from '../../features/admin/services/clubeService';
-import { MaisVantaReservaModal } from './components/MaisVantaReservaModal';
+import { MaisVantaBeneficioModal } from './components/MaisVantaBeneficioModal';
 import ReviewModal from '../../components/ReviewModal';
 import { ComemoracaoFormView } from '../community/ComemoracaoFormView';
 import { trackEventOpen } from '../../services/analyticsService';
+import type { BeneficioMV } from '../../features/admin/services/clube/clubeLotesService';
 
 interface EventDetailViewProps {
   evento: Evento;
@@ -68,34 +69,69 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
 
   const minPrice = getMinPrice(evento);
 
-  // MAIS VANTA — tier invisível ao membro
-  const temLotesMV = useMemo(() => clubeService.temBeneficio(evento.id), [evento.id]);
-  const loteMV = useMemo(
-    () => (profile?.id ? clubeService.getLoteParaTier(evento.id, profile.id) : null),
-    [evento.id, profile?.id],
-  );
+  // MAIS VANTA — busca benefícios do evento e verifica elegibilidade
+  const [beneficiosMV, setBeneficiosMV] = useState<BeneficioMV[]>([]);
   const isMembro = useMemo(() => (profile?.id ? clubeService.isMembro(profile.id) : false), [profile?.id]);
   const temDivida = useMemo(() => (profile?.id ? clubeService.temDividaSocial(profile.id) : false), [profile?.id]);
   const estaBloqueado = useMemo(() => (profile?.id ? clubeService.estaBloqueado(profile.id) : false), [profile?.id]);
-  const vagasRestantes = loteMV ? loteMV.quantidade - loteMV.reservados : 0;
   const eventoComunidadeId = evento.comunidade?.id;
   const eventoCidade = evento.cidade;
   const passportStatus = useMemo(() => {
-    if (!profile?.id || !eventoCidade) return 'APROVADO' as const; // sem cidade = liberar
+    if (!profile?.id || !eventoCidade) return 'APROVADO' as const;
     return clubeService.getPassportStatus(profile.id, eventoCidade);
   }, [profile?.id, eventoCidade]);
   const passportOk = passportStatus === 'APROVADO';
 
-  const handleReservarMV = async (_comAcompanhante: boolean) => {
-    if (!loteMV || !profile?.id) return;
-    const result = await clubeService.reservar(loteMV.id, evento.id, profile.id);
-    if (result) {
-      onSuccess?.('Reserva confirmada! Lembre-se da contrapartida.');
-      setShowMaisVantaModal(false);
-    } else {
-      onSuccess?.('Não foi possível reservar. Verifique os requisitos.');
+  useEffect(() => {
+    let cancelled = false;
+    clubeService.getBeneficiosEvento(evento.id).then(b => {
+      if (!cancelled) setBeneficiosMV(b.filter(x => x.ativo));
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [evento.id]);
+
+  // Benefício elegível para o membro logado (tier >= tier_minimo do benefício)
+  const membroClube = useMemo(
+    () => (profile?.id ? clubeService.getMembroClubeByUserId(profile.id) : null),
+    [profile?.id],
+  );
+  const beneficioElegivel = useMemo(() => {
+    if (!membroClube || !membroClube.ativo || beneficiosMV.length === 0) return null;
+    const membroOrdem = clubeService.getTierOrdem(membroClube.tier);
+    // Encontra o melhor benefício onde tier do membro >= tier_minimo
+    return (
+      beneficiosMV.find(b => {
+        const reqOrdem = clubeService.getTierOrdem(b.tierMinimo);
+        return membroOrdem >= reqOrdem;
+      }) ?? null
+    );
+  }, [membroClube, beneficiosMV]);
+
+  const temBeneficiosMV = beneficiosMV.length > 0;
+
+  // Label do benefício para exibição ao membro
+  const beneficioLabel = useMemo(() => {
+    if (!beneficioElegivel || !eventoAdmin) return '';
+    if (beneficioElegivel.tipo === 'ingresso' && beneficioElegivel.loteId) {
+      const loteIdx = eventoAdmin.lotes.findIndex(l => l.id === beneficioElegivel.loteId);
+      const lote = eventoAdmin.lotes[loteIdx];
+      if (!lote) return 'Ingresso exclusivo';
+      const varsLabel = lote.variacoes
+        .map(v => {
+          const gen = v.genero === 'MASCULINO' ? 'Masc.' : v.genero === 'FEMININO' ? 'Fem.' : '';
+          return `${v.area}${gen ? ` ${gen}` : ''}`;
+        })
+        .join(', ');
+      return varsLabel ? `Lote ${loteIdx + 1} — ${varsLabel}` : `Lote ${loteIdx + 1}`;
     }
-  };
+    return 'Lista exclusiva';
+  }, [beneficioElegivel, eventoAdmin]);
+
+  const isDescontoOnly = beneficioElegivel?.tierMinimo === 'desconto';
+  const beneficioDesconto =
+    isDescontoOnly && beneficioElegivel?.descontoPercentual ? beneficioElegivel.descontoPercentual : null;
 
   // Analytics: track event open
   const currentUserId = useAuthStore(s => s.currentAccount.id);
@@ -200,28 +236,20 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
             </button>
           )}
 
-          {/* MAIS VANTA — Benefício Influência (tier invisível) */}
-          {temLotesMV && !isPast && (
+          {/* MAIS VANTA — Benefício exclusivo (tier invisível ao membro) */}
+          {/* Tier desconto: desconto aparece direto no preço, sem badge MV */}
+          {temBeneficiosMV && !isPast && !isDescontoOnly && (
             <div className="bg-gradient-to-b from-[#FFD300]/5 to-transparent border border-[#FFD300]/15 rounded-2xl p-5 space-y-3">
               <div className="flex items-center gap-2">
                 <Crown size={16} className="text-[#FFD300]" />
                 <h3 className="text-[#FFD300] font-black text-xs uppercase tracking-widest">MAIS VANTA</h3>
               </div>
-              {loteMV?.descricao && <p className="text-zinc-300 text-sm line-clamp-3">{loteMV.descricao}</p>}
-              {loteMV && vagasRestantes > 0 && (
-                <div className="flex items-center gap-3 flex-wrap">
-                  <span className="text-zinc-400 text-[10px]">
-                    {vagasRestantes} vaga{vagasRestantes !== 1 ? 's' : ''}
-                  </span>
-                  {loteMV.acompanhantes > 0 && (
-                    <span className="flex items-center gap-1 text-zinc-400 text-[10px]">
-                      <UserPlus size={9} /> +{loteMV.acompanhantes} acompanhante{loteMV.acompanhantes !== 1 ? 's' : ''}
-                    </span>
-                  )}
-                  {loteMV.tipoAcesso && loteMV.tipoAcesso !== 'Pista' && (
-                    <span className="text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded bg-[#FFD300]/15 text-[#FFD300]">
-                      {loteMV.tipoAcesso}
-                    </span>
+
+              {beneficioElegivel && beneficioLabel && (
+                <div className="space-y-1">
+                  <p className="text-white text-sm font-bold">{beneficioLabel}</p>
+                  {beneficioDesconto && (
+                    <p className="text-[#FFD300] text-xs font-bold">{beneficioDesconto}% de desconto</p>
                   )}
                 </div>
               )}
@@ -242,7 +270,7 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
                     Poste o conteúdo pendente antes de fazer novas reservas
                   </span>
                 </div>
-              ) : !loteMV || vagasRestantes <= 0 ? (
+              ) : !beneficioElegivel ? (
                 <div className="flex items-center gap-2 bg-zinc-800/50 border border-white/5 rounded-xl p-3">
                   <Lock size={12} className="text-zinc-400 shrink-0" />
                   <span className="text-zinc-400 text-[10px]">Este evento não oferece benefício para o seu perfil</span>
@@ -278,7 +306,7 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
                   onClick={() => setShowMaisVantaModal(true)}
                   className="w-full py-3 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all"
                 >
-                  Reservar Experiência
+                  Resgatar Benefício
                 </button>
               )}
             </div>
@@ -426,14 +454,20 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
         </div>
       )}
 
-      {loteMV && (
-        <MaisVantaReservaModal
+      {beneficioElegivel && (
+        <MaisVantaBeneficioModal
           isOpen={showMaisVantaModal}
           onClose={() => setShowMaisVantaModal(false)}
-          lote={loteMV}
+          beneficio={beneficioElegivel}
+          beneficioLabel={beneficioLabel}
+          descontoPercentual={beneficioDesconto}
           eventoNome={evento.titulo}
           venueName={evento.comunidade?.nome ?? evento.local}
-          onConfirmar={handleReservarMV}
+          venueInstagram={eventoAdmin?.comunidade?.nome}
+          onConfirmar={() => {
+            onSuccess?.('Benefício resgatado! Lembre-se da contrapartida.');
+            setShowMaisVantaModal(false);
+          }}
         />
       )}
 

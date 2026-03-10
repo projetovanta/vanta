@@ -1,5 +1,5 @@
 // ── Clube de Influência (MAIS VANTA) ─────────────────────────────────────
-export type TierMaisVanta = 'BRONZE' | 'PRATA' | 'OURO' | 'DIAMANTE';
+export type TierMaisVanta = 'desconto' | 'convidado' | 'presenca' | 'creator' | 'vanta_black';
 
 export interface MembroClubeVanta {
   userId: string;
@@ -26,7 +26,7 @@ export interface LoteMaisVanta {
   id: string;
   eventoId: string;
   tierMinimo: TierMaisVanta; // @deprecated: legado — usar tierId
-  tierId?: string; // tier específico deste lote (ex: 'BRONZE')
+  tierId?: string; // tier específico deste lote (ex: 'convidado')
   quantidade: number; // total de vagas
   reservados: number; // já reservados
   prazo?: string; // deadline para reserva (ISO)
@@ -76,6 +76,8 @@ export interface SolicitacaoClube {
   resolvidoPor?: string;
   tierAtribuido?: TierMaisVanta;
   tierPreAtribuido?: TierMaisVanta; // tier escolhido pelo master ao convidar
+  profissao?: string;
+  comoConheceu?: string;
 }
 
 // ── MV2: Assinatura SaaS MAIS VANTA ────────────────────────────────────────
@@ -91,7 +93,7 @@ export interface PlanoMaisVantaDef {
   limiteEventosMV: number; // -1 = ilimitado
   limiteMembros: number; // -1 = ilimitado
   limiteVagasEvento: number;
-  tierMinimo: string; // id do tier mínimo (ex: 'BRONZE')
+  tierMinimo: string; // id do tier mínimo (ex: 'desconto')
   acompanhante: boolean;
   prazoPostHoras: number;
   precoAvulso: number;

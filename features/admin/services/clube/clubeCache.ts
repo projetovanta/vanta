@@ -23,10 +23,11 @@ type ClubeConfigRow = Database['public']['Tables']['clube_config']['Row'];
 // ── Hierarquia de tiers (legado para compat) ─────────────────────────────────
 /** @deprecated Use clubeService.getTiers() para tiers dinâmicos */
 export const TIER_ORDER: Record<TierMaisVanta, number> = {
-  BRONZE: 1,
-  PRATA: 2,
-  OURO: 3,
-  DIAMANTE: 4,
+  desconto: 0,
+  convidado: 1,
+  presenca: 2,
+  creator: 3,
+  vanta_black: 4,
 };
 
 // ── Cache de tiers dinâmicos ─────────────────────────────────────────────────
@@ -59,7 +60,7 @@ export const rowToTierDef = (r: TierRow): TierMaisVantaDef => ({
 
 export const rowToMembro = (r: MembroRow): MembroClubeVanta => ({
   userId: r.user_id ?? '',
-  tier: (r.tier as TierMaisVanta) ?? 'BRONZE',
+  tier: (r.tier as TierMaisVanta) ?? 'desconto',
   instagramHandle: r.instagram_handle ?? undefined,
   instagramSeguidores: r.instagram_seguidores ?? undefined,
   aprovadoPor: r.aprovado_por ?? '',
@@ -93,7 +94,7 @@ export const rowToPassport = (r: PassportRow): PassportAprovacao => ({
 export const rowToLote = (_r: Record<string, unknown>): LoteMaisVanta => ({
   id: '',
   eventoId: '',
-  tierMinimo: 'CONVIDADO' as TierMaisVanta,
+  tierMinimo: 'convidado' as TierMaisVanta,
   quantidade: 0,
   reservados: 0,
   acompanhantes: 0,
@@ -126,6 +127,8 @@ export const rowToSolicitacao = (r: SolicitacaoRow): SolicitacaoClube => ({
   resolvidoPor: r.resolvido_por ?? undefined,
   tierAtribuido: (r.tier_atribuido as TierMaisVanta) ?? undefined,
   tierPreAtribuido: (r.tier_pre_atribuido as TierMaisVanta) ?? undefined,
+  profissao: (r as Record<string, unknown>).profissao as string | undefined,
+  comoConheceu: (r as Record<string, unknown>).como_conheceu as string | undefined,
 });
 
 export const rowToConfig = (r: ClubeConfigRow) => ({

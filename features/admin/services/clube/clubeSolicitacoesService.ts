@@ -156,7 +156,7 @@ export async function aceitarConviteMaisVanta(
   sol.instagramVerificadoEm = verificacao?.verificadoEm;
   sol.codigoVerificacao = verificacao?.codigo;
 
-  const tier = sol.tierPreAtribuido ?? ('BRONZE' as TierMaisVanta);
+  const tier = sol.tierPreAtribuido ?? ('desconto' as TierMaisVanta);
   const masterId = sol.convidadoPor ?? '';
   await aprovarSolicitacao(solId, tier, masterId, undefined, enviarNotificacaoClube);
 }
@@ -172,6 +172,8 @@ export async function aprovarSolicitacao(
     corpo: string;
     data?: Record<string, string>;
   }) => Promise<void>,
+  tags?: string[],
+  notaInterna?: string,
 ): Promise<void> {
   const sol = _solicitacoes.find(s => s.id === solId);
   if (!sol) return;
@@ -183,7 +185,7 @@ export async function aprovarSolicitacao(
     .update({ status: 'APROVADO', resolvido_em: now, resolvido_por: masterId, tier_atribuido: tier })
     .eq('id', solId);
 
-  const membroRow = {
+  const membroRow: Record<string, unknown> = {
     user_id: sol.userId,
     tier,
     instagram_handle: sol.instagramHandle,
@@ -195,8 +197,10 @@ export async function aprovarSolicitacao(
     convidado_por: sol.convidadoPor ?? null,
     ativo: true,
     comunidade_origem: comunidadeId ?? null,
+    ...(tags && tags.length > 0 ? { tags } : {}),
+    ...(notaInterna ? { nota_interna: notaInterna } : {}),
   };
-  const { error: errMembro } = await supabase.from('membros_clube').insert(membroRow);
+  const { error: errMembro } = await supabase.from('membros_clube').insert(membroRow as never);
   if (errMembro) console.error('[clubeSolicitacoes] aprovar membro insert:', errMembro);
 
   if (comunidadeId) {

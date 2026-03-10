@@ -16,7 +16,7 @@ export interface BeneficioMVForm {
   tipo: 'ingresso' | 'lista'; // qual referência usar
   loteId: string; // ID do lote (se tipo=ingresso)
   listaVarId: string; // ID da varLista (se tipo=lista) — resolverá para lista_id no save
-  descontoPercentual: string; // 0-100 (se tier=DESCONTO)
+  descontoPercentual: string; // 0-100 (se tier=desconto)
 }
 
 export interface MaisVantaEventoForm {
@@ -70,11 +70,11 @@ const getTierOptions = (): { id: string; label: string; cor: string }[] => {
   const dynamic = clubeService.getTiers();
   if (dynamic.length > 0) return dynamic.map(t => ({ id: t.id, label: t.nome, cor: t.cor ?? '#666' }));
   return [
-    { id: 'DESCONTO', label: 'Desconto', cor: '#888' },
-    { id: 'CONVIDADO', label: 'Convidado', cor: '#CD7F32' },
-    { id: 'PRESENCA', label: 'Presença', cor: '#C0C0C0' },
-    { id: 'CREATOR', label: 'Creator', cor: '#FFD700' },
-    { id: 'VANTA_BLACK', label: 'VANTA Black', cor: '#1a1a1a' },
+    { id: 'desconto', label: 'Desconto', cor: '#888' },
+    { id: 'convidado', label: 'Convidado', cor: '#CD7F32' },
+    { id: 'presenca', label: 'Presença', cor: '#C0C0C0' },
+    { id: 'creator', label: 'Creator', cor: '#FFD700' },
+    { id: 'vanta_black', label: 'VANTA Black', cor: '#1a1a1a' },
   ];
 };
 
@@ -481,7 +481,7 @@ export const Step2Ingressos: React.FC<Props> = ({
                     const tierOpt = tierOptions.find(t => t.id === b.tierId);
                     const cor = tierOpt?.cor ?? '#666';
                     const nome = tierOpt?.label ?? b.tierId;
-                    const isDesconto = b.tierId === 'DESCONTO';
+                    const isDesconto = b.tierId === 'desconto';
 
                     const updateBeneficio = (field: keyof BeneficioMVForm, value: string | boolean) => {
                       const next = [...beneficios];
@@ -553,7 +553,7 @@ export const Step2Ingressos: React.FC<Props> = ({
                               />
                             </div>
 
-                            {/* Desconto (somente tier DESCONTO) */}
+                            {/* Desconto (somente tier desconto) */}
                             {isDesconto && (
                               <div>
                                 <label className="text-zinc-400 text-[8px] font-black uppercase flex items-center gap-1">

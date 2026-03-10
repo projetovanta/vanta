@@ -118,8 +118,19 @@ export const clubeService = {
     tier: import('../../../../types').TierMaisVanta,
     masterId: string,
     comunidadeId?: string,
+    _enviarNotificacao?: unknown,
+    tags?: string[],
+    notaInterna?: string,
   ) {
-    return solicitacoes.aprovarSolicitacao(solId, tier, masterId, comunidadeId, this.enviarNotificacaoClube.bind(this));
+    return solicitacoes.aprovarSolicitacao(
+      solId,
+      tier,
+      masterId,
+      comunidadeId,
+      this.enviarNotificacaoClube.bind(this),
+      tags,
+      notaInterna,
+    );
   },
   rejeitarSolicitacao: solicitacoes.rejeitarSolicitacao,
 

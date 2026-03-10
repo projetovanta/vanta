@@ -171,7 +171,7 @@ export const PerfilMembroOverlay: React.FC<Props> = ({
       {solicitacao && solicitacao.status === 'PENDENTE' && (
         <div className="space-y-2 mt-4">
           <VantaDropdown
-            value={tierSelects[solicitacao.id] || 'BRONZE'}
+            value={tierSelects[solicitacao.id] || 'desconto'}
             onChange={v => onTierSelectChange(solicitacao.id, v as TierMaisVanta)}
             options={getTierOptions().map(t => ({ value: t, label: TIER_LABELS[t], color: TIER_COLORS[t] }))}
             className="w-full"

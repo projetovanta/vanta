@@ -157,7 +157,7 @@ export const EditarLotesSubView: React.FC<Props> = ({ eventoId, onBack, currentU
           tipo: b.tipo,
           loteId: b.tipo === 'ingresso' ? b.loteId : null,
           listaId: b.tipo === 'lista' ? b.listaVarId : null,
-          descontoPercentual: b.tierId === 'DESCONTO' ? parseInt(b.descontoPercentual) || null : null,
+          descontoPercentual: b.tierId === 'desconto' ? parseInt(b.descontoPercentual) || null : null,
           ativo: true,
         })),
       );

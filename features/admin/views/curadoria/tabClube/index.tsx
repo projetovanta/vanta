@@ -40,6 +40,8 @@ export const TabClube: React.FC<Props> = ({ adminId, toastFn, comunidadeId }) =>
   const [query, setQuery] = useState('');
   const [tierFilter, setTierFilter] = useState<TierMaisVanta | ''>('');
   const [tierSelects, setTierSelects] = useState<Record<string, TierMaisVanta>>({});
+  const [tagsSelects, setTagsSelects] = useState<Record<string, string[]>>({});
+  const [notasInternas, setNotasInternas] = useState<Record<string, string>>({});
   const [atualizandoSeg, setAtualizandoSeg] = useState(false);
   const [eventoSelecionado, setEventoSelecionado] = useState<string>('');
   const [eventosComLote, setEventosComLote] = useState<EventoAdmin[]>([]);
@@ -118,9 +120,11 @@ export const TabClube: React.FC<Props> = ({ adminId, toastFn, comunidadeId }) =>
   }, [refresh]);
 
   const handleAprovar = async (solId: string) => {
-    const tier = tierSelects[solId] || 'BRONZE';
+    const tier = tierSelects[solId] || 'desconto';
+    const tags = tagsSelects[solId] || [];
+    const notaInterna = notasInternas[solId] || '';
     try {
-      await clubeService.aprovarSolicitacao(solId, tier, adminId, comunidadeId);
+      await clubeService.aprovarSolicitacao(solId, tier, adminId, comunidadeId, undefined, tags, notaInterna);
       toastFn('sucesso', `Membro aprovado como ${TIER_LABELS[tier]}`);
       await refresh();
     } catch {
@@ -280,7 +284,11 @@ export const TabClube: React.FC<Props> = ({ adminId, toastFn, comunidadeId }) =>
           solicitacoes={solicitacoes}
           perfis={perfis}
           tierSelects={tierSelects}
+          tagsSelects={tagsSelects}
+          notasInternas={notasInternas}
           onTierSelectChange={(id, tier) => setTierSelects(p => ({ ...p, [id]: tier }))}
+          onTagsChange={(id, tags) => setTagsSelects(p => ({ ...p, [id]: tags }))}
+          onNotaInternaChange={(id, nota) => setNotasInternas(p => ({ ...p, [id]: nota }))}
           onAprovar={handleAprovar}
           onRejeitar={handleRejeitar}
           onOpenPerfil={setPerfilDetalhe}

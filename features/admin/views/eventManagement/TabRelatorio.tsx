@@ -1,13 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { FileText, Star, Printer } from 'lucide-react';
+import { FileText, Star, Printer, Crown } from 'lucide-react';
 import { gerarRelatorio, RelatorioEvento } from '../../services/relatorioService';
 import { VantaPieChart } from '../../components/VantaPieChart';
 import { CORES_PIZZA } from './types';
 import { fmtBRL } from '../../../../utils';
+import { supabase } from '../../../../services/supabaseClient';
 
 export const TabRelatorio: React.FC<{ eventoAdminId: string }> = ({ eventoAdminId }) => {
   const [rel, setRel] = useState<RelatorioEvento | null>(null);
   const [loading, setLoading] = useState(true);
+  const [mvStats, setMvStats] = useState<{
+    totalResgates: number;
+    usados: number;
+    postsVerificados: number;
+    postsObrigatorios: number;
+    alcanceEstimado: number;
+  } | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -18,6 +26,49 @@ export const TabRelatorio: React.FC<{ eventoAdminId: string }> = ({ eventoAdminI
         setLoading(false);
       }
     });
+    // Buscar métricas MAIS VANTA
+    supabase
+      .from('resgates_mv_evento')
+      .select('id, user_id, status, post_verificado')
+      .eq('evento_id', eventoAdminId)
+      .limit(500)
+      .then(({ data: resgates }) => {
+        if (cancelled || !resgates || resgates.length === 0) return;
+        const total = resgates.length;
+        const usados = resgates.filter(r => r.status === 'USADO').length;
+        const postsVerif = resgates.filter(r => r.post_verificado).length;
+        // Para tiers creator/vanta_black, post é obrigatório
+        const userIds = [...new Set(resgates.map(r => r.user_id))];
+        supabase
+          .from('membros_clube')
+          .select('user_id, tier, instagram_seguidores')
+          .in('user_id', userIds)
+          .limit(500)
+          .then(({ data: membros }) => {
+            if (cancelled) return;
+            const memMap = new Map((membros ?? []).map(m => [m.user_id, m]));
+            let postsObrig = 0;
+            let alcance = 0;
+            for (const r of resgates) {
+              const m = memMap.get(r.user_id);
+              if (!m) continue;
+              const tier = m.tier as string;
+              if (tier === 'creator' || tier === 'vanta_black') postsObrig++;
+              if (r.post_verificado && m.instagram_seguidores) {
+                alcance += m.instagram_seguidores as number;
+              }
+            }
+            if (!cancelled) {
+              setMvStats({
+                totalResgates: total,
+                usados,
+                postsVerificados: postsVerif,
+                postsObrigatorios: postsObrig,
+                alcanceEstimado: alcance,
+              });
+            }
+          });
+      });
     return () => {
       cancelled = true;
     };
@@ -288,6 +339,42 @@ export const TabRelatorio: React.FC<{ eventoAdminId: string }> = ({ eventoAdminI
           </span>
         </div>
       </div>
+
+      {/* MAIS VANTA */}
+      {mvStats && mvStats.totalResgates > 0 && (
+        <div className="bg-zinc-900/60 border border-[#FFD300]/10 rounded-2xl p-4">
+          <div className="flex items-center gap-2 mb-4">
+            <Crown size={14} className="text-[#FFD300]" />
+            <h3 className="text-white text-xs font-black uppercase tracking-widest">MAIS VANTA</h3>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="bg-black/30 rounded-xl p-3 text-center">
+              <p className="text-[#FFD300] text-lg font-black">{mvStats.totalResgates}</p>
+              <p className="text-zinc-500 text-[8px] uppercase tracking-widest">Resgates</p>
+            </div>
+            <div className="bg-black/30 rounded-xl p-3 text-center">
+              <p className="text-emerald-400 text-lg font-black">
+                {mvStats.totalResgates > 0 ? Math.round((mvStats.usados / mvStats.totalResgates) * 100) : 0}%
+              </p>
+              <p className="text-zinc-500 text-[8px] uppercase tracking-widest">Comparecimento</p>
+            </div>
+            <div className="bg-black/30 rounded-xl p-3 text-center">
+              <p className="text-white text-lg font-black">
+                {mvStats.postsVerificados}/{mvStats.postsObrigatorios || '—'}
+              </p>
+              <p className="text-zinc-500 text-[8px] uppercase tracking-widest">Posts verificados</p>
+            </div>
+            <div className="bg-black/30 rounded-xl p-3 text-center">
+              <p className="text-[#FFD300] text-lg font-black">
+                {mvStats.alcanceEstimado >= 1000
+                  ? `${(mvStats.alcanceEstimado / 1000).toFixed(1)}K`
+                  : mvStats.alcanceEstimado}
+              </p>
+              <p className="text-zinc-500 text-[8px] uppercase tracking-widest">Alcance estimado</p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Exportar PDF */}
       <button

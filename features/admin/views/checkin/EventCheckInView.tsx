@@ -80,7 +80,37 @@ export const EventCheckInView: React.FC<{
       const result = await offlineEventService.validateAndBurn(ticketId, evId);
       void refreshPendingCount();
 
-      // Notificação MV no check-in requer userId no CachedTicket (não disponível offline)
+      // Check-in MV: marcar resgate como USADO para tiers convidado/presenca
+      if (result.resultado === 'VALIDO') {
+        supabase
+          .from('tickets_caixa')
+          .select('owner_id')
+          .eq('id', ticketId)
+          .maybeSingle()
+          .then(({ data: tk }) => {
+            if (!tk?.owner_id) return;
+            const userId = tk.owner_id as string;
+            // Verificar tier do membro
+            supabase
+              .from('membros_clube')
+              .select('tier')
+              .eq('user_id', userId)
+              .maybeSingle()
+              .then(({ data: membro }) => {
+                if (!membro) return;
+                const tier = membro.tier as string;
+                if (tier !== 'convidado' && tier !== 'presenca') return;
+                // Marcar resgates RESGATADO como USADO
+                supabase
+                  .from('resgates_mv_evento')
+                  .update({ status: 'USADO' })
+                  .eq('evento_id', evId)
+                  .eq('user_id', userId)
+                  .eq('status', 'RESGATADO')
+                  .then(() => {});
+              });
+          });
+      }
 
       return result;
     },

@@ -69,12 +69,12 @@ interface Props {
 const getTierOptions = (): { id: string; label: string; cor: string }[] => {
   const dynamic = clubeService.getTiers();
   if (dynamic.length > 0) return dynamic.map(t => ({ id: t.id, label: t.nome, cor: t.cor ?? '#666' }));
+  // vanta_black = contato direto via curadoria, não configurável pelo produtor
   return [
-    { id: 'desconto', label: 'Desconto', cor: '#888' },
-    { id: 'convidado', label: 'Convidado', cor: '#CD7F32' },
-    { id: 'presenca', label: 'Presença', cor: '#C0C0C0' },
-    { id: 'creator', label: 'Creator', cor: '#FFD700' },
-    { id: 'vanta_black', label: 'VANTA Black', cor: '#1a1a1a' },
+    { id: 'desconto', label: 'Desconto silencioso', cor: '#888' },
+    { id: 'convidado', label: 'Perfil geral aprovado', cor: '#CD7F32' },
+    { id: 'presenca', label: 'Presença & Ambiente', cor: '#C0C0C0' },
+    { id: 'creator', label: 'Criadores de conteúdo', cor: '#FFD700' },
   ];
 };
 

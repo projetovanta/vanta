@@ -302,11 +302,14 @@ export const authService = {
         window.dispatchEvent(new CustomEvent('vanta:password-recovery'));
       }
       if (!session?.user) {
+        // Logout real (SIGNED_OUT) ou sessão expirada sem refresh
         callback(null);
         return;
       }
+
+      // Token refresh ou sign-in: buscar profile
+      const isRefresh = event === 'TOKEN_REFRESHED';
       try {
-        // Timeout de 4s no fetch de profile — evita trava se rede estiver lenta
         const profilePromise = supabase.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
         const result = await Promise.race([
           profilePromise,
@@ -314,9 +317,18 @@ export const authService = {
         ]);
         const profile = result.data;
 
-        callback(profile ? profileToMembro(profile as any) : null);
+        if (profile) {
+          callback(profileToMembro(profile as any));
+        } else if (!isRefresh) {
+          // Só faz logout se NÃO for token refresh — evita kickar usuário por rede lenta
+          callback(null);
+        }
+        // Se isRefresh e profile=null: ignora silenciosamente, mantém sessão anterior
       } catch {
-        callback(null);
+        // Erro de rede/timeout: só faz logout se não for refresh
+        if (!isRefresh) {
+          callback(null);
+        }
       }
     });
     return () => subscription.unsubscribe();

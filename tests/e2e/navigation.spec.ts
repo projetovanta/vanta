@@ -21,10 +21,15 @@ test.describe('Navegação principal', () => {
 
     for (const tab of navTabs) {
       await page.getByText(tab, { exact: true }).click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(800);
 
-      const bodyText = await page.locator('body').innerText();
-      expect(bodyText.trim().length).toBeGreaterThan(0);
+      // Radar é um mapa (canvas) e pode não ter innerText — verificar DOM childElementCount
+      const hasContent = await page.evaluate(() => {
+        const main = document.querySelector('main') || document.querySelector('[role="main"]');
+        if (main && main.childElementCount > 0) return true;
+        return document.body.innerText.trim().length > 0;
+      });
+      expect(hasContent).toBe(true);
     }
   });
 

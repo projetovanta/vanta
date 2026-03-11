@@ -34,8 +34,9 @@ function tip(
   descricao: string,
   dado: string,
   acao?: string,
+  acaoTarget?: string,
 ): SmartTip {
-  return { id, categoria, prioridade, titulo, descricao, dado, ...(acao ? { acao } : {}) };
+  return { id, categoria, prioridade, titulo, descricao, dado, ...(acao ? { acao, acaoTarget } : {}) };
 }
 
 // ── Rules ──
@@ -51,6 +52,7 @@ function rulePricingSubir(ctx: TipContext, out: SmartTip[]): void {
       'As vendas estao acima da curva esperada. Aproveite a demanda e ajuste o valor do proximo lote.',
       `Velocidade ${ctx.pricing.velocidadeRelativa.toFixed(1)}x acima do normal`,
       'Ajustar preco',
+      'LOTES',
     ),
   );
 }
@@ -66,6 +68,7 @@ function rulePricingDescontar(ctx: TipContext, out: SmartTip[]): void {
       'As vendas estao abaixo do esperado para esse momento. Uma promocao rapida pode destravar o lote.',
       `Velocidade ${ctx.pricing.velocidadeRelativa.toFixed(1)}x abaixo do esperado`,
       'Criar cupom',
+      'CUPONS',
     ),
   );
 }
@@ -81,6 +84,7 @@ function ruleNoShowAlto(ctx: TipContext, out: SmartTip[]): void {
       'Muita gente comprou e nao apareceu. Envie lembretes na vespera e confirme presenca por push.',
       `${ctx.noShow.taxaNoShow.toFixed(0)}% de no-show (${ctx.noShow.totalNoShow} pessoas)`,
       'Enviar lembrete',
+      'COMUNICACAO',
     ),
   );
 }
@@ -112,6 +116,7 @@ function ruleBreakEvenPerto(ctx: TipContext, out: SmartTip[]): void {
       `Faltam apenas ${be.ingressosFaltam} ingressos pra cobrir todos os custos. Uma ultima acao de divulgacao pode garantir o lucro.`,
       `${be.percentProgresso.toFixed(0)}% do break-even atingido`,
       'Impulsionar vendas',
+      'EVENTO_DASHBOARD',
     ),
   );
 }
@@ -142,6 +147,7 @@ function ruleVendasLentas(ctx: TipContext, out: SmartTip[]): void {
       `Menos de 30% vendido e faltam ${ctx.diasParaEvento} dias. Ative promoters, crie cupons ou faca uma blitz nas redes.`,
       `${ctx.vendidoPercent.toFixed(0)}% vendido a ${ctx.diasParaEvento} dias do evento`,
       'Ver acoes',
+      'EVENTO_DASHBOARD',
     ),
   );
 }
@@ -185,6 +191,7 @@ function rulePromoterDestaque(ctx: TipContext, out: SmartTip[]): void {
       `Seu melhor promoter converteu ${ctx.topPromoterConversao.toFixed(0)}% dos convidados. Considere bonificar pra manter a parceria.`,
       `${ctx.topPromoterConversao.toFixed(0)}% de conversao`,
       'Ver promoter',
+      'LISTAS',
     ),
   );
 }

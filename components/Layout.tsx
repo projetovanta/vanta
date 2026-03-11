@@ -56,7 +56,7 @@ export const Header: React.FC<{
       <div className="flex justify-between items-center h-16 w-full">
         <button
           onClick={onProfileClick}
-          className="w-8 h-8 rounded-full border border-[#FFD300] p-0.5 overflow-hidden active:scale-90 transition-all"
+          className="min-w-[2.75rem] min-h-[2.75rem] w-8 h-8 rounded-full border border-[#FFD300] p-0.5 overflow-hidden active:opacity-70 transition-opacity -ml-2"
         >
           <img
             loading="lazy"

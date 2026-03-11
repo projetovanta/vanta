@@ -43,7 +43,7 @@ const Stepper: React.FC<{ value: number; min?: number; max: number; onChange: (n
     <button
       onClick={() => onChange(Math.max(min, value - 1))}
       disabled={value <= min}
-      className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-zinc-400 active:scale-90 transition-all disabled:opacity-30"
+      className="min-w-[2.75rem] min-h-[2.75rem] rounded-full border border-white/10 flex items-center justify-center text-zinc-400 active:opacity-70 transition-opacity disabled:opacity-30"
     >
       <Minus size="0.75rem" />
     </button>
@@ -51,7 +51,7 @@ const Stepper: React.FC<{ value: number; min?: number; max: number; onChange: (n
     <button
       onClick={() => onChange(Math.min(max, value + 1))}
       disabled={value >= max}
-      className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-zinc-400 active:scale-90 transition-all disabled:opacity-30"
+      className="min-w-[2.75rem] min-h-[2.75rem] rounded-full border border-white/10 flex items-center justify-center text-zinc-400 active:opacity-70 transition-opacity disabled:opacity-30"
     >
       <Plus size="0.75rem" />
     </button>

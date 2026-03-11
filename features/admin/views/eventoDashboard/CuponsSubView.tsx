@@ -117,7 +117,7 @@ export const CuponsSubView: React.FC<{
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => copyLink(c)}
-                    className="p-1 text-zinc-400 active:text-[#FFD300] transition-colors"
+                    className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center text-zinc-400 active:opacity-70 transition-opacity"
                     title="Copiar link com cupom"
                   >
                     {copied === c.id ? (
@@ -128,7 +128,7 @@ export const CuponsSubView: React.FC<{
                   </button>
                   <button
                     onClick={() => handleToggle(c)}
-                    className="p-1 text-zinc-400 active:text-[#FFD300] transition-colors"
+                    className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center text-zinc-400 active:opacity-70 transition-opacity"
                   >
                     {c.ativo ? (
                       <ToggleRight size="1.125rem" className="text-emerald-400" />
@@ -138,7 +138,7 @@ export const CuponsSubView: React.FC<{
                   </button>
                   <button
                     onClick={() => handleRemover(c)}
-                    className="p-1 text-zinc-400 active:text-red-400 transition-colors"
+                    className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center text-zinc-400 active:opacity-70 transition-opacity"
                   >
                     <Trash2 size="0.8125rem" />
                   </button>
@@ -176,7 +176,10 @@ export const CuponsSubView: React.FC<{
             <div className="w-10 h-1 bg-zinc-700 rounded-full mx-auto" />
             <div className="flex items-center justify-between">
               <p className="text-white font-bold text-base">Novo Cupom</p>
-              <button onClick={() => setShowForm(false)} className="p-1 text-zinc-400">
+              <button
+                onClick={() => setShowForm(false)}
+                className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center text-zinc-400 active:opacity-70 transition-opacity -mr-2"
+              >
                 <X size="0.875rem" />
               </button>
             </div>

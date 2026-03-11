@@ -238,14 +238,14 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
           <div className="flex items-center gap-3">
             <button
               onClick={() => setZoom(z => Math.max(1, z - 0.1))}
-              className="w-8 h-8 rounded-full bg-zinc-900 border border-white/10 flex items-center justify-center active:scale-90 transition-all shrink-0"
+              className="min-w-[2.75rem] min-h-[2.75rem] rounded-full bg-zinc-900 border border-white/10 flex items-center justify-center active:opacity-70 transition-opacity shrink-0"
             >
               <ZoomOut size="0.875rem" className="text-zinc-400" />
             </button>
             <VantaSlider min={1} max={3} step={0.01} value={zoom} onChange={setZoom} className="flex-1" />
             <button
               onClick={() => setZoom(z => Math.min(3, z + 0.1))}
-              className="w-8 h-8 rounded-full bg-zinc-900 border border-white/10 flex items-center justify-center active:scale-90 transition-all shrink-0"
+              className="min-w-[2.75rem] min-h-[2.75rem] rounded-full bg-zinc-900 border border-white/10 flex items-center justify-center active:opacity-70 transition-opacity shrink-0"
             >
               <ZoomIn size="0.875rem" className="text-zinc-400" />
             </button>

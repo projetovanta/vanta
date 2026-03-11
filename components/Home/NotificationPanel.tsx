@@ -275,7 +275,10 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({
                 <h4 style={TYPOGRAPHY.uiLabel} className="text-[0.5rem] opacity-40">
                   Notificações
                 </h4>
-                <button onClick={onClose} className="text-zinc-400 active:text-white transition-colors p-1">
+                <button
+                  onClick={onClose}
+                  className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center text-zinc-400 active:opacity-70 transition-opacity -mr-2"
+                >
                   <X size="0.875rem" />
                 </button>
               </div>

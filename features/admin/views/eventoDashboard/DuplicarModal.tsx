@@ -100,7 +100,10 @@ export const DuplicarModal: React.FC<{
             <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest">Duplicar</p>
             <p className="text-white font-bold text-base truncate">{evento.nome}</p>
           </div>
-          <button onClick={onClose} className="p-1 text-zinc-400">
+          <button
+            onClick={onClose}
+            className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center text-zinc-400 active:opacity-70 transition-opacity -mr-2"
+          >
             <X size="0.875rem" />
           </button>
         </div>

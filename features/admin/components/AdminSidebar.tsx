@@ -440,7 +440,7 @@ export const AdminSidebar: React.FC<{
           <div className="flex items-center w-full px-2 gap-1">
             <button
               onClick={onClose}
-              className="flex items-center justify-center w-8 h-8 rounded-lg active:bg-white/5 transition-all relative"
+              className="flex items-center justify-center min-w-[2.75rem] min-h-[2.75rem] w-8 h-8 rounded-lg active:opacity-70 transition-opacity relative"
             >
               <ArrowLeft size="1rem" className="text-zinc-400" />
               {totalPendencias > 0 && (
@@ -467,7 +467,7 @@ export const AdminSidebar: React.FC<{
               <button
                 aria-label="Voltar"
                 onClick={onToggle}
-                className="flex items-center justify-center w-8 h-8 rounded-lg active:bg-white/5 transition-all"
+                className="flex items-center justify-center min-w-[2.75rem] min-h-[2.75rem] w-8 h-8 rounded-lg active:opacity-70 transition-opacity"
               >
                 <ChevronLeft size="1rem" className="text-zinc-400" />
               </button>
@@ -532,7 +532,7 @@ export const AdminSidebar: React.FC<{
                     <button
                       key={item.id}
                       onClick={() => onSelect(item.id)}
-                      className={`w-full flex items-center gap-3 px-3 py-2 transition-all relative ${
+                      className={`w-full flex items-center gap-3 px-3 py-3 transition-all relative ${
                         isActive ? 'bg-[#FFD300]/10 text-white' : 'text-zinc-400 active:bg-white/5 active:text-zinc-300'
                       }`}
                     >

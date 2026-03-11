@@ -172,7 +172,11 @@ const CalendarModal: React.FC<CalendarModalProps> = ({ value, min, max, onSelect
           >
             {showYearPicker ? 'Voltar' : `${MONTH_NAMES[viewDate.getMonth()]} ${viewDate.getFullYear()}`}
           </button>
-          <button type="button" onClick={onClose} className="p-1.5 bg-zinc-900 rounded-full text-zinc-400">
+          <button
+            type="button"
+            onClick={onClose}
+            className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center bg-zinc-900 rounded-full text-zinc-400 active:opacity-70 transition-opacity -mr-2"
+          >
             <X size="1rem" />
           </button>
         </div>
@@ -199,13 +203,21 @@ const CalendarModal: React.FC<CalendarModalProps> = ({ value, min, max, onSelect
           <>
             {/* Month nav */}
             <div className="flex justify-between items-center mb-3 px-1">
-              <button type="button" onClick={() => changeMonth(-1)} className="p-1 text-zinc-400 hover:text-white">
+              <button
+                type="button"
+                onClick={() => changeMonth(-1)}
+                className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center text-zinc-400 hover:text-white active:opacity-70 transition-opacity -ml-2"
+              >
                 <ChevronLeft size="1.125rem" />
               </button>
               <span className="text-white font-bold uppercase tracking-widest text-[0.625rem]">
                 {MONTH_NAMES[viewDate.getMonth()]} {viewDate.getFullYear()}
               </span>
-              <button type="button" onClick={() => changeMonth(1)} className="p-1 text-zinc-400 hover:text-white">
+              <button
+                type="button"
+                onClick={() => changeMonth(1)}
+                className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center text-zinc-400 hover:text-white active:opacity-70 transition-opacity -mr-2"
+              >
                 <ChevronRight size="1.125rem" />
               </button>
             </div>

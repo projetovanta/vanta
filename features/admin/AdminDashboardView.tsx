@@ -541,7 +541,7 @@ export const AdminDashboardView: React.FC<{
     }
     // ── Inteligência VANTA ──────────────────────────────────────────────────
     if (subView === 'INTELIGENCIA') {
-      return <InsightsDashboardView onBack={back} comunidadeId={comunidadeId} />;
+      return <InsightsDashboardView onBack={back} comunidadeId={comunidadeId} onNavigate={setSubView} />;
     }
     // ── Novos Dashboards Analytics ──────────────────────────────────────────
     if (subView === 'MASTER_DASHBOARD') {

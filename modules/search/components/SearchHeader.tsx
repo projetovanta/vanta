@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Search, X, MapPin, Sparkles, Calendar, DollarSign, Crown } from 'lucide-react';
+import { Search, X, MapPin, Sparkles, Calendar, DollarSign } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
 
 interface SearchHeaderProps {
@@ -18,8 +18,6 @@ interface SearchHeaderProps {
   onOpenTimeFilter: () => void;
   maxPrice: number | null;
   onOpenPriceFilter: () => void;
-  beneficiosFilter?: boolean;
-  onToggleBeneficios?: () => void;
 }
 
 const getTimeLabel = (f: string | null): string => {
@@ -49,8 +47,6 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
   onOpenTimeFilter,
   maxPrice,
   onOpenPriceFilter,
-  beneficiosFilter,
-  onToggleBeneficios,
   isMembroMV,
 }) => {
   const cityLabel = useMemo(
@@ -81,26 +77,32 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
           </button>
         ))}
       </div>
-      {activeTab !== 'BENEFICIOS' && (
-        <div className="relative mb-4">
-          <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
-          <input
-            type="text"
-            className="w-full pl-11 pr-11 py-4 bg-zinc-900/80 border border-zinc-800 rounded-2xl text-white text-sm"
-            placeholder={activeTab === 'EVENTS' ? 'O que busca hoje?' : 'Nome ou e-mail...'}
-            value={query}
-            onChange={e => setQuery(e.target.value)}
-          />
-          {query && (
-            <button
-              onClick={onClearSearch}
-              className="absolute right-4 top-1/2 -translate-y-1/2 bg-zinc-800 rounded-full p-1.5"
-            >
-              <X size={12} />
-            </button>
-          )}
-        </div>
-      )}
+      {/* Busca por texto — todas as abas */}
+      <div className="relative mb-4">
+        <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
+        <input
+          type="text"
+          className="w-full pl-11 pr-11 py-4 bg-zinc-900/80 border border-zinc-800 rounded-2xl text-white text-sm"
+          placeholder={
+            activeTab === 'BENEFICIOS'
+              ? 'Buscar benefícios...'
+              : activeTab === 'PEOPLE'
+                ? 'Nome ou e-mail...'
+                : 'O que busca hoje?'
+          }
+          value={query}
+          onChange={e => setQuery(e.target.value)}
+        />
+        {query && (
+          <button
+            onClick={onClearSearch}
+            className="absolute right-4 top-1/2 -translate-y-1/2 bg-zinc-800 rounded-full p-1.5"
+          >
+            <X size={12} />
+          </button>
+        )}
+      </div>
+      {/* Filtros — Eventos: cidade, estilo, período, preço */}
       {activeTab === 'EVENTS' && (
         <div className="flex flex-wrap gap-2">
           <button
@@ -132,15 +134,26 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
             <DollarSign size={10} />
             {maxPrice !== null ? `Até R$ ${maxPrice}` : 'Preço'}
           </button>
-          {onToggleBeneficios && (
-            <button
-              onClick={onToggleBeneficios}
-              className={`px-3 py-2 rounded-xl text-[9px] font-bold uppercase border flex items-center gap-2 ${beneficiosFilter ? 'bg-[#FFD300] text-black' : 'bg-zinc-900 text-zinc-400 border-white/5'}`}
-            >
-              <Crown size={10} />
-              Benefícios
-            </button>
-          )}
+        </div>
+      )}
+      {/* Filtros — Benefícios: cidade, período (sem preço, sem estilo) */}
+      {activeTab === 'BENEFICIOS' && (
+        <div className="flex flex-wrap gap-2">
+          <button
+            onClick={onOpenCityFilter}
+            className={`px-3 py-2 rounded-xl text-[9px] font-bold uppercase border flex items-center gap-2 ${selectedCities.length > 0 ? 'bg-[#FFD300] text-black' : 'bg-zinc-900 text-zinc-400 border-white/5'}`}
+          >
+            <MapPin size={10} />
+            {cityLabel}
+          </button>
+          <button
+            aria-label="Calendário"
+            onClick={onOpenTimeFilter}
+            className={`px-3 py-2 rounded-xl text-[9px] font-bold uppercase border flex items-center gap-2 ${selectedTimeFilter ? 'bg-[#FFD300] text-black' : 'bg-zinc-900 text-zinc-400 border-white/5'}`}
+          >
+            <Calendar size={10} />
+            {timeLabel}
+          </button>
         </div>
       )}
     </div>

@@ -20,6 +20,8 @@ import {
   BadgeCheck,
   ShieldAlert,
   Share2,
+  Ban,
+  OctagonAlert,
 } from 'lucide-react';
 import { TYPOGRAPHY } from '../../constants';
 import { Membro, Evento } from '../../types';
@@ -27,7 +29,6 @@ import type { ResgateMV } from '../../features/admin/services/clube/clubeReserva
 import { clubeService } from '../../features/admin/services/clubeService';
 import { maisVantaConfigService } from '../../features/admin/services/maisVantaConfigService';
 import { tsBR, todayBR } from '../../utils';
-import { DealsMembroSection } from './DealsMembroSection';
 
 // ── Termos de uso LGPD (fallback se config.termosCustomizados for null) ────────
 const TERMOS_PADRAO = `TERMOS DE USO — CLUBE MAIS VANTA
@@ -99,6 +100,11 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
 
   const membro = useMemo(() => clubeService.getMembroClubeByUserId(profile.id), [profile.id]);
   const temDivida = useMemo(() => clubeService.temDividaSocial(profile.id), [profile.id]);
+  const estaBloqueado = useMemo(() => clubeService.estaBloqueado(profile.id), [profile.id]);
+  const bloqueioAte = useMemo(() => clubeService.getBloqueioAte(profile.id), [profile.id]);
+  const isBanido = useMemo(() => clubeService.isBanidoPermanente(profile.id), [profile.id]);
+  const [infracoes, setInfracoes] = useState<{ id: string; tipo: string; eventoNome: string; criadoEm: string }[]>([]);
+  const [infracoesCount, setInfracoesCount] = useState(0);
 
   useEffect(() => {
     if (isConvite) {
@@ -119,8 +125,14 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
     if (minha) setSolicitacaoStatus('PENDENTE');
     else if (membro) setSolicitacaoStatus('APROVADO');
 
-    // Carregar minhas reservas
+    // Carregar minhas reservas + infrações
     clubeService.getResgatesUsuarioAsync(profile.id).then(setMinhasReservas);
+    clubeService.getInfracoes(profile.id).then(list => {
+      setInfracoes(
+        list.map(i => ({ id: i.id, tipo: i.tipo, eventoNome: i.eventoNome ?? 'Evento', criadoEm: i.criadoEm })),
+      );
+    });
+    clubeService.getInfracoesCount(profile.id).then(setInfracoesCount);
   }, [profile.id, membro, isConvite, conviteId]);
 
   const handleVerificarPerfil = async () => {
@@ -265,9 +277,12 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
 
   const getEventoNome = (eventoId: string) => allEvents.find(e => e.id === eventoId)?.titulo ?? 'Evento';
 
-  // ── Membro ativo → tela de status com abas ──
+  // ── Membro ativo → tela de status com seções ──
   if (membro) {
     const listaExibida = activeTab === 'ATIVOS' ? reservasAtivas : reservasPassadas;
+    const bloqueioLabel = bloqueioAte
+      ? `Bloqueado até ${bloqueioAte.split('T')[0]?.split('-').reverse().join('/')}`
+      : 'Bloqueado permanentemente';
 
     return (
       <div className="absolute inset-0 bg-[#0a0a0a] flex flex-col overflow-hidden animate-in fade-in duration-300">
@@ -294,149 +309,246 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
             <p className="text-[10px] font-black uppercase tracking-widest text-[#FFD300]">Membro MAIS VANTA</p>
           </div>
 
-          {/* Dívida Social */}
-          {temDivida && (
-            <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/20 rounded-xl p-3 mb-4">
-              <AlertTriangle size={14} className="text-red-400 shrink-0" />
-              <span className="text-red-400 text-[10px] font-bold">
-                Você tem posts pendentes. Envie a comprovação para desbloquear novas reservas.
-              </span>
+          {/* ══ SEÇÃO: Alertas & Avisos ══ */}
+          {(estaBloqueado || temDivida) && (
+            <div className="space-y-2 mb-5">
+              {/* Banido permanente */}
+              {isBanido && (
+                <div className="flex items-center gap-2.5 bg-red-500/10 border border-red-500/20 rounded-xl p-3">
+                  <Ban size={14} className="text-red-400 shrink-0" />
+                  <span className="text-red-400 text-[10px] font-bold">
+                    Sua conta foi suspensa permanentemente. Entre em contato com o suporte.
+                  </span>
+                </div>
+              )}
+
+              {/* Bloqueio temporário */}
+              {estaBloqueado && !isBanido && (
+                <div className="flex items-center gap-2.5 bg-red-500/10 border border-red-500/20 rounded-xl p-3">
+                  <OctagonAlert size={14} className="text-red-400 shrink-0" />
+                  <span className="text-red-400 text-[10px] font-bold">
+                    {bloqueioLabel}. Você não pode resgatar novos benefícios neste período.
+                  </span>
+                </div>
+              )}
+
+              {/* Dívida Social */}
+              {temDivida && !estaBloqueado && (
+                <div className="flex items-center gap-2.5 bg-amber-500/10 border border-amber-500/20 rounded-xl p-3">
+                  <AlertTriangle size={14} className="text-amber-400 shrink-0" />
+                  <span className="text-amber-400 text-[10px] font-bold">
+                    Você tem posts pendentes. Envie a comprovação para desbloquear novas reservas.
+                  </span>
+                </div>
+              )}
             </div>
           )}
 
-          {/* Info */}
-          <div className="bg-zinc-900/60 border border-white/5 rounded-2xl p-4 mb-6 space-y-2">
-            {membro.instagramHandle && (
-              <div className="flex items-center gap-2">
-                <Instagram size={12} className="text-zinc-400" />
-                <span className="text-zinc-400 text-xs">@{membro.instagramHandle}</span>
-                {membro.instagramSeguidores && (
-                  <span className="text-zinc-400 text-[9px]">
-                    · {membro.instagramSeguidores.toLocaleString('pt-BR')} seguidores
-                  </span>
-                )}
+          {/* ══ SEÇÃO: Resumo do Membro ══ */}
+          <div className="bg-zinc-900/60 border border-white/5 rounded-2xl p-4 mb-5">
+            <div className="space-y-2.5">
+              {membro.instagramHandle && (
+                <div className="flex items-center gap-2">
+                  <Instagram size={12} className="text-zinc-400 shrink-0" />
+                  <span className="text-zinc-300 text-xs">@{membro.instagramHandle}</span>
+                  {membro.instagramSeguidores && (
+                    <span className="text-zinc-500 text-[9px]">
+                      · {membro.instagramSeguidores.toLocaleString('pt-BR')} seguidores
+                    </span>
+                  )}
+                </div>
+              )}
+              {membro.cidadePrincipal && (
+                <div className="flex items-center gap-2">
+                  <MapPin size={12} className="text-zinc-400 shrink-0" />
+                  <span className="text-zinc-300 text-xs">{membro.cidadePrincipal}</span>
+                </div>
+              )}
+              {/* Métricas rápidas */}
+              <div className="flex items-center gap-4 pt-1">
+                <div className="text-center">
+                  <p className="text-white text-sm font-bold">{minhasReservas.length}</p>
+                  <p className="text-zinc-500 text-[8px] font-black uppercase tracking-wider">Resgates</p>
+                </div>
+                <div className="w-px h-6 bg-white/5" />
+                <div className="text-center">
+                  <p className="text-white text-sm font-bold">{minhasReservas.filter(r => r.postVerificado).length}</p>
+                  <p className="text-zinc-500 text-[8px] font-black uppercase tracking-wider">Posts</p>
+                </div>
+                <div className="w-px h-6 bg-white/5" />
+                <div className="text-center">
+                  <p className={`text-sm font-bold ${infracoesCount > 0 ? 'text-red-400' : 'text-white'}`}>
+                    {infracoesCount}
+                  </p>
+                  <p className="text-zinc-500 text-[8px] font-black uppercase tracking-wider">Infrações</p>
+                </div>
+                <div className="w-px h-6 bg-white/5" />
+                <div className="text-center">
+                  <p className="text-white text-sm font-bold">{membro?.convitesDisponiveis ?? 0}</p>
+                  <p className="text-zinc-500 text-[8px] font-black uppercase tracking-wider">Convites</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ══ SEÇÃO: Benefícios — Ativos / Passados ══ */}
+          <div className="mb-5">
+            <div className="flex gap-0 bg-zinc-900/40 rounded-xl p-1 mb-4">
+              <button
+                onClick={() => setActiveTab('ATIVOS')}
+                className={`flex-1 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'ATIVOS' ? 'bg-[#FFD300] text-black' : 'text-zinc-400'}`}
+              >
+                Ativos{reservasAtivas.length > 0 ? ` (${reservasAtivas.length})` : ''}
+              </button>
+              <button
+                onClick={() => setActiveTab('PASSADOS')}
+                className={`flex-1 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'PASSADOS' ? 'bg-zinc-700 text-white' : 'text-zinc-400'}`}
+              >
+                Passados{reservasPassadas.length > 0 ? ` (${reservasPassadas.length})` : ''}
+              </button>
+            </div>
+
+            {listaExibida.length === 0 ? (
+              <p className="text-zinc-400 text-xs text-center py-8">
+                {activeTab === 'ATIVOS' ? 'Nenhum benefício ativo' : 'Nenhum benefício passado'}
+              </p>
+            ) : (
+              <div className="space-y-3">
+                {listaExibida.map(r => {
+                  const isPendingPost = r.status === 'PENDENTE_POST' || (r.status === 'RESGATADO' && !r.postVerificado);
+                  return (
+                    <div key={r.id} className="bg-zinc-900/60 border border-white/5 rounded-2xl p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-white text-sm font-bold truncate flex-1">
+                          {getEventoNome(r.eventoId)}
+                        </span>
+                        <span
+                          className={`text-[8px] font-black uppercase px-2 py-0.5 rounded shrink-0 ml-2 ${
+                            r.status === 'USADO'
+                              ? 'bg-emerald-500/15 text-emerald-400'
+                              : r.status === 'CANCELADO'
+                                ? 'bg-red-500/15 text-red-400'
+                                : r.status === 'NO_SHOW'
+                                  ? 'bg-red-500/15 text-red-400'
+                                  : r.postVerificado
+                                    ? 'bg-emerald-500/15 text-emerald-400'
+                                    : 'bg-amber-500/15 text-amber-400'
+                          }`}
+                        >
+                          {r.status === 'USADO'
+                            ? 'Utilizado'
+                            : r.status === 'CANCELADO'
+                              ? 'Cancelado'
+                              : r.status === 'NO_SHOW'
+                                ? 'Não compareceu'
+                                : r.postVerificado
+                                  ? 'Post verificado'
+                                  : r.postUrl
+                                    ? 'Aguardando verificação'
+                                    : 'Post pendente'}
+                        </span>
+                      </div>
+
+                      {activeTab === 'ATIVOS' && r.status === 'RESGATADO' && podeCancelar(r) && (
+                        <button
+                          onClick={() => setCancelTarget(r.id)}
+                          className="mt-2 w-full py-2 bg-zinc-800 border border-white/10 rounded-xl text-zinc-400 text-[10px] font-bold uppercase tracking-wider active:scale-95 transition-transform"
+                        >
+                          Cancelar reserva
+                        </button>
+                      )}
+
+                      {activeTab === 'ATIVOS' && r.status === 'RESGATADO' && !podeCancelar(r) && (
+                        <div className="mt-2 flex items-center gap-1.5">
+                          <Clock size={10} className="text-amber-400" />
+                          <span className="text-amber-400 text-[9px]">
+                            Faltam menos de 12h — cancelamento indisponível
+                          </span>
+                        </div>
+                      )}
+
+                      {activeTab === 'ATIVOS' && isPendingPost && !r.postUrl && (
+                        <div className="mt-3 space-y-2">
+                          <p className="text-zinc-400 text-[10px]">Envie o link do seu post/story:</p>
+                          <div className="flex gap-2">
+                            <input
+                              value={postUrl}
+                              onChange={e => setPostUrl(e.target.value)}
+                              placeholder="https://instagram.com/p/..."
+                              className="flex-1 bg-black/40 border border-white/10 rounded-lg text-xs text-white px-3 py-2"
+                            />
+                            <button
+                              onClick={() => handleEnviarPost(r.id)}
+                              className="px-3 py-2 bg-[#FFD300] text-black rounded-lg active:scale-90 transition-transform"
+                            >
+                              <Send size={12} />
+                            </button>
+                          </div>
+                        </div>
+                      )}
+
+                      {r.postUrl && !r.postVerificado && (
+                        <div className="flex items-center gap-1.5 mt-2">
+                          <Clock size={10} className="text-amber-400" />
+                          <span className="text-amber-400 text-[9px]">
+                            Comprovação enviada — aguardando verificação
+                          </span>
+                        </div>
+                      )}
+
+                      {r.postVerificado && (
+                        <div className="flex items-center gap-1.5 mt-2">
+                          <Check size={10} className="text-emerald-400" />
+                          <span className="text-emerald-400 text-[9px]">Post verificado pela equipe</span>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>
 
-          {/* Abas — Benefícios Ativos / Passados */}
-          <div className="flex gap-0 bg-zinc-900/40 rounded-xl p-1 mb-5">
-            <button
-              onClick={() => setActiveTab('ATIVOS')}
-              className={`flex-1 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'ATIVOS' ? 'bg-[#FFD300] text-black' : 'text-zinc-400'}`}
-            >
-              Ativos{reservasAtivas.length > 0 ? ` (${reservasAtivas.length})` : ''}
-            </button>
-            <button
-              onClick={() => setActiveTab('PASSADOS')}
-              className={`flex-1 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'PASSADOS' ? 'bg-zinc-700 text-white' : 'text-zinc-400'}`}
-            >
-              Passados{reservasPassadas.length > 0 ? ` (${reservasPassadas.length})` : ''}
-            </button>
-          </div>
-
-          {/* Lista de reservas da aba selecionada */}
-          {listaExibida.length === 0 ? (
-            <p className="text-zinc-400 text-xs text-center py-10">
-              {activeTab === 'ATIVOS' ? 'Nenhum benefício ativo' : 'Nenhum benefício passado'}
-            </p>
-          ) : (
-            <div className="space-y-3">
-              {listaExibida.map(r => {
-                const isPendingPost = r.status === 'PENDENTE_POST' || (r.status === 'RESGATADO' && !r.postVerificado);
-                return (
-                  <div key={r.id} className="bg-zinc-900/60 border border-white/5 rounded-2xl p-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-white text-sm font-bold truncate flex-1">{getEventoNome(r.eventoId)}</span>
-                      <span
-                        className={`text-[8px] font-black uppercase px-2 py-0.5 rounded shrink-0 ml-2 ${
-                          r.status === 'USADO'
-                            ? 'bg-emerald-500/15 text-emerald-400'
-                            : r.status === 'CANCELADO'
-                              ? 'bg-red-500/15 text-red-400'
-                              : r.status === 'NO_SHOW'
-                                ? 'bg-red-500/15 text-red-400'
-                                : r.postVerificado
-                                  ? 'bg-emerald-500/15 text-emerald-400'
-                                  : 'bg-amber-500/15 text-amber-400'
-                        }`}
-                      >
-                        {r.status === 'USADO'
-                          ? 'Utilizado'
-                          : r.status === 'CANCELADO'
-                            ? 'Cancelado'
-                            : r.status === 'NO_SHOW'
-                              ? 'Não compareceu'
-                              : r.postVerificado
-                                ? 'Post verificado'
-                                : r.postUrl
-                                  ? 'Aguardando verificação'
-                                  : 'Post pendente'}
-                      </span>
+          {/* ══ SEÇÃO: Infrações ══ */}
+          {infracoes.length > 0 && (
+            <div className="mb-5">
+              <div className="flex items-center gap-2 mb-3">
+                <ShieldAlert size={14} className="text-red-400" />
+                <span className="text-white text-xs font-bold">Infrações</span>
+                <span className="text-zinc-500 text-[9px]">({infracoes.length})</span>
+              </div>
+              <div className="space-y-2">
+                {infracoes.slice(0, 5).map(inf => (
+                  <div
+                    key={inf.id}
+                    className="flex items-center justify-between bg-red-500/5 border border-red-500/10 rounded-xl px-4 py-3"
+                  >
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <AlertTriangle size={10} className="text-red-400 shrink-0" />
+                      <div className="min-w-0">
+                        <p className="text-white text-[11px] font-semibold truncate">{inf.eventoNome}</p>
+                        <p className="text-red-400/70 text-[9px]">
+                          {inf.tipo === 'NO_SHOW' ? 'Não compareceu' : 'Não postou'}
+                        </p>
+                      </div>
                     </div>
-
-                    {/* Cancelar reserva — somente aba Ativos, se faltam >12h */}
-                    {activeTab === 'ATIVOS' && r.status === 'RESGATADO' && podeCancelar(r) && (
-                      <button
-                        onClick={() => setCancelTarget(r.id)}
-                        className="mt-2 w-full py-2 bg-zinc-800 border border-white/10 rounded-xl text-zinc-400 text-[10px] font-bold uppercase tracking-wider active:scale-95 transition-transform"
-                      >
-                        Cancelar reserva
-                      </button>
-                    )}
-
-                    {/* Aviso: sem tempo pra cancelar */}
-                    {activeTab === 'ATIVOS' && r.status === 'RESGATADO' && !podeCancelar(r) && (
-                      <div className="mt-2 flex items-center gap-1.5">
-                        <Clock size={10} className="text-amber-400" />
-                        <span className="text-amber-400 text-[9px]">
-                          Faltam menos de 12h — cancelamento indisponível
-                        </span>
-                      </div>
-                    )}
-
-                    {/* Enviar comprovação se pendente — somente na aba Ativos */}
-                    {activeTab === 'ATIVOS' && isPendingPost && !r.postUrl && (
-                      <div className="mt-3 space-y-2">
-                        <p className="text-zinc-400 text-[10px]">Envie o link do seu post/story:</p>
-                        <div className="flex gap-2">
-                          <input
-                            value={postUrl}
-                            onChange={e => setPostUrl(e.target.value)}
-                            placeholder="https://instagram.com/p/..."
-                            className="flex-1 bg-black/40 border border-white/10 rounded-lg text-xs text-white px-3 py-2"
-                          />
-                          <button
-                            onClick={() => handleEnviarPost(r.id)}
-                            className="px-3 py-2 bg-[#FFD300] text-black rounded-lg active:scale-90 transition-transform"
-                          >
-                            <Send size={12} />
-                          </button>
-                        </div>
-                      </div>
-                    )}
-
-                    {r.postUrl && !r.postVerificado && (
-                      <div className="flex items-center gap-1.5 mt-2">
-                        <Clock size={10} className="text-amber-400" />
-                        <span className="text-amber-400 text-[9px]">Comprovação enviada — aguardando verificação</span>
-                      </div>
-                    )}
-
-                    {r.postVerificado && (
-                      <div className="flex items-center gap-1.5 mt-2">
-                        <Check size={10} className="text-emerald-400" />
-                        <span className="text-emerald-400 text-[9px]">Post verificado pela equipe</span>
-                      </div>
-                    )}
+                    <span className="text-zinc-500 text-[9px] shrink-0">
+                      {inf.criadoEm?.split('T')[0]?.split('-').reverse().join('/')}
+                    </span>
                   </div>
-                );
-              })}
+                ))}
+                {infracoes.length > 5 && (
+                  <p className="text-zinc-500 text-[9px] text-center">
+                    + {infracoes.length - 5} infração{infracoes.length - 5 !== 1 ? 'ões' : ''} anterior
+                    {infracoes.length - 5 !== 1 ? 'es' : ''}
+                  </p>
+                )}
+              </div>
             </div>
           )}
 
-          {/* MV4: Passaporte Regional — Cidades */}
-          <div className="mt-6">
+          {/* ══ SEÇÃO: Passaporte Regional ══ */}
+          <div className="mb-5">
             <div className="flex items-center gap-2 mb-3">
               <Globe size={14} className="text-purple-400" />
               <span className="text-white text-xs font-bold">Passaporte Regional</span>
@@ -446,19 +558,17 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
 
               return (
                 <div className="space-y-2">
-                  {cidades.map(cidade => {
-                    const status = clubeService.getPassportStatus(profile.id, cidade);
+                  {cidades.map(c => {
+                    const status = clubeService.getPassportStatus(profile.id, c);
 
                     return (
                       <div
-                        key={cidade}
+                        key={c}
                         className="flex items-center justify-between bg-zinc-900/40 border border-white/5 rounded-xl px-4 py-3"
                       >
                         <div className="flex items-center gap-2.5 min-w-0">
                           <MapPin size={12} className="text-zinc-400 shrink-0" />
-                          <div className="min-w-0">
-                            <p className="text-white text-xs font-semibold truncate">{cidade}</p>
-                          </div>
+                          <p className="text-white text-xs font-semibold truncate">{c}</p>
                         </div>
                         {status === 'APROVADO' ? (
                           <span className="text-[8px] font-black uppercase px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 shrink-0">
@@ -472,7 +582,7 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
                           <button
                             onClick={async () => {
                               try {
-                                await clubeService.solicitarPassport(profile.id, cidade);
+                                await clubeService.solicitarPassport(profile.id, c);
                                 onSuccess?.('Passaporte solicitado!');
                               } catch {
                                 onSuccess?.('Erro ao solicitar');
@@ -494,11 +604,8 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
             })()}
           </div>
 
-          {/* Deals disponíveis */}
-          <DealsMembroSection userId={profile.id} onSuccess={onSuccess} />
-
-          {/* Convites de Indicação */}
-          <div className="mt-6 bg-zinc-900/30 border border-white/5 rounded-2xl p-4">
+          {/* ══ SEÇÃO: Convites de Indicação ══ */}
+          <div className="mt-5 bg-zinc-900/30 border border-white/5 rounded-2xl p-4">
             <div className="flex items-center gap-2 mb-2">
               <UserPlus size={14} className="text-[#FFD300]" />
               <span className="text-white text-xs font-bold">Convidar amigos</span>
@@ -548,7 +655,7 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
           </div>
         </div>
 
-        {/* Modal confirmar cancelamento de reserva */}
+        {/* Modal confirmar cancelamento */}
         {cancelTarget && (
           <div className="absolute inset-0 z-[400] bg-black/70 backdrop-blur-sm flex items-center justify-center p-6 animate-in fade-in duration-200">
             <div className="bg-zinc-900 border border-white/10 rounded-3xl p-6 w-full max-w-sm">

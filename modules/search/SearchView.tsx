@@ -44,7 +44,6 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
   const [isEstiloFilterOpen, setIsEstiloFilterOpen] = useState(false);
   const [isTimeFilterOpen, setIsTimeFilterOpen] = useState(false);
   const [isPriceFilterOpen, setIsPriceFilterOpen] = useState(false);
-  const [beneficiosFilter, setBeneficiosFilter] = useState(false);
   const [displayLimit, setDisplayLimit] = useState(ITEMS_PER_PAGE);
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -89,7 +88,6 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
     setSelectedCategories([]);
     setSelectedTimeFilter(null);
     setMaxPrice(null);
-    setBeneficiosFilter(false);
     setDisplayLimit(ITEMS_PER_PAGE);
   };
 
@@ -159,9 +157,6 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
     if (maxPrice !== null) {
       data = data.filter(e => getMinPrice(e) <= maxPrice);
     }
-    if (beneficiosFilter) {
-      data = data.filter(e => e.temBeneficioMaisVanta);
-    }
     // Filtro client-side por texto só quando NÃO temos resultado server-side
     if (debouncedQuery && !serverSearchResults) {
       const lowerQuery = debouncedQuery.toLowerCase();
@@ -182,7 +177,6 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
     selectedCities,
     selectedTimeFilter,
     maxPrice,
-    beneficiosFilter,
     displayLimit,
   ]);
 
@@ -252,8 +246,7 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
     selectedCategories.length === 0 &&
     selectedCities.length === 0 &&
     !selectedTimeFilter &&
-    maxPrice === null &&
-    !beneficiosFilter;
+    maxPrice === null;
 
   return (
     <div className="absolute inset-0 flex flex-col bg-[#0a0a0a] animate-in fade-in duration-300">
@@ -276,20 +269,14 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
         onOpenTimeFilter={() => setIsTimeFilterOpen(true)}
         maxPrice={maxPrice}
         onOpenPriceFilter={() => setIsPriceFilterOpen(true)}
-        beneficiosFilter={beneficiosFilter}
-        onToggleBeneficios={() => {
-          setBeneficiosFilter(p => !p);
-          setDisplayLimit(ITEMS_PER_PAGE);
-        }}
       />
       <div ref={contentRef} onScroll={handleScroll} className="flex-1 overflow-y-auto no-scrollbar px-6 pt-6 pb-32">
         {activeTab === 'BENEFICIOS' ? (
           <BeneficiosMVTab
             userId={currentUserId}
-            onEventClick={eventoId => {
-              const evt = EVENTOS.find(e => e.id === eventoId);
-              if (evt) onEventClick(evt);
-            }}
+            filteredEvents={visibleEvents}
+            query={debouncedQuery}
+            onEventClick={onEventClick}
           />
         ) : activeTab === 'EVENTS' ? (
           <>

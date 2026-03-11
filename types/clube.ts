@@ -327,6 +327,7 @@ export interface DealMaisVanta {
   // Joined
   parceiroNome?: string;
   parceiroFotoUrl?: string;
+  parceiroTipo?: string;
   cidadeNome?: string;
 }
 

@@ -127,17 +127,38 @@ Toda transação (compra, reembolso, transferência, cancelamento) é registrada
 - A adesão ao MAIS VANTA está sujeita a análise e aprovação da curadoria
 - Membros devem manter perfil ativo no Instagram com conta pública
 - A participação é gratuita, porém sujeita ao cumprimento das obrigações do programa
+- No ato da solicitação, o Usuário informa: perfil do Instagram, cidade de residência, profissão e como conheceu o programa. Esses dados são utilizados exclusivamente para análise de perfil e curadoria
 
-### 7.2 Obrigações dos Membros
-- Publicar conteúdo do evento nas redes sociais conforme acordado
+### 7.2 Benefícios e Regras de Uso
+- Membros podem ter acesso a benefícios exclusivos em eventos (ingressos, entradas em lista, descontos), conforme critérios definidos pela curadoria
+- O resgate de benefícios pode estar condicionado a obrigações de divulgação (publicação em redes sociais), conforme a Lei 4.680/65 e regulamentações do CONAR. O membro é informado da obrigação antes de confirmar o resgate
+- A VANTA pode limitar a quantidade de resgates por evento
+
+### 7.3 Obrigações dos Membros
+- Publicar conteúdo do evento nas redes sociais conforme acordado no momento do resgate
 - Manter dados cadastrais e perfil do Instagram atualizados
 - Respeitar os prazos e regras de cada ativação
 
-### 7.3 Sistema de Infrações
+### 7.4 Convites de Indicação
+- Membros podem receber convites para indicar amigos ao programa
+- A quantidade de convites é definida pela VANTA e pode variar conforme o engajamento do membro
+- A indicação não garante aprovação — o indicado passa pelo mesmo processo de curadoria
+
+### 7.5 Passport Regional
+- Membros podem solicitar acesso a cidades adicionais onde o programa opera
+- A ativação de cidades é individual e sujeita a disponibilidade
+
+### 7.6 Deals e Parceiros
+- Membros podem ter acesso a ofertas exclusivas de parceiros comerciais da VANTA
+- Deals possuem prazo de validade e condições específicas informadas no momento do resgate
+- O não cumprimento de obrigações associadas a deals configura infração
+
+### 7.7 Sistema de Infrações
 - 1ª infração: advertência com bloqueio temporário (30 dias)
 - 2ª infração: bloqueio estendido (60 dias)
 - 3ª infração: exclusão permanente do programa
 - Cada infração é registrada com data, motivo e notificação ao membro
+- O não comparecimento a evento após resgate de benefício (no-show) e o descumprimento de obrigação de publicação configuram infrações
 
 ## 8. Propriedade Intelectual
 
@@ -202,7 +223,9 @@ O Encarregado é o ponto de contato entre a VANTA, os titulares de dados e a Aut
 - **Identificação**: nome completo, e-mail, data de nascimento, gênero
 - **Contato**: telefone celular (DDD + número)
 - **Localização**: estado e cidade de residência
-- **Redes sociais**: Instagram (handle e contagem de seguidores — opcional)
+- **Redes sociais**: Instagram (handle e contagem de seguidores — opcional, obrigatório para participantes do MAIS VANTA)
+- **Dados profissionais**: profissão (opcional, coletado na solicitação ao MAIS VANTA)
+- **Pesquisa**: como conheceu a plataforma (opcional, coletado na solicitação ao MAIS VANTA)
 - **Dados biométricos**: foto facial (selfie) capturada no cadastro para verificação de identidade
 - **Preferências**: interesses, biografia e fotos de perfil/álbum
 - **Credenciais**: senha de acesso (armazenada em hash irreversível — nunca em texto claro)
@@ -226,7 +249,7 @@ Cada tratamento de dados pessoais possui uma finalidade específica e uma base l
 - **Comunicação e notificações** — Execução de contrato (art. 7º, V). Dados: e-mail, telefone.
 - **Prevenção de fraudes** — Legítimo interesse (art. 7º, IX). Dados: selfie, dados de dispositivo.
 - **Processamento de compras** — Execução de contrato (art. 7º, V). Dados: identificação, transação.
-- **MAIS VANTA** — Consentimento (art. 7º, I). Dados: Instagram, seguidores.
+- **MAIS VANTA** — Consentimento (art. 7º, I). Dados: Instagram (handle, seguidores, bio), cidade, profissão, como conheceu, histórico de resgates e benefícios, infrações, cidades ativas (passport). Dados de categorização interna (tags de perfil) são atribuídos pela curadoria e não são visíveis ao membro.
 - **Geolocalização (Radar)** — Consentimento (art. 7º, I). Dados: coordenadas GPS.
 - **Networking social** — Execução de contrato (art. 7º, V). Dados: perfil, conforme suas configurações de privacidade.
 - **Analytics e melhoria** — Legítimo interesse (art. 7º, IX). Dados: dados de uso anonimizados e agregados.
@@ -236,7 +259,7 @@ Cada tratamento de dados pessoais possui uma finalidade específica e uma base l
 
 Seus dados podem ser compartilhados com terceiros apenas nas seguintes hipóteses:
 
-- **Organizadores de eventos**: nome do titular e dados do ingresso, exclusivamente para controle de acesso ao evento
+- **Organizadores de eventos**: nome do titular e dados do ingresso, exclusivamente para controle de acesso ao evento. Organizadores que participam do programa MAIS VANTA recebem apenas dados agregados e estatísticos (quantidade de resgates, comparecimento, alcance estimado) — nunca dados individuais de membros
 - **Processadores de pagamento**: dados necessários para completar transações financeiras, sujeitos às políticas de privacidade do processador
 - **Provedores de infraestrutura e SDKs terceiros**:
 - Supabase (banco de dados, autenticação e armazenamento de arquivos) — recebe todos os dados cadastrais, transações e arquivos de mídia. Servidores AWS (região US)
@@ -340,6 +363,7 @@ Os seguintes tipos de dados são coletados pela VANTA, organizados conforme as c
 - **Dados biométricos**: foto facial (selfie) — usada exclusivamente para verificação de identidade
 - **Localização aproximada**: usada para funcionalidade do app (Radar de eventos), mediante consentimento explícito
 - **Compras**: histórico de ingressos adquiridos — usado para funcionalidade do app
+- **Outros dados**: profissão, Instagram (handle e seguidores), cidade de residência — usados para funcionalidade do app (programa MAIS VANTA), mediante consentimento
 
 **Dados não vinculados à identidade (Data Not Linked to You):**
 - **Dados de uso**: páginas visitadas e tempo de carregamento — coletados pelo Vercel Analytics de forma anônima e agregada, usados para analytics e melhoria de performance
@@ -356,7 +380,8 @@ Os seguintes tipos de dados são coletados pela VANTA, organizados conforme as c
 ### 12.2 Google Play (Data Safety)
 
 **Dados coletados:**
-- Dados pessoais: nome, e-mail, telefone, data de nascimento, gênero
+- Dados pessoais: nome, e-mail, telefone, data de nascimento, gênero, profissão
+- Perfil de redes sociais: Instagram (handle e contagem de seguidores) — mediante consentimento (MAIS VANTA)
 - Fotos e vídeos: fotos de perfil, álbum e selfie biométrica
 - Localização aproximada: coordenadas GPS (mediante consentimento)
 - Informações financeiras: histórico de compras de ingressos

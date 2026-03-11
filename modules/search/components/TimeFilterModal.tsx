@@ -197,9 +197,22 @@ export const TimeFilterModal: React.FC<{
 
   return (
     <div className="absolute inset-0 z-[200] animate-in fade-in duration-300">
-      <div className="absolute inset-0 bg-black/80 backdrop-blur-md" role="presentation" onClick={onClose} />
+      <div
+        className="absolute inset-0"
+        role="presentation"
+        onClick={onClose}
+        style={{ background: 'rgba(0,0,0,0.4)' }}
+      />
       <div className="absolute top-[10rem] left-0 right-0 flex justify-center px-6 animate-in slide-in-from-top-2 duration-500">
-        <div className="w-full max-w-[21.25rem] glass-premium rounded-[2rem] overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] bg-zinc-900/80">
+        <div
+          className="w-full max-w-[21.25rem] rounded-[2rem] overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
+          style={{
+            background: 'rgba(30,30,30,0.7)',
+            WebkitBackdropFilter: 'blur(80px) saturate(1.8)',
+            backdropFilter: 'blur(80px) saturate(1.8)',
+            isolation: 'isolate',
+          }}
+        >
           <div className="p-6">
             <div className="flex justify-between items-center mb-5">
               <div>

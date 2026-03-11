@@ -1,7 +1,9 @@
 import React from 'react';
-import { ArrowLeft, Share2, Heart } from 'lucide-react';
+import { ArrowLeft, Share2, Heart, Flag } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
 import { Evento } from '../../../types';
+import { ReportModal } from '../../../components/ReportModal';
+import { globalToast } from '../../../components/Toast';
 
 interface EventHeaderProps {
   evento: Evento;
@@ -9,6 +11,7 @@ interface EventHeaderProps {
   onShareSuccess?: (msg: string) => void;
   isFavorited?: boolean;
   onToggleFavorite?: () => void;
+  onReport?: () => void;
 }
 
 export const EventHeader: React.FC<EventHeaderProps> = ({
@@ -17,6 +20,7 @@ export const EventHeader: React.FC<EventHeaderProps> = ({
   onShareSuccess,
   isFavorited,
   onToggleFavorite,
+  onReport,
 }) => {
   const handleShare = async () => {
     const url = `https://maisvanta.com/event/${evento.id}`;
@@ -82,6 +86,15 @@ export const EventHeader: React.FC<EventHeaderProps> = ({
           >
             <Share2 size="1.125rem" />
           </button>
+          {onReport && (
+            <button
+              aria-label="Denunciar"
+              onClick={onReport}
+              className="p-3 bg-black/20 backdrop-blur-md rounded-full border border-white/10 text-zinc-400 active:scale-90 transition-transform"
+            >
+              <Flag size="1rem" />
+            </button>
+          )}
         </div>
       </div>
 

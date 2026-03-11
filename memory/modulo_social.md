@@ -35,6 +35,31 @@ Modelo: PENDING = pedido enviado. ACCEPTED = amigos. DELETE row = cancelar/recus
 | deleted_at | TIMESTAMPTZ | migration | Soft delete |
 | reactions | JSONB | migration | Array de reactions (default []) |
 
+### denuncias
+| Coluna | Tipo | Descricao |
+|---|---|---|
+| id | UUID PK | auto |
+| reporter_id | UUID FK auth.users | Quem denunciou |
+| tipo | TEXT | USUARIO, EVENTO, COMUNIDADE, CHAT |
+| alvo_user_id | UUID FK auth.users | Alvo (usuario) |
+| alvo_evento_id | UUID | Alvo (evento) |
+| alvo_comunidade_id | UUID | Alvo (comunidade) |
+| motivo | TEXT | OFENSIVO, SPAM, PERFIL_FALSO, ASSEDIO, OUTRO |
+| descricao | TEXT | Texto livre (quando motivo=OUTRO) |
+| status | TEXT | PENDENTE, ANALISANDO, RESOLVIDA, DESCARTADA |
+| criado_em | TIMESTAMPTZ | auto |
+RLS: INSERT own, SELECT admin only
+
+### bloqueios
+| Coluna | Tipo | Descricao |
+|---|---|---|
+| id | UUID PK | auto |
+| bloqueador_id | UUID FK auth.users | Quem bloqueou |
+| bloqueado_id | UUID FK auth.users | Quem foi bloqueado |
+| criado_em | TIMESTAMPTZ | auto |
+| UNIQUE | (bloqueador_id, bloqueado_id) | |
+RLS: INSERT/SELECT/DELETE own
+
 ## Stores
 
 ### useSocialStore (stores/socialStore.ts, 158L)
@@ -77,6 +102,13 @@ Modelo: PENDING = pedido enviado. ACCEPTED = amigos. DELETE row = cancelar/recus
 - `markAsRead(senderId, recipientId)` — UPDATE is_read=true, read_at=now()
 - `deleteMessage(messageId)` — UPDATE deleted_at=now() (soft delete)
 
+### reportBlockService (services/reportBlockService.ts)
+- `criarDenuncia(params)` — INSERT denuncias (tipo, alvo, motivo, descricao)
+- `bloquearUsuario(bloqueadoId)` — INSERT bloqueios + cache local
+- `desbloquearUsuario(bloqueadoId)` — DELETE bloqueios + cache local
+- `listarBloqueados()` — SELECT bloqueios → Set<string> (cache lazy)
+- `isUsuarioBloqueado(targetId)` — cache check
+
 ## Arquivos
 | Arquivo | Linhas | Funcao |
 |---|---|---|
@@ -85,6 +117,9 @@ Modelo: PENDING = pedido enviado. ACCEPTED = amigos. DELETE row = cancelar/recus
 | modules/messages/components/MessageBubble.tsx | 160 | Bolha de mensagem com reactions |
 | modules/messages/components/NewChatModal.tsx | 78 | Iniciar nova conversa |
 | modules/messages/components/ChatListItem.tsx | 55 | Item da lista de chats |
+| services/reportBlockService.ts | 132 | Denuncias + bloqueios |
+| components/ReportModal.tsx | 178 | Modal reutilizavel de denuncia |
+| hooks/useBloqueados.ts | 20 | Hook reativo de IDs bloqueados |
 | stores/socialStore.ts | 158 | Store de amizades |
 | stores/chatStore.ts | 266 | Store de chat |
 | services/friendshipsService.ts | ~120 | Service de amizades |
@@ -170,7 +205,9 @@ Modelo: PENDING = pedido enviado. ACCEPTED = amigos. DELETE row = cancelar/recus
 | 11 | Buscar usuario | OK | NewChatModal + search |
 | 12 | RLS | OK | friendships + messages com RLS |
 | 13 | Amigos mutuos | OK | mutualFriends no socialStore |
-| 14 | Bloquear usuario | NAO EXISTE | Sem funcao de bloqueio |
-| 15 | Grupo de chat | NAO EXISTE | Apenas 1:1 |
-| 16 | Enviar imagem/midia | NAO EXISTE | Apenas texto |
-| 17 | Denunciar mensagem | NAO EXISTE | Sem report |
+| 14 | Bloquear usuario | OK | reportBlockService + bloqueios table + useBloqueados hook |
+| 15 | Denunciar usuario/chat | OK | ReportModal em ChatRoomView + PublicProfilePreviewView |
+| 16 | Filtrar bloqueados chat | OK | MessagesView filtra chats de bloqueados via useBloqueados |
+| 17 | Filtrar bloqueados busca | OK | SearchView filtra peopleResults via useBloqueados |
+| 18 | Grupo de chat | NAO EXISTE | Apenas 1:1 |
+| 19 | Enviar imagem/midia | NAO EXISTE | Apenas texto |

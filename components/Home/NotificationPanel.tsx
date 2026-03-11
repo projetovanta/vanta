@@ -259,10 +259,18 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({
   return (
     <>
       <div className="absolute top-0 left-0 w-full h-full z-[120] animate-in fade-in duration-300">
-        <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" role="presentation" onClick={onClose} />
+        <div className="absolute inset-0 bg-black/40" role="presentation" onClick={onClose} />
         <div className="absolute top-[4.5rem] right-4 left-4 w-auto max-w-xs ml-auto animate-in zoom-in-95 slide-in-from-top-2 duration-300 origin-top-right">
-          <div className="glass-premium rounded-[2.5rem] overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
-            <div className="p-5 bg-zinc-900/80">
+          <div
+            className="rounded-[2.5rem] border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.6)]"
+            style={{
+              background: 'rgba(30,30,30,0.7)',
+              WebkitBackdropFilter: 'blur(80px) saturate(1.8)',
+              backdropFilter: 'blur(80px) saturate(1.8)',
+              isolation: 'isolate',
+            }}
+          >
+            <div className="p-5 rounded-[2.5rem] overflow-hidden">
               <div className="flex justify-between items-center mb-5">
                 <h4 style={TYPOGRAPHY.uiLabel} className="text-[0.5rem] opacity-40">
                   Notificações

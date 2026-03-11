@@ -7,7 +7,7 @@ import { getMinPrice } from '../../../utils';
 import { OptimizedImage } from '../../../components/OptimizedImage';
 
 // Escala com o font-size dinâmico: 5.75rem ≈ 92px@16px base
-const getItemHeight = () => parseFloat(getComputedStyle(document.documentElement).fontSize) * 5.75;
+const getItemHeight = () => parseFloat(getComputedStyle(document.documentElement).fontSize) * 5;
 
 export const SearchResults: React.FC<{
   results: Evento[];
@@ -64,29 +64,29 @@ export const SearchResults: React.FC<{
                 >
                   <div
                     onClick={() => onEventClick(evento)}
-                    className="bg-zinc-900 border border-white/5 rounded-2xl p-3 flex gap-4 cursor-pointer active:scale-95 transition-all h-full"
+                    className="bg-zinc-900 border border-white/5 rounded-2xl p-2.5 flex gap-3 cursor-pointer active:scale-95 transition-all h-full"
                   >
-                    <div className="w-20 h-20 shrink-0 rounded-xl overflow-hidden">
+                    <div className="w-16 h-16 shrink-0 rounded-xl overflow-hidden">
                       <OptimizedImage
                         src={evento.imagem}
                         alt={evento.titulo || 'Evento'}
-                        width={80}
-                        height={80}
+                        width={64}
+                        height={64}
                         className="w-full h-full object-cover"
                       />
                     </div>
                     <div className="flex-1 min-w-0 flex flex-col justify-center">
-                      <span className="text-[0.5625rem] font-bold text-[#FFD300] uppercase tracking-wider mb-1">
+                      <span className="text-[0.5rem] font-bold text-[#FFD300] uppercase tracking-wider mb-0.5">
                         {evento.formato || evento.categoria}
                       </span>
-                      <h3 className="font-serif font-bold text-white truncate mb-1">{evento.titulo}</h3>
-                      <div className="text-zinc-400 text-[0.625rem] truncate">
-                        <MapPin size="0.625rem" className="inline mr-1" />
+                      <h3 className="font-serif font-bold text-sm text-white truncate mb-0.5">{evento.titulo}</h3>
+                      <div className="text-zinc-400 text-[0.5625rem] truncate">
+                        <MapPin size="0.5625rem" className="inline mr-1" />
                         {evento.local}
                       </div>
                     </div>
                     <div className="flex items-center text-zinc-400">
-                      <ArrowRight size="1rem" />
+                      <ArrowRight size="0.875rem" />
                     </div>
                   </div>
                 </div>

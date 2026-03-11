@@ -164,5 +164,7 @@ Radar = mapa de eventos por geolocalizacao.
 | 25 | Dark/light mode | NAO EXISTE | Apenas dark |
 | 26 | Idioma | NAO EXISTE | Apenas pt-BR |
 | 27 | CTA Parceiro VANTA | OK | Card no perfil (nao-gerente/master) -> SolicitarParceriaView |
+| 28 | Exclusao de conta | OK | RPC anonimizar_conta() — anonimiza dados pessoais, mantém fiscais |
+| 29 | Denunciar perfil | OK | ReportModal no PublicProfilePreviewView (tipo USUARIO + bloquear) |
 | 28 | SubView SOLICITAR_PARCERIA | OK | ProfileSubView em types/auth.ts |
 | 29 | SubView MINHAS_SOLICITACOES | OK | MinhasSolicitacoesView.tsx (Privados + Comemoracoes com timeline + progresso vendas) |

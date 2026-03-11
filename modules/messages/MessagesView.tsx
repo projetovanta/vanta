@@ -9,6 +9,7 @@ import { useSocialStore } from '../../stores/socialStore';
 import { useDebounce } from '../../hooks/useDebounce';
 import { moodService, MoodData } from '../../services/moodService';
 import { Skeleton } from '../../components/Skeleton';
+import { useBloqueados } from '../../hooks/useBloqueados';
 
 interface MessagesViewProps {
   onOpenChat: (member: Membro) => void;
@@ -18,6 +19,7 @@ export const MessagesView: React.FC<MessagesViewProps> = ({ onOpenChat }) => {
   const chats = useChatStore(s => s.chats);
   const onlineUsers = useChatStore(s => s.onlineUsers);
   const mutualFriends = useSocialStore(s => s.mutualFriends);
+  const bloqueados = useBloqueados();
   const [query, setQuery] = useState('');
   const debouncedQuery = useDebounce(query, 300);
   const [isNewChatModalOpen, setIsNewChatModalOpen] = useState(false);
@@ -35,11 +37,12 @@ export const MessagesView: React.FC<MessagesViewProps> = ({ onOpenChat }) => {
 
   const filteredChats = useMemo(() => {
     return chats.filter(chat => {
+      if (bloqueados.has(chat.participantId)) return false;
       const nome = chat.participantNome ?? '';
       const searchStr = (nome + chat.lastMessage).toLowerCase();
       return searchStr.includes(debouncedQuery.toLowerCase());
     });
-  }, [chats, debouncedQuery]);
+  }, [chats, debouncedQuery, bloqueados]);
 
   const handleStartNewChat = (member: Membro) => {
     setIsNewChatModalOpen(false);

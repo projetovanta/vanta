@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { ArrowLeft, Send, Shield, MoreVertical, X, Search, ChevronUp, ChevronDown } from 'lucide-react';
+import { ArrowLeft, Send, Shield, MoreVertical, X, Search, ChevronUp, ChevronDown, Flag } from 'lucide-react';
 import { Chat, Membro } from '../../../types';
 import { PublicProfilePreviewView } from '../../profile/PublicProfilePreviewView';
 import { MessageBubble } from './MessageBubble';
@@ -7,6 +7,8 @@ import { useAuthStore } from '../../../stores/authStore';
 import { useSocialStore } from '../../../stores/socialStore';
 import { useChatStore } from '../../../stores/chatStore';
 import { useDebounce } from '../../../hooks/useDebounce';
+import { ReportModal } from '../../../components/ReportModal';
+import { globalToast } from '../../../components/Toast';
 
 interface ChatRoomViewProps {
   chat: Chat;
@@ -38,6 +40,8 @@ export const ChatRoomView: React.FC<ChatRoomViewProps> = ({ chat, onBack }) => {
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
   const [searchIndex, setSearchIndex] = useState(0);
   const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
+  const [showReport, setShowReport] = useState(false);
+  const [showChatMenu, setShowChatMenu] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messageRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -180,9 +184,29 @@ export const ChatRoomView: React.FC<ChatRoomViewProps> = ({ chat, onBack }) => {
           >
             <Search size="1.125rem" />
           </button>
-          <button aria-label="Mais opções" className="w-10 h-10 flex items-center justify-center text-zinc-400">
-            <MoreVertical size="1.25rem" />
-          </button>
+          <div className="relative">
+            <button
+              aria-label="Mais opções"
+              onClick={() => setShowChatMenu(v => !v)}
+              className="w-10 h-10 flex items-center justify-center text-zinc-400"
+            >
+              <MoreVertical size="1.25rem" />
+            </button>
+            {showChatMenu && (
+              <div className="absolute right-0 top-full mt-1 bg-zinc-900 border border-white/10 rounded-xl shadow-2xl overflow-hidden z-50 min-w-[10rem] animate-in fade-in zoom-in-95 duration-150">
+                <button
+                  onClick={() => {
+                    setShowChatMenu(false);
+                    setShowReport(true);
+                  }}
+                  className="w-full flex items-center gap-2.5 px-4 py-3 text-red-400 text-[0.6875rem] font-semibold active:bg-zinc-800 transition-colors"
+                >
+                  <Flag size="0.875rem" />
+                  Denunciar
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -346,6 +370,19 @@ export const ChatRoomView: React.FC<ChatRoomViewProps> = ({ chat, onBack }) => {
           </div>
         </div>
       )}
+
+      <ReportModal
+        isOpen={showReport}
+        onClose={() => setShowReport(false)}
+        tipo="CHAT"
+        alvoUserId={chat.participantId}
+        alvoNome={participantNome}
+        showBlockOption
+        onSuccess={msg => globalToast(msg.includes('Erro') ? 'erro' : 'sucesso', msg)}
+      />
+
+      {/* Fechar menu ao clicar fora */}
+      {showChatMenu && <div className="absolute inset-0 z-40" onClick={() => setShowChatMenu(false)} />}
     </div>
   );
 };

@@ -23,6 +23,8 @@ import ReviewModal from '../../components/ReviewModal';
 import { ComemoracaoFormView } from '../community/ComemoracaoFormView';
 import { trackEventOpen } from '../../services/analyticsService';
 import type { BeneficioMV } from '../../features/admin/services/clube/clubeLotesService';
+import { ReportModal } from '../../components/ReportModal';
+import { globalToast } from '../../components/Toast';
 
 interface EventDetailViewProps {
   evento: Evento;
@@ -58,6 +60,7 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [showMaisVantaModal, setShowMaisVantaModal] = useState(false);
   const [showComemoracao, setShowComemoracao] = useState(false);
+  const [showReport, setShowReport] = useState(false);
   const [reviewStats, setReviewStats] = useState<{ media: number; count: number }>({ media: 0, count: 0 });
 
   const eventoAdmin = useMemo(() => eventosAdminService.getEvento(evento.id), [evento.id]);
@@ -215,6 +218,7 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
           onShareSuccess={onSuccess}
           isFavorited={isFavorited}
           onToggleFavorite={onToggleFavorite}
+          onReport={() => setShowReport(true)}
         />
 
         {/* Content card — sobe por cima da foto */}
@@ -531,6 +535,15 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
           />
         </div>
       )}
+
+      <ReportModal
+        isOpen={showReport}
+        onClose={() => setShowReport(false)}
+        tipo="EVENTO"
+        alvoEventoId={evento.id}
+        alvoNome={evento.titulo}
+        onSuccess={msg => globalToast(msg.includes('Erro') ? 'erro' : 'sucesso', msg)}
+      />
     </div>
   );
 };

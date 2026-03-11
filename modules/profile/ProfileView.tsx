@@ -248,19 +248,15 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
     setPasswordLoading(false);
   };
 
-  // ── Excluir conta handler ──
+  // ── Excluir conta handler (anonimização Apple-compliant) ──
   const handleDeleteAccount = async () => {
     setIsDeleting(true);
     try {
       const { supabase } = await import('../../services/supabaseClient');
-      // Marca perfil como excluído (soft delete)
-      const agora = new Date().toLocaleString('sv-SE', { timeZone: 'America/Sao_Paulo' }).replace(' ', 'T') + '-03:00';
-      const { error: errDel } = await supabase
-        .from('profiles')
-        .update({ excluido: true, excluido_em: agora })
-        .eq('id', profile.id);
-      if (errDel) {
-        console.error('[ProfileView] deleteAccount:', errDel);
+      // RPC anonimiza dados pessoais, mantém registros fiscais
+      const { error: errRpc } = await supabase.rpc('anonimizar_conta');
+      if (errRpc) {
+        console.error('[ProfileView] anonimizar_conta:', errRpc);
         onSuccess?.('Erro ao excluir conta. Tente novamente.');
         setIsDeleting(false);
         return;

@@ -184,6 +184,27 @@ export type Database = {
         };
         Relationships: [];
       };
+      bloqueios: {
+        Row: {
+          bloqueado_id: string;
+          bloqueador_id: string;
+          criado_em: string;
+          id: string;
+        };
+        Insert: {
+          bloqueado_id: string;
+          bloqueador_id: string;
+          criado_em?: string;
+          id?: string;
+        };
+        Update: {
+          bloqueado_id?: string;
+          bloqueador_id?: string;
+          criado_em?: string;
+          id?: string;
+        };
+        Relationships: [];
+      };
       cargos: {
         Row: {
           atribuido_em: string;
@@ -1380,6 +1401,48 @@ export type Database = {
             referencedColumns: ['id'];
           },
         ];
+      };
+      denuncias: {
+        Row: {
+          alvo_comunidade_id: string | null;
+          alvo_evento_id: string | null;
+          alvo_user_id: string | null;
+          atualizado_em: string | null;
+          criado_em: string;
+          descricao: string | null;
+          id: string;
+          motivo: string;
+          reporter_id: string;
+          status: string;
+          tipo: string;
+        };
+        Insert: {
+          alvo_comunidade_id?: string | null;
+          alvo_evento_id?: string | null;
+          alvo_user_id?: string | null;
+          atualizado_em?: string | null;
+          criado_em?: string;
+          descricao?: string | null;
+          id?: string;
+          motivo: string;
+          reporter_id: string;
+          status?: string;
+          tipo: string;
+        };
+        Update: {
+          alvo_comunidade_id?: string | null;
+          alvo_evento_id?: string | null;
+          alvo_user_id?: string | null;
+          atualizado_em?: string | null;
+          criado_em?: string;
+          descricao?: string | null;
+          id?: string;
+          motivo?: string;
+          reporter_id?: string;
+          status?: string;
+          tipo?: string;
+        };
+        Relationships: [];
       };
       equipe_evento: {
         Row: {
@@ -4350,6 +4413,7 @@ export type Database = {
         Args: { p_evento_id: string; p_socio_id: string };
         Returns: Json;
       };
+      anonimizar_conta: { Args: never; Returns: undefined };
       buscar_membros: {
         Args: { max_results?: number; search_query: string };
         Returns: {

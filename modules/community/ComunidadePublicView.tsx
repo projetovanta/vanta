@@ -13,6 +13,7 @@ import {
   Star,
   PartyPopper,
   Cake,
+  Flag,
 } from 'lucide-react';
 import { TYPOGRAPHY } from '../../constants';
 import { Evento, Membro, HorarioSemanal, HorarioOverride } from '../../types';
@@ -24,6 +25,8 @@ import { reviewsService } from '../../features/admin/services/reviewsService';
 import { useAuthStore } from '../../stores/authStore';
 import { HorarioPublicDisplay } from '../../components/HorarioPublicDisplay';
 import { RestrictedModal } from '../../components/RestrictedModal';
+import { ReportModal } from '../../components/ReportModal';
+import { globalToast } from '../../components/Toast';
 import { EventoPrivadoFormView } from './EventoPrivadoFormView';
 import { ComemoracaoFormView } from './ComemoracaoFormView';
 
@@ -76,6 +79,7 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
   const [ratingData, setRatingData] = useState<{ media: number; count: number }>({ media: 0, count: 0 });
   const [showEventoPrivado, setShowEventoPrivado] = useState(false);
   const [showComemoracao, setShowComemoracao] = useState(false);
+  const [showReport, setShowReport] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -195,7 +199,7 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
     <div className="relative flex flex-col h-full bg-[#050505]">
       {/* Header fixo com safe-area — botão voltar sempre visível */}
       <div
-        className="absolute top-0 inset-x-0 z-20 flex items-end px-4 pb-2"
+        className="absolute top-0 inset-x-0 z-20 flex items-end justify-between px-4 pb-2"
         style={{
           background: 'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, transparent 100%)',
         }}
@@ -206,6 +210,13 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
           className="w-10 h-10 bg-black/40 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 active:scale-90 transition-all"
         >
           <ArrowLeft size="1.125rem" className="text-white" />
+        </button>
+        <button
+          aria-label="Denunciar"
+          onClick={() => setShowReport(true)}
+          className="w-10 h-10 bg-black/40 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 active:scale-90 transition-all text-zinc-400"
+        >
+          <Flag size="1rem" />
         </button>
       </div>
 
@@ -564,6 +575,15 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
           onRequestCadastro?.();
         }}
         mensagem="Seguir comunidades é exclusivo para membros. Entre ou crie sua conta para continuar."
+      />
+
+      <ReportModal
+        isOpen={showReport}
+        onClose={() => setShowReport(false)}
+        tipo="COMUNIDADE"
+        alvoComunidadeId={comunidadeId}
+        alvoNome={comunidade?.nome}
+        onSuccess={msg => globalToast(msg.includes('Erro') ? 'erro' : 'sucesso', msg)}
       />
     </div>
   );

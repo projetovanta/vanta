@@ -11,6 +11,7 @@ import { TimeFilterModal } from './components/TimeFilterModal';
 import { PriceFilterModal } from './components/PriceFilterModal';
 import { getMinPrice } from '../../utils';
 import { authService } from '../../services/authService';
+import { useBloqueados } from '../../hooks/useBloqueados';
 import { supabase } from '../../services/supabaseClient';
 import { useAuthStore } from '../../stores/authStore';
 import { useExtrasStore } from '../../stores/extrasStore';
@@ -29,6 +30,7 @@ const ITEMS_PER_PAGE = 10;
 export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberClick, onComunidadeClick }) => {
   const currentCity = useAuthStore(s => s.selectedCity);
   const EVENTOS = useExtrasStore(s => s.allEvents);
+  const bloqueados = useBloqueados();
   const searchEventsServerSide = useExtrasStore(s => s.searchEventsServerSide);
   const [query, setQuery] = useState('');
   const debouncedQuery = useDebounce(query, 300);
@@ -195,7 +197,7 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
       try {
         const r = await authService.buscarMembros(debouncedQuery, 20);
         if (cancelled) return;
-        setPeopleResults(r);
+        setPeopleResults(r.filter(m => !bloqueados.has(m.id)));
       } catch (err) {
         console.error('[SearchView] busca pessoas:', err);
       } finally {

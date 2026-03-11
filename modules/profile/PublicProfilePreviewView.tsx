@@ -26,12 +26,15 @@ import {
   ChevronLeft,
   ChevronRight,
   Pencil,
+  Flag,
 } from 'lucide-react';
 import { Membro, PrivacidadeOpcao } from '../../types';
 import { TYPOGRAPHY } from '../../constants';
 import { achievementsService, Achievement, Badge, NIVEL_CONFIG } from '../../services/achievementsService';
 import { useSocialStore } from '../../stores/socialStore';
 import { moodService, MoodData } from '../../services/moodService';
+import { ReportModal } from '../../components/ReportModal';
+import { globalToast } from '../../components/Toast';
 
 export const PublicProfilePreviewView: React.FC<{
   profile: Membro;
@@ -70,6 +73,7 @@ export const PublicProfilePreviewView: React.FC<{
 
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [badges, setBadges] = useState<Badge[]>([]);
+  const [showReport, setShowReport] = useState(false);
 
   useEffect(() => {
     if (!profile.id) return;
@@ -202,7 +206,7 @@ export const PublicProfilePreviewView: React.FC<{
       )}
 
       {(!isOwner || (isOwner && !setProfilePreviewStatus)) && (
-        <div className="shrink-0 p-6 flex items-center" style={{ paddingTop: '1.5rem' }}>
+        <div className="shrink-0 p-6 flex items-center justify-between" style={{ paddingTop: '1.5rem' }}>
           <button
             aria-label="Voltar"
             onClick={onBack}
@@ -210,6 +214,15 @@ export const PublicProfilePreviewView: React.FC<{
           >
             <ArrowLeft size="1.125rem" />
           </button>
+          {!isOwner && (
+            <button
+              aria-label="Denunciar"
+              onClick={() => setShowReport(true)}
+              className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all text-zinc-400"
+            >
+              <Flag size="1rem" />
+            </button>
+          )}
         </div>
       )}
 
@@ -636,6 +649,16 @@ export const PublicProfilePreviewView: React.FC<{
           onChangeIndex={setLightboxIndex}
         />
       )}
+
+      <ReportModal
+        isOpen={showReport}
+        onClose={() => setShowReport(false)}
+        tipo="USUARIO"
+        alvoUserId={profile.id}
+        alvoNome={profile.nome}
+        showBlockOption
+        onSuccess={msg => globalToast(msg.includes('Erro') ? 'erro' : 'sucesso', msg)}
+      />
     </div>
   );
 };

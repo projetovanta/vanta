@@ -120,7 +120,8 @@ export default function App() {
         return;
       }
       const w = Math.max(320, Math.min(el.offsetWidth, 500));
-      const fs = (w / 375) * 16;
+      // Abaixo de 375: redução linear. Acima: crescimento amortecido (30%)
+      const fs = w <= 375 ? (w / 375) * 16 : 16 * (1 + ((w - 375) / 375) * 0.3);
       document.documentElement.style.fontSize = fs + 'px';
     };
     const ro = new ResizeObserver(update);

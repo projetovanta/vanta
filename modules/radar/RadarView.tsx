@@ -278,9 +278,9 @@ export const RadarView: React.FC<RadarViewProps> = ({ onEventSelect }) => {
         <div className="absolute bottom-24 left-4 right-4 z-[1000] animate-in slide-in-from-bottom-4 duration-300">
           <div
             onClick={() => onEventSelect(radar.activeEvent!)}
-            className="bg-[#0A0A0A]/95 backdrop-blur-2xl border border-[#FFD300]/20 rounded-[1.5rem] p-4 shadow-2xl flex gap-4 cursor-pointer active:scale-[0.98] transition-transform"
+            className="bg-[#0A0A0A]/95 backdrop-blur-2xl border border-[#FFD300]/20 rounded-[1.5rem] p-3 shadow-2xl flex gap-3 cursor-pointer active:scale-[0.98] transition-transform"
           >
-            <div className="w-20 h-20 rounded-xl overflow-hidden shrink-0 relative">
+            <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 relative">
               <img
                 src={radar.activeEvent.imagem}
                 className="w-full h-full object-cover"
@@ -289,13 +289,13 @@ export const RadarView: React.FC<RadarViewProps> = ({ onEventSelect }) => {
               />
             </div>
             <div className="flex-1 min-w-0 flex flex-col justify-center">
-              <span className="text-[0.5625rem] font-bold text-[#FFD300] uppercase tracking-wider mb-1">
+              <span className="text-[0.5rem] font-bold text-[#FFD300] uppercase tracking-wider mb-0.5">
                 {radar.activeEvent.formato || radar.activeEvent.categoria}
               </span>
-              <h3 style={TYPOGRAPHY.cardTitle} className="text-base text-white leading-tight mb-1 truncate">
+              <h3 style={TYPOGRAPHY.cardTitle} className="text-sm text-white leading-tight mb-0.5 truncate">
                 {radar.activeEvent.titulo}
               </h3>
-              <p className="text-zinc-400 text-xs mb-2">
+              <p className="text-zinc-400 text-[0.625rem] mb-1.5">
                 {radar.activeEvent.data} • {radar.activeEvent.horario}
                 {radar.activeEvent.coords &&
                   (() => {

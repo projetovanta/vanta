@@ -99,7 +99,9 @@ function _addEntry(category: LogCategory, level: LogLevel, message: string, data
     console.log(`%c${tag} ${message}`, style, data ?? '');
   }
 
-  _emit();
+  // Deferrar notificação para evitar setState durante render de outro componente
+  // (ex: Recharts warn → interceptor → _addEntry → _emit → useSyncExternalStore → re-render)
+  queueMicrotask(_emit);
 }
 
 export const devLogger = {

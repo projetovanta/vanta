@@ -220,7 +220,8 @@ export interface Membro {
   biografia: string;
   foto: string;
   fotos?: string[]; // Álbum: até 6 fotos. Base64 client-side; trocar por URL quando backend estiver pronto.
-  genero: 'MASCULINO' | 'FEMININO';
+  cpf?: string; // preenchido no Nível 2 (primeira compra)
+  genero?: 'MASCULINO' | 'FEMININO' | 'PREFIRO_NAO_DIZER'; // preenchido sob demanda (Nível 3)
   interesses: string[];
   privacidade?: PrivacidadeConfig;
   role?: ContaVanta;

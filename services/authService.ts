@@ -21,8 +21,6 @@ type ProfileRow = Database['public']['Tables']['profiles']['Row'];
 let _intentionalLogout = false;
 
 // ── Avatares padrão por gênero ─────────────────────────────────────────────
-const AVATAR_FEMININO = 'https://i.imgur.com/XY8rZZf.png';
-const AVATAR_MASCULINO = 'https://i.imgur.com/kXFU8vy.png';
 
 // ── Tipos ──────────────────────────────────────────────────────────────────
 
@@ -43,8 +41,9 @@ export interface SignUpResult {
 
 export const profileToMembro = (row: ProfileRow | Record<string, unknown>): Membro => {
   const r = row as ProfileRow;
-  const genero = (r.genero as 'MASCULINO' | 'FEMININO' | undefined) ?? 'MASCULINO';
-  const fotoUrl = r.avatar_url ?? r.foto_perfil ?? r.foto ?? DEFAULT_AVATARS[genero];
+  const genero = (r.genero as Membro['genero']) ?? undefined;
+  const fotoUrl =
+    r.avatar_url ?? r.foto_perfil ?? r.foto ?? (genero ? DEFAULT_AVATARS[genero] : DEFAULT_AVATARS.NEUTRO);
   const dataNasc = r.data_nascimento ?? r.nascimento ?? r.birth_date ?? '';
   return {
     id: r.id,
@@ -64,6 +63,7 @@ export const profileToMembro = (row: ProfileRow | Record<string, unknown>): Memb
     foto: fotoUrl,
     biometriaFoto: r.biometria_url ?? undefined,
     biometriaCaptured: r.biometria_url ? true : false,
+    cpf: r.cpf ?? undefined,
     interesses: r.interesses ?? [],
     fotos: r.album_urls ?? [],
     privacidade: (r.privacidade as unknown as import('../types').PrivacidadeConfig | undefined) ?? undefined,
@@ -126,14 +126,9 @@ export const authService = {
     email: string;
     senha: string;
     nome: string;
-    instagram: string;
     dataNascimento: string; // ISO YYYY-MM-DD
-    genero: 'MASCULINO' | 'FEMININO';
-    estado: string;
-    cidade: string;
     telefoneDdd: string;
     telefoneNumero: string;
-    selfieUrl?: string;
   }): Promise<SignUpResult> => {
     try {
       const { data, error } = await supabase.auth.signUp({
@@ -148,43 +143,30 @@ export const authService = {
 
       const userId = data.user.id;
 
-      const avatarUrl = params.genero === 'FEMININO' ? AVATAR_FEMININO : AVATAR_MASCULINO;
+      const avatarUrl = DEFAULT_AVATARS.NEUTRO;
 
-      // Upsert profile — o trigger já criou o row básico; atualizamos com os dados completos
-      // Inclui tanto os nomes novos quanto os legados para máxima compatibilidade
+      // Upsert profile — o trigger já criou o row básico; atualizamos com os dados do cadastro
       const { error: pErr } = await supabase.from('profiles').upsert(
         {
           id: userId,
-          // Colunas novas (migration v7→v8)
           nome: params.nome,
+          full_name: params.nome,
           email: params.email,
           data_nascimento: params.dataNascimento,
-          genero: params.genero,
-          estado: params.estado,
-          cidade: params.cidade,
           telefone_ddd: params.telefoneDdd,
           telefone_numero: params.telefoneNumero,
           avatar_url: avatarUrl,
+          foto: avatarUrl,
           biografia: '',
           interesses: [],
-          // Colunas legadas (schema v5-v6) para compatibilidade
-          full_name: params.nome,
-          foto: avatarUrl,
-          instagram: params.instagram,
-          // 'vanta_member' não existe no CHECK CONSTRAINT do banco — usar 'vanta_guest'
-          // O app trata vanta_guest como membro comum quando logado
           role: 'vanta_guest',
-          biometria_url: params.selfieUrl ?? null,
         },
         { onConflict: 'id' },
       );
 
       if (pErr) {
         console.error('[AUTH] Erro ao salvar profile:', pErr.message, pErr.details, pErr.hint);
-        // Não bloqueia — o usuário já foi criado no Auth
       }
-
-      // Enriquecimento de seguidores Instagram roda em background via enrichInstagramFollowers()
 
       const nowBR = (): string => {
         const d = new Date();
@@ -195,16 +177,10 @@ export const authService = {
         id: userId,
         nome: params.nome,
         email: params.email,
-        instagram: params.instagram,
         dataNascimento: params.dataNascimento,
         telefone: { ddd: params.telefoneDdd, numero: params.telefoneNumero },
-        estado: params.estado,
-        cidade: params.cidade,
-        genero: params.genero,
         biografia: '',
         foto: avatarUrl,
-        biometriaFoto: params.selfieUrl,
-        biometriaCaptured: !!params.selfieUrl,
         interesses: [],
         role: 'vanta_member',
         curadoriaConcluida: false,
@@ -227,7 +203,6 @@ export const authService = {
         // silencioso — não bloqueia o cadastro
       }
 
-      // Supabase pode exigir confirmação de e-mail dependendo das configs
       const needsConfirmation = !data.session;
       return { ok: true, membro, needsConfirmation };
     } catch (e: unknown) {

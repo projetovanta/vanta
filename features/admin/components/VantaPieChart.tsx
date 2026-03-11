@@ -1,5 +1,5 @@
 import React from 'react';
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
+import { PieChart, Pie, Cell, Tooltip } from 'recharts';
 
 export interface PieSlice {
   name: string;
@@ -12,7 +12,7 @@ interface Props {
   formatValue?: (v: number) => string;
   onSliceClick?: (name: string) => void;
   selectedName?: string | null;
-  /** altura do container — padrão 180 */
+  /** altura do container — padrão 180 (desktop), 120 (mobile) */
   height?: number;
 }
 
@@ -37,6 +37,18 @@ const CustomTooltip: React.FC<{
   );
 };
 
+/** Hook simples pra detectar se é desktop (>=1024px) */
+function useIsLg() {
+  const [isLg, setIsLg] = React.useState(() => typeof window !== 'undefined' && window.innerWidth >= 1024);
+  React.useEffect(() => {
+    const mq = window.matchMedia('(min-width: 1024px)');
+    const handler = (e: MediaQueryListEvent) => setIsLg(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+  return isLg;
+}
+
 export const VantaPieChart: React.FC<Props> = ({
   data,
   formatValue = fmtDefault,
@@ -45,58 +57,58 @@ export const VantaPieChart: React.FC<Props> = ({
   height = 180,
 }) => {
   const total = data.reduce((s, d) => s + d.value, 0);
+  const isLg = useIsLg();
   if (total === 0) return null;
 
+  // Mobile: 120px, desktop: prop height
+  const size = isLg ? height : Math.min(height, 120);
+
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex flex-col items-center gap-3 lg:flex-row lg:items-center lg:gap-4">
       {/* Pizza */}
-      <div className="shrink-0" style={{ width: height, height }}>
-        <ResponsiveContainer width="100%" height="100%" minWidth={height} minHeight={height}>
-          <PieChart>
-            <Pie
-              data={data}
-              dataKey="value"
-              nameKey="name"
-              cx="50%"
-              cy="50%"
-              outerRadius={height / 2 - 10}
-              innerRadius={height / 4}
-              strokeWidth={2}
-              stroke="#0A0A0A"
-              onClick={(_: unknown, idx: number) => onSliceClick?.(data[idx].name)}
-              className={onSliceClick ? 'cursor-pointer' : ''}
-            >
-              {data.map((d, i) => (
-                <Cell
-                  key={`${d.name}-${i}`}
-                  fill={d.color}
-                  opacity={selectedName != null && d.name !== selectedName ? 0.3 : 1}
-                />
-              ))}
-            </Pie>
-            <Tooltip content={<CustomTooltip total={total} formatValue={formatValue} />} />
-          </PieChart>
-        </ResponsiveContainer>
+      <div className="shrink-0">
+        <PieChart width={size} height={size}>
+          <Pie
+            data={data}
+            dataKey="value"
+            nameKey="name"
+            cx="50%"
+            cy="50%"
+            outerRadius={size / 2 - 8}
+            innerRadius={size / 4}
+            strokeWidth={2}
+            stroke="#0A0A0A"
+            onClick={(_: unknown, idx: number) => onSliceClick?.(data[idx].name)}
+            className={onSliceClick ? 'cursor-pointer' : ''}
+          >
+            {data.map((d, i) => (
+              <Cell
+                key={`${d.name}-${i}`}
+                fill={d.color}
+                opacity={selectedName != null && d.name !== selectedName ? 0.3 : 1}
+              />
+            ))}
+          </Pie>
+          <Tooltip content={<CustomTooltip total={total} formatValue={formatValue} />} />
+        </PieChart>
       </div>
 
       {/* Legenda */}
-      <div className="flex-1 min-w-0 space-y-1.5">
+      <div className="w-full min-w-0 space-y-1 lg:flex-1">
         {data.map((d, i) => {
           const pct = total > 0 ? ((d.value / total) * 100).toFixed(1) : '0';
           return (
             <button
               key={`${d.name}-${i}`}
               onClick={() => onSliceClick?.(d.name)}
-              className={`w-full flex items-center gap-2 text-left rounded-lg px-2 py-1 transition-all ${
+              className={`w-full flex items-center gap-2 text-left rounded-lg px-2 py-1.5 transition-all ${
                 d.name === selectedName ? 'bg-white/5' : onSliceClick ? 'active:bg-white/5' : ''
               }`}
             >
               <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: d.color }} />
-              <div className="flex-1 min-w-0">
-                <p className="text-zinc-300 text-[9px] font-bold truncate">{d.name}</p>
-                <p className="text-zinc-700 text-[7px]">{pct}%</p>
-              </div>
-              <p className="text-zinc-400 text-[9px] font-bold shrink-0">{formatValue(d.value)}</p>
+              <p className="flex-1 min-w-0 text-zinc-300 text-[11px] font-bold truncate">{d.name}</p>
+              <p className="text-zinc-500 text-[10px] shrink-0">{pct}%</p>
+              <p className="text-zinc-400 text-[11px] font-bold shrink-0">{formatValue(d.value)}</p>
             </button>
           );
         })}

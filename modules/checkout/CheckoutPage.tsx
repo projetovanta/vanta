@@ -24,6 +24,7 @@ import { comemoracaoService } from '../../services/comemoracaoService';
 import { logger } from '../../services/logger';
 import { SuccessScreen } from './SuccessScreen';
 import { WaitlistModal } from './WaitlistModal';
+import { CompletarPerfilCPF } from '../../components/CompletarPerfilCPF';
 
 // eventoId extraído via useParams dentro do componente
 
@@ -207,6 +208,8 @@ export const CheckoutPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const submittingRef = useRef(false);
   const [erro, setErro] = useState('');
+  const [showCpfModal, setShowCpfModal] = useState(false);
+  const pendingCompradorRef = useRef<string | null>(null);
   const [tickets, setTickets] = useState<Ingresso[]>([]);
 
   // Mesas
@@ -387,6 +390,24 @@ export const CheckoutPage: React.FC = () => {
       return;
     }
     const compradorId = authData.user.id;
+
+    // Guard CPF — Nível 2 do Perfil Progressivo
+    const { data: profile } = await supabase.from('profiles').select('cpf').eq('id', compradorId).maybeSingle();
+
+    if (!profile?.cpf) {
+      pendingCompradorRef.current = compradorId;
+      setLoading(false);
+      submittingRef.current = false;
+      setShowCpfModal(true);
+      return;
+    }
+
+    await processarCompra(compradorId);
+  };
+
+  const processarCompra = async (compradorId: string) => {
+    setLoading(true);
+    setErro('');
 
     // Processar compra via RPC para cada variação
     const gerados: Ingresso[] = [];
@@ -936,6 +957,22 @@ export const CheckoutPage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Modal CPF — Nível 2 Perfil Progressivo */}
+      <CompletarPerfilCPF
+        isOpen={showCpfModal}
+        onClose={() => {
+          setShowCpfModal(false);
+          pendingCompradorRef.current = null;
+        }}
+        onSuccess={() => {
+          setShowCpfModal(false);
+          if (pendingCompradorRef.current) {
+            void processarCompra(pendingCompradorRef.current);
+            pendingCompradorRef.current = null;
+          }
+        }}
+      />
     </div>
   );
 };

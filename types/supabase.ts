@@ -2681,6 +2681,7 @@ export type Database = {
           birth_date: string | null;
           cidade: string | null;
           city: string | null;
+          cpf: string | null;
           created_at: string | null;
           curadoria_concluida: boolean;
           data_nascimento: string | null;
@@ -2729,6 +2730,7 @@ export type Database = {
           birth_date?: string | null;
           cidade?: string | null;
           city?: string | null;
+          cpf?: string | null;
           created_at?: string | null;
           curadoria_concluida?: boolean;
           data_nascimento?: string | null;
@@ -2777,6 +2779,7 @@ export type Database = {
           birth_date?: string | null;
           cidade?: string | null;
           city?: string | null;
+          cpf?: string | null;
           created_at?: string | null;
           curadoria_concluida?: boolean;
           data_nascimento?: string | null;

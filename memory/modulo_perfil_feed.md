@@ -57,6 +57,22 @@ Radar = mapa de eventos por geolocalizacao.
 | components/ImageCropperModal.tsx | 148 | Crop de foto |
 | utils/imageUtils.ts | 44 | Compress + crop de imagem |
 
+### Auth / Cadastro (components/auth/ + components/)
+| Arquivo | Funcao |
+|---|---|
+| AuthModal.tsx | Cadastro Nivel 1: email, senha, nome, telefone (DDD+numero), data nascimento, termos. Ken Burns bg. ~350L |
+| auth/FieldError.tsx | Componente de erro de campo |
+| auth/authHelpers.ts | Validadores: isValidDate, isAdult, isValidEmail, isValidCPF, formatadores: fmtDataNasc, fmtTelefone, fmtCPF |
+| CompletarPerfilCPF.tsx | Modal CPF (Nivel 2) — exibido no checkout se profile nao tem CPF. Valida CPF, salva no Supabase |
+
+### Perfil Progressivo (3 niveis)
+- **Nivel 1 (signup)**: email, senha, nome, telefone, data nascimento, termos — campos obrigatorios
+- **Nivel 2 (primeira compra)**: CPF — coletado via CompletarPerfilCPF no checkout
+- **Nivel 3 (sob demanda)**: genero, instagram, foto, cidade, estado — editaveis em EditProfileView
+- Avatar padrao: NEUTRO (silhueta) ate usuario enviar foto ou definir genero
+- Genero: MASCULINO, FEMININO, PREFIRO_NAO_DIZER (opcional, Nivel 3)
+- Coluna `cpf` em profiles: text, unique (parcial), constraint 11 digitos
+
 ## Fluxos
 
 ### FEED HOME
@@ -138,7 +154,7 @@ Radar = mapa de eventos por geolocalizacao.
 | 15 | Clube opt-in | OK | ClubeOptInView 785L |
 | 16 | PreferencesView | OK | 83L (basico) |
 | 17 | Onboarding | OK | OnboardingView.tsx 119L (welcome flow pos-signup) |
-| 18 | Selfie de verificacao | OK | SelfieCameraComponent 540L no signup (AuthModal). Portaria exibe selfie para conferencia visual |
+| 18 | Selfie de verificacao | REMOVIDO | Removido do signup (Perfil Progressivo). Portaria exibe selfie para conferencia visual |
 | 19 | Favoritos | OK | evento_favoritos + favoritosService |
 | 20 | Product Analytics | OK | analytics_events + analyticsService (batch tracking) |
 | 21 | PMF Survey | OK | pmf_responses + PmfSurveyModal |

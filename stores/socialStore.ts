@@ -146,7 +146,7 @@ function loadMutualFriends(userId: string, friendships: Record<string, Friendshi
           foto: p.avatar_url ?? '',
           email: p.email ?? '',
           role: (p.role ?? 'vanta_member') as Membro['role'],
-          genero: (p.genero ?? 'MASCULINO') as Membro['genero'],
+          genero: (p.genero as Membro['genero']) ?? undefined,
           cidade: p.cidade ?? '',
           estado: p.estado ?? '',
           biografia: p.biografia ?? '',

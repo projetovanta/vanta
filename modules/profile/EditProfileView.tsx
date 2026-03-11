@@ -157,7 +157,7 @@ export const EditProfileView: React.FC<{
     estado: profile.estado || '',
     cidade: profile.cidade || '',
     biografia: profile.biografia || '',
-    genero: profile.genero === 'FEMININO' ? 'FEMININO' : 'MASCULINO',
+    genero: profile.genero ?? '',
     foto: profile.foto,
     fotos: profile.fotos || [],
     interesses: profile.interesses,
@@ -415,16 +415,16 @@ export const EditProfileView: React.FC<{
                   <PrivacyToggle value={privacy.verGenero} onChange={v => updatePrivacy('verGenero', v)} />
                 </div>
                 <div className="flex bg-black/40 p-0.5 rounded-xl border border-white/5 w-full">
-                  {(['MASCULINO', 'FEMININO'] as const).map(g => (
+                  {(['MASCULINO', 'FEMININO', 'PREFIRO_NAO_DIZER'] as const).map(g => (
                     <button
                       key={g}
                       type="button"
                       onClick={() => setFormData(p => ({ ...p, genero: g }))}
-                      className={`flex-1 py-3 rounded-lg text-[9px] font-black uppercase transition-all flex items-center justify-center gap-1 ${
+                      className={`flex-1 py-2.5 rounded-lg text-[8px] font-black uppercase transition-all flex items-center justify-center gap-1 ${
                         formData.genero === g ? 'bg-[#FFD300] text-black shadow-lg' : 'text-zinc-400'
                       }`}
                     >
-                      {g === 'MASCULINO' ? 'Masc' : 'Fem'}
+                      {g === 'MASCULINO' ? 'Masc' : g === 'FEMININO' ? 'Fem' : 'N/I'}
                       {formData.genero === g && <Check size={10} strokeWidth={4} />}
                     </button>
                   ))}

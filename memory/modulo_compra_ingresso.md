@@ -94,7 +94,7 @@ Ja documentada em modulo_evento.md (CuponsSubView). Usado aqui via cuponsService
 ### Frontend
 | Arquivo | Linhas | Funcao |
 |---|---|---|
-| modules/checkout/CheckoutPage.tsx | 827 | Pagina de checkout standalone |
+| modules/checkout/CheckoutPage.tsx | ~980 | Pagina de checkout standalone. Guard CPF (Perfil Progressivo Nivel 2) antes de processar compra |
 | modules/checkout/SuccessScreen.tsx | 105 | Tela de sucesso pos-compra |
 | modules/checkout/WaitlistModal.tsx | 60 | Modal lista de espera |
 

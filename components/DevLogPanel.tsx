@@ -81,15 +81,16 @@ export function DevLogPanel() {
 
   const filtered = filter ? entries.filter(e => e.category === filter || e.level === filter) : entries;
 
-  const handleExport = () => {
-    const text = devLogger.exportText();
-    navigator.clipboard.writeText(text);
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard?.writeText(text).catch(() => {
+      // Fallback: HTTP sem HTTPS não suporta clipboard API
+      // eslint-disable-next-line no-console
+      console.log('[DevLog] Clipboard indisponível (HTTP). Log no console:\n', text);
+    });
   };
 
-  const handleExportReport = () => {
-    const text = devLogger.exportReport();
-    navigator.clipboard.writeText(text);
-  };
+  const handleExport = () => copyToClipboard(devLogger.exportText());
+  const handleExportReport = () => copyToClipboard(devLogger.exportReport());
 
   // Pill flutuante (minimizado)
   if (!isOpen) {

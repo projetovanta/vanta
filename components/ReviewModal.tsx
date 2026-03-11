@@ -52,7 +52,10 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ eventoId, eventoNome, userId,
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-white font-bold text-base truncate flex-1 mr-2">Avaliar Evento</h3>
-          <button onClick={onClose} className="text-zinc-400 active:text-white p-1">
+          <button
+            onClick={onClose}
+            className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center text-zinc-400 active:opacity-70 transition-opacity -mr-2"
+          >
             <X size="1.25rem" />
           </button>
         </div>
@@ -74,7 +77,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ eventoId, eventoNome, userId,
                   onPointerEnter={() => setHoveredStar(n)}
                   onPointerLeave={() => setHoveredStar(0)}
                   onClick={() => setRating(n)}
-                  className="p-1 active:scale-110 transition-transform"
+                  className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center active:opacity-70 transition-opacity"
                 >
                   <Star
                     size="2.25rem"

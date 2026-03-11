@@ -86,7 +86,11 @@ const ColorPickerModal: React.FC<{
       >
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-[#FFD300] font-serif italic text-lg">Escolha a Cor</h2>
-          <button type="button" onClick={onClose} className="p-1.5 bg-zinc-900 rounded-full text-zinc-400">
+          <button
+            type="button"
+            onClick={onClose}
+            className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center bg-zinc-900 rounded-full text-zinc-400 active:opacity-70 transition-opacity -mr-2"
+          >
             <X size="1rem" />
           </button>
         </div>

@@ -56,7 +56,7 @@ Sempre responder em português do Brasil.
 ### Contêiner Master (App.tsx)
 - **Outer**: `fixed inset-0 flex flex-col items-center overflow-hidden bg-[#050505]`
 - **Inner**: `w-full flex-1 overflow-hidden flex flex-col bg-[#0A0A0A]`
-  - App normal: `max-w-md`. Painel Admin: desktop sem max-w, mobile `max-w-4xl`
+  - App normal: `max-w-[500px]`. Painel Admin: `max-w-4xl` sempre
   - Desktop ≥768px: sidebar `w-56` fixa. Mobile: sidebar colapsável `w-14`/`w-48`
 
 ### Regra de Scroll — FocusViews (CRÍTICA)

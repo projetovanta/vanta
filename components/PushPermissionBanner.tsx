@@ -164,7 +164,7 @@ export const PushPermissionBanner: React.FC<Props> = ({
         {/* Botão fechar */}
         <button
           onClick={() => setDismissed(true)}
-          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/5 flex items-center justify-center active:scale-90 transition-all"
+          className="absolute top-4 right-4 min-w-[2.75rem] min-h-[2.75rem] rounded-full bg-white/5 flex items-center justify-center active:opacity-70 transition-opacity"
         >
           <X size="0.875rem" className="text-zinc-400" />
         </button>

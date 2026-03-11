@@ -115,7 +115,10 @@ export const PromoterDashboardView: React.FC<Props> = ({ eventoId, onBack }) => 
     <div className="absolute inset-0 flex flex-col overflow-hidden bg-[#0A0A0A]">
       {/* Header */}
       <div className="shrink-0 flex items-center gap-3 px-4 pt-[env(safe-area-inset-top)] pb-3 border-b border-white/5">
-        <button onClick={onBack} className="p-1.5 -ml-1.5 active:bg-white/5 rounded-lg">
+        <button
+          onClick={onBack}
+          className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center -ml-2 active:bg-white/5 rounded-lg"
+        >
           <ArrowLeft size={20} className="text-white" />
         </button>
         <div className="flex-1 min-w-0">

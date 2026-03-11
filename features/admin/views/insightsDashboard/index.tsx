@@ -18,11 +18,24 @@ const TABS: { id: TabId; label: string; icon: React.FC<{ className?: string }> }
 interface Props {
   onBack: () => void;
   comunidadeId?: string;
+  onNavigate?: (subView: string) => void;
 }
 
-export const InsightsDashboardView: React.FC<Props> = ({ onBack, comunidadeId }) => {
+export const InsightsDashboardView: React.FC<Props> = ({ onBack, comunidadeId, onNavigate }) => {
   const [activeTab, setActiveTab] = useState<TabId>('insights');
   const [selectedEventoId, setSelectedEventoId] = useState<string>('');
+
+  const handleTipAction = (target: string) => {
+    const targetMap: Record<string, string> = {
+      CUPONS: 'CUPONS',
+      LOTES: 'LOTES',
+      LISTAS: 'LISTAS',
+      COMUNICACAO: 'NOTIFICACOES',
+      EVENTO_DASHBOARD: 'MEUS_EVENTOS',
+    };
+    const subView = targetMap[target];
+    if (subView && onNavigate) onNavigate(subView);
+  };
 
   // Eventos da comunidade selecionada (ou todos se master sem comunidade)
   const eventos = useMemo(() => {
@@ -39,7 +52,7 @@ export const InsightsDashboardView: React.FC<Props> = ({ onBack, comunidadeId })
     return (
       <div className="absolute inset-0 flex flex-col overflow-hidden bg-[#0A0A0A]">
         <div className="flex items-center gap-3 px-4 py-3 border-b border-white/5">
-          <button onClick={onBack} className="p-1">
+          <button onClick={onBack} className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center -ml-2">
             <ArrowLeft className="w-5 h-5 text-white" />
           </button>
           <h2 className="text-white font-semibold">Inteligência VANTA</h2>
@@ -56,7 +69,7 @@ export const InsightsDashboardView: React.FC<Props> = ({ onBack, comunidadeId })
       {/* Header */}
       <div className="shrink-0 px-4 py-3 border-b border-white/5 space-y-3">
         <div className="flex items-center gap-3">
-          <button onClick={onBack} className="p-1">
+          <button onClick={onBack} className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center -ml-2">
             <ArrowLeft className="w-5 h-5 text-white" />
           </button>
           <Lightbulb className="w-5 h-5 text-[#FFD300]" />
@@ -121,7 +134,7 @@ export const InsightsDashboardView: React.FC<Props> = ({ onBack, comunidadeId })
         {activeTab === 'insights' && <InsightsTab comunidadeId={comId} eventoId={evId} />}
         {activeTab === 'financeiro' && <FinanceiroTab eventoId={evId} />}
         {activeTab === 'operacoes' && <OperacoesTab comunidadeId={comId} eventoId={evId} />}
-        {activeTab === 'valor' && <ValorTab comunidadeId={comId} eventoId={evId} />}
+        {activeTab === 'valor' && <ValorTab comunidadeId={comId} eventoId={evId} onAction={handleTipAction} />}
       </div>
     </div>
   );

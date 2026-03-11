@@ -9,6 +9,7 @@ interface SmartTipData {
   titulo: string;
   descricao: string;
   acao?: string;
+  acaoTarget?: string;
   dado: string;
 }
 
@@ -16,6 +17,7 @@ interface Props {
   comunidadeId: string;
   eventoId?: string;
   getTips: (comunidadeId: string, eventoId?: string) => Promise<SmartTipData[]>;
+  onAction?: (target: string, eventoId?: string) => void;
 }
 
 const DISMISSED_KEY = 'vanta-dismissed-tips';
@@ -34,7 +36,7 @@ const PRIORITY_BORDER: Record<string, string> = {
   LOW: 'border-white/5 bg-zinc-900/40',
 };
 
-const SmartTipsCard: React.FC<Props> = ({ comunidadeId, eventoId, getTips }) => {
+const SmartTipsCard: React.FC<Props> = ({ comunidadeId, eventoId, getTips, onAction }) => {
   const [tips, setTips] = useState<SmartTipData[]>([]);
   const [loading, setLoading] = useState(true);
   const [dismissed, setDismissed] = useState<Set<string>>(() => {
@@ -93,9 +95,9 @@ const SmartTipsCard: React.FC<Props> = ({ comunidadeId, eventoId, getTips }) => 
             {/* Dismiss */}
             <button
               onClick={() => dismiss(tip.id)}
-              className="absolute top-2 right-2 text-white/20 hover:text-white/50 transition-colors"
+              className="absolute top-1 right-1 min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center text-white/20 hover:text-white/50 active:text-white/70 transition-colors"
             >
-              <X className="w-3.5 h-3.5" />
+              <X className="w-4 h-4" />
             </button>
 
             <div className="flex items-start gap-2 pr-5">
@@ -105,7 +107,13 @@ const SmartTipsCard: React.FC<Props> = ({ comunidadeId, eventoId, getTips }) => 
                 <p className="text-xs text-white/50 mt-0.5">{tip.descricao}</p>
                 <p className="text-xs text-white/30 mt-1">{tip.dado}</p>
                 {tip.acao && (
-                  <span className="inline-block text-xs text-[#FFD300] mt-1.5 font-medium">{tip.acao} →</span>
+                  <button
+                    type="button"
+                    onClick={() => tip.acaoTarget && onAction?.(tip.acaoTarget, eventoId)}
+                    className="inline-block text-xs text-[#FFD300] mt-1.5 font-medium min-h-[2.75rem] min-w-[2.75rem] text-left active:opacity-70 transition-opacity"
+                  >
+                    {tip.acao} →
+                  </button>
                 )}
               </div>
             </div>

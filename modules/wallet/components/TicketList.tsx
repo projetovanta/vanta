@@ -68,7 +68,10 @@ const TransferirModal: React.FC<{
             <p className="text-white font-bold text-base mt-0.5 truncate">{ticket.tituloEvento}</p>
             {ticket.variacaoLabel && <p className="text-zinc-400 text-xs mt-0.5">{ticket.variacaoLabel}</p>}
           </div>
-          <button onClick={onClose} className="p-1.5 text-zinc-400 active:text-white transition-colors">
+          <button
+            onClick={onClose}
+            className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center text-zinc-400 active:opacity-70 transition-opacity -mr-2"
+          >
             <X size="0.875rem" />
           </button>
         </div>

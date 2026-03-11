@@ -433,7 +433,11 @@ export const ProductAnalyticsView: React.FC<{ onBack: () => void }> = ({ onBack 
 function Header({ title, onBack }: { title: string; onBack: () => void }) {
   return (
     <div className="shrink-0 flex items-center gap-3 px-4 py-3 border-b border-white/5">
-      <button aria-label="Voltar" onClick={onBack} className="p-1.5 rounded-lg hover:bg-white/5 transition-colors">
+      <button
+        aria-label="Voltar"
+        onClick={onBack}
+        className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center -ml-2 rounded-lg hover:bg-white/5 transition-colors"
+      >
         <ArrowLeft size="1.125rem" className="text-zinc-400" />
       </button>
       <h1 style={{ ...TYPOGRAPHY.screenTitle, fontSize: '0.875rem' }}>{title}</h1>

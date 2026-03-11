@@ -125,7 +125,11 @@ export const GestaoComprovantesView: React.FC<Props> = ({ onBack, masterId }) =>
       {/* Header */}
       <div className="shrink-0 px-4 pb-3 border-b border-white/5" style={{ paddingTop: '1rem' }}>
         <div className="flex items-center gap-3 mb-3">
-          <button aria-label="Voltar" onClick={onBack} className="p-1.5 hover:bg-white/5 rounded-lg transition-colors">
+          <button
+            aria-label="Voltar"
+            onClick={onBack}
+            className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center -ml-2 hover:bg-white/5 rounded-lg transition-colors"
+          >
             <ArrowLeft size="1.125rem" className="text-zinc-400" />
           </button>
           <div className="flex-1 min-w-0">

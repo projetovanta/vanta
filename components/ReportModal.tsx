@@ -98,7 +98,10 @@ export const ReportModal: React.FC<ReportModalProps> = ({
             <Flag size="1rem" className="text-red-400" />
             <h3 className="text-white font-bold text-sm">Denunciar {tipoLabel}</h3>
           </div>
-          <button onClick={onClose} className="p-1 text-zinc-400 active:text-white">
+          <button
+            onClick={onClose}
+            className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center text-zinc-400 active:opacity-70 transition-opacity -mr-2"
+          >
             <X size="1rem" />
           </button>
         </div>

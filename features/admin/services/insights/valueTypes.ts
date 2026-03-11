@@ -49,6 +49,7 @@ export interface SmartTip {
   titulo: string;
   descricao: string;
   acao?: string; // texto do CTA
+  acaoTarget?: string; // destino navegacao: CUPONS, LOTES, LISTAS, EVENTO_DASHBOARD
   dado: string; // dado que gerou a dica
 }
 

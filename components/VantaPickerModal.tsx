@@ -45,7 +45,7 @@ const PickerModal: React.FC<{
           <h3 className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest">{title}</h3>
           <button
             onClick={onClose}
-            className="w-8 h-8 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
+            className="min-w-[2.75rem] min-h-[2.75rem] bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:opacity-70 transition-opacity -mr-2"
           >
             <X size="0.875rem" className="text-zinc-400" />
           </button>

@@ -15,6 +15,8 @@ import { supabase } from '../../services/supabaseClient';
 import { useAuthStore } from '../../stores/authStore';
 import { useExtrasStore } from '../../stores/extrasStore';
 import { useDebounce } from '../../hooks/useDebounce';
+import { BeneficiosMVTab } from './components/BeneficiosMVTab';
+import { clubeService } from '../../features/admin/services/clubeService';
 
 interface SearchViewProps {
   onEventClick: (evento: Evento) => void;
@@ -31,7 +33,9 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
   const [query, setQuery] = useState('');
   const debouncedQuery = useDebounce(query, 300);
   const [serverSearchResults, setServerSearchResults] = useState<Evento[] | null>(null);
-  const [activeTab, setActiveTab] = useState<'EVENTS' | 'PEOPLE'>('EVENTS');
+  const [activeTab, setActiveTab] = useState<'EVENTS' | 'PEOPLE' | 'BENEFICIOS'>('EVENTS');
+  const currentUserId = useAuthStore(s => s.currentAccount?.id ?? '');
+  const isMembroMV = useMemo(() => clubeService.isMembro(currentUserId), [currentUserId]);
   const [selectedCities, setSelectedCities] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedTimeFilter, setSelectedTimeFilter] = useState<string | null>(null);
@@ -259,6 +263,7 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
         setQuery={setQuery}
         onClearSearch={clearAllFilters}
         activeTab={activeTab}
+        isMembroMV={isMembroMV}
         onTabChange={tab => {
           setActiveTab(tab);
           clearAllFilters();
@@ -278,7 +283,15 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
         }}
       />
       <div ref={contentRef} onScroll={handleScroll} className="flex-1 overflow-y-auto no-scrollbar px-6 pt-6 pb-32">
-        {activeTab === 'EVENTS' ? (
+        {activeTab === 'BENEFICIOS' ? (
+          <BeneficiosMVTab
+            userId={currentUserId}
+            onEventClick={eventoId => {
+              const evt = EVENTOS.find(e => e.id === eventoId);
+              if (evt) onEventClick(evt);
+            }}
+          />
+        ) : activeTab === 'EVENTS' ? (
           <>
             {comunidadeSpotlight && (
               <div className="mb-6 animate-in fade-in duration-300">

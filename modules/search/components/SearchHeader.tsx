@@ -7,8 +7,9 @@ interface SearchHeaderProps {
   query: string;
   setQuery: (q: string) => void;
   onClearSearch: () => void;
-  activeTab: 'EVENTS' | 'PEOPLE';
-  onTabChange: (tab: 'EVENTS' | 'PEOPLE') => void;
+  activeTab: 'EVENTS' | 'PEOPLE' | 'BENEFICIOS';
+  onTabChange: (tab: 'EVENTS' | 'PEOPLE' | 'BENEFICIOS') => void;
+  isMembroMV?: boolean;
   selectedCities: string[];
   onOpenCityFilter: () => void;
   selectedCategories: string[];
@@ -50,6 +51,7 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
   onOpenPriceFilter,
   beneficiosFilter,
   onToggleBeneficios,
+  isMembroMV,
 }) => {
   const cityLabel = useMemo(
     () =>
@@ -66,35 +68,39 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
       <h1 style={TYPOGRAPHY.screenTitle} className="text-3xl text-[#FFD300] mb-6">
         Explorar
       </h1>
-      <div className="grid grid-cols-2 gap-3 mb-6 p-1 bg-zinc-900/50 rounded-2xl border border-white/5">
-        {['EVENTS', 'PEOPLE'].map(t => (
+      <div
+        className={`grid ${isMembroMV ? 'grid-cols-3' : 'grid-cols-2'} gap-2 mb-6 p-1 bg-zinc-900/50 rounded-2xl border border-white/5`}
+      >
+        {(['EVENTS', 'PEOPLE', ...(isMembroMV ? ['BENEFICIOS'] : [])] as const).map(t => (
           <button
             key={t}
-            onClick={() => onTabChange(t as any)}
+            onClick={() => onTabChange(t as 'EVENTS' | 'PEOPLE' | 'BENEFICIOS')}
             className={`py-3.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${activeTab === t ? 'bg-[#FFD300] text-black' : 'text-zinc-400'}`}
           >
-            {t === 'EVENTS' ? 'Eventos' : 'Pessoas'}
+            {t === 'EVENTS' ? 'Eventos' : t === 'PEOPLE' ? 'Pessoas' : 'Benefícios'}
           </button>
         ))}
       </div>
-      <div className="relative mb-4">
-        <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
-        <input
-          type="text"
-          className="w-full pl-11 pr-11 py-4 bg-zinc-900/80 border border-zinc-800 rounded-2xl text-white text-sm"
-          placeholder={activeTab === 'EVENTS' ? 'O que busca hoje?' : 'Nome ou e-mail...'}
-          value={query}
-          onChange={e => setQuery(e.target.value)}
-        />
-        {query && (
-          <button
-            onClick={onClearSearch}
-            className="absolute right-4 top-1/2 -translate-y-1/2 bg-zinc-800 rounded-full p-1.5"
-          >
-            <X size={12} />
-          </button>
-        )}
-      </div>
+      {activeTab !== 'BENEFICIOS' && (
+        <div className="relative mb-4">
+          <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
+          <input
+            type="text"
+            className="w-full pl-11 pr-11 py-4 bg-zinc-900/80 border border-zinc-800 rounded-2xl text-white text-sm"
+            placeholder={activeTab === 'EVENTS' ? 'O que busca hoje?' : 'Nome ou e-mail...'}
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+          />
+          {query && (
+            <button
+              onClick={onClearSearch}
+              className="absolute right-4 top-1/2 -translate-y-1/2 bg-zinc-800 rounded-full p-1.5"
+            >
+              <X size={12} />
+            </button>
+          )}
+        </div>
+      )}
       {activeTab === 'EVENTS' && (
         <div className="flex flex-wrap gap-2">
           <button

@@ -22,7 +22,8 @@ import {
   Share2,
 } from 'lucide-react';
 import { TYPOGRAPHY } from '../../constants';
-import { Membro, ReservaMaisVanta, Evento } from '../../types';
+import { Membro, Evento } from '../../types';
+import type { ResgateMV } from '../../features/admin/services/clube/clubeReservasService';
 import { clubeService } from '../../features/admin/services/clubeService';
 import { maisVantaConfigService } from '../../features/admin/services/maisVantaConfigService';
 import { tsBR, todayBR } from '../../utils';
@@ -68,7 +69,7 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
   const [instagramHandle, setInstagramHandle] = useState(profile.instagram ?? '');
   const [submitting, setSubmitting] = useState(false);
   const [solicitacaoStatus, setSolicitacaoStatus] = useState<'NONE' | 'PENDENTE' | 'APROVADO'>('NONE');
-  const [minhasReservas, setMinhasReservas] = useState<ReservaMaisVanta[]>([]);
+  const [minhasReservas, setMinhasReservas] = useState<ResgateMV[]>([]);
   const [postUrl, setPostUrl] = useState('');
   const [activeTab, setActiveTab] = useState<'ATIVOS' | 'PASSADOS'>('ATIVOS');
   const [cancelTarget, setCancelTarget] = useState<string | null>(null);
@@ -108,7 +109,7 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
       } else {
         setSolicitacaoStatus('NONE');
       }
-      setMinhasReservas(clubeService.getReservasUsuario(profile.id));
+      clubeService.getResgatesUsuarioAsync(profile.id).then(setMinhasReservas);
       return;
     }
 
@@ -119,7 +120,7 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
     else if (membro) setSolicitacaoStatus('APROVADO');
 
     // Carregar minhas reservas
-    setMinhasReservas(clubeService.getReservasUsuario(profile.id));
+    clubeService.getResgatesUsuarioAsync(profile.id).then(setMinhasReservas);
   }, [profile.id, membro, isConvite, conviteId]);
 
   const handleVerificarPerfil = async () => {
@@ -208,8 +209,8 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
   const handleEnviarPost = async (reservaId: string) => {
     if (!postUrl.trim()) return;
     try {
-      await clubeService.confirmarPost(reservaId, postUrl.trim());
-      setMinhasReservas(clubeService.getReservasUsuario(profile.id));
+      await clubeService.enviarPostUrl(reservaId, postUrl.trim());
+      clubeService.getResgatesUsuarioAsync(profile.id).then(setMinhasReservas);
       setPostUrl('');
       onSuccess?.('Comprovação enviada!');
     } catch {
@@ -218,8 +219,8 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
   };
 
   // ── Cancelar reserva (sem infração se faltam >12h pro evento) ──
-  const podeCancelar = (r: ReservaMaisVanta) => {
-    if (r.status !== 'RESERVADO') return false;
+  const podeCancelar = (r: ResgateMV) => {
+    if (r.status !== 'RESGATADO') return false;
     const ev = allEvents.find(e => e.id === r.eventoId);
     if (!ev) return true; // sem evento = pode cancelar por segurança
     const inicio = ev.dataReal?.split('T')[0] ?? ev.data?.split('T')[0] ?? '';
@@ -231,8 +232,8 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
   const handleCancelarReserva = async () => {
     if (!cancelTarget) return;
     try {
-      await clubeService.cancelarReserva(cancelTarget);
-      setMinhasReservas(clubeService.getReservasUsuario(profile.id));
+      await clubeService.cancelarResgate(cancelTarget);
+      clubeService.getResgatesUsuarioAsync(profile.id).then(setMinhasReservas);
       onSuccess?.('Reserva cancelada com sucesso');
     } catch {
       onSuccess?.('Erro ao cancelar reserva');
@@ -342,7 +343,7 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
           ) : (
             <div className="space-y-3">
               {listaExibida.map(r => {
-                const isPendingPost = r.status === 'PENDENTE_POST' || (r.status === 'RESERVADO' && !r.postVerificado);
+                const isPendingPost = r.status === 'PENDENTE_POST' || (r.status === 'RESGATADO' && !r.postVerificado);
                 return (
                   <div key={r.id} className="bg-zinc-900/60 border border-white/5 rounded-2xl p-4">
                     <div className="flex items-center justify-between mb-2">
@@ -375,7 +376,7 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
                     </div>
 
                     {/* Cancelar reserva — somente aba Ativos, se faltam >12h */}
-                    {activeTab === 'ATIVOS' && r.status === 'RESERVADO' && podeCancelar(r) && (
+                    {activeTab === 'ATIVOS' && r.status === 'RESGATADO' && podeCancelar(r) && (
                       <button
                         onClick={() => setCancelTarget(r.id)}
                         className="mt-2 w-full py-2 bg-zinc-800 border border-white/10 rounded-xl text-zinc-400 text-[10px] font-bold uppercase tracking-wider active:scale-95 transition-transform"
@@ -385,7 +386,7 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
                     )}
 
                     {/* Aviso: sem tempo pra cancelar */}
-                    {activeTab === 'ATIVOS' && r.status === 'RESERVADO' && !podeCancelar(r) && (
+                    {activeTab === 'ATIVOS' && r.status === 'RESGATADO' && !podeCancelar(r) && (
                       <div className="mt-2 flex items-center gap-1.5">
                         <Clock size={10} className="text-amber-400" />
                         <span className="text-amber-400 text-[9px]">
@@ -541,7 +542,7 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
               </button>
             ) : (
               <p className="text-zinc-500 text-[9px] text-center py-2">
-                Sem convites disponíveis. Compare a eventos para ganhar mais!
+                Sem convites disponíveis. Compareça a eventos para ganhar mais!
               </p>
             )}
           </div>

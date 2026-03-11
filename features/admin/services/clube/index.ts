@@ -146,6 +146,7 @@ export const clubeService = {
   getResgatesEventoAsync: reservas.getResgatesEvento,
   cancelarResgate: reservas.cancelarResgate,
   getResgatesPendentePostAsync: reservas.getResgatesPendentePost,
+  enviarPostUrl: reservas.enviarPostUrl,
   verificarPostResgate: reservas.verificarPost,
 
   // ── Reservas (stubs legados — consumers síncronos) ─────────────────────

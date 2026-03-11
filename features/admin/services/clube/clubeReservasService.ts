@@ -117,6 +117,14 @@ export async function getResgatesPendentePost(): Promise<ResgateMV[]> {
   return (data ?? []).map(rowToResgate);
 }
 
+/** Membro envia link do post (sem marcar como verificado) */
+export async function enviarPostUrl(resgateId: string, postUrl: string): Promise<void> {
+  await supabase
+    .from('resgates_mv_evento')
+    .update({ post_url: postUrl, status: 'PENDENTE_POST' } as never)
+    .eq('id', resgateId);
+}
+
 /** Verificar post de resgate (admin) */
 export async function verificarPost(resgateId: string, postUrl: string): Promise<void> {
   await supabase.from('resgates_mv_evento').update({ post_verificado: true, post_url: postUrl }).eq('id', resgateId);

@@ -116,21 +116,25 @@ export default function App() {
   useEffect(() => {
     const el = document.getElementById('vanta-app');
     if (!el) return;
+    let rafId = 0;
     const update = () => {
-      const isAdmin = el.classList.contains('max-w-4xl');
-      if (isAdmin) {
-        document.documentElement.style.fontSize = '16px';
-        return;
-      }
-      const w = Math.max(320, Math.min(el.offsetWidth, 500));
-      // Abaixo de 375: redução linear. Acima: crescimento amortecido (30%)
-      const fs = w <= 375 ? (w / 375) * 16 : 16 * (1 + ((w - 375) / 375) * 0.2);
-      document.documentElement.style.fontSize = fs + 'px';
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        const isAdmin = el.classList.contains('max-w-4xl');
+        if (isAdmin) {
+          document.documentElement.style.fontSize = '16px';
+          return;
+        }
+        const w = Math.max(320, Math.min(el.offsetWidth, 500));
+        const fs = w <= 375 ? (w / 375) * 16 : 16 * (1 + ((w - 375) / 375) * 0.2);
+        document.documentElement.style.fontSize = fs + 'px';
+      });
     };
     const ro = new ResizeObserver(update);
     ro.observe(el);
     update();
     return () => {
+      cancelAnimationFrame(rafId);
       ro.disconnect();
       document.documentElement.style.fontSize = '';
     };

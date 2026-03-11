@@ -41,6 +41,17 @@
 ## Scroll horizontal tabs
 overflow-x-auto snap-x no-scrollbar + shrink-0
 
+## Admin tabs/pills — flex-wrap
+- Quando muitos itens: `flex-wrap` no container (sem overflow-x-auto, sem shrink-0)
+- Fontes mínimas: 6px (0.375rem)
+- Espaçamento: `gap-1.5` ou `gap-2` entre pills
+
+## Centralização vertical em scroll views
+- Pattern: scroll container `display: flex; flex-direction: column` + inner div `margin: auto 0`
+- Quando conteúdo < viewport: centraliza com espaço igual acima/abaixo
+- Quando conteúdo > viewport: scroll normal (margin auto colapsa para 0)
+- Usado em: ClubeOptInView
+
 ## Novos Bottom-Sheets — Regra Obrigatória
 - **SEMPRE usar `<BottomSheet>` de `components/BottomSheet.tsx`** para novos bottom-sheets
 - O componente já inclui: backdrop, animação, pill handle, safe-area-inset-bottom

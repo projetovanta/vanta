@@ -523,8 +523,6 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
           </button>
         )}
 
-        <div className="flex-grow" />
-
         {/* Sair */}
         <button
           onClick={onLogout}

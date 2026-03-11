@@ -286,11 +286,8 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
 
     return (
       <div className="absolute inset-0 bg-[#0a0a0a] flex flex-col overflow-hidden animate-in fade-in duration-300">
-        <div
-          className="flex-1 overflow-y-auto no-scrollbar"
-          style={{ display: 'grid', gridTemplateRows: 'minmax(100%, auto)' }}
-        >
-          <div className="flex flex-col pt-4 px-6 pb-6">
+        <div className="flex-1 overflow-y-auto no-scrollbar" style={{ display: 'flex', flexDirection: 'column' }}>
+          <div className="flex flex-col px-6" style={{ margin: 'auto 0', paddingTop: '1rem', paddingBottom: '1rem' }}>
             <button
               aria-label="Voltar"
               onClick={onBack}
@@ -610,8 +607,6 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
                 );
               })()}
             </div>
-
-            <div className="flex-grow" />
 
             {/* ══ SEÇÃO: Convites de Indicação ══ */}
             <div className="mt-5 bg-zinc-900/30 border border-white/5 rounded-2xl p-4">

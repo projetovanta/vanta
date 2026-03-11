@@ -716,14 +716,14 @@ export const PublicoDrilldown: React.FC<{
             onClick={goBack}
             className="w-6 h-6 rounded-full bg-zinc-800 flex items-center justify-center shrink-0 active:scale-90 transition-all"
           >
-            <ArrowLeft size={12} className="text-zinc-400" />
+            <ArrowLeft size="0.75rem" className="text-zinc-400" />
           </button>
           {breadcrumb.map((bc, i) => (
             <React.Fragment key={i}>
-              {i > 0 && <ChevronRight size={10} className="text-zinc-700 shrink-0" />}
+              {i > 0 && <ChevronRight size="0.625rem" className="text-zinc-700 shrink-0" />}
               <button
                 onClick={() => goTo(i)}
-                className={`text-[8px] font-black uppercase tracking-widest transition-all ${
+                className={`text-[0.5rem] font-black uppercase tracking-widest transition-all ${
                   i === breadcrumb.length - 1 ? 'text-[#FFD300]' : 'text-zinc-400 active:text-zinc-400'
                 }`}
               >
@@ -738,18 +738,18 @@ export const PublicoDrilldown: React.FC<{
       {peopleList ? (
         <div className="space-y-1.5 max-h-64 overflow-y-auto no-scrollbar">
           {peopleList.length === 0 && (
-            <p className="text-zinc-700 text-[10px] italic text-center py-4">Sem dados detalhados.</p>
+            <p className="text-zinc-700 text-[0.625rem] italic text-center py-4">Sem dados detalhados.</p>
           )}
           {peopleList.map((p, i) => (
             <div key={i} className="flex items-center gap-2.5 p-2.5 bg-zinc-900/40 border border-white/5 rounded-xl">
               <div className="w-7 h-7 rounded-full bg-zinc-800 flex items-center justify-center shrink-0">
-                <User size={12} className="text-zinc-400" />
+                <User size="0.75rem" className="text-zinc-400" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-white text-[11px] font-bold truncate">{p.nome}</p>
-                <p className="text-zinc-400 text-[9px] truncate">{p.sub}</p>
+                <p className="text-white text-[0.6875rem] font-bold truncate">{p.nome}</p>
+                <p className="text-zinc-400 text-[0.5625rem] truncate">{p.sub}</p>
               </div>
-              {p.extra && <p className="text-zinc-400 text-[8px] shrink-0">{p.extra}</p>}
+              {p.extra && <p className="text-zinc-400 text-[0.5rem] shrink-0">{p.extra}</p>}
             </div>
           ))}
         </div>
@@ -757,10 +757,10 @@ export const PublicoDrilldown: React.FC<{
         <div>
           {/* Cabeçalho + toggle lote */}
           <div className="text-center mb-1">
-            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">{activeLevel.title}</p>
+            <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest">{activeLevel.title}</p>
             <p className="text-white font-black text-xl">{fmt(total)}</p>
             {activeLevel.totalReceita > 0 && (
-              <p className="text-[#FFD300] text-[10px] font-bold">{fmtR$(activeLevel.totalReceita)}</p>
+              <p className="text-[#FFD300] text-[0.625rem] font-bold">{fmtR$(activeLevel.totalReceita)}</p>
             )}
           </div>
 
@@ -769,9 +769,9 @@ export const PublicoDrilldown: React.FC<{
             <div className="flex justify-center mb-2">
               <button
                 onClick={() => setShowByLote(prev => !prev)}
-                className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-800/60 border border-white/5 text-[9px] font-bold uppercase tracking-wider text-zinc-400 active:scale-95 transition-all"
+                className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-800/60 border border-white/5 text-[0.5625rem] font-bold uppercase tracking-wider text-zinc-400 active:scale-95 transition-all"
               >
-                <Layers size={10} />
+                <Layers size="0.625rem" />
                 {showByLote ? 'Ver por Variação' : 'Ver por Lote'}
               </button>
             </div>
@@ -793,18 +793,18 @@ export const PublicoDrilldown: React.FC<{
                 className="w-full flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-zinc-800/40 active:bg-zinc-800/60 transition-all text-left"
               >
                 <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: s.color }} />
-                <span className="text-white text-[10px] font-bold flex-1 min-w-0 truncate">{s.name}</span>
-                <span className="text-zinc-400 text-[9px] shrink-0">{fmt(s.value)}</span>
+                <span className="text-white text-[0.625rem] font-bold flex-1 min-w-0 truncate">{s.name}</span>
+                <span className="text-zinc-400 text-[0.5625rem] shrink-0">{fmt(s.value)}</span>
                 {s.receita > 0 && (
-                  <span className="text-[#FFD300] text-[9px] font-bold shrink-0">{fmtR$(s.receita)}</span>
+                  <span className="text-[#FFD300] text-[0.5625rem] font-bold shrink-0">{fmtR$(s.receita)}</span>
                 )}
-                <span className="text-zinc-600 text-[8px] shrink-0 w-7 text-right">{pct(s.value, total)}%</span>
-                <ChevronRight size={10} className="text-zinc-700 shrink-0" />
+                <span className="text-zinc-600 text-[0.5rem] shrink-0 w-7 text-right">{pct(s.value, total)}%</span>
+                <ChevronRight size="0.625rem" className="text-zinc-700 shrink-0" />
               </button>
             ))}
           </div>
 
-          <p className="text-zinc-700 text-[8px] text-center mt-2 italic">Toque em uma fatia para detalhar</p>
+          <p className="text-zinc-700 text-[0.5rem] text-center mt-2 italic">Toque em uma fatia para detalhar</p>
         </div>
       )}
     </div>

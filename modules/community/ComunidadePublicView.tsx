@@ -205,7 +205,7 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
           onClick={onBack}
           className="w-10 h-10 bg-black/40 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 active:scale-90 transition-all"
         >
-          <ArrowLeft size={18} className="text-white" />
+          <ArrowLeft size="1.125rem" className="text-white" />
         </button>
       </div>
 
@@ -243,10 +243,12 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
                 {comunidade.nome}
               </h1>
               <div className="flex items-center gap-1.5">
-                <MapPin size={11} className="text-[#FFD300] shrink-0" />
+                <MapPin size="0.6875rem" className="text-[#FFD300] shrink-0" />
                 <div className="min-w-0">
-                  {comunidade.endereco && <p className="text-zinc-300 text-[11px] truncate">{comunidade.endereco}</p>}
-                  <p className="text-zinc-400 text-[10px] truncate">
+                  {comunidade.endereco && (
+                    <p className="text-zinc-300 text-[0.6875rem] truncate">{comunidade.endereco}</p>
+                  )}
+                  <p className="text-zinc-400 text-[0.625rem] truncate">
                     {comunidade.cidade}
                     {comunidade.estado ? `, ${comunidade.estado}` : ''}
                   </p>
@@ -262,8 +264,8 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
                   : 'bg-transparent border-zinc-400 text-zinc-300'
               } disabled:opacity-50`}
             >
-              {isFollowing ? <UserCheck size={14} /> : <UserPlus size={14} />}
-              <span className="text-[11px] font-black uppercase tracking-wider">
+              {isFollowing ? <UserCheck size="0.875rem" /> : <UserPlus size="0.875rem" />}
+              <span className="text-[0.6875rem] font-black uppercase tracking-wider">
                 {isFollowing ? 'Seguindo' : 'Seguir'}
               </span>
             </button>
@@ -279,8 +281,8 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
               }}
               className="mt-3 w-full flex items-center justify-center gap-2.5 px-4 py-2.5 bg-zinc-800 border border-zinc-700 rounded-full active:scale-95 transition-all"
             >
-              <Navigation size={13} className="text-[#FFD300]" />
-              <span className="text-zinc-300 text-[10px] font-black uppercase tracking-widest">Como Chegar</span>
+              <Navigation size="0.8125rem" className="text-[#FFD300]" />
+              <span className="text-zinc-300 text-[0.625rem] font-black uppercase tracking-widest">Como Chegar</span>
             </button>
           )}
 
@@ -296,8 +298,8 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
               }}
               className="mt-3 w-full flex items-center justify-center gap-2.5 px-4 py-2.5 bg-zinc-800 border border-zinc-700 rounded-full active:scale-95 transition-all"
             >
-              <PartyPopper size={13} className="text-[#FFD300]" />
-              <span className="text-zinc-300 text-[10px] font-black uppercase tracking-widest">Evento Privado</span>
+              <PartyPopper size="0.8125rem" className="text-[#FFD300]" />
+              <span className="text-zinc-300 text-[0.625rem] font-black uppercase tracking-widest">Evento Privado</span>
             </button>
           )}
 
@@ -312,8 +314,8 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
             }}
             className="mt-3 w-full flex items-center justify-center gap-2.5 px-4 py-2.5 bg-zinc-800 border border-zinc-700 rounded-full active:scale-95 transition-all"
           >
-            <Cake size={13} className="text-[#FFD300]" />
-            <span className="text-zinc-300 text-[10px] font-black uppercase tracking-widest">Comemorar aqui</span>
+            <Cake size="0.8125rem" className="text-[#FFD300]" />
+            <span className="text-zinc-300 text-[0.625rem] font-black uppercase tracking-widest">Comemorar aqui</span>
           </button>
 
           {comunidade.descricao && (
@@ -355,12 +357,12 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
                 ))}
                 {followCount > 3 && (
                   <div className="relative inline-block h-6 w-6 rounded-full ring-2 ring-[#050505] bg-zinc-800 flex items-center justify-center z-0">
-                    <span className="text-[8px] font-bold text-zinc-400">+{followCount - 3}</span>
+                    <span className="text-[0.5rem] font-bold text-zinc-400">+{followCount - 3}</span>
                   </div>
                 )}
               </div>
               <div className="text-left flex-1 min-w-0">
-                <p className="text-[10px] text-zinc-400">
+                <p className="text-[0.625rem] text-zinc-400">
                   <span className="text-zinc-200 font-semibold">
                     {previewFollowers[0]?.nome.split(' ')[0] || 'Alguém'}
                   </span>{' '}
@@ -372,7 +374,7 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
                 </p>
               </div>
               <ChevronRight
-                size={14}
+                size="0.875rem"
                 className="ml-auto text-zinc-400 group-active:text-[#FFD300] transition-colors shrink-0"
               />
             </button>
@@ -386,7 +388,7 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
               {[1, 2, 3, 4, 5].map(n => (
                 <Star
                   key={n}
-                  size={14}
+                  size="0.875rem"
                   fill={n <= Math.round(ratingData.media) ? '#FFD300' : 'transparent'}
                   stroke={n <= Math.round(ratingData.media) ? '#FFD300' : '#52525b'}
                   strokeWidth={1.5}
@@ -394,7 +396,7 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
               ))}
             </div>
             <span className="text-zinc-200 text-sm font-bold">{ratingData.media}</span>
-            <span className="text-zinc-400 text-[10px]">
+            <span className="text-zinc-400 text-[0.625rem]">
               ({ratingData.count} avaliação{ratingData.count !== 1 ? 'ões' : ''})
             </span>
           </div>
@@ -406,11 +408,11 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
             Próximos Eventos
           </p>
           {proximosEventos.length === 0 ? (
-            <div className="flex flex-col items-center py-6 gap-3 min-h-[110px] border border-zinc-800 rounded-xl justify-center">
+            <div className="flex flex-col items-center py-6 gap-3 min-h-[6.875rem] border border-zinc-800 rounded-xl justify-center">
               <div className="w-10 h-10 bg-zinc-900 rounded-xl border border-white/5 flex items-center justify-center">
-                <Calendar size={18} className="text-zinc-700" />
+                <Calendar size="1.125rem" className="text-zinc-700" />
               </div>
-              <p className="text-zinc-400 text-[11px] text-center">Próximos eventos em breve</p>
+              <p className="text-zinc-400 text-[0.6875rem] text-center">Próximos eventos em breve</p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -430,13 +432,13 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-white font-bold text-sm truncate">{evento.titulo}</p>
-                    <p className="text-zinc-400 text-[11px] mt-0.5">
+                    <p className="text-zinc-400 text-[0.6875rem] mt-0.5">
                       {evento.data} · {evento.horario}
                     </p>
                   </div>
                   <div className="text-right shrink-0">
                     {evento.ocultarValor ? (
-                      <p className="text-zinc-400 text-[10px]">Sob consulta</p>
+                      <p className="text-zinc-400 text-[0.625rem]">Sob consulta</p>
                     ) : evento.lotes[0] ? (
                       <p className="text-[#FFD300] font-bold text-sm">
                         R$ {evento.lotes[0].preco.toFixed(2).replace('.', ',')}
@@ -459,7 +461,7 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
                 <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white">
                   Seguidores
                 </h2>
-                <p className="text-zinc-400 text-[10px] font-bold uppercase tracking-widest mt-1">
+                <p className="text-zinc-400 text-[0.625rem] font-bold uppercase tracking-widest mt-1">
                   {followCount} pessoa{followCount !== 1 ? 's' : ''} seguem esta comunidade
                 </p>
               </div>
@@ -470,11 +472,11 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
                 }}
                 className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-transform"
               >
-                <X size={20} className="text-zinc-400" />
+                <X size="1.25rem" className="text-zinc-400" />
               </button>
             </div>
             <div className="relative">
-              <Search size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
+              <Search size="0.875rem" className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
               <input
                 type="text"
                 placeholder="Buscar por nome ou email..."
@@ -487,7 +489,7 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
           <div className="flex-1 overflow-y-auto px-6 py-4 space-y-1 no-scrollbar">
             {loadingFollowers ? (
               <div className="flex items-center justify-center py-16">
-                <Loader2 size={20} className="text-zinc-700 animate-spin" />
+                <Loader2 size="1.25rem" className="text-zinc-700 animate-spin" />
               </div>
             ) : filteredFollowers.length > 0 ? (
               filteredFollowers.map(member => (
@@ -507,9 +509,11 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
                   </div>
                   <div className="flex-1 text-left min-w-0">
                     <h4 className="text-sm font-bold text-zinc-200 truncate">{member.nome}</h4>
-                    <p className="text-[10px] text-zinc-400 truncate">{member.biografia || 'Membro da comunidade'}</p>
+                    <p className="text-[0.625rem] text-zinc-400 truncate">
+                      {member.biografia || 'Membro da comunidade'}
+                    </p>
                   </div>
-                  <UserCheck size={16} className="text-zinc-700 shrink-0" />
+                  <UserCheck size="1rem" className="text-zinc-700 shrink-0" />
                 </button>
               ))
             ) : (
@@ -519,7 +523,7 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
             )}
             {!followerSearch && filteredFollowers.length > 0 && (
               <div className="py-8 text-center">
-                <p className="text-[10px] text-zinc-400 italic">
+                <p className="text-[0.625rem] text-zinc-400 italic">
                   Exibindo {filteredFollowers.length} de {followCount}
                 </p>
               </div>

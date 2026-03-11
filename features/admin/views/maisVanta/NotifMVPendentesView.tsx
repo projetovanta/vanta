@@ -102,17 +102,17 @@ export const NotifMVPendentesView: React.FC = () => {
           onClick={load}
           className="p-2 rounded-lg bg-zinc-900 border border-white/5 active:scale-90 transition-all"
         >
-          <RefreshCw size={14} className="text-zinc-400" />
+          <RefreshCw size="0.875rem" className="text-zinc-400" />
         </button>
       </div>
 
       {loading ? (
         <div className="flex items-center justify-center py-12">
-          <RefreshCw size={20} className="text-zinc-500 animate-spin" />
+          <RefreshCw size="1.25rem" className="text-zinc-500 animate-spin" />
         </div>
       ) : pendentes.length === 0 ? (
         <div className="text-center py-12">
-          <Bell size={32} className="text-zinc-700 mx-auto mb-3" />
+          <Bell size="2rem" className="text-zinc-700 mx-auto mb-3" />
           <p className="text-zinc-500 text-sm">Nenhuma solicitação pendente</p>
         </div>
       ) : (
@@ -121,11 +121,11 @@ export const NotifMVPendentesView: React.FC = () => {
             <div className="flex items-start justify-between gap-3">
               <div className="flex-1 min-w-0">
                 <p className="text-white text-sm font-semibold truncate">{eventosNomes[sol.eventoId] ?? 'Evento'}</p>
-                <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest mt-0.5">
+                <p className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest mt-0.5">
                   Por {nomes[sol.produtorId] ?? 'Produtor'}
                 </p>
               </div>
-              <span className="px-2 py-0.5 bg-amber-500/10 border border-amber-500/20 rounded-full text-amber-400 text-[8px] font-black uppercase tracking-widest shrink-0">
+              <span className="px-2 py-0.5 bg-amber-500/10 border border-amber-500/20 rounded-full text-amber-400 text-[0.5rem] font-black uppercase tracking-widest shrink-0">
                 Pendente
               </span>
             </div>
@@ -134,7 +134,7 @@ export const NotifMVPendentesView: React.FC = () => {
               {sol.mensagem || '(sem mensagem)'}
             </p>
 
-            <p className="text-zinc-500 text-[10px]">
+            <p className="text-zinc-500 text-[0.625rem]">
               {new Date(sol.criadoEm).toLocaleDateString('pt-BR')} às{' '}
               {new Date(sol.criadoEm).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
             </p>
@@ -143,17 +143,17 @@ export const NotifMVPendentesView: React.FC = () => {
               <button
                 disabled={actionId === sol.id}
                 onClick={() => aprovar(sol)}
-                className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-black uppercase tracking-wider hover:bg-emerald-500/20 active:scale-95 transition-all disabled:opacity-50"
+                className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[0.625rem] font-black uppercase tracking-wider hover:bg-emerald-500/20 active:scale-95 transition-all disabled:opacity-50"
               >
-                <CheckCircle size={12} />
+                <CheckCircle size="0.75rem" />
                 Aprovar e enviar
               </button>
               <button
                 disabled={actionId === sol.id}
                 onClick={() => rejeitar(sol.id)}
-                className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-[10px] font-black uppercase tracking-wider hover:bg-red-500/20 active:scale-95 transition-all disabled:opacity-50"
+                className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-[0.625rem] font-black uppercase tracking-wider hover:bg-red-500/20 active:scale-95 transition-all disabled:opacity-50"
               >
-                <XCircle size={12} />
+                <XCircle size="0.75rem" />
                 Rejeitar
               </button>
             </div>

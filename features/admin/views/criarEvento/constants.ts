@@ -3,7 +3,7 @@ import type { PermissaoToggle } from './types';
 
 export { inputCls } from '../../../../constants';
 export const inputSmCls =
-  'bg-zinc-800 border border-white/5 rounded-lg px-2 py-2 text-white text-[11px] outline-none focus:border-[#FFD300]/30 placeholder-zinc-700';
+  'bg-zinc-800 border border-white/5 rounded-lg px-2 py-2 text-white text-[0.6875rem] outline-none focus:border-[#FFD300]/30 placeholder-zinc-700';
 export const inputDateCls =
   'bg-zinc-900/60 border border-white/5 rounded-lg px-2.5 py-2 text-white text-xs outline-none focus:border-[#FFD300]/30 block w-full min-w-0';
 export { labelCls } from '../../../../constants';

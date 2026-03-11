@@ -409,9 +409,9 @@ export const AdminSidebar: React.FC<{
               onClick={onClose}
               className="flex items-center justify-center w-8 h-8 rounded-lg active:bg-white/5 transition-all relative"
             >
-              <ArrowLeft size={16} className="text-zinc-400" />
+              <ArrowLeft size="1rem" className="text-zinc-400" />
               {totalPendencias > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 min-w-[14px] h-[14px] bg-red-500 text-white text-[7px] font-black rounded-full flex items-center justify-center px-0.5 leading-none">
+                <span className="absolute -top-0.5 -right-0.5 min-w-[0.875rem] h-[0.875rem] bg-red-500 text-white text-[0.4375rem] font-black rounded-full flex items-center justify-center px-0.5 leading-none">
                   {totalPendencias > 99 ? '99+' : totalPendencias}
                 </span>
               )}
@@ -421,12 +421,12 @@ export const AdminSidebar: React.FC<{
                 {tenantFoto ? (
                   <img loading="lazy" src={tenantFoto} alt="" className="w-5 h-5 rounded-full object-cover shrink-0" />
                 ) : null}
-                <span className="text-zinc-400 text-[9px] font-black uppercase tracking-widest truncate">
+                <span className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest truncate">
                   {tenantNome}
                 </span>
               </div>
             ) : (
-              <span className="flex-1 text-zinc-400 text-[9px] font-black uppercase tracking-widest truncate px-1">
+              <span className="flex-1 text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest truncate px-1">
                 Portal VANTA
               </span>
             )}
@@ -436,7 +436,7 @@ export const AdminSidebar: React.FC<{
                 onClick={onToggle}
                 className="flex items-center justify-center w-8 h-8 rounded-lg active:bg-white/5 transition-all"
               >
-                <ChevronLeft size={16} className="text-zinc-400" />
+                <ChevronLeft size="1rem" className="text-zinc-400" />
               </button>
             )}
           </div>
@@ -447,7 +447,7 @@ export const AdminSidebar: React.FC<{
               onClick={onToggle}
               className="flex items-center justify-center w-10 h-10 rounded-lg active:bg-white/5 transition-all"
             >
-              <Menu size={18} className="text-zinc-400" />
+              <Menu size="1.125rem" className="text-zinc-400" />
             </button>
           </div>
         )}
@@ -466,12 +466,12 @@ export const AdminSidebar: React.FC<{
                   className="w-full flex items-center gap-1.5 px-4 pt-2 pb-1 group"
                 >
                   {collapsed ? (
-                    <ChevronRight size={10} className="text-zinc-400 shrink-0 transition-transform" />
+                    <ChevronRight size="0.625rem" className="text-zinc-400 shrink-0 transition-transform" />
                   ) : (
-                    <ChevronDown size={10} className="text-zinc-400 shrink-0 transition-transform" />
+                    <ChevronDown size="0.625rem" className="text-zinc-400 shrink-0 transition-transform" />
                   )}
                   <span
-                    className={`text-[9px] font-black uppercase tracking-[0.2em] truncate ${sectionHasActive ? 'text-zinc-400' : 'text-zinc-700'}`}
+                    className={`text-[0.5625rem] font-black uppercase tracking-[0.2em] truncate ${sectionHasActive ? 'text-zinc-400' : 'text-zinc-700'}`}
                   >
                     {section.label}
                   </span>
@@ -480,7 +480,7 @@ export const AdminSidebar: React.FC<{
                 <div className="h-px bg-white/5 mx-2 my-1" />
               )}
               <div
-                className={`overflow-hidden transition-all duration-150 ${collapsed && expanded ? 'max-h-0 opacity-0' : 'max-h-[600px] opacity-100'}`}
+                className={`overflow-hidden transition-all duration-150 ${collapsed && expanded ? 'max-h-0 opacity-0' : 'max-h-[37.5rem] opacity-100'}`}
               >
                 {section.items.map(item => {
                   const Icon = item.icon;
@@ -508,7 +508,7 @@ export const AdminSidebar: React.FC<{
                       )}
                       <div className="relative shrink-0">
                         <Icon
-                          size={18}
+                          size="1.125rem"
                           style={
                             isPendencias && badgeCount > 0
                               ? { color: '#EF4444' }
@@ -519,7 +519,7 @@ export const AdminSidebar: React.FC<{
                         />
                         {!expanded && badgeCount > 0 && (
                           <span
-                            className={`absolute -top-1 -right-1 w-3.5 h-3.5 ${isPendencias ? 'bg-red-500' : 'bg-amber-500'} text-${isPendencias ? 'white' : 'black'} text-[7px] font-black rounded-full flex items-center justify-center leading-none`}
+                            className={`absolute -top-1 -right-1 w-3.5 h-3.5 ${isPendencias ? 'bg-red-500' : 'bg-amber-500'} text-${isPendencias ? 'white' : 'black'} text-[0.4375rem] font-black rounded-full flex items-center justify-center leading-none`}
                           >
                             {badgeCount > 9 ? '9+' : badgeCount}
                           </span>
@@ -534,7 +534,7 @@ export const AdminSidebar: React.FC<{
                           </span>
                           {badgeCount > 0 && (
                             <span
-                              className={`shrink-0 min-w-[18px] h-[18px] ${isPendencias ? 'bg-red-500 text-white' : 'bg-amber-500 text-black'} text-[8px] font-black rounded-full flex items-center justify-center px-1 leading-none`}
+                              className={`shrink-0 min-w-[1.125rem] h-[1.125rem] ${isPendencias ? 'bg-red-500 text-white' : 'bg-amber-500 text-black'} text-[0.5rem] font-black rounded-full flex items-center justify-center px-1 leading-none`}
                             >
                               {badgeCount > 99 ? '99+' : badgeCount}
                             </span>
@@ -553,7 +553,7 @@ export const AdminSidebar: React.FC<{
       {/* Footer — ícone de usuário */}
       <div className="shrink-0 border-t border-white/5 p-2">
         <div className="flex items-center justify-center h-9">
-          <User size={16} className="text-zinc-400" />
+          <User size="1rem" className="text-zinc-400" />
         </div>
       </div>
     </aside>

@@ -135,10 +135,10 @@ export const PublicProfilePreviewView: React.FC<{
   const PrivateOverlay = () => (
     <div className="absolute inset-0 bg-black/40 backdrop-blur-md rounded-[2.5rem] flex flex-col items-center justify-center z-10 border border-white/5 animate-in fade-in duration-500">
       <div className="w-12 h-12 bg-zinc-900 rounded-full flex items-center justify-center mb-3 border border-white/10 shadow-2xl">
-        <Lock size={18} className="text-[#FFD300]" />
+        <Lock size="1.125rem" className="text-[#FFD300]" />
       </div>
-      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Conteúdo Restrito</p>
-      <p className="text-[8px] font-medium text-zinc-400 mt-1">Disponível apenas para amigos</p>
+      <p className="text-[0.625rem] font-black uppercase tracking-[0.2em] text-zinc-400">Conteúdo Restrito</p>
+      <p className="text-[0.5rem] font-medium text-zinc-400 mt-1">Disponível apenas para amigos</p>
     </div>
   );
 
@@ -161,8 +161,8 @@ export const PublicProfilePreviewView: React.FC<{
       <div className="relative group">
         <div className="space-y-4">
           <div className="flex items-center gap-2 opacity-40">
-            <Icon size={12} className="text-[#FFD300]" />
-            <h3 className="text-[10px] font-black uppercase tracking-widest">{title}</h3>
+            <Icon size="0.75rem" className="text-[#FFD300]" />
+            <h3 className="text-[0.625rem] font-black uppercase tracking-widest">{title}</h3>
           </div>
           {children || <p className="text-zinc-300 text-sm font-medium">{value || 'Não informado'}</p>}
         </div>
@@ -184,11 +184,13 @@ export const PublicProfilePreviewView: React.FC<{
               onClick={onBack}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
             >
-              <ArrowLeft size={18} />
+              <ArrowLeft size="1.125rem" />
             </button>
             <div className="flex items-center gap-2 bg-[#FFD300]/10 px-4 py-1.5 rounded-full border border-[#FFD300]/20">
-              <Eye size={12} className="text-[#FFD300]" />
-              <span className="text-[9px] font-black text-[#FFD300] uppercase tracking-widest">Modo Visualização</span>
+              <Eye size="0.75rem" className="text-[#FFD300]" />
+              <span className="text-[0.5625rem] font-black text-[#FFD300] uppercase tracking-widest">
+                Modo Visualização
+              </span>
             </div>
             <div className="w-10" />
           </div>
@@ -206,7 +208,7 @@ export const PublicProfilePreviewView: React.FC<{
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
           >
-            <ArrowLeft size={18} />
+            <ArrowLeft size="1.125rem" />
           </button>
         </div>
       )}
@@ -234,7 +236,7 @@ export const PublicProfilePreviewView: React.FC<{
           <h2 style={TYPOGRAPHY.screenTitle} className="text-3xl mb-1 italic text-center">
             {profile.nome}
           </h2>
-          <p className="text-zinc-400 text-[9px] font-black uppercase tracking-[0.3em] mb-3 opacity-60 text-center">
+          <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-[0.3em] mb-3 opacity-60 text-center">
             Membro Confirmado
           </p>
 
@@ -242,14 +244,14 @@ export const PublicProfilePreviewView: React.FC<{
           {mood && isVisible(privacy?.verMood) && (
             <div className="mb-5 px-3 py-1.5 rounded-full bg-[#FFD300]/10 border border-[#FFD300]/20 text-center">
               <span className="text-sm">{mood.emoji}</span>
-              {mood.text && <span className="text-zinc-300 text-[10px] ml-1">{mood.text}</span>}
+              {mood.text && <span className="text-zinc-300 text-[0.625rem] ml-1">{mood.text}</span>}
             </div>
           )}
 
           {/* Banner de Solicitação Recebida (Protocolo VANTA) */}
           {!isOwner && isPendingReceived && (
-            <div className="w-full max-w-[320px] mb-8 p-6 bg-zinc-900/50 border border-[#FFD300]/20 rounded-3xl animate-in slide-in-from-top-4 duration-500">
-              <p className="text-[10px] font-black uppercase tracking-widest text-center text-[#FFD300] mb-4">
+            <div className="w-full max-w-[20rem] mb-8 p-6 bg-zinc-900/50 border border-[#FFD300]/20 rounded-3xl animate-in slide-in-from-top-4 duration-500">
+              <p className="text-[0.625rem] font-black uppercase tracking-widest text-center text-[#FFD300] mb-4">
                 {profile.nome} enviou uma solicitação
               </p>
               <div className="flex gap-3">
@@ -258,7 +260,7 @@ export const PublicProfilePreviewView: React.FC<{
                     onAcceptFriend?.(profile.id);
                     setShowAcceptSuccessModal(true);
                   }}
-                  className="flex-1 py-3 bg-[#FFD300] text-black text-[9px] font-black uppercase tracking-wider rounded-xl active:scale-95 transition-all"
+                  className="flex-1 py-3 bg-[#FFD300] text-black text-[0.5625rem] font-black uppercase tracking-wider rounded-xl active:scale-95 transition-all"
                 >
                   Aceitar
                 </button>
@@ -267,7 +269,7 @@ export const PublicProfilePreviewView: React.FC<{
                     onDeclineFriend?.(profile.id);
                     setShowDeclineSuccessModal(true);
                   }}
-                  className="flex-1 py-3 bg-zinc-800 text-zinc-400 text-[9px] font-black uppercase tracking-wider rounded-xl border border-white/5 active:scale-95 transition-all"
+                  className="flex-1 py-3 bg-zinc-800 text-zinc-400 text-[0.5625rem] font-black uppercase tracking-wider rounded-xl border border-white/5 active:scale-95 transition-all"
                 >
                   Recusar
                 </button>
@@ -276,28 +278,28 @@ export const PublicProfilePreviewView: React.FC<{
           )}
 
           {isOwner && !setProfilePreviewStatus ? (
-            <div className="flex flex-col items-center w-full max-w-[320px] mb-12 gap-3">
+            <div className="flex flex-col items-center w-full max-w-[20rem] mb-12 gap-3">
               <button
                 onClick={onBack}
-                className="w-full py-4 rounded-xl font-bold text-[10px] uppercase bg-zinc-900 border border-white/10 text-white flex items-center justify-center gap-2 active:scale-95 transition-all"
+                className="w-full py-4 rounded-xl font-bold text-[0.625rem] uppercase bg-zinc-900 border border-white/10 text-white flex items-center justify-center gap-2 active:scale-95 transition-all"
               >
-                <Pencil size={14} /> Editar Perfil
+                <Pencil size="0.875rem" /> Editar Perfil
               </button>
             </div>
           ) : !isOwner || (isOwner && (profilePreviewStatus === 'PUBLIC' || profilePreviewStatus === 'FRIENDS')) ? (
-            <div className="flex flex-col items-center w-full max-w-[320px] mb-12 gap-3">
+            <div className="flex flex-col items-center w-full max-w-[20rem] mb-12 gap-3">
               <div className="flex gap-3 w-full">
                 {isFriend ? (
                   <>
                     <button
                       onClick={() => !isOwner && setShowUnfriendModal(true)}
-                      className="flex-1 py-4 rounded-xl font-bold text-[10px] uppercase bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(16,185,129,0.1)]"
+                      className="flex-1 py-4 rounded-xl font-bold text-[0.625rem] uppercase bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(16,185,129,0.1)]"
                     >
-                      <UserCheck size={14} /> Amigos
+                      <UserCheck size="0.875rem" /> Amigos
                     </button>
                     <button
                       onClick={() => !isOwner && onOpenChat?.(profile)}
-                      className={`flex-1 py-4 bg-zinc-900 border border-white/5 text-white rounded-xl font-bold text-[10px] uppercase transition-all ${isOwner ? 'opacity-50 cursor-default' : 'active:scale-95'}`}
+                      className={`flex-1 py-4 bg-zinc-900 border border-white/5 text-white rounded-xl font-bold text-[0.625rem] uppercase transition-all ${isOwner ? 'opacity-50 cursor-default' : 'active:scale-95'}`}
                     >
                       Mensagem
                     </button>
@@ -305,16 +307,16 @@ export const PublicProfilePreviewView: React.FC<{
                 ) : isPendingSent ? (
                   <button
                     onClick={() => !isOwner && setShowCancelModal(true)}
-                    className="w-full py-4 rounded-xl font-bold text-[10px] uppercase bg-zinc-900 border border-[#FFD300]/30 text-[#FFD300] flex items-center justify-center gap-2 active:scale-95 transition-all"
+                    className="w-full py-4 rounded-xl font-bold text-[0.625rem] uppercase bg-zinc-900 border border-[#FFD300]/30 text-[#FFD300] flex items-center justify-center gap-2 active:scale-95 transition-all"
                   >
-                    <Clock size={14} /> {isOwner ? 'Adicionar Amigo' : 'Solicitado'}
+                    <Clock size="0.875rem" /> {isOwner ? 'Adicionar Amigo' : 'Solicitado'}
                   </button>
                 ) : isPendingReceived ? null : isNone ? (
                   <button
                     onClick={() => onRequestFriend(profile.id)}
-                    className="w-full py-4 rounded-xl font-bold text-[10px] uppercase bg-[#FFD300] text-black shadow-xl flex items-center justify-center gap-2 active:scale-95 transition-all"
+                    className="w-full py-4 rounded-xl font-bold text-[0.625rem] uppercase bg-[#FFD300] text-black shadow-xl flex items-center justify-center gap-2 active:scale-95 transition-all"
                   >
-                    <UserPlus size={14} /> Adicionar Amigo
+                    <UserPlus size="0.875rem" /> Adicionar Amigo
                   </button>
                 ) : null}
               </div>
@@ -326,7 +328,7 @@ export const PublicProfilePreviewView: React.FC<{
             {isVisible(privacy?.verBio) && (
               <div className="p-8 bg-zinc-900/30 border border-white/5 rounded-[2.5rem] relative overflow-hidden">
                 <div className="absolute top-0 right-0 p-4 opacity-10">
-                  <Sparkles size={40} className="text-[#FFD300]" />
+                  <Sparkles size="2.5rem" className="text-[#FFD300]" />
                 </div>
                 <Section title="Sobre" icon={Eye} visible={true}>
                   <p className="text-zinc-300 text-sm leading-relaxed italic">
@@ -385,7 +387,7 @@ export const PublicProfilePreviewView: React.FC<{
                   {profile.interesses.map(id => (
                     <span
                       key={id}
-                      className="px-3 py-1.5 bg-zinc-900 border border-white/5 rounded-full text-[9px] font-bold uppercase tracking-wider text-zinc-400"
+                      className="px-3 py-1.5 bg-zinc-900 border border-white/5 rounded-full text-[0.5625rem] font-bold uppercase tracking-wider text-zinc-400"
                     >
                       {id}
                     </span>
@@ -394,7 +396,7 @@ export const PublicProfilePreviewView: React.FC<{
               </Section>
 
               <Section title="Eventos Confirmados" icon={Calendar} visible={isVisible(privacy?.verEventos)}>
-                <div className="py-4 text-zinc-400 text-[10px] uppercase font-bold tracking-widest italic">
+                <div className="py-4 text-zinc-400 text-[0.625rem] uppercase font-bold tracking-widest italic">
                   Nenhum evento público confirmado
                 </div>
               </Section>
@@ -418,7 +420,7 @@ export const PublicProfilePreviewView: React.FC<{
                         key={i}
                         className="aspect-square bg-zinc-900 rounded-xl border border-white/5 flex items-center justify-center opacity-20"
                       >
-                        <ImageIcon size={14} />
+                        <ImageIcon size="0.875rem" />
                       </div>
                     );
                   })}
@@ -454,12 +456,12 @@ export const PublicProfilePreviewView: React.FC<{
                                 )}
                               </div>
                               <p
-                                className="text-[8px] font-black uppercase tracking-wider text-center truncate w-full"
+                                className="text-[0.5rem] font-black uppercase tracking-wider text-center truncate w-full"
                                 style={{ color: cfg.cor }}
                               >
                                 {cfg.label}
                               </p>
-                              <p className="text-[9px] text-zinc-400 text-center truncate w-full">
+                              <p className="text-[0.5625rem] text-zinc-400 text-center truncate w-full">
                                 {ach.comunidadeNome}
                               </p>
                             </div>
@@ -478,8 +480,8 @@ export const PublicProfilePreviewView: React.FC<{
                                 key={badge.id}
                                 className="flex items-center gap-2 px-3 py-2 bg-zinc-900/80 border border-[#FFD300]/20 rounded-xl"
                               >
-                                <Icon size={12} className="text-[#FFD300]" />
-                                <span className="text-[9px] font-bold text-zinc-300">{badge.nome}</span>
+                                <Icon size="0.75rem" className="text-[#FFD300]" />
+                                <span className="text-[0.5625rem] font-bold text-zinc-300">{badge.nome}</span>
                               </div>
                             );
                           })}
@@ -503,7 +505,7 @@ export const PublicProfilePreviewView: React.FC<{
           />
           <div className="relative w-full max-w-[85%] bg-[#0A0A0A] border border-[#FFD300]/20 rounded-[2.5rem] p-8 text-center shadow-[0_0_50px_rgba(255,211,0,0.08)] animate-in zoom-in-95 duration-300">
             <div className="w-20 h-20 bg-zinc-900 rounded-full flex items-center justify-center mx-auto mb-6 border border-[#FFD300]/20 shadow-xl">
-              <UserMinus size={28} className="text-[#FFD300]" />
+              <UserMinus size="1.75rem" className="text-[#FFD300]" />
             </div>
             <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-3 italic">
               Cancelar pedido?
@@ -517,13 +519,13 @@ export const PublicProfilePreviewView: React.FC<{
                   onCancelRequest(profile.id);
                   setShowCancelModal(false);
                 }}
-                className="w-full py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all"
+                className="w-full py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all"
               >
                 Sim, desfazer
               </button>
               <button
                 onClick={() => setShowCancelModal(false)}
-                className="w-full py-4 text-zinc-400 font-bold text-[10px] uppercase active:opacity-60 transition-all"
+                className="w-full py-4 text-zinc-400 font-bold text-[0.625rem] uppercase active:opacity-60 transition-all"
               >
                 Cancelar
               </button>
@@ -542,7 +544,7 @@ export const PublicProfilePreviewView: React.FC<{
           />
           <div className="relative w-full max-w-[85%] bg-[#0A0A0A] border border-red-500/20 rounded-[2.5rem] p-8 text-center shadow-[0_0_50px_rgba(239,68,68,0.06)] animate-in zoom-in-95 duration-300">
             <div className="w-20 h-20 bg-zinc-900 rounded-full flex items-center justify-center mx-auto mb-6 border border-red-500/20 shadow-xl">
-              <UserMinus size={28} className="text-red-400" />
+              <UserMinus size="1.75rem" className="text-red-400" />
             </div>
             <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-3 italic">
               Remover amigo?
@@ -556,13 +558,13 @@ export const PublicProfilePreviewView: React.FC<{
                   onRemoveFriend(profile.id);
                   setShowUnfriendModal(false);
                 }}
-                className="w-full py-4 bg-red-500 text-white font-bold text-[10px] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all"
+                className="w-full py-4 bg-red-500 text-white font-bold text-[0.625rem] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all"
               >
                 Sim, remover
               </button>
               <button
                 onClick={() => setShowUnfriendModal(false)}
-                className="w-full py-4 text-zinc-400 font-bold text-[10px] uppercase active:opacity-60 transition-all"
+                className="w-full py-4 text-zinc-400 font-bold text-[0.625rem] uppercase active:opacity-60 transition-all"
               >
                 Cancelar
               </button>
@@ -580,7 +582,7 @@ export const PublicProfilePreviewView: React.FC<{
           />
           <div className="relative w-full max-w-[85%] bg-[#0A0A0A] border border-emerald-500/20 rounded-[2.5rem] p-8 text-center shadow-[0_0_50px_rgba(16,185,129,0.06)] animate-in zoom-in-95 duration-300">
             <div className="w-20 h-20 bg-zinc-900 rounded-full flex items-center justify-center mx-auto mb-6 border border-emerald-500/20 shadow-xl">
-              <UserCheck size={28} className="text-emerald-400" />
+              <UserCheck size="1.75rem" className="text-emerald-400" />
             </div>
             <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-3 italic">
               Conexão Confirmada!
@@ -590,7 +592,7 @@ export const PublicProfilePreviewView: React.FC<{
             </p>
             <button
               onClick={() => setShowAcceptSuccessModal(false)}
-              className="w-full py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all"
+              className="w-full py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all"
             >
               Entendido
             </button>
@@ -607,7 +609,7 @@ export const PublicProfilePreviewView: React.FC<{
           />
           <div className="relative w-full max-w-[85%] bg-[#0A0A0A] border border-[#FFD300]/20 rounded-[2.5rem] p-8 text-center shadow-[0_0_50px_rgba(255,211,0,0.08)] animate-in zoom-in-95 duration-300">
             <div className="w-20 h-20 bg-zinc-900 rounded-full flex items-center justify-center mx-auto mb-6 border border-[#FFD300]/20 shadow-xl">
-              <UserMinus size={28} className="text-zinc-400" />
+              <UserMinus size="1.75rem" className="text-zinc-400" />
             </div>
             <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-3 italic">
               Pedido Recusado
@@ -617,7 +619,7 @@ export const PublicProfilePreviewView: React.FC<{
             </p>
             <button
               onClick={() => setShowDeclineSuccessModal(false)}
-              className="w-full py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all"
+              className="w-full py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all"
             >
               Entendido
             </button>
@@ -735,10 +737,10 @@ const PhotoLightbox: React.FC<{
           onClick={onClose}
           className="w-10 h-10 bg-zinc-900/80 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
         >
-          <X size={18} className="text-white" />
+          <X size="1.125rem" className="text-white" />
         </button>
         {photos.length > 1 && (
-          <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">
+          <p className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest">
             {index + 1} / {photos.length}
           </p>
         )}
@@ -771,14 +773,14 @@ const PhotoLightbox: React.FC<{
             disabled={index === 0}
             className="w-12 h-12 bg-zinc-900/80 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all disabled:opacity-20"
           >
-            <ChevronLeft size={20} className="text-white" />
+            <ChevronLeft size="1.25rem" className="text-white" />
           </button>
           <button
             onClick={() => goTo(1)}
             disabled={index === photos.length - 1}
             className="w-12 h-12 bg-zinc-900/80 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all disabled:opacity-20"
           >
-            <ChevronRight size={20} className="text-white" />
+            <ChevronRight size="1.25rem" className="text-white" />
           </button>
         </div>
       )}

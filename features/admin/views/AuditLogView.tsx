@@ -128,12 +128,12 @@ const LogItem: React.FC<{ log: AuditLog }> = ({ log }) => {
           </p>
 
           {/* Linha secundária */}
-          <p className="text-zinc-700 text-[10px] mt-0.5 truncate">
+          <p className="text-zinc-700 text-[0.625rem] mt-0.5 truncate">
             {log.entityType}/{log.entityId}
           </p>
 
           {/* Timestamp */}
-          <p className="text-zinc-400 text-[9px] mt-0.5 font-black uppercase tracking-widest">
+          <p className="text-zinc-400 text-[0.5625rem] mt-0.5 font-black uppercase tracking-widest">
             {formatTs(log.timestamp)}
           </p>
 
@@ -142,13 +142,13 @@ const LogItem: React.FC<{ log: AuditLog }> = ({ log }) => {
             <div className="mt-2">
               <button
                 onClick={() => setExpanded(p => !p)}
-                className="flex items-center gap-1 text-zinc-400 text-[9px] font-black uppercase tracking-widest active:text-zinc-400 transition-colors"
+                className="flex items-center gap-1 text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest active:text-zinc-400 transition-colors"
               >
-                {expanded ? <ChevronUp size={10} /> : <ChevronDown size={10} />}
+                {expanded ? <ChevronUp size="0.625rem" /> : <ChevronDown size="0.625rem" />}
                 Ver detalhes
               </button>
               {expanded && (
-                <pre className="mt-2 p-3 bg-zinc-900/60 border border-white/5 rounded-xl text-zinc-400 text-[9px] font-mono overflow-x-auto leading-relaxed">
+                <pre className="mt-2 p-3 bg-zinc-900/60 border border-white/5 rounded-xl text-zinc-400 text-[0.5625rem] font-mono overflow-x-auto leading-relaxed">
                   {JSON.stringify(log.newValue, null, 2)}
                 </pre>
               )}
@@ -190,9 +190,9 @@ export const AuditLogView: React.FC<{ onBack: () => void }> = ({ onBack }) => {
               <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic">
                 Atividades
               </h1>
-              <Shield size={16} className="text-[#34d399]" />
+              <Shield size="1rem" className="text-[#34d399]" />
               {filtered.length > 0 && (
-                <span className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">
+                <span className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest">
                   {filtered.length} registro{filtered.length !== 1 ? 's' : ''}
                 </span>
               )}
@@ -203,7 +203,7 @@ export const AuditLogView: React.FC<{ onBack: () => void }> = ({ onBack }) => {
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all mt-1"
           >
-            <ArrowLeft size={18} className="text-zinc-400" />
+            <ArrowLeft size="1.125rem" className="text-zinc-400" />
           </button>
         </div>
 
@@ -216,7 +216,7 @@ export const AuditLogView: React.FC<{ onBack: () => void }> = ({ onBack }) => {
               <button
                 key={f.id}
                 onClick={() => setFiltro(f.id)}
-                className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-wider border transition-all ${
+                className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[0.5625rem] font-black uppercase tracking-wider border transition-all ${
                   isActive ? 'border-transparent text-black' : 'bg-zinc-900/60 text-zinc-400 border-white/5'
                 }`}
                 style={isActive ? { backgroundColor: cor } : {}}
@@ -239,9 +239,9 @@ export const AuditLogView: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         {filtered.length === 0 && (
           <div className="flex flex-col items-center py-20 gap-4">
             <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center">
-              <Shield size={28} className="text-zinc-700" />
+              <Shield size="1.75rem" className="text-zinc-700" />
             </div>
-            <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest text-center">
+            <p className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest text-center">
               {filtro === 'TODOS' ? 'Nenhuma atividade registrada.' : `Nenhum log de ${filtro.toLowerCase()}.`}
             </p>
           </div>

@@ -15,8 +15,8 @@ export const ReembolsosSection: React.FC<Props> = ({ reembolsos, onAprovar, onRe
     <div className="bg-zinc-900/40 border border-white/5 rounded-2xl p-5 space-y-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <RotateCcw size={13} className="text-orange-400 shrink-0" />
-          <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Reembolsos</p>
+          <RotateCcw size="0.8125rem" className="text-orange-400 shrink-0" />
+          <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">Reembolsos</p>
         </div>
         {reembolsos.length > 0 && (
           <p className="text-orange-400 font-black text-sm">{fmtBRL(reembolsos.reduce((s, r) => s + r.valor, 0))}</p>
@@ -24,8 +24,8 @@ export const ReembolsosSection: React.FC<Props> = ({ reembolsos, onAprovar, onRe
       </div>
       {reembolsos.length === 0 ? (
         <div className="flex flex-col items-center py-5 gap-2 opacity-40">
-          <Check size={16} className="text-zinc-700" />
-          <p className="text-zinc-700 text-[9px] font-black uppercase tracking-widest">Nenhum reembolso</p>
+          <Check size="1rem" className="text-zinc-700" />
+          <p className="text-zinc-700 text-[0.5625rem] font-black uppercase tracking-widest">Nenhum reembolso</p>
         </div>
       ) : (
         <div className="space-y-2">
@@ -55,13 +55,13 @@ export const ReembolsosSection: React.FC<Props> = ({ reembolsos, onAprovar, onRe
                     <p className="text-orange-300 text-xs font-bold truncate">
                       {r.tipo === 'AUTOMATICO' ? 'Reembolso Automático' : 'Reembolso Manual'} — {r.status}
                     </p>
-                    <p className="text-zinc-400 text-[9px] mt-0.5 truncate">{data}</p>
-                    <p className="text-zinc-400 text-[9px] mt-0.5 line-clamp-2">Motivo: {r.motivo}</p>
+                    <p className="text-zinc-400 text-[0.5625rem] mt-0.5 truncate">{data}</p>
+                    <p className="text-zinc-400 text-[0.5625rem] mt-0.5 line-clamp-2">Motivo: {r.motivo}</p>
                   </div>
                   <div className="text-right shrink-0">
                     <p className="text-orange-400 font-black text-sm">{fmtBRL(r.valor)}</p>
                     <span
-                      className={`text-[7px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full border block mt-1 ${statusColor}`}
+                      className={`text-[0.4375rem] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full border block mt-1 ${statusColor}`}
                     >
                       {r.status === 'PENDENTE_APROVACAO' ? 'Pendente' : r.status}
                     </span>
@@ -71,13 +71,13 @@ export const ReembolsosSection: React.FC<Props> = ({ reembolsos, onAprovar, onRe
                   <div className="flex gap-2 mt-3 pt-3 border-t border-amber-500/10">
                     <button
                       onClick={() => onAprovar(r.id)}
-                      className="flex-1 py-2 bg-emerald-950/40 border border-emerald-500/20 text-emerald-400 rounded-lg text-[8px] font-black uppercase tracking-wider active:scale-95 transition-all"
+                      className="flex-1 py-2 bg-emerald-950/40 border border-emerald-500/20 text-emerald-400 rounded-lg text-[0.5rem] font-black uppercase tracking-wider active:scale-95 transition-all"
                     >
                       ✓ Aprovar
                     </button>
                     <button
                       onClick={() => onRejeitar(r.id)}
-                      className="flex-1 py-2 bg-red-950/40 border border-red-500/20 text-red-400 rounded-lg text-[8px] font-black uppercase tracking-wider active:scale-95 transition-all"
+                      className="flex-1 py-2 bg-red-950/40 border border-red-500/20 text-red-400 rounded-lg text-[0.5rem] font-black uppercase tracking-wider active:scale-95 transition-all"
                     >
                       ✕ Rejeitar
                     </button>
@@ -94,19 +94,19 @@ export const ReembolsosSection: React.FC<Props> = ({ reembolsos, onAprovar, onRe
             <p className="text-emerald-400 text-xs font-bold">
               {reembolsos.filter(r => r.tipo === 'AUTOMATICO').length}
             </p>
-            <p className="text-zinc-700 text-[7px] font-black uppercase tracking-wider">Automáticos (CDC)</p>
+            <p className="text-zinc-700 text-[0.4375rem] font-black uppercase tracking-wider">Automáticos (CDC)</p>
           </div>
           <div className="text-center">
             <p className="text-orange-400 text-xs font-bold">{reembolsos.filter(r => r.tipo === 'MANUAL').length}</p>
-            <p className="text-zinc-700 text-[7px] font-black uppercase tracking-wider">Manuais</p>
+            <p className="text-zinc-700 text-[0.4375rem] font-black uppercase tracking-wider">Manuais</p>
           </div>
         </div>
       )}
       <button
         onClick={onSolicitarManual}
-        className="w-full py-3 rounded-xl font-black text-[10px] uppercase tracking-widest text-orange-400 border border-orange-500/30 bg-orange-500/5 active:scale-95 transition-all flex items-center justify-center gap-2"
+        className="w-full py-3 rounded-xl font-black text-[0.625rem] uppercase tracking-widest text-orange-400 border border-orange-500/30 bg-orange-500/5 active:scale-95 transition-all flex items-center justify-center gap-2"
       >
-        <RotateCcw size={12} /> Solicitar Reembolso Manual
+        <RotateCcw size="0.75rem" /> Solicitar Reembolso Manual
       </button>
     </div>
   );

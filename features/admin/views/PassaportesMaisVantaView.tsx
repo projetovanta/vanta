@@ -130,14 +130,14 @@ export const PassaportesMaisVantaView: React.FC<{
               onClick={handleRefresh}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
             >
-              <RefreshCw size={16} className="text-zinc-400" />
+              <RefreshCw size="1rem" className="text-zinc-400" />
             </button>
             <button
               aria-label="Voltar"
               onClick={onBack}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
             >
-              <ArrowLeft size={18} className="text-zinc-400" />
+              <ArrowLeft size="1.125rem" className="text-zinc-400" />
             </button>
           </div>
         </div>
@@ -148,7 +148,7 @@ export const PassaportesMaisVantaView: React.FC<{
             <button
               key={f.id}
               onClick={() => setFiltro(f.id)}
-              className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider shrink-0 border transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-[0.5625rem] font-black uppercase tracking-wider shrink-0 border transition-all ${
                 filtro === f.id
                   ? 'bg-[#FFD300] text-black border-transparent'
                   : 'bg-zinc-900/60 text-zinc-400 border-white/5 active:bg-zinc-800'
@@ -165,9 +165,9 @@ export const PassaportesMaisVantaView: React.FC<{
         {passports.length === 0 && (
           <div className="flex flex-col items-center justify-center py-16 gap-4">
             <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center">
-              <Compass size={28} className="text-zinc-700" />
+              <Compass size="1.75rem" className="text-zinc-700" />
             </div>
-            <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">
+            <p className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest">
               Nenhum passaporte {filtro === 'TODOS' ? '' : filtro.toLowerCase()}
             </p>
           </div>
@@ -189,13 +189,13 @@ export const PassaportesMaisVantaView: React.FC<{
                   />
                 ) : (
                   <div className="w-11 h-11 rounded-full bg-zinc-800 border border-white/5 flex items-center justify-center shrink-0">
-                    <User size={18} className="text-zinc-400" />
+                    <User size="1.125rem" className="text-zinc-400" />
                   </div>
                 )}
                 <div className="flex-1 min-w-0">
                   <p className="text-white font-bold text-sm truncate">{perfil?.nome || p.userId.slice(0, 8)}</p>
-                  <p className="text-zinc-400 text-[10px] truncate">{getCidadeLabel(p)}</p>
-                  <p className="text-zinc-700 text-[9px] mt-0.5">
+                  <p className="text-zinc-400 text-[0.625rem] truncate">{getCidadeLabel(p)}</p>
+                  <p className="text-zinc-700 text-[0.5625rem] mt-0.5">
                     {new Date(p.solicitadoEm).toLocaleDateString('pt-BR', {
                       day: '2-digit',
                       month: 'short',
@@ -211,25 +211,25 @@ export const PassaportesMaisVantaView: React.FC<{
                       disabled={isLoading}
                       className="w-9 h-9 rounded-xl bg-emerald-500/15 border border-emerald-500/25 flex items-center justify-center active:scale-90 transition-all disabled:opacity-40"
                     >
-                      <Check size={14} className="text-emerald-400" />
+                      <Check size="0.875rem" className="text-emerald-400" />
                     </button>
                     <button
                       onClick={() => handleRejeitar(p.id)}
                       disabled={isLoading}
                       className="w-9 h-9 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center active:scale-90 transition-all disabled:opacity-40"
                     >
-                      <X size={14} className="text-red-400" />
+                      <X size="0.875rem" className="text-red-400" />
                     </button>
                   </div>
                 ) : p.status === 'APROVADO' ? (
                   <button
                     onClick={() => setConfirmar({ id: p.id, nome: perfil?.nome || p.userId.slice(0, 8) })}
-                    className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-[8px] font-black uppercase tracking-wider hover:bg-red-500/20 transition-all"
+                    className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-[0.5rem] font-black uppercase tracking-wider hover:bg-red-500/20 transition-all"
                   >
-                    <Trash2 size={10} /> Revogar
+                    <Trash2 size="0.625rem" /> Revogar
                   </button>
                 ) : (
-                  <span className="px-2 py-0.5 rounded-md border text-[8px] font-black uppercase tracking-wider shrink-0 text-red-400 bg-red-500/15 border-red-500/25">
+                  <span className="px-2 py-0.5 rounded-md border text-[0.5rem] font-black uppercase tracking-wider shrink-0 text-red-400 bg-red-500/15 border-red-500/25">
                     Rejeitado
                   </span>
                 )}
@@ -250,7 +250,7 @@ export const PassaportesMaisVantaView: React.FC<{
             onClick={e => e.stopPropagation()}
           >
             <p className="text-white font-bold text-sm text-center">Revogar passport?</p>
-            <p className="text-zinc-400 text-[10px] text-center leading-relaxed">
+            <p className="text-zinc-400 text-[0.625rem] text-center leading-relaxed">
               O passport de "{confirmar.nome}" será revogado. O membro não poderá mais acessar eventos dessa cidade a
               menos que solicite novamente.
             </p>
@@ -258,7 +258,7 @@ export const PassaportesMaisVantaView: React.FC<{
               <button
                 onClick={() => setConfirmar(null)}
                 disabled={loading !== null}
-                className="flex-1 py-3 bg-zinc-900 border border-white/10 rounded-xl text-zinc-400 text-[9px] font-black uppercase tracking-widest active:scale-95 transition-all disabled:opacity-40"
+                className="flex-1 py-3 bg-zinc-900 border border-white/10 rounded-xl text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest active:scale-95 transition-all disabled:opacity-40"
               >
                 Voltar
               </button>
@@ -267,7 +267,7 @@ export const PassaportesMaisVantaView: React.FC<{
                 onClick={async () => {
                   await handleRevogar(confirmar.id);
                 }}
-                className="flex-1 py-3 bg-red-500 rounded-xl text-white text-[9px] font-black uppercase tracking-widest active:scale-95 transition-all disabled:opacity-40"
+                className="flex-1 py-3 bg-red-500 rounded-xl text-white text-[0.5625rem] font-black uppercase tracking-widest active:scale-95 transition-all disabled:opacity-40"
               >
                 {loading ? 'Revogando...' : 'Confirmar'}
               </button>

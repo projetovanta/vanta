@@ -80,7 +80,7 @@ const TitularModalMyTickets: React.FC<{
       >
         <div className="w-10 h-1 bg-zinc-700 rounded-full mx-auto" />
         <div>
-          <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">Dados do Titular</p>
+          <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest">Dados do Titular</p>
           <p className="text-white font-bold text-base mt-0.5">Preencha para usar o ingresso</p>
           <p className="text-zinc-400 text-xs mt-1">
             {ticket.variacaoLabel ? `${ticket.eventoNome} · ${ticket.variacaoLabel}` : ticket.eventoNome}
@@ -88,7 +88,7 @@ const TitularModalMyTickets: React.FC<{
         </div>
         <div className="space-y-3">
           <div>
-            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5">Nome completo</p>
+            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5">Nome completo</p>
             <input
               type="text"
               placeholder="Nome do titular do ingresso"
@@ -99,7 +99,7 @@ const TitularModalMyTickets: React.FC<{
             />
           </div>
           <div>
-            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5">CPF</p>
+            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5">CPF</p>
             <input
               type="text"
               inputMode="numeric"
@@ -109,20 +109,20 @@ const TitularModalMyTickets: React.FC<{
               className="w-full bg-zinc-900/60 border border-white/5 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-[#FFD300]/30 placeholder-zinc-700"
             />
           </div>
-          {erro && <p className="text-red-400 text-[10px] font-black uppercase tracking-widest">{erro}</p>}
+          {erro && <p className="text-red-400 text-[0.625rem] font-black uppercase tracking-widest">{erro}</p>}
         </div>
         <button
           onClick={handleSave}
           disabled={!valid || loading}
-          className="w-full py-4 bg-[#FFD300] text-black font-black text-[10px] uppercase tracking-[0.2em] rounded-xl flex items-center justify-center gap-2 active:scale-[0.97] transition-all disabled:opacity-30 disabled:pointer-events-none"
+          className="w-full py-4 bg-[#FFD300] text-black font-black text-[0.625rem] uppercase tracking-[0.2em] rounded-xl flex items-center justify-center gap-2 active:scale-[0.97] transition-all disabled:opacity-30 disabled:pointer-events-none"
         >
           {loading ? (
             <>
-              <Loader2 size={14} className="animate-spin" /> Salvando...
+              <Loader2 size="0.875rem" className="animate-spin" /> Salvando...
             </>
           ) : (
             <>
-              <Check size={14} /> Confirmar Titular
+              <Check size="0.875rem" /> Confirmar Titular
             </>
           )}
         </button>
@@ -165,7 +165,7 @@ const QRModal: React.FC<{ ticket: MyTicket; onClose: () => void }> = ({ ticket, 
         }
       `}</style>
       <div
-        className="w-full max-w-[300px] rounded-3xl p-px animate-in zoom-in-95 duration-200"
+        className="w-full max-w-[18.75rem] rounded-3xl p-px animate-in zoom-in-95 duration-200"
         style={{
           background: isUsado
             ? 'linear-gradient(135deg, #3f3f46, #52525b)'
@@ -175,7 +175,7 @@ const QRModal: React.FC<{ ticket: MyTicket; onClose: () => void }> = ({ ticket, 
       >
         <div className="bg-zinc-950 rounded-[calc(1.5rem-1px)] overflow-hidden">
           <div className="px-6 pt-6 pb-4 flex flex-col items-center text-center">
-            <p className="text-[8px] font-black uppercase tracking-[0.35em] text-zinc-400 mb-5">
+            <p className="text-[0.5rem] font-black uppercase tracking-[0.35em] text-zinc-400 mb-5">
               {isUsado ? 'Ingresso Utilizado' : 'Ingresso Disponível'}
             </p>
 
@@ -183,11 +183,11 @@ const QRModal: React.FC<{ ticket: MyTicket; onClose: () => void }> = ({ ticket, 
             <div
               className={`relative w-36 h-36 rounded-2xl flex items-center justify-center border border-white/5 mb-3 overflow-hidden ${isUsado ? 'bg-zinc-900/50' : 'bg-zinc-900'}`}
             >
-              <QrCode size={96} className={isUsado ? 'text-zinc-400' : 'text-zinc-300'} strokeWidth={1.2} />
+              <QrCode size="6rem" className={isUsado ? 'text-zinc-400' : 'text-zinc-300'} strokeWidth={1.2} />
               <div
                 className={`absolute w-10 h-10 bg-zinc-950 rounded-xl flex items-center justify-center border ${isUsado ? 'border-zinc-700' : 'border-[#FFD300]/30'}`}
               >
-                <Sparkles size={18} className={isUsado ? 'text-zinc-400' : 'text-[#FFD300]'} />
+                <Sparkles size="1.125rem" className={isUsado ? 'text-zinc-400' : 'text-[#FFD300]'} />
               </div>
               {!isUsado && (
                 <div
@@ -199,14 +199,16 @@ const QRModal: React.FC<{ ticket: MyTicket; onClose: () => void }> = ({ ticket, 
                 />
               )}
               <div className="absolute bottom-1.5 right-1.5 flex items-center gap-0.5 opacity-35">
-                <Clock size={7} className={isUsado ? 'text-zinc-400' : 'text-[#FFD300]'} />
-                <span className={`text-[6px] font-black tabular-nums ${isUsado ? 'text-zinc-400' : 'text-[#FFD300]'}`}>
+                <Clock size="0.4375rem" className={isUsado ? 'text-zinc-400' : 'text-[#FFD300]'} />
+                <span
+                  className={`text-[0.375rem] font-black tabular-nums ${isUsado ? 'text-zinc-400' : 'text-[#FFD300]'}`}
+                >
                   {clockTime}
                 </span>
               </div>
               {isUsado && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black/40">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400 rotate-[-20deg] border border-zinc-600 px-2 py-1 rounded">
+                  <span className="text-[0.625rem] font-black uppercase tracking-widest text-zinc-400 rotate-[-20deg] border border-zinc-600 px-2 py-1 rounded">
                     Utilizado
                   </span>
                 </div>
@@ -214,7 +216,7 @@ const QRModal: React.FC<{ ticket: MyTicket; onClose: () => void }> = ({ ticket, 
             </div>
 
             {/* Nonce anti-screenshot */}
-            <p className="text-[7px] font-black text-zinc-400 uppercase tracking-[0.25em] mb-3">#{qrNonce}</p>
+            <p className="text-[0.4375rem] font-black text-zinc-400 uppercase tracking-[0.25em] mb-3">#{qrNonce}</p>
 
             <p className="text-white font-black text-sm leading-none">{ticket.variacaoLabel}</p>
             <p
@@ -231,8 +233,8 @@ const QRModal: React.FC<{ ticket: MyTicket; onClose: () => void }> = ({ ticket, 
             >
               {fmtBRL(ticket.valor)}
             </p>
-            <p className="text-zinc-400 text-[10px] mt-1 truncate max-w-full">{ticket.email}</p>
-            <p className="text-zinc-700 text-[8px] font-black uppercase tracking-widest mt-1 truncate max-w-full">
+            <p className="text-zinc-400 text-[0.625rem] mt-1 truncate max-w-full">{ticket.email}</p>
+            <p className="text-zinc-700 text-[0.5rem] font-black uppercase tracking-widest mt-1 truncate max-w-full">
               {ticket.eventoNome}
             </p>
           </div>
@@ -247,17 +249,17 @@ const QRModal: React.FC<{ ticket: MyTicket; onClose: () => void }> = ({ ticket, 
           {/* Rodapé */}
           <div className="px-6 py-4 text-center space-y-1">
             {isUsado && ticket.usadoEm ? (
-              <p className="text-zinc-400 text-[9px]">Utilizado em {fmtDate(ticket.usadoEm)}</p>
+              <p className="text-zinc-400 text-[0.5625rem]">Utilizado em {fmtDate(ticket.usadoEm)}</p>
             ) : (
               <div
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full border"
                 style={{ background: 'rgba(255,211,0,0.08)', borderColor: 'rgba(255,211,0,0.25)' }}
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
-                <span className="text-[8px] font-black uppercase tracking-[0.3em] text-emerald-400">Válido</span>
+                <span className="text-[0.5rem] font-black uppercase tracking-[0.3em] text-emerald-400">Válido</span>
               </div>
             )}
-            <p className="text-zinc-800 text-[7px] font-black tracking-widest">{ticket.id}</p>
+            <p className="text-zinc-800 text-[0.4375rem] font-black tracking-widest">{ticket.id}</p>
           </div>
         </div>
       </div>
@@ -326,14 +328,14 @@ export const MyTicketsView: React.FC<{
             onClick={load}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
           >
-            <RefreshCw size={15} className={`text-zinc-400 ${loading ? 'animate-spin' : ''}`} />
+            <RefreshCw size="0.9375rem" className={`text-zinc-400 ${loading ? 'animate-spin' : ''}`} />
           </button>
           <button
             aria-label="Voltar"
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
           >
-            <ArrowLeft size={18} className="text-zinc-400" />
+            <ArrowLeft size="1.125rem" className="text-zinc-400" />
           </button>
         </div>
       </div>
@@ -342,17 +344,17 @@ export const MyTicketsView: React.FC<{
       <div className="flex-1 overflow-y-auto no-scrollbar p-5 space-y-6">
         {loading ? (
           <div className="flex items-center justify-center py-20">
-            <RefreshCw size={24} className="text-zinc-700 animate-spin" />
+            <RefreshCw size="1.5rem" className="text-zinc-700 animate-spin" />
           </div>
         ) : tickets.length === 0 ? (
           <div className="flex flex-col items-center py-20 gap-4">
             <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center">
-              <Ticket size={28} className="text-zinc-700" />
+              <Ticket size="1.75rem" className="text-zinc-700" />
             </div>
-            <p className="text-zinc-700 text-[10px] font-black uppercase tracking-widest text-center">
+            <p className="text-zinc-700 text-[0.625rem] font-black uppercase tracking-widest text-center">
               Nenhum ingresso
             </p>
-            <p className="text-zinc-800 text-[9px] text-center leading-relaxed">
+            <p className="text-zinc-800 text-[0.5625rem] text-center leading-relaxed">
               Seus ingressos comprados aparecerão aqui.
             </p>
           </div>
@@ -361,7 +363,7 @@ export const MyTicketsView: React.FC<{
             {/* Disponíveis */}
             {disponíveis.length > 0 && (
               <div>
-                <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest mb-3 px-1">
+                <p className="text-[0.5625rem] text-zinc-400 font-black uppercase tracking-widest mb-3 px-1">
                   Disponíveis ({disponíveis.length})
                 </p>
                 <div className="space-y-2">
@@ -372,17 +374,17 @@ export const MyTicketsView: React.FC<{
                       className="w-full flex items-center gap-4 p-4 bg-zinc-900/40 border border-emerald-500/20 rounded-2xl active:bg-emerald-500/5 transition-all text-left"
                     >
                       <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0">
-                        <QrCode size={18} className="text-emerald-400" />
+                        <QrCode size="1.125rem" className="text-emerald-400" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-white font-bold text-sm truncate">{t.eventoNome}</p>
-                        <p className="text-zinc-400 text-[10px] truncate">
+                        <p className="text-zinc-400 text-[0.625rem] truncate">
                           {t.variacaoLabel} · {fmtBRL(t.valor)}
                         </p>
-                        <p className="text-zinc-700 text-[9px]">{fmtDate(t.eventoDataInicio)}</p>
+                        <p className="text-zinc-700 text-[0.5625rem]">{fmtDate(t.eventoDataInicio)}</p>
                       </div>
                       <span
-                        className={`shrink-0 text-[7px] font-black uppercase tracking-widest px-2 py-1 rounded-full ${
+                        className={`shrink-0 text-[0.4375rem] font-black uppercase tracking-widest px-2 py-1 rounded-full ${
                           needsTitular(t) ? 'bg-[#FFD300]/15 text-[#FFD300]' : 'bg-emerald-500/15 text-emerald-400'
                         }`}
                       >
@@ -397,7 +399,7 @@ export const MyTicketsView: React.FC<{
             {/* Utilizados */}
             {utilizados.length > 0 && (
               <div>
-                <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest mb-3 px-1">
+                <p className="text-[0.5625rem] text-zinc-400 font-black uppercase tracking-widest mb-3 px-1">
                   Utilizados ({utilizados.length})
                 </p>
                 <div className="space-y-2">
@@ -408,16 +410,16 @@ export const MyTicketsView: React.FC<{
                       className="w-full flex items-center gap-4 p-4 bg-zinc-900/20 border border-white/5 rounded-2xl active:bg-white/5 transition-all text-left opacity-60"
                     >
                       <div className="w-10 h-10 rounded-xl bg-zinc-900 border border-white/5 flex items-center justify-center shrink-0">
-                        <QrCode size={18} className="text-zinc-400" />
+                        <QrCode size="1.125rem" className="text-zinc-400" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-zinc-400 font-bold text-sm truncate">{t.eventoNome}</p>
-                        <p className="text-zinc-400 text-[10px] truncate">
+                        <p className="text-zinc-400 text-[0.625rem] truncate">
                           {t.variacaoLabel} · {fmtBRL(t.valor)}
                         </p>
-                        <p className="text-zinc-700 text-[9px]">{fmtDate(t.eventoDataInicio)}</p>
+                        <p className="text-zinc-700 text-[0.5625rem]">{fmtDate(t.eventoDataInicio)}</p>
                       </div>
-                      <span className="shrink-0 text-[7px] font-black uppercase tracking-widest px-2 py-1 rounded-full bg-zinc-800 text-zinc-400">
+                      <span className="shrink-0 text-[0.4375rem] font-black uppercase tracking-widest px-2 py-1 rounded-full bg-zinc-800 text-zinc-400">
                         Utilizado
                       </span>
                     </button>

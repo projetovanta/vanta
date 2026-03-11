@@ -1,5 +1,15 @@
-# Criado: 2026-03-04 13:17 | Ultima edicao: 2026-03-04 18:08
+# Criado: 2026-03-04 13:17 | Ultima edicao: 2026-03-11 06:45
 # Memória — Responsividade
+
+## Scaling Fluido Proporcional (CRÍTICO)
+- **ResizeObserver** em App.tsx (useEffect com `[authLoading]`) ajusta `html font-size`
+- Fórmula: `fs = (Math.max(320, Math.min(el.offsetWidth, 500)) / 375) * 16`
+- 375px = 16px (referência design). 320px = 13.65px (mínimo). 500px = 21.33px (máximo)
+- **Admin panel**: detecta `max-w-4xl` → força font-size 16px fixo
+- **Tudo em rem**: 2546 `text-[Npx]` convertidos, 1635 `size={N}` (Lucide icons) convertidos
+- Container app: `max-w-[500px]` em px literal (NÃO escala com rem — intencional)
+- Valores NÃO convertidos: `w-[1-2px]`, `h-[1-2px]` (decorativos), `rounded-[2px]`, `borderLeftWidth: '3px'`
+- **Virtualizers**: devem usar `getItemHeight()` dinâmico baseado no font-size, não px fixo
 
 ## Regras (CLAUDE.md)
 - Mobile-first (iOS, Android, browser mobile)
@@ -16,8 +26,8 @@
 
 ## Contêiner Master (App.tsx)
 - Outer: fixed inset-0 flex flex-col items-center overflow-hidden bg-[#050505]
-- Inner: w-full flex-1 overflow-hidden flex flex-col bg-[#0A0A0A]
-- App normal: max-w-md
+- Inner (id="vanta-app"): w-full flex-1 overflow-hidden flex flex-col bg-[#0A0A0A]
+- App normal: max-w-[500px]
 - Admin: desktop sem max-w, mobile max-w-4xl
 - Desktop ≥768px: sidebar w-56 fixa. Mobile: sidebar colapsável w-14/w-48
 
@@ -39,3 +49,6 @@ overflow-x-auto snap-x no-scrollbar + shrink-0
 
 ## Tipografia
 Playfair Display SC Bold 700, clamp responsivo
+
+## Filter Modals (Busca)
+- Backdrop: bg-black/80 backdrop-blur-md (escuro)

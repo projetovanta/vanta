@@ -112,7 +112,7 @@ export const AceitarConviteMVPage: React.FC = () => {
         {/* Loading */}
         {state === 'loading' && (
           <div className="text-center">
-            <Loader2 size={32} className="mx-auto text-[#FFD300] animate-spin mb-4" />
+            <Loader2 size="2rem" className="mx-auto text-[#FFD300] animate-spin mb-4" />
             <p className="text-zinc-400 text-sm">Carregando convite...</p>
           </div>
         )}
@@ -126,9 +126,9 @@ export const AceitarConviteMVPage: React.FC = () => {
               }`}
             >
               {convite.tipo === 'MEMBRO' ? (
-                <Crown size={28} className="text-[#FFD300]" />
+                <Crown size="1.75rem" className="text-[#FFD300]" />
               ) : (
-                <Store size={28} className="text-purple-400" />
+                <Store size="1.75rem" className="text-purple-400" />
               )}
             </div>
 
@@ -142,7 +142,7 @@ export const AceitarConviteMVPage: React.FC = () => {
                 : `Você foi convidado como parceiro${convite.parceiro_nome ? ` (${convite.parceiro_nome})` : ''}`}
             </p>
 
-            <p className="text-zinc-400 text-[10px] mb-6">
+            <p className="text-zinc-400 text-[0.625rem] mb-6">
               Ao aceitar, você terá acesso a benefícios exclusivos do MAIS VANTA.
             </p>
 
@@ -163,7 +163,7 @@ export const AceitarConviteMVPage: React.FC = () => {
                 convite.tipo === 'MEMBRO' ? 'bg-[#FFD300]/10' : 'bg-purple-500/10'
               }`}
             >
-              <LogIn size={28} className="text-[#FFD300]" />
+              <LogIn size="1.75rem" className="text-[#FFD300]" />
             </div>
 
             <h1 className="text-white font-bold text-lg mb-2">Convite MAIS VANTA</h1>
@@ -182,7 +182,7 @@ export const AceitarConviteMVPage: React.FC = () => {
         {/* Aceitando */}
         {state === 'accepting' && (
           <div className="text-center">
-            <Loader2 size={32} className="mx-auto text-[#FFD300] animate-spin mb-4" />
+            <Loader2 size="2rem" className="mx-auto text-[#FFD300] animate-spin mb-4" />
             <p className="text-zinc-400 text-sm">Aceitando convite...</p>
           </div>
         )}
@@ -191,7 +191,7 @@ export const AceitarConviteMVPage: React.FC = () => {
         {state === 'success' && (
           <div className="bg-zinc-900/60 border border-white/10 rounded-3xl p-6 text-center">
             <div className="w-16 h-16 mx-auto rounded-2xl bg-green-500/10 flex items-center justify-center mb-4">
-              <CheckCircle size={28} className="text-green-500" />
+              <CheckCircle size="1.75rem" className="text-green-500" />
             </div>
 
             <h1 className="text-white font-bold text-lg mb-2">Bem-vindo!</h1>
@@ -215,7 +215,7 @@ export const AceitarConviteMVPage: React.FC = () => {
         {state === 'error' && (
           <div className="bg-zinc-900/60 border border-white/10 rounded-3xl p-6 text-center">
             <div className="w-16 h-16 mx-auto rounded-2xl bg-red-500/10 flex items-center justify-center mb-4">
-              <XCircle size={28} className="text-red-400" />
+              <XCircle size="1.75rem" className="text-red-400" />
             </div>
 
             <h1 className="text-white font-bold text-lg mb-2">Ops!</h1>

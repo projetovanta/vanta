@@ -62,7 +62,7 @@ export const ImageCropperModal: React.FC<{ image: string; onConfirm: (img: strin
 
   return (
     <div className="absolute inset-0 z-[400] flex items-center justify-center bg-black/95 backdrop-blur-2xl">
-      <div className="w-full max-w-md h-full flex flex-col bg-black">
+      <div className="w-full max-w-[500px] h-full flex flex-col bg-black">
         <div
           className="px-6 pb-6 flex justify-between items-center border-b border-white/5"
           style={{ paddingTop: '1.5rem' }}
@@ -71,10 +71,10 @@ export const ImageCropperModal: React.FC<{ image: string; onConfirm: (img: strin
             <h2 style={TYPOGRAPHY.screenTitle} className="text-xl italic">
               Ajustar Foto
             </h2>
-            <p className="text-[9px] text-[#FFD300] font-black uppercase mt-1">Curadoria</p>
+            <p className="text-[0.5625rem] text-[#FFD300] font-black uppercase mt-1">Curadoria</p>
           </div>
           <button onClick={onCancel} className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center">
-            <X size={18} />
+            <X size="1.125rem" />
           </button>
         </div>
         <div className="relative flex-1 bg-[#050505]">
@@ -96,17 +96,17 @@ export const ImageCropperModal: React.FC<{ image: string; onConfirm: (img: strin
         >
           <div className="space-y-4">
             <div className="flex justify-between items-center">
-              <span className="text-[10px] text-zinc-400 uppercase font-black tracking-widest flex gap-2">
-                <ZoomIn size={12} /> Zoom
+              <span className="text-[0.625rem] text-zinc-400 uppercase font-black tracking-widest flex gap-2">
+                <ZoomIn size="0.75rem" /> Zoom
               </span>
-              <span className="text-[10px] text-[#FFD300] font-mono">{Math.round(zoom * 100)}%</span>
+              <span className="text-[0.625rem] text-[#FFD300] font-mono">{Math.round(zoom * 100)}%</span>
             </div>
             <VantaSlider value={zoom} min={1} max={3} step={0.1} onChange={setZoom} className="w-full" />
           </div>
           <div className="flex gap-4">
             <button
               onClick={onCancel}
-              className="flex-1 py-4 bg-zinc-900 border border-white/5 text-white font-bold text-[10px] uppercase rounded-xl"
+              className="flex-1 py-4 bg-zinc-900 border border-white/5 text-white font-bold text-[0.625rem] uppercase rounded-xl"
             >
               Cancelar
             </button>
@@ -124,13 +124,13 @@ export const ImageCropperModal: React.FC<{ image: string; onConfirm: (img: strin
                 }
               }}
               disabled={isProcessing}
-              className="flex-[2] py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase rounded-xl shadow-xl flex items-center justify-center gap-2"
+              className="flex-[2] py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase rounded-xl shadow-xl flex items-center justify-center gap-2"
             >
               {isProcessing ? (
                 'Processando...'
               ) : (
                 <>
-                  <Check size={14} /> Confirmar
+                  <Check size="0.875rem" /> Confirmar
                 </>
               )}
             </button>

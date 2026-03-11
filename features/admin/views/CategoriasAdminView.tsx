@@ -156,7 +156,7 @@ export const CategoriasAdminView: React.FC<{ onBack: () => void }> = ({ onBack }
       </div>
       <div className="flex-1 min-w-0">
         <p className="text-white font-bold text-sm truncate">{item.label}</p>
-        <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">
+        <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest">
           {item.ativo ? 'Ativo' : 'Desativado'}
         </p>
       </div>
@@ -169,19 +169,19 @@ export const CategoriasAdminView: React.FC<{ onBack: () => void }> = ({ onBack }
               : 'bg-zinc-800 border-white/5 text-zinc-400'
           }`}
         >
-          <Check size={12} />
+          <Check size="0.75rem" />
         </button>
         <button
           onClick={() => setEditItem(item)}
           className="w-8 h-8 rounded-lg flex items-center justify-center border border-white/5 bg-zinc-800 text-zinc-400 active:scale-90 transition-all"
         >
-          <Pencil size={12} />
+          <Pencil size="0.75rem" />
         </button>
         <button
           onClick={() => handleDelete(item)}
           className="w-8 h-8 rounded-lg flex items-center justify-center border border-red-500/20 bg-red-950/30 text-red-400 active:scale-90 transition-all"
         >
-          <Trash2 size={12} />
+          <Trash2 size="0.75rem" />
         </button>
       </div>
     </div>
@@ -199,7 +199,7 @@ export const CategoriasAdminView: React.FC<{ onBack: () => void }> = ({ onBack }
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
           >
-            <ArrowLeft size={18} className="text-zinc-400" />
+            <ArrowLeft size="1.125rem" className="text-zinc-400" />
           </button>
           <div>
             <p style={TYPOGRAPHY.sectionKicker} className="mb-1">
@@ -214,7 +214,7 @@ export const CategoriasAdminView: React.FC<{ onBack: () => void }> = ({ onBack }
           onClick={() => setEditItem({ label: '', ativo: true, ordem: currentItems.length })}
           className="w-10 h-10 bg-[#FFD300]/15 rounded-full flex items-center justify-center border border-[#FFD300]/25 active:scale-90 transition-all mt-1"
         >
-          <Plus size={18} className="text-[#FFD300]" />
+          <Plus size="1.125rem" className="text-[#FFD300]" />
         </button>
       </div>
 
@@ -227,7 +227,7 @@ export const CategoriasAdminView: React.FC<{ onBack: () => void }> = ({ onBack }
             <button
               key={t}
               onClick={() => setTab(t)}
-              className={`shrink-0 px-4 py-3 rounded-2xl text-[9px] font-black uppercase tracking-widest border transition-all snap-start ${
+              className={`shrink-0 px-4 py-3 rounded-2xl text-[0.5625rem] font-black uppercase tracking-widest border transition-all snap-start ${
                 isActive
                   ? `${c.colorBg} ${c.colorBorder} ${t === 'formatos' || t === 'outros' ? 'text-black' : 'text-white'} shadow-lg`
                   : 'bg-zinc-900/50 border-white/5 text-zinc-400'
@@ -243,12 +243,12 @@ export const CategoriasAdminView: React.FC<{ onBack: () => void }> = ({ onBack }
       <div className="flex-1 overflow-y-auto no-scrollbar p-5 space-y-2 max-w-3xl mx-auto w-full">
         {loading ? (
           <div className="flex items-center justify-center py-20">
-            <Loader2 size={24} className="text-zinc-700 animate-spin" />
+            <Loader2 size="1.5rem" className="text-zinc-700 animate-spin" />
           </div>
         ) : currentItems.length === 0 ? (
           <div className="flex flex-col items-center py-20 gap-3">
             <span className="text-3xl">{cfg.emoji}</span>
-            <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">
+            <p className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest">
               Nenhum {cfg.label.toLowerCase().slice(0, -1)} cadastrado
             </p>
           </div>
@@ -270,16 +270,16 @@ export const CategoriasAdminView: React.FC<{ onBack: () => void }> = ({ onBack }
           >
             <div className="w-10 h-1 bg-zinc-700 rounded-full mx-auto" />
             <div className="flex items-start justify-between">
-              <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">
+              <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest">
                 {editItem.id ? 'Editar' : 'Novo'} {cfg.emoji} {cfg.label.slice(0, -1)}
               </p>
               <button onClick={() => setEditItem(null)} className="p-1.5 text-zinc-400 active:text-white">
-                <X size={14} />
+                <X size="0.875rem" />
               </button>
             </div>
 
             <div>
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5">Nome</p>
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5">Nome</p>
               <input
                 type="text"
                 value={editItem.label ?? ''}
@@ -293,9 +293,9 @@ export const CategoriasAdminView: React.FC<{ onBack: () => void }> = ({ onBack }
             <button
               onClick={handleSave}
               disabled={!editItem.label?.trim() || saving}
-              className="w-full py-4 bg-[#FFD300] text-black font-black text-[10px] uppercase tracking-[0.2em] rounded-xl flex items-center justify-center gap-2 active:scale-[0.97] transition-all disabled:opacity-30"
+              className="w-full py-4 bg-[#FFD300] text-black font-black text-[0.625rem] uppercase tracking-[0.2em] rounded-xl flex items-center justify-center gap-2 active:scale-[0.97] transition-all disabled:opacity-30"
             >
-              {saving ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />}
+              {saving ? <Loader2 size="0.875rem" className="animate-spin" /> : <Check size="0.875rem" />}
               {editItem.id ? 'Salvar' : `Criar ${cfg.label.slice(0, -1)}`}
             </button>
           </div>

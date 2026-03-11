@@ -387,7 +387,9 @@ export const AdminDashboardView: React.FC<{
             <div>
               <div className="flex items-center gap-2 mb-3">
                 <div className="w-1.5 h-1.5 rounded-full bg-[#FFD300]" />
-                <p className="text-[#FFD300]/60 text-[9px] font-black uppercase tracking-[0.25em]">Acesso Liberado</p>
+                <p className="text-[#FFD300]/60 text-[0.5625rem] font-black uppercase tracking-[0.25em]">
+                  Acesso Liberado
+                </p>
               </div>
               <h1 style={TYPOGRAPHY.screenTitle} className="text-2xl italic leading-none text-white">
                 Escolha seu Portal
@@ -399,7 +401,7 @@ export const AdminDashboardView: React.FC<{
               onClick={onClose}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
             >
-              <ArrowLeft size={18} className="text-zinc-400" />
+              <ArrowLeft size="1.125rem" className="text-zinc-400" />
             </button>
           </div>
         </div>
@@ -413,7 +415,7 @@ export const AdminDashboardView: React.FC<{
             }, {}),
           ).map(([cargoLabel, nodes]) => (
             <div key={cargoLabel}>
-              <p className="text-[9px] text-zinc-400 font-black uppercase tracking-wider mb-2">{cargoLabel}</p>
+              <p className="text-[0.5625rem] text-zinc-400 font-black uppercase tracking-wider mb-2">{cargoLabel}</p>
               <div className="space-y-2">
                 {nodes.map(node => (
                   <button
@@ -430,13 +432,13 @@ export const AdminDashboardView: React.FC<{
                     )}
                     <div className="min-w-0 flex-1">
                       <span
-                        className={`text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded mb-1.5 inline-block ${node.tipo === 'COMUNIDADE' ? 'bg-blue-500/20 text-blue-400' : 'bg-purple-500/20 text-purple-400'}`}
+                        className={`text-[0.5625rem] font-black uppercase tracking-wider px-2 py-0.5 rounded mb-1.5 inline-block ${node.tipo === 'COMUNIDADE' ? 'bg-blue-500/20 text-blue-400' : 'bg-purple-500/20 text-purple-400'}`}
                       >
                         {node.tipo === 'COMUNIDADE' ? 'Local' : 'Evento'}
                       </span>
                       <p className="text-white font-bold text-sm leading-tight truncate">{node.contextNome}</p>
                     </div>
-                    <ChevronRight size={16} className="text-zinc-700 shrink-0" />
+                    <ChevronRight size="1rem" className="text-zinc-700 shrink-0" />
                   </button>
                 ))}
               </div>
@@ -459,7 +461,7 @@ export const AdminDashboardView: React.FC<{
     <div className="flex-1 flex flex-col items-center justify-center gap-3 p-8 text-center">
       <div className="w-2 h-2 rounded-full bg-red-500/40" />
       <p className="text-zinc-400 text-xs font-medium">Acesso negado</p>
-      <p className="text-zinc-700 text-[10px]">Você não tem permissão para acessar este módulo.</p>
+      <p className="text-zinc-700 text-[0.625rem]">Você não tem permissão para acessar este módulo.</p>
       <button
         onClick={goBack}
         className="mt-4 px-4 py-2 bg-zinc-900 border border-white/10 rounded-lg text-zinc-400 text-xs active:scale-95 transition-all"
@@ -681,7 +683,9 @@ export const AdminDashboardView: React.FC<{
           <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-6 pt-8 pb-4 shrink-0">
             <div className="flex justify-between items-start">
               <div className="flex-1 min-w-0 mr-3">
-                <p className="text-[9px] font-black uppercase tracking-[.25em] text-[#FFD300]/60 mb-1">MAIS VANTA</p>
+                <p className="text-[0.5625rem] font-black uppercase tracking-[.25em] text-[#FFD300]/60 mb-1">
+                  MAIS VANTA
+                </p>
                 <h1 className="text-xl font-bold italic text-white">Curadoria</h1>
               </div>
               <button
@@ -689,7 +693,7 @@ export const AdminDashboardView: React.FC<{
                 onClick={back}
                 className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
               >
-                <ArrowLeft size={18} className="text-zinc-400" />
+                <ArrowLeft size="1.125rem" className="text-zinc-400" />
               </button>
             </div>
           </div>
@@ -749,7 +753,7 @@ export const AdminDashboardView: React.FC<{
     return (
       <div className="flex-1 flex flex-col items-center justify-center gap-3 p-8 text-center">
         <div className="w-1.5 h-1.5 rounded-full bg-[#FFD300]/40" />
-        <p className="text-zinc-700 text-[10px] font-black uppercase tracking-[0.2em]">Selecione um módulo</p>
+        <p className="text-zinc-700 text-[0.625rem] font-black uppercase tracking-[0.2em]">Selecione um módulo</p>
       </div>
     );
   };
@@ -803,21 +807,21 @@ export const AdminDashboardView: React.FC<{
                 <div className="shrink-0 flex items-center gap-1 px-4 py-2 border-b border-white/5 bg-[#080808]">
                   <button
                     onClick={() => setSubView('DASHBOARD')}
-                    className="text-zinc-400 text-[10px] font-semibold hover:text-zinc-300 transition-colors"
+                    className="text-zinc-400 text-[0.625rem] font-semibold hover:text-zinc-300 transition-colors"
                   >
                     Painel
                   </button>
-                  <ChevronRight size={10} className="text-zinc-700" />
-                  <span className="text-zinc-400 text-[10px] font-semibold">{crumb.section}</span>
-                  <ChevronRight size={10} className="text-zinc-700" />
-                  <span className="text-[#FFD300] text-[10px] font-bold">{crumb.label}</span>
+                  <ChevronRight size="0.625rem" className="text-zinc-700" />
+                  <span className="text-zinc-400 text-[0.625rem] font-semibold">{crumb.section}</span>
+                  <ChevronRight size="0.625rem" className="text-zinc-700" />
+                  <span className="text-[#FFD300] text-[0.625rem] font-bold">{crumb.label}</span>
                 </div>
               );
             })()}
           <Suspense
             fallback={
               <div className="flex-1 flex items-center justify-center">
-                <Loader2 size={24} className="text-[#FFD300] animate-spin" />
+                <Loader2 size="1.5rem" className="text-[#FFD300] animate-spin" />
               </div>
             }
           >

@@ -87,12 +87,12 @@ export const TagsPredefinidas: React.FC<Props> = ({ selected, onChange }) => {
     <div className="px-1 space-y-1">
       <button
         onClick={() => setExpanded(v => !v)}
-        className="flex items-center gap-1 text-zinc-500 text-[9px] font-bold uppercase tracking-wider"
+        className="flex items-center gap-1 text-zinc-500 text-[0.5625rem] font-bold uppercase tracking-wider"
       >
-        <Tag size={9} /> Tags internas
-        {expanded ? <ChevronUp size={9} /> : <ChevronDown size={9} />}
+        <Tag size="0.5625rem" /> Tags internas
+        {expanded ? <ChevronUp size="0.5625rem" /> : <ChevronDown size="0.5625rem" />}
         {selected.length > 0 && (
-          <span className="ml-1 bg-[#FFD300] text-black px-1.5 rounded-full text-[7px]">{selected.length}</span>
+          <span className="ml-1 bg-[#FFD300] text-black px-1.5 rounded-full text-[0.4375rem]">{selected.length}</span>
         )}
       </button>
 
@@ -106,9 +106,9 @@ export const TagsPredefinidas: React.FC<Props> = ({ selected, onChange }) => {
               <button
                 key={tagId}
                 onClick={() => toggle(tagId)}
-                className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold bg-[#FFD300]/15 border border-[#FFD300]/30 text-[#FFD300] active:scale-90 transition-all"
+                className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[0.5625rem] font-bold bg-[#FFD300]/15 border border-[#FFD300]/30 text-[#FFD300] active:scale-90 transition-all"
               >
-                {def?.label ?? tagId} <X size={8} />
+                {def?.label ?? tagId} <X size="0.5rem" />
               </button>
             );
           })}
@@ -120,7 +120,7 @@ export const TagsPredefinidas: React.FC<Props> = ({ selected, onChange }) => {
         <div className="bg-zinc-900/80 border border-white/5 rounded-xl p-2 space-y-2 max-h-48 overflow-y-auto no-scrollbar">
           {Object.entries(TAGS_POR_CATEGORIA).map(([catId, cat]) => (
             <div key={catId}>
-              <p className="text-zinc-500 text-[8px] font-black uppercase tracking-widest mb-1">{cat.label}</p>
+              <p className="text-zinc-500 text-[0.5rem] font-black uppercase tracking-widest mb-1">{cat.label}</p>
               <div className="flex flex-wrap gap-1">
                 {cat.tags.map(tag => {
                   const isSelected = selected.includes(tag.id);
@@ -128,7 +128,7 @@ export const TagsPredefinidas: React.FC<Props> = ({ selected, onChange }) => {
                     <button
                       key={tag.id}
                       onClick={() => toggle(tag.id)}
-                      className={`px-2 py-0.5 rounded-full text-[9px] font-bold border transition-all active:scale-90 ${
+                      className={`px-2 py-0.5 rounded-full text-[0.5625rem] font-bold border transition-all active:scale-90 ${
                         isSelected
                           ? 'bg-[#FFD300]/15 border-[#FFD300]/30 text-[#FFD300]'
                           : 'bg-zinc-800/60 border-white/5 text-zinc-400'

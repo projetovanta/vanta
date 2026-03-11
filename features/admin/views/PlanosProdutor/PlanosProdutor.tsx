@@ -136,13 +136,13 @@ export const PlanosProdutor: React.FC = () => {
         <div className="flex items-center justify-between">
           <h2 className="text-white font-bold text-sm">{editando === 'novo' ? 'Novo Plano' : 'Editar Plano'}</h2>
           <button onClick={() => setEditando(null)} className="p-2 text-zinc-400 active:text-white">
-            <X size={16} />
+            <X size="1rem" />
           </button>
         </div>
 
         {/* Nome */}
         <div>
-          <label className="text-[9px] font-black uppercase tracking-widest text-zinc-400 mb-1 block">
+          <label className="text-[0.5625rem] font-black uppercase tracking-widest text-zinc-400 mb-1 block">
             Nome do plano
           </label>
           <input
@@ -155,7 +155,9 @@ export const PlanosProdutor: React.FC = () => {
 
         {/* Descrição */}
         <div>
-          <label className="text-[9px] font-black uppercase tracking-widest text-zinc-400 mb-1 block">Descrição</label>
+          <label className="text-[0.5625rem] font-black uppercase tracking-widest text-zinc-400 mb-1 block">
+            Descrição
+          </label>
           <textarea
             value={form.descricao}
             onChange={e => setForm(p => ({ ...p, descricao: e.target.value }))}
@@ -166,9 +168,9 @@ export const PlanosProdutor: React.FC = () => {
 
         {/* Preço mensal */}
         <div className="flex items-center gap-3">
-          <DollarSign size={14} className="text-emerald-400 shrink-0" />
+          <DollarSign size="0.875rem" className="text-emerald-400 shrink-0" />
           <div className="flex-1">
-            <label className="text-[9px] font-black uppercase tracking-widest text-zinc-400 mb-1 block">
+            <label className="text-[0.5625rem] font-black uppercase tracking-widest text-zinc-400 mb-1 block">
               Preço mensal (R$)
             </label>
             <input
@@ -185,8 +187,8 @@ export const PlanosProdutor: React.FC = () => {
         {/* Limites */}
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="text-[9px] font-black uppercase tracking-widest text-zinc-400 mb-1 flex items-center gap-1">
-              <Calendar size={9} /> Eventos/mês
+            <label className="text-[0.5625rem] font-black uppercase tracking-widest text-zinc-400 mb-1 flex items-center gap-1">
+              <Calendar size="0.5625rem" /> Eventos/mês
             </label>
             <input
               type="number"
@@ -197,8 +199,8 @@ export const PlanosProdutor: React.FC = () => {
             />
           </div>
           <div>
-            <label className="text-[9px] font-black uppercase tracking-widest text-zinc-400 mb-1 flex items-center gap-1">
-              <Users size={9} /> Resgates/evento
+            <label className="text-[0.5625rem] font-black uppercase tracking-widest text-zinc-400 mb-1 flex items-center gap-1">
+              <Users size="0.5625rem" /> Resgates/evento
             </label>
             <input
               type="number"
@@ -209,8 +211,8 @@ export const PlanosProdutor: React.FC = () => {
             />
           </div>
           <div>
-            <label className="text-[9px] font-black uppercase tracking-widest text-zinc-400 mb-1 flex items-center gap-1">
-              <Bell size={9} /> Notificações/mês
+            <label className="text-[0.5625rem] font-black uppercase tracking-widest text-zinc-400 mb-1 flex items-center gap-1">
+              <Bell size="0.5625rem" /> Notificações/mês
             </label>
             <input
               type="number"
@@ -221,7 +223,9 @@ export const PlanosProdutor: React.FC = () => {
             />
           </div>
           <div>
-            <label className="text-[9px] font-black uppercase tracking-widest text-zinc-400 mb-1 block">Ordem</label>
+            <label className="text-[0.5625rem] font-black uppercase tracking-widest text-zinc-400 mb-1 block">
+              Ordem
+            </label>
             <input
               type="number"
               min={0}
@@ -235,7 +239,7 @@ export const PlanosProdutor: React.FC = () => {
         {/* Preço extras */}
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="text-[9px] font-black uppercase tracking-widest text-zinc-400 mb-1 block">
+            <label className="text-[0.5625rem] font-black uppercase tracking-widest text-zinc-400 mb-1 block">
               R$ evento extra
             </label>
             <input
@@ -248,7 +252,7 @@ export const PlanosProdutor: React.FC = () => {
             />
           </div>
           <div>
-            <label className="text-[9px] font-black uppercase tracking-widest text-zinc-400 mb-1 block">
+            <label className="text-[0.5625rem] font-black uppercase tracking-widest text-zinc-400 mb-1 block">
               R$ notif. extra
             </label>
             <input
@@ -264,7 +268,7 @@ export const PlanosProdutor: React.FC = () => {
 
         {/* Tiers acessíveis */}
         <div>
-          <label className="text-[9px] font-black uppercase tracking-widest text-zinc-400 mb-2 block">
+          <label className="text-[0.5625rem] font-black uppercase tracking-widest text-zinc-400 mb-2 block">
             Perfis acessíveis
           </label>
           <div className="flex flex-wrap gap-2">
@@ -272,7 +276,7 @@ export const PlanosProdutor: React.FC = () => {
               <button
                 key={tier}
                 onClick={() => toggleTier(tier)}
-                className={`px-3 py-1.5 rounded-lg text-[10px] font-bold border transition-all active:scale-95 ${
+                className={`px-3 py-1.5 rounded-lg text-[0.625rem] font-bold border transition-all active:scale-95 ${
                   form.tiersAcessiveis.includes(tier)
                     ? 'bg-[#FFD300]/10 border-[#FFD300]/30 text-[#FFD300]'
                     : 'bg-zinc-900/60 border-white/5 text-zinc-500'
@@ -289,7 +293,7 @@ export const PlanosProdutor: React.FC = () => {
           <div
             className={`w-4 h-4 rounded border flex items-center justify-center ${form.ativo ? 'bg-[#FFD300] border-[#FFD300]' : 'border-zinc-600'}`}
           >
-            {form.ativo && <Check size={10} className="text-black" />}
+            {form.ativo && <Check size="0.625rem" className="text-black" />}
           </div>
           <span className={form.ativo ? 'text-white' : 'text-zinc-500'}>Plano ativo</span>
         </button>
@@ -300,7 +304,7 @@ export const PlanosProdutor: React.FC = () => {
           disabled={salvando || !form.nome.trim()}
           className="w-full flex items-center justify-center gap-2 py-3 bg-[#FFD300] text-black font-bold text-xs rounded-xl active:scale-95 transition-all disabled:opacity-40"
         >
-          <Save size={14} /> {salvando ? 'Salvando...' : 'Salvar Plano'}
+          <Save size="0.875rem" /> {salvando ? 'Salvando...' : 'Salvar Plano'}
         </button>
       </div>
     );
@@ -315,8 +319,8 @@ export const PlanosProdutor: React.FC = () => {
       {/* Header + botão novo */}
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-[9px] font-black uppercase tracking-widest text-zinc-400">Planos do Produtor</p>
-          <p className="text-zinc-500 text-[10px]">
+          <p className="text-[0.5625rem] font-black uppercase tracking-widest text-zinc-400">Planos do Produtor</p>
+          <p className="text-zinc-500 text-[0.625rem]">
             {planos.length} plano{planos.length !== 1 ? 's' : ''} ·{' '}
             {atribuicoes.filter(a => a.status === 'ativo').length} produtor
             {atribuicoes.filter(a => a.status === 'ativo').length !== 1 ? 'es' : ''} ativo
@@ -325,17 +329,17 @@ export const PlanosProdutor: React.FC = () => {
         </div>
         <button
           onClick={handleNovo}
-          className="flex items-center gap-1.5 px-3 py-2 bg-[#FFD300]/10 border border-[#FFD300]/20 rounded-xl text-[#FFD300] text-[10px] font-bold active:scale-95 transition-all"
+          className="flex items-center gap-1.5 px-3 py-2 bg-[#FFD300]/10 border border-[#FFD300]/20 rounded-xl text-[#FFD300] text-[0.625rem] font-bold active:scale-95 transition-all"
         >
-          <Plus size={12} /> Novo Plano
+          <Plus size="0.75rem" /> Novo Plano
         </button>
       </div>
 
       {planos.length === 0 ? (
         <div className="text-center py-16">
-          <Crown size={32} className="text-zinc-700 mx-auto mb-3" />
+          <Crown size="2rem" className="text-zinc-700 mx-auto mb-3" />
           <p className="text-zinc-400 text-sm font-semibold">Nenhum plano criado</p>
-          <p className="text-zinc-500 text-[10px] mt-1">
+          <p className="text-zinc-500 text-[0.625rem] mt-1">
             Crie planos para que produtores possam usar o MAIS VANTA nos eventos.
           </p>
         </div>
@@ -348,53 +352,55 @@ export const PlanosProdutor: React.FC = () => {
             <div className="flex items-start justify-between">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <Crown size={14} className="text-[#FFD300] shrink-0" />
+                  <Crown size="0.875rem" className="text-[#FFD300] shrink-0" />
                   <p className="text-white font-bold text-sm truncate">{plano.nome}</p>
                   {!plano.ativo && (
-                    <span className="text-[8px] font-black uppercase text-red-400 bg-red-500/10 border border-red-500/20 px-1.5 py-0.5 rounded-full">
+                    <span className="text-[0.5rem] font-black uppercase text-red-400 bg-red-500/10 border border-red-500/20 px-1.5 py-0.5 rounded-full">
                       Inativo
                     </span>
                   )}
                   {plano.personalizadoPara && (
-                    <span className="text-[8px] font-black uppercase text-purple-400 bg-purple-500/10 border border-purple-500/20 px-1.5 py-0.5 rounded-full">
+                    <span className="text-[0.5rem] font-black uppercase text-purple-400 bg-purple-500/10 border border-purple-500/20 px-1.5 py-0.5 rounded-full">
                       Personalizado
                     </span>
                   )}
                 </div>
-                {plano.descricao && <p className="text-zinc-400 text-[10px] mt-0.5 line-clamp-2">{plano.descricao}</p>}
+                {plano.descricao && (
+                  <p className="text-zinc-400 text-[0.625rem] mt-0.5 line-clamp-2">{plano.descricao}</p>
+                )}
               </div>
               <div className="flex gap-1.5 shrink-0 ml-2">
                 <button
                   onClick={() => handleEditar(plano)}
                   className="p-2 bg-zinc-800 rounded-lg border border-white/5 active:scale-90 transition-all"
                 >
-                  <Edit2 size={12} className="text-zinc-400" />
+                  <Edit2 size="0.75rem" className="text-zinc-400" />
                 </button>
                 <button
                   onClick={() => handleDeletar(plano.id)}
                   className="p-2 bg-zinc-800 rounded-lg border border-white/5 active:scale-90 transition-all"
                 >
-                  <Trash2 size={12} className="text-red-400" />
+                  <Trash2 size="0.75rem" className="text-red-400" />
                 </button>
               </div>
             </div>
 
             {/* Stats */}
             <div className="flex flex-wrap gap-2">
-              <span className="flex items-center gap-1 text-zinc-400 text-[9px] bg-zinc-800/60 border border-white/5 rounded-lg px-2 py-1">
-                <DollarSign size={9} /> R${plano.precoMensal}/mês
+              <span className="flex items-center gap-1 text-zinc-400 text-[0.5625rem] bg-zinc-800/60 border border-white/5 rounded-lg px-2 py-1">
+                <DollarSign size="0.5625rem" /> R${plano.precoMensal}/mês
               </span>
-              <span className="flex items-center gap-1 text-zinc-400 text-[9px] bg-zinc-800/60 border border-white/5 rounded-lg px-2 py-1">
-                <Calendar size={9} /> {plano.limiteEventosMes} eventos/mês
+              <span className="flex items-center gap-1 text-zinc-400 text-[0.5625rem] bg-zinc-800/60 border border-white/5 rounded-lg px-2 py-1">
+                <Calendar size="0.5625rem" /> {plano.limiteEventosMes} eventos/mês
               </span>
-              <span className="flex items-center gap-1 text-zinc-400 text-[9px] bg-zinc-800/60 border border-white/5 rounded-lg px-2 py-1">
-                <Users size={9} /> {plano.limiteResgatesEvento} resgates/evento
+              <span className="flex items-center gap-1 text-zinc-400 text-[0.5625rem] bg-zinc-800/60 border border-white/5 rounded-lg px-2 py-1">
+                <Users size="0.5625rem" /> {plano.limiteResgatesEvento} resgates/evento
               </span>
-              <span className="flex items-center gap-1 text-zinc-400 text-[9px] bg-zinc-800/60 border border-white/5 rounded-lg px-2 py-1">
-                <Bell size={9} /> {plano.limiteNotificacoesMes} notif/mês
+              <span className="flex items-center gap-1 text-zinc-400 text-[0.5625rem] bg-zinc-800/60 border border-white/5 rounded-lg px-2 py-1">
+                <Bell size="0.5625rem" /> {plano.limiteNotificacoesMes} notif/mês
               </span>
-              <span className="flex items-center gap-1 text-zinc-400 text-[9px] bg-zinc-800/60 border border-white/5 rounded-lg px-2 py-1">
-                <UserCheck size={9} /> {ativosCount(plano.id)} produtor{ativosCount(plano.id) !== 1 ? 'es' : ''}
+              <span className="flex items-center gap-1 text-zinc-400 text-[0.5625rem] bg-zinc-800/60 border border-white/5 rounded-lg px-2 py-1">
+                <UserCheck size="0.5625rem" /> {ativosCount(plano.id)} produtor{ativosCount(plano.id) !== 1 ? 'es' : ''}
               </span>
             </div>
 
@@ -403,7 +409,7 @@ export const PlanosProdutor: React.FC = () => {
               {plano.tiersAcessiveis.map(t => (
                 <span
                   key={t}
-                  className="text-[8px] font-bold uppercase text-[#FFD300]/80 bg-[#FFD300]/5 border border-[#FFD300]/10 px-2 py-0.5 rounded-full"
+                  className="text-[0.5rem] font-bold uppercase text-[#FFD300]/80 bg-[#FFD300]/5 border border-[#FFD300]/10 px-2 py-0.5 rounded-full"
                 >
                   {TIER_LABELS[t] ?? t}
                 </span>
@@ -412,7 +418,7 @@ export const PlanosProdutor: React.FC = () => {
 
             {/* Extras */}
             {(plano.precoEventoExtra > 0 || plano.precoNotificacaoExtra > 0) && (
-              <p className="text-zinc-500 text-[9px]">
+              <p className="text-zinc-500 text-[0.5625rem]">
                 Extras: {plano.precoEventoExtra > 0 ? `R$${plano.precoEventoExtra}/evento` : ''}
                 {plano.precoEventoExtra > 0 && plano.precoNotificacaoExtra > 0 ? ' · ' : ''}
                 {plano.precoNotificacaoExtra > 0 ? `R$${plano.precoNotificacaoExtra}/notif` : ''}

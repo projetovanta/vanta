@@ -6,7 +6,7 @@ import { VantaTimePicker } from './VantaTimePicker';
 
 const inputCls =
   'w-full bg-zinc-900/60 border border-white/5 rounded-lg px-2 py-1.5 text-white text-xs outline-none focus:border-[#FFD300]/30';
-const labelCls = 'text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block';
+const labelCls = 'text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block';
 
 export const HorarioOverridesEditor: React.FC<{
   overrides: HorarioOverride[];
@@ -30,7 +30,7 @@ export const HorarioOverridesEditor: React.FC<{
   return (
     <div className="space-y-2">
       <label className={labelCls}>Exceções de Horário</label>
-      <p className="text-[8px] text-zinc-700 font-black uppercase tracking-widest leading-relaxed">
+      <p className="text-[0.5rem] text-zinc-700 font-black uppercase tracking-widest leading-relaxed">
         Feriados, datas especiais ou dias que fogem da regra padrão.
       </p>
 
@@ -61,7 +61,7 @@ export const HorarioOverridesEditor: React.FC<{
                 onClick={() => remove(idx)}
                 className="text-red-400/60 hover:text-red-400 transition-colors shrink-0"
               >
-                <Trash2 size={14} />
+                <Trash2 size="0.875rem" />
               </button>
             </div>
 
@@ -72,7 +72,7 @@ export const HorarioOverridesEditor: React.FC<{
                   onChange={v => update(idx, 'abertura', v)}
                   className={inputCls + ' flex-1 min-w-0 text-center'}
                 />
-                <span className="text-zinc-400 text-[10px] shrink-0">às</span>
+                <span className="text-zinc-400 text-[0.625rem] shrink-0">às</span>
                 <VantaTimePicker
                   value={o.fechamento ?? '02:00'}
                   onChange={v => update(idx, 'fechamento', v)}
@@ -95,9 +95,9 @@ export const HorarioOverridesEditor: React.FC<{
       <button
         type="button"
         onClick={add}
-        className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-dashed border-white/10 text-zinc-400 text-[10px] font-bold uppercase tracking-wider hover:border-[#FFD300]/30 hover:text-[#FFD300]/70 transition-colors"
+        className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-dashed border-white/10 text-zinc-400 text-[0.625rem] font-bold uppercase tracking-wider hover:border-[#FFD300]/30 hover:text-[#FFD300]/70 transition-colors"
       >
-        <Plus size={12} /> Adicionar exceção
+        <Plus size="0.75rem" /> Adicionar exceção
       </button>
     </div>
   );

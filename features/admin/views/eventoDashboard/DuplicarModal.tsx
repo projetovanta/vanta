@@ -97,11 +97,11 @@ export const DuplicarModal: React.FC<{
         <div className="w-10 h-1 bg-zinc-700 rounded-full mx-auto" />
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">Duplicar</p>
+            <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest">Duplicar</p>
             <p className="text-white font-bold text-base truncate">{evento.nome}</p>
           </div>
           <button onClick={onClose} className="p-1 text-zinc-400">
-            <X size={14} />
+            <X size="0.875rem" />
           </button>
         </div>
 
@@ -111,7 +111,7 @@ export const DuplicarModal: React.FC<{
 
         <div className="grid grid-cols-2 gap-2">
           <div>
-            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mb-1">Data Início</p>
+            <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest mb-1">Data Início</p>
             <VantaDatePicker
               value={dataInicio}
               onChange={setDataInicio}
@@ -119,7 +119,7 @@ export const DuplicarModal: React.FC<{
             />
           </div>
           <div>
-            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mb-1">Hora Início</p>
+            <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest mb-1">Hora Início</p>
             <VantaTimePicker
               value={horaInicio}
               onChange={setHoraInicio}
@@ -127,7 +127,7 @@ export const DuplicarModal: React.FC<{
             />
           </div>
           <div>
-            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mb-1">Data Fim</p>
+            <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest mb-1">Data Fim</p>
             <VantaDatePicker
               value={dataFim}
               onChange={setDataFim}
@@ -135,7 +135,7 @@ export const DuplicarModal: React.FC<{
             />
           </div>
           <div>
-            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mb-1">Hora Fim</p>
+            <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest mb-1">Hora Fim</p>
             <VantaTimePicker
               value={horaFim}
               onChange={setHoraFim}
@@ -151,7 +151,7 @@ export const DuplicarModal: React.FC<{
           <div
             className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-all ${copEquipe ? 'bg-[#FFD300] border-[#FFD300]' : 'border-zinc-600'}`}
           >
-            {copEquipe && <Check size={10} className="text-black" />}
+            {copEquipe && <Check size="0.625rem" className="text-black" />}
           </div>
           <span className={`text-sm font-bold ${copEquipe ? 'text-[#FFD300]' : 'text-white'}`}>Copiar Equipe</span>
         </button>
@@ -159,7 +159,7 @@ export const DuplicarModal: React.FC<{
         <button
           onClick={handleDuplicar}
           disabled={saving}
-          className="w-full py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl font-bold text-[10px] uppercase tracking-[0.2em] text-white active:scale-95 transition-all disabled:opacity-30"
+          className="w-full py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl font-bold text-[0.625rem] uppercase tracking-[0.2em] text-white active:scale-95 transition-all disabled:opacity-30"
         >
           {saving ? 'Criando...' : 'Criar Evento Duplicado'}
         </button>

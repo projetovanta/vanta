@@ -257,14 +257,14 @@ export const TabClube: React.FC<Props> = ({ adminId, toastFn, comunidadeId }) =>
   }
 
   return (
-    <div className="flex-1 overflow-y-auto no-scrollbar px-6 pt-4 pb-32">
+    <div className="flex-1 overflow-y-auto no-scrollbar px-6 pt-4 pb-6">
       {/* Sub-tabs — scroll horizontal snap (mobile) */}
       <div className="flex gap-1.5 mb-4 overflow-x-auto snap-x snap-mandatory no-scrollbar -mx-6 px-6">
         {tabItems.map(t => (
           <button
             key={t.id}
             onClick={() => setSubTab(t.id)}
-            className={`snap-start px-2.5 py-2 rounded-xl text-[8px] font-black uppercase tracking-wider border transition-all shrink-0 whitespace-nowrap ${
+            className={`snap-start px-2.5 py-2 rounded-xl text-[0.5rem] font-black uppercase tracking-wider border transition-all shrink-0 whitespace-nowrap ${
               subTab === t.id
                 ? 'bg-[#FFD300]/10 border-[#FFD300]/30 text-[#FFD300]'
                 : 'bg-zinc-900 border-white/5 text-zinc-400'
@@ -272,7 +272,7 @@ export const TabClube: React.FC<Props> = ({ adminId, toastFn, comunidadeId }) =>
           >
             {t.label}{' '}
             {t.count > 0 && (
-              <span className="ml-1 bg-[#FFD300] text-black px-1 rounded-full text-[7px]">{t.count}</span>
+              <span className="ml-1 bg-[#FFD300] text-black px-1 rounded-full text-[0.4375rem]">{t.count}</span>
             )}
           </button>
         ))}

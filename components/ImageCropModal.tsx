@@ -6,7 +6,7 @@
  *
  * REGRA: a imagem deve preencher 100% da crop area com zoom mínimo.
  * O usuário NUNCA é forçado a cortar — pode confirmar direto.
- * Em desktop, o container é limitado a max-w-md para evitar crop area gigante.
+ * Em desktop, o container é limitado a max-w-[500px] para evitar crop area gigante.
  */
 
 import React, { useState, useCallback } from 'react';
@@ -180,19 +180,21 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
   return (
     <div className="absolute inset-0 z-[500] flex items-center justify-center bg-black">
       {/* Container limitado — evita crop area gigante em desktop */}
-      <div className="w-full max-w-md h-full flex flex-col">
+      <div className="w-full max-w-[500px] h-full flex flex-col">
         {/* Header */}
         <div
           className="shrink-0 flex items-center justify-between px-5 pb-4 bg-black/90"
           style={{ paddingTop: '2.5rem' }}
         >
           <div>
-            <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest mb-0.5">Ajustar {label}</p>
+            <p className="text-[0.5625rem] text-zinc-400 font-black uppercase tracking-widest mb-0.5">
+              Ajustar {label}
+            </p>
             {dimLabel && (
-              <p className="text-[9px] text-[#FFD300]/80 font-black uppercase tracking-widest">{dimLabel}</p>
+              <p className="text-[0.5625rem] text-[#FFD300]/80 font-black uppercase tracking-widest">{dimLabel}</p>
             )}
             {perfectFit && (
-              <p className="text-[9px] text-emerald-400 font-black uppercase tracking-widest mt-0.5">
+              <p className="text-[0.5625rem] text-emerald-400 font-black uppercase tracking-widest mt-0.5">
                 Imagem já está no tamanho ideal
               </p>
             )}
@@ -201,11 +203,11 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
             onClick={onClose}
             className="w-9 h-9 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
           >
-            <X size={16} className="text-zinc-400" />
+            <X size="1rem" className="text-zinc-400" />
           </button>
         </div>
 
-        {/* Área de crop — container limitado a max-w-md */}
+        {/* Área de crop — container limitado a max-w-[500px] */}
         <div className="flex-1 relative min-h-0">
           <Cropper
             image={src}
@@ -223,7 +225,7 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
             }}
           />
 
-          <p className="absolute bottom-3 left-0 right-0 text-center text-[9px] text-white/30 font-black uppercase tracking-widest pointer-events-none">
+          <p className="absolute bottom-3 left-0 right-0 text-center text-[0.5625rem] text-white/30 font-black uppercase tracking-widest pointer-events-none">
             Arraste para posicionar · Pinch ou deslize para zoom
           </p>
         </div>
@@ -238,14 +240,14 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
               onClick={() => setZoom(z => Math.max(1, z - 0.1))}
               className="w-8 h-8 rounded-full bg-zinc-900 border border-white/10 flex items-center justify-center active:scale-90 transition-all shrink-0"
             >
-              <ZoomOut size={14} className="text-zinc-400" />
+              <ZoomOut size="0.875rem" className="text-zinc-400" />
             </button>
             <VantaSlider min={1} max={3} step={0.01} value={zoom} onChange={setZoom} className="flex-1" />
             <button
               onClick={() => setZoom(z => Math.min(3, z + 0.1))}
               className="w-8 h-8 rounded-full bg-zinc-900 border border-white/10 flex items-center justify-center active:scale-90 transition-all shrink-0"
             >
-              <ZoomIn size={14} className="text-zinc-400" />
+              <ZoomIn size="0.875rem" className="text-zinc-400" />
             </button>
           </div>
 
@@ -254,9 +256,9 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
               aria-label="Confirmar"
               onClick={handleUseOriginal}
               disabled={confirming}
-              className="w-full py-4 bg-emerald-600 text-white font-bold text-[10px] uppercase tracking-[0.25em] rounded-xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all disabled:opacity-40 mb-2"
+              className="w-full py-4 bg-emerald-600 text-white font-bold text-[0.625rem] uppercase tracking-[0.25em] rounded-xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all disabled:opacity-40 mb-2"
             >
-              <Check size={14} />
+              <Check size="0.875rem" />
               {confirming ? 'Processando…' : 'Usar imagem original'}
             </button>
           )}
@@ -265,9 +267,9 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
             aria-label="Confirmar"
             onClick={handleConfirm}
             disabled={confirming || !croppedArea}
-            className="w-full py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-[0.25em] rounded-xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all disabled:opacity-40"
+            className="w-full py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-[0.25em] rounded-xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all disabled:opacity-40"
           >
-            <Check size={14} />
+            <Check size="0.875rem" />
             {confirming ? 'Processando…' : perfectFit ? 'Recortar mesmo assim' : 'Usar esta foto'}
           </button>
         </div>

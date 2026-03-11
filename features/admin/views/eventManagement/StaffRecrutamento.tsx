@@ -51,18 +51,18 @@ const StaffCard: React.FC<{
     <button
       onClick={onAction}
       disabled={loading}
-      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider shrink-0 active:scale-95 transition-all ${
+      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[0.625rem] font-black uppercase tracking-wider shrink-0 active:scale-95 transition-all ${
         action === 'recrutar'
           ? 'bg-[#FFD300]/10 border border-[#FFD300]/20 text-[#FFD300]'
           : 'bg-red-500/10 border border-red-500/20 text-red-400'
       }`}
     >
       {loading ? (
-        <Loader2 size={11} className="animate-spin" />
+        <Loader2 size="0.6875rem" className="animate-spin" />
       ) : action === 'recrutar' ? (
-        <UserPlus size={11} />
+        <UserPlus size="0.6875rem" />
       ) : (
-        <UserMinus size={11} />
+        <UserMinus size="0.6875rem" />
       )}
       {action === 'recrutar' ? 'Recrutar' : 'Remover'}
     </button>
@@ -154,8 +154,8 @@ export const StaffRecrutamento: React.FC<{
   if (loading) {
     return (
       <div className="flex items-center justify-center py-10 gap-2">
-        <Loader2 size={16} className="animate-spin text-zinc-400" />
-        <p className="text-zinc-700 text-[10px] font-black uppercase tracking-widest">Carregando staff...</p>
+        <Loader2 size="1rem" className="animate-spin text-zinc-400" />
+        <p className="text-zinc-700 text-[0.625rem] font-black uppercase tracking-widest">Carregando staff...</p>
       </div>
     );
   }
@@ -163,11 +163,11 @@ export const StaffRecrutamento: React.FC<{
   if (!hasAny) {
     return (
       <div className="flex flex-col items-center py-8 gap-3">
-        <Scan size={24} className="text-zinc-800" />
-        <p className="text-zinc-700 text-[10px] font-black uppercase tracking-widest text-center">
+        <Scan size="1.5rem" className="text-zinc-800" />
+        <p className="text-zinc-700 text-[0.625rem] font-black uppercase tracking-widest text-center">
           Nenhum staff elegível na comunidade
         </p>
-        <p className="text-zinc-800 text-[9px] text-center max-w-[250px]">
+        <p className="text-zinc-800 text-[0.5625rem] text-center max-w-[15.625rem]">
           Adicione promoters, check-in ou QR code à comunidade para recrutar para este evento.
         </p>
       </div>
@@ -184,14 +184,14 @@ export const StaffRecrutamento: React.FC<{
         return (
           <div key={cargo}>
             <div className="flex items-center gap-2 mb-3">
-              <Icon size={13} className="text-zinc-400" />
-              <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest">{label}</p>
+              <Icon size="0.8125rem" className="text-zinc-400" />
+              <p className="text-[0.5625rem] text-zinc-400 font-black uppercase tracking-widest">{label}</p>
             </div>
 
             {/* Recrutados */}
             {recrutados.length > 0 && (
               <div className="space-y-2 mb-3">
-                <p className="text-[8px] text-emerald-500/60 font-black uppercase tracking-widest ml-1">
+                <p className="text-[0.5rem] text-emerald-500/60 font-black uppercase tracking-widest ml-1">
                   Recrutados ({recrutados.length})
                 </p>
                 {recrutados.map(a => (
@@ -209,7 +209,7 @@ export const StaffRecrutamento: React.FC<{
             {/* Elegíveis */}
             {elegiveis.length > 0 && (
               <div className="space-y-2">
-                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest ml-1">
+                <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest ml-1">
                   Elegíveis ({elegiveis.length})
                 </p>
                 {elegiveis.map(a => (

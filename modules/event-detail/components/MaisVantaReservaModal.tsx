@@ -52,13 +52,13 @@ export const MaisVantaReservaModal: React.FC<Props> = ({
           onClick={onClose}
           className="absolute top-5 right-5 p-1.5 text-zinc-400 active:text-white transition-colors"
         >
-          <X size={16} />
+          <X size="1rem" />
         </button>
         <div className="w-10 h-1 bg-[#FFD300]/30 rounded-full mx-auto mb-5" />
 
         {/* Título */}
         <div className="flex items-center gap-2 mb-4">
-          <Crown size={16} className="text-[#FFD300]" />
+          <Crown size="1rem" className="text-[#FFD300]" />
           <p className="text-white font-black text-sm uppercase tracking-wider">Reservar Experiência</p>
         </div>
 
@@ -67,17 +67,17 @@ export const MaisVantaReservaModal: React.FC<Props> = ({
           <p className="text-white text-sm font-bold">{eventoNome}</p>
           {lote.descricao && <p className="text-zinc-400 text-xs">{lote.descricao}</p>}
           <div className="flex items-center gap-3 flex-wrap">
-            <span className="text-zinc-400 text-[10px]">
+            <span className="text-zinc-400 text-[0.625rem]">
               {vagasRestantes} vaga{vagasRestantes !== 1 ? 's' : ''} restante{vagasRestantes !== 1 ? 's' : ''}
             </span>
             {lote.tipoAcesso && lote.tipoAcesso !== 'Pista' && (
-              <span className="text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded bg-[#FFD300]/15 text-[#FFD300]">
+              <span className="text-[0.5rem] font-black uppercase tracking-widest px-2 py-0.5 rounded bg-[#FFD300]/15 text-[#FFD300]">
                 {lote.tipoAcesso}
               </span>
             )}
             {maxAcomp > 0 && (
-              <span className="flex items-center gap-1 text-zinc-400 text-[10px]">
-                <UserPlus size={9} /> +{maxAcomp} acompanhante{maxAcomp !== 1 ? 's' : ''}
+              <span className="flex items-center gap-1 text-zinc-400 text-[0.625rem]">
+                <UserPlus size="0.5625rem" /> +{maxAcomp} acompanhante{maxAcomp !== 1 ? 's' : ''}
               </span>
             )}
           </div>
@@ -92,7 +92,7 @@ export const MaisVantaReservaModal: React.FC<Props> = ({
                 comAcompanhante ? 'bg-[#FFD300]/10 border-[#FFD300]/30' : 'bg-zinc-900/50 border-white/5'
               }`}
             >
-              <UserPlus size={14} className={comAcompanhante ? 'text-[#FFD300]' : 'text-zinc-400'} />
+              <UserPlus size="0.875rem" className={comAcompanhante ? 'text-[#FFD300]' : 'text-zinc-400'} />
               <span className={`text-xs font-bold ${comAcompanhante ? 'text-white' : 'text-zinc-400'}`}>
                 Levar acompanhante{maxAcomp > 1 ? 's' : ''}
               </span>
@@ -101,12 +101,12 @@ export const MaisVantaReservaModal: React.FC<Props> = ({
                   comAcompanhante ? 'border-[#FFD300] bg-[#FFD300]' : 'border-zinc-600'
                 }`}
               >
-                {comAcompanhante && <Check size={10} className="text-black" strokeWidth={3} />}
+                {comAcompanhante && <Check size="0.625rem" className="text-black" strokeWidth={3} />}
               </div>
             </button>
             {comAcompanhante && maxAcomp > 1 && (
               <div className="flex items-center gap-3 px-3">
-                <span className="text-zinc-400 text-[10px]">Quantidade:</span>
+                <span className="text-zinc-400 text-[0.625rem]">Quantidade:</span>
                 <div className="flex items-center gap-1">
                   {Array.from({ length: maxAcomp }, (_, i) => i + 1).map(n => (
                     <button
@@ -130,14 +130,16 @@ export const MaisVantaReservaModal: React.FC<Props> = ({
         {/* Contrapartida CONAR */}
         <div className="bg-amber-500/5 border border-amber-500/15 rounded-2xl p-4 mb-4">
           <div className="flex items-start gap-2 mb-2">
-            <AlertTriangle size={12} className="text-amber-400 shrink-0 mt-0.5" />
-            <p className="text-amber-400 text-[10px] font-black uppercase tracking-wider">Contrapartida Obrigatória</p>
+            <AlertTriangle size="0.75rem" className="text-amber-400 shrink-0 mt-0.5" />
+            <p className="text-amber-400 text-[0.625rem] font-black uppercase tracking-wider">
+              Contrapartida Obrigatória
+            </p>
           </div>
-          <p className="text-zinc-400 text-[11px] leading-relaxed mb-3">
+          <p className="text-zinc-400 text-[0.6875rem] leading-relaxed mb-3">
             Ao reservar, você se compromete a publicar conteúdo sobre o evento (Story/Post/Reels) com as seguintes
             obrigações:
           </p>
-          <ul className="space-y-1.5 text-zinc-400 text-[10px]">
+          <ul className="space-y-1.5 text-zinc-400 text-[0.625rem]">
             <li className="flex items-start gap-1.5">
               <span className="text-[#FFD300] shrink-0">•</span>
               <span>
@@ -191,9 +193,9 @@ export const MaisVantaReservaModal: React.FC<Props> = ({
               aceiteTermos ? 'border-[#FFD300] bg-[#FFD300]' : 'border-zinc-600'
             }`}
           >
-            {aceiteTermos && <Check size={10} className="text-black" strokeWidth={3} />}
+            {aceiteTermos && <Check size="0.625rem" className="text-black" strokeWidth={3} />}
           </div>
-          <span className="text-zinc-400 text-[10px] text-left">
+          <span className="text-zinc-400 text-[0.625rem] text-left">
             Li e aceito as condições de contrapartida e publicidade
           </span>
         </button>
@@ -202,7 +204,7 @@ export const MaisVantaReservaModal: React.FC<Props> = ({
         <button
           onClick={handleConfirmar}
           disabled={!aceiteTermos}
-          className="w-full py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all disabled:opacity-30 disabled:scale-100"
+          className="w-full py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all disabled:opacity-30 disabled:scale-100"
         >
           Confirmar Reserva
         </button>

@@ -136,7 +136,7 @@ export const ConviteEspecialMVView: React.FC = () => {
 
       {/* Selecionar evento */}
       <div className="space-y-1.5">
-        <label className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">Evento</label>
+        <label className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest">Evento</label>
         <div className="relative">
           <select
             value={eventoId}
@@ -157,9 +157,9 @@ export const ConviteEspecialMVView: React.FC = () => {
       {/* Filtros */}
       <button
         onClick={() => setShowFiltro(!showFiltro)}
-        className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-zinc-400 active:text-zinc-300"
+        className="flex items-center gap-1.5 text-[0.625rem] font-black uppercase tracking-widest text-zinc-400 active:text-zinc-300"
       >
-        <Filter size={12} />
+        <Filter size="0.75rem" />
         {showFiltro ? 'Esconder filtros' : 'Mostrar filtros'}
       </button>
 
@@ -171,7 +171,7 @@ export const ConviteEspecialMVView: React.FC = () => {
               <button
                 key={t.value}
                 onClick={() => setFiltro(f => ({ ...f, tier: (t.value || undefined) as TierMaisVanta | undefined }))}
-                className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider border transition-all ${
+                className={`px-3 py-1.5 rounded-lg text-[0.5625rem] font-black uppercase tracking-wider border transition-all ${
                   (filtro.tier ?? '') === t.value
                     ? 'bg-[#FFD300] text-black border-transparent'
                     : 'bg-zinc-800 text-zinc-400 border-white/5'
@@ -189,7 +189,7 @@ export const ConviteEspecialMVView: React.FC = () => {
                 <button
                   key={s.value}
                   onClick={() => setSublevel(s.value)}
-                  className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider border transition-all ${
+                  className={`px-3 py-1.5 rounded-lg text-[0.5625rem] font-black uppercase tracking-wider border transition-all ${
                     sublevel === s.value
                       ? 'bg-purple-500/20 text-purple-300 border-purple-500/30'
                       : 'bg-zinc-800 text-zinc-400 border-white/5'
@@ -214,9 +214,9 @@ export const ConviteEspecialMVView: React.FC = () => {
           <button
             onClick={buscarMembros}
             disabled={buscando}
-            className="w-full flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-[#FFD300]/10 border border-[#FFD300]/20 text-[#FFD300] text-[10px] font-black uppercase tracking-wider hover:bg-[#FFD300]/20 active:scale-95 transition-all disabled:opacity-50"
+            className="w-full flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-[#FFD300]/10 border border-[#FFD300]/20 text-[#FFD300] text-[0.625rem] font-black uppercase tracking-wider hover:bg-[#FFD300]/20 active:scale-95 transition-all disabled:opacity-50"
           >
-            {buscando ? <RefreshCw size={12} className="animate-spin" /> : <Search size={12} />}
+            {buscando ? <RefreshCw size="0.75rem" className="animate-spin" /> : <Search size="0.75rem" />}
             Buscar membros
           </button>
         </div>
@@ -226,12 +226,12 @@ export const ConviteEspecialMVView: React.FC = () => {
       {membros.length > 0 && (
         <>
           <div className="flex items-center justify-between">
-            <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">
+            <p className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest">
               {membros.length} membro{membros.length !== 1 ? 's' : ''} encontrado{membros.length !== 1 ? 's' : ''}
             </p>
             <button
               onClick={toggleTodos}
-              className="text-[10px] font-black uppercase tracking-widest text-[#FFD300] active:opacity-70"
+              className="text-[0.625rem] font-black uppercase tracking-widest text-[#FFD300] active:opacity-70"
             >
               {selecionados.size === membros.length ? 'Desmarcar todos' : 'Selecionar todos'}
             </button>
@@ -251,11 +251,11 @@ export const ConviteEspecialMVView: React.FC = () => {
                     selecionados.has(m.userId) ? 'bg-[#FFD300] border-[#FFD300]' : 'border-white/20'
                   }`}
                 >
-                  {selecionados.has(m.userId) && <Check size={12} className="text-black" />}
+                  {selecionados.has(m.userId) && <Check size="0.75rem" className="text-black" />}
                 </div>
                 <div className="flex-1 min-w-0 text-left">
                   <p className="text-white text-sm font-semibold truncate">{m.nome || 'Sem nome'}</p>
-                  <p className="text-zinc-500 text-[10px] font-black uppercase tracking-widest">
+                  <p className="text-zinc-500 text-[0.625rem] font-black uppercase tracking-widest">
                     {m.tier}
                     {m.cidade ? ` · ${m.cidade}` : ''}
                   </p>
@@ -268,7 +268,7 @@ export const ConviteEspecialMVView: React.FC = () => {
 
       {membros.length === 0 && !buscando && filtro.tier && (
         <div className="text-center py-8">
-          <Users size={28} className="text-zinc-700 mx-auto mb-2" />
+          <Users size="1.75rem" className="text-zinc-700 mx-auto mb-2" />
           <p className="text-zinc-500 text-sm">Nenhum membro encontrado com esse filtro</p>
         </div>
       )}
@@ -276,7 +276,7 @@ export const ConviteEspecialMVView: React.FC = () => {
       {/* Mensagem + enviar */}
       {selecionados.size > 0 && eventoId && (
         <div className="space-y-3 pt-2 border-t border-white/5">
-          <label className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">
+          <label className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest">
             Mensagem do convite ({selecionados.size} selecionado{selecionados.size !== 1 ? 's' : ''})
           </label>
           <textarea
@@ -291,7 +291,7 @@ export const ConviteEspecialMVView: React.FC = () => {
             disabled={enviando}
             className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-[#FFD300] text-black text-sm font-black uppercase tracking-wider active:scale-[0.97] transition-all disabled:opacity-50"
           >
-            {enviando ? <RefreshCw size={14} className="animate-spin" /> : <Send size={14} />}
+            {enviando ? <RefreshCw size="0.875rem" className="animate-spin" /> : <Send size="0.875rem" />}
             Enviar convites
           </button>
         </div>
@@ -304,7 +304,7 @@ export const ConviteEspecialMVView: React.FC = () => {
       {/* Resultado */}
       {resultado && (
         <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-4 flex items-center gap-3">
-          <Sparkles size={16} className="text-emerald-400 shrink-0" />
+          <Sparkles size="1rem" className="text-emerald-400 shrink-0" />
           <div>
             <p className="text-emerald-300 text-sm font-semibold">
               {resultado.enviados} convite{resultado.enviados !== 1 ? 's' : ''} enviado
@@ -317,7 +317,7 @@ export const ConviteEspecialMVView: React.FC = () => {
             )}
           </div>
           <button onClick={() => setResultado(null)} className="ml-auto">
-            <X size={14} className="text-zinc-400" />
+            <X size="0.875rem" className="text-zinc-400" />
           </button>
         </div>
       )}

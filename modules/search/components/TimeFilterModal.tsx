@@ -75,7 +75,7 @@ const MiniCalendar: React.FC<{
           onClick={prevMonth}
           className="w-8 h-8 flex items-center justify-center rounded-lg bg-black/40 border border-white/5 active:scale-90 transition-all"
         >
-          <ChevronLeft size={14} className="text-zinc-400" />
+          <ChevronLeft size="0.875rem" className="text-zinc-400" />
         </button>
         <p className="text-white text-xs font-bold">{monthLabel}</p>
         <button
@@ -83,14 +83,14 @@ const MiniCalendar: React.FC<{
           onClick={nextMonth}
           className="w-8 h-8 flex items-center justify-center rounded-lg bg-black/40 border border-white/5 active:scale-90 transition-all"
         >
-          <ChevronRight size={14} className="text-zinc-400" />
+          <ChevronRight size="0.875rem" className="text-zinc-400" />
         </button>
       </div>
 
       {/* Grid */}
       <div className="grid grid-cols-7 gap-1">
         {weekDayHeaders.map((h, i) => (
-          <div key={i} className="text-center text-[8px] text-zinc-400 font-black uppercase py-1">
+          <div key={i} className="text-center text-[0.5rem] text-zinc-400 font-black uppercase py-1">
             {h}
           </div>
         ))}
@@ -108,7 +108,7 @@ const MiniCalendar: React.FC<{
               key={i}
               onClick={() => !isPast && onSelectDate(dateStr)}
               disabled={isPast}
-              className={`h-8 rounded-lg text-[11px] font-bold transition-all ${
+              className={`h-8 rounded-lg text-[0.6875rem] font-bold transition-all ${
                 isSelected
                   ? 'bg-[#FFD300] text-black'
                   : inRange
@@ -197,22 +197,24 @@ export const TimeFilterModal: React.FC<{
 
   return (
     <div className="absolute inset-0 z-[200] animate-in fade-in duration-300">
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" role="presentation" onClick={onClose} />
+      <div className="absolute inset-0 bg-black/80 backdrop-blur-md" role="presentation" onClick={onClose} />
       <div className="absolute top-[10rem] left-0 right-0 flex justify-center px-6 animate-in slide-in-from-top-2 duration-500">
-        <div className="w-full max-w-[340px] glass-premium rounded-[2rem] overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] bg-zinc-900/80">
+        <div className="w-full max-w-[21.25rem] glass-premium rounded-[2rem] overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] bg-zinc-900/80">
           <div className="p-6">
             <div className="flex justify-between items-center mb-5">
               <div>
                 <h2 style={TYPOGRAPHY.screenTitle} className="text-xl italic text-white">
                   Período
                 </h2>
-                <p className="text-[9px] text-[#FFD300] font-black uppercase tracking-widest mt-1">Filtrar por data</p>
+                <p className="text-[0.5625rem] text-[#FFD300] font-black uppercase tracking-widest mt-1">
+                  Filtrar por data
+                </p>
               </div>
               <button
                 onClick={onClose}
                 className="p-2 bg-black/50 rounded-full text-zinc-400 hover:text-white transition-colors"
               >
-                <X size={16} />
+                <X size="1rem" />
               </button>
             </div>
 
@@ -234,10 +236,10 @@ export const TimeFilterModal: React.FC<{
                           }`}
                         >
                           <div className="flex items-center gap-3">
-                            <Calendar size={14} />
-                            <span className="text-[10px] font-black uppercase tracking-wider">{f.label}</span>
+                            <Calendar size="0.875rem" />
+                            <span className="text-[0.625rem] font-black uppercase tracking-wider">{f.label}</span>
                           </div>
-                          {isActive && <Check size={14} />}
+                          {isActive && <Check size="0.875rem" />}
                         </button>
                       );
                     })}
@@ -256,14 +258,14 @@ export const TimeFilterModal: React.FC<{
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <Calendar size={14} />
-                      <span className="text-[10px] font-black uppercase tracking-wider">
+                      <Calendar size="0.875rem" />
+                      <span className="text-[0.625rem] font-black uppercase tracking-wider">
                         {isRangeActive && rangeStart && rangeEnd
                           ? `${formatRange(rangeStart)} — ${formatRange(rangeEnd)}`
                           : 'Intervalo Personalizado'}
                       </span>
                     </div>
-                    <ChevronRight size={14} />
+                    <ChevronRight size="0.875rem" />
                   </button>
                 </>
               ) : (
@@ -271,21 +273,21 @@ export const TimeFilterModal: React.FC<{
                   {/* Voltar */}
                   <button
                     onClick={() => setShowCalendar(false)}
-                    className="flex items-center gap-2 text-zinc-400 text-[10px] font-black uppercase tracking-widest mb-1 active:text-white transition-colors"
+                    className="flex items-center gap-2 text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest mb-1 active:text-white transition-colors"
                   >
-                    <ChevronLeft size={12} /> Voltar
+                    <ChevronLeft size="0.75rem" /> Voltar
                   </button>
 
                   {/* Range labels */}
                   <div className="flex items-center gap-2 mb-1">
                     <div
-                      className={`flex-1 text-center py-2 rounded-lg text-[10px] font-bold ${rangeStart ? 'bg-[#FFD300]/10 text-[#FFD300] border border-[#FFD300]/20' : 'bg-black/40 text-zinc-400 border border-white/5'}`}
+                      className={`flex-1 text-center py-2 rounded-lg text-[0.625rem] font-bold ${rangeStart ? 'bg-[#FFD300]/10 text-[#FFD300] border border-[#FFD300]/20' : 'bg-black/40 text-zinc-400 border border-white/5'}`}
                     >
                       {rangeStart ? formatRange(rangeStart) : 'Início'}
                     </div>
-                    <span className="text-zinc-400 text-[10px]">—</span>
+                    <span className="text-zinc-400 text-[0.625rem]">—</span>
                     <div
-                      className={`flex-1 text-center py-2 rounded-lg text-[10px] font-bold ${rangeEnd ? 'bg-[#FFD300]/10 text-[#FFD300] border border-[#FFD300]/20' : 'bg-black/40 text-zinc-400 border border-white/5'}`}
+                      className={`flex-1 text-center py-2 rounded-lg text-[0.625rem] font-bold ${rangeEnd ? 'bg-[#FFD300]/10 text-[#FFD300] border border-[#FFD300]/20' : 'bg-black/40 text-zinc-400 border border-white/5'}`}
                     >
                       {rangeEnd ? formatRange(rangeEnd) : 'Fim'}
                     </div>
@@ -298,7 +300,7 @@ export const TimeFilterModal: React.FC<{
                   <button
                     onClick={handleApplyRange}
                     disabled={!rangeStart || !rangeEnd}
-                    className="w-full py-3.5 bg-[#FFD300] text-black font-black text-[10px] uppercase tracking-widest rounded-xl disabled:opacity-30 active:scale-[0.98] transition-all mt-2"
+                    className="w-full py-3.5 bg-[#FFD300] text-black font-black text-[0.625rem] uppercase tracking-widest rounded-xl disabled:opacity-30 active:scale-[0.98] transition-all mt-2"
                   >
                     Aplicar
                   </button>
@@ -314,7 +316,7 @@ export const TimeFilterModal: React.FC<{
                 onSelectTimeFilter(null);
                 onClose();
               }}
-              className="w-full py-4 bg-black/60 border-t border-white/5 text-[9px] font-black uppercase tracking-[0.3em] text-zinc-400 hover:text-white transition-colors"
+              className="w-full py-4 bg-black/60 border-t border-white/5 text-[0.5625rem] font-black uppercase tracking-[0.3em] text-zinc-400 hover:text-white transition-colors"
             >
               Limpar Filtro
             </button>

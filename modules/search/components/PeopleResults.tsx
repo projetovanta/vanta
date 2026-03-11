@@ -28,9 +28,9 @@ export const PeopleResults: React.FC<{ results: Membro[]; onMemberClick?: (m: Me
           </div>
           <div className="flex-1 min-w-0">
             <h3 className="text-sm font-bold text-white truncate">{m.nome}</h3>
-            <p className="text-[10px] text-zinc-400 truncate">@{m.email.split('@')[0]}</p>
+            <p className="text-[0.625rem] text-zinc-400 truncate">@{m.email.split('@')[0]}</p>
           </div>
-          <ChevronRight size={18} className="text-zinc-700" />
+          <ChevronRight size="1.125rem" className="text-zinc-700" />
         </div>
       ))
     ) : (

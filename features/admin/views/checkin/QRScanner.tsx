@@ -195,7 +195,7 @@ export const QRScanner: React.FC<{
 
   return (
     <div className="flex flex-col items-center px-6 pt-6 pb-10">
-      <div ref={containerRef} className="relative w-full max-w-[280px] aspect-square mb-5 mx-auto">
+      <div ref={containerRef} className="relative w-full max-w-[17.5rem] aspect-square mb-5 mx-auto">
         <div className="absolute top-0 left-0 w-10 h-10 border-t-[3px] border-l-[3px] border-[#FFD300] rounded-tl-xl z-10 pointer-events-none" />
         <div className="absolute top-0 right-0 w-10 h-10 border-t-[3px] border-r-[3px] border-[#FFD300] rounded-tr-xl z-10 pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-10 h-10 border-b-[3px] border-l-[3px] border-[#FFD300] rounded-bl-xl z-10 pointer-events-none" />
@@ -210,16 +210,16 @@ export const QRScanner: React.FC<{
           <div className="absolute inset-3 bg-zinc-900/60 rounded-2xl flex flex-col items-center justify-center gap-3">
             {camState === 'denied' ? (
               <>
-                <CameraOff size={48} className="text-red-500/60" />
-                <p className="text-red-400/80 text-[9px] font-black uppercase tracking-widest text-center px-4">
+                <CameraOff size="3rem" className="text-red-500/60" />
+                <p className="text-red-400/80 text-[0.5625rem] font-black uppercase tracking-widest text-center px-4">
                   Câmera bloqueada
                 </p>
-                <p className="text-zinc-400 text-[8px] text-center px-3">Libere nas configurações do navegador</p>
+                <p className="text-zinc-400 text-[0.5rem] text-center px-3">Libere nas configurações do navegador</p>
               </>
             ) : (
               <>
-                <Camera size={48} className="text-zinc-700" />
-                <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest text-center px-4">
+                <Camera size="3rem" className="text-zinc-700" />
+                <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest text-center px-4">
                   Toque para ativar a câmera
                 </p>
               </>
@@ -230,7 +230,7 @@ export const QRScanner: React.FC<{
         {cameraActive && (
           <div className="absolute top-3 left-3 z-20 flex items-center gap-1.5 bg-emerald-500/20 border border-emerald-500/30 rounded-full px-2.5 py-1">
             <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-emerald-400 text-[7px] font-black uppercase tracking-widest">Câmera ativa</span>
+            <span className="text-emerald-400 text-[0.4375rem] font-black uppercase tracking-widest">Câmera ativa</span>
           </div>
         )}
       </div>
@@ -241,14 +241,14 @@ export const QRScanner: React.FC<{
           disabled={processing}
           className="w-full py-4 bg-[#FFD300] text-black rounded-2xl font-black text-sm uppercase tracking-widest active:scale-[0.97] transition-all disabled:opacity-50 disabled:pointer-events-none mb-3 flex items-center justify-center gap-2"
         >
-          <Camera size={16} /> Ativar Scanner
+          <Camera size="1rem" /> Ativar Scanner
         </button>
       ) : (
         <button
           onClick={stopCamera}
           className="w-full py-4 bg-zinc-800 text-zinc-300 border border-white/10 rounded-2xl font-black text-sm uppercase tracking-widest active:scale-[0.97] transition-all mb-3 flex items-center justify-center gap-2"
         >
-          <CameraOff size={16} /> Desligar Câmera
+          <CameraOff size="1rem" /> Desligar Câmera
         </button>
       )}
 
@@ -257,19 +257,19 @@ export const QRScanner: React.FC<{
         className="flex items-center gap-2 mb-4 active:scale-95 transition-all"
       >
         {continuous ? (
-          <ToggleRight size={22} className="text-[#FFD300]" />
+          <ToggleRight size="1.375rem" className="text-[#FFD300]" />
         ) : (
-          <ToggleLeft size={22} className="text-zinc-400" />
+          <ToggleLeft size="1.375rem" className="text-zinc-400" />
         )}
         <span
-          className={`text-[9px] font-black uppercase tracking-widest ${continuous ? 'text-[#FFD300]' : 'text-zinc-400'}`}
+          className={`text-[0.5625rem] font-black uppercase tracking-widest ${continuous ? 'text-[#FFD300]' : 'text-zinc-400'}`}
         >
           Modo contínuo
         </span>
       </button>
 
       {continuous && (
-        <p className="text-zinc-700 text-[8px] font-black uppercase tracking-widest text-center mb-4">
+        <p className="text-zinc-700 text-[0.5rem] font-black uppercase tracking-widest text-center mb-4">
           Câmera fica ligada entre leituras · desliga após 60s sem leitura
         </p>
       )}
@@ -277,8 +277,10 @@ export const QRScanner: React.FC<{
       {(manualMode || camState === 'denied') && (
         <div className="w-full mt-2 mb-4">
           <div className="flex items-center gap-2 mb-2">
-            <Keyboard size={12} className="text-zinc-400 shrink-0" />
-            <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">Digitar código do ingresso</p>
+            <Keyboard size="0.75rem" className="text-zinc-400 shrink-0" />
+            <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest">
+              Digitar código do ingresso
+            </p>
           </div>
           <div className="flex gap-2">
             <input
@@ -291,7 +293,7 @@ export const QRScanner: React.FC<{
             <button
               onClick={handleManualSubmit}
               disabled={!manualCode.trim() || processing}
-              className="px-4 py-3 bg-[#FFD300] text-black rounded-xl font-black text-[9px] uppercase tracking-widest shrink-0 active:scale-95 transition-all disabled:opacity-40"
+              className="px-4 py-3 bg-[#FFD300] text-black rounded-xl font-black text-[0.5625rem] uppercase tracking-widest shrink-0 active:scale-95 transition-all disabled:opacity-40"
             >
               Validar
             </button>
@@ -302,7 +304,7 @@ export const QRScanner: React.FC<{
       {!manualMode && camState !== 'denied' && (
         <button
           onClick={() => setManualMode(true)}
-          className="text-zinc-700 text-[9px] font-black uppercase tracking-widest hover:text-zinc-400 transition-colors"
+          className="text-zinc-700 text-[0.5625rem] font-black uppercase tracking-widest hover:text-zinc-400 transition-colors"
         >
           Sem câmera? Digitar código manualmente
         </button>
@@ -311,7 +313,7 @@ export const QRScanner: React.FC<{
       {processing && (
         <div className="mt-4 flex items-center gap-2">
           <div className="w-3 h-3 rounded-full border-2 border-[#FFD300] border-t-transparent animate-spin" />
-          <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">Validando...</p>
+          <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest">Validando...</p>
         </div>
       )}
     </div>

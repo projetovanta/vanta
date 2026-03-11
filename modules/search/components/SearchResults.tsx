@@ -6,7 +6,8 @@ import { TYPOGRAPHY } from '../../../constants';
 import { getMinPrice } from '../../../utils';
 import { OptimizedImage } from '../../../components/OptimizedImage';
 
-const ITEM_HEIGHT = 92; // h-20 (80px) + p-3 (12+12) gap
+// Escala com o font-size dinâmico: 5.75rem ≈ 92px@16px base
+const getItemHeight = () => parseFloat(getComputedStyle(document.documentElement).fontSize) * 5.75;
 
 export const SearchResults: React.FC<{
   results: Evento[];
@@ -20,7 +21,7 @@ export const SearchResults: React.FC<{
   const virtualizer = useVirtualizer({
     count: results.length,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => ITEM_HEIGHT,
+    estimateSize: getItemHeight,
     overscan: 5,
   });
 
@@ -37,7 +38,7 @@ export const SearchResults: React.FC<{
         <div
           ref={parentRef}
           className="flex-1 overflow-y-auto no-scrollbar"
-          style={{ maxHeight: 'calc(100vh - 260px)' }}
+          style={{ maxHeight: 'calc(100vh - 16.25rem)' }}
         >
           <div
             style={{
@@ -75,17 +76,17 @@ export const SearchResults: React.FC<{
                       />
                     </div>
                     <div className="flex-1 min-w-0 flex flex-col justify-center">
-                      <span className="text-[9px] font-bold text-[#FFD300] uppercase tracking-wider mb-1">
+                      <span className="text-[0.5625rem] font-bold text-[#FFD300] uppercase tracking-wider mb-1">
                         {evento.formato || evento.categoria}
                       </span>
                       <h3 className="font-serif font-bold text-white truncate mb-1">{evento.titulo}</h3>
-                      <div className="text-zinc-400 text-[10px] truncate">
-                        <MapPin size={10} className="inline mr-1" />
+                      <div className="text-zinc-400 text-[0.625rem] truncate">
+                        <MapPin size="0.625rem" className="inline mr-1" />
                         {evento.local}
                       </div>
                     </div>
                     <div className="flex items-center text-zinc-400">
-                      <ArrowRight size={16} />
+                      <ArrowRight size="1rem" />
                     </div>
                   </div>
                 </div>

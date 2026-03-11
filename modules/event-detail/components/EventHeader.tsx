@@ -60,7 +60,7 @@ export const EventHeader: React.FC<EventHeaderProps> = ({
           onClick={onBack}
           className="p-3 bg-black/20 backdrop-blur-md rounded-full border border-white/10 text-white active:scale-90 transition-transform"
         >
-          <ArrowLeft size={20} />
+          <ArrowLeft size="1.25rem" />
         </button>
         <div className="flex items-center gap-2">
           {onToggleFavorite && (
@@ -69,7 +69,7 @@ export const EventHeader: React.FC<EventHeaderProps> = ({
               className="p-3 bg-black/20 backdrop-blur-md rounded-full border border-white/10 active:scale-90 transition-transform"
             >
               <Heart
-                size={18}
+                size="1.125rem"
                 fill={isFavorited ? '#FFD300' : 'none'}
                 className={isFavorited ? 'text-[#FFD300]' : 'text-white'}
               />
@@ -80,13 +80,13 @@ export const EventHeader: React.FC<EventHeaderProps> = ({
             onClick={handleShare}
             className="p-3 bg-black/20 backdrop-blur-md rounded-full border border-white/10 text-white active:scale-90 transition-transform"
           >
-            <Share2 size={18} />
+            <Share2 size="1.125rem" />
           </button>
         </div>
       </div>
 
       <div className="absolute bottom-10 left-0 right-0 p-6 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/80 to-transparent pt-20">
-        <span className="px-3 py-1 bg-[#FFD300] text-black text-[9px] font-black uppercase tracking-widest rounded-full mb-3 inline-block shadow-[0_0_15px_rgba(255,211,0,0.4)]">
+        <span className="px-3 py-1 bg-[#FFD300] text-black text-[0.5625rem] font-black uppercase tracking-widest rounded-full mb-3 inline-block shadow-[0_0_15px_rgba(255,211,0,0.4)]">
           {evento.formato || evento.categoria}
         </span>
         <h1

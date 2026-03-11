@@ -138,7 +138,7 @@ export const WalletView: React.FC<WalletViewProps> = ({
         className={`${isSubView ? 'absolute inset-0 flex flex-col overflow-hidden' : 'min-h-full flex flex-col pt-24'} bg-[#0a0a0a]`}
       >
         <div
-          className={`flex-1 ${isSubView ? 'overflow-y-auto no-scrollbar' : ''} flex flex-col`}
+          className={`flex-1 overflow-y-auto no-scrollbar flex flex-col`}
           style={isSubView ? { paddingTop: '2rem' } : undefined}
         >
           {isSubView && (
@@ -147,7 +147,7 @@ export const WalletView: React.FC<WalletViewProps> = ({
               onClick={onGoToHome}
               className="ml-6 mb-4 w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-transform shrink-0"
             >
-              <ArrowLeft size={18} className="text-white" />
+              <ArrowLeft size="1.125rem" className="text-white" />
             </button>
           )}
           <WalletLockScreen onUnlock={() => setIsUnlocked(true)} onExit={onGoToHome} userId={userId ?? ''} />
@@ -177,7 +177,7 @@ export const WalletView: React.FC<WalletViewProps> = ({
 
   return (
     <div
-      className={`${isSubView ? 'absolute inset-0 overflow-y-auto no-scrollbar' : 'min-h-full pt-24'} bg-[#0a0a0a] animate-in fade-in duration-500 px-6 pb-32`}
+      className={`${isSubView ? 'absolute inset-0 overflow-y-auto no-scrollbar' : 'pt-24'} bg-[#0a0a0a] animate-in fade-in duration-500 px-6 pb-4 flex flex-col`}
       style={isSubView ? { paddingTop: '2rem' } : undefined}
     >
       <div className="flex items-center justify-between mb-8">
@@ -187,12 +187,12 @@ export const WalletView: React.FC<WalletViewProps> = ({
             onClick={onGoToHome}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-transform"
           >
-            <ArrowLeft size={18} className="text-white" />
+            <ArrowLeft size="1.125rem" className="text-white" />
           </button>
         )}
         <div className="flex items-center gap-2 bg-[#FFD300]/10 px-3 py-1.5 rounded-full border border-[#FFD300]/20">
-          <ShieldCheck size={12} className="text-[#FFD300]" />
-          <span className="text-[8px] font-black text-[#FFD300] uppercase tracking-widest">Conexão Segura</span>
+          <ShieldCheck size="0.75rem" className="text-[#FFD300]" />
+          <span className="text-[0.5rem] font-black text-[#FFD300] uppercase tracking-widest">Conexão Segura</span>
         </div>
       </div>
 
@@ -207,7 +207,7 @@ export const WalletView: React.FC<WalletViewProps> = ({
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`flex-1 py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300 ${
+            className={`flex-1 py-3 rounded-xl text-[0.625rem] font-black uppercase tracking-[0.2em] transition-all duration-300 ${
               activeTab === tab
                 ? 'bg-[#FFD300] text-black shadow-lg shadow-[#FFD300]/10'
                 : 'text-zinc-400 active:text-zinc-300'
@@ -229,29 +229,29 @@ export const WalletView: React.FC<WalletViewProps> = ({
               <div key={cp.id} className="bg-emerald-500/5 border border-emerald-500/20 rounded-2xl p-4">
                 <div className="flex items-start gap-3 mb-3">
                   <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center shrink-0">
-                    <Gift size={18} className="text-emerald-400" />
+                    <Gift size="1.125rem" className="text-emerald-400" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-white font-bold text-sm truncate">{cp.eventoNome}</p>
-                    <p className="text-zinc-400 text-[10px] mt-0.5">
+                    <p className="text-zinc-400 text-[0.625rem] mt-0.5">
                       Enviado por {cp.remetenteNome} · {cp.variacaoLabel}
                       {cp.quantidade > 1 && ` · x${cp.quantidade}`}
                     </p>
-                    <p className="text-zinc-400 text-[9px] mt-0.5">{cp.eventoData}</p>
+                    <p className="text-zinc-400 text-[0.5625rem] mt-0.5">{cp.eventoData}</p>
                   </div>
                 </div>
                 <div className="flex gap-2">
                   <button
                     onClick={() => onAceitarCortesia?.(cp.id)}
-                    className="flex-1 py-2.5 bg-emerald-500 text-black text-[9px] font-black uppercase tracking-wider rounded-xl flex items-center justify-center gap-1 active:scale-95 transition-transform"
+                    className="flex-1 py-2.5 bg-emerald-500 text-black text-[0.5625rem] font-black uppercase tracking-wider rounded-xl flex items-center justify-center gap-1 active:scale-95 transition-transform"
                   >
-                    <Check size={12} /> Aceitar
+                    <Check size="0.75rem" /> Aceitar
                   </button>
                   <button
                     onClick={() => onRecusarCortesia?.(cp.id)}
-                    className="flex-1 py-2.5 bg-zinc-900 text-zinc-400 text-[9px] font-black uppercase tracking-wider rounded-xl border border-white/5 flex items-center justify-center gap-1 active:scale-95 transition-transform"
+                    className="flex-1 py-2.5 bg-zinc-900 text-zinc-400 text-[0.5625rem] font-black uppercase tracking-wider rounded-xl border border-white/5 flex items-center justify-center gap-1 active:scale-95 transition-transform"
                   >
-                    <X size={12} /> Recusar
+                    <X size="0.75rem" /> Recusar
                   </button>
                 </div>
               </div>
@@ -271,29 +271,29 @@ export const WalletView: React.FC<WalletViewProps> = ({
               <div key={tp.id} className="bg-purple-500/5 border border-purple-500/20 rounded-2xl p-4">
                 <div className="flex items-start gap-3 mb-3">
                   <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center shrink-0">
-                    <ArrowRightLeft size={18} className="text-purple-400" />
+                    <ArrowRightLeft size="1.125rem" className="text-purple-400" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-white font-bold text-sm truncate">{tp.tituloEvento}</p>
-                    <p className="text-zinc-400 text-[10px] mt-0.5">
+                    <p className="text-zinc-400 text-[0.625rem] mt-0.5">
                       Enviado por {tp.remetenteNome}
                       {tp.variacaoLabel && ` · ${tp.variacaoLabel}`}
                     </p>
-                    {tp.dataEvento && <p className="text-zinc-400 text-[9px] mt-0.5">{tp.dataEvento}</p>}
+                    {tp.dataEvento && <p className="text-zinc-400 text-[0.5625rem] mt-0.5">{tp.dataEvento}</p>}
                   </div>
                 </div>
                 <div className="flex gap-2">
                   <button
                     onClick={() => onAceitarTransferencia?.(tp.id)}
-                    className="flex-1 py-2.5 bg-purple-500 text-white text-[9px] font-black uppercase tracking-wider rounded-xl flex items-center justify-center gap-1 active:scale-95 transition-transform"
+                    className="flex-1 py-2.5 bg-purple-500 text-white text-[0.5625rem] font-black uppercase tracking-wider rounded-xl flex items-center justify-center gap-1 active:scale-95 transition-transform"
                   >
-                    <Check size={12} /> Aceitar
+                    <Check size="0.75rem" /> Aceitar
                   </button>
                   <button
                     onClick={() => onRecusarTransferencia?.(tp.id)}
-                    className="flex-1 py-2.5 bg-zinc-900 text-zinc-400 text-[9px] font-black uppercase tracking-wider rounded-xl border border-white/5 flex items-center justify-center gap-1 active:scale-95 transition-transform"
+                    className="flex-1 py-2.5 bg-zinc-900 text-zinc-400 text-[0.5625rem] font-black uppercase tracking-wider rounded-xl border border-white/5 flex items-center justify-center gap-1 active:scale-95 transition-transform"
                   >
-                    <X size={12} /> Recusar
+                    <X size="0.75rem" /> Recusar
                   </button>
                 </div>
               </div>
@@ -313,12 +313,12 @@ export const WalletView: React.FC<WalletViewProps> = ({
               <div key={r.id} className="bg-[#FFD300]/5 border border-[#FFD300]/15 rounded-2xl p-4">
                 <div className="flex items-start gap-3 mb-2">
                   <div className="w-10 h-10 rounded-xl bg-[#FFD300]/10 flex items-center justify-center shrink-0">
-                    <Crown size={18} className="text-[#FFD300]" />
+                    <Crown size="1.125rem" className="text-[#FFD300]" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-white font-bold text-sm truncate">Experiência</p>
                     <span
-                      className={`text-[8px] font-black uppercase px-2 py-0.5 rounded ${
+                      className={`text-[0.5rem] font-black uppercase px-2 py-0.5 rounded ${
                         r.postVerificado
                           ? 'bg-emerald-500/15 text-emerald-400'
                           : r.postUrl
@@ -342,7 +342,7 @@ export const WalletView: React.FC<WalletViewProps> = ({
                       onClick={() => handleEnviarPostMV(r.id)}
                       className="px-3 py-2 bg-[#FFD300] text-black rounded-lg active:scale-90 transition-transform"
                     >
-                      <Send size={12} />
+                      <Send size="0.75rem" />
                     </button>
                   </div>
                 )}
@@ -362,12 +362,12 @@ export const WalletView: React.FC<WalletViewProps> = ({
         <div className="flex flex-col items-center justify-center py-20 opacity-40">
           <div className="w-16 h-16 bg-zinc-900 rounded-full flex items-center justify-center mb-6 border border-zinc-800">
             {activeTab === 'UPCOMING' ? (
-              <Ticket size={24} className="text-zinc-400" />
+              <Ticket size="1.5rem" className="text-zinc-400" />
             ) : (
-              <Calendar size={24} className="text-zinc-400" />
+              <Calendar size="1.5rem" className="text-zinc-400" />
             )}
           </div>
-          <p className="text-zinc-400 text-[10px] uppercase font-bold tracking-widest">
+          <p className="text-zinc-400 text-[0.625rem] uppercase font-bold tracking-widest">
             {activeTab === 'UPCOMING' ? 'Nenhum evento futuro' : 'Nenhum histórico encontrado'}
           </p>
         </div>
@@ -402,7 +402,7 @@ export const WalletView: React.FC<WalletViewProps> = ({
                           />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center">
-                            <Ticket size={20} className="text-zinc-700" />
+                            <Ticket size="1.25rem" className="text-zinc-700" />
                           </div>
                         )}
                       </div>
@@ -410,27 +410,29 @@ export const WalletView: React.FC<WalletViewProps> = ({
                       {/* Dados */}
                       <div className="flex-1 min-w-0">
                         <p className="text-white font-bold text-sm leading-tight truncate mb-1">{grupo.titulo}</p>
-                        <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">{grupo.data}</p>
+                        <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest">
+                          {grupo.data}
+                        </p>
                         <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
                           {count > 1 && (
-                            <span className="text-[8px] font-black px-2 py-0.5 rounded-full bg-purple-500/15 border border-purple-500/25 text-purple-300">
+                            <span className="text-[0.5rem] font-black px-2 py-0.5 rounded-full bg-purple-500/15 border border-purple-500/25 text-purple-300">
                               x{count} ingressos
                             </span>
                           )}
                           {temCortesia && (
-                            <span className="text-[8px] font-black px-2 py-0.5 rounded-full bg-[#FFD300]/10 border border-[#FFD300]/20 text-[#FFD300] flex items-center gap-1">
-                              <Gift size={8} /> Cortesia
+                            <span className="text-[0.5rem] font-black px-2 py-0.5 rounded-full bg-[#FFD300]/10 border border-[#FFD300]/20 text-[#FFD300] flex items-center gap-1">
+                              <Gift size="0.5rem" /> Cortesia
                             </span>
                           )}
                           {temRegular && count === 1 && !temCortesia && (
-                            <span className="text-[8px] font-black px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
+                            <span className="text-[0.5rem] font-black px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
                               Ativo
                             </span>
                           )}
                         </div>
                       </div>
 
-                      <ChevronRight size={16} className="text-zinc-400 shrink-0" />
+                      <ChevronRight size="1rem" className="text-zinc-400 shrink-0" />
                     </button>
                   );
                 })}

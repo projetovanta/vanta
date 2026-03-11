@@ -34,9 +34,9 @@ const STATUS_CONFIG: Record<string, { label: string; color: string }> = {
 };
 
 const HORARIO_LABEL: Record<string, { label: string; icon: React.ReactNode }> = {
-  DIURNO: { label: 'Diurno', icon: <Sun size={12} /> },
-  NOTURNO: { label: 'Noturno', icon: <Moon size={12} /> },
-  DIA_INTEIRO: { label: 'Dia inteiro', icon: <Sparkles size={12} /> },
+  DIURNO: { label: 'Diurno', icon: <Sun size="0.75rem" /> },
+  NOTURNO: { label: 'Noturno', icon: <Moon size="0.75rem" /> },
+  DIA_INTEIRO: { label: 'Dia inteiro', icon: <Sparkles size="0.75rem" /> },
 };
 
 function formatDate(iso: string): string {
@@ -127,7 +127,7 @@ export const EventosPrivadosTab: React.FC<Props> = ({ comunidadeId }) => {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-16">
-        <Loader2 size={20} className="text-zinc-400 animate-spin" />
+        <Loader2 size="1.25rem" className="text-zinc-400 animate-spin" />
       </div>
     );
   }
@@ -136,7 +136,7 @@ export const EventosPrivadosTab: React.FC<Props> = ({ comunidadeId }) => {
     return (
       <div className="flex flex-col items-center justify-center py-16 gap-3">
         <div className="w-14 h-14 rounded-full bg-zinc-900 flex items-center justify-center border border-white/5">
-          <Calendar size={24} className="text-zinc-700" />
+          <Calendar size="1.5rem" className="text-zinc-700" />
         </div>
         <p className="text-zinc-400 text-sm">Nenhuma solicitação de evento privado</p>
       </div>
@@ -168,20 +168,20 @@ export const EventosPrivadosTab: React.FC<Props> = ({ comunidadeId }) => {
           )}
           <div className="flex-1 min-w-0">
             <p className="text-white font-bold text-sm truncate">{sol.nome_completo}</p>
-            <p className="text-zinc-400 text-[10px] truncate">
+            <p className="text-zinc-400 text-[0.625rem] truncate">
               {sol.empresa} · {sol.data_evento || sol.data_estimativa || 'Data a definir'}
             </p>
           </div>
           <span
-            className="shrink-0 px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-wider"
+            className="shrink-0 px-2 py-0.5 rounded-full text-[0.5rem] font-black uppercase tracking-wider"
             style={{ backgroundColor: cfg.color + '20', color: cfg.color }}
           >
             {cfg.label}
           </span>
           {isExpanded ? (
-            <ChevronUp size={16} className="text-zinc-400 shrink-0" />
+            <ChevronUp size="1rem" className="text-zinc-400 shrink-0" />
           ) : (
-            <ChevronDown size={16} className="text-zinc-400 shrink-0" />
+            <ChevronDown size="1rem" className="text-zinc-400 shrink-0" />
           )}
         </button>
 
@@ -191,40 +191,40 @@ export const EventosPrivadosTab: React.FC<Props> = ({ comunidadeId }) => {
             {/* Info de contato */}
             <div className="grid grid-cols-2 gap-2">
               <div className="flex items-center gap-2 text-zinc-400 text-xs">
-                <Phone size={12} className="shrink-0" />
+                <Phone size="0.75rem" className="shrink-0" />
                 <span className="truncate">{sol.telefone}</span>
               </div>
               <div className="flex items-center gap-2 text-zinc-400 text-xs">
-                <Mail size={12} className="shrink-0" />
+                <Mail size="0.75rem" className="shrink-0" />
                 <span className="truncate">{sol.email}</span>
               </div>
               <div className="flex items-center gap-2 text-zinc-400 text-xs">
-                <Instagram size={12} className="shrink-0" />
+                <Instagram size="0.75rem" className="shrink-0" />
                 <span className="truncate">{sol.instagram}</span>
               </div>
               <div className="flex items-center gap-2 text-zinc-400 text-xs">
-                <Building2 size={12} className="shrink-0" />
+                <Building2 size="0.75rem" className="shrink-0" />
                 <span className="truncate">{sol.empresa}</span>
               </div>
             </div>
 
             {/* Detalhes do evento */}
             <div className="flex flex-wrap gap-2">
-              <span className="px-2 py-1 bg-zinc-800 rounded-lg text-[10px] text-zinc-300 flex items-center gap-1">
-                <Users size={10} /> {sol.faixa_capacidade}
+              <span className="px-2 py-1 bg-zinc-800 rounded-lg text-[0.625rem] text-zinc-300 flex items-center gap-1">
+                <Users size="0.625rem" /> {sol.faixa_capacidade}
               </span>
               {hor && (
-                <span className="px-2 py-1 bg-zinc-800 rounded-lg text-[10px] text-zinc-300 flex items-center gap-1">
+                <span className="px-2 py-1 bg-zinc-800 rounded-lg text-[0.625rem] text-zinc-300 flex items-center gap-1">
                   {hor.icon} {hor.label}
                 </span>
               )}
               {sol.formatos?.map((f: string) => (
-                <span key={f} className="px-2 py-1 bg-zinc-800 rounded-lg text-[10px] text-zinc-300">
+                <span key={f} className="px-2 py-1 bg-zinc-800 rounded-lg text-[0.625rem] text-zinc-300">
                   {f}
                 </span>
               ))}
               {sol.atracoes?.map((a: string) => (
-                <span key={a} className="px-2 py-1 bg-[#FFD300]/10 rounded-lg text-[10px] text-[#FFD300]">
+                <span key={a} className="px-2 py-1 bg-[#FFD300]/10 rounded-lg text-[0.625rem] text-[#FFD300]">
                   {a}
                 </span>
               ))}
@@ -235,14 +235,14 @@ export const EventosPrivadosTab: React.FC<Props> = ({ comunidadeId }) => {
               <p className="text-zinc-300 text-xs leading-relaxed">{sol.descricao}</p>
             </div>
 
-            <p className="text-[9px] text-zinc-400">Enviada em {formatDate(sol.created_at)}</p>
+            <p className="text-[0.5625rem] text-zinc-400">Enviada em {formatDate(sol.created_at)}</p>
 
             {/* Ações */}
             {canAct && (
               <div className="space-y-3 pt-2 border-t border-white/5">
                 {/* Mensagem opcional */}
                 <div>
-                  <p className="text-[9px] text-zinc-400 font-bold uppercase tracking-wider mb-1">
+                  <p className="text-[0.5625rem] text-zinc-400 font-bold uppercase tracking-wider mb-1">
                     Mensagem (opcional)
                   </p>
                   <input
@@ -259,18 +259,18 @@ export const EventosPrivadosTab: React.FC<Props> = ({ comunidadeId }) => {
                     <button
                       onClick={() => handleEmAnalise(sol.id)}
                       disabled={isProcessing}
-                      className="flex-1 py-2.5 bg-yellow-500/10 border border-yellow-500/20 rounded-xl text-[10px] font-bold text-yellow-400 uppercase tracking-wider active:scale-95 transition-all disabled:opacity-50"
+                      className="flex-1 py-2.5 bg-yellow-500/10 border border-yellow-500/20 rounded-xl text-[0.625rem] font-bold text-yellow-400 uppercase tracking-wider active:scale-95 transition-all disabled:opacity-50"
                     >
-                      <Search size={12} className="inline mr-1" />
+                      <Search size="0.75rem" className="inline mr-1" />
                       Em análise
                     </button>
                   )}
                   <button
                     onClick={() => handleAprovar(sol.id)}
                     disabled={isProcessing}
-                    className="flex-1 py-2.5 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-[10px] font-bold text-emerald-400 uppercase tracking-wider active:scale-95 transition-all disabled:opacity-50"
+                    className="flex-1 py-2.5 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-[0.625rem] font-bold text-emerald-400 uppercase tracking-wider active:scale-95 transition-all disabled:opacity-50"
                   >
-                    <CheckCircle size={12} className="inline mr-1" />
+                    <CheckCircle size="0.75rem" className="inline mr-1" />
                     Aprovar
                   </button>
                 </div>
@@ -287,9 +287,9 @@ export const EventosPrivadosTab: React.FC<Props> = ({ comunidadeId }) => {
                   <button
                     onClick={() => handleRecusar(sol.id)}
                     disabled={isProcessing || !motivoRecusa.trim()}
-                    className="w-full py-2.5 bg-red-500/10 border border-red-500/20 rounded-xl text-[10px] font-bold text-red-400 uppercase tracking-wider active:scale-95 transition-all disabled:opacity-50"
+                    className="w-full py-2.5 bg-red-500/10 border border-red-500/20 rounded-xl text-[0.625rem] font-bold text-red-400 uppercase tracking-wider active:scale-95 transition-all disabled:opacity-50"
                   >
-                    <XCircle size={12} className="inline mr-1" />
+                    <XCircle size="0.75rem" className="inline mr-1" />
                     Recusar
                   </button>
                 </div>
@@ -299,7 +299,7 @@ export const EventosPrivadosTab: React.FC<Props> = ({ comunidadeId }) => {
             {/* Mensagem do gerente (se já respondeu) */}
             {sol.mensagem_gerente && !canAct && (
               <div className="flex items-start gap-2 bg-zinc-800/50 border border-white/5 rounded-xl p-3">
-                <MessageSquare size={12} className="text-zinc-400 shrink-0 mt-0.5" />
+                <MessageSquare size="0.75rem" className="text-zinc-400 shrink-0 mt-0.5" />
                 <p className="text-zinc-300 text-xs">{sol.mensagem_gerente}</p>
               </div>
             )}
@@ -309,7 +309,7 @@ export const EventosPrivadosTab: React.FC<Props> = ({ comunidadeId }) => {
               <div className="space-y-2 pt-2 border-t border-white/5">
                 {convertId === sol.id ? (
                   <>
-                    <p className="text-[9px] text-zinc-400 font-bold uppercase tracking-wider">
+                    <p className="text-[0.5625rem] text-zinc-400 font-bold uppercase tracking-wider">
                       Selecione o evento criado para vincular
                     </p>
                     <div className="space-y-2">
@@ -334,16 +334,16 @@ export const EventosPrivadosTab: React.FC<Props> = ({ comunidadeId }) => {
                             setConvertId(null);
                             setConvertEventoId('');
                           }}
-                          className="flex-1 py-2 bg-zinc-800 rounded-xl text-[10px] font-bold text-zinc-400 uppercase tracking-wider active:scale-95 transition-all"
+                          className="flex-1 py-2 bg-zinc-800 rounded-xl text-[0.625rem] font-bold text-zinc-400 uppercase tracking-wider active:scale-95 transition-all"
                         >
                           Cancelar
                         </button>
                         <button
                           onClick={() => handleConverter(sol.id)}
                           disabled={!convertEventoId || actionId === sol.id}
-                          className="flex-1 py-2 bg-[#FFD300]/10 border border-[#FFD300]/20 rounded-xl text-[10px] font-bold text-[#FFD300] uppercase tracking-wider active:scale-95 transition-all disabled:opacity-50"
+                          className="flex-1 py-2 bg-[#FFD300]/10 border border-[#FFD300]/20 rounded-xl text-[0.625rem] font-bold text-[#FFD300] uppercase tracking-wider active:scale-95 transition-all disabled:opacity-50"
                         >
-                          <Zap size={12} className="inline mr-1" />
+                          <Zap size="0.75rem" className="inline mr-1" />
                           Vincular
                         </button>
                       </div>
@@ -352,9 +352,9 @@ export const EventosPrivadosTab: React.FC<Props> = ({ comunidadeId }) => {
                 ) : (
                   <button
                     onClick={() => setConvertId(sol.id)}
-                    className="w-full py-2.5 bg-[#FFD300]/10 border border-[#FFD300]/20 rounded-xl text-[10px] font-bold text-[#FFD300] uppercase tracking-wider active:scale-95 transition-all flex items-center justify-center gap-1.5"
+                    className="w-full py-2.5 bg-[#FFD300]/10 border border-[#FFD300]/20 rounded-xl text-[0.625rem] font-bold text-[#FFD300] uppercase tracking-wider active:scale-95 transition-all flex items-center justify-center gap-1.5"
                   >
-                    <Zap size={12} />
+                    <Zap size="0.75rem" />
                     Converter em Evento
                   </button>
                 )}
@@ -371,7 +371,7 @@ export const EventosPrivadosTab: React.FC<Props> = ({ comunidadeId }) => {
       {pendentes.length > 0 && (
         <div>
           <p style={TYPOGRAPHY.sectionKicker} className="mb-3 flex items-center gap-2">
-            <Clock size={12} className="text-[#FFD300]" />
+            <Clock size="0.75rem" className="text-[#FFD300]" />
             Pendentes ({pendentes.length})
           </p>
           <div className="space-y-3">{pendentes.map(renderCard)}</div>
@@ -381,7 +381,7 @@ export const EventosPrivadosTab: React.FC<Props> = ({ comunidadeId }) => {
       {resolvidas.length > 0 && (
         <div>
           <p style={TYPOGRAPHY.sectionKicker} className="mb-3 flex items-center gap-2">
-            <CheckCircle size={12} className="text-zinc-400" />
+            <CheckCircle size="0.75rem" className="text-zinc-400" />
             Resolvidas ({resolvidas.length})
           </p>
           <div className="space-y-3">{resolvidas.map(renderCard)}</div>

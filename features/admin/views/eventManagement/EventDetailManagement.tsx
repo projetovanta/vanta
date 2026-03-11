@@ -151,25 +151,25 @@ export const EventDetailManagement: React.FC<{
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0 mt-1"
           >
-            <ArrowLeft size={18} className="text-zinc-400" />
+            <ArrowLeft size="1.125rem" className="text-zinc-400" />
           </button>
         </div>
         <div className="flex items-center gap-3 mb-4 mt-2 flex-wrap">
-          <span className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">
+          <span className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest">
             {lista?.eventoLocal ?? eventoAdmin?.local ?? ''}
           </span>
           <span className="w-1 h-1 rounded-full bg-zinc-700 shrink-0" />
-          <span className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">{total} inscritos</span>
+          <span className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest">{total} inscritos</span>
           {checkedIn > 0 && (
             <>
               <span className="w-1 h-1 rounded-full bg-zinc-700 shrink-0" />
-              <span className="text-emerald-500 text-[9px] font-black uppercase tracking-widest">
+              <span className="text-emerald-500 text-[0.5625rem] font-black uppercase tracking-widest">
                 {checkedIn} entraram
               </span>
             </>
           )}
           {isSocio && (
-            <span className="ml-auto px-2 py-0.5 bg-[#FFD300]/10 border border-[#FFD300]/20 rounded-full text-[#FFD300] text-[8px] font-black uppercase tracking-widest shrink-0">
+            <span className="ml-auto px-2 py-0.5 bg-[#FFD300]/10 border border-[#FFD300]/20 rounded-full text-[#FFD300] text-[0.5rem] font-black uppercase tracking-widest shrink-0">
               Meu Evento
             </span>
           )}
@@ -182,11 +182,11 @@ export const EventDetailManagement: React.FC<{
               <button
                 key={t.id}
                 onClick={() => setTab(t.id)}
-                className={`flex-none flex items-center justify-center gap-1 px-3.5 py-2.5 rounded-lg text-[9px] font-black uppercase tracking-wide transition-all whitespace-nowrap ${
+                className={`flex-none flex items-center justify-center gap-1 px-3.5 py-2.5 rounded-lg text-[0.5625rem] font-black uppercase tracking-wide transition-all whitespace-nowrap ${
                   tab === t.id ? 'bg-[#FFD300] text-black' : 'text-zinc-400 active:text-zinc-300'
                 }`}
               >
-                <t.icon size={10} /> {t.label}
+                <t.icon size="0.625rem" /> {t.label}
                 {isLocked && ' 🔒'}
               </button>
             );
@@ -201,7 +201,7 @@ export const EventDetailManagement: React.FC<{
           className="mx-4 mb-1 px-4 py-2.5 rounded-xl bg-zinc-900/60 border border-white/10 flex items-center justify-between gap-3 shrink-0"
         >
           <div className="flex items-center gap-2 min-w-0">
-            <ShieldAlert size={13} className="text-amber-400 shrink-0" />
+            <ShieldAlert size="0.8125rem" className="text-amber-400 shrink-0" />
             <p className="text-xs text-white/55 truncate">
               {sovPendentes.length === 1
                 ? 'Há 1 solicitação de acesso da Comunidade.'
@@ -210,7 +210,7 @@ export const EventDetailManagement: React.FC<{
           </div>
           <button
             onClick={() => setShowSovModal(true)}
-            className="text-[10px] font-bold text-amber-400/80 hover:text-amber-400 whitespace-nowrap shrink-0 active:scale-95 transition-all"
+            className="text-[0.625rem] font-bold text-amber-400/80 hover:text-amber-400 whitespace-nowrap shrink-0 active:scale-95 transition-all"
           >
             Revisar
           </button>
@@ -311,13 +311,13 @@ export const EventDetailManagement: React.FC<{
               <div className="w-10 h-1 rounded-full bg-zinc-700" />
             </div>
             <div className="px-6 pt-3 pb-4 border-b border-white/5 flex items-center gap-2">
-              <ShieldAlert size={14} className="text-amber-400 shrink-0" />
+              <ShieldAlert size="0.875rem" className="text-amber-400 shrink-0" />
               <h2 style={TYPOGRAPHY.screenTitle} className="text-base italic">
                 Solicitações de Acesso
               </h2>
             </div>
             <div className="p-6 space-y-3 max-h-[50vh] overflow-y-auto no-scrollbar">
-              <p className="text-[10px] text-zinc-400 font-black uppercase tracking-widest mb-4">
+              <p className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest mb-4">
                 Gerentes da Comunidade
               </p>
               {rbacService.getSolicitacoesPendentes(eventoAdminId!).map(uid => {
@@ -343,13 +343,13 @@ export const EventDetailManagement: React.FC<{
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-white text-sm font-semibold truncate">{membro?.nome ?? uid}</p>
-                      <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">
+                      <p className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest">
                         Produtor · Comunidade
                       </p>
                     </div>
                     <button
                       onClick={() => handleAutorizarSov(uid)}
-                      className="px-3 py-1.5 rounded-lg bg-[#FFD300]/10 border border-[#FFD300]/20 text-[#FFD300] text-[10px] font-black uppercase tracking-wider hover:bg-[#FFD300]/20 active:scale-95 transition-all shrink-0"
+                      className="px-3 py-1.5 rounded-lg bg-[#FFD300]/10 border border-[#FFD300]/20 text-[#FFD300] text-[0.625rem] font-black uppercase tracking-wider hover:bg-[#FFD300]/20 active:scale-95 transition-all shrink-0"
                     >
                       Autorizar
                     </button>

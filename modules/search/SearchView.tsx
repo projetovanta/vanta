@@ -270,7 +270,7 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
         maxPrice={maxPrice}
         onOpenPriceFilter={() => setIsPriceFilterOpen(true)}
       />
-      <div ref={contentRef} onScroll={handleScroll} className="flex-1 overflow-y-auto no-scrollbar px-6 pt-6 pb-32">
+      <div ref={contentRef} onScroll={handleScroll} className="flex-1 overflow-y-auto no-scrollbar px-6 pt-6 pb-4">
         {activeTab === 'BENEFICIOS' ? (
           <BeneficiosMVTab
             userId={currentUserId}
@@ -282,7 +282,7 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
           <>
             {comunidadeSpotlight && (
               <div className="mb-6 animate-in fade-in duration-300">
-                <p className="text-[8px] font-black uppercase tracking-widest text-[#FFD300]/70 mb-3">
+                <p className="text-[0.5rem] font-black uppercase tracking-widest text-[#FFD300]/70 mb-3">
                   Comunidade encontrada
                 </p>
                 <button
@@ -299,30 +299,32 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
-                        <Building2 size={20} className="text-zinc-400" />
+                        <Building2 size="1.25rem" className="text-zinc-400" />
                       </div>
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-[7px] font-black uppercase tracking-widest bg-[#FFD300]/15 text-[#FFD300] px-2 py-0.5 rounded">
+                      <span className="text-[0.4375rem] font-black uppercase tracking-widest bg-[#FFD300]/15 text-[#FFD300] px-2 py-0.5 rounded">
                         Comunidade
                       </span>
                     </div>
                     <p className="text-white font-bold text-sm truncate">{comunidadeSpotlight.comunidade.nome}</p>
-                    <p className="text-zinc-400 text-[10px] mt-0.5">Entre para ver todos os eventos</p>
+                    <p className="text-zinc-400 text-[0.625rem] mt-0.5">Entre para ver todos os eventos</p>
                     {comunidadeSpotlight.comunidade.cidade && (
                       <div className="flex items-center gap-1 mt-1">
-                        <MapPin size={9} className="text-zinc-400" />
-                        <p className="text-zinc-400 text-[10px] truncate">{comunidadeSpotlight.comunidade.cidade}</p>
+                        <MapPin size="0.5625rem" className="text-zinc-400" />
+                        <p className="text-zinc-400 text-[0.625rem] truncate">
+                          {comunidadeSpotlight.comunidade.cidade}
+                        </p>
                       </div>
                     )}
                   </div>
-                  <ChevronRight size={16} className="text-[#FFD300] shrink-0" />
+                  <ChevronRight size="1rem" className="text-[#FFD300] shrink-0" />
                 </button>
                 {comunidadeSpotlight.eventos.length > 0 && (
                   <>
-                    <p className="text-[8px] font-black uppercase tracking-widest text-zinc-400 mb-3">
+                    <p className="text-[0.5rem] font-black uppercase tracking-widest text-zinc-400 mb-3">
                       Próximos eventos neste local
                     </p>
                     <div className="space-y-3 mb-6">
@@ -337,7 +339,7 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
                           </div>
                           <div className="flex-1 min-w-0">
                             <p className="text-white text-sm font-bold truncate">{e.titulo}</p>
-                            <p className="text-zinc-400 text-[10px] mt-0.5">
+                            <p className="text-zinc-400 text-[0.625rem] mt-0.5">
                               {e.data} · {e.horario}
                             </p>
                           </div>

@@ -35,8 +35,8 @@ export const Step5Financeiro: React.FC<Props> = ({ split, setSplit, socio }) => 
   return (
     <div className="space-y-6">
       <div>
-        <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1">Split Financeiro</p>
-        <p className="text-zinc-400 text-[10px] leading-relaxed">
+        <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1">Split Financeiro</p>
+        <p className="text-zinc-400 text-[0.625rem] leading-relaxed">
           Defina a divisão da receita líquida entre sócio e produtor. A taxa VANTA é aplicada antes do split.
         </p>
       </div>
@@ -52,7 +52,7 @@ export const Step5Financeiro: React.FC<Props> = ({ split, setSplit, socio }) => 
           />
           <div className="flex-1 min-w-0">
             <p className="text-white font-bold text-sm leading-none truncate">{socio.nome}</p>
-            <p className="text-zinc-400 text-[10px] mt-0.5">Sócio convidado</p>
+            <p className="text-zinc-400 text-[0.625rem] mt-0.5">Sócio convidado</p>
           </div>
         </div>
       )}
@@ -93,7 +93,7 @@ export const Step5Financeiro: React.FC<Props> = ({ split, setSplit, socio }) => 
         {/* Slider */}
         <div className="space-y-2">
           <VantaSlider min={0} max={100} value={pSocio} onChange={v => handleSlider(v)} className="w-full" />
-          <div className="flex justify-between text-[8px] font-black uppercase tracking-widest">
+          <div className="flex justify-between text-[0.5rem] font-black uppercase tracking-widest">
             <span className="text-zinc-400">0% Sócio</span>
             <span className="text-zinc-400">100% Sócio</span>
           </div>
@@ -117,8 +117,8 @@ export const Step5Financeiro: React.FC<Props> = ({ split, setSplit, socio }) => 
 
       {/* Aviso */}
       <div className="flex items-start gap-3 p-4 bg-amber-500/5 border border-amber-500/15 rounded-2xl">
-        <AlertTriangle size={16} className="text-amber-400 shrink-0 mt-0.5" />
-        <p className="text-zinc-400 text-[10px] leading-relaxed">
+        <AlertTriangle size="1rem" className="text-amber-400 shrink-0 mt-0.5" />
+        <p className="text-zinc-400 text-[0.625rem] leading-relaxed">
           Este split será enviado como <span className="text-white font-bold">proposta</span> ao sócio junto com as
           demais condições do evento. O sócio poderá aceitar ou sugerir alterações.
         </p>

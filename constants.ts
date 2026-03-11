@@ -17,7 +17,7 @@ export const TYPOGRAPHY = {
     fontWeight: 600,
     textTransform: 'uppercase' as const,
     letterSpacing: '0.28em',
-    fontSize: '10px',
+    fontSize: '0.625rem',
   },
   uiLabel: {
     fontFamily: FONTS.sans,
@@ -25,7 +25,7 @@ export const TYPOGRAPHY = {
     fontWeight: 800,
     textTransform: 'uppercase' as const,
     letterSpacing: '0.22em',
-    fontSize: '10px',
+    fontSize: '0.625rem',
   },
   uiBody: { fontFamily: FONTS.sans, color: COLORS.textPrimary },
 };
@@ -33,4 +33,4 @@ export const TYPOGRAPHY = {
 // ── Classes de formulário reutilizáveis ─────────────────────────────────────
 export const inputCls =
   'w-full bg-zinc-900/60 border border-white/5 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-[#FFD300]/30 placeholder-zinc-700';
-export const labelCls = 'text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block';
+export const labelCls = 'text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block';

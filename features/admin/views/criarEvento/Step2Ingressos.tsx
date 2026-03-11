@@ -226,7 +226,7 @@ export const Step2Ingressos: React.FC<Props> = ({
 
   return (
     <div className="space-y-4">
-      <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">
+      <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">
         Ao menos um lote obrigatório. Quando esgotar, o próximo ativa automaticamente.
       </p>
       {lotes.map((lote, idx) => (
@@ -238,11 +238,11 @@ export const Step2Ingressos: React.FC<Props> = ({
                 onClick={() => removeLote(lote.id)}
                 className="text-zinc-700 active:text-red-400 transition-colors p-1"
               >
-                <Trash2 size={13} />
+                <Trash2 size="0.8125rem" />
               </button>
             )}
             <button onClick={() => updateLote(lote.id, 'aberto', !lote.aberto)} className="text-zinc-400 p-1">
-              {lote.aberto ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+              {lote.aberto ? <ChevronUp size="0.875rem" /> : <ChevronDown size="0.875rem" />}
             </button>
           </div>
 
@@ -262,7 +262,7 @@ export const Step2Ingressos: React.FC<Props> = ({
                     className={inputDateCls}
                   />
                 </div>
-                <p className="text-[8px] text-zinc-700 mt-1 font-black uppercase tracking-widest">
+                <p className="text-[0.5rem] text-zinc-700 mt-1 font-black uppercase tracking-widest">
                   Ex: virada de lote às 14h do dia X
                 </p>
               </div>
@@ -280,11 +280,11 @@ export const Step2Ingressos: React.FC<Props> = ({
                       placeholder="Ex: 80"
                       className={inputSmCls + ' w-full pr-7'}
                     />
-                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 text-[11px] font-bold">
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 text-[0.6875rem] font-bold">
                       %
                     </span>
                   </div>
-                  <p className="text-[8px] text-zinc-700 mt-1 font-black uppercase tracking-widest">
+                  <p className="text-[0.5rem] text-zinc-700 mt-1 font-black uppercase tracking-widest">
                     Ao atingir esse %, ativa o próximo lote
                   </p>
                 </div>
@@ -307,7 +307,7 @@ export const Step2Ingressos: React.FC<Props> = ({
                             <button
                               key={g}
                               onClick={() => updateVar(lote.id, v.id, 'genero', g)}
-                              className={`w-8 h-8 rounded-lg text-[10px] font-black transition-all border ${
+                              className={`w-8 h-8 rounded-lg text-[0.625rem] font-black transition-all border ${
                                 v.genero === g
                                   ? 'bg-[#FFD300] border-[#FFD300] text-black'
                                   : 'bg-zinc-800 border-white/5 text-zinc-400'
@@ -322,7 +322,7 @@ export const Step2Ingressos: React.FC<Props> = ({
                           disabled={lote.variacoes.length === 1}
                           className="text-zinc-700 active:text-red-400 transition-colors p-1 shrink-0 disabled:opacity-30"
                         >
-                          <Trash2 size={12} />
+                          <Trash2 size="0.75rem" />
                         </button>
                       </div>
                       {v.area === 'OUTRO' && (
@@ -335,7 +335,7 @@ export const Step2Ingressos: React.FC<Props> = ({
                       )}
                       <div className="flex gap-2">
                         <div className="relative flex-1">
-                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 text-[11px] font-bold">
+                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 text-[0.6875rem] font-bold">
                             R$
                           </span>
                           <input
@@ -383,7 +383,7 @@ export const Step2Ingressos: React.FC<Props> = ({
                             }`}
                           />
                         </button>
-                        <span className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider">
+                        <span className="text-zinc-400 text-[0.5625rem] font-bold uppercase tracking-wider">
                           Meia-entrada
                         </span>
                       </div>
@@ -401,9 +401,9 @@ export const Step2Ingressos: React.FC<Props> = ({
                 </div>
                 <button
                   onClick={() => addVar(lote.id)}
-                  className="mt-2 w-full flex items-center justify-center gap-1.5 py-2.5 border border-dashed border-white/10 rounded-xl text-zinc-400 text-[9px] font-black uppercase tracking-widest active:border-[#FFD300]/20 active:text-[#FFD300]/50 transition-all"
+                  className="mt-2 w-full flex items-center justify-center gap-1.5 py-2.5 border border-dashed border-white/10 rounded-xl text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest active:border-[#FFD300]/20 active:text-[#FFD300]/50 transition-all"
                 >
-                  <Plus size={11} /> Adicionar variação
+                  <Plus size="0.6875rem" /> Adicionar variação
                 </button>
               </div>
             </div>
@@ -412,19 +412,19 @@ export const Step2Ingressos: React.FC<Props> = ({
       ))}
       <button
         onClick={addLote}
-        className="w-full flex items-center justify-center gap-2 py-3.5 border border-[#FFD300]/20 bg-[#FFD300]/5 rounded-2xl text-[#FFD300] text-[9px] font-black uppercase tracking-widest active:scale-[0.98] transition-all"
+        className="w-full flex items-center justify-center gap-2 py-3.5 border border-[#FFD300]/20 bg-[#FFD300]/5 rounded-2xl text-[#FFD300] text-[0.5625rem] font-black uppercase tracking-widest active:scale-[0.98] transition-all"
       >
-        <Plus size={13} /> Adicionar Lote {lotes.length + 1}
+        <Plus size="0.8125rem" /> Adicionar Lote {lotes.length + 1}
       </button>
 
       {/* ── MAIS VANTA (Clube de Influência) ── */}
       {maisVantaEvento && setMaisVantaEvento && !assinaturaAtiva && comunidadeId && (
         <div className="border-t border-white/5 pt-5 mt-2">
           <div className="flex items-center gap-3 p-5 rounded-2xl border border-white/5 bg-zinc-900/40">
-            <Lock size={16} className="text-zinc-400 shrink-0" />
+            <Lock size="1rem" className="text-zinc-400 shrink-0" />
             <div className="flex-1 min-w-0">
               <p className="font-bold text-sm text-white">MAIS VANTA</p>
-              <p className="text-zinc-400 text-[10px] mt-1">
+              <p className="text-zinc-400 text-[0.625rem] mt-1">
                 Ative a assinatura MAIS VANTA para disponibilizar benefícios de influência nesta comunidade.
               </p>
             </div>
@@ -439,7 +439,7 @@ export const Step2Ingressos: React.FC<Props> = ({
           >
             <div className="flex items-center gap-3 flex-1 min-w-0">
               <Crown
-                size={16}
+                size="1rem"
                 className={maisVantaEvento.enabled ? 'text-[#FFD300] shrink-0' : 'text-zinc-400 shrink-0'}
               />
               <div className="text-left">
@@ -448,7 +448,9 @@ export const Step2Ingressos: React.FC<Props> = ({
                 >
                   MAIS VANTA
                 </p>
-                <p className="text-zinc-400 text-[10px] mt-1">Vincule benefícios exclusivos a ingressos ou listas</p>
+                <p className="text-zinc-400 text-[0.625rem] mt-1">
+                  Vincule benefícios exclusivos a ingressos ou listas
+                </p>
               </div>
             </div>
             <div
@@ -466,13 +468,13 @@ export const Step2Ingressos: React.FC<Props> = ({
               <div
                 className={`flex items-center justify-between p-3 rounded-xl border ${cotaDisponivel ? 'bg-[#FFD300]/5 border-[#FFD300]/15' : 'bg-red-500/5 border-red-500/15'}`}
               >
-                <span className="text-zinc-400 text-[10px]">Eventos MV usados</span>
+                <span className="text-zinc-400 text-[0.625rem]">Eventos MV usados</span>
                 <span className={`text-xs font-bold ${cotaDisponivel ? 'text-[#FFD300]' : 'text-red-400'}`}>
                   {eventosMVUsados} de {limiteEventosMV}
                 </span>
               </div>
               {!cotaDisponivel && (
-                <p className="text-red-400 text-[10px] mt-1.5">
+                <p className="text-red-400 text-[0.625rem] mt-1.5">
                   Cota esgotada. Compre avulso (R$ {assinaturaService.getPrecoAvulso(comunidadeId)}) ou faça upgrade do
                   plano.
                 </p>
@@ -482,12 +484,12 @@ export const Step2Ingressos: React.FC<Props> = ({
 
           {maisVantaEvento.enabled && (
             <div className="space-y-3 px-1 mt-4">
-              <p className="text-[8px] font-black uppercase tracking-widest text-zinc-400">
+              <p className="text-[0.5rem] font-black uppercase tracking-widest text-zinc-400">
                 Benefícios por nível de membro
               </p>
 
               {!temLotesOuListas && (
-                <p className="text-zinc-500 text-[10px] py-3">
+                <p className="text-zinc-500 text-[0.625rem] py-3">
                   Crie ingressos (acima) ou listas (próximo passo) para vincular benefícios.
                 </p>
               )}
@@ -525,7 +527,7 @@ export const Step2Ingressos: React.FC<Props> = ({
                           <div className="flex-1 min-w-0 text-left">
                             <span className="text-white text-xs font-bold">{nome}</span>
                             {TIER_DESC_PRODUTOR[b.tierId] && (
-                              <p className="text-zinc-500 text-[9px] mt-0.5 line-clamp-1">
+                              <p className="text-zinc-500 text-[0.5625rem] mt-0.5 line-clamp-1">
                                 {TIER_DESC_PRODUTOR[b.tierId]}
                               </p>
                             )}
@@ -544,18 +546,20 @@ export const Step2Ingressos: React.FC<Props> = ({
                           <div className="px-4 pb-3 space-y-2">
                             {/* Tipo: ingresso ou lista */}
                             <div>
-                              <label className="text-zinc-400 text-[8px] font-black uppercase">Tipo de benefício</label>
+                              <label className="text-zinc-400 text-[0.5rem] font-black uppercase">
+                                Tipo de benefício
+                              </label>
                               <div className="flex gap-2 mt-1">
                                 <button
                                   onClick={() => updateBeneficio('tipo', 'ingresso')}
-                                  className={`flex-1 py-2 rounded-lg text-[10px] font-bold border transition-all ${b.tipo === 'ingresso' ? 'bg-[#FFD300]/10 border-[#FFD300]/30 text-[#FFD300]' : 'bg-zinc-800/50 border-white/5 text-zinc-400'}`}
+                                  className={`flex-1 py-2 rounded-lg text-[0.625rem] font-bold border transition-all ${b.tipo === 'ingresso' ? 'bg-[#FFD300]/10 border-[#FFD300]/30 text-[#FFD300]' : 'bg-zinc-800/50 border-white/5 text-zinc-400'}`}
                                 >
                                   Ingresso
                                 </button>
                                 {listaOptions.length > 0 && (
                                   <button
                                     onClick={() => updateBeneficio('tipo', 'lista')}
-                                    className={`flex-1 py-2 rounded-lg text-[10px] font-bold border transition-all ${b.tipo === 'lista' ? 'bg-[#FFD300]/10 border-[#FFD300]/30 text-[#FFD300]' : 'bg-zinc-800/50 border-white/5 text-zinc-400'}`}
+                                    className={`flex-1 py-2 rounded-lg text-[0.625rem] font-bold border transition-all ${b.tipo === 'lista' ? 'bg-[#FFD300]/10 border-[#FFD300]/30 text-[#FFD300]' : 'bg-zinc-800/50 border-white/5 text-zinc-400'}`}
                                   >
                                     Lista
                                   </button>
@@ -565,7 +569,7 @@ export const Step2Ingressos: React.FC<Props> = ({
 
                             {/* Vincular a lote ou lista */}
                             <div>
-                              <label className="text-zinc-400 text-[8px] font-black uppercase">
+                              <label className="text-zinc-400 text-[0.5rem] font-black uppercase">
                                 {b.tipo === 'ingresso' ? 'Vincular a lote' : 'Vincular a lista'}
                               </label>
                               <VantaDropdown
@@ -580,8 +584,8 @@ export const Step2Ingressos: React.FC<Props> = ({
                             {/* Desconto (somente tier lista) */}
                             {isDesconto && (
                               <div>
-                                <label className="text-zinc-400 text-[8px] font-black uppercase flex items-center gap-1">
-                                  <Percent size={10} /> Desconto
+                                <label className="text-zinc-400 text-[0.5rem] font-black uppercase flex items-center gap-1">
+                                  <Percent size="0.625rem" /> Desconto
                                 </label>
                                 <div className="flex items-center gap-2 mt-1">
                                   <input
@@ -592,7 +596,7 @@ export const Step2Ingressos: React.FC<Props> = ({
                                     onChange={e => updateBeneficio('descontoPercentual', e.target.value)}
                                     className={inputSmCls + ' w-20 text-center'}
                                   />
-                                  <span className="text-zinc-400 text-[10px]">%</span>
+                                  <span className="text-zinc-400 text-[0.625rem]">%</span>
                                 </div>
                               </div>
                             )}
@@ -600,7 +604,7 @@ export const Step2Ingressos: React.FC<Props> = ({
                             {/* Sub-nível creator */}
                             {b.tierId === 'creator' && (
                               <div>
-                                <label className="text-zinc-400 text-[8px] font-black uppercase">
+                                <label className="text-zinc-400 text-[0.5rem] font-black uppercase">
                                   A partir de qual faixa
                                 </label>
                                 <div className="flex gap-1.5 mt-1">
@@ -617,7 +621,7 @@ export const Step2Ingressos: React.FC<Props> = ({
                                           b.creatorSublevelMinimo === opt.value ? '' : opt.value,
                                         )
                                       }
-                                      className={`flex-1 py-2 rounded-lg text-[10px] font-bold border transition-all ${
+                                      className={`flex-1 py-2 rounded-lg text-[0.625rem] font-bold border transition-all ${
                                         b.creatorSublevelMinimo === opt.value
                                           ? 'bg-[#FFD300]/10 border-[#FFD300]/30 text-[#FFD300]'
                                           : 'bg-zinc-800/50 border-white/5 text-zinc-400'
@@ -632,7 +636,9 @@ export const Step2Ingressos: React.FC<Props> = ({
 
                             {/* Limite de vagas */}
                             <div>
-                              <label className="text-zinc-400 text-[8px] font-black uppercase">Limite de vagas</label>
+                              <label className="text-zinc-400 text-[0.5rem] font-black uppercase">
+                                Limite de vagas
+                              </label>
                               <div className="flex items-center gap-2 mt-1">
                                 <input
                                   type="number"
@@ -642,7 +648,7 @@ export const Step2Ingressos: React.FC<Props> = ({
                                   placeholder="Sem limite"
                                   className={inputSmCls + ' w-24 text-center'}
                                 />
-                                <span className="text-zinc-500 text-[9px]">
+                                <span className="text-zinc-500 text-[0.5625rem]">
                                   {b.vagasLimite ? 'vagas' : 'sem limite'}
                                 </span>
                               </div>
@@ -657,7 +663,7 @@ export const Step2Ingressos: React.FC<Props> = ({
                     <div className="w-3 h-3 rounded-full shrink-0 bg-black border border-white/20" />
                     <div className="flex-1 min-w-0">
                       <span className="text-white text-xs font-bold">Perfil premium</span>
-                      <p className="text-zinc-500 text-[9px]">Contato direto — configurar via curadoria</p>
+                      <p className="text-zinc-500 text-[0.5625rem]">Contato direto — configurar via curadoria</p>
                     </div>
                   </div>
                 </div>
@@ -666,17 +672,19 @@ export const Step2Ingressos: React.FC<Props> = ({
               {/* Alcance estimado */}
               {alcanceEstimado && alcanceEstimado.membros > 0 && (
                 <div className="bg-[#FFD300]/5 border border-[#FFD300]/15 rounded-xl p-3 space-y-1.5">
-                  <p className="text-[8px] font-black uppercase tracking-widest text-[#FFD300]/70">Alcance estimado</p>
+                  <p className="text-[0.5rem] font-black uppercase tracking-widest text-[#FFD300]/70">
+                    Alcance estimado
+                  </p>
                   <div className="flex items-center gap-4">
                     <div className="flex items-center gap-1.5">
-                      <Users size={12} className="text-[#FFD300]" />
+                      <Users size="0.75rem" className="text-[#FFD300]" />
                       <span className="text-white text-sm font-bold">{alcanceEstimado.membros}</span>
-                      <span className="text-zinc-400 text-[9px]">elegíveis</span>
+                      <span className="text-zinc-400 text-[0.5625rem]">elegíveis</span>
                     </div>
                     <div className="flex items-center gap-1.5">
-                      <Eye size={12} className="text-[#FFD300]" />
+                      <Eye size="0.75rem" className="text-[#FFD300]" />
                       <span className="text-white text-sm font-bold">{formatAlcance(alcanceEstimado.alcance)}</span>
-                      <span className="text-zinc-400 text-[9px]">seguidores</span>
+                      <span className="text-zinc-400 text-[0.5625rem]">seguidores</span>
                     </div>
                   </div>
                 </div>
@@ -694,12 +702,14 @@ export const Step2Ingressos: React.FC<Props> = ({
             className={`w-full flex items-center justify-between p-5 rounded-2xl border transition-all ${cortesiaEnabled ? 'bg-[#FFD300]/5 border-[#FFD300]/25' : 'bg-zinc-900/40 border-white/5'}`}
           >
             <div className="flex items-center gap-3 flex-1 min-w-0">
-              <Gift size={16} className={cortesiaEnabled ? 'text-[#FFD300] shrink-0' : 'text-zinc-400 shrink-0'} />
+              <Gift size="1rem" className={cortesiaEnabled ? 'text-[#FFD300] shrink-0' : 'text-zinc-400 shrink-0'} />
               <div className="text-left">
                 <p className={`font-bold text-sm leading-none ${cortesiaEnabled ? 'text-[#FFD300]' : 'text-white'}`}>
                   Cortesias
                 </p>
-                <p className="text-zinc-400 text-[10px] mt-1">Ingressos gratuitos para equipe e convidados especiais</p>
+                <p className="text-zinc-400 text-[0.625rem] mt-1">
+                  Ingressos gratuitos para equipe e convidados especiais
+                </p>
               </div>
             </div>
             <div
@@ -743,7 +753,7 @@ export const Step2Ingressos: React.FC<Props> = ({
                                 ativo ? 'bg-[#FFD300] border-[#FFD300]' : 'bg-zinc-800 border-white/10'
                               }`}
                             >
-                              {ativo && <Gift size={10} className="text-black" />}
+                              {ativo && <Gift size="0.625rem" className="text-black" />}
                             </div>
                           </button>
                           <p
@@ -766,7 +776,7 @@ export const Step2Ingressos: React.FC<Props> = ({
                     })}
                   </div>
                   {Object.keys(cortesiaLimites ?? {}).length > 0 && (
-                    <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">
+                    <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest">
                       Total:{' '}
                       {(Object.values(cortesiaLimites ?? {}) as string[]).reduce((s, v) => s + (parseInt(v) || 0), 0)}{' '}
                       cortesias
@@ -774,7 +784,7 @@ export const Step2Ingressos: React.FC<Props> = ({
                   )}
                 </>
               ) : (
-                <p className="text-zinc-400 text-[10px] py-3">
+                <p className="text-zinc-400 text-[0.625rem] py-3">
                   Crie pelo menos um lote com variações para definir os tipos de cortesia.
                 </p>
               )}

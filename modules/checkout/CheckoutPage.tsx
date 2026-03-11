@@ -45,7 +45,7 @@ const Stepper: React.FC<{ value: number; min?: number; max: number; onChange: (n
       disabled={value <= min}
       className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-zinc-400 active:scale-90 transition-all disabled:opacity-30"
     >
-      <Minus size={12} />
+      <Minus size="0.75rem" />
     </button>
     <span className="w-5 text-center font-black text-sm text-white">{value}</span>
     <button
@@ -53,7 +53,7 @@ const Stepper: React.FC<{ value: number; min?: number; max: number; onChange: (n
       disabled={value >= max}
       className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-zinc-400 active:scale-90 transition-all disabled:opacity-30"
     >
-      <Plus size={12} />
+      <Plus size="0.75rem" />
     </button>
   </div>
 );
@@ -526,7 +526,7 @@ export const CheckoutPage: React.FC = () => {
   if (pageLoading)
     return (
       <div className="min-h-[100dvh] bg-black flex items-center justify-center gap-3">
-        <Loader2 size={24} className="text-zinc-400 animate-spin" />
+        <Loader2 size="1.5rem" className="text-zinc-400 animate-spin" />
       </div>
     );
 
@@ -553,14 +553,14 @@ export const CheckoutPage: React.FC = () => {
           className="absolute left-4 p-2 bg-black/40 backdrop-blur-sm rounded-full border border-white/10"
           style={{ top: '1rem' }}
         >
-          <X size={16} className="text-zinc-400" />
+          <X size="1rem" className="text-zinc-400" />
         </button>
       </div>
 
       <div className="flex-1 overflow-y-auto px-5 -mt-4 space-y-6 pb-4">
         {/* Info */}
         <div>
-          <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1">{evento.formato}</p>
+          <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1">{evento.formato}</p>
           <h1 className="font-serif italic text-2xl text-white leading-tight truncate">{evento.titulo}</h1>
           <p className="text-zinc-400 text-xs mt-1">
             {evento.data} · {evento.horario} · {evento.local}
@@ -570,15 +570,15 @@ export const CheckoutPage: React.FC = () => {
         {/* Seleção */}
         <div className="space-y-3">
           <div className="flex items-center gap-2 flex-wrap">
-            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Selecionar ingressos</p>
+            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">Selecionar ingressos</p>
             {totalLotes > 1 && loteOrdem === 0 && (
-              <span className="text-[7px] font-black uppercase tracking-wider text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full flex items-center gap-1">
-                <Zap size={8} /> Early Bird
+              <span className="text-[0.4375rem] font-black uppercase tracking-wider text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full flex items-center gap-1">
+                <Zap size="0.5rem" /> Early Bird
               </span>
             )}
             {totalLotes > 1 && loteOrdem === totalLotes - 1 && (
-              <span className="text-[7px] font-black uppercase tracking-wider text-red-400 bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded-full flex items-center gap-1">
-                <AlertTriangle size={8} /> Último lote
+              <span className="text-[0.4375rem] font-black uppercase tracking-wider text-red-400 bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded-full flex items-center gap-1">
+                <AlertTriangle size="0.5rem" /> Último lote
               </span>
             )}
           </div>
@@ -612,7 +612,7 @@ export const CheckoutPage: React.FC = () => {
                           {area} · {genero}
                         </p>
                         {isMeia && (
-                          <span className="text-[7px] font-black uppercase tracking-wider text-cyan-400 bg-cyan-500/10 border border-cyan-500/20 px-1.5 py-0.5 rounded-full shrink-0">
+                          <span className="text-[0.4375rem] font-black uppercase tracking-wider text-cyan-400 bg-cyan-500/10 border border-cyan-500/20 px-1.5 py-0.5 rounded-full shrink-0">
                             Meia
                           </span>
                         )}
@@ -626,21 +626,21 @@ export const CheckoutPage: React.FC = () => {
                         </p>
                       </div>
                       {meiaBloqueada && (
-                        <p className="text-[8px] font-black uppercase text-cyan-400 mt-0.5">
+                        <p className="text-[0.5rem] font-black uppercase text-cyan-400 mt-0.5">
                           Comprovante de meia-entrada necessário no perfil
                         </p>
                       )}
                       {poucos && !meiaBloqueada && (
-                        <p className="text-[8px] font-black uppercase text-amber-400 mt-0.5">
+                        <p className="text-[0.5rem] font-black uppercase text-amber-400 mt-0.5">
                           Faltam {disponivel} ingresso{disponivel !== 1 ? 's' : ''}!
                         </p>
                       )}
                       {esgotado && !meiaBloqueada && !naFila[v.id] && (
-                        <p className="text-[8px] font-black uppercase text-red-500 mt-0.5">Esgotado</p>
+                        <p className="text-[0.5rem] font-black uppercase text-red-500 mt-0.5">Esgotado</p>
                       )}
                       {esgotado && !meiaBloqueada && naFila[v.id] && (
-                        <p className="text-[8px] font-black uppercase text-amber-400 mt-0.5 flex items-center gap-1">
-                          <BellRing size={9} /> Na fila
+                        <p className="text-[0.5rem] font-black uppercase text-amber-400 mt-0.5 flex items-center gap-1">
+                          <BellRing size="0.5625rem" /> Na fila
                         </p>
                       )}
                     </div>
@@ -653,9 +653,9 @@ export const CheckoutPage: React.FC = () => {
                           e.stopPropagation();
                           setWaitlistModal(v.id);
                         }}
-                        className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[9px] font-black uppercase tracking-wider active:scale-95 transition-all shrink-0"
+                        className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[0.5625rem] font-black uppercase tracking-wider active:scale-95 transition-all shrink-0"
                       >
-                        <Bell size={11} /> Fila
+                        <Bell size="0.6875rem" /> Fila
                       </button>
                     )}
                   </div>
@@ -686,13 +686,13 @@ export const CheckoutPage: React.FC = () => {
         {totalItems >= 2 && (
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <UserPlus size={12} className="text-zinc-400" />
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Acompanhantes</p>
+              <UserPlus size="0.75rem" className="text-zinc-400" />
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">Acompanhantes</p>
             </div>
-            <p className="text-zinc-400 text-[10px]">Algum ingresso é para acompanhante? Informe o nome.</p>
+            <p className="text-zinc-400 text-[0.625rem]">Algum ingresso é para acompanhante? Informe o nome.</p>
             {Array.from({ length: totalItems }, (_, idx) => (
               <div key={idx} className="flex items-center gap-3">
-                <span className="text-zinc-400 text-[9px] font-bold shrink-0 w-16">#{idx + 1}</span>
+                <span className="text-zinc-400 text-[0.5625rem] font-bold shrink-0 w-16">#{idx + 1}</span>
                 <input
                   type="text"
                   placeholder={idx === 0 ? 'Para mim (deixe vazio)' : 'Nome do acompanhante'}
@@ -715,7 +715,7 @@ export const CheckoutPage: React.FC = () => {
         {/* Mesas / Camarotes */}
         {evento.mesasAtivo && evento.plantaMesas && mesas.length > 0 && (
           <div className="space-y-3">
-            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Selecionar mesa</p>
+            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">Selecionar mesa</p>
             <div className="relative rounded-2xl overflow-hidden border border-white/5">
               <img
                 loading="lazy"
@@ -750,7 +750,7 @@ export const CheckoutPage: React.FC = () => {
                       borderColor: cor,
                     }}
                   >
-                    <MapPin size={12} style={{ color: cor }} />
+                    <MapPin size="0.75rem" style={{ color: cor }} />
                   </button>
                 );
               })}
@@ -771,13 +771,13 @@ export const CheckoutPage: React.FC = () => {
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-white font-bold text-sm">{m.label}</p>
-                        <p className="text-zinc-400 text-[9px]">{m.capacidade} pessoas</p>
+                        <p className="text-zinc-400 text-[0.5625rem]">{m.capacidade} pessoas</p>
                       </div>
                       <div className="text-right">
                         <p className={`font-black text-base ${selected ? 'text-[#FFD300]' : 'text-zinc-400'}`}>
                           {fmtBrl(m.valor)}
                         </p>
-                        {selected && <p className="text-emerald-400 text-[8px] font-bold uppercase">Selecionada</p>}
+                        {selected && <p className="text-emerald-400 text-[0.5rem] font-bold uppercase">Selecionada</p>}
                       </div>
                     </div>
                   </div>
@@ -794,8 +794,8 @@ export const CheckoutPage: React.FC = () => {
                 onClick={() => setCupomOpen(p => !p)}
                 className="flex items-center gap-2 text-zinc-400 active:text-zinc-300 transition-colors"
               >
-                <Tag size={12} />
-                <span className="text-[9px] font-bold uppercase tracking-widest">
+                <Tag size="0.75rem" />
+                <span className="text-[0.5625rem] font-bold uppercase tracking-widest">
                   {cupomOpen ? 'Fechar' : 'Tem um cupom?'}
                 </span>
               </button>
@@ -814,22 +814,22 @@ export const CheckoutPage: React.FC = () => {
                   <button
                     onClick={handleAplicarCupom}
                     disabled={cupomLoading || !cupomCode.trim()}
-                    className="px-4 py-2.5 bg-[#FFD300]/10 border border-[#FFD300]/20 rounded-xl text-[#FFD300] text-[9px] font-black uppercase tracking-wider active:scale-95 transition-all disabled:opacity-30 shrink-0"
+                    className="px-4 py-2.5 bg-[#FFD300]/10 border border-[#FFD300]/20 rounded-xl text-[#FFD300] text-[0.5625rem] font-black uppercase tracking-wider active:scale-95 transition-all disabled:opacity-30 shrink-0"
                   >
                     {cupomLoading ? '...' : 'Aplicar'}
                   </button>
                 </div>
               )}
-              {cupomErro && <p className="text-red-400 text-[10px]">{cupomErro}</p>}
+              {cupomErro && <p className="text-red-400 text-[0.625rem]">{cupomErro}</p>}
             </>
           ) : (
             <div className="flex items-center justify-between p-3 bg-emerald-500/5 border border-emerald-500/20 rounded-xl">
               <div className="flex items-center gap-2 min-w-0">
-                <Tag size={12} className="text-emerald-400 shrink-0" />
+                <Tag size="0.75rem" className="text-emerald-400 shrink-0" />
                 <span className="text-emerald-400 text-xs font-bold uppercase tracking-wider truncate">
                   {cupomAplicado.codigo}
                 </span>
-                <span className="text-emerald-400/60 text-[9px] shrink-0">
+                <span className="text-emerald-400/60 text-[0.5625rem] shrink-0">
                   −{cupomAplicado.tipo === 'PERCENTUAL' ? `${cupomAplicado.valor}%` : fmtBrl(cupomAplicado.valor)}
                 </span>
               </div>
@@ -837,7 +837,7 @@ export const CheckoutPage: React.FC = () => {
                 onClick={removerCupom}
                 className="p-1 text-zinc-400 active:text-red-400 transition-colors shrink-0"
               >
-                <X size={12} />
+                <X size="0.75rem" />
               </button>
             </div>
           )}
@@ -848,7 +848,7 @@ export const CheckoutPage: React.FC = () => {
       <div className="shrink-0 p-4 bg-[#0A0A0A] border-t border-white/5 space-y-3">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-[9px] text-zinc-400 uppercase font-black tracking-widest">Total</p>
+            <p className="text-[0.5625rem] text-zinc-400 uppercase font-black tracking-widest">Total</p>
             <div className="flex items-baseline gap-2">
               {desconto > 0 && totalItems > 0 && !evento.ocultarValor && (
                 <p className="text-sm text-zinc-400 line-through">{fmtBrl(subtotal)}</p>
@@ -858,7 +858,7 @@ export const CheckoutPage: React.FC = () => {
               </p>
             </div>
             {totalItems > 0 && (
-              <p className="text-zinc-400 text-[9px]">
+              <p className="text-zinc-400 text-[0.5625rem]">
                 {totalItems} ingresso{totalItems !== 1 ? 's' : ''}
                 {descontoMVValor > 0 && (
                   <span className="text-emerald-400 ml-1">· −{fmtBrl(descontoMVValor)} desconto</span>
@@ -872,14 +872,14 @@ export const CheckoutPage: React.FC = () => {
           <button
             onClick={() => setStep('login')}
             disabled={totalItems === 0}
-            className="flex items-center gap-2 px-6 py-3.5 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl font-bold text-[10px] uppercase tracking-widest text-white shadow-[0_0_20px_rgba(168,85,247,0.4)] active:scale-95 transition-all disabled:opacity-30 disabled:scale-100"
+            className="flex items-center gap-2 px-6 py-3.5 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl font-bold text-[0.625rem] uppercase tracking-widest text-white shadow-[0_0_20px_rgba(168,85,247,0.4)] active:scale-95 transition-all disabled:opacity-30 disabled:scale-100"
           >
-            <ShoppingBag size={14} />
+            <ShoppingBag size="0.875rem" />
             {totalItems > 0 ? `Continuar (${totalItems})` : 'Continuar'}
           </button>
         </div>
-        <p className="text-center text-zinc-700 text-[8px] flex items-center justify-center gap-1">
-          <Lock size={9} /> Pagamento seguro · fora do app
+        <p className="text-center text-zinc-700 text-[0.5rem] flex items-center justify-center gap-1">
+          <Lock size="0.5625rem" /> Pagamento seguro · fora do app
         </p>
       </div>
 
@@ -916,7 +916,7 @@ export const CheckoutPage: React.FC = () => {
           >
             <div className="w-10 h-1 bg-zinc-700 rounded-full mx-auto" />
             <div>
-              <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">Identificação</p>
+              <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest">Identificação</p>
               <p className="text-white font-bold text-lg mt-0.5">Entrar com sua conta VANTA</p>
               <p className="text-zinc-400 text-xs mt-1">Use os mesmos dados do aplicativo</p>
             </div>
@@ -950,7 +950,7 @@ export const CheckoutPage: React.FC = () => {
             <button
               onClick={handleLogin}
               disabled={loading}
-              className="w-full py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl font-bold text-[10px] uppercase tracking-[0.2em] text-white active:scale-95 transition-all disabled:opacity-50"
+              className="w-full py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl font-bold text-[0.625rem] uppercase tracking-[0.2em] text-white active:scale-95 transition-all disabled:opacity-50"
             >
               {loading ? 'Processando...' : `Confirmar ${totalItems} ingresso${totalItems !== 1 ? 's' : ''}`}
             </button>

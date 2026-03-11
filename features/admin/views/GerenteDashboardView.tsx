@@ -100,8 +100,8 @@ const ModalReenvio: React.FC<{
           {evento.mensagemNegociacao && (
             <div className="bg-cyan-500/5 border border-cyan-500/10 rounded-xl px-4 py-3">
               <div className="flex items-center gap-2 mb-1">
-                <MessageSquare size={11} className="text-cyan-400" />
-                <p className="text-[8px] text-cyan-400 font-black uppercase tracking-widest">Mensagem do Sócio</p>
+                <MessageSquare size="0.6875rem" className="text-cyan-400" />
+                <p className="text-[0.5rem] text-cyan-400 font-black uppercase tracking-widest">Mensagem do Sócio</p>
               </div>
               <p className="text-zinc-300 text-xs leading-relaxed italic">"{evento.mensagemNegociacao}"</p>
             </div>
@@ -109,7 +109,7 @@ const ModalReenvio: React.FC<{
 
           {/* Split */}
           <div>
-            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">Split da Receita</p>
+            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2">Split da Receita</p>
             <VantaSlider min={10} max={90} value={splitProdutor} onChange={setSplitProdutor} className="w-full" />
             <div className="flex justify-between mt-1">
               <span className="text-zinc-400 text-xs font-bold">Produtor: {splitProdutor}%</span>
@@ -119,7 +119,9 @@ const ModalReenvio: React.FC<{
 
           {/* Permissões */}
           <div>
-            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">Permissões Solicitadas</p>
+            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2">
+              Permissões Solicitadas
+            </p>
             <div className="space-y-1.5">
               {PERMISSOES_DISPONIVEIS.map(p => (
                 <button
@@ -134,7 +136,7 @@ const ModalReenvio: React.FC<{
                       permissoes.includes(p) ? 'border-purple-400 bg-purple-400' : 'border-zinc-600'
                     }`}
                   >
-                    {permissoes.includes(p) && <Check size={8} className="text-black" strokeWidth={3} />}
+                    {permissoes.includes(p) && <Check size="0.5rem" className="text-black" strokeWidth={3} />}
                   </div>
                   <span className="text-zinc-300 text-xs">{p.replace(/_/g, ' ')}</span>
                 </button>
@@ -144,7 +146,7 @@ const ModalReenvio: React.FC<{
 
           {/* Mensagem */}
           <div>
-            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">
+            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2">
               Mensagem ao Sócio (opcional)
             </p>
             <textarea
@@ -161,7 +163,7 @@ const ModalReenvio: React.FC<{
           <button
             onClick={onCancelar}
             disabled={enviando}
-            className="flex-1 py-4 bg-zinc-900 border border-white/10 text-zinc-400 font-black text-[10px] uppercase tracking-widest rounded-xl active:scale-95 transition-all disabled:opacity-40"
+            className="flex-1 py-4 bg-zinc-900 border border-white/10 text-zinc-400 font-black text-[0.625rem] uppercase tracking-widest rounded-xl active:scale-95 transition-all disabled:opacity-40"
           >
             Cancelar
           </button>
@@ -175,9 +177,9 @@ const ModalReenvio: React.FC<{
               })
             }
             disabled={enviando}
-            className="flex-1 py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-widest rounded-xl active:scale-95 transition-all disabled:opacity-60"
+            className="flex-1 py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-widest rounded-xl active:scale-95 transition-all disabled:opacity-60"
           >
-            {enviando ? <RefreshCw size={14} className="animate-spin mx-auto" /> : 'Reenviar'}
+            {enviando ? <RefreshCw size="0.875rem" className="animate-spin mx-auto" /> : 'Reenviar'}
           </button>
         </div>
       </div>
@@ -204,12 +206,12 @@ const EventoCard: React.FC<{
       onClick={onClick}
       className="w-full text-left relative rounded-2xl overflow-hidden active:scale-[0.98] transition-all"
     >
-      <div className="aspect-[16/6] max-h-[180px] w-full">
+      <div className="aspect-[16/6] max-h-[11.25rem] w-full">
         {ev.foto ? (
           <img loading="lazy" src={ev.foto} alt={ev.nome} className="w-full h-full object-cover" />
         ) : (
           <div className="w-full h-full bg-zinc-900 flex items-center justify-center">
-            <Calendar size={24} className="text-zinc-800" />
+            <Calendar size="1.5rem" className="text-zinc-800" />
           </div>
         )}
       </div>
@@ -219,23 +221,25 @@ const EventoCard: React.FC<{
       />
       <div className="absolute inset-0 flex flex-col justify-center px-5">
         <div className="flex items-center gap-2 mb-1 flex-wrap">
-          <Clock size={9} className="text-[#FFD300]/70" />
-          <p className="text-[#FFD300] text-[8px] font-black uppercase tracking-[0.15em]">
+          <Clock size="0.5625rem" className="text-[#FFD300]/70" />
+          <p className="text-[#FFD300] text-[0.5rem] font-black uppercase tracking-[0.15em]">
             {fmtData(ev.dataInicio)} · {fmtHora(ev.dataInicio)}
           </p>
           {badge === 'ao_vivo' && (
-            <span className="text-[7px] bg-emerald-500/20 text-emerald-400 font-black uppercase tracking-wider px-1.5 py-0.5 rounded flex items-center gap-1">
-              <Radio size={7} className="animate-pulse" />
+            <span className="text-[0.4375rem] bg-emerald-500/20 text-emerald-400 font-black uppercase tracking-wider px-1.5 py-0.5 rounded flex items-center gap-1">
+              <Radio size="0.4375rem" className="animate-pulse" />
               Ao Vivo
             </span>
           )}
           {badge === 'encerrado' && (
-            <span className="text-[7px] bg-zinc-700/60 text-zinc-400 font-black uppercase tracking-wider px-1.5 py-0.5 rounded">
+            <span className="text-[0.4375rem] bg-zinc-700/60 text-zinc-400 font-black uppercase tracking-wider px-1.5 py-0.5 rounded">
               Encerrado
             </span>
           )}
           {statusInfo && (
-            <span className={`text-[7px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded ${statusInfo.cls}`}>
+            <span
+              className={`text-[0.4375rem] font-black uppercase tracking-wider px-1.5 py-0.5 rounded ${statusInfo.cls}`}
+            >
               {statusInfo.label}
             </span>
           )}
@@ -243,8 +247,8 @@ const EventoCard: React.FC<{
         <p className="text-white font-bold text-sm leading-tight truncate">{ev.nome}</p>
         {ev.local && (
           <div className="flex items-center gap-1 mt-0.5">
-            <MapPin size={8} className="text-zinc-400" />
-            <p className="text-zinc-400 text-[10px] truncate">{ev.local}</p>
+            <MapPin size="0.5rem" className="text-zinc-400" />
+            <p className="text-zinc-400 text-[0.625rem] truncate">{ev.local}</p>
           </div>
         )}
       </div>
@@ -496,7 +500,9 @@ export const GerenteDashboardView: React.FC<{
             }}
           />
           <div className="absolute bottom-0 left-0 right-0 px-6 pb-4">
-            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-[0.2em] mb-1">Painel da Comunidade</p>
+            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-[0.2em] mb-1">
+              Painel da Comunidade
+            </p>
             <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic leading-none text-white truncate">
               {comunidadeNome}
             </h1>
@@ -509,8 +515,8 @@ export const GerenteDashboardView: React.FC<{
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 mb-4 -mt-1">
             <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-3 flex flex-col gap-1">
               <div className="flex items-center gap-1.5">
-                <DollarSign size={11} className="text-[#FFD300] shrink-0" />
-                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider">Receita Total</p>
+                <DollarSign size="0.6875rem" className="text-[#FFD300] shrink-0" />
+                <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-wider">Receita Total</p>
               </div>
               <p className="text-lg font-bold text-[#FFD300] leading-none truncate">
                 {kpisAgg.loading ? '...' : fmtBRL(kpisFiltrados.receita)}
@@ -518,8 +524,8 @@ export const GerenteDashboardView: React.FC<{
             </div>
             <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-3 flex flex-col gap-1">
               <div className="flex items-center gap-1.5">
-                <UserCheck size={11} className="text-emerald-400 shrink-0" />
-                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider">Check-ins</p>
+                <UserCheck size="0.6875rem" className="text-emerald-400 shrink-0" />
+                <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-wider">Check-ins</p>
               </div>
               <p className="text-lg font-bold text-white leading-none">
                 {kpisAgg.loading ? '...' : String(kpisFiltrados.checkins)}
@@ -527,24 +533,24 @@ export const GerenteDashboardView: React.FC<{
             </div>
             <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-3 flex flex-col gap-1">
               <div className="flex items-center gap-1.5">
-                <Ticket size={11} className="text-purple-400 shrink-0" />
-                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider">Próx. Evento</p>
+                <Ticket size="0.6875rem" className="text-purple-400 shrink-0" />
+                <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-wider">Próx. Evento</p>
               </div>
-              <p className="text-[11px] font-bold text-white leading-tight truncate">{proxEventoLabel}</p>
+              <p className="text-[0.6875rem] font-bold text-white leading-tight truncate">{proxEventoLabel}</p>
             </div>
             <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-3 flex flex-col gap-1">
               <div className="flex items-center gap-1.5">
-                <Users size={11} className="text-blue-400 shrink-0" />
-                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider">Equipe</p>
+                <Users size="0.6875rem" className="text-blue-400 shrink-0" />
+                <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-wider">Equipe</p>
               </div>
               <p className="text-lg font-bold text-white leading-none">{equipeTotalCount}</p>
-              <p className="text-[8px] text-zinc-400">{aoVivo.length + futuros.length} eventos ativos</p>
+              <p className="text-[0.5rem] text-zinc-400">{aoVivo.length + futuros.length} eventos ativos</p>
             </div>
             {reviewsCom.count > 0 && (
               <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-3 flex flex-col gap-1 col-span-2 md:col-span-1">
                 <div className="flex items-center gap-1.5">
-                  <Star size={11} className="text-[#FFD300] shrink-0" />
-                  <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider">Reviews</p>
+                  <Star size="0.6875rem" className="text-[#FFD300] shrink-0" />
+                  <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-wider">Reviews</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <p className="text-lg font-bold text-[#FFD300] leading-none">{reviewsCom.media.toFixed(1)}</p>
@@ -552,7 +558,7 @@ export const GerenteDashboardView: React.FC<{
                     {[1, 2, 3, 4, 5].map(i => (
                       <Star
                         key={i}
-                        size={9}
+                        size="0.5625rem"
                         className={
                           i <= Math.round(reviewsCom.media) ? 'text-[#FFD300] fill-[#FFD300]' : 'text-zinc-700'
                         }
@@ -560,7 +566,7 @@ export const GerenteDashboardView: React.FC<{
                     ))}
                   </div>
                 </div>
-                <p className="text-[8px] text-zinc-400">{reviewsCom.count} avaliações</p>
+                <p className="text-[0.5rem] text-zinc-400">{reviewsCom.count} avaliações</p>
               </div>
             )}
           </div>
@@ -569,10 +575,12 @@ export const GerenteDashboardView: React.FC<{
           {!kpisAgg.loading && kpisAgg.receitaPorDia.length > 1 && (
             <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-4 mb-4">
               <div className="flex items-center justify-between mb-2">
-                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Receita Últimos 30 Dias</p>
+                <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">
+                  Receita Últimos 30 Dias
+                </p>
                 <div className="flex items-center gap-1">
-                  <TrendingUp size={10} className="text-[#FFD300]" />
-                  <p className="text-[10px] text-[#FFD300] font-bold">{fmtBRL(kpisAgg.receitaTotal)}</p>
+                  <TrendingUp size="0.625rem" className="text-[#FFD300]" />
+                  <p className="text-[0.625rem] text-[#FFD300] font-bold">{fmtBRL(kpisAgg.receitaTotal)}</p>
                 </div>
               </div>
               <ResponsiveContainer width="100%" height={80}>
@@ -612,7 +620,7 @@ export const GerenteDashboardView: React.FC<{
                     ? kpisAgg.porEvento.find(e => e.eventoId === filtroEventoId)?.eventoNome
                     : 'Todos os eventos'}
                 </span>
-                <ChevronDown size={14} className="text-zinc-400" />
+                <ChevronDown size="0.875rem" className="text-zinc-400" />
               </button>
               {showFiltroDropdown && (
                 <div className="absolute left-0 right-0 top-full z-20 bg-zinc-900 border border-white/10 rounded-xl overflow-hidden shadow-xl mt-1">
@@ -653,7 +661,7 @@ export const GerenteDashboardView: React.FC<{
             >
               <div className="flex items-center gap-2">
                 <TrendingUp
-                  size={14}
+                  size="0.875rem"
                   className={tendenciaGerente === 'acima' ? 'text-emerald-400' : 'text-orange-400'}
                 />
                 <p
@@ -661,7 +669,7 @@ export const GerenteDashboardView: React.FC<{
                 >
                   {tendenciaGerente === 'acima' ? 'Acima' : 'Abaixo'} da média
                 </p>
-                <p className="text-[10px] text-zinc-400">
+                <p className="text-[0.625rem] text-zinc-400">
                   ({fmtBRL(eventoFiltrado?.receita ?? 0)} vs média {fmtBRL(mediaReceitaEvento)})
                 </p>
               </div>
@@ -671,7 +679,7 @@ export const GerenteDashboardView: React.FC<{
           {/* Comparativo por evento */}
           {!kpisAgg.loading && kpisAgg.porEvento.length > 1 && !filtroEventoId && (
             <div className="mb-4">
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider mb-2">
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-wider mb-2">
                 Comparativo por Evento
               </p>
               <div className="space-y-2">
@@ -689,7 +697,7 @@ export const GerenteDashboardView: React.FC<{
                           style={{ width: `${Math.min(pct, 200)}%` }}
                         />
                       </div>
-                      <p className="text-[9px] text-zinc-400 mt-1">{ev.checkins} check-ins</p>
+                      <p className="text-[0.5625rem] text-zinc-400 mt-1">{ev.checkins} check-ins</p>
                     </div>
                   );
                 })}
@@ -705,10 +713,10 @@ export const GerenteDashboardView: React.FC<{
           >
             <div>
               <p className="text-black font-black text-sm uppercase tracking-wider leading-none">Criar Novo Evento</p>
-              <p className="text-black/50 text-[10px] font-bold mt-1">{comunidadeNome}</p>
+              <p className="text-black/50 text-[0.625rem] font-bold mt-1">{comunidadeNome}</p>
             </div>
             <div className="w-10 h-10 bg-black/10 rounded-xl flex items-center justify-center shrink-0">
-              <Plus size={18} className="text-black" />
+              <Plus size="1.125rem" className="text-black" />
             </div>
           </button>
           {/* Seção Ao Vivo (só aparece se houver eventos acontecendo) */}
@@ -716,7 +724,7 @@ export const GerenteDashboardView: React.FC<{
             <div className="mb-6">
               <div className="flex items-center gap-2 mb-3">
                 <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                <p className="text-[9px] font-black uppercase tracking-[0.2em] text-emerald-400">
+                <p className="text-[0.5625rem] font-black uppercase tracking-[0.2em] text-emerald-400">
                   Acontecendo Agora ({aoVivo.length})
                 </p>
               </div>
@@ -732,8 +740,8 @@ export const GerenteDashboardView: React.FC<{
           {emNegociacao.length > 0 && (
             <div className="mb-6">
               <div className="flex items-center gap-2 mb-3">
-                <AlertCircle size={12} className="text-amber-400" />
-                <p className="text-[9px] font-black uppercase tracking-[0.2em] text-amber-400">
+                <AlertCircle size="0.75rem" className="text-amber-400" />
+                <p className="text-[0.5625rem] font-black uppercase tracking-[0.2em] text-amber-400">
                   Em Negociação ({emNegociacao.length})
                 </p>
               </div>
@@ -745,34 +753,38 @@ export const GerenteDashboardView: React.FC<{
                     {ev.mensagemNegociacao && ev.statusEvento === 'NEGOCIANDO' && (
                       <div className="px-4 py-3 border-t border-white/5">
                         <div className="flex items-center gap-2 mb-1">
-                          <MessageSquare size={10} className="text-cyan-400" />
-                          <p className="text-[8px] text-cyan-400 font-black uppercase tracking-widest">Msg do Sócio</p>
+                          <MessageSquare size="0.625rem" className="text-cyan-400" />
+                          <p className="text-[0.5rem] text-cyan-400 font-black uppercase tracking-widest">
+                            Msg do Sócio
+                          </p>
                         </div>
-                        <p className="text-zinc-400 text-[10px] leading-relaxed italic">"{ev.mensagemNegociacao}"</p>
+                        <p className="text-zinc-400 text-[0.625rem] leading-relaxed italic">
+                          "{ev.mensagemNegociacao}"
+                        </p>
                       </div>
                     )}
                     {ev.statusEvento === 'RASCUNHO' && (
                       <div className="px-4 py-3 border-t border-white/5 space-y-2">
                         {ev.motivoRejeicao && (
-                          <p className="text-red-400/80 text-[10px] leading-relaxed">Motivo: {ev.motivoRejeicao}</p>
+                          <p className="text-red-400/80 text-[0.625rem] leading-relaxed">Motivo: {ev.motivoRejeicao}</p>
                         )}
                         <div className="flex items-center gap-2">
-                          <p className="text-zinc-400 text-[9px] flex-1">Rodada {ev.rodadaNegociacao ?? 1}/3</p>
+                          <p className="text-zinc-400 text-[0.5625rem] flex-1">Rodada {ev.rodadaNegociacao ?? 1}/3</p>
                           {(ev.rodadaNegociacao ?? 1) < 3 ? (
                             <button
                               onClick={() => setReenvioModal(ev)}
                               disabled={reenviando === ev.id}
-                              className="flex items-center gap-1.5 px-3 py-2 bg-[#FFD300] text-black rounded-xl text-[9px] font-black uppercase tracking-wider active:scale-95 transition-all disabled:opacity-50"
+                              className="flex items-center gap-1.5 px-3 py-2 bg-[#FFD300] text-black rounded-xl text-[0.5625rem] font-black uppercase tracking-wider active:scale-95 transition-all disabled:opacity-50"
                             >
                               {reenviando === ev.id ? (
-                                <RefreshCw size={11} className="animate-spin" />
+                                <RefreshCw size="0.6875rem" className="animate-spin" />
                               ) : (
-                                <Send size={11} />
+                                <Send size="0.6875rem" />
                               )}
                               Reenviar Proposta
                             </button>
                           ) : (
-                            <span className="text-red-400 text-[9px] font-black uppercase tracking-wider">
+                            <span className="text-red-400 text-[0.5625rem] font-black uppercase tracking-wider">
                               Limite atingido
                             </span>
                           )}
@@ -794,8 +806,8 @@ export const GerenteDashboardView: React.FC<{
             return (
               <div className="mb-6">
                 <div className="flex items-center gap-2 mb-3">
-                  <Percent size={12} className="text-[#FFD300]" />
-                  <p className="text-[9px] font-black uppercase tracking-[0.2em] text-[#FFD300]">
+                  <Percent size="0.75rem" className="text-[#FFD300]" />
+                  <p className="text-[0.5625rem] font-black uppercase tracking-[0.2em] text-[#FFD300]">
                     Propostas VANTA ({propostasVanta.length})
                   </p>
                 </div>
@@ -808,28 +820,34 @@ export const GerenteDashboardView: React.FC<{
                       <EventoCard ev={ev} onClick={() => setEventoAberto(ev)} />
                       <div className="px-4 py-3 border-t border-white/5 space-y-2">
                         <div className="flex items-center gap-2 mb-1">
-                          <Link size={10} className="text-[#FFD300]" />
-                          <p className="text-[8px] text-[#FFD300] font-black uppercase tracking-widest">
+                          <Link size="0.625rem" className="text-[#FFD300]" />
+                          <p className="text-[0.5rem] text-[#FFD300] font-black uppercase tracking-widest">
                             Proposta de Parceria
                           </p>
                           {ev.propostaRodada && (
-                            <span className="text-[7px] text-zinc-400 font-bold">Rodada {ev.propostaRodada}/3</span>
+                            <span className="text-[0.4375rem] text-zinc-400 font-bold">
+                              Rodada {ev.propostaRodada}/3
+                            </span>
                           )}
                         </div>
                         <div className="grid grid-cols-2 gap-2">
                           <div className="bg-zinc-950/50 rounded-lg px-2.5 py-1.5">
-                            <p className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">Comissão</p>
+                            <p className="text-[0.4375rem] text-zinc-400 font-black uppercase tracking-widest">
+                              Comissão
+                            </p>
                             <p className="text-[#FFD300] text-sm font-bold">{ev.comissaoVanta ?? 0}%</p>
                           </div>
                           <div className="bg-zinc-950/50 rounded-lg px-2.5 py-1.5">
-                            <p className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">
+                            <p className="text-[0.4375rem] text-zinc-400 font-black uppercase tracking-widest">
                               Cód. Afiliado
                             </p>
                             <p className="text-white text-xs font-bold truncate">{ev.codigoAfiliado ?? '—'}</p>
                           </div>
                         </div>
                         {ev.propostaMensagem && (
-                          <p className="text-zinc-400 text-[10px] leading-relaxed italic">"{ev.propostaMensagem}"</p>
+                          <p className="text-zinc-400 text-[0.625rem] leading-relaxed italic">
+                            "{ev.propostaMensagem}"
+                          </p>
                         )}
                         <div className="flex gap-2 pt-1">
                           <button
@@ -849,9 +867,9 @@ export const GerenteDashboardView: React.FC<{
                               }
                             }}
                             disabled={respondendoProposta === ev.id}
-                            className="flex-1 py-2.5 bg-zinc-900 border border-red-500/20 text-red-400 font-bold text-[9px] uppercase tracking-widest rounded-xl flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all disabled:opacity-40"
+                            className="flex-1 py-2.5 bg-zinc-900 border border-red-500/20 text-red-400 font-bold text-[0.5625rem] uppercase tracking-widest rounded-xl flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all disabled:opacity-40"
                           >
-                            <X size={12} /> Recusar
+                            <X size="0.75rem" /> Recusar
                           </button>
                           <button
                             onClick={async () => {
@@ -870,12 +888,12 @@ export const GerenteDashboardView: React.FC<{
                               }
                             }}
                             disabled={respondendoProposta === ev.id}
-                            className="flex-1 py-2.5 bg-[#FFD300] text-black font-bold text-[9px] uppercase tracking-widest rounded-xl flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all disabled:opacity-40"
+                            className="flex-1 py-2.5 bg-[#FFD300] text-black font-bold text-[0.5625rem] uppercase tracking-widest rounded-xl flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all disabled:opacity-40"
                           >
                             {respondendoProposta === ev.id ? (
-                              <RefreshCw size={12} className="animate-spin" />
+                              <RefreshCw size="0.75rem" className="animate-spin" />
                             ) : (
-                              <Check size={12} />
+                              <Check size="0.75rem" />
                             )}
                             Aceitar
                           </button>
@@ -894,7 +912,7 @@ export const GerenteDashboardView: React.FC<{
               <button
                 key={tab}
                 onClick={() => setAba(tab)}
-                className={`flex-1 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-wider transition-all border ${
+                className={`flex-1 py-2.5 rounded-xl text-[0.5625rem] font-black uppercase tracking-wider transition-all border ${
                   aba === tab
                     ? 'bg-[#FFD300]/10 border-[#FFD300]/30 text-[#FFD300]'
                     : 'bg-zinc-900/40 border-white/5 text-zinc-400 active:border-white/20'
@@ -912,7 +930,7 @@ export const GerenteDashboardView: React.FC<{
           {/* Lista de eventos da aba selecionada */}
           {listaAtual.length === 0 ? (
             <div className="flex flex-col items-center justify-center gap-3 py-16">
-              <Calendar size={28} className="text-zinc-800" />
+              <Calendar size="1.75rem" className="text-zinc-800" />
               <p className="text-zinc-400 text-xs font-semibold">
                 {aba === 'FUTUROS'
                   ? 'Nenhum evento futuro'
@@ -920,7 +938,7 @@ export const GerenteDashboardView: React.FC<{
                     ? 'Nenhum evento cancelado'
                     : 'Nenhum evento passado'}
               </p>
-              <p className="text-zinc-700 text-[10px] font-black uppercase tracking-widest">
+              <p className="text-zinc-700 text-[0.625rem] font-black uppercase tracking-widest">
                 {aba === 'FUTUROS'
                   ? 'Crie seu primeiro evento acima'
                   : aba === 'CANCELADOS'

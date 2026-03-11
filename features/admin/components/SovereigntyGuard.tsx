@@ -59,7 +59,7 @@ export const SovereigntyGuard: React.FC<SovereigntyGuardProps> = ({
     <div className="flex flex-col items-center justify-center gap-5 py-12 px-6">
       <div className="flex flex-col items-center gap-5 p-7 rounded-2xl bg-zinc-900/60 border border-white/5 text-center w-full max-w-xs">
         <div className="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
-          <LockKeyhole size={22} className="text-amber-400" />
+          <LockKeyhole size="1.375rem" className="text-amber-400" />
         </div>
 
         <div className="space-y-2">
@@ -69,14 +69,14 @@ export const SovereigntyGuard: React.FC<SovereigntyGuardProps> = ({
             <span className="text-white/60 font-semibold">{nomeEvento}</span>, você precisa de autorização do Gerente do
             Evento.
           </p>
-          <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest mt-1">
+          <p className="text-[0.5625rem] text-zinc-400 font-black uppercase tracking-widest mt-1">
             O sócio/dono do evento deve aprovar seu acesso no painel dele.
           </p>
         </div>
 
         {solicitado ? (
           <div className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-400 font-semibold">
-            <Clock size={12} />
+            <Clock size="0.75rem" />
             Solicitação enviada — aguardando aprovação
           </div>
         ) : (

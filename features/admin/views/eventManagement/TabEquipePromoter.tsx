@@ -163,10 +163,10 @@ export const TabEquipePromoter: React.FC<{
       >
         <div>
           <p className="text-black font-black text-sm uppercase tracking-wider leading-none">Distribuir Cota</p>
-          <p className="text-black/50 text-[10px] font-bold mt-1">Alocar vagas aos promoters</p>
+          <p className="text-black/50 text-[0.625rem] font-bold mt-1">Alocar vagas aos promoters</p>
         </div>
         <div className="w-10 h-10 bg-black/10 rounded-xl flex items-center justify-center shrink-0">
-          <Plus size={18} className="text-black" />
+          <Plus size="1.125rem" className="text-black" />
         </div>
       </button>
 
@@ -174,21 +174,21 @@ export const TabEquipePromoter: React.FC<{
       {ranking.length > 0 && (
         <div className="bg-zinc-900/40 border border-white/5 rounded-2xl p-4">
           <div className="flex items-center gap-2 mb-3">
-            <Trophy size={14} className="text-[#FFD300]" />
-            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Ranking Promoters</p>
+            <Trophy size="0.875rem" className="text-[#FFD300]" />
+            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">Ranking Promoters</p>
           </div>
           <div className="space-y-2">
             {ranking.map((r, i) => (
               <div key={r.pid} className="flex items-center gap-3">
                 <span
-                  className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 text-[9px] font-black ${i === 0 ? 'bg-[#FFD300] text-black' : i === 1 ? 'bg-zinc-400 text-black' : i === 2 ? 'bg-amber-700 text-white' : 'bg-zinc-800 text-zinc-400'}`}
+                  className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 text-[0.5625rem] font-black ${i === 0 ? 'bg-[#FFD300] text-black' : i === 1 ? 'bg-zinc-400 text-black' : i === 2 ? 'bg-amber-700 text-white' : 'bg-zinc-800 text-zinc-400'}`}
                 >
                   {i + 1}
                 </span>
                 <div className="flex-1 min-w-0">
                   <p className="text-white text-xs font-bold truncate">{r.nome}</p>
                 </div>
-                <div className="flex items-center gap-3 shrink-0 text-[9px]">
+                <div className="flex items-center gap-3 shrink-0 text-[0.5625rem]">
                   <span className="text-zinc-400">{r.nomesNaLista} nomes</span>
                   <span className="text-emerald-400">{r.checkins} check-ins</span>
                   <span className="text-zinc-400">{r.conversao}%</span>
@@ -201,8 +201,8 @@ export const TabEquipePromoter: React.FC<{
 
       {promoterIds.length === 0 && (
         <div className="flex flex-col items-center py-12 gap-3">
-          <Users size={28} className="text-zinc-800" />
-          <p className="text-zinc-700 text-[10px] font-black uppercase tracking-widest">
+          <Users size="1.75rem" className="text-zinc-800" />
+          <p className="text-zinc-700 text-[0.625rem] font-black uppercase tracking-widest">
             Nenhum promoter com cota ainda
           </p>
         </div>
@@ -222,11 +222,11 @@ export const TabEquipePromoter: React.FC<{
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-white font-bold text-sm leading-none truncate">{promoter?.nome ?? pid}</p>
-                <p className="text-[#FFD300]/70 text-[10px] mt-0.5 font-black">{totalSaldo} vagas disponíveis</p>
+                <p className="text-[#FFD300]/70 text-[0.625rem] mt-0.5 font-black">{totalSaldo} vagas disponíveis</p>
               </div>
               <div className="text-right shrink-0">
                 <p className="text-white font-black text-xl leading-none">{cotas.reduce((a, c) => a + c.usado, 0)}</p>
-                <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">usadas</p>
+                <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest">usadas</p>
               </div>
             </div>
             <div className="p-3 space-y-2">
@@ -240,9 +240,9 @@ export const TabEquipePromoter: React.FC<{
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-1.5">
                         <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: cor }} />
-                        <p className="text-zinc-300 text-[10px] font-bold">{regra?.label}</p>
+                        <p className="text-zinc-300 text-[0.625rem] font-bold">{regra?.label}</p>
                       </div>
-                      <div className="flex items-center gap-2 text-[9px] font-black uppercase tracking-widest">
+                      <div className="flex items-center gap-2 text-[0.5625rem] font-black uppercase tracking-widest">
                         <span className="text-zinc-400">Usado: {c.usado}</span>
                         <span className={saldo > 0 ? 'text-[#FFD300]' : 'text-zinc-700'}>Saldo: {saldo}</span>
                       </div>
@@ -258,16 +258,20 @@ export const TabEquipePromoter: React.FC<{
             <div className="px-3 pb-3 flex items-center gap-2">
               <button
                 onClick={() => copyTrackingLink(pid)}
-                className="flex items-center gap-1 px-3 py-1.5 bg-zinc-900 border border-white/5 rounded-lg text-[9px] text-zinc-400 hover:text-[#FFD300] transition-colors active:scale-95"
+                className="flex items-center gap-1 px-3 py-1.5 bg-zinc-900 border border-white/5 rounded-lg text-[0.5625rem] text-zinc-400 hover:text-[#FFD300] transition-colors active:scale-95"
               >
-                {copiedId === pid ? <Check size={11} className="text-emerald-400" /> : <Link2 size={11} />}
+                {copiedId === pid ? (
+                  <Check size="0.6875rem" className="text-emerald-400" />
+                ) : (
+                  <Link2 size="0.6875rem" />
+                )}
                 {copiedId === pid ? 'Copiado!' : 'Link de tracking'}
               </button>
               <button
                 onClick={() => setPagModal(pid)}
-                className="flex items-center gap-1 px-3 py-1.5 bg-zinc-900 border border-white/5 rounded-lg text-[9px] text-zinc-400 hover:text-emerald-400 transition-colors active:scale-95"
+                className="flex items-center gap-1 px-3 py-1.5 bg-zinc-900 border border-white/5 rounded-lg text-[0.5625rem] text-zinc-400 hover:text-emerald-400 transition-colors active:scale-95"
               >
-                <DollarSign size={11} /> Pagamento
+                <DollarSign size="0.6875rem" /> Pagamento
               </button>
             </div>
           </div>
@@ -318,22 +322,22 @@ export const TabEquipePromoter: React.FC<{
                 placeholder="Quantidade de vagas"
                 className={inputCls}
               />
-              {erro && <p className="text-red-400 text-[10px] font-black uppercase tracking-widest">{erro}</p>}
+              {erro && <p className="text-red-400 text-[0.625rem] font-black uppercase tracking-widest">{erro}</p>}
               <div className="flex gap-2 pt-1">
                 <button
                   onClick={() => {
                     setDistModal(false);
                     setErro('');
                   }}
-                  className="flex-1 py-3.5 bg-zinc-900 border border-white/10 rounded-xl text-zinc-400 text-[10px] font-black uppercase tracking-widest active:scale-95 transition-all"
+                  className="flex-1 py-3.5 bg-zinc-900 border border-white/10 rounded-xl text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest active:scale-95 transition-all"
                 >
                   Cancelar
                 </button>
                 <button
                   onClick={handleDistribuir}
-                  className="flex-1 py-3.5 bg-[#FFD300] text-black rounded-xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-1.5 active:scale-95 transition-all"
+                  className="flex-1 py-3.5 bg-[#FFD300] text-black rounded-xl text-[0.625rem] font-black uppercase tracking-widest flex items-center justify-center gap-1.5 active:scale-95 transition-all"
                 >
-                  <Check size={12} /> Confirmar
+                  <Check size="0.75rem" /> Confirmar
                 </button>
               </div>
             </div>
@@ -362,7 +366,7 @@ export const TabEquipePromoter: React.FC<{
               <h2 style={TYPOGRAPHY.screenTitle} className="text-base italic">
                 Registrar Pagamento
               </h2>
-              <p className="text-zinc-400 text-[10px] mt-1">
+              <p className="text-zinc-400 text-[0.625rem] mt-1">
                 {PROMOTERS_CACHE.find(p => p.id === pagModal)?.nome ?? pagModal}
               </p>
             </div>
@@ -385,7 +389,7 @@ export const TabEquipePromoter: React.FC<{
                 placeholder="Observação (opcional)"
                 className={inputCls}
               />
-              {erro && <p className="text-red-400 text-[10px] font-black uppercase tracking-widest">{erro}</p>}
+              {erro && <p className="text-red-400 text-[0.625rem] font-black uppercase tracking-widest">{erro}</p>}
               <div className="flex gap-2 pt-1">
                 <button
                   onClick={() => {
@@ -394,29 +398,32 @@ export const TabEquipePromoter: React.FC<{
                     setPagObs('');
                     setErro('');
                   }}
-                  className="flex-1 py-3.5 bg-zinc-900 border border-white/10 rounded-xl text-zinc-400 text-[10px] font-black uppercase tracking-widest active:scale-95 transition-all"
+                  className="flex-1 py-3.5 bg-zinc-900 border border-white/10 rounded-xl text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest active:scale-95 transition-all"
                 >
                   Cancelar
                 </button>
                 <button
                   onClick={handlePagamento}
                   disabled={pagLoading}
-                  className="flex-1 py-3.5 bg-emerald-500 text-white rounded-xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-1.5 active:scale-95 transition-all disabled:opacity-50"
+                  className="flex-1 py-3.5 bg-emerald-500 text-white rounded-xl text-[0.625rem] font-black uppercase tracking-widest flex items-center justify-center gap-1.5 active:scale-95 transition-all disabled:opacity-50"
                 >
-                  {pagLoading ? <Loader2 size={12} className="animate-spin" /> : <DollarSign size={12} />} Confirmar
+                  {pagLoading ? <Loader2 size="0.75rem" className="animate-spin" /> : <DollarSign size="0.75rem" />}{' '}
+                  Confirmar
                 </button>
               </div>
               {/* Histórico de pagamentos */}
               {pagHistLoading ? (
                 <div className="flex justify-center py-3">
-                  <Loader2 size={14} className="text-zinc-400 animate-spin" />
+                  <Loader2 size="0.875rem" className="text-zinc-400 animate-spin" />
                 </div>
               ) : pagHistorico.length > 0 ? (
                 <div className="pt-3 border-t border-white/5 space-y-2">
-                  <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Pagamentos anteriores</p>
+                  <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">
+                    Pagamentos anteriores
+                  </p>
                   {pagHistorico.map(p => (
-                    <div key={p.id} className="flex items-center gap-2 text-[10px]">
-                      <Clock size={10} className="text-zinc-700 shrink-0" />
+                    <div key={p.id} className="flex items-center gap-2 text-[0.625rem]">
+                      <Clock size="0.625rem" className="text-zinc-700 shrink-0" />
                       <span className="text-emerald-400 font-bold shrink-0">{fmtBRL(p.valor)}</span>
                       <span className="text-zinc-400 truncate flex-1">{p.observacao || '—'}</span>
                       <span className="text-zinc-700 shrink-0">
@@ -424,7 +431,7 @@ export const TabEquipePromoter: React.FC<{
                       </span>
                     </div>
                   ))}
-                  <p className="text-[9px] text-zinc-400 font-bold">
+                  <p className="text-[0.5625rem] text-zinc-400 font-bold">
                     Total: {fmtBRL(pagHistorico.reduce((s, p) => s + Number(p.valor), 0))}
                   </p>
                 </div>

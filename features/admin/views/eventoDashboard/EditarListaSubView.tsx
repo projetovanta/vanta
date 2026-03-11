@@ -109,12 +109,12 @@ export const EditarListaSubView: React.FC<Props> = ({ eventoId, onBack }) => {
     return (
       <div className="absolute inset-0 bg-[#0A0A0A] flex flex-col items-center justify-center p-10 gap-6">
         <div className="w-16 h-16 rounded-full bg-emerald-500/20 flex items-center justify-center">
-          <Check size={28} className="text-emerald-400" />
+          <Check size="1.75rem" className="text-emerald-400" />
         </div>
         <p className="text-white font-bold text-lg">{listasEnabled ? 'Lista ativada' : 'Configuração salva'}</p>
         <button
           onClick={onBack}
-          className="mt-4 px-8 py-3 bg-[#FFD300] text-black rounded-xl text-[10px] font-black uppercase tracking-widest"
+          className="mt-4 px-8 py-3 bg-[#FFD300] text-black rounded-xl text-[0.625rem] font-black uppercase tracking-widest"
         >
           Voltar ao Painel
         </button>
@@ -139,7 +139,7 @@ export const EditarListaSubView: React.FC<Props> = ({ eventoId, onBack }) => {
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0 mt-1"
           >
-            <ArrowLeft size={18} className="text-zinc-400" />
+            <ArrowLeft size="1.125rem" className="text-zinc-400" />
           </button>
         </div>
       </div>
@@ -150,16 +150,16 @@ export const EditarListaSubView: React.FC<Props> = ({ eventoId, onBack }) => {
           varsLista={varsLista}
           setVarsLista={setVarsLista}
         />
-        {erro && <p className="mt-4 text-red-400 text-[10px] font-black uppercase tracking-widest">{erro}</p>}
+        {erro && <p className="mt-4 text-red-400 text-[0.625rem] font-black uppercase tracking-widest">{erro}</p>}
       </div>
       <div className="px-6 pb-8 safe-bottom pt-3 border-t border-white/5 shrink-0">
         <button
           aria-label="Carregando"
           onClick={handleSalvar}
           disabled={saving}
-          className="w-full py-3.5 bg-[#FFD300] text-black rounded-xl text-[10px] font-black uppercase tracking-widest active:scale-95 transition-all font-bold disabled:opacity-50 flex items-center justify-center gap-2"
+          className="w-full py-3.5 bg-[#FFD300] text-black rounded-xl text-[0.625rem] font-black uppercase tracking-widest active:scale-95 transition-all font-bold disabled:opacity-50 flex items-center justify-center gap-2"
         >
-          {saving ? <Loader2 size={14} className="animate-spin" /> : null}
+          {saving ? <Loader2 size="0.875rem" className="animate-spin" /> : null}
           {listasEnabled ? 'Salvar Lista' : 'Desativar Lista'}
         </button>
       </div>

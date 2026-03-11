@@ -39,15 +39,15 @@ const PickerModal: React.FC<{
   return (
     <div className="absolute inset-0 z-[600] flex items-end justify-center animate-in fade-in duration-200">
       <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" role="presentation" onClick={onClose} />
-      <div className="relative w-full max-w-md bg-[#0A0A0A] border-t border-white/10 rounded-t-[2rem] animate-in slide-in-from-bottom duration-300 flex flex-col max-h-[70vh]">
+      <div className="relative w-full max-w-[500px] bg-[#0A0A0A] border-t border-white/10 rounded-t-[2rem] animate-in slide-in-from-bottom duration-300 flex flex-col max-h-[70vh]">
         {/* Header */}
         <div className="shrink-0 flex items-center justify-between px-6 pt-6 pb-3">
-          <h3 className="text-[10px] text-zinc-400 font-black uppercase tracking-widest">{title}</h3>
+          <h3 className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest">{title}</h3>
           <button
             onClick={onClose}
             className="w-8 h-8 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
           >
-            <X size={14} className="text-zinc-400" />
+            <X size="0.875rem" className="text-zinc-400" />
           </button>
         </div>
 
@@ -55,7 +55,7 @@ const PickerModal: React.FC<{
         {searchable && (
           <div className="shrink-0 px-6 pb-3">
             <div className="relative">
-              <Search size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
+              <Search size="0.875rem" className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
               <input
                 ref={searchRef}
                 value={search}
@@ -92,7 +92,7 @@ const PickerModal: React.FC<{
                 <span className={`text-sm font-medium ${selected ? 'text-[#FFD300]' : 'text-zinc-300'}`}>
                   {item.label}
                 </span>
-                {selected && <Check size={14} className="text-[#FFD300] shrink-0" />}
+                {selected && <Check size="0.875rem" className="text-[#FFD300] shrink-0" />}
               </button>
             );
           })}

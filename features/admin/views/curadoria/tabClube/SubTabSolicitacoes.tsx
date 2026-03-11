@@ -51,31 +51,31 @@ const BALDE_CONFIG: { key: BaldeFiltro; label: string; cor: string; icon: React.
     key: 'provavel_creator',
     label: 'Creator',
     cor: 'text-amber-300 bg-amber-500/10 border-amber-500/20',
-    icon: <Sparkles size={10} />,
+    icon: <Sparkles size="0.625rem" />,
   },
   {
     key: 'provavel_presenca',
     label: 'Presença',
     cor: 'text-pink-300 bg-pink-500/10 border-pink-500/20',
-    icon: <Eye size={10} />,
+    icon: <Eye size="0.625rem" />,
   },
   {
     key: 'provavel_social',
     label: 'Social',
     cor: 'text-blue-300 bg-blue-500/10 border-blue-500/20',
-    icon: <Users size={10} />,
+    icon: <Users size="0.625rem" />,
   },
   {
     key: 'indicado_tier_alto',
     label: 'Indicação VIP',
     cor: 'text-yellow-300 bg-yellow-500/10 border-yellow-500/20',
-    icon: <Sparkles size={10} />,
+    icon: <Sparkles size="0.625rem" />,
   },
   {
     key: 'sem_fit_claro',
     label: 'Sem fit',
     cor: 'text-zinc-400 bg-zinc-800/60 border-white/5',
-    icon: <HelpCircle size={10} />,
+    icon: <HelpCircle size="0.625rem" />,
   },
 ];
 
@@ -125,7 +125,7 @@ export const SubTabSolicitacoes: React.FC<Props> = ({
                 <button
                   key={b.key}
                   onClick={() => setBaldeFiltro(b.key)}
-                  className={`shrink-0 flex items-center gap-1 px-2.5 py-1.5 rounded-lg border text-[9px] font-bold uppercase tracking-wider transition-all active:scale-95 ${
+                  className={`shrink-0 flex items-center gap-1 px-2.5 py-1.5 rounded-lg border text-[0.5625rem] font-bold uppercase tracking-wider transition-all active:scale-95 ${
                     ativo ? b.cor + ' ring-1 ring-white/20' : 'text-zinc-500 bg-zinc-900/40 border-white/5'
                   }`}
                 >
@@ -161,7 +161,7 @@ export const SubTabSolicitacoes: React.FC<Props> = ({
                     <img loading="lazy" src={p.foto} alt="Perfil" className="w-full h-full object-cover" />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
-                      <User size={20} className="text-zinc-400" />
+                      <User size="1.25rem" className="text-zinc-400" />
                     </div>
                   )}
                 </div>
@@ -169,36 +169,36 @@ export const SubTabSolicitacoes: React.FC<Props> = ({
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <p className="text-white font-bold text-sm truncate">{p?.nome || sol.userId.slice(0, 8)}</p>
-                    <ChevronRight size={12} className="text-zinc-400 shrink-0" />
+                    <ChevronRight size="0.75rem" className="text-zinc-400 shrink-0" />
                   </div>
-                  {p?.email && <p className="text-zinc-400 text-[10px] truncate">{p.email}</p>}
+                  {p?.email && <p className="text-zinc-400 text-[0.625rem] truncate">{p.email}</p>}
                   <div className="flex items-center gap-2 mt-1 flex-wrap">
-                    <Instagram size={10} className="text-zinc-400" />
-                    <span className="text-zinc-400 text-[10px]">@{sol.instagramHandle}</span>
+                    <Instagram size="0.625rem" className="text-zinc-400" />
+                    <span className="text-zinc-400 text-[0.625rem]">@{sol.instagramHandle}</span>
                     {sol.instagramSeguidores && (
-                      <span className="text-zinc-400 text-[9px]">
+                      <span className="text-zinc-400 text-[0.5625rem]">
                         · {sol.instagramSeguidores.toLocaleString('pt-BR')} seg.
                       </span>
                     )}
                     {sol.instagramVerificado ? (
-                      <span className="text-[8px] font-black uppercase tracking-wider text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-1.5 py-0.5 rounded-full">
+                      <span className="text-[0.5rem] font-black uppercase tracking-wider text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-1.5 py-0.5 rounded-full">
                         Verificado ✓
                       </span>
                     ) : (
-                      <span className="text-[8px] font-black uppercase tracking-wider text-zinc-400 bg-zinc-800 border border-white/5 px-1.5 py-0.5 rounded-full">
+                      <span className="text-[0.5rem] font-black uppercase tracking-wider text-zinc-400 bg-zinc-800 border border-white/5 px-1.5 py-0.5 rounded-full">
                         Não verificado
                       </span>
                     )}
                   </div>
                   <div className="flex items-center gap-3 mt-1 flex-wrap">
                     {(sol.cidade || p?.cidade || p?.estado) && (
-                      <span className="text-zinc-400 text-[9px] flex items-center gap-1">
-                        <MapPin size={8} /> {sol.cidade || [p?.cidade, p?.estado].filter(Boolean).join(', ')}
+                      <span className="text-zinc-400 text-[0.5625rem] flex items-center gap-1">
+                        <MapPin size="0.5rem" /> {sol.cidade || [p?.cidade, p?.estado].filter(Boolean).join(', ')}
                       </span>
                     )}
                     {sol.baldeSugerido && (
                       <span
-                        className={`text-[8px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full ${
+                        className={`text-[0.5rem] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full ${
                           sol.baldeSugerido === 'provavel_creator'
                             ? 'text-amber-300 bg-amber-500/10 border border-amber-500/20'
                             : sol.baldeSugerido === 'provavel_presenca'
@@ -221,10 +221,10 @@ export const SubTabSolicitacoes: React.FC<Props> = ({
                                 : 'Sem fit'}
                       </span>
                     )}
-                    <span className="text-zinc-700 text-[8px]">{formatDate(sol.criadoEm)}</span>
+                    <span className="text-zinc-700 text-[0.5rem]">{formatDate(sol.criadoEm)}</span>
                   </div>
                   {(sol.convidadoPor || sol.indicadoPorTexto) && (
-                    <p className="text-zinc-400 text-[9px] mt-0.5">
+                    <p className="text-zinc-400 text-[0.5625rem] mt-0.5">
                       {sol.convidadoPor
                         ? `Convidado por: ${perfis[sol.convidadoPor]?.nome || sol.convidadoPor.slice(0, 8)}`
                         : `Indicado por: ${sol.indicadoPorTexto}`}
@@ -232,8 +232,8 @@ export const SubTabSolicitacoes: React.FC<Props> = ({
                   )}
                   {clubeService.getFlagReincidencia(sol.userId) && (
                     <div className="flex items-center gap-1 mt-1 bg-red-500/15 border border-red-500/30 rounded-lg px-2 py-1">
-                      <AlertTriangle size={10} className="text-red-400 shrink-0" />
-                      <span className="text-red-400 text-[9px] font-bold">
+                      <AlertTriangle size="0.625rem" className="text-red-400 shrink-0" />
+                      <span className="text-red-400 text-[0.5625rem] font-bold">
                         Excluído por reincidência — solicita retorno
                       </span>
                     </div>
@@ -245,13 +245,13 @@ export const SubTabSolicitacoes: React.FC<Props> = ({
               {(sol.profissao || sol.comoConheceu) && (
                 <div className="flex flex-wrap gap-2 px-1">
                   {sol.profissao && (
-                    <span className="flex items-center gap-1 text-zinc-400 text-[9px] bg-zinc-800/60 border border-white/5 rounded-lg px-2 py-1">
-                      <Briefcase size={9} className="shrink-0" /> {sol.profissao}
+                    <span className="flex items-center gap-1 text-zinc-400 text-[0.5625rem] bg-zinc-800/60 border border-white/5 rounded-lg px-2 py-1">
+                      <Briefcase size="0.5625rem" className="shrink-0" /> {sol.profissao}
                     </span>
                   )}
                   {sol.comoConheceu && (
-                    <span className="flex items-center gap-1 text-zinc-400 text-[9px] bg-zinc-800/60 border border-white/5 rounded-lg px-2 py-1">
-                      <HelpCircle size={9} className="shrink-0" /> {sol.comoConheceu}
+                    <span className="flex items-center gap-1 text-zinc-400 text-[0.5625rem] bg-zinc-800/60 border border-white/5 rounded-lg px-2 py-1">
+                      <HelpCircle size="0.5625rem" className="shrink-0" /> {sol.comoConheceu}
                     </span>
                   )}
                 </div>
@@ -262,15 +262,15 @@ export const SubTabSolicitacoes: React.FC<Props> = ({
 
               {/* Nota interna */}
               <div className="px-1 space-y-1">
-                <p className="text-zinc-500 text-[9px] font-bold uppercase tracking-wider flex items-center gap-1">
-                  <FileText size={9} /> Nota interna
+                <p className="text-zinc-500 text-[0.5625rem] font-bold uppercase tracking-wider flex items-center gap-1">
+                  <FileText size="0.5625rem" /> Nota interna
                 </p>
                 <textarea
                   value={notasInternas[sol.id] || ''}
                   onChange={e => onNotaInternaChange(sol.id, e.target.value)}
                   placeholder="Observações internas (só curadores veem)..."
                   rows={2}
-                  className="w-full bg-zinc-800/40 border border-white/5 rounded-xl px-3 py-2 text-zinc-300 text-[10px] placeholder-zinc-600 resize-none focus:outline-none focus:border-[#FFD300]/20"
+                  className="w-full bg-zinc-800/40 border border-white/5 rounded-xl px-3 py-2 text-zinc-300 text-[0.625rem] placeholder-zinc-600 resize-none focus:outline-none focus:border-[#FFD300]/20"
                 />
               </div>
 
@@ -280,9 +280,9 @@ export const SubTabSolicitacoes: React.FC<Props> = ({
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => onOpenInstagram(sol.instagramHandle)}
-                    className="flex items-center gap-1.5 px-3 py-2 bg-purple-500/10 border border-purple-500/20 rounded-xl text-purple-400 text-[10px] font-bold shrink-0 active:scale-90 transition-all"
+                    className="flex items-center gap-1.5 px-3 py-2 bg-purple-500/10 border border-purple-500/20 rounded-xl text-purple-400 text-[0.625rem] font-bold shrink-0 active:scale-90 transition-all"
                   >
-                    <Instagram size={12} /> Instagram
+                    <Instagram size="0.75rem" /> Instagram
                   </button>
                   <VantaDropdown
                     value={tierSelects[sol.id] || 'lista'}
@@ -299,15 +299,15 @@ export const SubTabSolicitacoes: React.FC<Props> = ({
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => onAprovar(sol.id)}
-                    className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 bg-emerald-500/20 border border-emerald-500/30 rounded-xl text-emerald-400 text-[10px] font-black uppercase active:scale-90 transition-all"
+                    className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 bg-emerald-500/20 border border-emerald-500/30 rounded-xl text-emerald-400 text-[0.625rem] font-black uppercase active:scale-90 transition-all"
                   >
-                    <Check size={12} /> Aprovar
+                    <Check size="0.75rem" /> Aprovar
                   </button>
                   <button
                     onClick={() => onAdiar(sol.id)}
-                    className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 bg-zinc-500/20 border border-zinc-500/30 rounded-xl text-zinc-400 text-[10px] font-black uppercase active:scale-90 transition-all"
+                    className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 bg-zinc-500/20 border border-zinc-500/30 rounded-xl text-zinc-400 text-[0.625rem] font-black uppercase active:scale-90 transition-all"
                   >
-                    <Clock size={12} /> Adiar
+                    <Clock size="0.75rem" /> Adiar
                   </button>
                 </div>
               </div>

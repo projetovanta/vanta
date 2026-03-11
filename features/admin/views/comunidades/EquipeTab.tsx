@@ -105,23 +105,23 @@ export const EquipeTab: React.FC<{
       >
         <div className="text-left">
           <p className="text-zinc-300 text-sm font-bold">Adicionar membro</p>
-          <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mt-0.5">
+          <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest mt-0.5">
             Equipe fixa da comunidade
           </p>
         </div>
         <div className="w-9 h-9 bg-[#FFD300]/10 rounded-full flex items-center justify-center shrink-0">
-          <Plus size={16} className="text-[#FFD300]" />
+          <Plus size="1rem" className="text-[#FFD300]" />
         </div>
       </button>
 
       {/* Lista de membros */}
       {equipeUnificada.length === 0 ? (
         <div className="flex flex-col items-center py-12 gap-4">
-          <Users size={28} className="text-zinc-800" />
-          <p className="text-zinc-700 text-[10px] font-black uppercase tracking-widest text-center">
+          <Users size="1.75rem" className="text-zinc-800" />
+          <p className="text-zinc-700 text-[0.625rem] font-black uppercase tracking-widest text-center">
             Equipe não definida
           </p>
-          <p className="text-zinc-800 text-[9px] italic text-center max-w-[200px]">
+          <p className="text-zinc-800 text-[0.5625rem] italic text-center max-w-[12.5rem]">
             Membros da equipe fixa têm acesso automático aos eventos desta comunidade.
           </p>
         </div>
@@ -144,13 +144,13 @@ export const EquipeTab: React.FC<{
                     />
                   ) : (
                     <div className="w-full h-full bg-zinc-900 flex items-center justify-center">
-                      <Users size={14} className="text-zinc-700" />
+                      <Users size="0.875rem" className="text-zinc-700" />
                     </div>
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-white text-sm font-bold truncate">{resolved?.nome || '—'}</p>
-                  <p className="text-[#FFD300]/60 text-[8px] font-black uppercase tracking-widest truncate">
+                  <p className="text-[#FFD300]/60 text-[0.5rem] font-black uppercase tracking-widest truncate">
                     {item.label}
                   </p>
                 </div>
@@ -158,7 +158,7 @@ export const EquipeTab: React.FC<{
                   onClick={() => handleRemover(item)}
                   className="w-8 h-8 bg-zinc-800 rounded-full flex items-center justify-center border border-white/5 active:scale-90 transition-all shrink-0"
                 >
-                  <Trash2 size={12} className="text-zinc-400" />
+                  <Trash2 size="0.75rem" className="text-zinc-400" />
                 </button>
               </div>
             );

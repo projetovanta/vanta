@@ -62,7 +62,7 @@ export const OnboardingView: React.FC<{ onComplete: () => void }> = ({ onComplet
       <div className="shrink-0 flex justify-end px-6 pt-3">
         <button
           onClick={onComplete}
-          className="py-2 px-4 text-zinc-400 text-[10px] font-black uppercase tracking-widest active:text-zinc-300 transition-colors"
+          className="py-2 px-4 text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest active:text-zinc-300 transition-colors"
         >
           Pular
         </button>
@@ -80,12 +80,12 @@ export const OnboardingView: React.FC<{ onComplete: () => void }> = ({ onComplet
                 className="w-28 h-28 rounded-full flex items-center justify-center mb-10"
                 style={{ backgroundColor: `${slide.color}15`, border: `2px solid ${slide.color}30` }}
               >
-                <slide.icon size={44} style={{ color: slide.color }} />
+                <slide.icon size="2.75rem" style={{ color: slide.color }} />
               </div>
               <h2 style={TYPOGRAPHY.screenTitle} className="text-2xl text-white mb-4 italic">
                 {slide.title}
               </h2>
-              <p className="text-zinc-400 text-sm leading-relaxed max-w-[280px]">{slide.text}</p>
+              <p className="text-zinc-400 text-sm leading-relaxed max-w-[17.5rem]">{slide.text}</p>
             </div>
           ))}
         </div>
@@ -109,7 +109,7 @@ export const OnboardingView: React.FC<{ onComplete: () => void }> = ({ onComplet
         {/* Botão */}
         <button
           onClick={isLast ? onComplete : next}
-          className="w-full py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all"
+          className="w-full py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all"
         >
           {isLast ? 'Começar' : 'Próximo'}
         </button>

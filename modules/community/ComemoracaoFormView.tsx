@@ -78,7 +78,7 @@ export const ComemoracaoFormView: React.FC<Props> = ({
     return (
       <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#050505] px-8 gap-5">
         <div className="w-16 h-16 rounded-full bg-[#FFD300]/10 flex items-center justify-center">
-          <Cake size={32} className="text-[#FFD300]" />
+          <Cake size="2rem" className="text-[#FFD300]" />
         </div>
         <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white text-center">
           Solicitação enviada!
@@ -98,7 +98,7 @@ export const ComemoracaoFormView: React.FC<Props> = ({
 
   const inputClass =
     'w-full bg-zinc-900/50 border border-white/10 rounded-xl py-3 px-4 text-sm text-white placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/50 transition-colors';
-  const labelClass = 'text-[10px] font-black uppercase tracking-widest text-zinc-400 mb-1.5';
+  const labelClass = 'text-[0.625rem] font-black uppercase tracking-widest text-zinc-400 mb-1.5';
 
   return (
     <div className="absolute inset-0 flex flex-col bg-[#050505] overflow-hidden">
@@ -109,15 +109,15 @@ export const ComemoracaoFormView: React.FC<Props> = ({
           onClick={onBack}
           className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
         >
-          <ArrowLeft size={18} className="text-zinc-400" />
+          <ArrowLeft size="1.125rem" className="text-zinc-400" />
         </button>
         <div className="flex-1 min-w-0">
           <h1 style={TYPOGRAPHY.screenTitle} className="text-base text-white truncate">
             Comemorar aqui
           </h1>
-          <p className="text-[10px] text-zinc-400 truncate">{eventoNome ?? comunidadeNome}</p>
+          <p className="text-[0.625rem] text-zinc-400 truncate">{eventoNome ?? comunidadeNome}</p>
         </div>
-        <Cake size={20} className="text-[#FFD300] shrink-0" />
+        <Cake size="1.25rem" className="text-[#FFD300] shrink-0" />
       </div>
 
       {/* Content */}
@@ -172,7 +172,7 @@ export const ComemoracaoFormView: React.FC<Props> = ({
             <p className={labelClass}>Data da comemoração *</p>
             <VantaDatePicker value={dataComemoracao} onChange={setDataComemoracao} className={inputClass} />
             {!eventoId && (
-              <p className="text-[9px] text-zinc-400 mt-1">
+              <p className="text-[0.5625rem] text-zinc-400 mt-1">
                 Se ainda não tem evento nessa data, vincularemos quando ele for criado.
               </p>
             )}
@@ -213,10 +213,10 @@ export const ComemoracaoFormView: React.FC<Props> = ({
           } disabled:opacity-50`}
         >
           {sending ? (
-            <Loader2 size={16} className="animate-spin" />
+            <Loader2 size="1rem" className="animate-spin" />
           ) : (
             <>
-              <Send size={14} />
+              <Send size="0.875rem" />
               Enviar Solicitação
             </>
           )}

@@ -122,7 +122,7 @@ export const ComemoracoesTab: React.FC<Props> = ({ comunidadeId }) => {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-16">
-        <Loader2 size={20} className="text-zinc-400 animate-spin" />
+        <Loader2 size="1.25rem" className="text-zinc-400 animate-spin" />
       </div>
     );
   }
@@ -131,7 +131,7 @@ export const ComemoracoesTab: React.FC<Props> = ({ comunidadeId }) => {
     return (
       <div className="flex flex-col items-center justify-center py-16 gap-3">
         <div className="w-14 h-14 rounded-full bg-zinc-900 flex items-center justify-center border border-white/5">
-          <Cake size={24} className="text-zinc-700" />
+          <Cake size="1.5rem" className="text-zinc-700" />
         </div>
         <p className="text-zinc-400 text-sm">Nenhuma solicitação de comemoração</p>
       </div>
@@ -160,26 +160,26 @@ export const ComemoracoesTab: React.FC<Props> = ({ comunidadeId }) => {
           )}
           <div className="flex-1 min-w-0">
             <p className="text-white font-bold text-sm truncate">{sol.nome_completo}</p>
-            <p className="text-zinc-400 text-[10px] truncate">
+            <p className="text-zinc-400 text-[0.625rem] truncate">
               {MOTIVO_LABEL[sol.motivo] ?? sol.motivo} · {formatSimpleDate(sol.data_comemoracao)}
             </p>
           </div>
           {sol.status === 'APROVADA' && (
             <div className="flex items-center gap-1 shrink-0 mr-1">
-              <ShoppingCart size={10} className="text-[#FFD300]" />
-              <span className="text-[9px] font-black text-[#FFD300]">{sol.vendas_count}</span>
+              <ShoppingCart size="0.625rem" className="text-[#FFD300]" />
+              <span className="text-[0.5625rem] font-black text-[#FFD300]">{sol.vendas_count}</span>
             </div>
           )}
           <span
-            className="shrink-0 px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-wider"
+            className="shrink-0 px-2 py-0.5 rounded-full text-[0.5rem] font-black uppercase tracking-wider"
             style={{ backgroundColor: cfg.color + '20', color: cfg.color }}
           >
             {cfg.label}
           </span>
           {isExpanded ? (
-            <ChevronUp size={16} className="text-zinc-400 shrink-0" />
+            <ChevronUp size="1rem" className="text-zinc-400 shrink-0" />
           ) : (
-            <ChevronDown size={16} className="text-zinc-400 shrink-0" />
+            <ChevronDown size="1rem" className="text-zinc-400 shrink-0" />
           )}
         </button>
 
@@ -187,36 +187,36 @@ export const ComemoracoesTab: React.FC<Props> = ({ comunidadeId }) => {
           <div className="px-4 pb-4 space-y-3 border-t border-white/5 pt-3">
             <div className="grid grid-cols-2 gap-2">
               <div className="flex items-center gap-2 text-zinc-400 text-xs">
-                <Phone size={12} className="shrink-0" />
+                <Phone size="0.75rem" className="shrink-0" />
                 <span className="truncate">{sol.celular}</span>
               </div>
               <div className="flex items-center gap-2 text-zinc-400 text-xs">
-                <Instagram size={12} className="shrink-0" />
+                <Instagram size="0.75rem" className="shrink-0" />
                 <span className="truncate">{sol.instagram}</span>
               </div>
               <div className="flex items-center gap-2 text-zinc-400 text-xs">
-                <Cake size={12} className="shrink-0" />
+                <Cake size="0.75rem" className="shrink-0" />
                 <span className="truncate">
                   {MOTIVO_LABEL[sol.motivo]}
                   {sol.motivo_outro ? `: ${sol.motivo_outro}` : ''}
                 </span>
               </div>
               <div className="flex items-center gap-2 text-zinc-400 text-xs">
-                <Calendar size={12} className="shrink-0" />
+                <Calendar size="0.75rem" className="shrink-0" />
                 <span className="truncate">{formatSimpleDate(sol.data_comemoracao)}</span>
               </div>
             </div>
 
             {sol.data_aniversario && (
-              <p className="text-[10px] text-zinc-400">Aniversário: {formatSimpleDate(sol.data_aniversario)}</p>
+              <p className="text-[0.625rem] text-zinc-400">Aniversário: {formatSimpleDate(sol.data_aniversario)}</p>
             )}
 
             {/* Link de vendas (se aprovado) */}
             {sol.ref_code && (
               <div className="flex items-center gap-2 bg-[#FFD300]/5 border border-[#FFD300]/20 rounded-xl p-3">
-                <Link2 size={14} className="text-[#FFD300] shrink-0" />
+                <Link2 size="0.875rem" className="text-[#FFD300] shrink-0" />
                 <div className="flex-1 min-w-0">
-                  <p className="text-[9px] text-zinc-400 uppercase tracking-wider font-bold">Link de vendas</p>
+                  <p className="text-[0.5625rem] text-zinc-400 uppercase tracking-wider font-bold">Link de vendas</p>
                   <p className="text-xs text-[#FFD300] font-bold truncate">{sol.ref_code}</p>
                 </div>
                 <button
@@ -224,20 +224,20 @@ export const ComemoracoesTab: React.FC<Props> = ({ comunidadeId }) => {
                   className="shrink-0 w-8 h-8 bg-[#FFD300]/10 rounded-lg flex items-center justify-center active:scale-90 transition-all"
                 >
                   {copied === sol.ref_code ? (
-                    <CheckCircle size={14} className="text-emerald-400" />
+                    <CheckCircle size="0.875rem" className="text-emerald-400" />
                   ) : (
-                    <Copy size={14} className="text-[#FFD300]" />
+                    <Copy size="0.875rem" className="text-[#FFD300]" />
                   )}
                 </button>
               </div>
             )}
 
-            <p className="text-[9px] text-zinc-400">Enviada em {formatDate(sol.created_at)}</p>
+            <p className="text-[0.5625rem] text-zinc-400">Enviada em {formatDate(sol.created_at)}</p>
 
             {canAct && (
               <div className="space-y-3 pt-2 border-t border-white/5">
                 <div>
-                  <p className="text-[9px] text-zinc-400 font-bold uppercase tracking-wider mb-1">
+                  <p className="text-[0.5625rem] text-zinc-400 font-bold uppercase tracking-wider mb-1">
                     Mensagem (opcional)
                   </p>
                   <input
@@ -254,18 +254,18 @@ export const ComemoracoesTab: React.FC<Props> = ({ comunidadeId }) => {
                     <button
                       onClick={() => handleEmAnalise(sol.id)}
                       disabled={isProcessing}
-                      className="flex-1 py-2.5 bg-yellow-500/10 border border-yellow-500/20 rounded-xl text-[10px] font-bold text-yellow-400 uppercase tracking-wider active:scale-95 transition-all disabled:opacity-50"
+                      className="flex-1 py-2.5 bg-yellow-500/10 border border-yellow-500/20 rounded-xl text-[0.625rem] font-bold text-yellow-400 uppercase tracking-wider active:scale-95 transition-all disabled:opacity-50"
                     >
-                      <Search size={12} className="inline mr-1" />
+                      <Search size="0.75rem" className="inline mr-1" />
                       Em análise
                     </button>
                   )}
                   <button
                     onClick={() => handleAprovar(sol.id)}
                     disabled={isProcessing}
-                    className="flex-1 py-2.5 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-[10px] font-bold text-emerald-400 uppercase tracking-wider active:scale-95 transition-all disabled:opacity-50"
+                    className="flex-1 py-2.5 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-[0.625rem] font-bold text-emerald-400 uppercase tracking-wider active:scale-95 transition-all disabled:opacity-50"
                   >
-                    <CheckCircle size={12} className="inline mr-1" />
+                    <CheckCircle size="0.75rem" className="inline mr-1" />
                     Aprovar
                   </button>
                 </div>
@@ -281,9 +281,9 @@ export const ComemoracoesTab: React.FC<Props> = ({ comunidadeId }) => {
                   <button
                     onClick={() => handleRecusar(sol.id)}
                     disabled={isProcessing || !motivoRecusa.trim()}
-                    className="w-full py-2.5 bg-red-500/10 border border-red-500/20 rounded-xl text-[10px] font-bold text-red-400 uppercase tracking-wider active:scale-95 transition-all disabled:opacity-50"
+                    className="w-full py-2.5 bg-red-500/10 border border-red-500/20 rounded-xl text-[0.625rem] font-bold text-red-400 uppercase tracking-wider active:scale-95 transition-all disabled:opacity-50"
                   >
-                    <XCircle size={12} className="inline mr-1" />
+                    <XCircle size="0.75rem" className="inline mr-1" />
                     Recusar
                   </button>
                 </div>
@@ -292,14 +292,14 @@ export const ComemoracoesTab: React.FC<Props> = ({ comunidadeId }) => {
 
             {sol.mensagem_gerente && !canAct && (
               <div className="flex items-start gap-2 bg-zinc-800/50 border border-white/5 rounded-xl p-3">
-                <MessageSquare size={12} className="text-zinc-400 shrink-0 mt-0.5" />
+                <MessageSquare size="0.75rem" className="text-zinc-400 shrink-0 mt-0.5" />
                 <p className="text-zinc-300 text-xs">{sol.mensagem_gerente}</p>
               </div>
             )}
 
             {sol.status === 'RECUSADA' && sol.motivo_recusa && (
               <div className="flex items-start gap-2 bg-red-500/5 border border-red-500/10 rounded-xl p-3">
-                <XCircle size={12} className="text-red-400 shrink-0 mt-0.5" />
+                <XCircle size="0.75rem" className="text-red-400 shrink-0 mt-0.5" />
                 <p className="text-red-300 text-xs">{sol.motivo_recusa}</p>
               </div>
             )}
@@ -314,7 +314,7 @@ export const ComemoracoesTab: React.FC<Props> = ({ comunidadeId }) => {
       {pendentes.length > 0 && (
         <div>
           <p style={TYPOGRAPHY.sectionKicker} className="mb-3 flex items-center gap-2">
-            <Clock size={12} className="text-[#FFD300]" />
+            <Clock size="0.75rem" className="text-[#FFD300]" />
             Pendentes ({pendentes.length})
           </p>
           <div className="space-y-3">{pendentes.map(renderCard)}</div>
@@ -324,7 +324,7 @@ export const ComemoracoesTab: React.FC<Props> = ({ comunidadeId }) => {
       {resolvidas.length > 0 && (
         <div>
           <p style={TYPOGRAPHY.sectionKicker} className="mb-3 flex items-center gap-2">
-            <CheckCircle size={12} className="text-zinc-400" />
+            <CheckCircle size="0.75rem" className="text-zinc-400" />
             Resolvidas ({resolvidas.length})
           </p>
           <div className="space-y-3">{resolvidas.map(renderCard)}</div>

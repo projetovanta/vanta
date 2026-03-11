@@ -80,14 +80,14 @@ export const ModalInserirLote: React.FC<{
             onClick={onClose}
             className="w-8 h-8 flex items-center justify-center rounded-full bg-zinc-900 border border-white/10 active:scale-90 transition-all"
           >
-            <X size={14} className="text-zinc-400" />
+            <X size="0.875rem" className="text-zinc-400" />
           </button>
         </div>
 
         <div className="p-6 space-y-4" style={{ paddingBottom: 'max(2rem, env(safe-area-inset-bottom, 2rem))' }}>
           {/* Pills de regra */}
           <div>
-            <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mb-2">Categoria</p>
+            <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest mb-2">Categoria</p>
             {regrasDisponiveis.length === 0 ? (
               <p className="text-zinc-400 text-xs">Sem saldo disponível em nenhuma categoria.</p>
             ) : (
@@ -109,7 +109,7 @@ export const ModalInserirLote: React.FC<{
                     >
                       <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: r.cor ?? '#71717a' }} />
                       {r.label}
-                      <span className={`text-[9px] font-black ${ativa ? 'opacity-70' : 'text-zinc-400'}`}>
+                      <span className={`text-[0.5625rem] font-black ${ativa ? 'opacity-70' : 'text-zinc-400'}`}>
                         ({saldo})
                       </span>
                     </button>
@@ -121,7 +121,7 @@ export const ModalInserirLote: React.FC<{
 
           {/* Textarea */}
           <div>
-            <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mb-2">
+            <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest mb-2">
               Nomes <span className="text-zinc-700">(um por linha, máx. 20)</span>
             </p>
             <textarea
@@ -135,8 +135,8 @@ export const ModalInserirLote: React.FC<{
 
           {erro && (
             <div className="flex items-center gap-2 text-red-400">
-              <AlertCircle size={12} />
-              <p className="text-[10px] font-black uppercase tracking-widest">{erro}</p>
+              <AlertCircle size="0.75rem" />
+              <p className="text-[0.625rem] font-black uppercase tracking-widest">{erro}</p>
             </div>
           )}
 

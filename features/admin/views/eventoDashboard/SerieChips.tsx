@@ -91,12 +91,14 @@ export const SerieChips: React.FC<SerieChipsProps> = ({
     <>
       <div className="flex items-center gap-2 mb-3 -mt-1">
         <div className="flex items-center gap-1.5 shrink-0">
-          <Repeat size={11} className="text-[#FFD300]" />
-          <span className="text-[9px] font-black uppercase tracking-wider text-[#FFD300]">{labelRecorrencia}</span>
+          <Repeat size="0.6875rem" className="text-[#FFD300]" />
+          <span className="text-[0.5625rem] font-black uppercase tracking-wider text-[#FFD300]">
+            {labelRecorrencia}
+          </span>
         </div>
 
         {loading ? (
-          <Loader2 size={12} className="text-zinc-400 animate-spin" />
+          <Loader2 size="0.75rem" className="text-zinc-400 animate-spin" />
         ) : (
           <div className="flex-1 overflow-x-auto no-scrollbar">
             <div className="flex items-center gap-1.5">
@@ -106,7 +108,7 @@ export const SerieChips: React.FC<SerieChipsProps> = ({
                   <button
                     key={o.id}
                     onClick={() => !isAtual && onSelectOcorrencia(o.id)}
-                    className={`shrink-0 px-2.5 py-1 rounded-full text-[10px] font-bold transition-all active:scale-90 ${
+                    className={`shrink-0 px-2.5 py-1 rounded-full text-[0.625rem] font-bold transition-all active:scale-90 ${
                       isAtual
                         ? 'bg-[#FFD300] text-black'
                         : o.publicado
@@ -116,7 +118,7 @@ export const SerieChips: React.FC<SerieChipsProps> = ({
                   >
                     {fmtChip(o.data_inicio)}
                     {o.total_vendidos > 0 && !isAtual && (
-                      <span className="ml-1 text-[8px] opacity-60">{o.total_vendidos}</span>
+                      <span className="ml-1 text-[0.5rem] opacity-60">{o.total_vendidos}</span>
                     )}
                   </button>
                 );
@@ -131,7 +133,7 @@ export const SerieChips: React.FC<SerieChipsProps> = ({
             className="shrink-0 p-1.5 rounded-full bg-zinc-900 border border-white/5 text-zinc-400 active:scale-90"
             title="Cancelar datas futuras"
           >
-            <X size={12} />
+            <X size="0.75rem" />
           </button>
         )}
       </div>

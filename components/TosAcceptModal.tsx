@@ -45,16 +45,16 @@ export const TosAcceptModal: React.FC<TosAcceptModalProps> = ({ userId, userName
 
   return (
     <div className="absolute inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-6">
-      <div className="bg-[#111] border border-white/10 rounded-2xl max-w-md w-full max-h-[80vh] flex flex-col overflow-hidden">
+      <div className="bg-[#111] border border-white/10 rounded-2xl max-w-[500px] w-full max-h-[80vh] flex flex-col overflow-hidden">
         {/* Header */}
         <div className="p-6 border-b border-white/5 text-center">
           <div className="w-14 h-14 bg-[#FFD300]/10 rounded-full flex items-center justify-center mx-auto mb-3">
-            <Shield size={24} className="text-[#FFD300]" />
+            <Shield size="1.5rem" className="text-[#FFD300]" />
           </div>
           <h2 style={TYPOGRAPHY.screenTitle} className="text-lg italic mb-1">
             Termos de Serviço
           </h2>
-          <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">
+          <p className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest">
             Aceite obrigatório para criar eventos
           </p>
         </div>
@@ -81,7 +81,7 @@ export const TosAcceptModal: React.FC<TosAcceptModalProps> = ({ userId, userName
               Master).
             </li>
           </ul>
-          <p className="text-zinc-400 text-[9px]">
+          <p className="text-zinc-400 text-[0.5625rem]">
             Versão {TOS_VERSION} — Estes termos podem ser atualizados. Você será notificado de mudanças significativas.
           </p>
         </div>
@@ -95,20 +95,20 @@ export const TosAcceptModal: React.FC<TosAcceptModalProps> = ({ userId, userName
               onChange={e => setAceito(e.target.checked)}
               className="mt-0.5 accent-[#FFD300]"
             />
-            <span className="text-zinc-300 text-[10px] font-bold">Li e aceito os Termos de Serviço da VANTA</span>
+            <span className="text-zinc-300 text-[0.625rem] font-bold">Li e aceito os Termos de Serviço da VANTA</span>
           </label>
 
           <div className="flex gap-3">
             <button
               onClick={onBack}
-              className="flex-1 py-3 bg-zinc-900 border border-white/10 rounded-xl text-zinc-400 text-[10px] font-black uppercase tracking-widest active:scale-95 transition-all"
+              className="flex-1 py-3 bg-zinc-900 border border-white/10 rounded-xl text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest active:scale-95 transition-all"
             >
               Voltar
             </button>
             <button
               onClick={handleAceitar}
               disabled={!aceito || salvando}
-              className={`flex-1 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest active:scale-95 transition-all ${
+              className={`flex-1 py-3 rounded-xl text-[0.625rem] font-black uppercase tracking-widest active:scale-95 transition-all ${
                 aceito ? 'bg-[#FFD300] text-black' : 'bg-zinc-800 text-zinc-400 cursor-not-allowed'
               }`}
             >

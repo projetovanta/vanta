@@ -79,7 +79,7 @@ export const MaisVantaHubView: React.FC<{
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
           >
-            <ArrowLeft size={18} className="text-zinc-400" />
+            <ArrowLeft size="1.125rem" className="text-zinc-400" />
           </button>
         </div>
 
@@ -91,13 +91,13 @@ export const MaisVantaHubView: React.FC<{
               <button
                 key={a.id}
                 onClick={() => setAba(a.id)}
-                className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider shrink-0 border transition-all flex items-center gap-1.5 ${
+                className={`px-3 py-1.5 rounded-lg text-[0.5625rem] font-black uppercase tracking-wider shrink-0 border transition-all flex items-center gap-1.5 ${
                   aba === a.id
                     ? 'bg-[#FFD300] text-black border-transparent'
                     : 'bg-zinc-900/60 text-zinc-400 border-white/5 active:bg-zinc-800'
                 }`}
               >
-                <Icon size={12} />
+                <Icon size="0.75rem" />
                 {a.label}
               </button>
             );

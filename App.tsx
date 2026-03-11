@@ -107,6 +107,31 @@ export default function App() {
 
   const [showResetPassword, setShowResetPassword] = useState(false);
 
+  // ── Escala fluida: ajusta html font-size pela largura do container ──────
+  // 375px = 16px (referência). Escala linear proporcional.
+  // Cap em 500px para não afetar o painel admin (max-w-4xl).
+  useEffect(() => {
+    const el = document.getElementById('vanta-app');
+    if (!el) return;
+    const update = () => {
+      const isAdmin = el.classList.contains('max-w-4xl');
+      if (isAdmin) {
+        document.documentElement.style.fontSize = '16px';
+        return;
+      }
+      const w = Math.max(320, Math.min(el.offsetWidth, 500));
+      const fs = (w / 375) * 16;
+      document.documentElement.style.fontSize = fs + 'px';
+    };
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    update();
+    return () => {
+      ro.disconnect();
+      document.documentElement.style.fontSize = '';
+    };
+  }, [authLoading]);
+
   // ── Dev logging (noop em produção) ──────────────────────────────────────
   useDevNavLogger(nav.activeTab);
   useEffect(() => initDevLogging(), []);
@@ -339,17 +364,17 @@ export default function App() {
           return (
             <div className="absolute inset-0 bg-[#0A0A0A] z-[150] flex flex-col items-center justify-center p-8 text-center">
               <div className="w-16 h-16 bg-zinc-900 rounded-full flex items-center justify-center mb-6 border border-white/10">
-                <Shield size={28} className="text-zinc-400" />
+                <Shield size="1.75rem" className="text-zinc-400" />
               </div>
               <h2 style={TYPOGRAPHY.screenTitle} className="text-xl italic mb-3">
                 Sem Acesso
               </h2>
-              <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest mb-8">
+              <p className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest mb-8">
                 Você não possui cargos ativos em nenhum evento ou comunidade.
               </p>
               <button
                 onClick={() => nav.navigateToTab('INICIO')}
-                className="px-8 py-4 bg-zinc-900 border border-white/10 rounded-xl text-[10px] font-black uppercase tracking-widest text-zinc-400 active:scale-95 transition-all"
+                className="px-8 py-4 bg-zinc-900 border border-white/10 rounded-xl text-[0.625rem] font-black uppercase tracking-widest text-zinc-400 active:scale-95 transition-all"
               >
                 Voltar
               </button>
@@ -371,14 +396,14 @@ export default function App() {
   if (authLoading) {
     return (
       <div className="fixed inset-0 bg-[#050505] flex flex-col items-center justify-center">
-        <div className="w-full max-w-md flex flex-col items-center gap-6">
+        <div className="w-full max-w-[500px] flex flex-col items-center gap-6">
           <img
             src="/icon-192.png"
             alt="VANTA"
             className="w-20 h-20 rounded-2xl animate-spin"
             style={{ animationDuration: '2s' }}
           />
-          <span className="text-[8px] font-black uppercase tracking-[0.3em] text-zinc-400">Carregando</span>
+          <span className="text-[0.5rem] font-black uppercase tracking-[0.3em] text-zinc-400">Carregando</span>
         </div>
       </div>
     );
@@ -404,7 +429,8 @@ export default function App() {
       style={{ paddingTop: 'env(safe-area-inset-top, 0px)', paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
     >
       <div
-        className={`w-full flex-1 bg-[#0A0A0A] relative overflow-hidden flex flex-col ${nav.activeTab === 'ADMIN_HUB' ? 'max-w-4xl' : 'max-w-md'}`}
+        id="vanta-app"
+        className={`w-full flex-1 bg-[#0A0A0A] relative overflow-hidden flex flex-col ${nav.activeTab === 'ADMIN_HUB' ? 'max-w-4xl' : 'max-w-[500px]'}`}
       >
         {showResetPassword && (
           <div className="absolute inset-0 z-[500]">
@@ -477,10 +503,10 @@ export default function App() {
                     onClick={() => setComemorarComunidadeId(null)}
                     className="absolute top-4 right-4 text-zinc-500 hover:text-white transition-colors"
                   >
-                    <X size={20} />
+                    <X size="1.25rem" />
                   </button>
                   <div className="w-16 h-16 rounded-full bg-[#FFD300]/10 flex items-center justify-center mx-auto mb-4">
-                    <PartyPopper size={32} className="text-[#FFD300]" />
+                    <PartyPopper size="2rem" className="text-[#FFD300]" />
                   </div>
                   <h2 style={TYPOGRAPHY.screenTitle} className="text-xl mb-1">
                     Comemore com a gente
@@ -490,7 +516,7 @@ export default function App() {
                 <div className="p-5 space-y-3">
                   <div className="flex items-start gap-3">
                     <div className="w-8 h-8 rounded-full bg-[#FFD300]/10 flex items-center justify-center shrink-0 mt-0.5">
-                      <Gift size={16} className="text-[#FFD300]" />
+                      <Gift size="1rem" className="text-[#FFD300]" />
                     </div>
                     <div>
                       <p className="text-white text-sm font-semibold">Cortesias exclusivas</p>
@@ -499,7 +525,7 @@ export default function App() {
                   </div>
                   <div className="flex items-start gap-3">
                     <div className="w-8 h-8 rounded-full bg-[#FFD300]/10 flex items-center justify-center shrink-0 mt-0.5">
-                      <Star size={16} className="text-[#FFD300]" />
+                      <Star size="1rem" className="text-[#FFD300]" />
                     </div>
                     <div>
                       <p className="text-white text-sm font-semibold">Tratamento VIP</p>
@@ -517,9 +543,9 @@ export default function App() {
                     className="w-full bg-[#FFD300] text-black font-black text-sm py-3.5 rounded-2xl flex items-center justify-center gap-2 active:scale-[0.97] transition-transform"
                   >
                     Quero comemorar
-                    <ChevronRight size={18} />
+                    <ChevronRight size="1.125rem" />
                   </button>
-                  <p className="text-zinc-600 text-[10px] text-center mt-3">
+                  <p className="text-zinc-600 text-[0.625rem] text-center mt-3">
                     Você será levado à página do espaço para preencher sua solicitação
                   </p>
                 </div>

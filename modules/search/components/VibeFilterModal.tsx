@@ -84,9 +84,9 @@ export const VibeFilterModal: React.FC<{
 
   return (
     <div className="absolute inset-0 z-[200] animate-in fade-in duration-300">
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" role="presentation" onClick={onClose} />
+      <div className="absolute inset-0 bg-black/80 backdrop-blur-md" role="presentation" onClick={onClose} />
       <div className="absolute top-[10rem] left-0 right-0 flex justify-center px-6 animate-in slide-in-from-top-2 duration-500">
-        <div className="w-full max-w-[320px] glass-premium rounded-[2rem] overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] bg-zinc-900/80">
+        <div className="w-full max-w-[20rem] glass-premium rounded-[2rem] overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] bg-zinc-900/80">
           <div className="p-6">
             <div className="flex justify-between items-center mb-4">
               <div>
@@ -94,7 +94,7 @@ export const VibeFilterModal: React.FC<{
                   Filtros
                 </h2>
                 {totalSelected > 0 && (
-                  <p className="text-[9px] text-[#FFD300] font-black uppercase tracking-widest mt-1">
+                  <p className="text-[0.5625rem] text-[#FFD300] font-black uppercase tracking-widest mt-1">
                     {totalSelected} selecionado{totalSelected > 1 ? 's' : ''}
                   </p>
                 )}
@@ -103,7 +103,7 @@ export const VibeFilterModal: React.FC<{
                 onClick={onClose}
                 className="p-2 bg-black/50 rounded-full text-zinc-400 hover:text-white transition-colors"
               >
-                <X size={16} />
+                <X size="1rem" />
               </button>
             </div>
 
@@ -113,7 +113,7 @@ export const VibeFilterModal: React.FC<{
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex-1 py-2 rounded-lg text-[9px] font-bold uppercase tracking-wider transition-all ${activeTab === tab.id ? 'bg-[#FFD300]/15 text-[#FFD300] border border-[#FFD300]/20' : 'text-zinc-400'}`}
+                  className={`flex-1 py-2 rounded-lg text-[0.5625rem] font-bold uppercase tracking-wider transition-all ${activeTab === tab.id ? 'bg-[#FFD300]/15 text-[#FFD300] border border-[#FFD300]/20' : 'text-zinc-400'}`}
                 >
                   {tab.emoji} {tab.label}
                   {(activeTab === 'FORMATO'
@@ -122,7 +122,7 @@ export const VibeFilterModal: React.FC<{
                       ? filters.estilos
                       : filters.experiencias
                   ).length > 0 &&
-                    tab.id === activeTab && <span className="ml-1 text-[8px]">({currentSelected.length})</span>}
+                    tab.id === activeTab && <span className="ml-1 text-[0.5rem]">({currentSelected.length})</span>}
                 </button>
               ))}
             </div>
@@ -130,7 +130,7 @@ export const VibeFilterModal: React.FC<{
             <div className="max-h-[35vh] overflow-y-auto no-scrollbar">
               {loading ? (
                 <div className="flex items-center justify-center py-10">
-                  <Loader2 size={20} className="text-zinc-400 animate-spin" />
+                  <Loader2 size="1.25rem" className="text-zinc-400 animate-spin" />
                 </div>
               ) : (
                 <div className="flex flex-wrap gap-2">
@@ -138,10 +138,10 @@ export const VibeFilterModal: React.FC<{
                     <button
                       key={item}
                       onClick={() => handleToggle(item)}
-                      className={`px-3 py-1.5 rounded-full flex items-center gap-1.5 transition-all text-[10px] font-bold uppercase tracking-wider ${currentSelected.includes(item) ? 'bg-[#FFD300]/15 border border-[#FFD300]/30 text-[#FFD300]' : 'bg-black/40 border border-white/5 text-zinc-400'}`}
+                      className={`px-3 py-1.5 rounded-full flex items-center gap-1.5 transition-all text-[0.625rem] font-bold uppercase tracking-wider ${currentSelected.includes(item) ? 'bg-[#FFD300]/15 border border-[#FFD300]/30 text-[#FFD300]' : 'bg-black/40 border border-white/5 text-zinc-400'}`}
                     >
                       <span className="truncate">{item}</span>
-                      {currentSelected.includes(item) && <Check size={11} className="shrink-0" />}
+                      {currentSelected.includes(item) && <Check size="0.6875rem" className="shrink-0" />}
                     </button>
                   ))}
                 </div>
@@ -150,7 +150,7 @@ export const VibeFilterModal: React.FC<{
           </div>
           <button
             onClick={handleClear}
-            className="w-full py-4 bg-black/60 border-t border-white/5 text-[9px] font-black uppercase tracking-[0.3em] text-zinc-400 hover:text-white transition-colors"
+            className="w-full py-4 bg-black/60 border-t border-white/5 text-[0.5625rem] font-black uppercase tracking-[0.3em] text-zinc-400 hover:text-white transition-colors"
           >
             Limpar Filtros
           </button>

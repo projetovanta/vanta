@@ -41,7 +41,7 @@ export const CentralEventosView: React.FC<{
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0 mt-1"
           >
-            <ArrowLeft size={18} className="text-zinc-400" />
+            <ArrowLeft size="1.125rem" className="text-zinc-400" />
           </button>
         </div>
 
@@ -50,7 +50,7 @@ export const CentralEventosView: React.FC<{
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
-              className={`flex-1 py-2.5 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all ${
+              className={`flex-1 py-2.5 rounded-lg text-[0.5625rem] font-black uppercase tracking-wider transition-all ${
                 tab === t.id ? 'bg-[#FFD300] text-black' : 'text-zinc-400 active:text-zinc-300'
               }`}
             >
@@ -68,10 +68,10 @@ export const CentralEventosView: React.FC<{
           >
             <div>
               <p className="text-black font-black text-sm uppercase tracking-wider leading-none">Criar Novo Evento</p>
-              <p className="text-black/50 text-[10px] font-bold mt-1 truncate">{comunidade.nome}</p>
+              <p className="text-black/50 text-[0.625rem] font-bold mt-1 truncate">{comunidade.nome}</p>
             </div>
             <div className="w-10 h-10 bg-black/10 rounded-xl flex items-center justify-center shrink-0">
-              <Plus size={18} className="text-black" />
+              <Plus size="1.125rem" className="text-black" />
             </div>
           </button>
         )}

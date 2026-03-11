@@ -131,7 +131,7 @@ export const DealsMaisVantaView: React.FC = () => {
     };
     const s = map[status] ?? { bg: 'bg-zinc-700/50', text: 'text-zinc-400' };
     return (
-      <span className={`${s.bg} ${s.text} px-2 py-0.5 rounded text-[9px] font-bold uppercase`}>
+      <span className={`${s.bg} ${s.text} px-2 py-0.5 rounded text-[0.5625rem] font-bold uppercase`}>
         {status.replace('_', ' ')}
       </span>
     );
@@ -147,11 +147,11 @@ export const DealsMaisVantaView: React.FC = () => {
             onClick={() => setSelectedDealId(null)}
             className="w-8 h-8 bg-zinc-800 rounded-full flex items-center justify-center border border-white/5 active:scale-90 transition-all rotate-180"
           >
-            <ArrowRight size={14} className="text-zinc-400" />
+            <ArrowRight size="0.875rem" className="text-zinc-400" />
           </button>
           <div className="flex-1 min-w-0">
             <p className="text-white text-sm font-bold truncate">{deal?.titulo ?? 'Deal'}</p>
-            <p className="text-zinc-400 text-[10px]">
+            <p className="text-zinc-400 text-[0.625rem]">
               {deal?.parceiroNome} · {deal?.cidadeNome}
             </p>
           </div>
@@ -165,15 +165,15 @@ export const DealsMaisVantaView: React.FC = () => {
               <p className="text-white text-lg font-bold">
                 {deal.vagasPreenchidas}/{deal.vagas}
               </p>
-              <p className="text-zinc-400 text-[9px] uppercase">Vagas</p>
+              <p className="text-zinc-400 text-[0.5625rem] uppercase">Vagas</p>
             </div>
             <div className="flex-1 bg-zinc-900/60 border border-white/5 rounded-xl p-3 text-center">
               <p className="text-white text-lg font-bold">{resgates.length}</p>
-              <p className="text-zinc-400 text-[9px] uppercase">Candidatos</p>
+              <p className="text-zinc-400 text-[0.5625rem] uppercase">Candidatos</p>
             </div>
             <div className="flex-1 bg-zinc-900/60 border border-white/5 rounded-xl p-3 text-center">
               <p className="text-[#FFD300] text-lg font-bold">{deal.tipo}</p>
-              <p className="text-zinc-400 text-[9px] uppercase">Tipo</p>
+              <p className="text-zinc-400 text-[0.5625rem] uppercase">Tipo</p>
             </div>
           </div>
         )}
@@ -185,7 +185,7 @@ export const DealsMaisVantaView: React.FC = () => {
           </div>
         ) : resgates.length === 0 ? (
           <div className="text-center py-8">
-            <Users size={24} className="text-zinc-700 mx-auto mb-2" />
+            <Users size="1.5rem" className="text-zinc-700 mx-auto mb-2" />
             <p className="text-zinc-400 text-xs">Nenhum candidato ainda</p>
           </div>
         ) : (
@@ -194,11 +194,11 @@ export const DealsMaisVantaView: React.FC = () => {
               <div key={r.id} className="bg-zinc-900/60 border border-white/5 rounded-xl p-3">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 bg-zinc-800 rounded-full flex items-center justify-center shrink-0">
-                    <Users size={14} className="text-zinc-400" />
+                    <Users size="0.875rem" className="text-zinc-400" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-white text-sm font-semibold truncate">{r.userName ?? 'Membro'}</p>
-                    {r.userInstagram && <p className="text-zinc-400 text-[10px]">@{r.userInstagram}</p>}
+                    {r.userInstagram && <p className="text-zinc-400 text-[0.625rem]">@{r.userInstagram}</p>}
                   </div>
                   {statusBadge(r.status)}
                 </div>
@@ -209,40 +209,40 @@ export const DealsMaisVantaView: React.FC = () => {
                     <>
                       <button
                         onClick={() => handleSelecionar(r.id)}
-                        className="flex-1 py-1.5 bg-[#FFD300] text-black rounded-lg text-[9px] font-black uppercase tracking-wider active:scale-95 transition-all flex items-center justify-center gap-1"
+                        className="flex-1 py-1.5 bg-[#FFD300] text-black rounded-lg text-[0.5625rem] font-black uppercase tracking-wider active:scale-95 transition-all flex items-center justify-center gap-1"
                       >
-                        <CheckCircle2 size={10} /> Selecionar
+                        <CheckCircle2 size="0.625rem" /> Selecionar
                       </button>
                       <button
                         onClick={() => handleRecusar(r.id)}
-                        className="px-3 py-1.5 bg-zinc-800 text-zinc-400 rounded-lg text-[9px] font-black uppercase tracking-wider active:scale-95 transition-all"
+                        className="px-3 py-1.5 bg-zinc-800 text-zinc-400 rounded-lg text-[0.5625rem] font-black uppercase tracking-wider active:scale-95 transition-all"
                       >
-                        <XCircle size={10} />
+                        <XCircle size="0.625rem" />
                       </button>
                     </>
                   )}
                   {r.status === 'SELECIONADO' && (
                     <button
                       onClick={() => handleNoShow(r.id)}
-                      className="px-3 py-1.5 bg-red-500/20 text-red-400 rounded-lg text-[9px] font-black uppercase tracking-wider active:scale-95 transition-all flex items-center gap-1"
+                      className="px-3 py-1.5 bg-red-500/20 text-red-400 rounded-lg text-[0.5625rem] font-black uppercase tracking-wider active:scale-95 transition-all flex items-center gap-1"
                     >
-                      <XCircle size={10} /> No-Show
+                      <XCircle size="0.625rem" /> No-Show
                     </button>
                   )}
                   {r.status === 'PENDENTE_POST' && (
                     <button
                       onClick={() => handleVerificarPost(r.id)}
-                      className="flex-1 py-1.5 bg-green-500/20 text-green-400 rounded-lg text-[9px] font-black uppercase tracking-wider active:scale-95 transition-all flex items-center justify-center gap-1"
+                      className="flex-1 py-1.5 bg-green-500/20 text-green-400 rounded-lg text-[0.5625rem] font-black uppercase tracking-wider active:scale-95 transition-all flex items-center justify-center gap-1"
                     >
-                      <CheckCircle2 size={10} /> Verificar Post
+                      <CheckCircle2 size="0.625rem" /> Verificar Post
                     </button>
                   )}
                   {r.status === 'CHECK_IN' && deal?.tipo === 'DESCONTO' && (
                     <button
                       onClick={() => handleConcluir(r.id)}
-                      className="flex-1 py-1.5 bg-green-500/20 text-green-400 rounded-lg text-[9px] font-black uppercase tracking-wider active:scale-95 transition-all flex items-center justify-center gap-1"
+                      className="flex-1 py-1.5 bg-green-500/20 text-green-400 rounded-lg text-[0.5625rem] font-black uppercase tracking-wider active:scale-95 transition-all flex items-center justify-center gap-1"
                     >
-                      <CheckCircle2 size={10} /> Concluir
+                      <CheckCircle2 size="0.625rem" /> Concluir
                     </button>
                   )}
                   {r.postUrl && (
@@ -250,9 +250,9 @@ export const DealsMaisVantaView: React.FC = () => {
                       href={r.postUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-3 py-1.5 bg-zinc-800 text-zinc-400 rounded-lg text-[9px] font-black uppercase tracking-wider flex items-center gap-1"
+                      className="px-3 py-1.5 bg-zinc-800 text-zinc-400 rounded-lg text-[0.5625rem] font-black uppercase tracking-wider flex items-center gap-1"
                     >
-                      <Eye size={10} /> Post
+                      <Eye size="0.625rem" /> Post
                     </a>
                   )}
                 </div>
@@ -272,7 +272,7 @@ export const DealsMaisVantaView: React.FC = () => {
           <button
             key={t}
             onClick={() => setTab(t)}
-            className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider border transition-all ${
+            className={`px-3 py-1.5 rounded-lg text-[0.5625rem] font-black uppercase tracking-wider border transition-all ${
               tab === t ? 'bg-[#FFD300] text-black border-transparent' : 'bg-zinc-900/60 text-zinc-400 border-white/5'
             }`}
           >
@@ -286,9 +286,9 @@ export const DealsMaisVantaView: React.FC = () => {
               resetForm();
               setShowForm(true);
             }}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-[#FFD300] text-black rounded-lg text-[10px] font-black uppercase tracking-wider active:scale-95 transition-all"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-[#FFD300] text-black rounded-lg text-[0.625rem] font-black uppercase tracking-wider active:scale-95 transition-all"
           >
-            <Plus size={12} /> Novo Deal
+            <Plus size="0.75rem" /> Novo Deal
           </button>
         )}
       </div>
@@ -309,12 +309,12 @@ export const DealsMaisVantaView: React.FC = () => {
             value={descricao}
             onChange={e => setDescricao(e.target.value)}
             placeholder="Descrição do deal"
-            className="w-full bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/50 min-h-[60px] resize-none"
+            className="w-full bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/50 min-h-[3.75rem] resize-none"
           />
 
           {/* Parceiro */}
           <div>
-            <p className="text-zinc-400 text-[10px] font-bold uppercase tracking-wider mb-1">Parceiro</p>
+            <p className="text-zinc-400 text-[0.625rem] font-bold uppercase tracking-wider mb-1">Parceiro</p>
             <div className="flex flex-wrap gap-1.5">
               {parceiros.map(p => (
                 <button
@@ -323,7 +323,7 @@ export const DealsMaisVantaView: React.FC = () => {
                     setParceiroId(p.id);
                     setCidadeId(p.cidadeId);
                   }}
-                  className={`px-2.5 py-1 rounded-lg text-[9px] font-bold border transition-all ${
+                  className={`px-2.5 py-1 rounded-lg text-[0.5625rem] font-bold border transition-all ${
                     parceiroId === p.id
                       ? 'bg-[#FFD300] text-black border-transparent'
                       : 'bg-zinc-800 text-zinc-400 border-white/5'
@@ -341,7 +341,7 @@ export const DealsMaisVantaView: React.FC = () => {
               <button
                 key={t}
                 onClick={() => setTipo(t)}
-                className={`flex-1 py-2 rounded-lg text-[10px] font-black uppercase tracking-wider border transition-all ${
+                className={`flex-1 py-2 rounded-lg text-[0.625rem] font-black uppercase tracking-wider border transition-all ${
                   tipo === t ? 'bg-[#FFD300] text-black border-transparent' : 'bg-zinc-800 text-zinc-400 border-white/5'
                 }`}
               >
@@ -382,7 +382,7 @@ export const DealsMaisVantaView: React.FC = () => {
           <div className="flex gap-2">
             <button
               onClick={handleCriar}
-              className="flex-1 py-2 bg-[#FFD300] text-black rounded-lg text-[10px] font-black uppercase tracking-wider active:scale-95 transition-all"
+              className="flex-1 py-2 bg-[#FFD300] text-black rounded-lg text-[0.625rem] font-black uppercase tracking-wider active:scale-95 transition-all"
             >
               Criar Deal
             </button>
@@ -391,7 +391,7 @@ export const DealsMaisVantaView: React.FC = () => {
                 setShowForm(false);
                 resetForm();
               }}
-              className="px-4 py-2 bg-zinc-800 text-zinc-400 rounded-lg text-[10px] font-black uppercase tracking-wider active:scale-95 transition-all"
+              className="px-4 py-2 bg-zinc-800 text-zinc-400 rounded-lg text-[0.625rem] font-black uppercase tracking-wider active:scale-95 transition-all"
             >
               Cancelar
             </button>
@@ -406,7 +406,7 @@ export const DealsMaisVantaView: React.FC = () => {
         </div>
       ) : deals.length === 0 ? (
         <div className="text-center py-12">
-          <Ticket size={32} className="text-zinc-700 mx-auto mb-2" />
+          <Ticket size="2rem" className="text-zinc-700 mx-auto mb-2" />
           <p className="text-zinc-400 text-xs">Nenhum deal cadastrado</p>
         </div>
       ) : (
@@ -419,14 +419,14 @@ export const DealsMaisVantaView: React.FC = () => {
             >
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-zinc-800 rounded-xl flex items-center justify-center shrink-0 border border-white/5">
-                  <Ticket size={18} className="text-[#FFD300]" />
+                  <Ticket size="1.125rem" className="text-[#FFD300]" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-white text-sm font-semibold truncate">{d.titulo}</p>
-                  <div className="flex items-center gap-2 text-[10px] text-zinc-400 mt-0.5">
+                  <div className="flex items-center gap-2 text-[0.625rem] text-zinc-400 mt-0.5">
                     <span>{d.parceiroNome}</span>
                     <span className="flex items-center gap-0.5">
-                      <MapPin size={9} />
+                      <MapPin size="0.5625rem" />
                       {d.cidadeNome}
                     </span>
                     <span className={d.tipo === 'BARTER' ? 'text-purple-400' : 'text-green-400'}>{d.tipo}</span>
@@ -434,15 +434,15 @@ export const DealsMaisVantaView: React.FC = () => {
                 </div>
                 <div className="flex flex-col items-end gap-1 shrink-0">
                   {statusBadge(d.status)}
-                  <div className="flex items-center gap-1 text-[10px] text-zinc-400">
-                    <Users size={10} />
+                  <div className="flex items-center gap-1 text-[0.625rem] text-zinc-400">
+                    <Users size="0.625rem" />
                     {d.vagasPreenchidas}/{d.vagas}
                   </div>
                 </div>
               </div>
               {d.obrigacaoBarter && (
-                <p className="text-zinc-400 text-[10px] mt-1.5 truncate">
-                  <Clock size={9} className="inline mr-1" />
+                <p className="text-zinc-400 text-[0.625rem] mt-1.5 truncate">
+                  <Clock size="0.5625rem" className="inline mr-1" />
                   {d.obrigacaoBarter}
                 </p>
               )}

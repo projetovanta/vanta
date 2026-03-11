@@ -249,31 +249,31 @@ export const MembrosGlobaisMaisVantaView: React.FC<{
       <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-6 pt-8 pb-4 shrink-0">
         {selecionados.size > 0 && (
           <div className="mb-4 p-3 bg-amber-500/15 border border-amber-500/25 rounded-xl flex items-center justify-between">
-            <span className="text-amber-400 text-[9px] font-black uppercase tracking-widest">
+            <span className="text-amber-400 text-[0.5625rem] font-black uppercase tracking-widest">
               {selecionados.size} selecionado(s)
             </span>
             <div className="flex gap-2">
               <button
                 onClick={() => setConfirmaBulk({ acao: 'BLOQUEAR', count: selecionados.size })}
-                className="px-2 py-1 bg-amber-500/20 border border-amber-500/30 rounded-lg text-amber-400 text-[8px] font-black uppercase active:scale-95 transition-all"
+                className="px-2 py-1 bg-amber-500/20 border border-amber-500/30 rounded-lg text-amber-400 text-[0.5rem] font-black uppercase active:scale-95 transition-all"
               >
                 Bloquear
               </button>
               <button
                 onClick={() => setConfirmaBulk({ acao: 'DESBLOQUEAR', count: selecionados.size })}
-                className="px-2 py-1 bg-emerald-500/20 border border-emerald-500/30 rounded-lg text-emerald-400 text-[8px] font-black uppercase active:scale-95 transition-all"
+                className="px-2 py-1 bg-emerald-500/20 border border-emerald-500/30 rounded-lg text-emerald-400 text-[0.5rem] font-black uppercase active:scale-95 transition-all"
               >
                 Desbloquear
               </button>
               <button
                 onClick={() => setConfirmaBulk({ acao: 'BANIR', count: selecionados.size })}
-                className="px-2 py-1 bg-red-500/20 border border-red-500/30 rounded-lg text-red-400 text-[8px] font-black uppercase active:scale-95 transition-all"
+                className="px-2 py-1 bg-red-500/20 border border-red-500/30 rounded-lg text-red-400 text-[0.5rem] font-black uppercase active:scale-95 transition-all"
               >
                 Banir
               </button>
               <button
                 onClick={() => setSelecionados(new Set())}
-                className="px-2 py-1 bg-zinc-800 border border-white/10 rounded-lg text-zinc-400 text-[8px] font-black uppercase active:scale-95 transition-all"
+                className="px-2 py-1 bg-zinc-800 border border-white/10 rounded-lg text-zinc-400 text-[0.5rem] font-black uppercase active:scale-95 transition-all"
               >
                 Limpar
               </button>
@@ -295,14 +295,14 @@ export const MembrosGlobaisMaisVantaView: React.FC<{
               onClick={handleRefresh}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
             >
-              <RefreshCw size={16} className="text-zinc-400" />
+              <RefreshCw size="1rem" className="text-zinc-400" />
             </button>
             <button
               aria-label="Voltar"
               onClick={onBack}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
             >
-              <ArrowLeft size={18} className="text-zinc-400" />
+              <ArrowLeft size="1.125rem" className="text-zinc-400" />
             </button>
           </div>
         </div>
@@ -311,19 +311,19 @@ export const MembrosGlobaisMaisVantaView: React.FC<{
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 mb-4">
           <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center">
             <p className="text-emerald-400 font-black text-xl leading-none">{totais.ativos}</p>
-            <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider mt-1">Ativos</p>
+            <p className="text-zinc-400 text-[0.5625rem] font-bold uppercase tracking-wider mt-1">Ativos</p>
           </div>
           <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center">
             <p className="text-amber-400 font-black text-xl leading-none">{totais.bloqueados}</p>
-            <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider mt-1">Bloqueados</p>
+            <p className="text-zinc-400 text-[0.5625rem] font-bold uppercase tracking-wider mt-1">Bloqueados</p>
           </div>
           <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center">
             <p className="text-red-400 font-black text-xl leading-none">{totais.banidos}</p>
-            <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider mt-1">Banidos</p>
+            <p className="text-zinc-400 text-[0.5625rem] font-bold uppercase tracking-wider mt-1">Banidos</p>
           </div>
           <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center">
             <p className="text-orange-400 font-black text-xl leading-none">{totais.divida}</p>
-            <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider mt-1">Dívida</p>
+            <p className="text-zinc-400 text-[0.5625rem] font-bold uppercase tracking-wider mt-1">Dívida</p>
           </div>
         </div>
 
@@ -333,7 +333,7 @@ export const MembrosGlobaisMaisVantaView: React.FC<{
             <button
               key={f.id}
               onClick={() => setFiltro(f.id)}
-              className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider shrink-0 border transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-[0.5625rem] font-black uppercase tracking-wider shrink-0 border transition-all ${
                 filtro === f.id
                   ? 'bg-[#FFD300] text-black border-transparent'
                   : 'bg-zinc-900/60 text-zinc-400 border-white/5 active:bg-zinc-800'
@@ -350,9 +350,11 @@ export const MembrosGlobaisMaisVantaView: React.FC<{
         {filtrados.length === 0 && (
           <div className="flex flex-col items-center justify-center py-16 gap-4">
             <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center">
-              <Users size={28} className="text-zinc-700" />
+              <Users size="1.75rem" className="text-zinc-700" />
             </div>
-            <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">Nenhum membro encontrado</p>
+            <p className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest">
+              Nenhum membro encontrado
+            </p>
           </div>
         )}
 
@@ -393,24 +395,24 @@ export const MembrosGlobaisMaisVantaView: React.FC<{
                   />
                 ) : (
                   <div className="w-12 h-12 rounded-full bg-zinc-800 border border-white/5 flex items-center justify-center shrink-0">
-                    <Users size={20} className="text-zinc-400" />
+                    <Users size="1.25rem" className="text-zinc-400" />
                   </div>
                 )}
                 <div className="flex-1 min-w-0">
                   <p className="text-white font-bold text-sm truncate">{perfil?.nome || m.userId.slice(0, 8)}</p>
                   <div className="flex items-center gap-2 mt-1">
                     <span
-                      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md border text-[8px] font-black uppercase tracking-wider ${st.color}`}
+                      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md border text-[0.5rem] font-black uppercase tracking-wider ${st.color}`}
                     >
-                      <StIcon size={9} /> {st.label}
+                      <StIcon size="0.5625rem" /> {st.label}
                     </span>
-                    <span className="text-[#FFD300] text-[9px] font-black">{m.tier}</span>
+                    <span className="text-[#FFD300] text-[0.5625rem] font-black">{m.tier}</span>
                   </div>
-                  <p className="text-zinc-400 text-[9px] mt-1">Origem: {getComunidadeNome(m.comunidadeOrigem)}</p>
+                  <p className="text-zinc-400 text-[0.5625rem] mt-1">Origem: {getComunidadeNome(m.comunidadeOrigem)}</p>
                 </div>
 
                 {/* Status info */}
-                <div className="text-right shrink-0 text-[9px] text-zinc-400">
+                <div className="text-right shrink-0 text-[0.5625rem] text-zinc-400">
                   {m.bloqueioAte && (
                     <p>Até {new Date(m.bloqueioAte).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })}</p>
                   )}
@@ -426,18 +428,18 @@ export const MembrosGlobaisMaisVantaView: React.FC<{
                       setConfirmar({ memberId: m.userId, acao: 'DESBLOQUEAR', nome: perfil?.nome || m.userId })
                     }
                     disabled={isLoading}
-                    className="flex-1 py-2 bg-emerald-500/15 border border-emerald-500/25 rounded-xl text-emerald-400 text-[9px] font-black uppercase tracking-widest active:scale-95 transition-all disabled:opacity-40"
+                    className="flex-1 py-2 bg-emerald-500/15 border border-emerald-500/25 rounded-xl text-emerald-400 text-[0.5625rem] font-black uppercase tracking-widest active:scale-95 transition-all disabled:opacity-40"
                   >
-                    <LogOut size={12} className="inline mr-1" /> Desbloquear
+                    <LogOut size="0.75rem" className="inline mr-1" /> Desbloquear
                   </button>
                 )}
                 {!m.banidoPermanente && (
                   <button
                     onClick={() => setConfirmar({ memberId: m.userId, acao: 'BANIR', nome: perfil?.nome || m.userId })}
                     disabled={isLoading}
-                    className="flex-1 py-2 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-[9px] font-black uppercase tracking-widest active:scale-95 transition-all disabled:opacity-40"
+                    className="flex-1 py-2 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-[0.5625rem] font-black uppercase tracking-widest active:scale-95 transition-all disabled:opacity-40"
                   >
-                    <Ban size={12} className="inline mr-1" /> Banir
+                    <Ban size="0.75rem" className="inline mr-1" /> Banir
                   </button>
                 )}
                 {temDividaSocial(m.userId) && (
@@ -446,9 +448,9 @@ export const MembrosGlobaisMaisVantaView: React.FC<{
                       setConfirmar({ memberId: m.userId, acao: 'RESOLVER_DIVIDA', nome: perfil?.nome || m.userId })
                     }
                     disabled={isLoading}
-                    className="flex-1 py-2 bg-orange-500/15 border border-orange-500/25 rounded-xl text-orange-400 text-[9px] font-black uppercase tracking-widest active:scale-95 transition-all disabled:opacity-40"
+                    className="flex-1 py-2 bg-orange-500/15 border border-orange-500/25 rounded-xl text-orange-400 text-[0.5625rem] font-black uppercase tracking-widest active:scale-95 transition-all disabled:opacity-40"
                   >
-                    <Gift size={12} className="inline mr-1" /> Resolver
+                    <Gift size="0.75rem" className="inline mr-1" /> Resolver
                   </button>
                 )}
               </div>
@@ -474,7 +476,7 @@ export const MembrosGlobaisMaisVantaView: React.FC<{
                   ? 'Banir permanentemente?'
                   : 'Resolver dívida social?'}
             </p>
-            <p className="text-zinc-400 text-[10px] text-center leading-relaxed">
+            <p className="text-zinc-400 text-[0.625rem] text-center leading-relaxed">
               {confirmar.acao === 'DESBLOQUEAR'
                 ? `"${confirmar.nome}" poderá participar de eventos MAIS VANTA novamente.`
                 : confirmar.acao === 'BANIR'
@@ -485,7 +487,7 @@ export const MembrosGlobaisMaisVantaView: React.FC<{
               <button
                 onClick={() => setConfirmar(null)}
                 disabled={loading !== null}
-                className="flex-1 py-3 bg-zinc-900 border border-white/10 rounded-xl text-zinc-400 text-[9px] font-black uppercase tracking-widest active:scale-95 transition-all disabled:opacity-40"
+                className="flex-1 py-3 bg-zinc-900 border border-white/10 rounded-xl text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest active:scale-95 transition-all disabled:opacity-40"
               >
                 Voltar
               </button>
@@ -500,7 +502,7 @@ export const MembrosGlobaisMaisVantaView: React.FC<{
                     await handleResolverDivida(confirmar.memberId);
                   }
                 }}
-                className={`flex-1 py-3 rounded-xl text-[9px] font-black uppercase tracking-widest active:scale-95 transition-all disabled:opacity-40 ${
+                className={`flex-1 py-3 rounded-xl text-[0.5625rem] font-black uppercase tracking-widest active:scale-95 transition-all disabled:opacity-40 ${
                   confirmar.acao === 'DESBLOQUEAR'
                     ? 'bg-emerald-500 text-black'
                     : confirmar.acao === 'BANIR'
@@ -532,14 +534,14 @@ export const MembrosGlobaisMaisVantaView: React.FC<{
                   ? 'Desbloquear membros?'
                   : 'Banir membros?'}
             </p>
-            <p className="text-zinc-400 text-[10px] text-center leading-relaxed">
+            <p className="text-zinc-400 text-[0.625rem] text-center leading-relaxed">
               Esta ação afetará {confirmaBulk.count} membro{confirmaBulk.count > 1 ? 's' : ''}.
             </p>
             <div className="flex gap-2">
               <button
                 onClick={() => setConfirmaBulk(null)}
                 disabled={loading === 'BULK'}
-                className="flex-1 py-3 bg-zinc-900 border border-white/10 rounded-xl text-zinc-400 text-[9px] font-black uppercase tracking-widest active:scale-95 transition-all disabled:opacity-40"
+                className="flex-1 py-3 bg-zinc-900 border border-white/10 rounded-xl text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest active:scale-95 transition-all disabled:opacity-40"
               >
                 Cancelar
               </button>
@@ -554,7 +556,7 @@ export const MembrosGlobaisMaisVantaView: React.FC<{
                     await handleBulkBanir();
                   }
                 }}
-                className={`flex-1 py-3 rounded-xl text-[9px] font-black uppercase tracking-widest active:scale-95 transition-all disabled:opacity-40 ${
+                className={`flex-1 py-3 rounded-xl text-[0.5625rem] font-black uppercase tracking-widest active:scale-95 transition-all disabled:opacity-40 ${
                   confirmaBulk.acao === 'BLOQUEAR'
                     ? 'bg-amber-500 text-black'
                     : confirmaBulk.acao === 'DESBLOQUEAR'

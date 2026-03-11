@@ -52,7 +52,7 @@ export const CheckInView: React.FC<{ onBack: () => void; comunidadeId?: string; 
           onClick={onBack}
           className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all mt-1 shrink-0"
         >
-          <ArrowLeft size={18} className="text-zinc-400" />
+          <ArrowLeft size="1.125rem" className="text-zinc-400" />
         </button>
       </div>
 
@@ -60,9 +60,9 @@ export const CheckInView: React.FC<{ onBack: () => void; comunidadeId?: string; 
         {eventos.length === 0 && (
           <div className="flex flex-col items-center py-20 gap-4">
             <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center">
-              <QrCode size={28} className="text-zinc-700" />
+              <QrCode size="1.75rem" className="text-zinc-700" />
             </div>
-            <p className="text-zinc-700 text-[10px] font-black uppercase tracking-widest text-center">
+            <p className="text-zinc-700 text-[0.625rem] font-black uppercase tracking-widest text-center">
               Nenhum evento disponível
             </p>
           </div>

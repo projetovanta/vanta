@@ -115,13 +115,13 @@ const ModalRecusa: React.FC<{
         <div className="px-6 pt-2 flex gap-3" style={{ paddingBottom: '1.5rem' }}>
           <button
             onClick={onCancelar}
-            className="flex-1 py-4 bg-zinc-900 border border-white/10 text-zinc-400 font-black text-[10px] uppercase tracking-widest rounded-xl active:scale-95 transition-all"
+            className="flex-1 py-4 bg-zinc-900 border border-white/10 text-zinc-400 font-black text-[0.625rem] uppercase tracking-widest rounded-xl active:scale-95 transition-all"
           >
             Cancelar
           </button>
           <button
             onClick={() => onConfirmar(motivo.trim())}
-            className="flex-1 py-4 bg-red-500 text-white font-bold text-[10px] uppercase tracking-widest rounded-xl active:scale-95 transition-all"
+            className="flex-1 py-4 bg-red-500 text-white font-bold text-[0.625rem] uppercase tracking-widest rounded-xl active:scale-95 transition-all"
           >
             Confirmar Recusa
           </button>
@@ -170,7 +170,7 @@ const ModalContraProposta: React.FC<{
 
           {/* Split */}
           <div>
-            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">Split da Receita</p>
+            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2">Split da Receita</p>
             <VantaSlider min={10} max={90} value={splitSocio} onChange={setSplitSocio} className="w-full" />
             <div className="flex justify-between mt-1">
               <span className="text-emerald-400 text-xs font-bold">Sócio: {splitSocio}%</span>
@@ -180,7 +180,9 @@ const ModalContraProposta: React.FC<{
 
           {/* Permissões */}
           <div>
-            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">Permissões do Produtor</p>
+            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2">
+              Permissões do Produtor
+            </p>
             <div className="space-y-1.5">
               {PERMISSOES_DISPONIVEIS.map(p => (
                 <button
@@ -195,7 +197,7 @@ const ModalContraProposta: React.FC<{
                       permissoes.includes(p) ? 'border-purple-400 bg-purple-400' : 'border-zinc-600'
                     }`}
                   >
-                    {permissoes.includes(p) && <Check size={8} className="text-black" strokeWidth={3} />}
+                    {permissoes.includes(p) && <Check size="0.5rem" className="text-black" strokeWidth={3} />}
                   </div>
                   <span className="text-zinc-300 text-xs">{p.replace(/_/g, ' ')}</span>
                 </button>
@@ -205,7 +207,7 @@ const ModalContraProposta: React.FC<{
 
           {/* Mensagem */}
           <div>
-            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">Mensagem (opcional)</p>
+            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2">Mensagem (opcional)</p>
             <textarea
               value={mensagem}
               onChange={e => setMensagem(e.target.value)}
@@ -219,7 +221,7 @@ const ModalContraProposta: React.FC<{
         <div className="px-6 pt-3 flex gap-3 shrink-0" style={{ paddingBottom: '1.5rem' }}>
           <button
             onClick={onCancelar}
-            className="flex-1 py-4 bg-zinc-900 border border-white/10 text-zinc-400 font-black text-[10px] uppercase tracking-widest rounded-xl active:scale-95 transition-all"
+            className="flex-1 py-4 bg-zinc-900 border border-white/10 text-zinc-400 font-black text-[0.625rem] uppercase tracking-widest rounded-xl active:scale-95 transition-all"
           >
             Cancelar
           </button>
@@ -232,7 +234,7 @@ const ModalContraProposta: React.FC<{
                 mensagem: mensagem.trim() || undefined,
               })
             }
-            className="flex-1 py-4 bg-cyan-500 text-white font-bold text-[10px] uppercase tracking-widest rounded-xl active:scale-95 transition-all"
+            className="flex-1 py-4 bg-cyan-500 text-white font-bold text-[0.625rem] uppercase tracking-widest rounded-xl active:scale-95 transition-all"
           >
             Enviar Proposta
           </button>
@@ -255,7 +257,7 @@ const SectionBlock: React.FC<{
   >
     <div className="flex items-center gap-2">
       {icon}
-      <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest">{title}</p>
+      <p className="text-[0.5625rem] text-zinc-400 font-black uppercase tracking-widest">{title}</p>
     </div>
     {children}
   </div>
@@ -445,7 +447,7 @@ export const ConviteSocioModal: React.FC<Props> = ({ eventoId, userId, onClose, 
   if (loading) {
     return (
       <div className="absolute inset-0 z-50 bg-[#0A0A0A] flex items-center justify-center">
-        <Loader2 size={32} className="text-amber-400 animate-spin" />
+        <Loader2 size="2rem" className="text-amber-400 animate-spin" />
       </div>
     );
   }
@@ -453,7 +455,7 @@ export const ConviteSocioModal: React.FC<Props> = ({ eventoId, userId, onClose, 
   if (erro || !convite) {
     return (
       <div className="absolute inset-0 z-50 bg-[#0A0A0A] flex flex-col items-center justify-center gap-4 px-8">
-        <AlertTriangle size={32} className="text-red-400" />
+        <AlertTriangle size="2rem" className="text-red-400" />
         <p className="text-zinc-400 text-sm text-center">{erro ?? 'Erro ao carregar convite.'}</p>
         <button
           onClick={onClose}
@@ -475,7 +477,7 @@ export const ConviteSocioModal: React.FC<Props> = ({ eventoId, userId, onClose, 
           <img loading="lazy" src={convite.foto} alt={convite.nome} className="w-full h-full object-cover" />
         ) : (
           <div className="w-full h-full bg-zinc-900 flex items-center justify-center">
-            <Image size={32} className="text-zinc-800" />
+            <Image size="2rem" className="text-zinc-800" />
           </div>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/30 to-transparent" />
@@ -485,21 +487,21 @@ export const ConviteSocioModal: React.FC<Props> = ({ eventoId, userId, onClose, 
           className="absolute left-4 w-10 h-10 bg-black/60 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
           style={{ top: '1.25rem' }}
         >
-          <ArrowLeft size={18} className="text-white" />
+          <ArrowLeft size="1.125rem" className="text-white" />
         </button>
         <div className="absolute bottom-4 left-5 right-5">
           <div className="flex items-center gap-2 mb-2">
-            <span className="text-[7px] font-black uppercase tracking-[0.2em] text-amber-400 bg-amber-400/15 border border-amber-400/20 px-2.5 py-1 rounded-full inline-block">
+            <span className="text-[0.4375rem] font-black uppercase tracking-[0.2em] text-amber-400 bg-amber-400/15 border border-amber-400/20 px-2.5 py-1 rounded-full inline-block">
               Convite Pendente
             </span>
             {convite.rodadaNegociacao > 1 && (
-              <span className="text-[7px] font-black uppercase tracking-[0.2em] text-cyan-400 bg-cyan-400/15 border border-cyan-400/20 px-2.5 py-1 rounded-full inline-block">
+              <span className="text-[0.4375rem] font-black uppercase tracking-[0.2em] text-cyan-400 bg-cyan-400/15 border border-cyan-400/20 px-2.5 py-1 rounded-full inline-block">
                 Rodada {convite.rodadaNegociacao}/3
               </span>
             )}
           </div>
           <p className="text-white font-bold text-xl leading-tight truncate">{convite.nome}</p>
-          <p className="text-zinc-400 text-[10px] mt-1 truncate">
+          <p className="text-zinc-400 text-[0.625rem] mt-1 truncate">
             {convite.comunidadeNome} · {convite.cidade}
           </p>
         </div>
@@ -508,28 +510,28 @@ export const ConviteSocioModal: React.FC<Props> = ({ eventoId, userId, onClose, 
       {/* Conteúdo scrollável */}
       <div className="flex-1 overflow-y-auto no-scrollbar p-5 space-y-3 max-w-3xl mx-auto w-full">
         {/* Info do Evento */}
-        <SectionBlock icon={<Clock size={14} className="text-amber-400" />} title="Informações do Evento">
+        <SectionBlock icon={<Clock size="0.875rem" className="text-amber-400" />} title="Informações do Evento">
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1">Data / Hora</p>
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1">Data / Hora</p>
               <p className="text-white text-xs font-bold leading-tight">{formatDateTime(convite.dataInicio)}</p>
             </div>
             <div>
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1">Local</p>
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1">Local</p>
               <p className="text-white text-xs font-bold truncate">{convite.local}</p>
             </div>
             <div>
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1">Produtor</p>
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1">Produtor</p>
               <p className="text-white text-xs font-bold truncate">{convite.criadorNome}</p>
             </div>
             <div>
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1">Comunidade</p>
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1">Comunidade</p>
               <p className="text-white text-xs font-bold truncate">{convite.comunidadeNome}</p>
             </div>
           </div>
           {convite.descricao && (
             <div>
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1">Descrição</p>
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1">Descrição</p>
               <p className="text-zinc-400 text-xs leading-relaxed line-clamp-4">{convite.descricao}</p>
             </div>
           )}
@@ -537,19 +539,19 @@ export const ConviteSocioModal: React.FC<Props> = ({ eventoId, userId, onClose, 
 
         {/* Proposta Financeira */}
         <SectionBlock
-          icon={<Percent size={14} className="text-emerald-400" />}
+          icon={<Percent size="0.875rem" className="text-emerald-400" />}
           title="Proposta Financeira"
           borderColor="rgba(16,185,129,0.15)"
         >
           <div className="grid grid-cols-2 gap-3">
             <div className="bg-emerald-500/5 border border-emerald-500/10 rounded-xl px-4 py-3 text-center">
-              <p className="text-[8px] text-emerald-400/60 font-black uppercase tracking-widest mb-1">
+              <p className="text-[0.5rem] text-emerald-400/60 font-black uppercase tracking-widest mb-1">
                 Sua Parte (Sócio)
               </p>
               <p className="text-emerald-400 text-2xl font-black">{convite.splitSocio}%</p>
             </div>
             <div className="bg-zinc-900/80 border border-white/5 rounded-xl px-4 py-3 text-center">
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1">Produtor</p>
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1">Produtor</p>
               <p className="text-zinc-400 text-2xl font-black">{convite.splitProdutor}%</p>
             </div>
           </div>
@@ -558,7 +560,7 @@ export const ConviteSocioModal: React.FC<Props> = ({ eventoId, userId, onClose, 
         {/* Mensagem de negociação */}
         {convite.mensagemNegociacao && (
           <SectionBlock
-            icon={<MessageSquare size={14} className="text-cyan-400" />}
+            icon={<MessageSquare size="0.875rem" className="text-cyan-400" />}
             title="Última Mensagem"
             borderColor="rgba(6,182,212,0.15)"
           >
@@ -569,7 +571,7 @@ export const ConviteSocioModal: React.FC<Props> = ({ eventoId, userId, onClose, 
         {/* Permissoes oferecidas ao Produtor */}
         {convite.permissoesProdutor.length > 0 && (
           <SectionBlock
-            icon={<Shield size={14} className="text-purple-400" />}
+            icon={<Shield size="0.875rem" className="text-purple-400" />}
             title="Permissões do Produtor"
             borderColor="rgba(168,139,250,0.15)"
           >
@@ -579,14 +581,14 @@ export const ConviteSocioModal: React.FC<Props> = ({ eventoId, userId, onClose, 
                   key={p}
                   className="flex items-center gap-2 bg-purple-500/5 border border-purple-500/10 rounded-xl px-3 py-2"
                 >
-                  <Check size={12} className="text-purple-400 shrink-0" />
+                  <Check size="0.75rem" className="text-purple-400 shrink-0" />
                   <p className="text-zinc-300 text-xs">{p.replace(/_/g, ' ')}</p>
                 </div>
               ))}
             </div>
             <div className="flex items-start gap-2 bg-zinc-950/50 rounded-xl px-3 py-2">
-              <AlertTriangle size={11} className="text-zinc-400 shrink-0 mt-0.5" />
-              <p className="text-zinc-400 text-[9px] leading-relaxed">
+              <AlertTriangle size="0.6875rem" className="text-zinc-400 shrink-0 mt-0.5" />
+              <p className="text-zinc-400 text-[0.5625rem] leading-relaxed">
                 O produtor terá acesso a esses módulos no evento. Você pode ajustar na contra-proposta.
               </p>
             </div>
@@ -602,25 +604,25 @@ export const ConviteSocioModal: React.FC<Props> = ({ eventoId, userId, onClose, 
         <button
           onClick={() => setShowRecusa(true)}
           disabled={aceitando || enviandoProposta}
-          className="py-4 px-3 bg-zinc-900 border border-red-500/20 text-red-400 font-bold text-[10px] uppercase tracking-widest rounded-2xl flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all disabled:opacity-40"
+          className="py-4 px-3 bg-zinc-900 border border-red-500/20 text-red-400 font-bold text-[0.625rem] uppercase tracking-widest rounded-2xl flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all disabled:opacity-40"
         >
-          <X size={14} /> Recusar
+          <X size="0.875rem" /> Recusar
         </button>
         {podeContrapor && (
           <button
             onClick={() => setShowContraProposta(true)}
             disabled={aceitando || enviandoProposta}
-            className="flex-1 py-4 bg-zinc-900 border border-cyan-500/20 text-cyan-400 font-bold text-[10px] uppercase tracking-widest rounded-2xl flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all disabled:opacity-40"
+            className="flex-1 py-4 bg-zinc-900 border border-cyan-500/20 text-cyan-400 font-bold text-[0.625rem] uppercase tracking-widest rounded-2xl flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all disabled:opacity-40"
           >
-            <Repeat size={14} /> Contra-proposta
+            <Repeat size="0.875rem" /> Contra-proposta
           </button>
         )}
         <button
           onClick={handleAceitar}
           disabled={aceitando || enviandoProposta}
-          className="flex-1 py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-widest rounded-2xl flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all disabled:opacity-60"
+          className="flex-1 py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-widest rounded-2xl flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all disabled:opacity-60"
         >
-          {aceitando ? <Clock size={14} className="animate-spin" /> : <Check size={14} />}
+          {aceitando ? <Clock size="0.875rem" className="animate-spin" /> : <Check size="0.875rem" />}
           {aceitando ? 'Aceitando...' : 'Aceitar'}
         </button>
       </div>

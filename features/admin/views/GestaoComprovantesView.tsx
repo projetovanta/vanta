@@ -126,11 +126,11 @@ export const GestaoComprovantesView: React.FC<Props> = ({ onBack, masterId }) =>
       <div className="shrink-0 px-4 pb-3 border-b border-white/5" style={{ paddingTop: '1rem' }}>
         <div className="flex items-center gap-3 mb-3">
           <button aria-label="Voltar" onClick={onBack} className="p-1.5 hover:bg-white/5 rounded-lg transition-colors">
-            <ArrowLeft size={18} className="text-zinc-400" />
+            <ArrowLeft size="1.125rem" className="text-zinc-400" />
           </button>
           <div className="flex-1 min-w-0">
             <h1 className="text-base font-bold text-white truncate">Comprovantes de Meia-Entrada</h1>
-            <p className="text-[10px] text-zinc-400">
+            <p className="text-[0.625rem] text-zinc-400">
               {pendentesCount} pendente{pendentesCount !== 1 ? 's' : ''}
             </p>
           </div>
@@ -154,18 +154,18 @@ export const GestaoComprovantesView: React.FC<Props> = ({ onBack, masterId }) =>
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
-              className={`shrink-0 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all ${
+              className={`shrink-0 px-3 py-1.5 rounded-lg text-[0.625rem] font-bold uppercase tracking-wider transition-all ${
                 tab === t.id ? 'bg-white/10 text-white' : 'text-zinc-400 hover:text-zinc-300'
               }`}
             >
-              {t.label} {t.count > 0 && <span className="ml-1 text-[9px] opacity-60">({t.count})</span>}
+              {t.label} {t.count > 0 && <span className="ml-1 text-[0.5625rem] opacity-60">({t.count})</span>}
             </button>
           ))}
         </div>
 
         {/* Busca */}
         <div className="relative mt-2">
-          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+          <Search size="0.875rem" className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
           <input
             value={busca}
             onChange={e => setBusca(e.target.value)}
@@ -183,7 +183,7 @@ export const GestaoComprovantesView: React.FC<Props> = ({ onBack, masterId }) =>
           </div>
         ) : filtered.length === 0 ? (
           <div className="text-center py-12">
-            <FileCheck size={32} className="text-zinc-700 mx-auto mb-2" />
+            <FileCheck size="2rem" className="text-zinc-700 mx-auto mb-2" />
             <p className="text-zinc-400 text-xs">
               Nenhum comprovante {tab === 'PENDENTES' ? 'pendente' : tab === 'APROVADOS' ? 'aprovado' : ''}
             </p>
@@ -198,18 +198,18 @@ export const GestaoComprovantesView: React.FC<Props> = ({ onBack, masterId }) =>
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-bold text-white truncate">{c._userName ?? 'Usuário'}</p>
-                  <p className="text-[10px] text-zinc-400 truncate">{c._userEmail ?? ''}</p>
+                  <p className="text-[0.625rem] text-zinc-400 truncate">{c._userEmail ?? ''}</p>
                   <div className="flex items-center gap-2 mt-1">
-                    <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400">
+                    <span className="text-[0.5625rem] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400">
                       {tipoLabel(c.tipo)}
                     </span>
                     {c.status === 'APROVADO' && c.validadeAte && (
-                      <span className="text-[9px] text-zinc-400">
+                      <span className="text-[0.5625rem] text-zinc-400">
                         até {new Date(c.validadeAte).toLocaleDateString('pt-BR')}
                       </span>
                     )}
                     {c.status === 'REJEITADO' && c.motivoRejeicao && (
-                      <span className="text-[9px] text-red-400 truncate">{c.motivoRejeicao}</span>
+                      <span className="text-[0.5625rem] text-red-400 truncate">{c.motivoRejeicao}</span>
                     )}
                   </div>
                 </div>
@@ -221,7 +221,7 @@ export const GestaoComprovantesView: React.FC<Props> = ({ onBack, masterId }) =>
                     className="p-2 bg-zinc-800 rounded-lg hover:bg-zinc-700 transition-colors"
                     title="Ver documento"
                   >
-                    <Eye size={14} className="text-zinc-400" />
+                    <Eye size="0.875rem" className="text-zinc-400" />
                   </button>
                   {c.status === 'PENDENTE' && (
                     <>
@@ -235,14 +235,14 @@ export const GestaoComprovantesView: React.FC<Props> = ({ onBack, masterId }) =>
                         className="p-2 bg-emerald-500/20 rounded-lg hover:bg-emerald-500/30 transition-colors"
                         title="Aprovar"
                       >
-                        <CheckCircle size={14} className="text-emerald-400" />
+                        <CheckCircle size="0.875rem" className="text-emerald-400" />
                       </button>
                       <button
                         onClick={() => setRejeitarModal(c)}
                         className="p-2 bg-red-500/20 rounded-lg hover:bg-red-500/30 transition-colors"
                         title="Rejeitar"
                       >
-                        <XCircle size={14} className="text-red-400" />
+                        <XCircle size="0.875rem" className="text-red-400" />
                       </button>
                     </>
                   )}
@@ -265,16 +265,16 @@ export const GestaoComprovantesView: React.FC<Props> = ({ onBack, masterId }) =>
             <div className="p-4 border-b border-white/5 flex items-center justify-between">
               <h3 className="text-sm font-bold text-white">Aprovar Comprovante</h3>
               <button onClick={() => setAprovarModal(null)} className="p-1 hover:bg-white/10 rounded-lg">
-                <X size={16} className="text-zinc-400" />
+                <X size="1rem" className="text-zinc-400" />
               </button>
             </div>
             <div className="p-4 space-y-4">
               <div>
                 <p className="text-xs text-zinc-400 mb-1">{aprovarModal._userName}</p>
-                <p className="text-[10px] text-zinc-400">{tipoLabel(aprovarModal.tipo)}</p>
+                <p className="text-[0.625rem] text-zinc-400">{tipoLabel(aprovarModal.tipo)}</p>
               </div>
               <div>
-                <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1.5 block">
+                <label className="text-[0.625rem] font-bold uppercase tracking-wider text-zinc-400 mb-1.5 block">
                   Validade
                 </label>
                 <div className="grid grid-cols-3 gap-2">
@@ -323,16 +323,16 @@ export const GestaoComprovantesView: React.FC<Props> = ({ onBack, masterId }) =>
                 }}
                 className="p-1 hover:bg-white/10 rounded-lg"
               >
-                <X size={16} className="text-zinc-400" />
+                <X size="1rem" className="text-zinc-400" />
               </button>
             </div>
             <div className="p-4 space-y-4">
               <div>
                 <p className="text-xs text-zinc-400 mb-1">{rejeitarModal._userName}</p>
-                <p className="text-[10px] text-zinc-400">{tipoLabel(rejeitarModal.tipo)}</p>
+                <p className="text-[0.625rem] text-zinc-400">{tipoLabel(rejeitarModal.tipo)}</p>
               </div>
               <div>
-                <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1.5 block">
+                <label className="text-[0.625rem] font-bold uppercase tracking-wider text-zinc-400 mb-1.5 block">
                   Motivo da rejeição *
                 </label>
                 <textarea
@@ -359,7 +359,7 @@ export const GestaoComprovantesView: React.FC<Props> = ({ onBack, masterId }) =>
       {fotoModal && (
         <div className="absolute inset-0 z-[110] flex flex-col items-center justify-center p-4 animate-in fade-in duration-200">
           <div className="absolute inset-0 bg-black/90" role="presentation" onClick={() => setFotoModal(null)} />
-          <div className="relative w-full max-w-md animate-in zoom-in-95 duration-300">
+          <div className="relative w-full max-w-[500px] animate-in zoom-in-95 duration-300">
             {/* Tabs das fotos */}
             {fotoModalUrls.length > 1 && (
               <div className="flex gap-1 mb-3 justify-center relative z-10">
@@ -370,7 +370,7 @@ export const GestaoComprovantesView: React.FC<Props> = ({ onBack, masterId }) =>
                       setFotoModalIdx(i);
                       setFotoModal(f.url);
                     }}
-                    className={`px-3 py-1.5 rounded-lg text-[9px] font-bold uppercase tracking-wider transition-all ${
+                    className={`px-3 py-1.5 rounded-lg text-[0.5625rem] font-bold uppercase tracking-wider transition-all ${
                       fotoModalIdx === i ? 'bg-white/10 text-white' : 'text-zinc-400'
                     }`}
                   >
@@ -394,7 +394,7 @@ export const GestaoComprovantesView: React.FC<Props> = ({ onBack, masterId }) =>
               onClick={() => setFotoModal(null)}
               className="absolute top-3 right-3 p-2 bg-black/60 rounded-full z-10"
             >
-              <X size={16} className="text-white" />
+              <X size="1rem" className="text-white" />
             </button>
           </div>
         </div>

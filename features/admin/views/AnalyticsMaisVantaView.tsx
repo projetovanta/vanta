@@ -150,10 +150,10 @@ export const AnalyticsMaisVantaView: React.FC<{
     <div className="bg-zinc-900/60 border border-white/5 rounded-2xl p-4">
       <div className="flex items-center gap-2 mb-2">
         {icon}
-        <span className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">{label}</span>
+        <span className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">{label}</span>
       </div>
       <p className="text-white font-bold text-xl">{value}</p>
-      {sub && <p className="text-zinc-400 text-[9px] mt-0.5">{sub}</p>}
+      {sub && <p className="text-zinc-400 text-[0.5625rem] mt-0.5">{sub}</p>}
     </div>
   );
 
@@ -162,38 +162,38 @@ export const AnalyticsMaisVantaView: React.FC<{
       {/* Header */}
       <div className="shrink-0 flex items-center gap-3 px-4 py-3 border-b border-white/5">
         <button onClick={onBack} className="p-1.5 text-zinc-400 active:text-white" aria-label="Voltar">
-          <ArrowLeft size={16} />
+          <ArrowLeft size="1rem" />
         </button>
-        <BarChart3 size={14} className="text-[#FFD300]" />
+        <BarChart3 size="0.875rem" className="text-[#FFD300]" />
         <h1 className="text-white font-bold text-sm">Analytics MAIS VANTA</h1>
       </div>
 
       <div className="flex-1 overflow-y-auto no-scrollbar p-4 space-y-4">
         {loading ? (
           <div className="flex items-center justify-center py-20">
-            <Loader2 size={20} className="text-zinc-400 animate-spin" />
+            <Loader2 size="1.25rem" className="text-zinc-400 animate-spin" />
           </div>
         ) : (
           <>
             {/* Membros */}
             <div>
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2 flex items-center gap-1.5">
-                <Users size={10} /> Membros
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2 flex items-center gap-1.5">
+                <Users size="0.625rem" /> Membros
               </p>
               <div className="grid grid-cols-3 gap-2">
                 <KpiCard
-                  icon={<Users size={12} className="text-[#FFD300]" />}
+                  icon={<Users size="0.75rem" className="text-[#FFD300]" />}
                   label="Total"
                   value={membros?.ativos ?? 0}
                   sub={`de ${membros?.total ?? 0} registrados`}
                 />
                 <KpiCard
-                  icon={<TrendingUp size={12} className="text-green-500" />}
+                  icon={<TrendingUp size="0.75rem" className="text-green-500" />}
                   label="Novos (mês)"
                   value={membros?.novosMes ?? 0}
                 />
                 <KpiCard
-                  icon={<Crown size={12} className="text-[#FFD300]" />}
+                  icon={<Crown size="0.75rem" className="text-[#FFD300]" />}
                   label="Por nível"
                   value=""
                   sub={
@@ -207,31 +207,31 @@ export const AnalyticsMaisVantaView: React.FC<{
 
             {/* Resgates */}
             <div>
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2 flex items-center gap-1.5">
-                <ShoppingCart size={10} /> Resgates
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2 flex items-center gap-1.5">
+                <ShoppingCart size="0.625rem" /> Resgates
               </p>
               <div className="grid grid-cols-2 gap-2 mb-2">
                 <KpiCard
-                  icon={<ShoppingCart size={12} className="text-green-500" />}
+                  icon={<ShoppingCart size="0.75rem" className="text-green-500" />}
                   label="Total"
                   value={resgates?.total ?? 0}
                 />
                 <KpiCard
-                  icon={<TrendingUp size={12} className="text-[#FFD300]" />}
+                  icon={<TrendingUp size="0.75rem" className="text-[#FFD300]" />}
                   label="Este mês"
                   value={resgates?.mes ?? 0}
                 />
               </div>
               {(resgates?.topDeals?.length ?? 0) > 0 && (
                 <div className="bg-zinc-900/60 border border-white/5 rounded-2xl p-3">
-                  <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">Top Deals</p>
+                  <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2">Top Deals</p>
                   {resgates?.topDeals.map((d, i) => (
                     <div
                       key={i}
                       className="flex items-center justify-between py-1.5 border-b border-white/5 last:border-0"
                     >
-                      <span className="text-white text-[10px] truncate flex-1 mr-2">{d.titulo}</span>
-                      <span className="text-[#FFD300] text-[10px] font-bold shrink-0">{d.resgates}</span>
+                      <span className="text-white text-[0.625rem] truncate flex-1 mr-2">{d.titulo}</span>
+                      <span className="text-[#FFD300] text-[0.625rem] font-bold shrink-0">{d.resgates}</span>
                     </div>
                   ))}
                 </div>
@@ -240,25 +240,25 @@ export const AnalyticsMaisVantaView: React.FC<{
 
             {/* Parceiros */}
             <div>
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2 flex items-center gap-1.5">
-                <Store size={10} /> Parceiros
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2 flex items-center gap-1.5">
+                <Store size="0.625rem" /> Parceiros
               </p>
               <div className="grid grid-cols-2 gap-2 mb-2">
                 <KpiCard
-                  icon={<Store size={12} className="text-purple-400" />}
+                  icon={<Store size="0.75rem" className="text-purple-400" />}
                   label="Total"
                   value={parceiros?.total ?? 0}
                   sub={`${parceiros?.inativos ?? 0} inativos`}
                 />
                 <KpiCard
-                  icon={<AlertCircle size={12} className="text-red-400" />}
+                  icon={<AlertCircle size="0.75rem" className="text-red-400" />}
                   label="Inativos"
                   value={parceiros?.inativos ?? 0}
                 />
               </div>
               {(parceiros?.ranking?.length ?? 0) > 0 && (
                 <div className="bg-zinc-900/60 border border-white/5 rounded-2xl p-3">
-                  <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">
+                  <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2">
                     Ranking (resgates/mês)
                   </p>
                   {parceiros?.ranking.map((p, i) => (
@@ -266,10 +266,10 @@ export const AnalyticsMaisVantaView: React.FC<{
                       key={i}
                       className="flex items-center justify-between py-1.5 border-b border-white/5 last:border-0"
                     >
-                      <span className="text-white text-[10px] truncate flex-1 mr-2">
+                      <span className="text-white text-[0.625rem] truncate flex-1 mr-2">
                         <span className="text-zinc-400 mr-1">#{i + 1}</span> {p.nome}
                       </span>
-                      <span className="text-purple-400 text-[10px] font-bold shrink-0">{p.resgates}</span>
+                      <span className="text-purple-400 text-[0.625rem] font-bold shrink-0">{p.resgates}</span>
                     </div>
                   ))}
                 </div>
@@ -278,17 +278,17 @@ export const AnalyticsMaisVantaView: React.FC<{
 
             {/* Receita */}
             <div>
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2 flex items-center gap-1.5">
-                <DollarSign size={10} /> Receita
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2 flex items-center gap-1.5">
+                <DollarSign size="0.625rem" /> Receita
               </p>
               <div className="grid grid-cols-2 gap-2">
                 <KpiCard
-                  icon={<DollarSign size={12} className="text-green-500" />}
+                  icon={<DollarSign size="0.75rem" className="text-green-500" />}
                   label="Assinaturas ativas"
                   value={receita?.assinaturasAtivas ?? 0}
                 />
                 <KpiCard
-                  icon={<TrendingUp size={12} className="text-[#FFD300]" />}
+                  icon={<TrendingUp size="0.75rem" className="text-[#FFD300]" />}
                   label="Receita mensal"
                   value={`R$ ${(receita?.valorTotal ?? 0).toFixed(2)}`}
                 />
@@ -297,18 +297,18 @@ export const AnalyticsMaisVantaView: React.FC<{
 
             {/* Engajamento */}
             <div>
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2 flex items-center gap-1.5">
-                <TrendingUp size={10} /> Engajamento
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2 flex items-center gap-1.5">
+                <TrendingUp size="0.625rem" /> Engajamento
               </p>
               <div className="grid grid-cols-2 gap-2">
                 <KpiCard
-                  icon={<AlertCircle size={12} className="text-yellow-500" />}
+                  icon={<AlertCircle size="0.75rem" className="text-yellow-500" />}
                   label="Nunca resgatou"
                   value={engajamento?.nuncaResgatou ?? 0}
                   sub="membros inativos"
                 />
                 <KpiCard
-                  icon={<ShoppingCart size={12} className="text-green-500" />}
+                  icon={<ShoppingCart size="0.75rem" className="text-green-500" />}
                   label="Média/membro"
                   value={(engajamento?.mediaResgatesMembro ?? 0).toFixed(1)}
                   sub="resgates por membro"

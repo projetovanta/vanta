@@ -20,7 +20,7 @@ const EventoCard: React.FC<{ lista: ListaEvento; onSelect: (lista: ListaEvento) 
         className={`w-12 shrink-0 rounded-xl border flex flex-col items-center py-2 ${isPassed ? 'border-white/5 bg-zinc-900/50' : 'border-[#FFD300]/20 bg-[#FFD300]/5'}`}
       >
         <span
-          className={`text-[9px] font-black uppercase tracking-widest ${isPassed ? 'text-zinc-400' : 'text-[#FFD300]/60'}`}
+          className={`text-[0.5625rem] font-black uppercase tracking-widest ${isPassed ? 'text-zinc-400' : 'text-[#FFD300]/60'}`}
         >
           {lista.eventoData.slice(5, 7)}/{lista.eventoData.slice(0, 4).slice(-2)}
         </span>
@@ -33,23 +33,23 @@ const EventoCard: React.FC<{ lista: ListaEvento; onSelect: (lista: ListaEvento) 
         <p className={`font-bold text-sm leading-tight line-clamp-2 ${isPassed ? 'text-zinc-400' : 'text-white'}`}>
           {lista.eventoNome}
         </p>
-        <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mt-1 truncate">
+        <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest mt-1 truncate">
           {lista.eventoLocal}
         </p>
         <div className="mt-2.5 flex items-center gap-2">
           <div className="flex-1 h-1 bg-zinc-800 rounded-full overflow-hidden">
             <div className="h-full bg-[#FFD300] rounded-full" style={{ width: `${Math.min(pct, 100)}%` }} />
           </div>
-          <span className="text-zinc-400 text-[8px] font-black shrink-0">
+          <span className="text-zinc-400 text-[0.5rem] font-black shrink-0">
             {total}/{lista.tetoGlobalTotal}
           </span>
         </div>
         {dentro > 0 && (
-          <p className="text-emerald-500/70 text-[8px] font-black uppercase tracking-widest mt-1">{dentro} dentro</p>
+          <p className="text-emerald-500/70 text-[0.5rem] font-black uppercase tracking-widest mt-1">{dentro} dentro</p>
         )}
       </div>
 
-      <ChevronRight size={14} className="text-zinc-700 shrink-0 mt-1" />
+      <ChevronRight size="0.875rem" className="text-zinc-700 shrink-0 mt-1" />
     </button>
   );
 };
@@ -101,7 +101,7 @@ export const PainelEventos: React.FC<{
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all mt-1"
           >
-            <ArrowLeft size={18} className="text-zinc-400" />
+            <ArrowLeft size="1.125rem" className="text-zinc-400" />
           </button>
         </div>
       </div>
@@ -109,7 +109,9 @@ export const PainelEventos: React.FC<{
       <div className="flex-1 overflow-y-auto no-scrollbar p-5 space-y-6 max-w-3xl mx-auto w-full">
         {proximas.length > 0 && (
           <div>
-            <p className="text-zinc-700 text-[9px] font-black uppercase tracking-[0.2em] mb-3 px-1">Próximos Eventos</p>
+            <p className="text-zinc-700 text-[0.5625rem] font-black uppercase tracking-[0.2em] mb-3 px-1">
+              Próximos Eventos
+            </p>
             <div className="space-y-3">
               {proximas.map(l => (
                 <EventoCard key={l.id} lista={l} onSelect={onSelect} />
@@ -120,7 +122,9 @@ export const PainelEventos: React.FC<{
 
         {passadas.length > 0 && (
           <div>
-            <p className="text-zinc-700 text-[9px] font-black uppercase tracking-[0.2em] mb-3 px-1">Eventos Passados</p>
+            <p className="text-zinc-700 text-[0.5625rem] font-black uppercase tracking-[0.2em] mb-3 px-1">
+              Eventos Passados
+            </p>
             <div className="space-y-3">
               {passadas.map(l => (
                 <EventoCard key={l.id} lista={l} onSelect={onSelect} />
@@ -131,8 +135,8 @@ export const PainelEventos: React.FC<{
 
         {listas.length === 0 && (
           <div className="flex flex-col items-center py-20 gap-4">
-            <BarChart2 size={32} className="text-zinc-800" />
-            <p className="text-zinc-700 text-[10px] font-black uppercase tracking-widest text-center">
+            <BarChart2 size="2rem" className="text-zinc-800" />
+            <p className="text-zinc-700 text-[0.625rem] font-black uppercase tracking-widest text-center">
               Nenhuma lista disponível
             </p>
           </div>

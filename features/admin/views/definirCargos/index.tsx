@@ -209,13 +209,15 @@ export const DefinirCargosView: React.FC<DefinirCargosProps> = ({ onBack, curren
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
           >
-            <ArrowLeft size={18} className="text-zinc-400" />
+            <ArrowLeft size="1.125rem" className="text-zinc-400" />
           </button>
           <div>
             <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic leading-none text-white">
               Definir Cargos
             </h1>
-            <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mt-1">Permissões de acesso</p>
+            <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest mt-1">
+              Permissões de acesso
+            </p>
           </div>
         </div>
         {/* Abas Adicionar / Importar */}
@@ -224,11 +226,11 @@ export const DefinirCargosView: React.FC<DefinirCargosProps> = ({ onBack, curren
             <button
               key={m}
               onClick={() => setModo(m)}
-              className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-[9px] font-black uppercase tracking-wide transition-all ${
+              className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-[0.5625rem] font-black uppercase tracking-wide transition-all ${
                 modo === m ? 'bg-[#FFD300] text-black' : 'text-zinc-400 active:text-zinc-300'
               }`}
             >
-              {m === 'IMPORTAR' && <Download size={10} />}
+              {m === 'IMPORTAR' && <Download size="0.625rem" />}
               {m === 'ADICIONAR' ? 'Novo Cargo' : 'Importar Staff'}
             </button>
           ))}
@@ -237,12 +239,12 @@ export const DefinirCargosView: React.FC<DefinirCargosProps> = ({ onBack, curren
       {/* Banner de sucesso de importação */}
       {importDone > 0 && (
         <div className="mx-4 mt-3 flex items-center gap-3 p-3.5 bg-emerald-500/10 border border-emerald-500/25 rounded-xl shrink-0">
-          <CheckCircle size={14} className="text-emerald-400 shrink-0" />
+          <CheckCircle size="0.875rem" className="text-emerald-400 shrink-0" />
           <p className="text-emerald-300 text-xs font-bold flex-1 min-w-0">
             {importDone} membro{importDone > 1 ? 's' : ''} importado{importDone > 1 ? 's' : ''} com sucesso.
           </p>
           <button onClick={() => setImportDone(0)} className="text-zinc-400 active:text-white transition-all shrink-0">
-            <X size={13} />
+            <X size="0.8125rem" />
           </button>
         </div>
       )}
@@ -281,7 +283,7 @@ export const DefinirCargosView: React.FC<DefinirCargosProps> = ({ onBack, curren
                       className="w-full flex items-center gap-3 bg-zinc-900/40 border border-white/5 rounded-xl px-4 py-3 active:bg-zinc-800/60 transition-all text-left"
                     >
                       <span
-                        className={`shrink-0 text-[8px] font-black uppercase tracking-wider px-2 py-1 rounded-md ${d.tipo === 'COMUNIDADE' ? 'bg-blue-500/20 text-blue-400' : 'bg-purple-500/20 text-purple-400'}`}
+                        className={`shrink-0 text-[0.5rem] font-black uppercase tracking-wider px-2 py-1 rounded-md ${d.tipo === 'COMUNIDADE' ? 'bg-blue-500/20 text-blue-400' : 'bg-purple-500/20 text-purple-400'}`}
                       >
                         {d.tipo === 'COMUNIDADE' ? 'Local' : 'Evento'}
                       </span>
@@ -296,14 +298,14 @@ export const DefinirCargosView: React.FC<DefinirCargosProps> = ({ onBack, curren
               {/* Destino selecionado */}
               <div className="flex items-center gap-3 bg-zinc-900/60 border border-emerald-500/20 rounded-xl px-4 py-3">
                 <span
-                  className={`shrink-0 text-[8px] font-black uppercase tracking-wider px-2 py-1 rounded-md ${selectedDestino.tipo === 'COMUNIDADE' ? 'bg-blue-500/20 text-blue-400' : 'bg-purple-500/20 text-purple-400'}`}
+                  className={`shrink-0 text-[0.5rem] font-black uppercase tracking-wider px-2 py-1 rounded-md ${selectedDestino.tipo === 'COMUNIDADE' ? 'bg-blue-500/20 text-blue-400' : 'bg-purple-500/20 text-purple-400'}`}
                 >
                   {selectedDestino.tipo === 'COMUNIDADE' ? 'Local' : 'Evento'}
                 </span>
                 <p className="text-white text-sm font-medium truncate min-w-0 flex-1">{selectedDestino.nome}</p>
                 <button
                   onClick={() => setSelectedDestino(null)}
-                  className="ml-auto shrink-0 text-zinc-400 text-[9px] font-black uppercase tracking-wider active:text-white transition-all"
+                  className="ml-auto shrink-0 text-zinc-400 text-[0.5625rem] font-black uppercase tracking-wider active:text-white transition-all"
                 >
                   Trocar
                 </button>
@@ -337,14 +339,14 @@ export const DefinirCargosView: React.FC<DefinirCargosProps> = ({ onBack, curren
                 />
                 <div className="min-w-0">
                   <p className="text-white text-sm font-bold truncate">{selectedMembro.nome}</p>
-                  <p className="text-zinc-400 text-[10px] truncate">{selectedMembro.email}</p>
+                  <p className="text-zinc-400 text-[0.625rem] truncate">{selectedMembro.email}</p>
                 </div>
                 <button
                   onClick={() => {
                     setSelectedMembro(null);
                     setEmailQuery('');
                   }}
-                  className="ml-auto shrink-0 text-zinc-400 text-[9px] font-black uppercase tracking-wider active:text-white transition-all"
+                  className="ml-auto shrink-0 text-zinc-400 text-[0.5625rem] font-black uppercase tracking-wider active:text-white transition-all"
                 >
                   Trocar
                 </button>
@@ -376,7 +378,7 @@ export const DefinirCargosView: React.FC<DefinirCargosProps> = ({ onBack, curren
                         />
                         <div className="min-w-0">
                           <p className="text-white text-sm font-medium truncate">{m.nome}</p>
-                          <p className="text-zinc-400 text-[10px] truncate">{m.email}</p>
+                          <p className="text-zinc-400 text-[0.625rem] truncate">{m.email}</p>
                         </div>
                       </button>
                     ))}
@@ -395,14 +397,14 @@ export const DefinirCargosView: React.FC<DefinirCargosProps> = ({ onBack, curren
             {selectedDestino ? (
               <div className="flex items-center gap-3 bg-zinc-900/60 border border-emerald-500/20 rounded-xl px-4 py-3">
                 <span
-                  className={`shrink-0 text-[8px] font-black uppercase tracking-wider px-2 py-1 rounded-md ${selectedDestino.tipo === 'COMUNIDADE' ? 'bg-blue-500/20 text-blue-400' : 'bg-purple-500/20 text-purple-400'}`}
+                  className={`shrink-0 text-[0.5rem] font-black uppercase tracking-wider px-2 py-1 rounded-md ${selectedDestino.tipo === 'COMUNIDADE' ? 'bg-blue-500/20 text-blue-400' : 'bg-purple-500/20 text-purple-400'}`}
                 >
                   {selectedDestino.tipo === 'COMUNIDADE' ? 'Local' : 'Evento'}
                 </span>
                 <p className="text-white text-sm font-medium truncate min-w-0">{selectedDestino.nome}</p>
                 <button
                   onClick={() => setSelectedDestino(null)}
-                  className="ml-auto shrink-0 text-zinc-400 text-[9px] font-black uppercase tracking-wider active:text-white transition-all"
+                  className="ml-auto shrink-0 text-zinc-400 text-[0.5625rem] font-black uppercase tracking-wider active:text-white transition-all"
                 >
                   Trocar
                 </button>
@@ -423,7 +425,7 @@ export const DefinirCargosView: React.FC<DefinirCargosProps> = ({ onBack, curren
                       className="w-full flex items-center gap-3 bg-zinc-900/40 border border-white/5 rounded-xl px-4 py-3 active:bg-zinc-800/60 transition-all text-left"
                     >
                       <span
-                        className={`shrink-0 text-[8px] font-black uppercase tracking-wider px-2 py-1 rounded-md ${d.tipo === 'COMUNIDADE' ? 'bg-blue-500/20 text-blue-400' : 'bg-purple-500/20 text-purple-400'}`}
+                        className={`shrink-0 text-[0.5rem] font-black uppercase tracking-wider px-2 py-1 rounded-md ${d.tipo === 'COMUNIDADE' ? 'bg-blue-500/20 text-blue-400' : 'bg-purple-500/20 text-purple-400'}`}
                       >
                         {d.tipo === 'COMUNIDADE' ? 'Local' : 'Evento'}
                       </span>
@@ -459,7 +461,7 @@ export const DefinirCargosView: React.FC<DefinirCargosProps> = ({ onBack, curren
                   >
                     {c.label}
                   </p>
-                  <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">{c.desc}</p>
+                  <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest">{c.desc}</p>
                 </button>
               ))}
 
@@ -480,7 +482,9 @@ export const DefinirCargosView: React.FC<DefinirCargosProps> = ({ onBack, curren
                 >
                   ＋ Personalizado
                 </p>
-                <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">Permissões customizadas</p>
+                <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest">
+                  Permissões customizadas
+                </p>
               </button>
             </div>
 
@@ -496,8 +500,8 @@ export const DefinirCargosView: React.FC<DefinirCargosProps> = ({ onBack, curren
             {/* Aviso de validação cargo customizado */}
             {usarCargoCustom && !cargoCustomValido && (cargoCustom.nome.trim() || cargoCustom.listas.ativo) && (
               <div className="mt-3 flex items-start gap-2 p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl">
-                <Lock size={13} className="text-amber-400 shrink-0 mt-0.5" />
-                <p className="text-amber-300 text-[10px] font-bold leading-relaxed">
+                <Lock size="0.8125rem" className="text-amber-400 shrink-0 mt-0.5" />
+                <p className="text-amber-300 text-[0.625rem] font-bold leading-relaxed">
                   {!cargoCustom.nome.trim()
                     ? 'Informe o nome do cargo.'
                     : cargoCustom.listas.ativo && !cargoCustom.listas.cotas.some(c => c.limite > 0)
@@ -512,7 +516,7 @@ export const DefinirCargosView: React.FC<DefinirCargosProps> = ({ onBack, curren
           <button
             onClick={() => setShowModal(true)}
             disabled={!podeConfirmar}
-            className="w-full py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-[0.3em] rounded-xl active:scale-[0.98] transition-all disabled:opacity-30 disabled:pointer-events-none"
+            className="w-full py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-[0.3em] rounded-xl active:scale-[0.98] transition-all disabled:opacity-30 disabled:pointer-events-none"
           >
             Confirmar
           </button>

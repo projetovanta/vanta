@@ -13,11 +13,11 @@ export const PreferencesView: React.FC<{ onBack: () => void; onSave: (d: any) =>
         <div
           className={`p-2 rounded-xl border ${active ? 'bg-[#FFD300]/10 border-[#FFD300]/30 text-[#FFD300]' : 'bg-black border-white/5 text-zinc-400'}`}
         >
-          <Icon size={18} />
+          <Icon size="1.125rem" />
         </div>
         <div>
           <h4 className="text-sm font-bold text-white leading-none mb-1.5">{label}</h4>
-          <p className="text-[10px] text-zinc-400 italic">{description}</p>
+          <p className="text-[0.625rem] text-zinc-400 italic">{description}</p>
         </div>
       </div>
       <button
@@ -42,7 +42,7 @@ export const PreferencesView: React.FC<{ onBack: () => void; onSave: (d: any) =>
           onClick={onBack}
           className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center"
         >
-          <ArrowLeft size={18} />
+          <ArrowLeft size="1.125rem" />
         </button>
         <h1 style={TYPOGRAPHY.screenTitle} className="text-lg italic">
           Preferências
@@ -76,9 +76,9 @@ export const PreferencesView: React.FC<{ onBack: () => void; onSave: (d: any) =>
             onSave({ preferences: settings });
           }}
           disabled={isSaving}
-          className="w-full py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-[0.35em] rounded-xl shadow-xl flex items-center justify-center gap-3 active:scale-95 transition-all"
+          className="w-full py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-[0.35em] rounded-xl shadow-xl flex items-center justify-center gap-3 active:scale-95 transition-all"
         >
-          {isSaving ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />}Salvar
+          {isSaving ? <Loader2 size="0.875rem" className="animate-spin" /> : <Check size="0.875rem" />}Salvar
         </button>
       </div>
     </div>

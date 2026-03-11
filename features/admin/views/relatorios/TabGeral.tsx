@@ -194,16 +194,16 @@ export const TabGeral: React.FC<Props> = ({ evento, listas }) => {
       {/* KPIs */}
       <div className="grid grid-cols-2 gap-3">
         <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-4">
-          <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Ingressos Vendidos</p>
+          <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">Ingressos Vendidos</p>
           <p className="text-white font-black text-xl mt-1">{totalIngressos}</p>
-          <p className="text-zinc-400 text-[9px] mt-0.5">/ {totalLimite} limite</p>
+          <p className="text-zinc-400 text-[0.5625rem] mt-0.5">/ {totalLimite} limite</p>
         </div>
         <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-4">
-          <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Check-ins Lista</p>
+          <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">Check-ins Lista</p>
           <p className="text-white font-black text-xl mt-1">
             {checkInsLista}/{totalLista}
           </p>
-          <p className="text-zinc-400 text-[9px] mt-0.5">{pctCheckin}% conversão</p>
+          <p className="text-zinc-400 text-[0.5625rem] mt-0.5">{pctCheckin}% conversão</p>
         </div>
       </div>
 
@@ -216,20 +216,20 @@ export const TabGeral: React.FC<Props> = ({ evento, listas }) => {
               <React.Fragment key={i}>
                 <button
                   onClick={() => setDrill(b.state)}
-                  className="text-[9px] text-zinc-400 font-bold active:text-[#FFD300] transition-colors"
+                  className="text-[0.5625rem] text-zinc-400 font-bold active:text-[#FFD300] transition-colors"
                 >
                   {b.label}
                 </button>
-                <ChevronLeft size={10} className="text-zinc-700 rotate-180" />
+                <ChevronLeft size="0.625rem" className="text-zinc-700 rotate-180" />
               </React.Fragment>
             ))}
-            <p className="text-[9px] text-[#FFD300] font-bold">{titulo}</p>
+            <p className="text-[0.5625rem] text-[#FFD300] font-bold">{titulo}</p>
           </div>
         )}
 
         {/* Título (sem breadcrumb no root) */}
         {breadcrumbs.length === 0 && (
-          <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">{titulo}</p>
+          <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">{titulo}</p>
         )}
 
         {slices.length === 0 ? (
@@ -246,7 +246,7 @@ export const TabGeral: React.FC<Props> = ({ evento, listas }) => {
 
         {/* Dica de interação */}
         {slices.length > 0 && drill.level !== 'LISTAS_GENERO' && drill.level !== 'INGRESSOS_GENERO' && (
-          <p className="text-zinc-700 text-[8px] text-center">Toque numa fatia para detalhar</p>
+          <p className="text-zinc-700 text-[0.5rem] text-center">Toque numa fatia para detalhar</p>
         )}
       </div>
     </div>

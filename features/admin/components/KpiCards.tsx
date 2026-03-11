@@ -17,12 +17,12 @@ export const KpiCard: React.FC<{
     disabled={!onClick}
     className={`flex flex-col items-center justify-center bg-zinc-900/60 border border-white/5 rounded-2xl p-3 min-w-0 ${onClick ? 'active:bg-white/5 active:border-white/10 cursor-pointer' : 'cursor-default'} transition-all`}
   >
-    <Icon size={16} style={{ color }} className="mb-1.5" />
+    <Icon size="1rem" style={{ color }} className="mb-1.5" />
     <p className="text-white text-lg font-black leading-none truncate w-full text-center">
       {prefix}
       {formatValue ? formatValue(value) : value}
     </p>
-    <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mt-1 truncate w-full text-center">
+    <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest mt-1 truncate w-full text-center">
       {label}
     </p>
   </button>
@@ -77,7 +77,7 @@ export const KpiPieCard: React.FC<{
         {value}
         <span className="text-zinc-400 text-xs font-bold">/{total}</span>
       </p>
-      <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mt-0.5 truncate">{label}</p>
+      <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest mt-0.5 truncate">{label}</p>
     </div>
   </button>
 );
@@ -108,7 +108,7 @@ export const KpiDeltaCard: React.FC<{
       disabled={!onClick}
       className={`flex flex-col items-center justify-center bg-zinc-900/60 border border-white/5 rounded-2xl p-3 min-w-0 ${onClick ? 'active:bg-white/5 active:border-white/10 cursor-pointer' : 'cursor-default'} transition-all`}
     >
-      <Icon size={14} style={{ color }} className="mb-1" />
+      <Icon size="0.875rem" style={{ color }} className="mb-1" />
       <p className="text-white text-lg font-black leading-none truncate w-full text-center">
         {formatValue ? (
           formatValue(metric.atual)
@@ -120,13 +120,13 @@ export const KpiDeltaCard: React.FC<{
         )}
       </p>
       <div className="flex items-center gap-0.5 mt-1">
-        <DeltaIcon size={10} style={{ color: deltaColor }} />
-        <span className="text-[9px] font-bold" style={{ color: deltaColor }}>
+        <DeltaIcon size="0.625rem" style={{ color: deltaColor }} />
+        <span className="text-[0.5625rem] font-bold" style={{ color: deltaColor }}>
           {delta > 0 ? '+' : ''}
           {delta}%
         </span>
       </div>
-      <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mt-0.5 truncate w-full text-center">
+      <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest mt-0.5 truncate w-full text-center">
         {label}
       </p>
     </button>

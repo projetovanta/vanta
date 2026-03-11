@@ -4,12 +4,12 @@ import { TYPOGRAPHY } from '../../constants';
 import { eventoPrivadoService, EventoPrivado } from '../../services/eventoPrivadoService';
 
 const STATUS_CONFIG: Record<string, { label: string; color: string; icon: React.ReactNode }> = {
-  ENVIADA: { label: 'Enviada', color: '#A78BFA', icon: <Clock size={14} /> },
-  VISUALIZADA: { label: 'Visualizada', color: '#60A5FA', icon: <Eye size={14} /> },
-  EM_ANALISE: { label: 'Em análise', color: '#FBBF24', icon: <Search size={14} /> },
-  APROVADA: { label: 'Aprovada', color: '#34D399', icon: <CheckCircle size={14} /> },
-  RECUSADA: { label: 'Recusada', color: '#F87171', icon: <XCircle size={14} /> },
-  CONVERTIDA: { label: 'Evento criado', color: '#FFD300', icon: <Sparkles size={14} /> },
+  ENVIADA: { label: 'Enviada', color: '#A78BFA', icon: <Clock size="0.875rem" /> },
+  VISUALIZADA: { label: 'Visualizada', color: '#60A5FA', icon: <Eye size="0.875rem" /> },
+  EM_ANALISE: { label: 'Em análise', color: '#FBBF24', icon: <Search size="0.875rem" /> },
+  APROVADA: { label: 'Aprovada', color: '#34D399', icon: <CheckCircle size="0.875rem" /> },
+  RECUSADA: { label: 'Recusada', color: '#F87171', icon: <XCircle size="0.875rem" /> },
+  CONVERTIDA: { label: 'Evento criado', color: '#FFD300', icon: <Sparkles size="0.875rem" /> },
 };
 
 const TIMELINE_ORDER = ['ENVIADA', 'VISUALIZADA', 'EM_ANALISE', 'APROVADA'];
@@ -60,7 +60,7 @@ function getTimelineForStatus(sol: EventoPrivado) {
       key: 'RECUSADA',
       label: 'Recusada',
       color: '#F87171',
-      icon: <XCircle size={14} />,
+      icon: <XCircle size="0.875rem" />,
       timestamp: sol.avaliado_em,
       reached: true,
     };
@@ -98,7 +98,7 @@ export const MinhasSolicitacoesPrivadoView: React.FC<Props> = ({ onBack }) => {
           onClick={onBack}
           className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
         >
-          <ArrowLeft size={18} className="text-zinc-400" />
+          <ArrowLeft size="1.125rem" className="text-zinc-400" />
         </button>
         <h1 style={TYPOGRAPHY.screenTitle} className="text-base text-white">
           Minhas Solicitações
@@ -109,12 +109,12 @@ export const MinhasSolicitacoesPrivadoView: React.FC<Props> = ({ onBack }) => {
       <div className="flex-1 overflow-y-auto no-scrollbar px-5 py-5 space-y-4">
         {loading ? (
           <div className="flex items-center justify-center py-16">
-            <Loader2 size={20} className="text-zinc-400 animate-spin" />
+            <Loader2 size="1.25rem" className="text-zinc-400 animate-spin" />
           </div>
         ) : solicitacoes.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 gap-3">
             <div className="w-14 h-14 rounded-full bg-zinc-900 flex items-center justify-center border border-white/5">
-              <Clock size={24} className="text-zinc-700" />
+              <Clock size="1.5rem" className="text-zinc-700" />
             </div>
             <p className="text-zinc-400 text-sm">Nenhuma solicitação ainda</p>
           </div>
@@ -129,12 +129,12 @@ export const MinhasSolicitacoesPrivadoView: React.FC<Props> = ({ onBack }) => {
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex-1 min-w-0">
                     <p className="text-white font-bold text-sm truncate">{sol.empresa}</p>
-                    <p className="text-zinc-400 text-[10px] mt-0.5">
+                    <p className="text-zinc-400 text-[0.625rem] mt-0.5">
                       {sol.data_evento || sol.data_estimativa || 'Data a definir'} · {sol.faixa_capacidade}
                     </p>
                   </div>
                   <span
-                    className="shrink-0 px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-wider"
+                    className="shrink-0 px-2.5 py-1 rounded-full text-[0.5625rem] font-black uppercase tracking-wider"
                     style={{ backgroundColor: currentCfg.color + '20', color: currentCfg.color }}
                   >
                     {currentCfg.label}
@@ -158,7 +158,7 @@ export const MinhasSolicitacoesPrivadoView: React.FC<Props> = ({ onBack }) => {
                         >
                           {step.icon}
                         </div>
-                        <span className="text-[8px] text-zinc-400 text-center leading-tight w-14 truncate">
+                        <span className="text-[0.5rem] text-zinc-400 text-center leading-tight w-14 truncate">
                           {step.reached && step.timestamp ? formatDate(step.timestamp) : step.label}
                         </span>
                       </div>
@@ -177,7 +177,7 @@ export const MinhasSolicitacoesPrivadoView: React.FC<Props> = ({ onBack }) => {
                 {/* Mensagem do gerente */}
                 {sol.mensagem_gerente && (
                   <div className="flex items-start gap-2 bg-zinc-800/50 border border-white/5 rounded-xl p-3">
-                    <MessageSquare size={12} className="text-zinc-400 shrink-0 mt-0.5" />
+                    <MessageSquare size="0.75rem" className="text-zinc-400 shrink-0 mt-0.5" />
                     <p className="text-zinc-300 text-xs leading-relaxed">{sol.mensagem_gerente}</p>
                   </div>
                 )}
@@ -185,7 +185,7 @@ export const MinhasSolicitacoesPrivadoView: React.FC<Props> = ({ onBack }) => {
                 {/* Motivo recusa */}
                 {sol.status === 'RECUSADA' && sol.motivo_recusa && (
                   <div className="flex items-start gap-2 bg-red-500/5 border border-red-500/10 rounded-xl p-3">
-                    <XCircle size={12} className="text-red-400 shrink-0 mt-0.5" />
+                    <XCircle size="0.75rem" className="text-red-400 shrink-0 mt-0.5" />
                     <p className="text-red-300 text-xs leading-relaxed">{sol.motivo_recusa}</p>
                   </div>
                 )}

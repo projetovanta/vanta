@@ -176,7 +176,7 @@ export const BeneficiosMVTab: React.FC<Props> = ({ userId, filteredEvents, onEve
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <RefreshCw size={20} className="text-zinc-500 animate-spin" />
+        <RefreshCw size="1.25rem" className="text-zinc-500 animate-spin" />
       </div>
     );
   }
@@ -199,21 +199,23 @@ export const BeneficiosMVTab: React.FC<Props> = ({ userId, filteredEvents, onEve
             <button
               key={t.key}
               onClick={() => setFiltroTipo(t.key)}
-              className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider border transition-all flex items-center gap-1 ${
+              className={`px-3 py-1.5 rounded-lg text-[0.5625rem] font-black uppercase tracking-wider border transition-all flex items-center gap-1 ${
                 filtroTipo === t.key
                   ? 'bg-[#FFD300] text-black border-transparent'
                   : 'bg-zinc-900/60 text-zinc-400 border-white/5'
               }`}
             >
-              <t.icon size={10} />
+              <t.icon size="0.625rem" />
               {t.label}
             </button>
           ))}
         </div>
         <div className="text-center py-12">
-          <Sparkles size={32} className="text-zinc-700 mx-auto mb-3" />
+          <Sparkles size="2rem" className="text-zinc-700 mx-auto mb-3" />
           <p className="text-zinc-500 text-sm">Nenhum benefício disponível</p>
-          <p className="text-zinc-600 text-[10px] mt-1">Novos benefícios aparecem conforme eventos são publicados</p>
+          <p className="text-zinc-600 text-[0.625rem] mt-1">
+            Novos benefícios aparecem conforme eventos são publicados
+          </p>
         </div>
       </div>
     );
@@ -233,13 +235,13 @@ export const BeneficiosMVTab: React.FC<Props> = ({ userId, filteredEvents, onEve
           <button
             key={t.key}
             onClick={() => setFiltroTipo(t.key)}
-            className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider border transition-all flex items-center gap-1 ${
+            className={`px-3 py-1.5 rounded-lg text-[0.5625rem] font-black uppercase tracking-wider border transition-all flex items-center gap-1 ${
               filtroTipo === t.key
                 ? 'bg-[#FFD300] text-black border-transparent'
                 : 'bg-zinc-900/60 text-zinc-400 border-white/5'
             }`}
           >
-            <t.icon size={10} />
+            <t.icon size="0.625rem" />
             {t.label}
           </button>
         ))}
@@ -250,7 +252,7 @@ export const BeneficiosMVTab: React.FC<Props> = ({ userId, filteredEvents, onEve
         <div className="flex gap-1.5 overflow-x-auto no-scrollbar">
           <button
             onClick={() => setFiltroCategoria(null)}
-            className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider border transition-all shrink-0 ${
+            className={`px-3 py-1.5 rounded-lg text-[0.5625rem] font-black uppercase tracking-wider border transition-all shrink-0 ${
               !filtroCategoria
                 ? 'bg-zinc-700 text-white border-transparent'
                 : 'bg-zinc-900/60 text-zinc-400 border-white/5'
@@ -262,7 +264,7 @@ export const BeneficiosMVTab: React.FC<Props> = ({ userId, filteredEvents, onEve
             <button
               key={cat.key}
               onClick={() => setFiltroCategoria(filtroCategoria === cat.key ? null : cat.key)}
-              className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider border transition-all shrink-0 ${
+              className={`px-3 py-1.5 rounded-lg text-[0.5625rem] font-black uppercase tracking-wider border transition-all shrink-0 ${
                 filtroCategoria === cat.key
                   ? 'bg-zinc-700 text-white border-transparent'
                   : 'bg-zinc-900/60 text-zinc-400 border-white/5'
@@ -277,7 +279,7 @@ export const BeneficiosMVTab: React.FC<Props> = ({ userId, filteredEvents, onEve
       {/* Eventos com benefício */}
       {eventosVisiveis.length > 0 && (
         <div>
-          <p className="text-[8px] font-black uppercase tracking-widest text-[#FFD300]/70 mb-3">
+          <p className="text-[0.5rem] font-black uppercase tracking-widest text-[#FFD300]/70 mb-3">
             Eventos com benefício ({eventosVisiveis.length})
           </p>
           <div className="space-y-3">
@@ -294,23 +296,23 @@ export const BeneficiosMVTab: React.FC<Props> = ({ userId, filteredEvents, onEve
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-1.5 mb-0.5">
-                    <span className="text-[7px] font-black uppercase tracking-widest bg-[#FFD300]/10 text-[#FFD300] px-1.5 py-0.5 rounded">
+                    <span className="text-[0.4375rem] font-black uppercase tracking-widest bg-[#FFD300]/10 text-[#FFD300] px-1.5 py-0.5 rounded">
                       Benefício MV
                     </span>
                   </div>
                   <p className="text-white text-sm font-bold truncate">{e.titulo}</p>
                   <div className="flex items-center gap-2 mt-1">
                     {e.cidade && (
-                      <span className="flex items-center gap-0.5 text-zinc-500 text-[9px]">
-                        <MapPin size={8} /> {e.cidade}
+                      <span className="flex items-center gap-0.5 text-zinc-500 text-[0.5625rem]">
+                        <MapPin size="0.5rem" /> {e.cidade}
                       </span>
                     )}
                     {e.data && (
-                      <span className="flex items-center gap-0.5 text-zinc-500 text-[9px]">
-                        <Calendar size={8} /> {e.data}
+                      <span className="flex items-center gap-0.5 text-zinc-500 text-[0.5625rem]">
+                        <Calendar size="0.5rem" /> {e.data}
                       </span>
                     )}
-                    {e.horario && <span className="text-zinc-500 text-[9px]">· {e.horario}</span>}
+                    {e.horario && <span className="text-zinc-500 text-[0.5625rem]">· {e.horario}</span>}
                   </div>
                 </div>
               </button>
@@ -322,7 +324,7 @@ export const BeneficiosMVTab: React.FC<Props> = ({ userId, filteredEvents, onEve
       {/* Benefícios de parceiros */}
       {dealsVisiveis.length > 0 && (
         <div>
-          <p className="text-[8px] font-black uppercase tracking-widest text-purple-400/70 mb-3">
+          <p className="text-[0.5rem] font-black uppercase tracking-widest text-purple-400/70 mb-3">
             Benefícios de parceiros ({dealsVisiveis.length})
           </p>
           <div className="space-y-3">
@@ -333,32 +335,32 @@ export const BeneficiosMVTab: React.FC<Props> = ({ userId, filteredEvents, onEve
                     <img src={b.fotoUrl} alt="" className="w-12 h-12 rounded-xl object-cover shrink-0" loading="lazy" />
                   ) : (
                     <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 bg-purple-500/10">
-                      <Store size={18} className="text-purple-400" />
+                      <Store size="1.125rem" className="text-purple-400" />
                     </div>
                   )}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-0.5">
-                      <span className="text-[7px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded bg-purple-500/10 text-purple-400">
+                      <span className="text-[0.4375rem] font-black uppercase tracking-widest px-1.5 py-0.5 rounded bg-purple-500/10 text-purple-400">
                         Parceiro
                       </span>
                       {b.vagasRestantes != null && (
-                        <span className="text-zinc-500 text-[8px]">
+                        <span className="text-zinc-500 text-[0.5rem]">
                           {b.vagasRestantes} vaga{b.vagasRestantes !== 1 ? 's' : ''}
                         </span>
                       )}
                     </div>
                     <p className="text-white text-sm font-bold truncate">{b.titulo}</p>
-                    <p className="text-purple-400 text-[10px] font-bold truncate">{b.subtitulo}</p>
-                    {b.descricao && <p className="text-zinc-400 text-[10px] truncate mt-0.5">{b.descricao}</p>}
+                    <p className="text-purple-400 text-[0.625rem] font-bold truncate">{b.subtitulo}</p>
+                    {b.descricao && <p className="text-zinc-400 text-[0.625rem] truncate mt-0.5">{b.descricao}</p>}
                     <div className="flex items-center gap-2 mt-1.5">
                       {b.cidade && (
-                        <span className="flex items-center gap-0.5 text-zinc-500 text-[9px]">
-                          <MapPin size={8} /> {b.cidade}
+                        <span className="flex items-center gap-0.5 text-zinc-500 text-[0.5625rem]">
+                          <MapPin size="0.5rem" /> {b.cidade}
                         </span>
                       )}
                       {b.data && (
-                        <span className="flex items-center gap-0.5 text-zinc-500 text-[9px]">
-                          <Calendar size={8} /> {formatDate(b.data)}
+                        <span className="flex items-center gap-0.5 text-zinc-500 text-[0.5625rem]">
+                          <Calendar size="0.5rem" /> {formatDate(b.data)}
                         </span>
                       )}
                     </div>

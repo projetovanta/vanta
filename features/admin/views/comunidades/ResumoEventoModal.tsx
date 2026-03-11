@@ -33,8 +33,8 @@ const StatCard: React.FC<{
 }> = ({ label, value, sub, color = 'text-zinc-300', bgClass = 'bg-zinc-900/40 border-white/5' }) => (
   <div className={`p-3.5 border rounded-xl text-center ${bgClass}`}>
     <p className={`${color} font-black text-xl leading-none`}>{value}</p>
-    <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider mt-1.5">{label}</p>
-    {sub && <p className="text-zinc-400 text-[8px] mt-0.5">{sub}</p>}
+    <p className="text-zinc-400 text-[0.5625rem] font-bold uppercase tracking-wider mt-1.5">{label}</p>
+    {sub && <p className="text-zinc-400 text-[0.5rem] mt-0.5">{sub}</p>}
   </div>
 );
 
@@ -52,8 +52,8 @@ const Section: React.FC<{ icon: React.ReactNode; title: string; children: React.
         className="w-full flex items-center gap-1.5 mb-2.5 active:opacity-70 transition-opacity"
       >
         {icon}
-        <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest flex-1 text-left">{title}</p>
-        <ChevronDown size={12} className={`text-zinc-600 transition-transform ${open ? 'rotate-180' : ''}`} />
+        <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest flex-1 text-left">{title}</p>
+        <ChevronDown size="0.75rem" className={`text-zinc-600 transition-transform ${open ? 'rotate-180' : ''}`} />
       </button>
       {open && children}
     </div>
@@ -370,14 +370,14 @@ export const ResumoEventoView: React.FC<{
             onClick={onClose}
             className="w-9 h-9 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 shrink-0 active:scale-90 transition-all"
           >
-            <ArrowLeft size={16} className="text-zinc-400" />
+            <ArrowLeft size="1rem" className="text-zinc-400" />
           </button>
           <div className="flex-1 min-w-0">
-            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mb-0.5">Resumo do Evento</p>
+            <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest mb-0.5">Resumo do Evento</p>
             <h2 style={TYPOGRAPHY.screenTitle} className="text-base italic truncate">
               {evento.nome}
             </h2>
-            <p className="text-zinc-400 text-[10px] font-bold mt-0.5">{dataLabel}</p>
+            <p className="text-zinc-400 text-[0.625rem] font-bold mt-0.5">{dataLabel}</p>
           </div>
         </div>
       </div>
@@ -390,27 +390,27 @@ export const ResumoEventoView: React.FC<{
         {/* ══ RESUMO GERAL — KPIs ══ */}
         <div>
           <div className="flex items-center gap-1.5 mb-3">
-            <TrendingUp size={10} className="text-[#FFD300]" />
-            <p className="text-[8px] text-[#FFD300] font-black uppercase tracking-widest">Visão Geral</p>
+            <TrendingUp size="0.625rem" className="text-[#FFD300]" />
+            <p className="text-[0.5rem] text-[#FFD300] font-black uppercase tracking-widest">Visão Geral</p>
           </div>
 
           {/* Receita destaque */}
           <div className="p-4 bg-gradient-to-br from-[#FFD300]/10 to-[#FFD300]/5 border border-[#FFD300]/20 rounded-2xl mb-3 text-center">
-            <p className="text-zinc-400 text-[8px] font-bold uppercase tracking-wider mb-0.5">Receita Bruta</p>
+            <p className="text-zinc-400 text-[0.5rem] font-bold uppercase tracking-wider mb-0.5">Receita Bruta</p>
             <p className="text-[#FFD300] font-black text-2xl leading-none">{fmt(faturamentoBrutoTotal)}</p>
             {taxaVantaTotal > 0 && (
-              <p className="text-emerald-400 text-[10px] font-bold mt-1">Líquido: {fmt(liquidoTotal)}</p>
+              <p className="text-emerald-400 text-[0.625rem] font-bold mt-1">Líquido: {fmt(liquidoTotal)}</p>
             )}
           </div>
 
           {/* Público total + breakdown */}
           <div className="p-4 bg-zinc-900/40 border border-white/5 rounded-xl text-center mb-2">
             <p className="text-white font-black text-3xl leading-none">{publicoTotal}</p>
-            <p className="text-zinc-500 text-[8px] font-bold uppercase mt-1.5 mb-3">Público total</p>
+            <p className="text-zinc-500 text-[0.5rem] font-bold uppercase mt-1.5 mb-3">Público total</p>
             <div className="space-y-1.5">
               <div className="flex items-center gap-2 justify-center">
                 <div className="w-1.5 h-1.5 rounded-full bg-[#FFD300] shrink-0" />
-                <p className="text-zinc-300 text-[10px]">
+                <p className="text-zinc-300 text-[0.625rem]">
                   <span className="text-[#FFD300] font-bold">{totalVendidos + cortesiasTotal}</span>
                   <span className="text-zinc-500"> por ingresso</span>
                   {cortesiasTotal > 0 && (
@@ -424,7 +424,7 @@ export const ResumoEventoView: React.FC<{
               {totalCheckedIn > 0 && (
                 <div className="flex items-center gap-2 justify-center">
                   <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
-                  <p className="text-zinc-300 text-[10px]">
+                  <p className="text-zinc-300 text-[0.625rem]">
                     <span className="text-emerald-400 font-bold">{totalCheckedIn}</span>
                     <span className="text-zinc-500"> por lista</span>
                     <span className="text-zinc-600">
@@ -443,8 +443,8 @@ export const ResumoEventoView: React.FC<{
               <div className="p-2 bg-zinc-900/40 border border-white/5 rounded-lg flex items-center gap-2">
                 <div className="w-1 h-6 rounded-full bg-[#FFD300] shrink-0" />
                 <div>
-                  <p className="text-[#FFD300] text-[10px] font-bold">{fmt(ticketMedioIngresso)}</p>
-                  <p className="text-zinc-600 text-[7px]">Ticket médio</p>
+                  <p className="text-[#FFD300] text-[0.625rem] font-bold">{fmt(ticketMedioIngresso)}</p>
+                  <p className="text-zinc-600 text-[0.4375rem]">Ticket médio</p>
                 </div>
               </div>
             )}
@@ -454,11 +454,11 @@ export const ResumoEventoView: React.FC<{
               />
               <div>
                 <p
-                  className={`text-[10px] font-bold ${checkinGeralPct >= 70 ? 'text-emerald-400' : checkinGeralPct >= 40 ? 'text-amber-400' : 'text-red-400'}`}
+                  className={`text-[0.625rem] font-bold ${checkinGeralPct >= 70 ? 'text-emerald-400' : checkinGeralPct >= 40 ? 'text-amber-400' : 'text-red-400'}`}
                 >
                   {checkinGeralPct}%
                 </p>
-                <p className="text-zinc-600 text-[7px]">Check-in geral</p>
+                <p className="text-zinc-600 text-[0.4375rem]">Check-in geral</p>
               </div>
             </div>
           </div>
@@ -467,79 +467,83 @@ export const ResumoEventoView: React.FC<{
         {/* ══ SEÇÕES DETALHADAS (colapsáveis) ══ */}
 
         {/* ══ FATURAMENTO TOTAL ══ */}
-        <Section icon={<DollarSign size={10} className="text-zinc-400" />} title="Faturamento">
+        <Section icon={<DollarSign size="0.625rem" className="text-zinc-400" />} title="Faturamento">
           <div className="p-4 bg-gradient-to-br from-[#FFD300]/10 to-[#FFD300]/5 border border-[#FFD300]/20 rounded-2xl mb-3">
-            <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider mb-1">Receita Bruta Total</p>
+            <p className="text-zinc-400 text-[0.5625rem] font-bold uppercase tracking-wider mb-1">
+              Receita Bruta Total
+            </p>
             <p className="text-[#FFD300] font-black text-2xl leading-none">{fmt(faturamentoBrutoTotal)}</p>
-            {publicoTotal > 0 && <p className="text-zinc-400 text-[10px] mt-1.5">~{publicoTotal} pessoas no evento</p>}
+            {publicoTotal > 0 && (
+              <p className="text-zinc-400 text-[0.625rem] mt-1.5">~{publicoTotal} pessoas no evento</p>
+            )}
           </div>
           <div className="grid grid-cols-2 gap-2.5">
             <div className="p-3 bg-zinc-900/40 border border-white/5 rounded-xl">
-              <p className="text-zinc-400 text-[8px] font-bold uppercase tracking-wider">Ingressos</p>
+              <p className="text-zinc-400 text-[0.5rem] font-bold uppercase tracking-wider">Ingressos</p>
               <p className="text-white font-black text-base mt-1">{fmt(faturamentoBrutoIngressos)}</p>
-              <p className="text-zinc-400 text-[9px] mt-0.5">{totalVendidos} vendidos</p>
+              <p className="text-zinc-400 text-[0.5625rem] mt-0.5">{totalVendidos} vendidos</p>
             </div>
             <div className="p-3 bg-zinc-900/40 border border-white/5 rounded-xl">
-              <p className="text-zinc-400 text-[8px] font-bold uppercase tracking-wider">Lista (porta)</p>
+              <p className="text-zinc-400 text-[0.5rem] font-bold uppercase tracking-wider">Lista (porta)</p>
               <p className="text-white font-black text-base mt-1">{fmt(faturamentoLista)}</p>
-              <p className="text-zinc-400 text-[9px] mt-0.5">
+              <p className="text-zinc-400 text-[0.5625rem] mt-0.5">
                 {listaPago} pagaram · {listaGratis} grátis
               </p>
             </div>
           </div>
           {taxaVantaTotal > 0 && (
             <div className="mt-2.5 p-3.5 bg-zinc-900/40 border border-white/5 rounded-xl space-y-2">
-              <p className="text-zinc-400 text-[8px] font-bold uppercase tracking-widest">Taxas VANTA</p>
+              <p className="text-zinc-400 text-[0.5rem] font-bold uppercase tracking-widest">Taxas VANTA</p>
               {taxaServicoApp > 0 && (
-                <div className="flex justify-between text-[10px]">
+                <div className="flex justify-between text-[0.625rem]">
                   <span className="text-zinc-400">Serviço app ({(fees.feePercent * 100).toFixed(0)}%)</span>
                   <span className="text-red-400 font-bold">-{fmt(taxaServicoApp)}</span>
                 </div>
               )}
               {taxaProcessamento > 0 && (
-                <div className="flex justify-between text-[10px]">
+                <div className="flex justify-between text-[0.625rem]">
                   <span className="text-zinc-400">Processamento ({(fees.taxaProcessamento * 100).toFixed(1)}%)</span>
                   <span className="text-red-400 font-bold">-{fmt(taxaProcessamento)}</span>
                 </div>
               )}
               {taxaPorta > 0 && (
-                <div className="flex justify-between text-[10px]">
+                <div className="flex justify-between text-[0.625rem]">
                   <span className="text-zinc-400">Porta ({(fees.taxaPorta * 100).toFixed(0)}%)</span>
                   <span className="text-red-400 font-bold">-{fmt(taxaPorta)}</span>
                 </div>
               )}
               {taxaFixa > 0 && (
-                <div className="flex justify-between text-[10px]">
+                <div className="flex justify-between text-[0.625rem]">
                   <span className="text-zinc-400">Fixo evento</span>
                   <span className="text-red-400 font-bold">-{fmt(taxaFixa)}</span>
                 </div>
               )}
               {taxaListaExcedente > 0 && (
-                <div className="flex justify-between text-[10px]">
+                <div className="flex justify-between text-[0.625rem]">
                   <span className="text-zinc-400">Lista excedente ({nomesExcedentes} nomes)</span>
                   <span className="text-red-400 font-bold">-{fmt(taxaListaExcedente)}</span>
                 </div>
               )}
               {taxaCortesiaExcedente > 0 && (
-                <div className="flex justify-between text-[10px]">
+                <div className="flex justify-between text-[0.625rem]">
                   <span className="text-zinc-400">Cortesias excedentes ({cortesiasExcedentes})</span>
                   <span className="text-red-400 font-bold">-{fmt(taxaCortesiaExcedente)}</span>
                 </div>
               )}
               <div className="border-t border-white/5 pt-2 flex justify-between items-center">
-                <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider">Total taxas</p>
+                <p className="text-zinc-400 text-[0.5625rem] font-bold uppercase tracking-wider">Total taxas</p>
                 <p className="text-red-400 font-black text-sm">-{fmt(taxaVantaTotal)}</p>
               </div>
               <div className="border-t border-white/5 pt-2 flex justify-between items-center">
-                <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider">Líquido Produtor</p>
+                <p className="text-zinc-400 text-[0.5625rem] font-bold uppercase tracking-wider">Líquido Produtor</p>
                 <p className="text-emerald-400 font-black text-lg">{fmt(liquidoTotal)}</p>
               </div>
             </div>
           )}
           {ticketMedioIngresso > 0 && (
             <div className="mt-2 flex items-center gap-1.5 px-3 py-2 bg-zinc-900/20 rounded-lg">
-              <TrendingUp size={10} className="text-zinc-400" />
-              <p className="text-zinc-400 text-[9px]">
+              <TrendingUp size="0.625rem" className="text-zinc-400" />
+              <p className="text-zinc-400 text-[0.5625rem]">
                 Ticket médio ingresso: <span className="text-white font-bold">{fmt(ticketMedioIngresso)}</span>
               </p>
             </div>
@@ -548,13 +552,13 @@ export const ResumoEventoView: React.FC<{
 
         {/* ══ TIMELINE DE VENDAS ══ */}
         {!vendasLoading && vendasPorDia.length > 1 && (
-          <Section icon={<BarChart3 size={10} className="text-zinc-400" />} title="Timeline de Vendas">
+          <Section icon={<BarChart3 size="0.625rem" className="text-zinc-400" />} title="Timeline de Vendas">
             <div className="space-y-1">
               {(() => {
                 const maxV = Math.max(...vendasPorDia.map(d => d.vendas));
                 return vendasPorDia.map((d, i) => (
                   <div key={i} className="flex items-center gap-2">
-                    <span className="text-zinc-500 text-[8px] font-mono w-12 shrink-0 text-right">
+                    <span className="text-zinc-500 text-[0.5rem] font-mono w-12 shrink-0 text-right">
                       {new Date(d.dia + 'T12:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })}
                     </span>
                     <div className="flex-1 h-4 bg-zinc-900 rounded-full overflow-hidden">
@@ -563,8 +567,8 @@ export const ResumoEventoView: React.FC<{
                         style={{ width: `${(d.vendas / maxV) * 100}%` }}
                       />
                     </div>
-                    <span className="text-white text-[9px] font-bold w-7 text-right shrink-0">{d.vendas}</span>
-                    <span className="text-zinc-500 text-[8px] w-16 text-right shrink-0">{fmt(d.receita)}</span>
+                    <span className="text-white text-[0.5625rem] font-bold w-7 text-right shrink-0">{d.vendas}</span>
+                    <span className="text-zinc-500 text-[0.5rem] w-16 text-right shrink-0">{fmt(d.receita)}</span>
                   </div>
                 ));
               })()}
@@ -574,14 +578,14 @@ export const ResumoEventoView: React.FC<{
 
         {/* ══ HORÁRIO DE PICO ══ */}
         {picoVendas && (
-          <Section icon={<Clock size={10} className="text-zinc-400" />} title="Horário de Pico">
+          <Section icon={<Clock size="0.625rem" className="text-zinc-400" />} title="Horário de Pico">
             <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-[#FFD300]/10 to-transparent border border-[#FFD300]/20 rounded-xl">
               <div className="w-10 h-10 rounded-full bg-[#FFD300]/10 flex items-center justify-center shrink-0">
-                <Clock size={16} className="text-[#FFD300]" />
+                <Clock size="1rem" className="text-[#FFD300]" />
               </div>
               <div>
                 <p className="text-white font-black text-lg">{picoVendas.hora}</p>
-                <p className="text-zinc-400 text-[9px]">{picoVendas.qtd} vendas nesse horário</p>
+                <p className="text-zinc-400 text-[0.5625rem]">{picoVendas.qtd} vendas nesse horário</p>
               </div>
             </div>
           </Section>
@@ -589,13 +593,13 @@ export const ResumoEventoView: React.FC<{
 
         {/* ══ TICKET MÉDIO POR CANAL ══ */}
         {ticketMedioPorCanal && ticketMedioPorCanal.length > 1 && (
-          <Section icon={<DollarSign size={10} className="text-zinc-400" />} title="Ticket Médio por Canal">
+          <Section icon={<DollarSign size="0.625rem" className="text-zinc-400" />} title="Ticket Médio por Canal">
             <div className="grid grid-cols-2 gap-2">
               {ticketMedioPorCanal.map((c, i) => (
                 <div key={i} className="p-3 bg-zinc-900/40 border border-white/5 rounded-xl">
-                  <p className="text-zinc-400 text-[8px] font-bold uppercase tracking-wider">{c.canal}</p>
+                  <p className="text-zinc-400 text-[0.5rem] font-bold uppercase tracking-wider">{c.canal}</p>
                   <p className="text-[#FFD300] font-black text-base mt-1">{fmt(c.ticketMedio)}</p>
-                  <p className="text-zinc-500 text-[8px]">
+                  <p className="text-zinc-500 text-[0.5rem]">
                     {c.total} vendas · {fmt(c.receita)}
                   </p>
                 </div>
@@ -605,7 +609,7 @@ export const ResumoEventoView: React.FC<{
         )}
 
         {/* ══ PUBLICO — DRILL-DOWN ══ */}
-        <Section icon={<PieIcon size={10} className="text-zinc-400" />} title="Publico — De onde veio?">
+        <Section icon={<PieIcon size="0.625rem" className="text-zinc-400" />} title="Publico — De onde veio?">
           <PublicoDrilldown
             evento={{ ...evento, cortesiasEnviadas: cortesiasTotal }}
             lista={lista}
@@ -614,7 +618,7 @@ export const ResumoEventoView: React.FC<{
         </Section>
 
         {/* ══ INGRESSOS ══ */}
-        <Section icon={<Ticket size={10} className="text-zinc-400" />} title="Ingressos">
+        <Section icon={<Ticket size="0.625rem" className="text-zinc-400" />} title="Ingressos">
           <div className="grid grid-cols-3 gap-2.5">
             <StatCard
               label="Total"
@@ -638,7 +642,7 @@ export const ResumoEventoView: React.FC<{
           {totalCapacidade > 0 && (
             <div className="mt-2.5 p-3 bg-zinc-900/40 border border-white/5 rounded-xl">
               <div className="flex justify-between items-center mb-1.5">
-                <p className="text-zinc-400 text-[10px]">Ocupação</p>
+                <p className="text-zinc-400 text-[0.625rem]">Ocupação</p>
                 <p className="text-[#FFD300] font-black text-sm">
                   {Math.round((totalVendidos / totalCapacidade) * 100)}%
                 </p>
@@ -649,7 +653,7 @@ export const ResumoEventoView: React.FC<{
                   style={{ width: `${Math.min(100, (totalVendidos / totalCapacidade) * 100)}%` }}
                 />
               </div>
-              <p className="text-zinc-400 text-[9px] mt-1">
+              <p className="text-zinc-400 text-[0.5625rem] mt-1">
                 {totalVendidos} / {totalCapacidade} ingressos
               </p>
             </div>
@@ -657,21 +661,21 @@ export const ResumoEventoView: React.FC<{
           {cortesiasTotal > 0 && (
             <div className="mt-2.5 p-3 bg-purple-500/5 border border-purple-500/10 rounded-xl">
               <div className="flex items-center gap-1.5 mb-2">
-                <Gift size={10} className="text-purple-400" />
-                <p className="text-purple-400 text-[9px] font-bold">{cortesiasTotal} cortesias enviadas</p>
+                <Gift size="0.625rem" className="text-purple-400" />
+                <p className="text-purple-400 text-[0.5625rem] font-bold">{cortesiasTotal} cortesias enviadas</p>
               </div>
               <div className="grid grid-cols-3 gap-2">
                 <div className="text-center">
                   <p className="text-emerald-400 font-black text-sm">{cortesiasDetalhe.aceitas}</p>
-                  <p className="text-zinc-500 text-[8px]">Aceitas</p>
+                  <p className="text-zinc-500 text-[0.5rem]">Aceitas</p>
                 </div>
                 <div className="text-center">
                   <p className="text-amber-400 font-black text-sm">{cortesiasDetalhe.pendentes}</p>
-                  <p className="text-zinc-500 text-[8px]">Pendentes</p>
+                  <p className="text-zinc-500 text-[0.5rem]">Pendentes</p>
                 </div>
                 <div className="text-center">
                   <p className="text-red-400 font-black text-sm">{cortesiasDetalhe.recusadas}</p>
-                  <p className="text-zinc-500 text-[8px]">Recusadas</p>
+                  <p className="text-zinc-500 text-[0.5rem]">Recusadas</p>
                 </div>
               </div>
             </div>
@@ -680,12 +684,12 @@ export const ResumoEventoView: React.FC<{
 
         {/* ══ OCUPAÇÃO POR VARIAÇÃO ══ */}
         {ocupacaoPorVariacao.length > 0 && (
-          <Section icon={<Activity size={10} className="text-zinc-400" />} title="Ocupação por Variação">
+          <Section icon={<Activity size="0.625rem" className="text-zinc-400" />} title="Ocupação por Variação">
             <div className="space-y-2">
               {ocupacaoPorVariacao.map((v, i) => (
                 <div key={i} className="p-2.5 bg-zinc-900/40 border border-white/5 rounded-xl">
                   <div className="flex justify-between items-center mb-1">
-                    <p className="text-white text-[10px] font-bold truncate flex-1 min-w-0">{v.label}</p>
+                    <p className="text-white text-[0.625rem] font-bold truncate flex-1 min-w-0">{v.label}</p>
                     <p
                       className={`font-black text-sm shrink-0 ml-2 ${v.pct >= 80 ? 'text-red-400' : v.pct >= 50 ? 'text-amber-400' : 'text-emerald-400'}`}
                     >
@@ -699,10 +703,10 @@ export const ResumoEventoView: React.FC<{
                     />
                   </div>
                   <div className="flex justify-between mt-1">
-                    <p className="text-zinc-500 text-[8px]">
+                    <p className="text-zinc-500 text-[0.5rem]">
                       {v.vendidos}/{v.limite}
                     </p>
-                    <p className="text-zinc-500 text-[8px]">{fmt(v.receita)}</p>
+                    <p className="text-zinc-500 text-[0.5rem]">{fmt(v.receita)}</p>
                   </div>
                 </div>
               ))}
@@ -711,10 +715,10 @@ export const ResumoEventoView: React.FC<{
         )}
 
         {/* ══ CHECK-IN GERAL ══ */}
-        <Section icon={<Activity size={10} className="text-zinc-400" />} title="Check-in Geral">
+        <Section icon={<Activity size="0.625rem" className="text-zinc-400" />} title="Check-in Geral">
           <div className="p-4 bg-zinc-900/40 border border-white/5 rounded-2xl">
             <div className="flex justify-between items-center mb-2">
-              <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider">Presença confirmada</p>
+              <p className="text-zinc-400 text-[0.5625rem] font-bold uppercase tracking-wider">Presença confirmada</p>
               <p
                 className={`font-black text-lg ${checkinGeralPct >= 70 ? 'text-emerald-400' : checkinGeralPct >= 40 ? 'text-amber-400' : 'text-red-400'}`}
               >
@@ -730,19 +734,19 @@ export const ResumoEventoView: React.FC<{
             <div className="grid grid-cols-3 gap-2 text-center">
               <div>
                 <p className="text-white font-black text-sm">{totalVendidos}</p>
-                <p className="text-zinc-500 text-[8px]">Ingressos</p>
+                <p className="text-zinc-500 text-[0.5rem]">Ingressos</p>
               </div>
               <div>
                 <p className="text-white font-black text-sm">{totalCheckedIn}</p>
-                <p className="text-zinc-500 text-[8px]">Lista (in)</p>
+                <p className="text-zinc-500 text-[0.5rem]">Lista (in)</p>
               </div>
               <div>
                 <p className="text-white font-black text-sm">{cortesiasDetalhe.aceitas}</p>
-                <p className="text-zinc-500 text-[8px]">Cortesias (in)</p>
+                <p className="text-zinc-500 text-[0.5rem]">Cortesias (in)</p>
               </div>
             </div>
             {totalEsperado > 0 && (
-              <p className="text-zinc-600 text-[8px] text-center mt-2">
+              <p className="text-zinc-600 text-[0.5rem] text-center mt-2">
                 {totalPresencas} de {totalEsperado} esperados compareceram
               </p>
             )}
@@ -751,7 +755,7 @@ export const ResumoEventoView: React.FC<{
 
         {/* ══ LISTA DE CONVIDADOS ══ */}
         {totalLista > 0 && (
-          <Section icon={<ListChecks size={10} className="text-zinc-400" />} title="Lista de Convidados">
+          <Section icon={<ListChecks size="0.625rem" className="text-zinc-400" />} title="Lista de Convidados">
             <div className="grid grid-cols-3 gap-2.5">
               <StatCard label="Na lista" value={totalLista} />
               <StatCard
@@ -769,7 +773,7 @@ export const ResumoEventoView: React.FC<{
             </div>
             <div className="mt-2.5 p-3 bg-zinc-900/40 border border-white/5 rounded-xl">
               <div className="flex justify-between items-center mb-1.5">
-                <p className="text-zinc-400 text-[10px]">Frequência</p>
+                <p className="text-zinc-400 text-[0.625rem]">Frequência</p>
                 <p className="text-emerald-400 font-black text-sm">{freqPct}%</p>
               </div>
               <div className="w-full h-2 bg-zinc-800 rounded-full overflow-hidden">
@@ -786,7 +790,7 @@ export const ResumoEventoView: React.FC<{
 
         {/* ══ RANKING PROMOTERS ══ */}
         {topPromoters.length > 0 && (
-          <Section icon={<Users size={10} className="text-zinc-400" />} title="Ranking de Promoters">
+          <Section icon={<Users size="0.625rem" className="text-zinc-400" />} title="Ranking de Promoters">
             {/* Filtros */}
             <div className="flex gap-1.5 mb-3 overflow-x-auto no-scrollbar">
               {[
@@ -799,14 +803,14 @@ export const ResumoEventoView: React.FC<{
                   <button
                     key={opt.key}
                     onClick={() => handlePromoterSort(opt.key)}
-                    className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-[9px] font-bold uppercase tracking-wider shrink-0 transition-all active:scale-95 ${
+                    className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-[0.5625rem] font-bold uppercase tracking-wider shrink-0 transition-all active:scale-95 ${
                       active
                         ? 'bg-[#FFD300]/10 text-[#FFD300] border border-[#FFD300]/30'
                         : 'bg-zinc-800/60 text-zinc-500 border border-white/5'
                     }`}
                   >
                     {opt.label}
-                    {active && <ArrowUpDown size={8} className={promoterSortAsc ? 'rotate-180' : ''} />}
+                    {active && <ArrowUpDown size="0.5rem" className={promoterSortAsc ? 'rotate-180' : ''} />}
                   </button>
                 );
               })}
@@ -820,13 +824,13 @@ export const ResumoEventoView: React.FC<{
                     className="flex items-center gap-2.5 p-3 bg-zinc-900/40 border border-white/5 rounded-xl"
                   >
                     <span
-                      className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black shrink-0 ${medalCls(i)}`}
+                      className={`w-6 h-6 rounded-full flex items-center justify-center text-[0.625rem] font-black shrink-0 ${medalCls(i)}`}
                     >
                       {i + 1}
                     </span>
                     <div className="flex-1 min-w-0">
                       <p className="text-white text-sm font-bold truncate">{p.nome}</p>
-                      <p className="text-zinc-400 text-[9px]">{convPct}% de conversão</p>
+                      <p className="text-zinc-400 text-[0.5625rem]">{convPct}% de conversão</p>
                     </div>
                     <p className="font-black text-sm shrink-0">
                       <span className="text-emerald-400">{p.checkins}</span>
@@ -841,7 +845,7 @@ export const ResumoEventoView: React.FC<{
         )}
 
         {/* ══ RANKING LOTES ══ */}
-        <Section icon={<Ticket size={10} className="text-zinc-400" />} title="Ranking de Lotes">
+        <Section icon={<Ticket size="0.625rem" className="text-zinc-400" />} title="Ranking de Lotes">
           {/* Filtros */}
           <div className="flex gap-1.5 mb-3 overflow-x-auto no-scrollbar">
             {[
@@ -854,14 +858,14 @@ export const ResumoEventoView: React.FC<{
                 <button
                   key={opt.key}
                   onClick={() => handleLoteSort(opt.key)}
-                  className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-[9px] font-bold uppercase tracking-wider shrink-0 transition-all active:scale-95 ${
+                  className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-[0.5625rem] font-bold uppercase tracking-wider shrink-0 transition-all active:scale-95 ${
                     active
                       ? 'bg-[#FFD300]/10 text-[#FFD300] border border-[#FFD300]/30'
                       : 'bg-zinc-800/60 text-zinc-500 border border-white/5'
                   }`}
                 >
                   {opt.label}
-                  {active && <ArrowUpDown size={8} className={loteSortAsc ? 'rotate-180' : ''} />}
+                  {active && <ArrowUpDown size="0.5rem" className={loteSortAsc ? 'rotate-180' : ''} />}
                 </button>
               );
             })}
@@ -876,24 +880,24 @@ export const ResumoEventoView: React.FC<{
                   className="flex items-center gap-2.5 p-3 bg-zinc-900/40 border border-white/5 rounded-xl"
                 >
                   <span
-                    className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black shrink-0 ${medalCls(i)}`}
+                    className={`w-6 h-6 rounded-full flex items-center justify-center text-[0.625rem] font-black shrink-0 ${medalCls(i)}`}
                   >
                     {i + 1}
                   </span>
                   <div className="flex-1 min-w-0">
                     <p className="text-white text-sm font-bold truncate">{lote.nome}</p>
-                    <p className="text-zinc-400 text-[9px]">
+                    <p className="text-zinc-400 text-[0.5625rem]">
                       {fmt(faturamentoLote)} · {ocupacaoLote}% ocupado
                     </p>
                   </div>
                   <p className="text-[#FFD300] font-black text-sm shrink-0">
-                    {lote.vendidos} <span className="text-zinc-400 text-[9px] font-normal">vendidos</span>
+                    {lote.vendidos} <span className="text-zinc-400 text-[0.5625rem] font-normal">vendidos</span>
                   </p>
                 </div>
               );
             })}
             {lotesOrdenadosFiltrado.length === 0 && (
-              <p className="text-zinc-700 text-[10px] italic text-center py-4">Nenhum dado de vendas.</p>
+              <p className="text-zinc-700 text-[0.625rem] italic text-center py-4">Nenhum dado de vendas.</p>
             )}
           </div>
         </Section>

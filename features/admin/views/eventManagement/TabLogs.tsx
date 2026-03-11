@@ -56,8 +56,10 @@ export const TabLogs: React.FC<{ listaId: string; eventoAdminId?: string }> = ({
   if (logs.length === 0) {
     return (
       <div className="flex flex-col items-center py-16 gap-3">
-        <Clock size={28} className="text-zinc-800" />
-        <p className="text-zinc-700 text-[10px] font-black uppercase tracking-widest">Nenhuma atividade registrada</p>
+        <Clock size="1.75rem" className="text-zinc-800" />
+        <p className="text-zinc-700 text-[0.625rem] font-black uppercase tracking-widest">
+          Nenhuma atividade registrada
+        </p>
       </div>
     );
   }
@@ -69,13 +71,13 @@ export const TabLogs: React.FC<{ listaId: string; eventoAdminId?: string }> = ({
         const colorCls = ACTION_COLOR[log.action] ?? DEFAULT_COLOR;
         return (
           <div key={log.id} className="flex gap-3 relative">
-            {i < logs.length - 1 && <div className="absolute left-[14px] top-8 bottom-0 w-px bg-zinc-800/60" />}
+            {i < logs.length - 1 && <div className="absolute left-[0.875rem] top-8 bottom-0 w-px bg-zinc-800/60" />}
             <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 mt-1 border ${colorCls}`}>
-              <Icon size={12} />
+              <Icon size="0.75rem" />
             </div>
             <div className="pb-4 flex-1 min-w-0">
-              <p className="text-zinc-200 text-[11px] leading-snug">{log.acao}</p>
-              <p className="text-zinc-700 text-[9px] mt-1 font-black">
+              <p className="text-zinc-200 text-[0.6875rem] leading-snug">{log.acao}</p>
+              <p className="text-zinc-700 text-[0.5625rem] mt-1 font-black">
                 {new Date(log.ts).toLocaleString('pt-BR', {
                   day: '2-digit',
                   month: 'short',

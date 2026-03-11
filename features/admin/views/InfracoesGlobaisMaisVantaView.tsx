@@ -141,14 +141,14 @@ export const InfracoesGlobaisMaisVantaView: React.FC<{
               disabled={loading}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all disabled:opacity-40"
             >
-              <RefreshCw size={16} className={`text-zinc-400 ${loading ? 'animate-spin' : ''}`} />
+              <RefreshCw size="1rem" className={`text-zinc-400 ${loading ? 'animate-spin' : ''}`} />
             </button>
             <button
               aria-label="Voltar"
               onClick={onBack}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
             >
-              <ArrowLeft size={18} className="text-zinc-400" />
+              <ArrowLeft size="1.125rem" className="text-zinc-400" />
             </button>
           </div>
         </div>
@@ -157,15 +157,15 @@ export const InfracoesGlobaisMaisVantaView: React.FC<{
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5 mb-4">
           <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center">
             <p className="text-white font-black text-xl leading-none">{totais.total}</p>
-            <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider mt-1">Total</p>
+            <p className="text-zinc-400 text-[0.5625rem] font-bold uppercase tracking-wider mt-1">Total</p>
           </div>
           <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center">
             <p className="text-red-400 font-black text-xl leading-none">{totais.noShow}</p>
-            <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider mt-1">No-Show</p>
+            <p className="text-zinc-400 text-[0.5625rem] font-bold uppercase tracking-wider mt-1">No-Show</p>
           </div>
           <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center">
             <p className="text-amber-400 font-black text-xl leading-none">{totais.naoPostou}</p>
-            <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider mt-1">Não Postou</p>
+            <p className="text-zinc-400 text-[0.5625rem] font-bold uppercase tracking-wider mt-1">Não Postou</p>
           </div>
         </div>
 
@@ -175,7 +175,7 @@ export const InfracoesGlobaisMaisVantaView: React.FC<{
             <button
               key={f.id}
               onClick={() => setFiltro(f.id)}
-              className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider shrink-0 border transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-[0.5625rem] font-black uppercase tracking-wider shrink-0 border transition-all ${
                 filtro === f.id
                   ? 'bg-[#FFD300] text-black border-transparent'
                   : 'bg-zinc-900/60 text-zinc-400 border-white/5 active:bg-zinc-800'
@@ -192,9 +192,9 @@ export const InfracoesGlobaisMaisVantaView: React.FC<{
         {filtradas.length === 0 && (
           <div className="flex flex-col items-center justify-center py-16 gap-4">
             <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center">
-              <AlertCircle size={28} className="text-zinc-700" />
+              <AlertCircle size="1.75rem" className="text-zinc-700" />
             </div>
-            <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">
+            <p className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest">
               Nenhuma infração encontrada
             </p>
           </div>
@@ -207,13 +207,13 @@ export const InfracoesGlobaisMaisVantaView: React.FC<{
             <div key={inf.id} className="bg-zinc-900/40 border border-white/5 rounded-2xl p-4">
               <div className="flex items-start gap-3 mb-3">
                 <div className="w-10 h-10 rounded-full bg-zinc-800 border border-white/5 flex items-center justify-center shrink-0">
-                  <User size={16} className="text-zinc-400" />
+                  <User size="1rem" className="text-zinc-400" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-white font-bold text-sm truncate">{inf.nomeMembro}</p>
-                  <p className="text-zinc-400 text-[10px] mt-1">
+                  <p className="text-zinc-400 text-[0.625rem] mt-1">
                     <span
-                      className={`inline-block px-2 py-0.5 rounded-md border text-[8px] font-black uppercase tracking-wider ${tipoInfo?.color ?? 'text-zinc-400 bg-zinc-500/15 border-zinc-500/25'}`}
+                      className={`inline-block px-2 py-0.5 rounded-md border text-[0.5rem] font-black uppercase tracking-wider ${tipoInfo?.color ?? 'text-zinc-400 bg-zinc-500/15 border-zinc-500/25'}`}
                     >
                       {tipoInfo?.label ?? inf.tipo}
                     </span>
@@ -222,7 +222,7 @@ export const InfracoesGlobaisMaisVantaView: React.FC<{
               </div>
 
               {/* Detalhes */}
-              <div className="space-y-1.5 text-[9px] text-zinc-400 mb-3">
+              <div className="space-y-1.5 text-[0.5625rem] text-zinc-400 mb-3">
                 {inf.evento_nome && (
                   <p>
                     <span className="text-zinc-400 font-bold">Evento:</span> {inf.evento_nome}
@@ -242,9 +242,9 @@ export const InfracoesGlobaisMaisVantaView: React.FC<{
               <button
                 onClick={() => setConfirmar({ id: inf.id, userId: inf.user_id, nomeMembro: inf.nomeMembro || '' })}
                 disabled={loading}
-                className="w-full py-2 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-[9px] font-black uppercase tracking-widest active:scale-95 transition-all disabled:opacity-40 flex items-center justify-center gap-1.5"
+                className="w-full py-2 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-[0.5625rem] font-black uppercase tracking-widest active:scale-95 transition-all disabled:opacity-40 flex items-center justify-center gap-1.5"
               >
-                <Trash2 size={12} /> Deletar Infração
+                <Trash2 size="0.75rem" /> Deletar Infração
               </button>
             </div>
           );
@@ -262,7 +262,7 @@ export const InfracoesGlobaisMaisVantaView: React.FC<{
             onClick={e => e.stopPropagation()}
           >
             <p className="text-white font-bold text-sm text-center">Deletar infração?</p>
-            <p className="text-zinc-400 text-[10px] text-center leading-relaxed">
+            <p className="text-zinc-400 text-[0.625rem] text-center leading-relaxed">
               A infração de "{confirmar.nomeMembro}" será deletada. Seu nível de bloqueio será recalculado
               automaticamente.
             </p>
@@ -270,7 +270,7 @@ export const InfracoesGlobaisMaisVantaView: React.FC<{
               <button
                 onClick={() => setConfirmar(null)}
                 disabled={loading}
-                className="flex-1 py-3 bg-zinc-900 border border-white/10 rounded-xl text-zinc-400 text-[9px] font-black uppercase tracking-widest active:scale-95 transition-all disabled:opacity-40"
+                className="flex-1 py-3 bg-zinc-900 border border-white/10 rounded-xl text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest active:scale-95 transition-all disabled:opacity-40"
               >
                 Voltar
               </button>
@@ -280,7 +280,7 @@ export const InfracoesGlobaisMaisVantaView: React.FC<{
                   const infracao = infracoes.find(i => i.id === confirmar.id);
                   if (infracao) await handleDeletarInfracao(infracao);
                 }}
-                className="flex-1 py-3 bg-red-500 rounded-xl text-white text-[9px] font-black uppercase tracking-widest active:scale-95 transition-all disabled:opacity-40"
+                className="flex-1 py-3 bg-red-500 rounded-xl text-white text-[0.5625rem] font-black uppercase tracking-widest active:scale-95 transition-all disabled:opacity-40"
               >
                 {loading ? 'Deletando...' : 'Confirmar'}
               </button>

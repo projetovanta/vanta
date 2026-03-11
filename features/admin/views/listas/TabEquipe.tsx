@@ -47,17 +47,17 @@ export const TabEquipe: React.FC<{
       >
         <div>
           <p className="text-black font-black text-sm uppercase tracking-wider leading-none">Distribuir Cota</p>
-          <p className="text-black/50 text-[10px] font-bold mt-1">Alocar vagas aos promoters</p>
+          <p className="text-black/50 text-[0.625rem] font-bold mt-1">Alocar vagas aos promoters</p>
         </div>
         <div className="w-10 h-10 bg-black/10 rounded-xl flex items-center justify-center shrink-0">
-          <Plus size={18} className="text-black" />
+          <Plus size="1.125rem" className="text-black" />
         </div>
       </button>
 
       {promoterIds.length === 0 && (
         <div className="flex flex-col items-center py-12 gap-3">
-          <Users size={28} className="text-zinc-800" />
-          <p className="text-zinc-700 text-[10px] font-black uppercase tracking-widest">
+          <Users size="1.75rem" className="text-zinc-800" />
+          <p className="text-zinc-700 text-[0.625rem] font-black uppercase tracking-widest">
             Nenhum promoter com cota ainda
           </p>
         </div>
@@ -77,11 +77,11 @@ export const TabEquipe: React.FC<{
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-white font-bold text-sm leading-none truncate">{promoter?.nome ?? pid}</p>
-                <p className="text-[#FFD300]/70 text-[10px] mt-0.5 font-black">{totalSaldo} vagas disponíveis</p>
+                <p className="text-[#FFD300]/70 text-[0.625rem] mt-0.5 font-black">{totalSaldo} vagas disponíveis</p>
               </div>
               <div className="text-right shrink-0">
                 <p className="text-white font-black text-xl leading-none">{cotas.reduce((a, c) => a + c.usado, 0)}</p>
-                <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">usadas</p>
+                <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest">usadas</p>
               </div>
             </div>
             <div className="p-3 space-y-2">
@@ -95,9 +95,9 @@ export const TabEquipe: React.FC<{
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-1.5">
                         <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: cor }} />
-                        <p className="text-zinc-300 text-[10px] font-bold truncate">{regra?.label}</p>
+                        <p className="text-zinc-300 text-[0.625rem] font-bold truncate">{regra?.label}</p>
                       </div>
-                      <div className="flex items-center gap-2 text-[9px] font-black uppercase tracking-widest shrink-0">
+                      <div className="flex items-center gap-2 text-[0.5625rem] font-black uppercase tracking-widest shrink-0">
                         <span className="text-zinc-400">Usado: {c.usado}</span>
                         <span className={saldo > 0 ? 'text-[#FFD300]' : 'text-zinc-700'}>Saldo: {saldo}</span>
                       </div>
@@ -155,22 +155,22 @@ export const TabEquipe: React.FC<{
                 placeholder="Quantidade de vagas"
                 className={inputCls}
               />
-              {erro && <p className="text-red-400 text-[10px] font-black uppercase tracking-widest">{erro}</p>}
+              {erro && <p className="text-red-400 text-[0.625rem] font-black uppercase tracking-widest">{erro}</p>}
               <div className="flex gap-2 pt-1">
                 <button
                   onClick={() => {
                     setDistModal(false);
                     setErro('');
                   }}
-                  className="flex-1 py-3.5 bg-zinc-900 border border-white/10 rounded-xl text-zinc-400 text-[10px] font-black uppercase tracking-widest active:scale-95 transition-all"
+                  className="flex-1 py-3.5 bg-zinc-900 border border-white/10 rounded-xl text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest active:scale-95 transition-all"
                 >
                   Cancelar
                 </button>
                 <button
                   onClick={handleDistribuir}
-                  className="flex-1 py-3.5 bg-[#FFD300] text-black rounded-xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-1.5 active:scale-95 transition-all"
+                  className="flex-1 py-3.5 bg-[#FFD300] text-black rounded-xl text-[0.625rem] font-black uppercase tracking-widest flex items-center justify-center gap-1.5 active:scale-95 transition-all"
                 >
-                  <Check size={12} /> Confirmar
+                  <Check size="0.75rem" /> Confirmar
                 </button>
               </div>
             </div>

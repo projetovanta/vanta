@@ -36,28 +36,30 @@ export const PriceFilterModal: React.FC<PriceFilterModalProps> = ({ isOpen, onCl
 
   return (
     <div className="absolute inset-0 z-[200] animate-in fade-in duration-300">
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" role="presentation" onClick={onClose} />
+      <div className="absolute inset-0 bg-black/80 backdrop-blur-md" role="presentation" onClick={onClose} />
       <div className="absolute top-[10rem] left-0 right-0 flex justify-center px-6 animate-in slide-in-from-top-2 duration-500">
-        <div className="w-full max-w-[320px] glass-premium rounded-[2rem] overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] bg-zinc-900/80">
+        <div className="w-full max-w-[20rem] glass-premium rounded-[2rem] overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] bg-zinc-900/80">
           <div className="p-6">
             <div className="flex justify-between items-center mb-6">
               <div>
                 <h2 style={TYPOGRAPHY.screenTitle} className="text-xl italic text-white">
                   Investimento
                 </h2>
-                <p className="text-[9px] text-[#FFD300] font-black uppercase tracking-widest mt-1">Filtrar por valor</p>
+                <p className="text-[0.5625rem] text-[#FFD300] font-black uppercase tracking-widest mt-1">
+                  Filtrar por valor
+                </p>
               </div>
               <button
                 onClick={onClose}
                 className="p-2 bg-black/50 rounded-full text-zinc-400 hover:text-white transition-colors"
               >
-                <X size={16} />
+                <X size="1rem" />
               </button>
             </div>
 
             <div className="space-y-6">
               <div className="flex justify-between items-end">
-                <span className="text-[10px] text-zinc-400 uppercase font-black tracking-widest">Valor Máximo</span>
+                <span className="text-[0.625rem] text-zinc-400 uppercase font-black tracking-widest">Valor Máximo</span>
                 <span className="text-xl font-serif font-bold text-white">
                   {tempPrice >= 5000 ? 'R$ 5000+' : `R$ ${tempPrice}`}
                 </span>
@@ -85,8 +87,8 @@ export const PriceFilterModal: React.FC<PriceFilterModalProps> = ({ isOpen, onCl
                         : 'bg-black/40 border-white/5 text-zinc-400'
                     }`}
                   >
-                    <span className="text-[9px] font-bold uppercase tracking-wider">{price.label}</span>
-                    {tempPrice === price.value && <Check size={12} className="text-[#FFD300]" />}
+                    <span className="text-[0.5625rem] font-bold uppercase tracking-wider">{price.label}</span>
+                    {tempPrice === price.value && <Check size="0.75rem" className="text-[#FFD300]" />}
                   </button>
                 ))}
               </div>
@@ -96,13 +98,13 @@ export const PriceFilterModal: React.FC<PriceFilterModalProps> = ({ isOpen, onCl
           <div className="flex border-t border-white/5">
             <button
               onClick={handleClear}
-              className="flex-1 py-4 bg-black/60 text-[9px] font-black uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors"
+              className="flex-1 py-4 bg-black/60 text-[0.5625rem] font-black uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors"
             >
               Limpar
             </button>
             <button
               onClick={handleApply}
-              className="flex-1 py-4 bg-[#FFD300] text-[9px] font-black uppercase tracking-[0.2em] text-black transition-colors"
+              className="flex-1 py-4 bg-[#FFD300] text-[0.5625rem] font-black uppercase tracking-[0.2em] text-black transition-colors"
             >
               Aplicar
             </button>

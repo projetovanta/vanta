@@ -103,11 +103,11 @@ export const Step1Evento: React.FC<Props> = p => {
           className="w-full flex items-center gap-3 p-4 bg-zinc-900/40 border border-dashed border-white/10 rounded-2xl active:border-[#FFD300]/30 active:bg-[#FFD300]/5 transition-all"
         >
           <div className="w-9 h-9 rounded-xl bg-zinc-800 border border-white/5 flex items-center justify-center shrink-0">
-            <Copy size={14} className="text-zinc-400" />
+            <Copy size="0.875rem" className="text-zinc-400" />
           </div>
           <div className="text-left">
             <p className="text-zinc-400 font-bold text-sm leading-none">Importar dados de evento anterior</p>
-            <p className="text-zinc-700 text-[9px] mt-0.5 font-black uppercase tracking-widest">
+            <p className="text-zinc-700 text-[0.5625rem] mt-0.5 font-black uppercase tracking-widest">
               Ingressos, listas, equipe
             </p>
           </div>
@@ -116,30 +116,30 @@ export const Step1Evento: React.FC<Props> = p => {
 
       <div>
         <label className={labelCls}>Foto do evento *</label>
-        <p className="text-[8px] text-zinc-700 mb-3 font-black uppercase tracking-widest">
+        <p className="text-[0.5rem] text-zinc-700 mb-3 font-black uppercase tracking-widest">
           1080 × 1350 px · proporção 4:5 · JPG ou PNG
         </p>
         <input ref={fotoRef} type="file" accept="image/*" onChange={handleFotoChange} className="hidden" />
         <button
           onClick={() => fotoRef.current?.click()}
-          className="w-full aspect-[4/5] max-h-[360px] mx-auto rounded-2xl overflow-hidden border border-dashed border-white/10 bg-zinc-900/30 relative active:scale-[0.99] transition-all"
+          className="w-full aspect-[4/5] max-h-[22.5rem] mx-auto rounded-2xl overflow-hidden border border-dashed border-white/10 bg-zinc-900/30 relative active:scale-[0.99] transition-all"
         >
           {p.foto ? (
             <img loading="lazy" src={p.foto} alt="preview" className="w-full h-full object-cover" />
           ) : (
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
               <div className="w-14 h-14 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center">
-                <Upload size={22} className="text-zinc-400" />
+                <Upload size="1.375rem" className="text-zinc-400" />
               </div>
-              <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">
+              <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest">
                 Toque para escolher a foto
               </p>
             </div>
           )}
           {p.foto && (
             <div className="absolute bottom-3 right-3 bg-black/60 backdrop-blur-sm border border-white/10 rounded-full px-3 py-1.5 flex items-center gap-1.5">
-              <Upload size={10} className="text-white/60" />
-              <p className="text-white text-[8px] font-black uppercase tracking-widest">Trocar foto</p>
+              <Upload size="0.625rem" className="text-white/60" />
+              <p className="text-white text-[0.5rem] font-black uppercase tracking-widest">Trocar foto</p>
             </div>
           )}
         </button>
@@ -191,36 +191,36 @@ export const Step1Evento: React.FC<Props> = p => {
           className="w-full flex items-center justify-between px-4 py-3"
         >
           <div className="flex items-center gap-2 min-w-0">
-            <span className="text-[10px]">🧱</span>
+            <span className="text-[0.625rem]">🧱</span>
             <span className="text-white text-xs font-bold">Formato</span>
             {p.formato && openSection !== 'formato' && (
-              <span className="px-2 py-0.5 bg-[#FFD300]/15 border border-[#FFD300]/30 rounded-lg text-[#FFD300] text-[9px] font-bold truncate">
+              <span className="px-2 py-0.5 bg-[#FFD300]/15 border border-[#FFD300]/30 rounded-lg text-[#FFD300] text-[0.5625rem] font-bold truncate">
                 {p.formato}
               </span>
             )}
             {!p.formato && openSection !== 'formato' && (
-              <span className="text-zinc-400 text-[9px]">Nenhum selecionado</span>
+              <span className="text-zinc-400 text-[0.5625rem]">Nenhum selecionado</span>
             )}
           </div>
           <ChevronDown
-            size={14}
+            size="0.875rem"
             className={`text-zinc-400 shrink-0 transition-transform ${openSection === 'formato' ? 'rotate-180' : ''}`}
           />
         </button>
         {openSection === 'formato' && (
           <div className="px-4 pb-3 space-y-2">
-            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">
+            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">
               O que é / Onde acontece · selecione 1
             </p>
             {loading ? (
               <div className="flex items-center gap-2 py-2">
-                <Loader2 size={14} className="text-zinc-400 animate-spin" />
+                <Loader2 size="0.875rem" className="text-zinc-400 animate-spin" />
                 <span className="text-zinc-400 text-xs">Carregando...</span>
               </div>
             ) : (
               <>
                 <div className="relative">
-                  <Search size={12} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+                  <Search size="0.75rem" className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
                   <input
                     value={searchFormato}
                     onChange={e => setSearchFormato(e.target.value)}
@@ -234,7 +234,7 @@ export const Step1Evento: React.FC<Props> = p => {
                       key={fmt}
                       type="button"
                       onClick={() => p.setFormato(p.formato === fmt ? '' : fmt)}
-                      className={`px-3 py-2 rounded-xl text-[10px] font-bold uppercase tracking-wider border transition-all active:scale-95 ${
+                      className={`px-3 py-2 rounded-xl text-[0.625rem] font-bold uppercase tracking-wider border transition-all active:scale-95 ${
                         p.formato === fmt
                           ? 'bg-[#FFD300]/15 border-[#FFD300]/40 text-[#FFD300]'
                           : 'bg-zinc-900/50 border-white/5 text-zinc-400'
@@ -260,14 +260,14 @@ export const Step1Evento: React.FC<Props> = p => {
           className="w-full flex items-center justify-between px-4 py-3"
         >
           <div className="flex items-center gap-2 min-w-0 flex-1">
-            <span className="text-[10px]">🎵</span>
+            <span className="text-[0.625rem]">🎵</span>
             <span className="text-white text-xs font-bold shrink-0">Estilo</span>
             {p.estilos.length > 0 && openSection !== 'estilo' && (
               <div className="flex gap-1 flex-wrap min-w-0">
                 {p.estilos.map(e => (
                   <span
                     key={e}
-                    className="px-1.5 py-0.5 bg-purple-500/15 border border-purple-500/30 rounded text-purple-400 text-[8px] font-bold truncate"
+                    className="px-1.5 py-0.5 bg-purple-500/15 border border-purple-500/30 rounded text-purple-400 text-[0.5rem] font-bold truncate"
                   >
                     {e}
                   </span>
@@ -275,26 +275,28 @@ export const Step1Evento: React.FC<Props> = p => {
               </div>
             )}
             {p.estilos.length === 0 && openSection !== 'estilo' && (
-              <span className="text-zinc-400 text-[9px]">Nenhum selecionado</span>
+              <span className="text-zinc-400 text-[0.5625rem]">Nenhum selecionado</span>
             )}
           </div>
           <ChevronDown
-            size={14}
+            size="0.875rem"
             className={`text-zinc-400 shrink-0 transition-transform ${openSection === 'estilo' ? 'rotate-180' : ''}`}
           />
         </button>
         {openSection === 'estilo' && (
           <div className="px-4 pb-3 space-y-2">
-            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Som / Vibe · min. 1, max. 5</p>
+            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">
+              Som / Vibe · min. 1, max. 5
+            </p>
             <p
-              className={`text-[8px] font-black uppercase tracking-widest ${p.estilos.length < 1 ? 'text-amber-500' : p.estilos.length >= 5 ? 'text-blue-400' : 'text-emerald-500'}`}
+              className={`text-[0.5rem] font-black uppercase tracking-widest ${p.estilos.length < 1 ? 'text-amber-500' : p.estilos.length >= 5 ? 'text-blue-400' : 'text-emerald-500'}`}
             >
               {p.estilos.length}/5 selecionados
             </p>
             {!loading && (
               <>
                 <div className="relative">
-                  <Search size={12} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+                  <Search size="0.75rem" className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
                   <input
                     value={searchEstilo}
                     onChange={e => setSearchEstilo(e.target.value)}
@@ -315,7 +317,7 @@ export const Step1Evento: React.FC<Props> = p => {
                           const r = toggleMulti(p.estilos, est, 5);
                           if (r) p.setEstilos(r);
                         }}
-                        className={`px-3 py-2 rounded-xl text-[10px] font-bold uppercase tracking-wider border transition-all active:scale-95 ${
+                        className={`px-3 py-2 rounded-xl text-[0.625rem] font-bold uppercase tracking-wider border transition-all active:scale-95 ${
                           selected
                             ? 'bg-purple-500/15 border-purple-500/40 text-purple-400'
                             : limitReached
@@ -344,14 +346,14 @@ export const Step1Evento: React.FC<Props> = p => {
           className="w-full flex items-center justify-between px-4 py-3"
         >
           <div className="flex items-center gap-2 min-w-0 flex-1">
-            <span className="text-[10px]">✨</span>
+            <span className="text-[0.625rem]">✨</span>
             <span className="text-white text-xs font-bold shrink-0">Experiencia</span>
             {p.experiencias.length > 0 && openSection !== 'experiencia' && (
               <div className="flex gap-1 flex-wrap min-w-0">
                 {p.experiencias.map(e => (
                   <span
                     key={e}
-                    className="px-1.5 py-0.5 bg-emerald-500/15 border border-emerald-500/30 rounded text-emerald-400 text-[8px] font-bold truncate"
+                    className="px-1.5 py-0.5 bg-emerald-500/15 border border-emerald-500/30 rounded text-emerald-400 text-[0.5rem] font-bold truncate"
                   >
                     {e}
                   </span>
@@ -359,28 +361,28 @@ export const Step1Evento: React.FC<Props> = p => {
               </div>
             )}
             {p.experiencias.length === 0 && openSection !== 'experiencia' && (
-              <span className="text-zinc-400 text-[9px]">Nenhum selecionado</span>
+              <span className="text-zinc-400 text-[0.5625rem]">Nenhum selecionado</span>
             )}
           </div>
           <ChevronDown
-            size={14}
+            size="0.875rem"
             className={`text-zinc-400 shrink-0 transition-transform ${openSection === 'experiencia' ? 'rotate-180' : ''}`}
           />
         </button>
         {openSection === 'experiencia' && (
           <div className="px-4 pb-3 space-y-2">
-            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">
+            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">
               Modelo / Diferencial · min. 1, max. 5
             </p>
             <p
-              className={`text-[8px] font-black uppercase tracking-widest ${p.experiencias.length < 1 ? 'text-amber-500' : p.experiencias.length >= 5 ? 'text-blue-400' : 'text-emerald-500'}`}
+              className={`text-[0.5rem] font-black uppercase tracking-widest ${p.experiencias.length < 1 ? 'text-amber-500' : p.experiencias.length >= 5 ? 'text-blue-400' : 'text-emerald-500'}`}
             >
               {p.experiencias.length}/5 selecionadas
             </p>
             {!loading && (
               <>
                 <div className="relative">
-                  <Search size={12} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+                  <Search size="0.75rem" className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
                   <input
                     value={searchExperiencia}
                     onChange={e => setSearchExperiencia(e.target.value)}
@@ -401,7 +403,7 @@ export const Step1Evento: React.FC<Props> = p => {
                           const r = toggleMulti(p.experiencias, exp, 5);
                           if (r) p.setExperiencias(r);
                         }}
-                        className={`px-3 py-2 rounded-xl text-[10px] font-bold uppercase tracking-wider border transition-all active:scale-95 ${
+                        className={`px-3 py-2 rounded-xl text-[0.625rem] font-bold uppercase tracking-wider border transition-all active:scale-95 ${
                           selected
                             ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-400'
                             : limitReached
@@ -446,7 +448,7 @@ export const Step1Evento: React.FC<Props> = p => {
           </div>
         </div>
         {p.dataInicio && p.horaInicio && p.horaFim && p.horaFim <= p.horaInicio && (
-          <p className="text-zinc-400 text-[9px] italic">
+          <p className="text-zinc-400 text-[0.5625rem] italic">
             Encerramento no dia seguinte (
             {(() => {
               const d = new Date(p.dataInicio + 'T00:00:00');
@@ -482,7 +484,7 @@ export const Step1Evento: React.FC<Props> = p => {
                 className={inputDateCls}
               />
               {!p.recorrenciaAte && (
-                <p className="text-amber-500/70 text-[9px] mt-1">Escolha ate quando o evento se repete</p>
+                <p className="text-amber-500/70 text-[0.5625rem] mt-1">Escolha ate quando o evento se repete</p>
               )}
             </div>
           )}
@@ -507,7 +509,7 @@ export const Step1Evento: React.FC<Props> = p => {
             className={inputCls + ' opacity-40 cursor-not-allowed'}
           />
         </div>
-        <p className="text-[8px] text-zinc-700 font-black uppercase tracking-widest">
+        <p className="text-[0.5rem] text-zinc-700 font-black uppercase tracking-widest">
           Somente o VANTA masteradm pode alterar local e endereço.
         </p>
       </div>

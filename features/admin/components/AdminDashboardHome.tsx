@@ -335,7 +335,7 @@ export const AdminDashboardHome: React.FC<{
       <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-6 pt-8 pb-5 shrink-0">
         <div className="flex items-center gap-2 mb-1">
           <div className="w-1.5 h-1.5 rounded-full bg-[#FFD300] animate-pulse" />
-          <p className="text-[#FFD300]/60 text-[9px] font-black uppercase tracking-[0.25em]">
+          <p className="text-[#FFD300]/60 text-[0.5625rem] font-black uppercase tracking-[0.25em]">
             {roleLabel} · Painel Administrativo
           </p>
         </div>
@@ -343,12 +343,12 @@ export const AdminDashboardHome: React.FC<{
           Bem-vindo, {adminNome}
         </h1>
         {tenantNome && (
-          <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest mt-1.5">
+          <p className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest mt-1.5">
             Você está em: <span className="text-zinc-300">{tenantNome}</span>
           </p>
         )}
         {isMaster && !tenantNome && (
-          <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest mt-1.5">
+          <p className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest mt-1.5">
             Visão global da plataforma
           </p>
         )}
@@ -358,7 +358,9 @@ export const AdminDashboardHome: React.FC<{
         {/* KPIs — contexto de comunidade (só para gestão: master, gerente, sócio) */}
         {isInCommunity && communityKpis && (isMaster || isGerente || isSocio) && (
           <div>
-            <p className="text-zinc-700 text-[9px] font-black uppercase tracking-[0.2em] mb-2.5">Visão da Comunidade</p>
+            <p className="text-zinc-700 text-[0.5625rem] font-black uppercase tracking-[0.2em] mb-2.5">
+              Visão da Comunidade
+            </p>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
               <KpiCard
                 label="Eventos"
@@ -397,24 +399,24 @@ export const AdminDashboardHome: React.FC<{
                 }`}
               >
                 <div className="w-11 h-11 rounded-xl bg-[#FFD300]/15 border border-[#FFD300]/25 flex items-center justify-center shrink-0">
-                  <Crown size={20} className="text-[#FFD300]" />
+                  <Crown size="1.25rem" className="text-[#FFD300]" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-white font-bold text-sm truncate">
                     {ativa ? 'MAIS VANTA Ativo' : 'Ative o MAIS VANTA'}
                   </p>
-                  <p className="text-zinc-400 text-[10px] mt-0.5 truncate">
+                  <p className="text-zinc-400 text-[0.625rem] mt-0.5 truncate">
                     {ativa
                       ? `Plano ${assinaturaService.getInfoPlano(assinatura!).nome} · ${assinaturaService.getInfoPlano(assinatura!).membros} membros`
                       : 'Atraia influenciadores para seus eventos'}
                   </p>
                 </div>
                 {ativa ? (
-                  <span className="shrink-0 px-2 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-[9px] font-black uppercase tracking-wider">
+                  <span className="shrink-0 px-2 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-[0.5625rem] font-black uppercase tracking-wider">
                     Ativo
                   </span>
                 ) : (
-                  <span className="shrink-0 px-3 py-1.5 rounded-full bg-[#FFD300] text-black text-[9px] font-black uppercase tracking-wider">
+                  <span className="shrink-0 px-3 py-1.5 rounded-full bg-[#FFD300] text-black text-[0.5625rem] font-black uppercase tracking-wider">
                     Conhecer
                   </span>
                 )}
@@ -425,7 +427,9 @@ export const AdminDashboardHome: React.FC<{
         {/* Pizza faturamento por evento — comunidade */}
         {isInCommunity && communityPieData && (
           <div className="bg-zinc-900/40 border border-white/5 rounded-2xl p-5 space-y-3">
-            <p className="text-zinc-700 text-[9px] font-black uppercase tracking-[0.2em]">Faturamento por Evento</p>
+            <p className="text-zinc-700 text-[0.5625rem] font-black uppercase tracking-[0.2em]">
+              Faturamento por Evento
+            </p>
             <VantaPieChart
               data={communityPieData}
               formatValue={v => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
@@ -437,7 +441,7 @@ export const AdminDashboardHome: React.FC<{
         {/* KPIs estáticos — totais absolutos (visão global master) */}
         {isMaster && kpis && !isInCommunity && (
           <div>
-            <p className="text-zinc-700 text-[9px] font-black uppercase tracking-[0.2em] mb-2.5">Resumo Total</p>
+            <p className="text-zinc-700 text-[0.5625rem] font-black uppercase tracking-[0.2em] mb-2.5">Resumo Total</p>
             <div className="grid grid-cols-2 gap-2">
               <KpiPieCard
                 label="Comunidades Ativas"
@@ -472,7 +476,9 @@ export const AdminDashboardHome: React.FC<{
         {/* Pizza faturamento por comunidade — visão global master */}
         {isMaster && globalPieData && !isInCommunity && (
           <div className="bg-zinc-900/40 border border-white/5 rounded-2xl p-5 space-y-3">
-            <p className="text-zinc-700 text-[9px] font-black uppercase tracking-[0.2em]">Faturamento por Comunidade</p>
+            <p className="text-zinc-700 text-[0.5625rem] font-black uppercase tracking-[0.2em]">
+              Faturamento por Comunidade
+            </p>
             <VantaPieChart
               data={globalPieData}
               formatValue={v => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
@@ -497,8 +503,8 @@ export const AdminDashboardHome: React.FC<{
               onClick={() => setVisaoGeralAberta(v => !v)}
               className="w-full flex items-center justify-between mb-2.5 active:opacity-70 transition-opacity"
             >
-              <p className="text-zinc-700 text-[9px] font-black uppercase tracking-[0.2em]">Visão Geral</p>
-              <span className="text-[9px] font-bold text-[#FFD300]/60 uppercase tracking-wider">
+              <p className="text-zinc-700 text-[0.5625rem] font-black uppercase tracking-[0.2em]">Visão Geral</p>
+              <span className="text-[0.5625rem] font-bold text-[#FFD300]/60 uppercase tracking-wider">
                 {visaoGeralAberta ? 'Fechar' : 'Ver'}
               </span>
             </button>
@@ -510,7 +516,7 @@ export const AdminDashboardHome: React.FC<{
                       <button
                         key={p.value}
                         onClick={() => setPeriodo(p.value)}
-                        className={`px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-wider transition-all ${
+                        className={`px-3 py-1.5 rounded-full text-[0.5625rem] font-black uppercase tracking-wider transition-all ${
                           periodo === p.value
                             ? 'bg-[#FFD300] text-black'
                             : 'bg-zinc-900/60 text-zinc-400 border border-white/5 active:bg-white/5'
@@ -520,11 +526,11 @@ export const AdminDashboardHome: React.FC<{
                       </button>
                     ))}
                   </div>
-                  <p className="text-zinc-700 text-[9px] font-medium italic">{getPeriodoLabel(periodo)}</p>
+                  <p className="text-zinc-700 text-[0.5625rem] font-medium italic">{getPeriodoLabel(periodo)}</p>
                 </div>
                 {metricsLoading ? (
                   <div className="flex items-center justify-center py-8">
-                    <Loader2 size={20} className="text-[#FFD300] animate-spin" />
+                    <Loader2 size="1.25rem" className="text-[#FFD300] animate-spin" />
                   </div>
                 ) : metrics ? (
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -578,19 +584,19 @@ export const AdminDashboardHome: React.FC<{
               >
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
-                    <Crown size={14} className="text-[#FFD300] shrink-0" />
-                    <p className="text-[#FFD300] text-[9px] font-black uppercase tracking-widest">MAIS VANTA</p>
+                    <Crown size="0.875rem" className="text-[#FFD300] shrink-0" />
+                    <p className="text-[#FFD300] text-[0.5625rem] font-black uppercase tracking-widest">MAIS VANTA</p>
                   </div>
-                  <ChevronRight size={13} className="text-zinc-700 shrink-0" />
+                  <ChevronRight size="0.8125rem" className="text-zinc-700 shrink-0" />
                 </div>
                 <div className="flex items-baseline gap-4">
                   <div>
                     <p className="text-white font-black text-2xl leading-none">{ativas}</p>
-                    <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mt-1">ativas</p>
+                    <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest mt-1">ativas</p>
                   </div>
                   <div>
                     <p className="text-[#FFD300] font-black text-xl leading-none">{fmtBRL(mrr)}</p>
-                    <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mt-1">MRR</p>
+                    <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest mt-1">MRR</p>
                   </div>
                 </div>
               </button>
@@ -700,8 +706,8 @@ export const AdminDashboardHome: React.FC<{
             return (
               <div>
                 <div className="flex items-center justify-between mb-2.5">
-                  <p className="text-zinc-700 text-[9px] font-black uppercase tracking-[0.2em]">Pendências</p>
-                  <span className="px-2 py-0.5 rounded-full bg-red-500/20 text-red-400 text-[9px] font-black">
+                  <p className="text-zinc-700 text-[0.5625rem] font-black uppercase tracking-[0.2em]">Pendências</p>
+                  <span className="px-2 py-0.5 rounded-full bg-red-500/20 text-red-400 text-[0.5625rem] font-black">
                     {totalPendencias}
                   </span>
                 </div>
@@ -712,9 +718,9 @@ export const AdminDashboardHome: React.FC<{
                       onClick={() => onNavigate(item.nav)}
                       className={`w-full flex items-center gap-3 ${item.bg} border ${item.border} rounded-xl px-4 py-3 active:opacity-80 transition-all text-left`}
                     >
-                      <item.icon size={15} className={`${item.color} shrink-0`} />
+                      <item.icon size="0.9375rem" className={`${item.color} shrink-0`} />
                       <p className="flex-1 text-zinc-300 text-xs font-semibold truncate">{item.label}</p>
-                      <ChevronRight size={13} className="text-zinc-700 shrink-0" />
+                      <ChevronRight size="0.8125rem" className="text-zinc-700 shrink-0" />
                     </button>
                   ))}
                 </div>
@@ -725,7 +731,7 @@ export const AdminDashboardHome: React.FC<{
         {/* Ações rápidas */}
         {buttons.length > 0 && (
           <div>
-            <p className="text-zinc-700 text-[9px] font-black uppercase tracking-[0.2em] mb-2.5">Ações rápidas</p>
+            <p className="text-zinc-700 text-[0.5625rem] font-black uppercase tracking-[0.2em] mb-2.5">Ações rápidas</p>
             <div className="space-y-2">
               {buttons.map(btn => {
                 const Icon = btn.icon;
@@ -740,10 +746,10 @@ export const AdminDashboardHome: React.FC<{
                       className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 relative"
                       style={{ backgroundColor: `${btn.color}15`, border: `1px solid ${btn.color}25` }}
                     >
-                      <Icon size={18} style={{ color: btn.color }} />
+                      <Icon size="1.125rem" style={{ color: btn.color }} />
                       {hasBadge && (
                         <span
-                          className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] rounded-full text-[8px] font-black flex items-center justify-center px-1 leading-none text-black"
+                          className="absolute -top-1.5 -right-1.5 min-w-[1.125rem] h-[1.125rem] rounded-full text-[0.5rem] font-black flex items-center justify-center px-1 leading-none text-black"
                           style={{ backgroundColor: btn.badgeColor ?? btn.color }}
                         >
                           {(btn.badge ?? 0) > 99 ? '99+' : btn.badge}
@@ -752,17 +758,17 @@ export const AdminDashboardHome: React.FC<{
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-white font-bold text-sm leading-tight truncate">{btn.label}</p>
-                      <p className="text-zinc-400 text-[10px] mt-0.5 truncate">{btn.sublabel}</p>
+                      <p className="text-zinc-400 text-[0.625rem] mt-0.5 truncate">{btn.sublabel}</p>
                     </div>
                     {hasBadge && (
                       <span
-                        className="shrink-0 min-w-[20px] h-5 rounded-full text-[8px] font-black flex items-center justify-center px-1.5 leading-none text-black"
+                        className="shrink-0 min-w-[1.25rem] h-5 rounded-full text-[0.5rem] font-black flex items-center justify-center px-1.5 leading-none text-black"
                         style={{ backgroundColor: btn.badgeColor ?? btn.color }}
                       >
                         {(btn.badge ?? 0) > 99 ? '99+' : btn.badge}
                       </span>
                     )}
-                    {!hasBadge && <ChevronRight size={14} className="text-zinc-700 shrink-0" />}
+                    {!hasBadge && <ChevronRight size="0.875rem" className="text-zinc-700 shrink-0" />}
                   </button>
                 );
               })}
@@ -772,8 +778,10 @@ export const AdminDashboardHome: React.FC<{
 
         {buttons.length === 0 && !isMaster && (
           <div className="flex flex-col items-center justify-center gap-3 py-16 text-center">
-            <Shield size={28} className="text-zinc-700" />
-            <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">Nenhuma ação disponível</p>
+            <Shield size="1.75rem" className="text-zinc-700" />
+            <p className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest">
+              Nenhuma ação disponível
+            </p>
           </div>
         )}
       </div>

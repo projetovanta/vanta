@@ -10,10 +10,10 @@ export interface ToastData {
 }
 
 const ICON: Record<ToastType, React.ReactNode> = {
-  sucesso: <Check size={14} strokeWidth={3} />,
-  erro: <X size={14} strokeWidth={3} />,
-  aviso: <AlertTriangle size={14} strokeWidth={2.5} />,
-  info: <Info size={14} strokeWidth={2.5} />,
+  sucesso: <Check size="0.875rem" strokeWidth={3} />,
+  erro: <X size="0.875rem" strokeWidth={3} />,
+  aviso: <AlertTriangle size="0.875rem" strokeWidth={2.5} />,
+  info: <Info size="0.875rem" strokeWidth={2.5} />,
 };
 
 const STYLE: Record<ToastType, { bg: string; border: string; icon: string }> = {

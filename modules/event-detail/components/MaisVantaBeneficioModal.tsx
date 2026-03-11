@@ -54,13 +54,13 @@ export const MaisVantaBeneficioModal: React.FC<Props> = ({
           onClick={onClose}
           className="absolute top-5 right-5 p-1.5 text-zinc-400 active:text-white transition-colors"
         >
-          <X size={16} />
+          <X size="1rem" />
         </button>
         <div className="w-10 h-1 bg-[#FFD300]/30 rounded-full mx-auto mb-5" />
 
         {/* Titulo */}
         <div className="flex items-center gap-2 mb-4">
-          <Crown size={16} className="text-[#FFD300]" />
+          <Crown size="1rem" className="text-[#FFD300]" />
           <p className="text-white font-black text-sm uppercase tracking-wider">Resgatar Benefício</p>
         </div>
 
@@ -69,7 +69,7 @@ export const MaisVantaBeneficioModal: React.FC<Props> = ({
           <p className="text-white text-sm font-bold">{eventoNome}</p>
           <p className="text-zinc-300 text-xs">{beneficioLabel}</p>
           {descontoPercentual && (
-            <span className="inline-block text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded bg-[#FFD300]/15 text-[#FFD300]">
+            <span className="inline-block text-[0.5rem] font-black uppercase tracking-widest px-2 py-0.5 rounded bg-[#FFD300]/15 text-[#FFD300]">
               {descontoPercentual}% de desconto
             </span>
           )}
@@ -78,13 +78,15 @@ export const MaisVantaBeneficioModal: React.FC<Props> = ({
         {/* Contrapartida CONAR */}
         <div className="bg-amber-500/5 border border-amber-500/15 rounded-2xl p-4 mb-4">
           <div className="flex items-start gap-2 mb-2">
-            <AlertTriangle size={12} className="text-amber-400 shrink-0 mt-0.5" />
-            <p className="text-amber-400 text-[10px] font-black uppercase tracking-wider">Contrapartida Obrigatória</p>
+            <AlertTriangle size="0.75rem" className="text-amber-400 shrink-0 mt-0.5" />
+            <p className="text-amber-400 text-[0.625rem] font-black uppercase tracking-wider">
+              Contrapartida Obrigatória
+            </p>
           </div>
-          <p className="text-zinc-400 text-[11px] leading-relaxed mb-3">
+          <p className="text-zinc-400 text-[0.6875rem] leading-relaxed mb-3">
             Ao resgatar, você se compromete a comparecer ao evento e publicar conteúdo (Story/Post/Reels):
           </p>
-          <ul className="space-y-1.5 text-zinc-400 text-[10px]">
+          <ul className="space-y-1.5 text-zinc-400 text-[0.625rem]">
             <li className="flex items-start gap-1.5">
               <span className="text-[#FFD300] shrink-0">•</span>
               <span>
@@ -129,9 +131,9 @@ export const MaisVantaBeneficioModal: React.FC<Props> = ({
         {/* Link para termos */}
         <button
           onClick={() => setMostrarTermos(true)}
-          className="flex items-center gap-1.5 mb-4 text-zinc-400 text-[10px] active:text-[#FFD300] transition-colors"
+          className="flex items-center gap-1.5 mb-4 text-zinc-400 text-[0.625rem] active:text-[#FFD300] transition-colors"
         >
-          <ExternalLink size={10} /> Ver termos completos do MAIS VANTA
+          <ExternalLink size="0.625rem" /> Ver termos completos do MAIS VANTA
         </button>
 
         {/* Aceite explicito */}
@@ -141,9 +143,9 @@ export const MaisVantaBeneficioModal: React.FC<Props> = ({
               aceiteTermos ? 'border-[#FFD300] bg-[#FFD300]' : 'border-zinc-600'
             }`}
           >
-            {aceiteTermos && <Check size={10} className="text-black" strokeWidth={3} />}
+            {aceiteTermos && <Check size="0.625rem" className="text-black" strokeWidth={3} />}
           </div>
-          <span className="text-zinc-400 text-[10px] text-left">
+          <span className="text-zinc-400 text-[0.625rem] text-left">
             Li e aceito as condições de contrapartida, publicidade e os termos do MAIS VANTA
           </span>
         </button>
@@ -152,7 +154,7 @@ export const MaisVantaBeneficioModal: React.FC<Props> = ({
         <button
           onClick={handleConfirmar}
           disabled={!aceiteTermos}
-          className="w-full py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all disabled:opacity-30 disabled:scale-100"
+          className="w-full py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all disabled:opacity-30 disabled:scale-100"
         >
           Confirmar Resgate
         </button>
@@ -173,15 +175,15 @@ export const MaisVantaBeneficioModal: React.FC<Props> = ({
           >
             <div className="flex items-center justify-between px-5 pt-5 pb-3 shrink-0">
               <div className="flex items-center gap-2">
-                <Shield size={14} className="text-[#FFD300]" />
+                <Shield size="0.875rem" className="text-[#FFD300]" />
                 <span className="text-white text-sm font-bold">Termos de Uso — MAIS VANTA</span>
               </div>
               <button onClick={() => setMostrarTermos(false)} className="p-1.5 text-zinc-400 active:text-white">
-                <ArrowLeft size={16} />
+                <ArrowLeft size="1rem" />
               </button>
             </div>
             <div className="flex-1 overflow-y-auto no-scrollbar px-5 pb-4">
-              <pre className="text-zinc-400 text-[9px] leading-relaxed whitespace-pre-wrap font-sans">
+              <pre className="text-zinc-400 text-[0.5625rem] leading-relaxed whitespace-pre-wrap font-sans">
                 {termosTexto}
               </pre>
             </div>

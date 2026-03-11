@@ -179,16 +179,16 @@ export const ComprovanteMeiaSection: React.FC<Props> = ({ userId, onSuccess, onB
               onClick={onBack}
               className="p-1.5 hover:bg-white/5 rounded-lg transition-colors"
             >
-              <ArrowLeft size={18} className="text-zinc-400" />
+              <ArrowLeft size="1.125rem" className="text-zinc-400" />
             </button>
           )}
           <div className="flex-1 min-w-0">
             <h1 className="text-base font-bold text-white truncate">Meia-Entrada</h1>
-            <p className="text-[10px] text-zinc-400">Comprovante para ingressos meia-entrada</p>
+            <p className="text-[0.625rem] text-zinc-400">Comprovante para ingressos meia-entrada</p>
           </div>
           <div className="flex items-center gap-1 shrink-0">
-            <Shield size={10} className="text-zinc-400" />
-            <span className="text-[8px] text-zinc-400 font-bold uppercase tracking-wider">Privado</span>
+            <Shield size="0.625rem" className="text-zinc-400" />
+            <span className="text-[0.5rem] text-zinc-400 font-bold uppercase tracking-wider">Privado</span>
           </div>
         </div>
       </div>
@@ -207,9 +207,9 @@ export const ComprovanteMeiaSection: React.FC<Props> = ({ userId, onSuccess, onB
                 <p className={`text-sm font-bold ${statusConfig[comp.status].text}`}>
                   {isVencendo ? `Vence em ${diasRestantes} dias` : statusConfig[comp.status].label}
                 </p>
-                <p className="text-[10px] text-zinc-400 mt-0.5 truncate">{tipoLabel}</p>
+                <p className="text-[0.625rem] text-zinc-400 mt-0.5 truncate">{tipoLabel}</p>
                 {comp.status === 'APROVADO' && comp.validadeAte && (
-                  <p className="text-[9px] text-zinc-400 mt-0.5">
+                  <p className="text-[0.5625rem] text-zinc-400 mt-0.5">
                     Válido até {new Date(comp.validadeAte).toLocaleDateString('pt-BR')}
                     {comp.fotos.length > 1 && <span className="text-zinc-400"> · {comp.fotos.length} arquivos</span>}
                   </p>
@@ -220,15 +220,15 @@ export const ComprovanteMeiaSection: React.FC<Props> = ({ userId, onSuccess, onB
                   onClick={handleVerFotos}
                   className="shrink-0 px-3 py-1.5 bg-emerald-500/20 rounded-lg flex items-center gap-1.5 active:scale-95 transition-all"
                 >
-                  <Eye size={12} className="text-emerald-400" />
-                  <span className="text-emerald-400 text-[9px] font-bold uppercase tracking-wider">Ver</span>
+                  <Eye size="0.75rem" className="text-emerald-400" />
+                  <span className="text-emerald-400 text-[0.5625rem] font-bold uppercase tracking-wider">Ver</span>
                 </button>
               )}
             </div>
 
             {comp.status === 'REJEITADO' && comp.motivoRejeicao && (
               <div className="mt-3 p-2.5 bg-red-500/10 rounded-xl">
-                <p className="text-[10px] text-red-400">
+                <p className="text-[0.625rem] text-red-400">
                   <span className="font-bold">Motivo:</span> {comp.motivoRejeicao}
                 </p>
               </div>
@@ -250,7 +250,7 @@ export const ComprovanteMeiaSection: React.FC<Props> = ({ userId, onSuccess, onB
 
             {/* Tipo de comprovante */}
             <div>
-              <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1.5 block">
+              <label className="text-[0.625rem] font-bold uppercase tracking-wider text-zinc-400 mb-1.5 block">
                 Tipo de Documento
               </label>
               <div className="relative">
@@ -263,7 +263,7 @@ export const ComprovanteMeiaSection: React.FC<Props> = ({ userId, onSuccess, onB
                       ? 'Outro tipo...'
                       : (TIPOS_COMPROVANTE_MEIA.find(t => t.id === tipoSelecionado)?.label ?? 'Selecione o tipo')}
                   </span>
-                  <ChevronDown size={14} className="text-zinc-400" />
+                  <ChevronDown size="0.875rem" className="text-zinc-400" />
                 </button>
                 {showTipoDropdown && (
                   <div className="absolute top-full left-0 right-0 mt-1 bg-zinc-800 border border-white/10 rounded-xl overflow-hidden z-10 shadow-2xl max-h-48 overflow-y-auto">
@@ -304,23 +304,23 @@ export const ComprovanteMeiaSection: React.FC<Props> = ({ userId, onSuccess, onB
 
             {/* Arquivos — frente/verso/extra */}
             <div>
-              <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1.5 block">
+              <label className="text-[0.625rem] font-bold uppercase tracking-wider text-zinc-400 mb-1.5 block">
                 Documentos
               </label>
-              <p className="text-[9px] text-zinc-400 mb-2">Adicione frente e verso do documento (se aplicável)</p>
+              <p className="text-[0.5625rem] text-zinc-400 mb-2">Adicione frente e verso do documento (se aplicável)</p>
               <div className="space-y-2">
                 {arquivos.map(arq => (
                   <div key={arq.label} className="rounded-xl border border-white/10 overflow-hidden">
                     <div className="flex items-center gap-2 px-3 py-2 bg-zinc-800/50">
-                      <span className="text-[9px] font-bold uppercase tracking-wider text-cyan-400 flex-1">
+                      <span className="text-[0.5625rem] font-bold uppercase tracking-wider text-cyan-400 flex-1">
                         {LABEL_DISPLAY[arq.label] ?? arq.label}
                       </span>
-                      <span className="text-[9px] text-zinc-400 truncate max-w-[120px]">{arq.filename}</span>
+                      <span className="text-[0.5625rem] text-zinc-400 truncate max-w-[7.5rem]">{arq.filename}</span>
                       <button
                         onClick={() => removeArquivo(arq.label)}
                         className="p-1 text-zinc-400 hover:text-red-400 transition-colors shrink-0"
                       >
-                        <Trash2 size={12} />
+                        <Trash2 size="0.75rem" />
                       </button>
                     </div>
                     {arq.dataUrl.startsWith('data:image') && (
@@ -328,7 +328,7 @@ export const ComprovanteMeiaSection: React.FC<Props> = ({ userId, onSuccess, onB
                     )}
                     {arq.dataUrl.startsWith('data:application/pdf') && (
                       <div className="h-16 bg-zinc-800 flex items-center justify-center gap-2">
-                        <File size={20} className="text-zinc-400" />
+                        <File size="1.25rem" className="text-zinc-400" />
                         <span className="text-zinc-400 text-xs">PDF</span>
                       </div>
                     )}
@@ -341,8 +341,8 @@ export const ComprovanteMeiaSection: React.FC<Props> = ({ userId, onSuccess, onB
                       onClick={() => setShowSourcePicker(showSourcePicker ? null : proximoLabel)}
                       className="w-full h-24 bg-zinc-900/40 border-2 border-dashed border-white/10 rounded-xl flex flex-col items-center justify-center gap-1.5 hover:border-white/20 transition-colors active:scale-[0.98]"
                     >
-                      <Plus size={18} className="text-zinc-400" />
-                      <span className="text-[9px] text-zinc-400 font-bold uppercase tracking-wider">
+                      <Plus size="1.125rem" className="text-zinc-400" />
+                      <span className="text-[0.5625rem] text-zinc-400 font-bold uppercase tracking-wider">
                         {arquivos.length === 0
                           ? 'Adicionar frente'
                           : `Adicionar ${LABEL_DISPLAY[proximoLabel]?.toLowerCase() ?? proximoLabel}`}
@@ -355,21 +355,21 @@ export const ComprovanteMeiaSection: React.FC<Props> = ({ userId, onSuccess, onB
                           onClick={() => cameraRef.current?.click()}
                           className="w-full flex items-center gap-3 px-4 py-3 text-white hover:bg-white/5 transition-colors border-b border-white/5"
                         >
-                          <Camera size={16} className="text-cyan-400 shrink-0" />
+                          <Camera size="1rem" className="text-cyan-400 shrink-0" />
                           <span className="text-sm">Tirar foto agora</span>
                         </button>
                         <button
                           onClick={() => galleryRef.current?.click()}
                           className="w-full flex items-center gap-3 px-4 py-3 text-white hover:bg-white/5 transition-colors border-b border-white/5"
                         >
-                          <Image size={16} className="text-purple-400 shrink-0" />
+                          <Image size="1rem" className="text-purple-400 shrink-0" />
                           <span className="text-sm">Escolher da galeria</span>
                         </button>
                         <button
                           onClick={() => fileRef.current?.click()}
                           className="w-full flex items-center gap-3 px-4 py-3 text-white hover:bg-white/5 transition-colors"
                         >
-                          <File size={16} className="text-amber-400 shrink-0" />
+                          <File size="1rem" className="text-amber-400 shrink-0" />
                           <span className="text-sm">Enviar arquivo (PDF/imagem)</span>
                         </button>
                       </div>
@@ -404,8 +404,8 @@ export const ComprovanteMeiaSection: React.FC<Props> = ({ userId, onSuccess, onB
 
             {/* Info legal */}
             <div className="bg-zinc-900/30 border border-white/5 rounded-xl p-3 flex items-start gap-2.5">
-              <Shield size={14} className="text-zinc-400 shrink-0 mt-0.5" />
-              <p className="text-[9px] text-zinc-400 leading-relaxed">
+              <Shield size="0.875rem" className="text-zinc-400 shrink-0 mt-0.5" />
+              <p className="text-[0.5625rem] text-zinc-400 leading-relaxed">
                 Seus documentos são privados e visíveis apenas para você e o administrador. Aceitos: CIE, DNE, RG
                 (idoso), laudo médico (PCD), ID Jovem, carteira funcional.
               </p>
@@ -429,7 +429,7 @@ export const ComprovanteMeiaSection: React.FC<Props> = ({ userId, onSuccess, onB
                 </span>
               ) : (
                 <span className="flex items-center justify-center gap-2">
-                  <Upload size={14} />
+                  <Upload size="0.875rem" />
                   Enviar{' '}
                   {arquivos.length > 0
                     ? `${arquivos.length} arquivo${arquivos.length !== 1 ? 's' : ''}`
@@ -449,7 +449,7 @@ export const ComprovanteMeiaSection: React.FC<Props> = ({ userId, onSuccess, onB
             </p>
             <button
               onClick={() => setArquivos([])}
-              className="text-[9px] text-zinc-400 font-bold uppercase tracking-wider hover:text-zinc-400 transition-colors"
+              className="text-[0.5625rem] text-zinc-400 font-bold uppercase tracking-wider hover:text-zinc-400 transition-colors"
             >
               Deseja atualizar o comprovante?
             </button>
@@ -461,14 +461,14 @@ export const ComprovanteMeiaSection: React.FC<Props> = ({ userId, onSuccess, onB
       {showFotoModal && fotoModalUrls.length > 0 && (
         <div className="absolute inset-0 z-[110] flex flex-col items-center justify-center p-4 animate-in fade-in duration-200">
           <div className="absolute inset-0 bg-black/90" role="presentation" onClick={() => setShowFotoModal(false)} />
-          <div className="relative w-full max-w-md animate-in zoom-in-95 duration-300">
+          <div className="relative w-full max-w-[500px] animate-in zoom-in-95 duration-300">
             {fotoModalUrls.length > 1 && (
               <div className="flex gap-1 mb-3 justify-center relative z-10">
                 {fotoModalUrls.map((f, i) => (
                   <button
                     key={f.label}
                     onClick={() => setFotoModalIdx(i)}
-                    className={`px-3 py-1.5 rounded-lg text-[9px] font-bold uppercase tracking-wider transition-all ${
+                    className={`px-3 py-1.5 rounded-lg text-[0.5625rem] font-bold uppercase tracking-wider transition-all ${
                       fotoModalIdx === i ? 'bg-white/10 text-white' : 'text-zinc-400'
                     }`}
                   >
@@ -487,7 +487,7 @@ export const ComprovanteMeiaSection: React.FC<Props> = ({ userId, onSuccess, onB
               onClick={() => setShowFotoModal(false)}
               className="absolute top-3 right-3 p-2 bg-black/60 rounded-full z-10"
             >
-              <X size={16} className="text-white" />
+              <X size="1rem" className="text-white" />
             </button>
           </div>
         </div>

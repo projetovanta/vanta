@@ -19,11 +19,11 @@ const Row: React.FC<{ label: string; value: string; icon: React.ElementType; acc
 }) => (
   <div className="flex items-center justify-between py-2">
     <div className="flex items-center gap-2 min-w-0">
-      <Icon size={13} className={accent ? 'text-[#FFD300]' : muted ? 'text-zinc-700' : 'text-zinc-400'} />
-      <p className={`text-[11px] font-semibold truncate ${muted ? 'text-zinc-400' : 'text-zinc-400'}`}>{label}</p>
+      <Icon size="0.8125rem" className={accent ? 'text-[#FFD300]' : muted ? 'text-zinc-700' : 'text-zinc-400'} />
+      <p className={`text-[0.6875rem] font-semibold truncate ${muted ? 'text-zinc-400' : 'text-zinc-400'}`}>{label}</p>
     </div>
     <p
-      className={`text-[12px] font-black tabular-nums shrink-0 ${accent ? 'text-[#FFD300]' : muted ? 'text-zinc-400' : 'text-white'}`}
+      className={`text-[0.75rem] font-black tabular-nums shrink-0 ${accent ? 'text-[#FFD300]' : muted ? 'text-zinc-400' : 'text-white'}`}
     >
       {value}
     </p>
@@ -46,7 +46,7 @@ export const ResumoFinanceiroCard: React.FC<Props> = ({ resumo: r, titulo = 'Res
 
   return (
     <div className="bg-zinc-900/40 border border-white/5 rounded-2xl p-5">
-      <p className="text-zinc-700 text-[9px] font-black uppercase tracking-[0.2em] mb-3">{titulo}</p>
+      <p className="text-zinc-700 text-[0.5625rem] font-black uppercase tracking-[0.2em] mb-3">{titulo}</p>
 
       <div className="divide-y divide-white/5">
         <Row

@@ -186,7 +186,7 @@ export const SocioDashboardView: React.FC<SocioDashProps> = ({ onBack, currentUs
         <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic leading-none text-white">
           Dashboard Sócio
         </h1>
-        <p className="text-[10px] text-zinc-400 font-black uppercase tracking-wider mt-1">
+        <p className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-wider mt-1">
           {socioNodes.length} evento{socioNodes.length !== 1 ? 's' : ''}
         </p>
       </div>
@@ -200,7 +200,7 @@ export const SocioDashboardView: React.FC<SocioDashProps> = ({ onBack, currentUs
             <span>
               {filtroEventoId ? metricas.find(m => m.eventoId === filtroEventoId)?.eventoNome : 'Todos os eventos'}
             </span>
-            <ChevronDown size={14} className="text-zinc-400" />
+            <ChevronDown size="0.875rem" className="text-zinc-400" />
           </button>
           {showDropdown && (
             <div className="absolute left-6 right-6 top-full z-20 bg-zinc-900 border border-white/10 rounded-xl overflow-hidden shadow-xl">
@@ -250,21 +250,21 @@ export const SocioDashboardView: React.FC<SocioDashProps> = ({ onBack, currentUs
                   <div className="flex items-center gap-3 mt-2">
                     {eventoDestaque.eventoDataInicio && (
                       <div className="flex items-center gap-1">
-                        <Calendar size={10} className="text-zinc-400 shrink-0" />
-                        <p className="text-[10px] text-zinc-400">{fmtData(eventoDestaque.eventoDataInicio)}</p>
+                        <Calendar size="0.625rem" className="text-zinc-400 shrink-0" />
+                        <p className="text-[0.625rem] text-zinc-400">{fmtData(eventoDestaque.eventoDataInicio)}</p>
                       </div>
                     )}
                     {eventoDestaque.eventoLocal && (
                       <div className="flex items-center gap-1 min-w-0">
-                        <MapPin size={10} className="text-zinc-400 shrink-0" />
-                        <p className="text-[10px] text-zinc-400 truncate">{eventoDestaque.eventoLocal}</p>
+                        <MapPin size="0.625rem" className="text-zinc-400 shrink-0" />
+                        <p className="text-[0.625rem] text-zinc-400 truncate">{eventoDestaque.eventoLocal}</p>
                       </div>
                     )}
                   </div>
                   {eventoDestaque.eventoStatus && (
                     <div className="mt-2">
                       <span
-                        className={`text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full ${
+                        className={`text-[0.5625rem] font-black uppercase tracking-wider px-2 py-0.5 rounded-full ${
                           eventoDestaque.eventoStatus === 'ATIVO'
                             ? 'bg-emerald-500/10 text-emerald-400'
                             : eventoDestaque.eventoStatus === 'RASCUNHO'
@@ -286,27 +286,27 @@ export const SocioDashboardView: React.FC<SocioDashProps> = ({ onBack, currentUs
             <div className="grid grid-cols-2 gap-2.5 mb-4">
               <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-3 flex flex-col gap-1">
                 <div className="flex items-center gap-1.5">
-                  <DollarSign size={11} className="text-[#FFD300] shrink-0" />
-                  <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider">Receita Bruta</p>
+                  <DollarSign size="0.6875rem" className="text-[#FFD300] shrink-0" />
+                  <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-wider">Receita Bruta</p>
                 </div>
                 <p className="text-lg font-bold text-[#FFD300] leading-none truncate">{fmtBRL(dados.receitaBruta)}</p>
               </div>
               <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-3 flex flex-col gap-1">
                 <div className="flex items-center gap-1.5">
-                  <Percent size={11} className="text-emerald-400 shrink-0" />
-                  <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider">Sua Parte</p>
+                  <Percent size="0.6875rem" className="text-emerald-400 shrink-0" />
+                  <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-wider">Sua Parte</p>
                 </div>
                 <p className="text-lg font-bold text-emerald-400 leading-none truncate">{fmtBRL(dados.valorSplit)}</p>
-                <p className="text-[9px] text-zinc-400">Seu split: {dados.splitMedio.toFixed(0)}%</p>
+                <p className="text-[0.5625rem] text-zinc-400">Seu split: {dados.splitMedio.toFixed(0)}%</p>
               </div>
             </div>
 
             {/* Empty state */}
             {!dados.temVendas && (
               <div className="mb-4 px-4 py-6 rounded-2xl border border-dashed border-white/10 bg-zinc-900/30 text-center">
-                <Sparkles size={24} className="text-[#FFD300]/40 mx-auto mb-2" />
+                <Sparkles size="1.5rem" className="text-[#FFD300]/40 mx-auto mb-2" />
                 <p className="text-sm font-bold text-zinc-400">Nenhuma venda ainda</p>
-                <p className="text-[10px] text-zinc-400 mt-1">
+                <p className="text-[0.625rem] text-zinc-400 mt-1">
                   {eventoDestaque?.eventoDataInicio
                     ? `Evento ${formatRelativeTime(eventoDestaque.eventoDataInicio)}`
                     : 'As vendas aparecerão aqui em tempo real'}
@@ -318,30 +318,32 @@ export const SocioDashboardView: React.FC<SocioDashProps> = ({ onBack, currentUs
             <div className="grid grid-cols-2 gap-2.5 mb-4">
               <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-3 flex flex-col gap-1">
                 <div className="flex items-center gap-1.5">
-                  <Ticket size={11} className="text-purple-400 shrink-0" />
-                  <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider">Vendidos</p>
+                  <Ticket size="0.6875rem" className="text-purple-400 shrink-0" />
+                  <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-wider">Vendidos</p>
                 </div>
                 <p className="text-lg font-bold text-white leading-none">{dados.totalVendidos}</p>
-                {dados.totalCapacidade > 0 && <p className="text-[9px] text-zinc-400">{dados.ocupacao}% ocupação</p>}
+                {dados.totalCapacidade > 0 && (
+                  <p className="text-[0.5625rem] text-zinc-400">{dados.ocupacao}% ocupação</p>
+                )}
               </div>
               <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-3 flex flex-col gap-1">
                 <div className="flex items-center gap-1.5">
-                  <UserCheck size={11} className="text-cyan-400 shrink-0" />
-                  <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider">Check-ins</p>
+                  <UserCheck size="0.6875rem" className="text-cyan-400 shrink-0" />
+                  <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-wider">Check-ins</p>
                 </div>
                 <p className="text-lg font-bold text-white leading-none">{dados.totalCheckins}</p>
               </div>
               <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-3 flex flex-col gap-1">
                 <div className="flex items-center gap-1.5">
-                  <ClipboardList size={11} className="text-orange-400 shrink-0" />
-                  <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider">Lista</p>
+                  <ClipboardList size="0.6875rem" className="text-orange-400 shrink-0" />
+                  <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-wider">Lista</p>
                 </div>
                 <p className="text-lg font-bold text-white leading-none">{dados.totalConvidados}</p>
               </div>
               <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-3 flex flex-col gap-1">
                 <div className="flex items-center gap-1.5">
-                  <TrendingUp size={11} className="text-blue-400 shrink-0" />
-                  <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider">Média/evento</p>
+                  <TrendingUp size="0.6875rem" className="text-blue-400 shrink-0" />
+                  <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-wider">Média/evento</p>
                 </div>
                 <p className="text-lg font-bold text-white leading-none">{dados.mediaVendas.toFixed(0)}</p>
               </div>
@@ -357,11 +359,14 @@ export const SocioDashboardView: React.FC<SocioDashProps> = ({ onBack, currentUs
                 }`}
               >
                 <div className="flex items-center gap-2">
-                  <TrendingUp size={14} className={tendencia === 'acima' ? 'text-emerald-400' : 'text-orange-400'} />
+                  <TrendingUp
+                    size="0.875rem"
+                    className={tendencia === 'acima' ? 'text-emerald-400' : 'text-orange-400'}
+                  />
                   <p className={`text-xs font-bold ${tendencia === 'acima' ? 'text-emerald-400' : 'text-orange-400'}`}>
                     {tendencia === 'acima' ? 'Acima' : 'Abaixo'} da média
                   </p>
-                  <p className="text-[10px] text-zinc-400">
+                  <p className="text-[0.625rem] text-zinc-400">
                     ({eventoSelecionado?.vendidos} vendas vs média {dados.mediaVendas.toFixed(0)})
                   </p>
                 </div>
@@ -371,7 +376,7 @@ export const SocioDashboardView: React.FC<SocioDashProps> = ({ onBack, currentUs
             {/* Comparativo */}
             {metricas.length > 1 && !filtroEventoId && (
               <div className="mb-4">
-                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider mb-2">
+                <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-wider mb-2">
                   Comparativo por Evento
                 </p>
                 <div className="space-y-2">
@@ -390,10 +395,10 @@ export const SocioDashboardView: React.FC<SocioDashProps> = ({ onBack, currentUs
                           />
                         </div>
                         <div className="flex items-center justify-between mt-1">
-                          <p className="text-[9px] text-zinc-400">
+                          <p className="text-[0.5625rem] text-zinc-400">
                             {m.vendidos} vendidos · {m.splitIndividual}% seu split
                           </p>
-                          <p className="text-[9px] text-emerald-500">
+                          <p className="text-[0.5625rem] text-emerald-500">
                             {fmtBRL(m.receitaBruta * (m.splitIndividual / 100))}
                           </p>
                         </div>
@@ -406,7 +411,7 @@ export const SocioDashboardView: React.FC<SocioDashProps> = ({ onBack, currentUs
 
             {/* Atalhos */}
             <div className="space-y-2">
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider">Ações rápidas</p>
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-wider">Ações rápidas</p>
               {[
                 { id: 'MEUS_EVENTOS', icon: BarChart3, label: 'Painel do Evento', color: 'text-purple-400' },
                 { id: 'FINANCEIRO', icon: DollarSign, label: 'Ver Financeiro', color: 'text-[#FFD300]' },
@@ -419,10 +424,10 @@ export const SocioDashboardView: React.FC<SocioDashProps> = ({ onBack, currentUs
                   className="w-full flex items-center justify-between bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 active:scale-[0.98] transition-all"
                 >
                   <div className="flex items-center gap-3">
-                    <item.icon size={16} className={`${item.color} shrink-0`} />
+                    <item.icon size="1rem" className={`${item.color} shrink-0`} />
                     <p className="text-sm text-white font-bold">{item.label}</p>
                   </div>
-                  <ArrowRight size={14} className="text-zinc-400 shrink-0" />
+                  <ArrowRight size="0.875rem" className="text-zinc-400 shrink-0" />
                 </button>
               ))}
             </div>

@@ -144,7 +144,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
         <div>
           <div className="flex items-center gap-2 mb-2">
             <div className="w-1.5 h-1.5 rounded-full bg-[#FFD300]" />
-            <p className="text-[#FFD300]/60 text-[9px] font-black uppercase tracking-[0.25em]">Criar conta</p>
+            <p className="text-[#FFD300]/60 text-[0.5625rem] font-black uppercase tracking-[0.25em]">Criar conta</p>
           </div>
           <h1 style={TYPOGRAPHY.screenTitle} className="text-2xl italic text-white">
             Cadastro
@@ -155,7 +155,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
           onClick={onClose}
           className="w-10 h-10 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
         >
-          <ArrowLeft size={18} className="text-zinc-400" />
+          <ArrowLeft size="1.125rem" className="text-zinc-400" />
         </button>
       </div>
 
@@ -164,7 +164,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
         <div className="space-y-4">
           {/* Email */}
           <div>
-            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5">E-mail</p>
+            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5">E-mail</p>
             <input
               type="email"
               value={email}
@@ -179,7 +179,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
 
           {/* Senha */}
           <div>
-            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5">Senha</p>
+            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5">Senha</p>
             <div className="relative">
               <input
                 type={showSenha ? 'text' : 'password'}
@@ -194,7 +194,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
                 onClick={() => setShowSenha(p => !p)}
                 className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400"
               >
-                {showSenha ? <EyeOff size={16} /> : <Eye size={16} />}
+                {showSenha ? <EyeOff size="1rem" /> : <Eye size="1rem" />}
               </button>
             </div>
             <FieldError msg={errors.senha} />
@@ -202,7 +202,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
 
           {/* Nome */}
           <div>
-            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5">Nome Completo</p>
+            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5">Nome Completo</p>
             <input
               value={nome}
               onChange={e => setNome(e.target.value)}
@@ -215,7 +215,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
 
           {/* Telefone */}
           <div>
-            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5">Telefone</p>
+            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5">Telefone</p>
             <div className="flex gap-2">
               <div className="w-24 shrink-0">
                 <VantaPickerModal
@@ -243,7 +243,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
 
           {/* Data de Nascimento */}
           <div>
-            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5">Data de Nascimento</p>
+            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5">
+              Data de Nascimento
+            </p>
             <input
               value={dataNasc}
               onChange={e => setDataNasc(fmtDataNasc(e.target.value))}
@@ -273,9 +275,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
                   consentimento ? 'bg-[#FFD300] border-[#FFD300]' : 'border-zinc-600'
                 }`}
               >
-                {consentimento && <Check size={12} className="text-black" />}
+                {consentimento && <Check size="0.75rem" className="text-black" />}
               </div>
-              <p className="text-zinc-400 text-[11px] leading-relaxed">
+              <p className="text-zinc-400 text-[0.6875rem] leading-relaxed">
                 Li e aceito os{' '}
                 <span
                   className="text-[#FFD300] underline"
@@ -311,14 +313,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
       >
         {isSignupLocked && signupLockCountdown > 0 && (
           <div className="flex items-center gap-2 justify-center bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3 mb-3">
-            <Lock size={12} className="text-red-400 shrink-0" />
-            <p className="text-red-400 text-[10px] font-black uppercase tracking-widest">
+            <Lock size="0.75rem" className="text-red-400 shrink-0" />
+            <p className="text-red-400 text-[0.625rem] font-black uppercase tracking-widest">
               Bloqueado por {signupLockCountdown}s
             </p>
           </div>
         )}
 
-        {globalError && <p className="text-red-400 text-[11px] text-center mb-3">{globalError}</p>}
+        {globalError && <p className="text-red-400 text-[0.6875rem] text-center mb-3">{globalError}</p>}
 
         <button
           onClick={handleSubmit}
@@ -329,7 +331,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
             <span className="animate-pulse">Criando conta…</span>
           ) : (
             <>
-              <Check size={14} /> Criar Conta
+              <Check size="0.875rem" /> Criar Conta
             </>
           )}
         </button>

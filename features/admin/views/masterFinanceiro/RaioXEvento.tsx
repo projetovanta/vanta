@@ -14,13 +14,13 @@ export const RaioXEvento: React.FC<Props> = ({ evento }) => {
   return (
     <div className="bg-zinc-900/40 border border-[#FFD300]/15 rounded-2xl p-5 space-y-4">
       <div className="flex items-center gap-2">
-        <BarChart3 size={13} className="text-[#FFD300]" />
-        <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Raio-X — {evento.nome}</p>
+        <BarChart3 size="0.8125rem" className="text-[#FFD300]" />
+        <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">Raio-X — {evento.nome}</p>
       </div>
 
       {/* Performance por Lote */}
       <div className="space-y-2">
-        <p className="text-[8px] text-zinc-700 font-black uppercase tracking-widest">Performance por Lote</p>
+        <p className="text-[0.5rem] text-zinc-700 font-black uppercase tracking-widest">Performance por Lote</p>
         {evento.lotes.map(lote => {
           const loteGmv = lote.variacoes.reduce((s, v) => s + v.vendidos * v.valor, 0);
           const loteVendidos = lote.variacoes.reduce((s, v) => s + v.vendidos, 0);
@@ -29,8 +29,8 @@ export const RaioXEvento: React.FC<Props> = ({ evento }) => {
           return (
             <div key={lote.id} className="space-y-1">
               <div className="flex items-center justify-between">
-                <p className="text-zinc-400 text-[9px] font-bold truncate flex-1 min-w-0">{lote.nome}</p>
-                <p className="text-zinc-400 text-[9px] shrink-0 ml-2">
+                <p className="text-zinc-400 text-[0.5625rem] font-bold truncate flex-1 min-w-0">{lote.nome}</p>
+                <p className="text-zinc-400 text-[0.5625rem] shrink-0 ml-2">
                   {loteVendidos}/{loteLimite} · {fmtBRL(loteGmv)}
                 </p>
               </div>
@@ -47,7 +47,7 @@ export const RaioXEvento: React.FC<Props> = ({ evento }) => {
 
       {/* Divisão por Tipo (Gênero/Área) */}
       <div className="space-y-2 pt-3 border-t border-white/5">
-        <p className="text-[8px] text-zinc-700 font-black uppercase tracking-widest">Lucro por Tipo</p>
+        <p className="text-[0.5rem] text-zinc-700 font-black uppercase tracking-widest">Lucro por Tipo</p>
         <div className="grid grid-cols-2 gap-2">
           {(() => {
             const tipoMap = new Map<string, { vendidos: number; gmv: number }>();
@@ -69,9 +69,9 @@ export const RaioXEvento: React.FC<Props> = ({ evento }) => {
                 const taxaV = d.gmv * fees.feePercent + fees.feeFixed * d.vendidos;
                 return (
                   <div key={tipo} className="bg-zinc-900/60 border border-white/5 rounded-xl p-3 space-y-1">
-                    <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest truncate">{tipo}</p>
+                    <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest truncate">{tipo}</p>
                     <p className="text-zinc-300 text-xs font-bold">{fmtBRL(taxaV)}</p>
-                    <p className="text-zinc-700 text-[7px]">{d.vendidos} ingressos</p>
+                    <p className="text-zinc-700 text-[0.4375rem]">{d.vendidos} ingressos</p>
                   </div>
                 );
               });

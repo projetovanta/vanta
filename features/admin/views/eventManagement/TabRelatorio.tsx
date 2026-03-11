@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FileText, Star, Printer, Crown } from 'lucide-react';
+import { FileText, Star, Printer, Crown, ThumbsUp, ThumbsDown } from 'lucide-react';
 import { gerarRelatorio, RelatorioEvento } from '../../services/relatorioService';
 import { VantaPieChart } from '../../components/VantaPieChart';
 import { CORES_PIZZA } from './types';
@@ -17,6 +17,16 @@ export const TabRelatorio: React.FC<{ eventoAdminId: string }> = ({ eventoAdminI
     postsObrigatorios: number;
     alcanceEstimado: number;
   } | null>(null);
+  const [mvAvaliacao, setMvAvaliacao] = useState<'eficiente' | 'ineficiente' | null>(null);
+  const [mvAvalSaving, setMvAvalSaving] = useState(false);
+
+  const salvarMvAvaliacao = async (val: 'eficiente' | 'ineficiente') => {
+    const novo = mvAvaliacao === val ? null : val;
+    setMvAvalSaving(true);
+    await supabase.from('eventos_admin').update({ mv_avaliacao: novo }).eq('id', eventoAdminId);
+    setMvAvaliacao(novo);
+    setMvAvalSaving(false);
+  };
 
   useEffect(() => {
     let cancelled = false;
@@ -27,6 +37,15 @@ export const TabRelatorio: React.FC<{ eventoAdminId: string }> = ({ eventoAdminI
         setLoading(false);
       }
     });
+    // Carregar avaliação MV existente
+    supabase
+      .from('eventos_admin')
+      .select('mv_avaliacao')
+      .eq('id', eventoAdminId)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (!cancelled && data?.mv_avaliacao) setMvAvaliacao(data.mv_avaliacao as 'eficiente' | 'ineficiente');
+      });
     // Buscar métricas MAIS VANTA
     supabase
       .from('resgates_mv_evento')
@@ -39,7 +58,7 @@ export const TabRelatorio: React.FC<{ eventoAdminId: string }> = ({ eventoAdminI
         const usados = resgates.filter(r => r.status === 'USADO').length;
         const postsEnv = resgates.filter(r => r.post_url).length;
         const postsVerif = resgates.filter(r => r.post_verificado).length;
-        // Para tiers creator/vanta_black, post é obrigatório
+        // Para tiers creator/black, post é obrigatório
         const userIds = [...new Set(resgates.map(r => r.user_id))];
         supabase
           .from('membros_clube')
@@ -55,7 +74,7 @@ export const TabRelatorio: React.FC<{ eventoAdminId: string }> = ({ eventoAdminI
               const m = memMap.get(r.user_id);
               if (!m) continue;
               const tier = m.tier as string;
-              if (tier === 'creator' || tier === 'vanta_black') postsObrig++;
+              if (tier === 'creator' || tier === 'black') postsObrig++;
               if (r.post_verificado && m.instagram_seguidores) {
                 alcance += m.instagram_seguidores as number;
               }
@@ -381,6 +400,32 @@ export const TabRelatorio: React.FC<{ eventoAdminId: string }> = ({ eventoAdminI
               </p>
               <p className="text-zinc-500 text-[8px] uppercase tracking-widest">Alcance estimado</p>
             </div>
+          </div>
+
+          {/* Avaliação eficiente/ineficiente */}
+          <div className="flex gap-2 mt-4">
+            <button
+              onClick={() => salvarMvAvaliacao('eficiente')}
+              disabled={mvAvalSaving}
+              className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-wider border transition-all active:scale-95 ${
+                mvAvaliacao === 'eficiente'
+                  ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-400'
+                  : 'bg-zinc-900/40 border-white/5 text-zinc-500'
+              }`}
+            >
+              <ThumbsUp size={12} /> Eficiente
+            </button>
+            <button
+              onClick={() => salvarMvAvaliacao('ineficiente')}
+              disabled={mvAvalSaving}
+              className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-wider border transition-all active:scale-95 ${
+                mvAvaliacao === 'ineficiente'
+                  ? 'bg-red-500/20 border-red-500/40 text-red-400'
+                  : 'bg-zinc-900/40 border-white/5 text-zinc-500'
+              }`}
+            >
+              <ThumbsDown size={12} /> Ineficiente
+            </button>
           </div>
         </div>
       )}

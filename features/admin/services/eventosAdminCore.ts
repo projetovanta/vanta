@@ -281,7 +281,7 @@ const _doRefresh = async (): Promise<void> => {
       });
     }
 
-    // lotes_mais_vanta dropada — mais_vanta_lotes_evento será carregado na Fase 2
+    // lotes_mais_vanta dropada — mais_vanta_config_evento será carregado na Fase 2
     const lotesMvMap = new Map<string, LoteMaisVanta>();
 
     // Lookup de profiles (criadorNome)

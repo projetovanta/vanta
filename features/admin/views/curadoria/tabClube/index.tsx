@@ -120,7 +120,7 @@ export const TabClube: React.FC<Props> = ({ adminId, toastFn, comunidadeId }) =>
   }, [refresh]);
 
   const handleAprovar = async (solId: string) => {
-    const tier = tierSelects[solId] || 'desconto';
+    const tier = tierSelects[solId] || 'lista';
     const tags = tagsSelects[solId] || [];
     const notaInterna = notasInternas[solId] || '';
     try {
@@ -129,16 +129,6 @@ export const TabClube: React.FC<Props> = ({ adminId, toastFn, comunidadeId }) =>
       await refresh();
     } catch {
       toastFn('erro', 'Erro ao aprovar');
-    }
-  };
-
-  const handleRejeitar = async (solId: string) => {
-    try {
-      await clubeService.rejeitarSolicitacao(solId, adminId);
-      toastFn('sucesso', 'Solicitação rejeitada');
-      await refresh();
-    } catch {
-      toastFn('erro', 'Erro ao rejeitar');
     }
   };
 
@@ -261,7 +251,6 @@ export const TabClube: React.FC<Props> = ({ adminId, toastFn, comunidadeId }) =>
         tierSelects={tierSelects}
         onTierSelectChange={(id, tier) => setTierSelects(p => ({ ...p, [id]: tier }))}
         onAprovar={handleAprovar}
-        onRejeitar={handleRejeitar}
         onClose={() => setPerfilDetalhe(null)}
       />
     );
@@ -300,7 +289,6 @@ export const TabClube: React.FC<Props> = ({ adminId, toastFn, comunidadeId }) =>
           onTagsChange={(id, tags) => setTagsSelects(p => ({ ...p, [id]: tags }))}
           onNotaInternaChange={(id, nota) => setNotasInternas(p => ({ ...p, [id]: nota }))}
           onAprovar={handleAprovar}
-          onRejeitar={handleRejeitar}
           onAdiar={handleAdiar}
           onOpenPerfil={setPerfilDetalhe}
           onOpenInstagram={openInstagram}

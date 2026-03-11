@@ -19,6 +19,7 @@ import {
   Copy,
   BadgeCheck,
   ShieldAlert,
+  Share2,
 } from 'lucide-react';
 import { TYPOGRAPHY } from '../../constants';
 import { Membro, ReservaMaisVanta, Evento } from '../../types';
@@ -66,7 +67,7 @@ interface Props {
 export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, allEvents = [], conviteId }) => {
   const [instagramHandle, setInstagramHandle] = useState(profile.instagram ?? '');
   const [submitting, setSubmitting] = useState(false);
-  const [solicitacaoStatus, setSolicitacaoStatus] = useState<'NONE' | 'PENDENTE' | 'APROVADO' | 'REJEITADO'>('NONE');
+  const [solicitacaoStatus, setSolicitacaoStatus] = useState<'NONE' | 'PENDENTE' | 'APROVADO'>('NONE');
   const [minhasReservas, setMinhasReservas] = useState<ReservaMaisVanta[]>([]);
   const [postUrl, setPostUrl] = useState('');
   const [activeTab, setActiveTab] = useState<'ATIVOS' | 'PASSADOS'>('ATIVOS');
@@ -78,6 +79,7 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
   const [profissao, setProfissao] = useState('');
   const [comoConheceu, setComoConheceu] = useState('');
   const [indicadoPor, setIndicadoPor] = useState('');
+  const [cidade, setCidade] = useState('');
   const [comoConheceuAberto, setComoConheceuAberto] = useState(false);
 
   // ── Instagram verificação ──────────────────────────────────────────────────
@@ -101,21 +103,7 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
     if (isConvite) {
       // Modo convite: verificar se convite é válido
       const sol = clubeService.getSolicitacoes().find(s => s.id === conviteId);
-      if (sol?.status === 'CONVIDADO') {
-        setSolicitacaoStatus('NONE'); // permite preencher
-        // Buscar nome do master que convidou
-        if (sol.convidadoPor) {
-          import('../../services/supabaseClient').then(({ supabase: sb }) => {
-            sb.from('profiles')
-              .select('nome')
-              .eq('id', sol.convidadoPor!)
-              .maybeSingle()
-              .then(({ data }) => {
-                if (data?.nome) setConviteNomeMaster(data.nome as string);
-              });
-          });
-        }
-      } else if (sol?.status === 'APROVADO') {
+      if (sol?.status === 'APROVADO') {
         setSolicitacaoStatus('APROVADO');
       } else {
         setSolicitacaoStatus('NONE');
@@ -203,6 +191,8 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
         comoConheceu: comoConheceu || undefined,
         profissao: profissao.trim() || undefined,
         indicadoPor: indicadoPor.trim() || undefined,
+        cidade: cidade.trim() || undefined,
+        conviteCodigo: conviteId || undefined,
       });
       setSolicitacaoStatus('PENDENTE');
       onSuccess?.('Solicitação enviada! Aguarde aprovação.');
@@ -213,24 +203,7 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
     setSubmitting(false);
   };
 
-  const handleAceitarConvite = async () => {
-    if (!conviteId || !instagramHandle.trim()) return;
-    setSubmitting(true);
-    try {
-      const handle = instagramHandle.replace('@', '').trim();
-      await clubeService.aceitarConviteMaisVanta(conviteId, handle, {
-        verificado: igVerified,
-        verificadoEm: igVerified ? tsBR() : undefined,
-        codigo: verificationCode,
-      });
-      setSolicitacaoStatus('APROVADO');
-      onSuccess?.('Parabéns! Você agora faz parte do MAIS VANTA!');
-    } catch (err) {
-      console.error('[ClubeOptIn] Erro ao aceitar convite:', err);
-      onSuccess?.('Erro ao aceitar convite. Tente novamente.');
-    }
-    setSubmitting(false);
-  };
+  /** @removed V3: convites agora são links de indicação membro→membro */
 
   const handleEnviarPost = async (reservaId: string) => {
     if (!postUrl.trim()) return;
@@ -523,16 +496,54 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
           {/* Deals disponíveis */}
           <DealsMembroSection userId={profile.id} onSuccess={onSuccess} />
 
-          {/* Convidar Amigo */}
+          {/* Convites de Indicação */}
           <div className="mt-6 bg-zinc-900/30 border border-white/5 rounded-2xl p-4">
             <div className="flex items-center gap-2 mb-2">
               <UserPlus size={14} className="text-[#FFD300]" />
-              <span className="text-white text-xs font-bold">Convidar amigo para o Clube</span>
+              <span className="text-white text-xs font-bold">Convidar amigos</span>
             </div>
             <p className="text-zinc-400 text-[10px] mb-3">
-              Convites são pré-aprovados com o seu nome. O convidado ainda precisa ser aceito pelo curador.
+              Compartilhe seu link exclusivo. Seu amigo preenche a solicitação e passa pela curadoria normalmente.
             </p>
-            <p className="text-zinc-400 text-[9px] italic">Em breve: busca de amigos por nome</p>
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-zinc-300 text-[10px]">
+                {membro?.convitesDisponiveis ?? 0} convite{(membro?.convitesDisponiveis ?? 0) !== 1 ? 's' : ''}{' '}
+                disponíve{(membro?.convitesDisponiveis ?? 0) !== 1 ? 'is' : 'l'}
+              </span>
+              <span className="text-zinc-600 text-[9px]">·</span>
+              <span className="text-zinc-500 text-[9px]">
+                {membro?.convitesUsados ?? 0} usado{(membro?.convitesUsados ?? 0) !== 1 ? 's' : ''}
+              </span>
+            </div>
+            {(membro?.convitesDisponiveis ?? 0) > 0 ? (
+              <button
+                onClick={async () => {
+                  try {
+                    const convite = await clubeService.gerarConviteIndicacao(profile.id);
+                    const link = clubeService.getLinkConviteIndicacao(convite.codigo);
+                    if (navigator.share) {
+                      await navigator.share({
+                        title: 'Convite MAIS VANTA',
+                        text: 'Você foi convidado para o MAIS VANTA!',
+                        url: link,
+                      });
+                    } else {
+                      await navigator.clipboard.writeText(link);
+                      onSuccess?.('Link copiado!');
+                    }
+                  } catch {
+                    onSuccess?.('Erro ao gerar convite');
+                  }
+                }}
+                className="w-full py-3 bg-[#FFD300]/10 border border-[#FFD300]/20 rounded-xl text-[#FFD300] text-[10px] font-bold uppercase tracking-wider active:scale-95 transition-all flex items-center justify-center gap-2"
+              >
+                <Share2 size={12} /> Gerar e compartilhar convite
+              </button>
+            ) : (
+              <p className="text-zinc-500 text-[9px] text-center py-2">
+                Sem convites disponíveis. Compare a eventos para ganhar mais!
+              </p>
+            )}
           </div>
         </div>
 
@@ -855,6 +866,19 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
           </div>
         </div>
 
+        {/* Cidade */}
+        <div className="mb-4">
+          <label className="text-[9px] font-black uppercase tracking-widest text-zinc-400 mb-2 block">
+            Sua cidade *
+          </label>
+          <input
+            value={cidade}
+            onChange={e => setCidade(e.target.value)}
+            placeholder="Ex: Rio de Janeiro, São Paulo..."
+            className="w-full px-4 py-3 bg-zinc-900/80 border border-zinc-800 rounded-xl text-white text-sm placeholder-zinc-500 focus:outline-none focus:border-[#FFD300]/20"
+          />
+        </div>
+
         {/* Quem te indicou */}
         <div className="mb-4">
           <label className="text-[9px] font-black uppercase tracking-widest text-zinc-400 mb-2 block">
@@ -911,9 +935,13 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
         </button>
 
         <button
-          onClick={isConvite ? handleAceitarConvite : handleSolicitar}
+          onClick={handleSolicitar}
           disabled={
-            !instagramHandle.trim() || !aceitouTermos || submitting || (igStep !== 'VERIFIED' && igStep !== 'SKIPPED')
+            !instagramHandle.trim() ||
+            !cidade.trim() ||
+            !aceitouTermos ||
+            submitting ||
+            (igStep !== 'VERIFIED' && igStep !== 'SKIPPED')
           }
           className="w-full py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all disabled:opacity-30"
         >

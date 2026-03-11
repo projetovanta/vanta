@@ -1,28 +1,34 @@
 // ── Clube de Influência (MAIS VANTA) ─────────────────────────────────────
-export type TierMaisVanta = 'desconto' | 'convidado' | 'presenca' | 'creator' | 'vanta_black';
+export type TierMaisVanta = 'lista' | 'presenca' | 'social' | 'creator' | 'black';
+export type CreatorSublevel = 'creator_200k' | 'creator_500k' | 'creator_1m';
 
 export interface MembroClubeVanta {
   userId: string;
   tier: TierMaisVanta;
+  creatorSublevel?: CreatorSublevel;
   instagramHandle?: string;
   instagramSeguidores?: number;
-  instagramVerificado: boolean; // bio check passou na solicitação
-  instagramVerificadoEm?: string; // ISO 8601 -03:00
-  aprovadoPor: string; // masteradm userId
-  aprovadoEm: string; // ISO 8601 -03:00
-  convidadoPor?: string; // userId de quem convidou
+  instagramVerificado: boolean;
+  instagramVerificadoEm?: string;
+  aprovadoPor: string;
+  aprovadoEm: string;
+  convidadoPor?: string;
   ativo: boolean;
-  comunidadeOrigem?: string; // MV4: comunidade onde foi aprovado originalmente
-  metaUserId?: string; // MV3: Instagram Business Account ID (Graph API)
-  castigoAte?: string; // @deprecated — usar bloqueioAte
-  castigoMotivo?: string; // @deprecated — usar infrações
-  bloqueioNivel: number; // 0=limpo, 1=1º bloqueio, 2=2º bloqueio, 3=banido
-  bloqueioAte?: string; // ISO — se set e > now, bloqueado
-  banidoPermanente: boolean; // true = excluído definitivamente do MAIS VANTA
-  banidoEm?: string; // ISO — quando foi banido
-  tags?: string[]; // tags livres (free text)
-  notaInterna?: string; // nota interna visível só para admin
-  status?: string; // 'ativo' | 'bloqueado' | 'banido' etc.
+  comunidadeOrigem?: string;
+  metaUserId?: string;
+  castigoAte?: string; // @deprecated
+  castigoMotivo?: string; // @deprecated
+  bloqueioNivel: number;
+  bloqueioAte?: string;
+  banidoPermanente: boolean;
+  banidoEm?: string;
+  tags?: string[];
+  notaInterna?: string;
+  status?: string;
+  cidadePrincipal?: string;
+  cidadesAtivas?: string[];
+  convitesDisponiveis?: number;
+  convitesUsados?: number;
 }
 
 export interface LoteMaisVanta {
@@ -73,15 +79,19 @@ export interface SolicitacaoClube {
   instagramVerificadoEm?: string; // ISO 8601 -03:00
   codigoVerificacao?: string; // ex: 'VANTA-K8M2' (para auditoria)
   convidadoPor?: string;
-  status: 'PENDENTE' | 'APROVADO' | 'REJEITADO' | 'CONVIDADO' | 'ADIADO';
-  criadoEm: string; // ISO 8601 -03:00
+  status: 'PENDENTE' | 'APROVADO' | 'ADIADO';
+  criadoEm: string;
   resolvidoEm?: string;
   resolvidoPor?: string;
   tierAtribuido?: TierMaisVanta;
-  tierPreAtribuido?: TierMaisVanta; // tier escolhido pelo master ao convidar
+  tierPreAtribuido?: TierMaisVanta;
   profissao?: string;
   comoConheceu?: string;
   indicadoPorTexto?: string;
+  indicadoPor?: string;
+  conviteId?: string;
+  cidade?: string;
+  baldeSugerido?: string;
 }
 
 // ── MV2: Assinatura SaaS MAIS VANTA ────────────────────────────────────────
@@ -163,19 +173,68 @@ export type BeneficioId =
 export interface ClubeConfig {
   id: string;
   comunidadeId: string;
-  /** Benefícios por tier (convidado/presenca/creator/vanta_black) */
-  beneficiosConvidado: BeneficioId[];
+  /** Benefícios por tier (lista/presenca/social/creator/black) */
+  beneficiosLista: BeneficioId[];
   beneficiosPresenca: BeneficioId[];
   beneficiosCreator: BeneficioId[];
-  beneficiosVantaBlack: BeneficioId[];
-  limiteConvidado: number;
+  beneficiosBlack: BeneficioId[];
+  limiteLista: number;
   limitePresenca: number;
   limiteCreator: number;
-  limiteVantaBlack: number;
+  limiteBlack: number;
   prazoPostHoras: number;
   infracoesLimite: number; // quantas infrações até próximo bloqueio (default 3)
   bloqueio1Dias: number; // dias do 1º bloqueio (default 30)
   bloqueio2Dias: number; // dias do 2º bloqueio/reincidência (default 60)
+  /** Convites de indicação por tier */
+  convitesLista: number;
+  convitesPresenca: number;
+  convitesSocial: number;
+  convitesCreator: number;
+  convitesBlack: number;
+}
+
+// ── Convite de indicação membro→membro ──────────────────────────────────────
+export interface ConviteClube {
+  id: string;
+  membroId: string;
+  codigo: string;
+  usadoPor?: string;
+  usadoEm?: string;
+  status: 'disponivel' | 'usado' | 'expirado';
+  criadoEm: string;
+}
+
+// ── Planos do produtor ──────────────────────────────────────────────────────
+export interface PlanoProdutor {
+  id: string;
+  nome: string;
+  descricao: string;
+  precoMensal: number;
+  limiteEventosMes: number;
+  limiteResgatesEvento: number;
+  tiersAcessiveis: TierMaisVanta[];
+  limiteNotificacoesMes: number;
+  precoEventoExtra: number;
+  precoNotificacaoExtra: number;
+  ativo: boolean;
+  personalizadoPara?: string;
+  ordem: number;
+  criadoEm: string;
+  atualizadoEm?: string;
+}
+
+export interface ProdutorPlano {
+  id: string;
+  produtorId: string;
+  planoId: string;
+  inicio: string;
+  fim?: string;
+  status: 'ativo' | 'cancelado' | 'expirado';
+  criadoEm: string;
+  // joins
+  planoNome?: string;
+  produtorNome?: string;
 }
 
 // ── Infrações MAIS VANTA ──────────────────────────────────────────────────

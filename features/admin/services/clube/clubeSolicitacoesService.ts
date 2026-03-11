@@ -5,6 +5,8 @@ import { notificationsService } from '../notificationsService';
 import { tsBR } from '../../../../utils';
 import { TIER_ORDER, _membros, _solicitacoes, _passports, bump, rowToSolicitacao } from './clubeCache';
 import { _fetchAndUpdateFollowers } from './clubeInstagramService';
+import { gerarConvitesIniciais, buscarConvitePorCodigo, usarConvite } from './clubeConvitesIndicacaoService';
+import { getConfig } from './clubeConfigService';
 
 export function getSolicitacoesPendentes(): SolicitacaoClube[] {
   return _solicitacoes.filter(s => s.status === 'PENDENTE');
@@ -22,6 +24,12 @@ export function getSolicitacaoByUserId(userId: string): SolicitacaoClube | null 
   return _solicitacoes.find(s => s.userId === userId) ?? null;
 }
 
+function calcularBalde(seguidores?: number): string {
+  if (seguidores && seguidores >= 200_000) return 'provavel_creator';
+  if (seguidores && seguidores >= 5_000) return 'provavel_presenca';
+  return 'sem_fit_claro';
+}
+
 export async function solicitarEntrada(
   userId: string,
   instagramHandle: string,
@@ -33,8 +41,43 @@ export async function solicitarEntrada(
     comoConheceu?: string;
     profissao?: string;
     indicadoPor?: string;
+    cidade?: string;
+    conviteCodigo?: string;
   },
 ): Promise<SolicitacaoClube> {
+  // Se veio por convite de indicação, buscar dados do convite
+  let indicadoPorId: string | null = null;
+  let conviteId: string | null = null;
+  if (verificacao?.conviteCodigo) {
+    const convite = await buscarConvitePorCodigo(verificacao.conviteCodigo);
+    if (convite) {
+      indicadoPorId = convite.membroId;
+      conviteId = convite.id;
+      await usarConvite(verificacao.conviteCodigo, userId);
+      // Atualizar contadores do membro que indicou
+      const indicador = _membros.get(indicadoPorId);
+      if (indicador) {
+        const novosUsados = (indicador.convitesUsados ?? 0) + 1;
+        const novosDisp = Math.max(0, (indicador.convitesDisponiveis ?? 0) - 1);
+        await supabase
+          .from('membros_clube')
+          .update({ convites_usados: novosUsados, convites_disponiveis: novosDisp })
+          .eq('user_id', indicadoPorId);
+        indicador.convitesUsados = novosUsados;
+        indicador.convitesDisponiveis = novosDisp;
+      }
+    }
+  }
+
+  // Calcular balde — se indicado por creator/black, usar balde especial
+  let balde = calcularBalde(seguidores);
+  if (indicadoPorId) {
+    const indicador = _membros.get(indicadoPorId);
+    if (indicador && (indicador.tier === 'creator' || indicador.tier === 'black')) {
+      balde = 'indicado_tier_alto';
+    }
+  }
+
   const row = {
     user_id: userId,
     instagram_handle: instagramHandle,
@@ -45,6 +88,10 @@ export async function solicitarEntrada(
     como_conheceu: verificacao?.comoConheceu ?? null,
     profissao: verificacao?.profissao ?? null,
     indicado_por_texto: verificacao?.indicadoPor ?? null,
+    indicado_por: indicadoPorId,
+    convite_id: conviteId,
+    cidade: verificacao?.cidade ?? null,
+    balde_sugerido: balde,
     status: 'PENDENTE',
     criado_em: tsBR(),
   };
@@ -78,98 +125,7 @@ export async function convidarAmigo(
   return sol;
 }
 
-export async function convidarParaMaisVanta(
-  masterId: string,
-  membroUserId: string,
-  tier: TierMaisVanta,
-  enviarNotificacaoClube: (p: {
-    userId: string;
-    titulo: string;
-    corpo: string;
-    data?: Record<string, string>;
-  }) => Promise<void>,
-): Promise<SolicitacaoClube> {
-  const { data: profileData } = await supabase
-    .from('profiles')
-    .select('instagram')
-    .eq('id', membroUserId)
-    .maybeSingle();
-  const igHandle = (profileData?.instagram as string) ?? '';
-
-  const row = {
-    user_id: membroUserId,
-    instagram_handle: igHandle,
-    convidado_por: masterId,
-    tier_pre_atribuido: tier,
-    status: 'CONVIDADO',
-    criado_em: tsBR(),
-  };
-  const { data, error } = await supabase.from('solicitacoes_clube').insert(row).select().single();
-  if (error) throw error;
-  const sol = rowToSolicitacao(data);
-  _solicitacoes.unshift(sol);
-  bump();
-
-  const now = tsBR();
-  notificationsService
-    .add(
-      {
-        titulo: 'Convite MAIS VANTA!',
-        mensagem: 'Você foi convidado para participar do MAIS VANTA. Toque para aceitar.',
-        tipo: 'MAIS_VANTA' as any,
-        lida: false,
-        link: `CLUBE_CONVITE:${sol.id}`,
-        timestamp: now,
-      },
-      membroUserId,
-    )
-    .catch(() => {});
-
-  enviarNotificacaoClube({
-    userId: membroUserId,
-    titulo: 'Convite MAIS VANTA!',
-    corpo: 'Você foi convidado para participar do MAIS VANTA. Toque para aceitar.',
-    data: { tipo: 'MAIS_VANTA_CONVITE', solicitacaoId: sol.id },
-  }).catch(() => {});
-
-  return sol;
-}
-
-export async function aceitarConviteMaisVanta(
-  solId: string,
-  instagramHandle: string,
-  verificacao?: { verificado: boolean; verificadoEm?: string; codigo?: string },
-  enviarNotificacaoClube?: (p: {
-    userId: string;
-    titulo: string;
-    corpo: string;
-    data?: Record<string, string>;
-  }) => Promise<void>,
-): Promise<void> {
-  const sol = _solicitacoes.find(s => s.id === solId);
-  if (!sol || sol.status !== 'CONVIDADO') throw new Error('Convite inválido ou já processado');
-
-  const updatePayload: Record<string, unknown> = {
-    instagram_handle: instagramHandle,
-    instagram_verificado: verificacao?.verificado ?? false,
-    instagram_verificado_em: verificacao?.verificadoEm ?? null,
-    codigo_verificacao: verificacao?.codigo ?? null,
-  };
-  const { error: errSol } = await supabase.from('solicitacoes_clube').update(updatePayload).eq('id', solId);
-  if (errSol) {
-    console.error('[clubeSolicitacoes] completarInstagram:', errSol);
-    return;
-  }
-
-  sol.instagramHandle = instagramHandle;
-  sol.instagramVerificado = verificacao?.verificado ?? false;
-  sol.instagramVerificadoEm = verificacao?.verificadoEm;
-  sol.codigoVerificacao = verificacao?.codigo;
-
-  const tier = sol.tierPreAtribuido ?? ('desconto' as TierMaisVanta);
-  const masterId = sol.convidadoPor ?? '';
-  await aprovarSolicitacao(solId, tier, masterId, undefined, enviarNotificacaoClube);
-}
+/** @removed V3: convites agora são links de indicação membro→membro, não admin→membro */
 
 export async function aprovarSolicitacao(
   solId: string,
@@ -287,23 +243,62 @@ export async function aprovarSolicitacao(
     corpo: 'Boas notícias! Você foi aprovado no MAIS VANTA e já pode aproveitar vantagens exclusivas.',
     data: { tipo: 'MAIS_VANTA_APROVADO' },
   }).catch(() => {});
+
+  // Gerar convites de indicação iniciais conforme config do tier
+  if (comunidadeId) {
+    getConfig(comunidadeId)
+      .then(cfg => {
+        if (!cfg) return;
+        const convitesPorTier: Record<string, number> = {
+          lista: cfg.convitesLista,
+          presenca: cfg.convitesPresenca,
+          social: cfg.convitesSocial,
+          creator: cfg.convitesCreator,
+          black: cfg.convitesBlack,
+        };
+        const qtd = convitesPorTier[tier] ?? 1;
+        gerarConvitesIniciais(sol.userId, qtd)
+          .then(() => {
+            // Atualizar contadores no membro
+            supabase
+              .from('membros_clube')
+              .update({ convites_disponiveis: qtd, convites_usados: 0 })
+              .eq('user_id', sol.userId)
+              .then(() => {});
+          })
+          .catch(() => {});
+      })
+      .catch(() => {});
+  }
+
+  // Notificar quem indicou (se veio por convite de outro membro)
+  if (sol.indicadoPor) {
+    const indicadorMembro = _membros.get(sol.indicadoPor);
+    if (indicadorMembro) {
+      notificationsService
+        .add(
+          {
+            titulo: 'Sua indicação foi aprovada!',
+            mensagem: 'Alguém que você indicou acabou de ser aprovado no MAIS VANTA!',
+            tipo: 'MAIS_VANTA' as any,
+            lida: false,
+            link: 'CLUBE',
+            timestamp: now,
+          },
+          sol.indicadoPor,
+        )
+        .catch(() => {});
+      enviarNotificacaoClube?.({
+        userId: sol.indicadoPor,
+        titulo: 'Sua indicação foi aprovada!',
+        corpo: 'Alguém que você indicou acabou de ser aprovado no MAIS VANTA!',
+        data: { tipo: 'MV_INDICACAO_APROVADA' },
+      }).catch(() => {});
+    }
+  }
 }
 
-export async function rejeitarSolicitacao(solId: string, masterId: string): Promise<void> {
-  const now = tsBR();
-  await supabase
-    .from('solicitacoes_clube')
-    .update({ status: 'REJEITADO', resolvido_em: now, resolvido_por: masterId })
-    .eq('id', solId);
-  const sol = _solicitacoes.find(s => s.id === solId);
-  if (sol) {
-    sol.status = 'REJEITADO';
-    sol.resolvidoEm = now;
-    sol.resolvidoPor = masterId;
-    // Rejeição silenciosa: NÃO notificar o membro (spec regra 2)
-  }
-  bump();
-}
+/** @removed V3: não existe rejeição — todo mundo é aprovado em pelo menos LISTA */
 
 /** Adiar solicitação — remove da fila de pendentes sem aprovar nem rejeitar */
 export async function adiarSolicitacao(solId: string): Promise<void> {

@@ -454,7 +454,7 @@ export const CriarEventoView: React.FC<{
         if (errRec) console.error('[CriarEventoView] gerar_ocorrencias_recorrente:', errRec);
       }
 
-      // MAIS VANTA — salvar benefícios por tier (mais_vanta_lotes_evento)
+      // MAIS VANTA — salvar benefícios por tier (mais_vanta_config_evento)
       if (maisVantaEvento.enabled) {
         const ativos = maisVantaEvento.beneficios.filter(b => b.ativo && (b.loteId || b.listaVarId));
         if (ativos.length > 0) {
@@ -465,7 +465,9 @@ export const CriarEventoView: React.FC<{
               tipo: b.tipo,
               loteId: b.tipo === 'ingresso' ? b.loteId : null,
               listaId: b.tipo === 'lista' ? b.listaVarId : null,
-              descontoPercentual: b.tierId === 'desconto' ? parseInt(b.descontoPercentual) || null : null,
+              descontoPercentual: b.tierId === 'lista' ? parseInt(b.descontoPercentual) || null : null,
+              creatorSublevelMinimo: b.tierId === 'creator' && b.creatorSublevelMinimo ? b.creatorSublevelMinimo : null,
+              vagasLimite: b.vagasLimite ? parseInt(b.vagasLimite) || null : null,
               ativo: true,
             })),
           );

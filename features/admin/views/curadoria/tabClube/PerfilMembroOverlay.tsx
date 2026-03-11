@@ -28,7 +28,6 @@ interface Props {
   tierSelects: Record<string, TierMaisVanta>;
   onTierSelectChange: (id: string, tier: TierMaisVanta) => void;
   onAprovar: (solId: string) => void;
-  onRejeitar: (solId: string) => void;
   onClose: () => void;
 }
 
@@ -49,7 +48,6 @@ export const PerfilMembroOverlay: React.FC<Props> = ({
   tierSelects,
   onTierSelectChange,
   onAprovar,
-  onRejeitar,
   onClose,
 }) => {
   const igHandle = solicitacao?.instagramHandle || membro?.instagramHandle || perfil.instagram;
@@ -171,7 +169,7 @@ export const PerfilMembroOverlay: React.FC<Props> = ({
       {solicitacao && solicitacao.status === 'PENDENTE' && (
         <div className="space-y-2 mt-4">
           <VantaDropdown
-            value={tierSelects[solicitacao.id] || 'desconto'}
+            value={tierSelects[solicitacao.id] || 'lista'}
             onChange={v => onTierSelectChange(solicitacao.id, v as TierMaisVanta)}
             options={getTierOptions().map(t => ({ value: t, label: TIER_LABELS[t], color: TIER_COLORS[t] }))}
             className="w-full"
@@ -185,15 +183,6 @@ export const PerfilMembroOverlay: React.FC<Props> = ({
               className="flex-1 flex items-center justify-center gap-1.5 px-4 py-2.5 bg-emerald-500/20 border border-emerald-500/30 rounded-xl text-emerald-400 text-[10px] font-black uppercase active:scale-90 transition-all"
             >
               <Check size={12} /> Aprovar
-            </button>
-            <button
-              onClick={() => {
-                onRejeitar(solicitacao.id);
-                onClose();
-              }}
-              className="flex-1 flex items-center justify-center gap-1.5 px-4 py-2.5 bg-red-500/20 border border-red-500/30 rounded-xl text-red-400 text-[10px] font-black uppercase active:scale-90 transition-all"
-            >
-              <X size={12} /> Rejeitar
             </button>
           </div>
         </div>

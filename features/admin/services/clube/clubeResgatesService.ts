@@ -6,6 +6,7 @@
 import { supabase } from '../../../../services/supabaseClient';
 import { tsBR } from '../../../../utils';
 import type { ResgateMaisVanta, StatusResgate } from '../../../../types';
+import { adicionarConvite } from './clubeConvitesIndicacaoService';
 
 function rowToResgate(r: Record<string, unknown>): ResgateMaisVanta {
   return {
@@ -107,6 +108,27 @@ export const clubeResgatesService = {
     if (error) return { ok: false, erro: error.message };
     resgate.status = 'CHECK_IN';
     resgate.checkinEm = tsBR();
+    // Renovação de convite por engajamento: +1 convite ao fazer check-in com resgate
+    adicionarConvite(resgate.userId)
+      .then(() => {
+        supabase
+          .from('membros_clube')
+          .select('convites_disponiveis')
+          .eq('user_id', resgate.userId)
+          .maybeSingle()
+          .then(({ data }) => {
+            if (data) {
+              supabase
+                .from('membros_clube')
+                .update({
+                  convites_disponiveis: (((data as Record<string, unknown>).convites_disponiveis as number) ?? 0) + 1,
+                })
+                .eq('user_id', resgate.userId)
+                .then(() => {});
+            }
+          });
+      })
+      .catch(() => {});
     return { ok: true, resgate };
   },
 

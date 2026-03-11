@@ -80,7 +80,7 @@ export const EventCheckInView: React.FC<{
       const result = await offlineEventService.validateAndBurn(ticketId, evId);
       void refreshPendingCount();
 
-      // Check-in MV: marcar resgate como USADO para tiers convidado/presenca
+      // Check-in MV: marcar resgate como USADO para tiers lista/presenca
       if (result.resultado === 'VALIDO') {
         supabase
           .from('tickets_caixa')

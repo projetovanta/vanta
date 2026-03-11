@@ -82,6 +82,8 @@ export const EditarLotesSubView: React.FC<Props> = ({ eventoId, onBack, currentU
             loteId: b.loteId ?? '',
             listaVarId: b.listaId ?? '',
             descontoPercentual: String(b.descontoPercentual ?? 0),
+            creatorSublevelMinimo: b.creatorSublevelMinimo ?? '',
+            vagasLimite: b.vagasLimite != null ? String(b.vagasLimite) : '',
           })),
         });
       }
@@ -147,7 +149,7 @@ export const EditarLotesSubView: React.FC<Props> = ({ eventoId, onBack, currentU
       });
     }
 
-    // MAIS VANTA — salvar benefícios por tier (mais_vanta_lotes_evento)
+    // MAIS VANTA — salvar benefícios por tier (mais_vanta_config_evento)
     if (maisVantaEvento.enabled) {
       const ativos = maisVantaEvento.beneficios.filter(b => b.ativo && (b.loteId || b.listaVarId));
       await clubeService.salvarBeneficiosEvento(
@@ -157,7 +159,9 @@ export const EditarLotesSubView: React.FC<Props> = ({ eventoId, onBack, currentU
           tipo: b.tipo,
           loteId: b.tipo === 'ingresso' ? b.loteId : null,
           listaId: b.tipo === 'lista' ? b.listaVarId : null,
-          descontoPercentual: b.tierId === 'desconto' ? parseInt(b.descontoPercentual) || null : null,
+          descontoPercentual: b.tierId === 'lista' ? parseInt(b.descontoPercentual) || null : null,
+          creatorSublevelMinimo: b.tierId === 'creator' && b.creatorSublevelMinimo ? b.creatorSublevelMinimo : null,
+          vagasLimite: b.vagasLimite ? parseInt(b.vagasLimite) || null : null,
           ativo: true,
         })),
       );

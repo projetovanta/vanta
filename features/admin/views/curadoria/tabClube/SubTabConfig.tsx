@@ -41,11 +41,11 @@ export const SubTabConfig: React.FC<Props> = ({
   const d = configDraft;
 
   const TIER_CONFIG_KEY: Record<TierMaisVanta, { benef: keyof ClubeConfig; lim: keyof ClubeConfig }> = {
-    desconto: { benef: 'beneficiosConvidado', lim: 'limiteConvidado' },
-    convidado: { benef: 'beneficiosConvidado', lim: 'limiteConvidado' },
+    lista: { benef: 'beneficiosLista', lim: 'limiteLista' },
     presenca: { benef: 'beneficiosPresenca', lim: 'limitePresenca' },
+    social: { benef: 'beneficiosPresenca', lim: 'limitePresenca' },
     creator: { benef: 'beneficiosCreator', lim: 'limiteCreator' },
-    vanta_black: { benef: 'beneficiosVantaBlack', lim: 'limiteVantaBlack' },
+    black: { benef: 'beneficiosBlack', lim: 'limiteBlack' },
   };
 
   const getBeneficios = (tier: TierMaisVanta): BeneficioId[] => {
@@ -416,6 +416,44 @@ export const SubTabConfig: React.FC<Props> = ({
             <span className="text-zinc-400 text-[9px]">dias</span>
           </div>
         </div>
+      </div>
+
+      {/* Convites de Indicação por Tier */}
+      <div className="bg-zinc-900/60 border border-white/5 rounded-2xl p-4 space-y-3">
+        <p className="text-[9px] font-black uppercase tracking-widest text-zinc-400">Convites de indicação por tier</p>
+        <p className="text-zinc-500 text-[10px]">Quantidade de convites que cada membro recebe ao ser aprovado.</p>
+        {(['lista', 'presenca', 'social', 'creator', 'black'] as TierMaisVanta[]).map(tier => {
+          const configKey = `convites${tier.charAt(0).toUpperCase() + tier.slice(1)}` as keyof ClubeConfig;
+          const defaults: Record<string, number> = { lista: 1, presenca: 3, social: 5, creator: 7, black: 10 };
+          const valor =
+            (d[configKey] as number | undefined) ?? (cfg?.[configKey] as number | undefined) ?? defaults[tier];
+          return (
+            <div key={tier} className="flex items-center justify-between">
+              <span className="text-white text-xs font-semibold capitalize">
+                {tier === 'lista'
+                  ? 'Lista'
+                  : tier === 'presenca'
+                    ? 'Presença'
+                    : tier === 'social'
+                      ? 'Social'
+                      : tier === 'creator'
+                        ? 'Creator'
+                        : 'Black'}
+              </span>
+              <div className="flex items-center gap-2">
+                <input
+                  type="number"
+                  min={0}
+                  max={50}
+                  value={valor}
+                  onChange={e => setDraft(configKey, parseInt(e.target.value) || 0)}
+                  className="w-14 bg-black/30 border border-white/5 rounded-lg px-2 py-1.5 text-white text-xs text-center focus:border-white/20 focus:outline-none"
+                />
+                <span className="text-zinc-400 text-[9px]">convites</span>
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       {/* Botão salvar regras gerais */}

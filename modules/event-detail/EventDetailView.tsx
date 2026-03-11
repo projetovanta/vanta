@@ -100,10 +100,24 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
   const beneficioElegivel = useMemo(() => {
     if (!membroClube || !membroClube.ativo || beneficiosMV.length === 0) return null;
     // Sem cascata: membro só acessa benefício configurado exatamente pro tier dele
-    return beneficiosMV.find(b => b.tierMinimo === membroClube.tier) ?? null;
+    const match = beneficiosMV.find(b => b.tierMinimo === membroClube.tier);
+    if (!match) return null;
+    // Creator com sublevel mínimo: verificar se membro atende
+    if (match.tierMinimo === 'creator' && match.creatorSublevelMinimo) {
+      const subOrder = ['creator_200k', 'creator_500k', 'creator_1m'];
+      const membroIdx = subOrder.indexOf(membroClube.creatorSublevel ?? '');
+      const minimoIdx = subOrder.indexOf(match.creatorSublevelMinimo);
+      if (membroIdx < minimoIdx) return null;
+    }
+    return match;
   }, [membroClube, beneficiosMV]);
 
   const temBeneficiosMV = beneficiosMV.length > 0;
+  const vagasEsgotadas =
+    beneficioElegivel != null &&
+    beneficioElegivel.vagasLimite != null &&
+    beneficioElegivel.vagasLimite > 0 &&
+    beneficioElegivel.vagasResgatadas >= beneficioElegivel.vagasLimite;
 
   // Label do benefício para exibição ao membro
   const beneficioLabel = useMemo(() => {
@@ -123,7 +137,7 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
     return 'Lista exclusiva';
   }, [beneficioElegivel, eventoAdmin]);
 
-  const isDescontoOnly = beneficioElegivel?.tierMinimo === 'desconto';
+  const isDescontoOnly = beneficioElegivel?.tierMinimo === 'lista';
   const beneficioDesconto =
     isDescontoOnly && beneficioElegivel?.descontoPercentual ? beneficioElegivel.descontoPercentual : null;
 
@@ -245,6 +259,14 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
                   {beneficioDesconto && (
                     <p className="text-[#FFD300] text-xs font-bold">{beneficioDesconto}% de desconto</p>
                   )}
+                  {beneficioElegivel.vagasLimite != null && beneficioElegivel.vagasLimite > 0 && (
+                    <p className="text-zinc-400 text-[10px]">
+                      Vagas restantes:{' '}
+                      <span className="text-white font-bold">
+                        {Math.max(0, beneficioElegivel.vagasLimite - beneficioElegivel.vagasResgatadas)}
+                      </span>
+                    </p>
+                  )}
                 </div>
               )}
 
@@ -294,6 +316,19 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
                       Solicitar Acesso Nesta Cidade
                     </button>
                   )}
+                </div>
+              ) : vagasEsgotadas ? (
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 bg-amber-500/10 border border-amber-500/20 rounded-xl p-3">
+                    <Crown size={12} className="text-amber-400 shrink-0" />
+                    <span className="text-amber-400 text-[10px] font-bold">Vagas esgotadas para este perfil</span>
+                  </div>
+                  <button
+                    onClick={() => onBuy(evento)}
+                    className="w-full py-2.5 border border-[#FFD300]/30 bg-[#FFD300]/10 text-[#FFD300] font-bold text-[10px] uppercase tracking-widest rounded-xl active:scale-95 transition-all"
+                  >
+                    Comprar ingresso normal
+                  </button>
                 </div>
               ) : (
                 <button

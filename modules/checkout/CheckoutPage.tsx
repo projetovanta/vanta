@@ -271,7 +271,7 @@ export const CheckoutPage: React.FC = () => {
 
   // Comprovante meia-entrada — check de elegibilidade do user logado
   const [meiaElegivel, setMeiaElegivel] = useState(false);
-  // Desconto MAIS VANTA — tier desconto aplica % direto no preço
+  // Desconto MAIS VANTA — tier lista aplica % direto no preço
   const [descontoMV, setDescontoMV] = useState<number>(0); // 0-100
   useEffect(() => {
     let cancelled = false;
@@ -285,10 +285,10 @@ export const CheckoutPage: React.FC = () => {
         Promise.all([
           supabase.from('membros_clube').select('tier').eq('user_id', user.id).eq('ativo', true).maybeSingle(),
           supabase
-            .from('mais_vanta_lotes_evento')
+            .from('mais_vanta_config_evento')
             .select('tier_minimo, desconto_percentual')
             .eq('evento_id', eventoId)
-            .eq('tier_minimo', 'desconto')
+            .eq('tier_minimo', 'lista')
             .eq('ativo', true)
             .maybeSingle(),
         ]).then(([membroRes, benefRes]) => {

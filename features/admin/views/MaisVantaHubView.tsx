@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from 'react';
-import { ArrowLeft, Settings, Crown, Compass, SlidersHorizontal, MapPin, Store, Ticket } from 'lucide-react';
+import { ArrowLeft, Settings, Crown, Compass, SlidersHorizontal, MapPin, Store, Ticket, Briefcase } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
 import { PlanosMaisVantaView } from './PlanosMaisVantaView';
 import { AssinaturasMaisVantaView } from './AssinaturasMaisVantaView';
@@ -13,7 +13,16 @@ import { ConfigMaisVantaView } from './ConfigMaisVantaView';
 import { CidadesMaisVantaView } from './CidadesMaisVantaView';
 import { ParceirosMaisVantaView } from './ParceirosMaisVantaView';
 import { DealsMaisVantaView } from './DealsMaisVantaView';
-type AbaHub = 'PLANOS' | 'ASSINATURAS' | 'PASSAPORTES' | 'CIDADES' | 'PARCEIROS' | 'DEALS' | 'CONFIG';
+import { PlanosProdutor } from './PlanosProdutor/PlanosProdutor';
+type AbaHub =
+  | 'PLANOS'
+  | 'PLANOS_PRODUTOR'
+  | 'ASSINATURAS'
+  | 'PASSAPORTES'
+  | 'CIDADES'
+  | 'PARCEIROS'
+  | 'DEALS'
+  | 'CONFIG';
 
 export const MaisVantaHubView: React.FC<{
   onBack: () => void;
@@ -24,6 +33,7 @@ export const MaisVantaHubView: React.FC<{
 
   const abas: { id: AbaHub; label: string; icon: typeof Settings }[] = [
     { id: 'PLANOS', label: 'Planos & Tiers', icon: Settings },
+    { id: 'PLANOS_PRODUTOR', label: 'Planos Produtor', icon: Briefcase },
     { id: 'CIDADES', label: 'Cidades', icon: MapPin },
     { id: 'PARCEIROS', label: 'Parceiros', icon: Store },
     { id: 'DEALS', label: 'Deals', icon: Ticket },
@@ -80,6 +90,7 @@ export const MaisVantaHubView: React.FC<{
       {/* Conteúdo das abas */}
       <div className="flex-1 overflow-hidden flex flex-col">
         {aba === 'PLANOS' && <PlanosMaisVantaView onBack={() => {}} />}
+        {aba === 'PLANOS_PRODUTOR' && <PlanosProdutor />}
         {aba === 'CIDADES' && <CidadesMaisVantaView />}
         {aba === 'PARCEIROS' && <ParceirosMaisVantaView />}
         {aba === 'DEALS' && <DealsMaisVantaView />}

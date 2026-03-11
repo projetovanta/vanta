@@ -18,7 +18,9 @@ export interface BeneficioMVForm {
   tipo: 'ingresso' | 'lista'; // qual referência usar
   loteId: string; // ID do lote (se tipo=ingresso)
   listaVarId: string; // ID da varLista (se tipo=lista) — resolverá para lista_id no save
-  descontoPercentual: string; // 0-100 (se tier=desconto)
+  descontoPercentual: string; // 0-100 (se tier=lista)
+  creatorSublevelMinimo: string; // 'creator_200k' | 'creator_500k' | 'creator_1m' | ''
+  vagasLimite: string; // limite de vagas (vazio = sem limite)
 }
 
 export interface MaisVantaEventoForm {
@@ -67,24 +69,30 @@ interface Props {
   setMaisVanta?: (v: LoteMaisVantaForm) => void;
 }
 
-// Tiers dinâmicos com fallback legado — vanta_black excluído (contato direto via curadoria)
+// Tiers dinâmicos com fallback legado — black excluído (contato direto via curadoria)
 const TIER_LABELS_PRODUTOR: Record<string, string> = {
-  desconto: 'Desconto silencioso',
-  convidado: 'Perfil geral aprovado',
-  presenca: 'Presença & Ambiente',
+  lista: 'Público geral',
+  presenca: 'Presença visual',
+  social: 'Conexão social',
   creator: 'Criadores de conteúdo',
+};
+const TIER_DESC_PRODUTOR: Record<string, string> = {
+  lista: 'Pessoas que recebem promoções e ofertas do evento',
+  presenca: 'Pessoas que elevam o ambiente visualmente — modelos, estilo marcante',
+  social: 'Pessoas bem relacionadas que trazem grupo e circulam nos lugares certos',
+  creator: 'Influencers que vão gerar visibilidade pro evento',
 };
 const getTierOptions = (): { id: string; label: string; cor: string }[] => {
   const dynamic = clubeService.getTiers();
   if (dynamic.length > 0) {
     return dynamic
-      .filter(t => t.id !== 'vanta_black')
+      .filter(t => t.id !== 'black')
       .map(t => ({ id: t.id, label: TIER_LABELS_PRODUTOR[t.id] ?? t.nome, cor: t.cor ?? '#666' }));
   }
   return [
-    { id: 'desconto', label: 'Desconto silencioso', cor: '#888' },
-    { id: 'convidado', label: 'Perfil geral aprovado', cor: '#CD7F32' },
+    { id: 'lista', label: 'Lista exclusiva', cor: '#888' },
     { id: 'presenca', label: 'Presença & Ambiente', cor: '#C0C0C0' },
+    { id: 'social', label: 'Social & Networking', cor: '#A0A0D0' },
     { id: 'creator', label: 'Criadores de conteúdo', cor: '#FFD700' },
   ];
 };
@@ -128,6 +136,8 @@ export const Step2Ingressos: React.FC<Props> = ({
       loteId: '',
       listaVarId: '',
       descontoPercentual: '0',
+      creatorSublevelMinimo: '',
+      vagasLimite: '',
     }));
   }, [maisVantaEvento?.beneficios, tierOptions]);
 
@@ -488,7 +498,7 @@ export const Step2Ingressos: React.FC<Props> = ({
                     const tierOpt = tierOptions.find(t => t.id === b.tierId);
                     const cor = tierOpt?.cor ?? '#666';
                     const nome = tierOpt?.label ?? b.tierId;
-                    const isDesconto = b.tierId === 'desconto';
+                    const isDesconto = b.tierId === 'lista';
 
                     const updateBeneficio = (field: keyof BeneficioMVForm, value: string | boolean) => {
                       const next = [...beneficios];
@@ -506,13 +516,20 @@ export const Step2Ingressos: React.FC<Props> = ({
                         key={b.tierId}
                         className={`rounded-xl border transition-all ${b.ativo ? 'bg-zinc-900/60 border-white/10' : 'bg-zinc-900/30 border-white/5 opacity-50'}`}
                       >
-                        {/* Header: toggle + nome tier */}
+                        {/* Header: toggle + nome perfil + descrição */}
                         <button
                           onClick={() => updateBeneficio('ativo', !b.ativo)}
                           className="w-full flex items-center gap-3 px-4 py-3"
                         >
                           <div className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: cor }} />
-                          <span className="text-white text-xs font-bold flex-1 text-left">{nome}</span>
+                          <div className="flex-1 min-w-0 text-left">
+                            <span className="text-white text-xs font-bold">{nome}</span>
+                            {TIER_DESC_PRODUTOR[b.tierId] && (
+                              <p className="text-zinc-500 text-[9px] mt-0.5 line-clamp-1">
+                                {TIER_DESC_PRODUTOR[b.tierId]}
+                              </p>
+                            )}
+                          </div>
                           <div
                             className={`w-10 h-5 rounded-full border relative transition-all shrink-0 ${b.ativo ? 'bg-[#FFD300]/20 border-[#FFD300]/40' : 'bg-zinc-800 border-white/10'}`}
                           >
@@ -560,7 +577,7 @@ export const Step2Ingressos: React.FC<Props> = ({
                               />
                             </div>
 
-                            {/* Desconto (somente tier desconto) */}
+                            {/* Desconto (somente tier lista) */}
                             {isDesconto && (
                               <div>
                                 <label className="text-zinc-400 text-[8px] font-black uppercase flex items-center gap-1">
@@ -579,6 +596,57 @@ export const Step2Ingressos: React.FC<Props> = ({
                                 </div>
                               </div>
                             )}
+
+                            {/* Sub-nível creator */}
+                            {b.tierId === 'creator' && (
+                              <div>
+                                <label className="text-zinc-400 text-[8px] font-black uppercase">
+                                  A partir de qual faixa
+                                </label>
+                                <div className="flex gap-1.5 mt-1">
+                                  {[
+                                    { value: 'creator_200k', label: '200K+' },
+                                    { value: 'creator_500k', label: '500K+' },
+                                    { value: 'creator_1m', label: '1M+' },
+                                  ].map(opt => (
+                                    <button
+                                      key={opt.value}
+                                      onClick={() =>
+                                        updateBeneficio(
+                                          'creatorSublevelMinimo',
+                                          b.creatorSublevelMinimo === opt.value ? '' : opt.value,
+                                        )
+                                      }
+                                      className={`flex-1 py-2 rounded-lg text-[10px] font-bold border transition-all ${
+                                        b.creatorSublevelMinimo === opt.value
+                                          ? 'bg-[#FFD300]/10 border-[#FFD300]/30 text-[#FFD300]'
+                                          : 'bg-zinc-800/50 border-white/5 text-zinc-400'
+                                      }`}
+                                    >
+                                      {opt.label}
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Limite de vagas */}
+                            <div>
+                              <label className="text-zinc-400 text-[8px] font-black uppercase">Limite de vagas</label>
+                              <div className="flex items-center gap-2 mt-1">
+                                <input
+                                  type="number"
+                                  min="0"
+                                  value={b.vagasLimite}
+                                  onChange={e => updateBeneficio('vagasLimite', e.target.value)}
+                                  placeholder="Sem limite"
+                                  className={inputSmCls + ' w-24 text-center'}
+                                />
+                                <span className="text-zinc-500 text-[9px]">
+                                  {b.vagasLimite ? 'vagas' : 'sem limite'}
+                                </span>
+                              </div>
+                            </div>
                           </div>
                         )}
                       </div>

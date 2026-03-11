@@ -11,6 +11,7 @@
  */
 
 import { useEffect, useRef, useCallback } from 'react';
+import { devLogger } from '../services/devLogger';
 
 // ── Stack global (singleton) ─────────────────────────────────────────────────
 
@@ -151,9 +152,11 @@ export function useModalBack(isOpen: boolean, onClose: () => void, id: string) {
     if (isOpen && !registeredRef.current) {
       registeredRef.current = true;
       registerModal(id, stableClose);
+      devLogger.modal(`abriu ${id}`);
     } else if (!isOpen && registeredRef.current) {
       registeredRef.current = false;
       unregisterModal(id);
+      devLogger.modal(`fechou ${id}`);
     }
 
     return () => {

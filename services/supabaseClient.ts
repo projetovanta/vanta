@@ -28,10 +28,14 @@ if (isMissing) {
   console.warn('[VANTA] Supabase não configurado — defina VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY no .env.local'); // audit-ok: aviso de config
 }
 
-export const supabase = createClient<Database>(
+import { wrapSupabaseWithLogging } from './supabaseProxy';
+
+const _supabaseRaw = createClient<Database>(
   supabaseUrl || 'https://placeholder.supabase.co',
   supabaseKey || 'placeholder-anon-key',
 );
+
+export const supabase = wrapSupabaseWithLogging(_supabaseRaw);
 
 // supabaseAdmin REMOVIDO (2026-03-03)
 // Todas as tabelas possuem RLS policies de leitura para admin roles.

@@ -132,7 +132,7 @@ export function DevQuickLogin() {
     try {
       // Usa adminClient (service_role) para bypassar RLS da tabela profiles
       const adminClient = createClient(SUPABASE_URL, SERVICE_ROLE_KEY, {
-        auth: { autoRefreshToken: false, persistSession: false },
+        auth: { autoRefreshToken: false, persistSession: false, storageKey: 'vanta-dev-admin' },
       });
       // Buscar apenas profiles que existem em auth.users (ignorar imports sem auth)
       const { data: authUsers } = await adminClient.auth.admin.listUsers({ perPage: 200 });
@@ -210,7 +210,7 @@ export function DevQuickLogin() {
     try {
       // Gerar token via Admin API (funciona para qualquer user, não precisa de senha)
       const adminClient = createClient(SUPABASE_URL, SERVICE_ROLE_KEY, {
-        auth: { autoRefreshToken: false, persistSession: false },
+        auth: { autoRefreshToken: false, persistSession: false, storageKey: 'vanta-dev-admin' },
       });
       const { data: linkData, error: linkError } = await adminClient.auth.admin.generateLink({
         type: 'magiclink',

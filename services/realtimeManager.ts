@@ -1,5 +1,6 @@
 import { supabase } from './supabaseClient';
 import type { RealtimeChannel, RealtimeChannelOptions } from '@supabase/supabase-js';
+import { devLogger } from './devLogger';
 
 /**
  * Realtime Manager — gerencia subscriptions do Supabase Realtime.
@@ -108,6 +109,7 @@ function createStatusHandler(entry: ManagedChannel) {
 
     if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
       console.warn(`[realtimeManager] ${entry.name}: ${status}`);
+      devLogger.rtError(`disconnected: ${entry.name} (reason: ${status})`);
       // Só agendar se ainda estiver no map (não foi unsubscribed)
       if (channels.has(entry.name)) {
         scheduleReconnect(entry);
@@ -152,6 +154,8 @@ export const realtimeManager = {
       channel.subscribe(createStatusHandler(entry));
     }
 
+    devLogger.rt(`subscribed: ${name} (channel: ${name})`);
+
     return () => realtimeManager.unsubscribe(name);
   },
 
@@ -162,6 +166,7 @@ export const realtimeManager = {
       clearTimeout(entry.reconnectTimer);
       supabase.removeChannel(entry.channel);
       channels.delete(name);
+      devLogger.rt(`unsubscribed: ${name}`);
     }
   },
 

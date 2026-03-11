@@ -47,6 +47,29 @@ React Router v6 funciona nos dois. Ver `memory/plataformas.md` para regra comple
 - **Double-click guard**: `useRef(false)` + try/finally em ações financeiras (confirmarSaque, estornarSaque, aprovarReembolso, rejeitarReembolso — financeiro/index.tsx e masterFinanceiro/index.tsx)
 - **Single-flight refresh**: eventosAdminCore.refresh() com guard `isRefreshing` para evitar race conditions
 
+## DevLogging (DEV-only)
+Sistema de debug logging ativo APENAS em `import.meta.env.DEV`. Em produção: ZERO logs, ZERO impacto (funções noop).
+
+### Arquivos
+| Arquivo | Função |
+|---|---|
+| `services/devLogger.ts` | Core singleton — 9 categorias (NAV, MODAL, CLICK, FORM, API, STORE, ERRO, RT, LIFECYCLE), console formatado, export texto |
+| `services/supabaseProxy.ts` | Proxy transparente no supabase client — intercepta `.from()` e `.rpc()`, loga resultado/tempo/erros |
+| `services/storeLogger.ts` | Observer de mudanças nas 5 stores Zustand via `subscribe()` nativo (zero alteração nos stores) |
+| `services/devLogInit.ts` | Inicializador central — intercepta console.error/warn, window.onerror, unhandledrejection, CSP violations, store observers |
+| `hooks/useDevNavLogger.ts` | Hook que observa mudanças de rota (useLocation) e tab ativa |
+| `components/DevLogPanel.tsx` | Painel flutuante com filtros por categoria, auto-scroll, export clipboard |
+
+### Integração
+- `services/supabaseClient.ts` — wrapa client com `wrapSupabaseWithLogging()`
+- `services/realtimeManager.ts` — loga subscribe/unsubscribe/erros de channels
+- `hooks/useModalStack.ts` — loga abrir/fechar de todos os modais (~33)
+- `App.tsx` — `useDevNavLogger(nav.activeTab)`, `useEffect(() => initDevLogging(), [])`, `<DevLogPanel />` (lazy, DEV-only)
+
+### Fixes associados
+- `components/DevQuickLogin.tsx` — `storageKey: 'vanta-dev-admin'` nos 2 createClient admin (evita conflito de sessão)
+- `index.html` — CSP `connect-src` adicionou `https://firebaseinstallations.googleapis.com` (Firebase)
+
 ## Build
 - `vite.config.ts`: logLevel `error`
 - `npm run build` → dist/

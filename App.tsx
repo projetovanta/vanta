@@ -27,6 +27,10 @@ import { PmfSurveyModal } from './components/PmfSurveyModal';
 import { ResetPasswordView } from './components/ResetPasswordView';
 import { nativePushService } from './services/nativePushService';
 import { logger } from './services/logger';
+import { useDevNavLogger } from './hooks/useDevNavLogger';
+import { initDevLogging } from './services/devLogInit';
+
+const DevLogPanel = lazy(() => import('./components/DevLogPanel').then(m => ({ default: m.DevLogPanel })));
 
 // ── Lazy-loaded views (code splitting) ───────────────────────────────────────
 const EventDetailView = lazy(() =>
@@ -102,6 +106,10 @@ export default function App() {
   const registerCortesiaCallbacks = useTicketsStore(s => s.registerCortesiaCallbacks);
 
   const [showResetPassword, setShowResetPassword] = useState(false);
+
+  // ── Dev logging (noop em produção) ──────────────────────────────────────
+  useDevNavLogger(nav.activeTab);
+  useEffect(() => initDevLogging(), []);
 
   useEffect(() => {
     const handler = () => setShowResetPassword(true);
@@ -533,6 +541,11 @@ export default function App() {
         </Suspense>
       </div>
       {import.meta.env.DEV && <DevQuickLogin />}
+      {import.meta.env.DEV && (
+        <Suspense fallback={null}>
+          <DevLogPanel />
+        </Suspense>
+      )}
     </div>
   );
 }

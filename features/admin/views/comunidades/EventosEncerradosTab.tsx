@@ -15,8 +15,8 @@ export const EventosEncerradosTab: React.FC<{ comunidadeId: string }> = ({ comun
   if (eventos.length === 0) {
     return (
       <div className="flex flex-col items-center py-16 gap-4">
-        <BarChart2 size={32} className="text-zinc-800" />
-        <p className="text-zinc-700 text-[10px] font-black uppercase tracking-widest text-center">
+        <BarChart2 size="2rem" className="text-zinc-800" />
+        <p className="text-zinc-700 text-[0.625rem] font-black uppercase tracking-widest text-center">
           Nenhum evento encerrado
         </p>
       </div>
@@ -45,27 +45,27 @@ export const EventosEncerradosTab: React.FC<{ comunidadeId: string }> = ({ comun
             >
               <div className="flex justify-between items-start mb-3">
                 <div className="flex-1 min-w-0 mr-3">
-                  <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mb-0.5">
+                  <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest mb-0.5">
                     {dataLabel} · Encerrado
                   </p>
                   <p className="text-zinc-300 font-bold text-sm leading-tight truncate">{e.nome}</p>
                 </div>
-                <span className="text-[8px] font-black uppercase tracking-widest text-[#FFD300]/60 border border-[#FFD300]/20 px-2.5 py-1 rounded-full shrink-0 bg-[#FFD300]/5">
+                <span className="text-[0.5rem] font-black uppercase tracking-widest text-[#FFD300]/60 border border-[#FFD300]/20 px-2.5 py-1 rounded-full shrink-0 bg-[#FFD300]/5">
                   Ver mais
                 </span>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5">
                 <div className="bg-zinc-900 border border-white/5 rounded-xl p-3 text-center">
                   <p className="text-zinc-300 font-black text-lg leading-none">{totalVendidos}</p>
-                  <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider mt-1">Ingressos</p>
+                  <p className="text-zinc-400 text-[0.5625rem] font-bold uppercase tracking-wider mt-1">Ingressos</p>
                 </div>
                 <div className="bg-zinc-900 border border-white/5 rounded-xl p-3 text-center">
                   <p className="text-zinc-300 font-black text-lg leading-none">{totalLista}</p>
-                  <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider mt-1">Na Lista</p>
+                  <p className="text-zinc-400 text-[0.5625rem] font-bold uppercase tracking-wider mt-1">Na Lista</p>
                 </div>
                 <div className="bg-emerald-500/5 border border-emerald-500/10 rounded-xl p-3 text-center">
                   <p className="text-emerald-400 font-black text-lg leading-none">{totalCheckedIn}</p>
-                  <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider mt-1">Entraram</p>
+                  <p className="text-zinc-400 text-[0.5625rem] font-bold uppercase tracking-wider mt-1">Entraram</p>
                 </div>
               </div>
             </button>

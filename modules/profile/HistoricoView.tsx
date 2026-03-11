@@ -115,7 +115,7 @@ export const HistoricoView: React.FC<HistoricoViewProps> = ({
           onClick={onBack}
           className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-transform"
         >
-          <ArrowLeft size={18} />
+          <ArrowLeft size="1.125rem" />
         </button>
         <h1 style={TYPOGRAPHY.screenTitle} className="text-lg italic">
           Meu Histórico
@@ -123,10 +123,13 @@ export const HistoricoView: React.FC<HistoricoViewProps> = ({
         <div className="w-10" />
       </div>
 
-      <div className="flex-1 overflow-y-auto no-scrollbar pb-24">
+      <div
+        className="flex-1 overflow-y-auto no-scrollbar pb-6"
+        style={{ display: 'grid', gridTemplateRows: 'minmax(100%, auto)' }}
+      >
         {loading ? (
           <div className="flex items-center justify-center py-20">
-            <Loader2 size={20} className="text-zinc-700 animate-spin" />
+            <Loader2 size="1.25rem" className="text-zinc-700 animate-spin" />
           </div>
         ) : (
           <>
@@ -160,13 +163,15 @@ export const HistoricoView: React.FC<HistoricoViewProps> = ({
                           )}
                         </div>
                         <p
-                          className="text-[9px] font-black uppercase tracking-wider text-center truncate w-full"
+                          className="text-[0.5625rem] font-black uppercase tracking-wider text-center truncate w-full"
                           style={{ color: cfg.cor }}
                         >
                           {cfg.label}
                         </p>
-                        <p className="text-[10px] text-zinc-400 text-center truncate w-full">{ach.comunidadeNome}</p>
-                        <p className="text-[9px] text-zinc-400">
+                        <p className="text-[0.625rem] text-zinc-400 text-center truncate w-full">
+                          {ach.comunidadeNome}
+                        </p>
+                        <p className="text-[0.5625rem] text-zinc-400">
                           {ach.totalEventos} evento{ach.totalEventos !== 1 ? 's' : ''}
                         </p>
                       </div>
@@ -194,9 +199,9 @@ export const HistoricoView: React.FC<HistoricoViewProps> = ({
                             : 'bg-zinc-950 border-white/5 opacity-30'
                         }`}
                       >
-                        <Icon size={14} className={badge.conquistado ? 'text-[#FFD300]' : 'text-zinc-700'} />
+                        <Icon size="0.875rem" className={badge.conquistado ? 'text-[#FFD300]' : 'text-zinc-700'} />
                         <span
-                          className={`text-[10px] font-bold ${badge.conquistado ? 'text-zinc-300' : 'text-zinc-700'}`}
+                          className={`text-[0.625rem] font-bold ${badge.conquistado ? 'text-zinc-300' : 'text-zinc-700'}`}
                         >
                           {badge.nome}
                         </span>
@@ -215,7 +220,7 @@ export const HistoricoView: React.FC<HistoricoViewProps> = ({
               {historico.length === 0 ? (
                 <div className="flex flex-col items-center py-14 gap-3">
                   <div className="w-12 h-12 bg-zinc-900 rounded-2xl border border-white/5 flex items-center justify-center">
-                    <Calendar size={20} className="text-zinc-700" />
+                    <Calendar size="1.25rem" className="text-zinc-700" />
                   </div>
                   <p className="text-zinc-400 text-sm text-center">Nenhum evento no histórico ainda</p>
                 </div>
@@ -234,20 +239,20 @@ export const HistoricoView: React.FC<HistoricoViewProps> = ({
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-white font-bold text-sm truncate">{item.evento.titulo}</p>
-                        <p className="text-zinc-400 text-[11px] mt-0.5 truncate">
+                        <p className="text-zinc-400 text-[0.6875rem] mt-0.5 truncate">
                           {item.evento.data} · {item.evento.local}
                         </p>
                       </div>
                       <div className="shrink-0">
                         {item.tipo === 'INGRESSO' ? (
                           <div className="flex items-center gap-1 px-2 py-1 bg-[#FFD300]/10 rounded-lg">
-                            <Ticket size={10} className="text-[#FFD300]" />
-                            <span className="text-[8px] font-black uppercase text-[#FFD300]">Ingresso</span>
+                            <Ticket size="0.625rem" className="text-[#FFD300]" />
+                            <span className="text-[0.5rem] font-black uppercase text-[#FFD300]">Ingresso</span>
                           </div>
                         ) : (
                           <div className="flex items-center gap-1 px-2 py-1 bg-purple-500/10 rounded-lg">
-                            <UserCheck size={10} className="text-purple-400" />
-                            <span className="text-[8px] font-black uppercase text-purple-400">Presença</span>
+                            <UserCheck size="0.625rem" className="text-purple-400" />
+                            <span className="text-[0.5rem] font-black uppercase text-purple-400">Presença</span>
                           </div>
                         )}
                       </div>

@@ -254,7 +254,7 @@ export const WalletLockScreen: React.FC<WalletLockScreenProps> = ({ onUnlock, on
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] animate-in fade-in duration-300">
-        <Loader2 size={32} className="text-[#FFD300] animate-spin" />
+        <Loader2 size="2rem" className="text-[#FFD300] animate-spin" />
       </div>
     );
   }
@@ -266,12 +266,12 @@ export const WalletLockScreen: React.FC<WalletLockScreenProps> = ({ onUnlock, on
         <div
           className={`w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 border transition-all duration-500 ${iconClass}`}
         >
-          <Icon size={32} className={iconColor} />
+          <Icon size="2rem" className={iconColor} />
         </div>
         <h2 style={TYPOGRAPHY.screenTitle} className="text-2xl text-white mb-2 italic">
           {title}
         </h2>
-        <p className="text-zinc-400 text-[9px] uppercase tracking-[0.3em] font-black">{subtitle}</p>
+        <p className="text-zinc-400 text-[0.5625rem] uppercase tracking-[0.3em] font-black">{subtitle}</p>
       </div>
 
       {/* Keypad */}
@@ -281,9 +281,9 @@ export const WalletLockScreen: React.FC<WalletLockScreenProps> = ({ onUnlock, on
       {!lockUntil && !showErrorModal && !pinMismatch && (
         <button
           onClick={onExit}
-          className="mt-12 text-zinc-400 hover:text-zinc-400 text-[10px] font-black uppercase tracking-[0.2em] flex items-center gap-2 transition-colors"
+          className="mt-12 text-zinc-400 hover:text-zinc-400 text-[0.625rem] font-black uppercase tracking-[0.2em] flex items-center gap-2 transition-colors"
         >
-          <LogOut size={12} />
+          <LogOut size="0.75rem" />
           Voltar ao Perfil
         </button>
       )}
@@ -294,14 +294,14 @@ export const WalletLockScreen: React.FC<WalletLockScreenProps> = ({ onUnlock, on
           <div className="absolute inset-0 bg-black/80 backdrop-blur-xl" />
           <div className="relative w-full max-w-[85%] bg-[#0A0A0A] border border-red-500/20 rounded-[2.5rem] p-8 text-center shadow-[0_0_50px_rgba(239,68,68,0.1)] animate-in zoom-in-95 duration-500">
             <div className="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-red-500/20">
-              <AlertTriangle size={28} className="text-red-500 drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]" />
+              <AlertTriangle size="1.75rem" className="text-red-500 drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]" />
             </div>
 
             <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-3 italic">
               PIN Incorreto
             </h2>
 
-            <p className="text-zinc-400 text-[11px] leading-relaxed mb-8 px-2 font-medium">
+            <p className="text-zinc-400 text-[0.6875rem] leading-relaxed mb-8 px-2 font-medium">
               Você tem mais <span className="text-white font-black">{remainingAttempts}</span>{' '}
               {remainingAttempts === 1 ? 'tentativa' : 'tentativas'} antes de bloquear por{' '}
               <span className="text-white font-black">{nextLockDurationMinutes} minutos</span>.
@@ -310,15 +310,15 @@ export const WalletLockScreen: React.FC<WalletLockScreenProps> = ({ onUnlock, on
             <div className="space-y-3">
               <button
                 onClick={() => setShowErrorModal(false)}
-                className="w-full py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-[0.2em] rounded-xl shadow-[0_10px_20px_rgba(255,211,0,0.1)] active:scale-95 transition-all flex items-center justify-center gap-2"
+                className="w-full py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-[0.2em] rounded-xl shadow-[0_10px_20px_rgba(255,211,0,0.1)] active:scale-95 transition-all flex items-center justify-center gap-2"
               >
                 Continuar
-                <ArrowRight size={14} />
+                <ArrowRight size="0.875rem" />
               </button>
 
               <button
                 onClick={onExit}
-                className="w-full py-4 bg-transparent text-zinc-400 font-bold text-[10px] uppercase tracking-[0.2em] border border-white/5 rounded-xl active:bg-white/5 transition-all"
+                className="w-full py-4 bg-transparent text-zinc-400 font-bold text-[0.625rem] uppercase tracking-[0.2em] border border-white/5 rounded-xl active:bg-white/5 transition-all"
               >
                 Sair
               </button>

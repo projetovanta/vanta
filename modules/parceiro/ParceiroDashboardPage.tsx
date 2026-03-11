@@ -183,16 +183,16 @@ export const ParceiroDashboardPage: React.FC = () => {
   const statusIcon = (s: string) => {
     switch (s) {
       case 'ATIVO':
-        return <CheckCircle size={10} className="text-green-500" />;
+        return <CheckCircle size="0.625rem" className="text-green-500" />;
       case 'RASCUNHO':
-        return <Clock size={10} className="text-yellow-500" />;
+        return <Clock size="0.625rem" className="text-yellow-500" />;
       case 'PAUSADO':
-        return <Pause size={10} className="text-zinc-400" />;
+        return <Pause size="0.625rem" className="text-zinc-400" />;
       case 'ENCERRADO':
       case 'EXPIRADO':
-        return <XCircle size={10} className="text-zinc-400" />;
+        return <XCircle size="0.625rem" className="text-zinc-400" />;
       default:
-        return <Clock size={10} className="text-zinc-400" />;
+        return <Clock size="0.625rem" className="text-zinc-400" />;
     }
   };
 
@@ -216,7 +216,7 @@ export const ParceiroDashboardPage: React.FC = () => {
   if (loading) {
     return (
       <div className="absolute inset-0 bg-[#0A0A0A] flex items-center justify-center">
-        <Loader2 size={24} className="text-[#FFD300] animate-spin" />
+        <Loader2 size="1.5rem" className="text-[#FFD300] animate-spin" />
       </div>
     );
   }
@@ -225,7 +225,7 @@ export const ParceiroDashboardPage: React.FC = () => {
     return (
       <div className="absolute inset-0 bg-[#0A0A0A] flex items-center justify-center p-6">
         <div className="text-center">
-          <Store size={32} className="mx-auto text-zinc-700 mb-3" />
+          <Store size="2rem" className="mx-auto text-zinc-700 mb-3" />
           <p className="text-zinc-400 text-sm">Faça login para acessar o painel do parceiro</p>
           <button
             onClick={() => navigate('/')}
@@ -242,7 +242,7 @@ export const ParceiroDashboardPage: React.FC = () => {
     return (
       <div className="absolute inset-0 bg-[#0A0A0A] flex items-center justify-center p-6">
         <div className="text-center">
-          <Store size={32} className="mx-auto text-zinc-700 mb-3" />
+          <Store size="2rem" className="mx-auto text-zinc-700 mb-3" />
           <p className="text-zinc-400 text-sm">Você não é parceiro MAIS VANTA</p>
           <button
             onClick={() => navigate('/')}
@@ -260,12 +260,12 @@ export const ParceiroDashboardPage: React.FC = () => {
       {/* Header */}
       <div className="shrink-0 flex items-center gap-3 px-4 py-3 border-b border-white/5">
         <button onClick={() => navigate('/')} className="p-1.5 text-zinc-400 active:text-white" aria-label="Voltar">
-          <ArrowLeft size={16} />
+          <ArrowLeft size="1rem" />
         </button>
-        <Store size={14} className="text-purple-400" />
+        <Store size="0.875rem" className="text-purple-400" />
         <div className="min-w-0 flex-1">
           <h1 className="text-white font-bold text-sm truncate">{parceiro.nome}</h1>
-          <p className="text-zinc-400 text-[9px] truncate">
+          <p className="text-zinc-400 text-[0.5625rem] truncate">
             {parceiro.cidade_nome ? `${parceiro.cidade_nome} · ` : ''}Plano {parceiro.plano}
           </p>
         </div>
@@ -275,19 +275,19 @@ export const ParceiroDashboardPage: React.FC = () => {
       {metricas && (
         <div className="shrink-0 grid grid-cols-3 gap-2 p-4">
           <div className="bg-zinc-900/60 border border-white/5 rounded-2xl p-3 text-center">
-            <ShoppingCart size={14} className="mx-auto text-green-500 mb-1" />
+            <ShoppingCart size="0.875rem" className="mx-auto text-green-500 mb-1" />
             <p className="text-white font-bold text-lg">{metricas.totalResgates}</p>
-            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">Total resgates</p>
+            <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest">Total resgates</p>
           </div>
           <div className="bg-zinc-900/60 border border-white/5 rounded-2xl p-3 text-center">
-            <TrendingUp size={14} className="mx-auto text-[#FFD300] mb-1" />
+            <TrendingUp size="0.875rem" className="mx-auto text-[#FFD300] mb-1" />
             <p className="text-white font-bold text-lg">{metricas.resgatesMes}</p>
-            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">Este mês</p>
+            <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest">Este mês</p>
           </div>
           <div className="bg-zinc-900/60 border border-white/5 rounded-2xl p-3 text-center">
-            <Users size={14} className="mx-auto text-purple-400 mb-1" />
+            <Users size="0.875rem" className="mx-auto text-purple-400 mb-1" />
             <p className="text-white font-bold text-lg">{metricas.membrosUnicos}</p>
-            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">Membros</p>
+            <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest">Membros</p>
           </div>
         </div>
       )}
@@ -298,7 +298,7 @@ export const ParceiroDashboardPage: React.FC = () => {
           <button
             key={t}
             onClick={() => setTab(t)}
-            className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider border transition-all ${
+            className={`px-4 py-2 rounded-xl text-[0.625rem] font-black uppercase tracking-wider border transition-all ${
               tab === t
                 ? 'bg-[#FFD300]/15 border-[#FFD300]/30 text-[#FFD300]'
                 : 'bg-zinc-900 border-white/5 text-zinc-400'
@@ -309,10 +309,10 @@ export const ParceiroDashboardPage: React.FC = () => {
         ))}
         <button
           onClick={() => setShowForm(true)}
-          className="ml-auto px-3 py-2 bg-purple-500/15 border border-purple-500/30 rounded-xl text-purple-400 text-[10px] font-black uppercase tracking-wider flex items-center gap-1 active:scale-95 transition-all"
+          className="ml-auto px-3 py-2 bg-purple-500/15 border border-purple-500/30 rounded-xl text-purple-400 text-[0.625rem] font-black uppercase tracking-wider flex items-center gap-1 active:scale-95 transition-all"
           aria-label="Sugerir novo deal"
         >
-          <Plus size={10} /> Sugerir Deal
+          <Plus size="0.625rem" /> Sugerir Deal
         </button>
       </div>
 
@@ -321,7 +321,7 @@ export const ParceiroDashboardPage: React.FC = () => {
         {tab === 'DEALS' &&
           (deals.length === 0 ? (
             <div className="text-center py-16">
-              <Crown size={24} className="mx-auto text-zinc-700 mb-2" />
+              <Crown size="1.5rem" className="mx-auto text-zinc-700 mb-2" />
               <p className="text-zinc-400 text-xs">Nenhum deal ainda</p>
             </div>
           ) : (
@@ -329,15 +329,15 @@ export const ParceiroDashboardPage: React.FC = () => {
               <div key={d.id} className="bg-zinc-900/60 border border-white/5 rounded-2xl p-4">
                 <div className="flex items-center gap-2 mb-1">
                   {statusIcon(d.status)}
-                  <span className="text-zinc-400 text-[9px] font-black uppercase tracking-wider">
+                  <span className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-wider">
                     {statusLabel(d.status)}
                   </span>
-                  <span className="ml-auto text-zinc-400 text-[9px]">
+                  <span className="ml-auto text-zinc-400 text-[0.5625rem]">
                     {d.tipo === 'BARTER' ? 'Barter' : 'Desconto'}
                   </span>
                 </div>
                 <p className="text-white font-bold text-sm truncate">{d.titulo}</p>
-                <p className="text-zinc-400 text-[10px] mt-1">
+                <p className="text-zinc-400 text-[0.625rem] mt-1">
                   {d.vagas_preenchidas}/{d.vagas} vagas preenchidas
                 </p>
               </div>
@@ -347,22 +347,24 @@ export const ParceiroDashboardPage: React.FC = () => {
         {tab === 'RESGATES' &&
           (resgates.length === 0 ? (
             <div className="text-center py-16">
-              <ShoppingCart size={24} className="mx-auto text-zinc-700 mb-2" />
+              <ShoppingCart size="1.5rem" className="mx-auto text-zinc-700 mb-2" />
               <p className="text-zinc-400 text-xs">Nenhum resgate ainda</p>
             </div>
           ) : (
             resgates.map(r => (
               <div key={r.id} className="bg-zinc-900/60 border border-white/5 rounded-2xl p-3 flex items-center gap-3">
                 <div className="w-8 h-8 rounded-xl bg-green-500/10 flex items-center justify-center shrink-0">
-                  <ShoppingCart size={12} className="text-green-500" />
+                  <ShoppingCart size="0.75rem" className="text-green-500" />
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="text-white text-xs font-bold truncate">{r.user_nome ?? 'Membro'}</p>
-                  <p className="text-zinc-400 text-[9px] truncate">{r.deal_titulo ?? 'Deal'}</p>
+                  <p className="text-zinc-400 text-[0.5625rem] truncate">{r.deal_titulo ?? 'Deal'}</p>
                 </div>
                 <div className="text-right shrink-0">
-                  <p className="text-zinc-400 text-[9px]">{new Date(r.aplicado_em).toLocaleDateString('pt-BR')}</p>
-                  <p className="text-[8px] font-black uppercase tracking-wider text-green-500">
+                  <p className="text-zinc-400 text-[0.5625rem]">
+                    {new Date(r.aplicado_em).toLocaleDateString('pt-BR')}
+                  </p>
+                  <p className="text-[0.5rem] font-black uppercase tracking-wider text-green-500">
                     {r.status === 'CONCLUIDO' ? 'Concluído' : r.status === 'CHECK_IN' ? 'Check-in' : r.status}
                   </p>
                 </div>
@@ -375,15 +377,15 @@ export const ParceiroDashboardPage: React.FC = () => {
             {/* Scanner container */}
             <div
               ref={scanContainerRef}
-              className="w-full max-w-[280px] aspect-square rounded-2xl overflow-hidden bg-zinc-900 border-2 border-[#FFD300]/30 relative"
+              className="w-full max-w-[17.5rem] aspect-square rounded-2xl overflow-hidden bg-zinc-900 border-2 border-[#FFD300]/30 relative"
             >
               <div id="qr-mv-reader" className="w-full h-full" style={{ display: scanning ? 'block' : 'none' }} />
               {!scanning && !scanResult && (
                 <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
                   <div className="w-16 h-16 rounded-full bg-[#FFD300]/10 flex items-center justify-center">
-                    <QrCode size={28} className="text-[#FFD300]" />
+                    <QrCode size="1.75rem" className="text-[#FFD300]" />
                   </div>
-                  <p className="text-zinc-400 text-[10px] text-center px-4">
+                  <p className="text-zinc-400 text-[0.625rem] text-center px-4">
                     Escaneie o QR VIP dourado do membro para registrar o check-in
                   </p>
                 </div>
@@ -399,22 +401,22 @@ export const ParceiroDashboardPage: React.FC = () => {
               >
                 <div className="flex items-center gap-3">
                   {scanResult.ok ? (
-                    <CheckCircle size={20} className="text-green-500 shrink-0" />
+                    <CheckCircle size="1.25rem" className="text-green-500 shrink-0" />
                   ) : (
-                    <XCircle size={20} className="text-red-500 shrink-0" />
+                    <XCircle size="1.25rem" className="text-red-500 shrink-0" />
                   )}
                   <div className="min-w-0 flex-1">
                     {scanResult.ok ? (
                       <>
                         <p className="text-green-400 font-bold text-sm">Check-in confirmado!</p>
-                        <p className="text-zinc-400 text-[10px] truncate">
+                        <p className="text-zinc-400 text-[0.625rem] truncate">
                           {scanResult.nome} — {scanResult.deal}
                         </p>
                       </>
                     ) : (
                       <>
                         <p className="text-red-400 font-bold text-sm">Erro</p>
-                        <p className="text-zinc-400 text-[10px]">{scanResult.erro}</p>
+                        <p className="text-zinc-400 text-[0.625rem]">{scanResult.erro}</p>
                       </>
                     )}
                   </div>
@@ -425,7 +427,7 @@ export const ParceiroDashboardPage: React.FC = () => {
             {/* Botão */}
             <button
               onClick={() => (scanning ? void stopScanner() : void startScanner())}
-              className={`w-full py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 active:scale-95 transition-all ${
+              className={`w-full py-4 rounded-2xl font-black text-[0.625rem] uppercase tracking-widest flex items-center justify-center gap-2 active:scale-95 transition-all ${
                 scanning
                   ? 'bg-red-500/10 border border-red-500/30 text-red-400'
                   : 'bg-[#FFD300]/10 border border-[#FFD300]/30 text-[#FFD300]'
@@ -433,12 +435,12 @@ export const ParceiroDashboardPage: React.FC = () => {
             >
               {scanning ? (
                 <>
-                  <Pause size={14} />
+                  <Pause size="0.875rem" />
                   Parar Scanner
                 </>
               ) : (
                 <>
-                  <Camera size={14} />
+                  <Camera size="0.875rem" />
                   {scanResult ? 'Escanear Outro' : 'Iniciar Scanner'}
                 </>
               )}
@@ -465,18 +467,18 @@ export const ParceiroDashboardPage: React.FC = () => {
               <div className="flex items-center justify-between mb-5">
                 <p className="text-white font-bold text-base">Sugerir Deal</p>
                 <button onClick={() => setShowForm(false)} className="p-1.5 text-zinc-400" aria-label="Fechar">
-                  <X size={14} />
+                  <X size="0.875rem" />
                 </button>
               </div>
 
               {/* Tipo */}
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">Tipo</p>
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2">Tipo</p>
               <div className="flex gap-2 mb-4">
                 {['BARTER', 'DESCONTO'].map(t => (
                   <button
                     key={t}
                     onClick={() => setFormTipo(t)}
-                    className={`flex-1 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-wider border transition-all ${
+                    className={`flex-1 py-2.5 rounded-xl text-[0.625rem] font-black uppercase tracking-wider border transition-all ${
                       formTipo === t
                         ? 'bg-[#FFD300]/15 border-[#FFD300]/30 text-[#FFD300]'
                         : 'bg-zinc-900 border-white/5 text-zinc-400'
@@ -488,7 +490,7 @@ export const ParceiroDashboardPage: React.FC = () => {
               </div>
 
               {/* Título */}
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">Título do Deal</p>
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2">Título do Deal</p>
               <input
                 type="text"
                 value={formTitulo}
@@ -500,7 +502,7 @@ export const ParceiroDashboardPage: React.FC = () => {
               {/* Obrigação barter */}
               {formTipo === 'BARTER' && (
                 <>
-                  <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">
+                  <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2">
                     Obrigação do membro
                   </p>
                   <input
@@ -516,7 +518,7 @@ export const ParceiroDashboardPage: React.FC = () => {
               {/* Desconto */}
               {formTipo === 'DESCONTO' && (
                 <>
-                  <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">
+                  <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2">
                     Percentual de desconto
                   </p>
                   <input
@@ -530,7 +532,7 @@ export const ParceiroDashboardPage: React.FC = () => {
               )}
 
               {/* Vagas */}
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">Vagas</p>
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2">Vagas</p>
               <input
                 type="number"
                 value={formVagas}
@@ -538,23 +540,23 @@ export const ParceiroDashboardPage: React.FC = () => {
                 className="w-full px-4 py-3 bg-zinc-900 border border-white/10 rounded-xl text-white text-sm placeholder-zinc-600 outline-none focus:border-[#FFD300]/30 mb-4"
               />
 
-              <p className="text-zinc-400 text-[10px] leading-relaxed mb-5">
+              <p className="text-zinc-400 text-[0.625rem] leading-relaxed mb-5">
                 O deal será enviado pro master pra aprovação. Você será notificado quando for aprovado.
               </p>
 
               <div className="flex gap-3">
                 <button
                   onClick={() => setShowForm(false)}
-                  className="flex-1 py-4 bg-zinc-900 border border-white/10 text-zinc-400 font-black text-[10px] uppercase tracking-widest rounded-2xl active:scale-95 transition-all"
+                  className="flex-1 py-4 bg-zinc-900 border border-white/10 text-zinc-400 font-black text-[0.625rem] uppercase tracking-widest rounded-2xl active:scale-95 transition-all"
                 >
                   Cancelar
                 </button>
                 <button
                   onClick={() => void handleSugerir()}
                   disabled={criando || !formTitulo.trim()}
-                  className="flex-1 py-4 bg-purple-500 text-white font-black text-[10px] uppercase tracking-widest rounded-2xl active:scale-95 transition-all disabled:opacity-40 flex items-center justify-center gap-2"
+                  className="flex-1 py-4 bg-purple-500 text-white font-black text-[0.625rem] uppercase tracking-widest rounded-2xl active:scale-95 transition-all disabled:opacity-40 flex items-center justify-center gap-2"
                 >
-                  {criando ? <Loader2 size={14} className="animate-spin" /> : <Plus size={14} />}
+                  {criando ? <Loader2 size="0.875rem" className="animate-spin" /> : <Plus size="0.875rem" />}
                   {criando ? 'Enviando...' : 'Sugerir'}
                 </button>
               </div>

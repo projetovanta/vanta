@@ -310,12 +310,12 @@ export const DatabaseHealthView: React.FC<Props> = ({ onBack }) => {
             onClick={onBack}
             className="w-9 h-9 bg-zinc-900 rounded-xl flex items-center justify-center border border-white/8 active:scale-90 transition-all shrink-0"
           >
-            <ArrowLeft size={16} className="text-zinc-400" />
+            <ArrowLeft size="1rem" className="text-zinc-400" />
           </button>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-1.5 mb-0.5">
-              <ActivitySquare size={12} color="#10b981" />
-              <p className="text-[#10b981]/70 text-[8px] font-black uppercase tracking-[0.25em]">
+              <ActivitySquare size="0.75rem" color="#10b981" />
+              <p className="text-[#10b981]/70 text-[0.5rem] font-black uppercase tracking-[0.25em]">
                 Master · Diagnóstico
               </p>
             </div>
@@ -350,26 +350,26 @@ export const DatabaseHealthView: React.FC<Props> = ({ onBack }) => {
                     style={{ backgroundColor: `${check.color}20`, border: `1px solid ${check.color}30` }}
                   >
                     {isLoading ? (
-                      <Loader2 size={14} style={{ color: check.color }} className="animate-spin" />
+                      <Loader2 size="0.875rem" style={{ color: check.color }} className="animate-spin" />
                     ) : (
-                      <Icon size={14} style={{ color: check.color }} />
+                      <Icon size="0.875rem" style={{ color: check.color }} />
                     )}
                   </div>
                   {isActive && !loading && results.length > 0 && (
                     <span
-                      className="text-[9px] font-black px-1.5 py-0.5 rounded-full"
+                      className="text-[0.5625rem] font-black px-1.5 py-0.5 rounded-full"
                       style={{ backgroundColor: `${check.color}25`, color: check.color }}
                     >
                       {results.length}
                     </span>
                   )}
                   {isActive && !loading && results.length === 0 && (
-                    <CheckCircle2 size={12} className="text-emerald-400" />
+                    <CheckCircle2 size="0.75rem" className="text-emerald-400" />
                   )}
                 </div>
                 <div>
-                  <p className="text-white text-[11px] font-bold leading-tight line-clamp-2">{check.label}</p>
-                  <p className="text-zinc-400 text-[9px] mt-0.5 leading-tight line-clamp-1">{check.sublabel}</p>
+                  <p className="text-white text-[0.6875rem] font-bold leading-tight line-clamp-2">{check.label}</p>
+                  <p className="text-zinc-400 text-[0.5625rem] mt-0.5 leading-tight line-clamp-1">{check.sublabel}</p>
                 </div>
               </button>
             );
@@ -389,11 +389,11 @@ export const DatabaseHealthView: React.FC<Props> = ({ onBack }) => {
                   className="w-6 h-6 rounded-md flex items-center justify-center shrink-0"
                   style={{ backgroundColor: `${activeCheck.color}20` }}
                 >
-                  <Users size={12} style={{ color: activeCheck.color }} />
+                  <Users size="0.75rem" style={{ color: activeCheck.color }} />
                 </div>
                 <div className="flex-1 min-w-0 text-left">
                   <p className="text-white text-xs font-bold truncate">{activeCheck.label}</p>
-                  <p className="text-zinc-400 text-[9px]">
+                  <p className="text-zinc-400 text-[0.5625rem]">
                     {results.length === 0
                       ? 'Nenhum resultado — banco OK ✓'
                       : `${results.length} usuário(s) encontrado(s)`}
@@ -405,15 +405,15 @@ export const DatabaseHealthView: React.FC<Props> = ({ onBack }) => {
                       e.stopPropagation();
                       toggleAll();
                     }}
-                    className="shrink-0 text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded-lg border border-white/10 text-zinc-400 active:bg-white/5"
+                    className="shrink-0 text-[0.5625rem] font-black uppercase tracking-wider px-2 py-1 rounded-lg border border-white/10 text-zinc-400 active:bg-white/5"
                   >
                     {allSelected ? 'Desmarcar' : 'Todos'}
                   </button>
                 )}
                 {resultsOpen ? (
-                  <ChevronUp size={14} className="text-zinc-400 shrink-0" />
+                  <ChevronUp size="0.875rem" className="text-zinc-400 shrink-0" />
                 ) : (
-                  <ChevronDown size={14} className="text-zinc-400 shrink-0" />
+                  <ChevronDown size="0.875rem" className="text-zinc-400 shrink-0" />
                 )}
               </button>
 
@@ -431,23 +431,23 @@ export const DatabaseHealthView: React.FC<Props> = ({ onBack }) => {
                         }`}
                       >
                         {isSelected ? (
-                          <CheckSquare size={16} className="text-emerald-400 shrink-0" />
+                          <CheckSquare size="1rem" className="text-emerald-400 shrink-0" />
                         ) : (
-                          <Square size={16} className="text-zinc-700 shrink-0" />
+                          <Square size="1rem" className="text-zinc-700 shrink-0" />
                         )}
 
                         {/* Avatar inicial */}
                         <div className="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center shrink-0 border border-white/8">
-                          <span className="text-zinc-400 text-[10px] font-bold uppercase">
+                          <span className="text-zinc-400 text-[0.625rem] font-bold uppercase">
                             {user.nome?.charAt(0) ?? '?'}
                           </span>
                         </div>
 
                         <div className="flex-1 min-w-0">
                           <p className="text-white text-xs font-semibold truncate">{user.nome}</p>
-                          <p className="text-zinc-400 text-[9px] truncate">{user.email}</p>
+                          <p className="text-zinc-400 text-[0.5625rem] truncate">{user.email}</p>
                           {user.cidade && (
-                            <p className="text-zinc-700 text-[8px] truncate">
+                            <p className="text-zinc-700 text-[0.5rem] truncate">
                               {user.cidade}
                               {user.estado ? `, ${user.estado}` : ''}
                             </p>
@@ -462,11 +462,11 @@ export const DatabaseHealthView: React.FC<Props> = ({ onBack }) => {
               {/* Estado vazio */}
               {resultsOpen && results.length === 0 && (
                 <div className="flex flex-col items-center gap-2 py-8 px-4">
-                  <CheckCircle2 size={24} className="text-emerald-400" />
-                  <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest text-center">
+                  <CheckCircle2 size="1.5rem" className="text-emerald-400" />
+                  <p className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest text-center">
                     Nenhum problema encontrado
                   </p>
-                  <p className="text-zinc-700 text-[9px] text-center">Todos os perfis passaram neste filtro</p>
+                  <p className="text-zinc-700 text-[0.5625rem] text-center">Todos os perfis passaram neste filtro</p>
                 </div>
               )}
             </div>
@@ -476,8 +476,8 @@ export const DatabaseHealthView: React.FC<Props> = ({ onBack }) => {
         {/* Loading state */}
         {loading && (
           <div className="flex flex-col items-center gap-3 py-10 px-4">
-            <Loader2 size={22} className="text-zinc-400 animate-spin" />
-            <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">Consultando banco...</p>
+            <Loader2 size="1.375rem" className="text-zinc-400 animate-spin" />
+            <p className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest">Consultando banco...</p>
           </div>
         )}
 
@@ -488,18 +488,20 @@ export const DatabaseHealthView: React.FC<Props> = ({ onBack }) => {
               {/* Cabeçalho do broadcast */}
               <div className="px-4 py-3 border-b border-white/8 flex items-center gap-2">
                 <div className="w-6 h-6 rounded-md bg-[#10b981]/15 border border-[#10b981]/25 flex items-center justify-center shrink-0">
-                  <Send size={11} className="text-emerald-400" />
+                  <Send size="0.6875rem" className="text-emerald-400" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-white text-xs font-bold">Broadcast</p>
-                  <p className="text-zinc-400 text-[9px]">{selected.size} usuário(s) selecionado(s) · in-app + email</p>
+                  <p className="text-zinc-400 text-[0.5625rem]">
+                    {selected.size} usuário(s) selecionado(s) · in-app + email
+                  </p>
                 </div>
               </div>
 
               <div className="p-4 space-y-3">
                 {/* Título da notificação */}
                 <div>
-                  <label className="block text-[9px] font-black uppercase tracking-widest text-zinc-400 mb-1.5">
+                  <label className="block text-[0.5625rem] font-black uppercase tracking-widest text-zinc-400 mb-1.5">
                     Título
                   </label>
                   <input
@@ -514,7 +516,7 @@ export const DatabaseHealthView: React.FC<Props> = ({ onBack }) => {
 
                 {/* Mensagem */}
                 <div>
-                  <label className="block text-[9px] font-black uppercase tracking-widest text-zinc-400 mb-1.5">
+                  <label className="block text-[0.5625rem] font-black uppercase tracking-widest text-zinc-400 mb-1.5">
                     Mensagem
                   </label>
                   <textarea
@@ -525,21 +527,21 @@ export const DatabaseHealthView: React.FC<Props> = ({ onBack }) => {
                     placeholder="Digite a mensagem para os membros selecionados..."
                     className="w-full bg-zinc-800/60 border border-white/8 rounded-xl px-3 py-2.5 text-white text-xs placeholder-zinc-600 focus:outline-none focus:border-white/20 transition-all resize-none leading-relaxed"
                   />
-                  <p className="text-right text-zinc-700 text-[9px] mt-1">{message.length}/500</p>
+                  <p className="text-right text-zinc-700 text-[0.5625rem] mt-1">{message.length}/500</p>
                 </div>
 
                 {/* Feedback de envio */}
                 {sentOk && (
                   <div className="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 rounded-xl px-3 py-2.5">
-                    <CheckCircle2 size={13} className="text-emerald-400 shrink-0" />
-                    <p className="text-emerald-400 text-[10px] font-semibold">Broadcast enviado com sucesso!</p>
+                    <CheckCircle2 size="0.8125rem" className="text-emerald-400 shrink-0" />
+                    <p className="text-emerald-400 text-[0.625rem] font-semibold">Broadcast enviado com sucesso!</p>
                   </div>
                 )}
 
                 {sendError && (
                   <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/20 rounded-xl px-3 py-2.5">
-                    <AlertCircle size={13} className="text-red-400 shrink-0" />
-                    <p className="text-red-400 text-[10px] font-semibold">{sendError}</p>
+                    <AlertCircle size="0.8125rem" className="text-red-400 shrink-0" />
+                    <p className="text-red-400 text-[0.625rem] font-semibold">{sendError}</p>
                   </div>
                 )}
 
@@ -551,17 +553,17 @@ export const DatabaseHealthView: React.FC<Props> = ({ onBack }) => {
                 >
                   {sending ? (
                     <>
-                      <Loader2 size={14} className="animate-spin" />
+                      <Loader2 size="0.875rem" className="animate-spin" />
                       Enviando...
                     </>
                   ) : sentOk ? (
                     <>
-                      <CheckCircle2 size={14} />
+                      <CheckCircle2 size="0.875rem" />
                       Enviado
                     </>
                   ) : (
                     <>
-                      <Send size={14} />
+                      <Send size="0.875rem" />
                       Enviar para {selected.size} usuário{selected.size !== 1 ? 's' : ''}
                     </>
                   )}
@@ -575,7 +577,7 @@ export const DatabaseHealthView: React.FC<Props> = ({ onBack }) => {
                     }}
                     className="w-full flex items-center justify-center gap-2 border border-white/10 text-zinc-400 font-bold text-xs py-2.5 rounded-xl active:bg-white/5 transition-all"
                   >
-                    <RefreshCw size={12} />
+                    <RefreshCw size="0.75rem" />
                     Nova seleção
                   </button>
                 )}

@@ -145,15 +145,15 @@ export const AnalyticsSubView: React.FC<{
             onClick={onBack}
             className="w-9 h-9 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
           >
-            <ArrowLeft size={16} className="text-zinc-400" />
+            <ArrowLeft size="1rem" className="text-zinc-400" />
           </button>
           <div className="flex-1 min-w-0">
-            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-0.5">Análise</p>
+            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-0.5">Análise</p>
             <h1 className="font-serif italic text-xl text-white">Analytics de Público</h1>
           </div>
         </div>
         {totalTickets > 0 && (
-          <p className="text-zinc-400 text-[10px] mt-1">
+          <p className="text-zinc-400 text-[0.625rem] mt-1">
             {totalParticipantes} de {totalTickets} participante{totalTickets !== 1 ? 's' : ''} com perfil
           </p>
         )}
@@ -162,14 +162,14 @@ export const AnalyticsSubView: React.FC<{
       <div className="flex-1 overflow-y-auto no-scrollbar p-6 max-w-3xl mx-auto w-full space-y-8">
         {loading ? (
           <div className="flex items-center justify-center py-16">
-            <Loader2 size={20} className="text-zinc-400 animate-spin" />
+            <Loader2 size="1.25rem" className="text-zinc-400 animate-spin" />
           </div>
         ) : totalParticipantes === 0 ? (
           <div className="text-center py-16">
-            <PieChart size={24} className="text-zinc-800 mx-auto mb-3" />
+            <PieChart size="1.5rem" className="text-zinc-800 mx-auto mb-3" />
             <p className="text-zinc-400 text-xs">Nenhum participante com perfil encontrado</p>
             {totalTickets > 0 && (
-              <p className="text-zinc-700 text-[10px] mt-2">
+              <p className="text-zinc-700 text-[0.625rem] mt-2">
                 {totalTickets} ingresso{totalTickets !== 1 ? 's' : ''} vendido{totalTickets !== 1 ? 's' : ''}, mas sem
                 perfis vinculados
               </p>
@@ -179,19 +179,19 @@ export const AnalyticsSubView: React.FC<{
           <>
             {generoData.length > 0 && (
               <div>
-                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-4">Gênero</p>
+                <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-4">Gênero</p>
                 <VantaPieChart data={generoData} height={140} />
               </div>
             )}
             {idadeData.length > 0 && (
               <div>
-                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-4">Faixa Etária</p>
+                <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-4">Faixa Etária</p>
                 <VantaPieChart data={idadeData} height={140} />
               </div>
             )}
             {cidadeData.length > 0 && (
               <div>
-                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-4">Cidade</p>
+                <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-4">Cidade</p>
                 <VantaPieChart data={cidadeData} height={140} />
               </div>
             )}

@@ -186,7 +186,26 @@ export const getSaldoFinanceiro = async (currentUserId: string): Promise<SaldoFi
     } else {
       totalVendas += brutoTotal;
     }
+
+    // Deduzir reembolsos aprovados do evento
+    const { data: reembolsosEv } = await supabase
+      .from('reembolsos')
+      .select('valor')
+      .eq('evento_id', ev.id)
+      .in('status', ['APROVADO', 'AUTOMATICO'])
+      .limit(500);
+    totalVendas -= (reembolsosEv ?? []).reduce((s, r) => s + Number(r.valor ?? 0), 0);
+
+    // Deduzir chargebacks do evento
+    const { data: chargebacksEv } = await supabase
+      .from('chargebacks')
+      .select('valor')
+      .eq('evento_id', ev.id)
+      .limit(500);
+    totalVendas -= (chargebacksEv ?? []).reduce((s, c) => s + Number(c.valor ?? 0), 0);
   }
+
+  totalVendas = Math.max(0, totalVendas);
 
   // Saques do Supabase
   const { data: saques } = await supabase
@@ -970,12 +989,14 @@ export const getChargebacks = async (): Promise<Chargeback[]> => {
 export const getGatewayCostByEvento = async (
   eventoId: string,
 ): Promise<{ totalCusto: number; totalVendas: number }> => {
+  // Incluir TODOS os tickets que passaram pelo gateway (incluindo reembolsados),
+  // pois o Stripe já cobrou a taxa de processamento na transação original
   const { data } = await supabase
     .from('tickets_caixa')
-    .select('valor, metodo_pagamento')
+    .select('valor, metodo_pagamento, origem')
     .eq('evento_id', eventoId)
-    .in('status', ['DISPONIVEL', 'USADO'])
-    .limit(1000);
+    .in('status', ['DISPONIVEL', 'USADO', 'CANCELADO', 'REEMBOLSADO'])
+    .limit(2000);
 
   if (!data) return { totalCusto: 0, totalVendas: 0 };
   let totalCusto = 0;
@@ -983,6 +1004,9 @@ export const getGatewayCostByEvento = async (
   for (const row of data) {
     const valor = Number(row.valor ?? 0);
     const metodo = ((row.metodo_pagamento as string) ?? 'CREDITO') as MetodoPagamento;
+    const origem = (row.origem as string) ?? '';
+    // Vendas de porta/cortesia não passam pelo gateway
+    if (origem === 'CAIXA' || origem === 'CORTESIA') continue;
     totalVendas += valor;
     totalCusto += calcGatewayCost(valor, metodo);
   }
@@ -991,13 +1015,14 @@ export const getGatewayCostByEvento = async (
 
 /**
  * Calcula custo de gateway global (todos os eventos).
+ * Inclui tickets reembolsados pois o Stripe já cobrou a taxa.
  */
 export const getGatewayCostGlobal = async (): Promise<{ totalCusto: number; totalVendas: number }> => {
   const { data } = await supabase
     .from('tickets_caixa')
-    .select('valor, metodo_pagamento')
-    .in('status', ['DISPONIVEL', 'USADO'])
-    .limit(1000);
+    .select('valor, metodo_pagamento, origem')
+    .in('status', ['DISPONIVEL', 'USADO', 'CANCELADO', 'REEMBOLSADO'])
+    .limit(2000);
 
   if (!data) return { totalCusto: 0, totalVendas: 0 };
   let totalCusto = 0;
@@ -1005,6 +1030,9 @@ export const getGatewayCostGlobal = async (): Promise<{ totalCusto: number; tota
   for (const row of data) {
     const valor = Number(row.valor ?? 0);
     const metodo = ((row.metodo_pagamento as string) ?? 'CREDITO') as MetodoPagamento;
+    const origem = (row.origem as string) ?? '';
+    // Vendas de porta/cortesia não passam pelo gateway
+    if (origem === 'CAIXA' || origem === 'CORTESIA') continue;
     totalVendas += valor;
     totalCusto += calcGatewayCost(valor, metodo);
   }
@@ -1154,8 +1182,29 @@ export const getResumoFinanceiroEvento = async (eventoId: string): Promise<Resum
   const brutoTotal = receitaBruta + receitaListas;
   const gwCost = await getGatewayCostByEvento(eventoId);
   const custoGateway = fees.gatewayMode === 'ABSORVER' ? gwCost.totalCusto : 0;
-  const receitaLiquida = Math.round((brutoTotal - custoGateway) * 100) / 100;
-  const taxaVanta = Math.round((brutoTotal * fees.feePercent + fees.feeFixed * totalVendidos) * 100) / 100;
+
+  // Deduzir reembolsos e chargebacks aprovados
+  const { data: reembolsosData } = await supabase
+    .from('reembolsos')
+    .select('valor')
+    .eq('evento_id', eventoId)
+    .in('status', ['APROVADO', 'AUTOMATICO'])
+    .limit(500);
+  const totalReembolsado = (reembolsosData ?? []).reduce((s, r) => s + Number(r.valor ?? 0), 0);
+
+  const { data: chargebacksData } = await supabase
+    .from('chargebacks')
+    .select('valor')
+    .eq('evento_id', eventoId)
+    .limit(500);
+  const totalChargebacks = (chargebacksData ?? []).reduce((s, c) => s + Number(c.valor ?? 0), 0);
+
+  const receitaLiquida =
+    Math.round(Math.max(0, brutoTotal - custoGateway - totalReembolsado - totalChargebacks) * 100) / 100;
+  const taxaVanta =
+    Math.round(
+      ((brutoTotal - totalReembolsado - totalChargebacks) * fees.feePercent + fees.feeFixed * totalVendidos) * 100,
+    ) / 100;
   const ticketMedio = totalVendidos > 0 ? Math.round((brutoTotal / totalVendidos) * 100) / 100 : 0;
 
   const splitPct = ev.splitProdutor ?? 100;

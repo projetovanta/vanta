@@ -43,8 +43,8 @@ export const LucroPorComunidade: React.FC<Props> = ({
   return (
     <div className="bg-zinc-900/40 border border-white/5 rounded-2xl p-5 space-y-4">
       <div className="flex items-center gap-2">
-        <PieChart size={13} className="text-[#FFD300]" />
-        <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Lucro por Comunidade</p>
+        <PieChart size="0.8125rem" className="text-[#FFD300]" />
+        <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">Lucro por Comunidade</p>
       </div>
 
       <VantaPieChart
@@ -62,13 +62,17 @@ export const LucroPorComunidade: React.FC<Props> = ({
       {/* Eventos da comunidade selecionada */}
       {selectedCom && selectedComId !== '__outros__' && (
         <div className="pt-3 border-t border-white/5 space-y-2">
-          <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Eventos — {selectedCom.nome}</p>
+          <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">
+            Eventos — {selectedCom.nome}
+          </p>
           {selectedCom.eventos.map(ev => {
             const fees = eventosAdminService.getContractedFees(ev.id);
             if (fees.feePercent === 0 && fees.feeFixed === 0) return null;
-            const gmv = ev.lotes.flatMap(l => l.variacoes).reduce((s, v) => s + v.vendidos * v.valor, 0);
+            const gmvBruto = ev.lotes.flatMap(l => l.variacoes).reduce((s, v) => s + v.vendidos * v.valor, 0);
             const ingressos = ev.lotes.flatMap(l => l.variacoes).reduce((s, v) => s + v.vendidos, 0);
-            const taxaV = gmv * fees.feePercent + fees.feeFixed * ingressos;
+            // GMV exibido é bruto (para contexto), taxa VANTA calculada sobre bruto
+            const taxaV = gmvBruto * fees.feePercent + fees.feeFixed * ingressos;
+            const gmv = gmvBruto;
             return (
               <button
                 key={ev.id}
@@ -80,14 +84,14 @@ export const LucroPorComunidade: React.FC<Props> = ({
                 }`}
               >
                 <div className="flex-1 min-w-0">
-                  <p className="text-zinc-300 text-[11px] font-bold truncate">{ev.nome}</p>
-                  <p className="text-zinc-700 text-[8px]">
+                  <p className="text-zinc-300 text-[0.6875rem] font-bold truncate">{ev.nome}</p>
+                  <p className="text-zinc-700 text-[0.5rem]">
                     {ingressos} ingressos · GMV {fmtBRL(gmv)}
                   </p>
                 </div>
                 <p className="text-[#FFD300] text-xs font-bold shrink-0">{fmtBRL(taxaV)}</p>
                 <ChevronRight
-                  size={12}
+                  size="0.75rem"
                   className={`text-zinc-700 shrink-0 transition-transform ${ev.id === selectedEventoId ? 'rotate-90' : ''}`}
                 />
               </button>

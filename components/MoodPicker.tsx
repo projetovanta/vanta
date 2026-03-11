@@ -20,7 +20,7 @@ export const MoodPicker: React.FC<MoodPickerProps> = ({ currentEmoji, currentTex
       onClick={onClose}
     >
       <div
-        className="w-full max-w-md bg-[#111] rounded-t-3xl border-t border-white/10 p-6 space-y-5 animate-in slide-in-from-bottom-10 duration-300"
+        className="w-full max-w-[500px] bg-[#111] rounded-t-3xl border-t border-white/10 p-6 space-y-5 animate-in slide-in-from-bottom-10 duration-300"
         style={{ paddingBottom: 'max(2rem, env(safe-area-inset-bottom))' }}
         onClick={e => e.stopPropagation()}
       >
@@ -30,11 +30,11 @@ export const MoodPicker: React.FC<MoodPickerProps> = ({ currentEmoji, currentTex
             onClick={onClose}
             className="w-8 h-8 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10"
           >
-            <X size={16} className="text-zinc-400" />
+            <X size="1rem" className="text-zinc-400" />
           </button>
         </div>
 
-        <p className="text-[10px] text-zinc-400">Como você está hoje? Seus amigos vão ver.</p>
+        <p className="text-[0.625rem] text-zinc-400">Como você está hoje? Seus amigos vão ver.</p>
 
         {/* Emoji grid */}
         <div className="grid grid-cols-6 gap-2">
@@ -58,7 +58,7 @@ export const MoodPicker: React.FC<MoodPickerProps> = ({ currentEmoji, currentTex
           placeholder="O que rola hoje? (opcional)"
           className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-[#FFD300]/30 placeholder-zinc-700"
         />
-        <p className="text-right text-[9px] text-zinc-700 -mt-3">{text.length}/40</p>
+        <p className="text-right text-[0.5625rem] text-zinc-700 -mt-3">{text.length}/40</p>
 
         {/* Actions */}
         <div className="flex gap-3">
@@ -89,7 +89,7 @@ export const MoodPicker: React.FC<MoodPickerProps> = ({ currentEmoji, currentTex
           </button>
         </div>
 
-        <p className="text-[9px] text-zinc-700 text-center">Expira em 24h automaticamente</p>
+        <p className="text-[0.5625rem] text-zinc-700 text-center">Expira em 24h automaticamente</p>
       </div>
     </div>
   );

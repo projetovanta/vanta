@@ -43,7 +43,7 @@ const StaffRecrutamentoSection: React.FC<{ listaId: string; toastFn?: (t: 'suces
 
   return (
     <div className="mt-6 pt-6 border-t border-white/5">
-      <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest mb-4">Staff do Evento</p>
+      <p className="text-[0.5625rem] text-zinc-400 font-black uppercase tracking-widest mb-4">Staff do Evento</p>
       <StaffRecrutamento
         eventoAdminId={eventoAdminId}
         comunidadeId={comunidadeId}
@@ -194,7 +194,7 @@ export const TabEquipeSocio: React.FC<{
   if (loading) {
     return (
       <div className="flex items-center justify-center py-16">
-        <Loader2 size={20} className="text-zinc-400 animate-spin" />
+        <Loader2 size="1.25rem" className="text-zinc-400 animate-spin" />
       </div>
     );
   }
@@ -204,7 +204,7 @@ export const TabEquipeSocio: React.FC<{
       {/* Busca */}
       <div className="relative">
         <div className="flex items-center gap-3 bg-zinc-900/60 border border-white/5 rounded-xl px-4 py-2.5 focus-within:border-[#FFD300]/30">
-          <Search size={14} className="text-zinc-400 shrink-0" />
+          <Search size="0.875rem" className="text-zinc-400 shrink-0" />
           <input
             value={query}
             onChange={e => {
@@ -223,7 +223,7 @@ export const TabEquipeSocio: React.FC<{
               }}
               className="text-zinc-400 active:text-zinc-400"
             >
-              <X size={13} />
+              <X size="0.8125rem" />
             </button>
           )}
         </div>
@@ -241,7 +241,7 @@ export const TabEquipeSocio: React.FC<{
                 <img loading="lazy" src={m.foto} alt={m.nome} className="w-9 h-9 rounded-full object-cover shrink-0" />
                 <div className="min-w-0">
                   <p className="text-white font-bold text-sm leading-none truncate">{m.nome}</p>
-                  <p className="text-zinc-400 text-[10px] mt-0.5 truncate">{m.email}</p>
+                  <p className="text-zinc-400 text-[0.625rem] mt-0.5 truncate">{m.email}</p>
                 </div>
               </button>
             ))}
@@ -251,8 +251,8 @@ export const TabEquipeSocio: React.FC<{
 
       {membros.length === 0 && (
         <div className="flex flex-col items-center py-10 gap-3">
-          <Users size={28} className="text-zinc-800" />
-          <p className="text-zinc-700 text-[10px] font-black uppercase tracking-widest">
+          <Users size="1.75rem" className="text-zinc-800" />
+          <p className="text-zinc-700 text-[0.625rem] font-black uppercase tracking-widest">
             Nenhum membro na equipe ainda
           </p>
         </div>
@@ -273,7 +273,7 @@ export const TabEquipeSocio: React.FC<{
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-white font-bold text-sm leading-none truncate mb-1">{m.nome}</p>
-                <span className="text-[8px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-zinc-900 text-zinc-400 border border-white/5">
+                <span className="text-[0.5rem] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-zinc-900 text-zinc-400 border border-white/5">
                   {m.papel}
                 </span>
               </div>
@@ -281,7 +281,7 @@ export const TabEquipeSocio: React.FC<{
                 onClick={() => handleRemover(m.id)}
                 className="text-zinc-700 active:text-red-400 transition-colors p-1.5 shrink-0"
               >
-                <Trash2 size={13} />
+                <Trash2 size="0.8125rem" />
               </button>
             </div>
 
@@ -292,8 +292,8 @@ export const TabEquipeSocio: React.FC<{
                   className="w-full flex items-center justify-between px-4 py-3 active:bg-white/3 transition-all"
                 >
                   <div className="text-left">
-                    <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">Liberar Lista</p>
-                    <p className="text-zinc-700 text-[9px] mt-0.5">
+                    <p className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest">Liberar Lista</p>
+                    <p className="text-zinc-700 text-[0.5625rem] mt-0.5">
                       {m.liberar_lista ? 'Pode inserir nomes com as cotas abaixo' : 'Sem acesso à lista de convidados'}
                     </p>
                   </div>
@@ -340,11 +340,13 @@ export const TabEquipeSocio: React.FC<{
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-white font-bold text-base leading-none truncate">{cargoTarget.nome}</p>
-                <p className="text-zinc-400 text-[10px] mt-0.5 truncate">{cargoTarget.email}</p>
+                <p className="text-zinc-400 text-[0.625rem] mt-0.5 truncate">{cargoTarget.email}</p>
               </div>
             </div>
             <div className="p-5 space-y-2">
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-3">Cargo neste evento</p>
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-3">
+                Cargo neste evento
+              </p>
               {PAPEIS.map(p => (
                 <button
                   key={p}
@@ -363,9 +365,9 @@ export const TabEquipeSocio: React.FC<{
             <div className="px-5" style={{ paddingBottom: 'max(2rem, env(safe-area-inset-bottom, 2rem))' }}>
               <button
                 onClick={() => handleAdd(selPapel)}
-                className="w-full py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-[0.3em] rounded-xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all"
+                className="w-full py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-[0.3em] rounded-xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all"
               >
-                <Check size={13} /> Adicionar à Equipe
+                <Check size="0.8125rem" /> Adicionar à Equipe
               </button>
             </div>
           </div>

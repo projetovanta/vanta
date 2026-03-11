@@ -138,8 +138,10 @@ export const ImportarStaffPanel: React.FC<ImportarStaffPanelProps> = ({
       {/* Lista de membros */}
       {eventoOrigemId && membros.length === 0 && (
         <div className="flex flex-col items-center py-8 gap-3">
-          <Users size={24} className="text-zinc-700" />
-          <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">Nenhum membro neste evento</p>
+          <Users size="1.5rem" className="text-zinc-700" />
+          <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest">
+            Nenhum membro neste evento
+          </p>
         </div>
       )}
 
@@ -193,7 +195,7 @@ export const ImportarStaffPanel: React.FC<ImportarStaffPanelProps> = ({
                 {/* Nome + cargo */}
                 <div className="flex-1 min-w-0">
                   <p className="text-white text-sm font-bold truncate">{m.nome}</p>
-                  <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">
+                  <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest">
                     {CARGO_LABELS[m.cargoOriginal]}
                   </p>
                 </div>
@@ -202,10 +204,10 @@ export const ImportarStaffPanel: React.FC<ImportarStaffPanelProps> = ({
                   <button
                     type="button"
                     onClick={() => toggleExpandido(m.userId)}
-                    className="flex items-center gap-1 text-[9px] text-zinc-400 font-black uppercase tracking-wider active:text-white transition-all shrink-0"
+                    className="flex items-center gap-1 text-[0.5625rem] text-zinc-400 font-black uppercase tracking-wider active:text-white transition-all shrink-0"
                   >
                     Permissões
-                    {m.expandido ? <ChevronDown size={10} /> : <ChevronRight size={10} />}
+                    {m.expandido ? <ChevronDown size="0.625rem" /> : <ChevronRight size="0.625rem" />}
                   </button>
                 )}
               </div>
@@ -236,9 +238,9 @@ export const ImportarStaffPanel: React.FC<ImportarStaffPanelProps> = ({
           type="button"
           onClick={handleImportar}
           disabled={importando}
-          className="w-full py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-[0.3em] rounded-xl active:scale-[0.98] transition-all disabled:opacity-50"
+          className="w-full py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-[0.3em] rounded-xl active:scale-[0.98] transition-all disabled:opacity-50"
         >
-          <Download size={13} className="inline mr-2 -mt-0.5" />
+          <Download size="0.8125rem" className="inline mr-2 -mt-0.5" />
           Importar {selecionados.length} membro{selecionados.length > 1 ? 's' : ''}
         </button>
       )}

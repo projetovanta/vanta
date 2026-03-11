@@ -76,7 +76,7 @@ export const PromoterDashboardView: React.FC<{
             <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic">
               Meu Painel
             </h1>
-            <p className="text-[10px] text-zinc-400 font-black uppercase tracking-wider mt-1">
+            <p className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-wider mt-1">
               {listas.length} evento{listas.length !== 1 ? 's' : ''}
             </p>
           </div>
@@ -85,7 +85,7 @@ export const PromoterDashboardView: React.FC<{
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all mt-1"
           >
-            <ArrowLeft size={18} className="text-zinc-400" />
+            <ArrowLeft size="1.125rem" className="text-zinc-400" />
           </button>
         </div>
       </div>
@@ -99,7 +99,7 @@ export const PromoterDashboardView: React.FC<{
             <span>
               {filtroListaId ? metricas.find(m => m.listaId === filtroListaId)?.eventoNome : 'Todos os eventos'}
             </span>
-            <ChevronDown size={14} className="text-zinc-400" />
+            <ChevronDown size="0.875rem" className="text-zinc-400" />
           </button>
           {showDropdown && (
             <div className="absolute left-6 right-6 top-full z-20 bg-zinc-900 border border-white/10 rounded-xl overflow-hidden shadow-xl">
@@ -133,33 +133,33 @@ export const PromoterDashboardView: React.FC<{
         <div className="grid grid-cols-2 gap-2.5 mb-4">
           <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-3 flex flex-col gap-1">
             <div className="flex items-center gap-1.5">
-              <Ticket size={11} className="text-[#FFD300] shrink-0" />
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider">Alocado</p>
+              <Ticket size="0.6875rem" className="text-[#FFD300] shrink-0" />
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-wider">Alocado</p>
             </div>
             <p className="text-lg font-bold text-[#FFD300] leading-none">{kpis.totalAlocado}</p>
-            <p className="text-[9px] text-zinc-400">{kpis.usoPct}% utilizado</p>
+            <p className="text-[0.5625rem] text-zinc-400">{kpis.usoPct}% utilizado</p>
           </div>
           <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-3 flex flex-col gap-1">
             <div className="flex items-center gap-1.5">
-              <Users size={11} className="text-emerald-400 shrink-0" />
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider">Usado</p>
+              <Users size="0.6875rem" className="text-emerald-400 shrink-0" />
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-wider">Usado</p>
             </div>
             <p className="text-lg font-bold text-emerald-400 leading-none">{kpis.totalUsado}</p>
           </div>
           <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-3 flex flex-col gap-1">
             <div className="flex items-center gap-1.5">
-              <UserCheck size={11} className="text-cyan-400 shrink-0" />
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider">Check-in</p>
+              <UserCheck size="0.6875rem" className="text-cyan-400 shrink-0" />
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-wider">Check-in</p>
             </div>
             <p className="text-lg font-bold text-cyan-400 leading-none">{kpis.convPct}%</p>
-            <p className="text-[9px] text-zinc-400">
+            <p className="text-[0.5625rem] text-zinc-400">
               {kpis.totalCheckin}/{kpis.totalConvidados}
             </p>
           </div>
           <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-3 flex flex-col gap-1">
             <div className="flex items-center gap-1.5">
-              <TrendingUp size={11} className="text-blue-400 shrink-0" />
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider">Média/evento</p>
+              <TrendingUp size="0.6875rem" className="text-blue-400 shrink-0" />
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-wider">Média/evento</p>
             </div>
             <p className="text-lg font-bold text-white leading-none">{kpis.mediaUsado.toFixed(0)}</p>
           </div>
@@ -172,11 +172,11 @@ export const PromoterDashboardView: React.FC<{
             }`}
           >
             <div className="flex items-center gap-2">
-              <TrendingUp size={14} className={tendencia === 'acima' ? 'text-emerald-400' : 'text-orange-400'} />
+              <TrendingUp size="0.875rem" className={tendencia === 'acima' ? 'text-emerald-400' : 'text-orange-400'} />
               <p className={`text-xs font-bold ${tendencia === 'acima' ? 'text-emerald-400' : 'text-orange-400'}`}>
                 {tendencia === 'acima' ? 'Acima' : 'Abaixo'} da média
               </p>
-              <p className="text-[10px] text-zinc-400">
+              <p className="text-[0.625rem] text-zinc-400">
                 ({eventoSelecionado?.usado} nomes vs média {kpis.mediaUsado.toFixed(0)})
               </p>
             </div>
@@ -185,7 +185,9 @@ export const PromoterDashboardView: React.FC<{
 
         {metricas.length > 1 && !filtroListaId && (
           <div className="mb-4">
-            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider mb-2">Comparativo por Evento</p>
+            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-wider mb-2">
+              Comparativo por Evento
+            </p>
             <div className="space-y-2">
               {metricas.map(m => {
                 const pct = kpis.mediaUsado > 0 ? (m.usado / kpis.mediaUsado) * 100 : 0;
@@ -204,10 +206,10 @@ export const PromoterDashboardView: React.FC<{
                       />
                     </div>
                     <div className="flex items-center justify-between mt-1">
-                      <p className="text-[9px] text-zinc-400">
+                      <p className="text-[0.5625rem] text-zinc-400">
                         {m.convidados} convidados · {m.checkins} check-ins
                       </p>
-                      <p className="text-[9px] text-zinc-400">
+                      <p className="text-[0.5625rem] text-zinc-400">
                         {m.alocado > 0 ? Math.round((m.usado / m.alocado) * 100) : 0}%
                       </p>
                     </div>
@@ -219,17 +221,17 @@ export const PromoterDashboardView: React.FC<{
         )}
 
         <div className="space-y-2">
-          <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider">Ações rápidas</p>
+          <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-wider">Ações rápidas</p>
           {onNavigateGuestlist && (
             <button
               onClick={onNavigateGuestlist}
               className="w-full flex items-center justify-between bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 active:scale-[0.98] transition-all"
             >
               <div className="flex items-center gap-3">
-                <List size={16} className="text-[#FFD300] shrink-0" />
+                <List size="1rem" className="text-[#FFD300] shrink-0" />
                 <p className="text-sm text-white font-bold">Inserir Nomes</p>
               </div>
-              <ChevronRight size={14} className="text-zinc-400 shrink-0" />
+              <ChevronRight size="0.875rem" className="text-zinc-400 shrink-0" />
             </button>
           )}
           {(filtroListaId ? [listas.find(l => l.id === filtroListaId)!] : listas).filter(Boolean).map(lista => (
@@ -240,13 +242,13 @@ export const PromoterDashboardView: React.FC<{
               className="w-full flex items-center justify-between bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 active:scale-[0.98] transition-all disabled:opacity-50"
             >
               <div className="flex items-center gap-3 min-w-0">
-                <Users size={16} className="text-emerald-400 shrink-0" />
+                <Users size="1rem" className="text-emerald-400 shrink-0" />
                 <div className="min-w-0">
                   <p className="text-sm text-white font-bold truncate">Ver Cotas</p>
-                  <p className="text-[10px] text-zinc-400 truncate">{lista.eventoNome}</p>
+                  <p className="text-[0.625rem] text-zinc-400 truncate">{lista.eventoNome}</p>
                 </div>
               </div>
-              <ChevronRight size={14} className="text-zinc-400 shrink-0" />
+              <ChevronRight size="0.875rem" className="text-zinc-400 shrink-0" />
             </button>
           ))}
         </div>
@@ -254,9 +256,9 @@ export const PromoterDashboardView: React.FC<{
         {listas.length === 0 && (
           <div className="flex flex-col items-center py-12 gap-3">
             <div className="w-14 h-14 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center">
-              <Users size={24} className="text-zinc-700" />
+              <Users size="1.5rem" className="text-zinc-700" />
             </div>
-            <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest text-center">
+            <p className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest text-center">
               Nenhuma cota atribuída ainda.
             </p>
           </div>

@@ -4,7 +4,19 @@
  */
 
 import React, { useState } from 'react';
-import { ArrowLeft, Settings, Crown, Compass, SlidersHorizontal, MapPin, Store, Ticket } from 'lucide-react';
+import {
+  ArrowLeft,
+  Settings,
+  Crown,
+  Compass,
+  SlidersHorizontal,
+  MapPin,
+  Store,
+  Ticket,
+  Briefcase,
+  Bell,
+  Sparkles,
+} from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
 import { PlanosMaisVantaView } from './PlanosMaisVantaView';
 import { AssinaturasMaisVantaView } from './AssinaturasMaisVantaView';
@@ -13,7 +25,20 @@ import { ConfigMaisVantaView } from './ConfigMaisVantaView';
 import { CidadesMaisVantaView } from './CidadesMaisVantaView';
 import { ParceirosMaisVantaView } from './ParceirosMaisVantaView';
 import { DealsMaisVantaView } from './DealsMaisVantaView';
-type AbaHub = 'PLANOS' | 'ASSINATURAS' | 'PASSAPORTES' | 'CIDADES' | 'PARCEIROS' | 'DEALS' | 'CONFIG';
+import { PlanosProdutor } from './PlanosProdutor/PlanosProdutor';
+import { NotifMVPendentesView } from './maisVanta/NotifMVPendentesView';
+import { ConviteEspecialMVView } from './maisVanta/ConviteEspecialMVView';
+type AbaHub =
+  | 'PLANOS'
+  | 'PLANOS_PRODUTOR'
+  | 'ASSINATURAS'
+  | 'PASSAPORTES'
+  | 'CIDADES'
+  | 'PARCEIROS'
+  | 'DEALS'
+  | 'NOTIF_MV'
+  | 'CONVITES_ESP'
+  | 'CONFIG';
 
 export const MaisVantaHubView: React.FC<{
   onBack: () => void;
@@ -24,9 +49,12 @@ export const MaisVantaHubView: React.FC<{
 
   const abas: { id: AbaHub; label: string; icon: typeof Settings }[] = [
     { id: 'PLANOS', label: 'Planos & Tiers', icon: Settings },
+    { id: 'PLANOS_PRODUTOR', label: 'Planos Produtor', icon: Briefcase },
     { id: 'CIDADES', label: 'Cidades', icon: MapPin },
     { id: 'PARCEIROS', label: 'Parceiros', icon: Store },
     { id: 'DEALS', label: 'Deals', icon: Ticket },
+    { id: 'CONVITES_ESP', label: 'Convites', icon: Sparkles },
+    { id: 'NOTIF_MV', label: 'Notif Produtor', icon: Bell },
     { id: 'ASSINATURAS', label: 'Assinaturas', icon: Crown },
     { id: 'PASSAPORTES', label: 'Passaportes', icon: Compass },
     { id: 'CONFIG', label: 'Config', icon: SlidersHorizontal },
@@ -51,25 +79,25 @@ export const MaisVantaHubView: React.FC<{
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
           >
-            <ArrowLeft size={18} className="text-zinc-400" />
+            <ArrowLeft size="1.125rem" className="text-zinc-400" />
           </button>
         </div>
 
         {/* Abas */}
-        <div className="flex gap-1.5 overflow-x-auto no-scrollbar">
+        <div className="flex flex-wrap gap-1.5">
           {abas.map(a => {
             const Icon = a.icon;
             return (
               <button
                 key={a.id}
                 onClick={() => setAba(a.id)}
-                className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider shrink-0 border transition-all flex items-center gap-1.5 ${
+                className={`px-3 py-1.5 rounded-lg text-[0.5625rem] font-black uppercase tracking-wider border transition-all flex items-center gap-1.5 ${
                   aba === a.id
                     ? 'bg-[#FFD300] text-black border-transparent'
                     : 'bg-zinc-900/60 text-zinc-400 border-white/5 active:bg-zinc-800'
                 }`}
               >
-                <Icon size={12} />
+                <Icon size="0.75rem" />
                 {a.label}
               </button>
             );
@@ -80,9 +108,12 @@ export const MaisVantaHubView: React.FC<{
       {/* Conteúdo das abas */}
       <div className="flex-1 overflow-hidden flex flex-col">
         {aba === 'PLANOS' && <PlanosMaisVantaView onBack={() => {}} />}
+        {aba === 'PLANOS_PRODUTOR' && <PlanosProdutor />}
         {aba === 'CIDADES' && <CidadesMaisVantaView />}
         {aba === 'PARCEIROS' && <ParceirosMaisVantaView />}
         {aba === 'DEALS' && <DealsMaisVantaView />}
+        {aba === 'CONVITES_ESP' && <ConviteEspecialMVView />}
+        {aba === 'NOTIF_MV' && <NotifMVPendentesView />}
         {aba === 'ASSINATURAS' && <AssinaturasMaisVantaView onBack={() => {}} />}
         {aba === 'PASSAPORTES' && <PassaportesMaisVantaView onBack={() => {}} masterId={masterId} />}
         {aba === 'CONFIG' && <ConfigMaisVantaView />}

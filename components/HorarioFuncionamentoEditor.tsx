@@ -6,7 +6,7 @@ const DIAS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'] as const;
 
 const inputCls =
   'w-full bg-zinc-900/60 border border-white/5 rounded-lg px-2 py-1.5 text-white text-xs outline-none focus:border-[#FFD300]/30 text-center';
-const labelCls = 'text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block';
+const labelCls = 'text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block';
 
 export const DEFAULT_HORARIOS: HorarioSemanal[] = [
   { dia: 0, aberto: false, abertura: '00:00', fechamento: '00:00' },
@@ -38,7 +38,7 @@ export const HorarioFuncionamentoEditor: React.FC<{
             }`}
           >
             {/* Dia */}
-            <span className="text-[10px] font-bold text-zinc-400 w-8 shrink-0">{DIAS[h.dia]}</span>
+            <span className="text-[0.625rem] font-bold text-zinc-400 w-8 shrink-0">{DIAS[h.dia]}</span>
 
             {/* Toggle */}
             <button
@@ -62,7 +62,7 @@ export const HorarioFuncionamentoEditor: React.FC<{
                   onChange={v => update(h.dia, 'abertura', v)}
                   className={inputCls + ' flex-1 min-w-0'}
                 />
-                <span className="text-zinc-400 text-[10px] shrink-0">às</span>
+                <span className="text-zinc-400 text-[0.625rem] shrink-0">às</span>
                 <VantaTimePicker
                   value={h.fechamento}
                   onChange={v => update(h.dia, 'fechamento', v)}
@@ -70,7 +70,7 @@ export const HorarioFuncionamentoEditor: React.FC<{
                 />
               </div>
             ) : (
-              <span className="text-zinc-400 text-[10px] font-bold uppercase tracking-wider">Fechado</span>
+              <span className="text-zinc-400 text-[0.625rem] font-bold uppercase tracking-wider">Fechado</span>
             )}
           </div>
         ))}

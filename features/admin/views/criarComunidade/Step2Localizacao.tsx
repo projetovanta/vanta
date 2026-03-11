@@ -4,7 +4,7 @@ import { buscarCep, formatCep, geocodeEndereco } from '../../../../services/cepS
 
 const inputCls =
   'w-full bg-zinc-900/60 border border-white/5 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-[#FFD300]/30 placeholder-zinc-700';
-const labelCls = 'text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block';
+const labelCls = 'text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block';
 
 export const Step2Localizacao: React.FC<{
   cep: string;
@@ -68,16 +68,16 @@ export const Step2Localizacao: React.FC<{
             {buscando && (
               <div className="w-4 h-4 border-2 border-[#FFD300]/30 border-t-[#FFD300] rounded-full animate-spin" />
             )}
-            {cepOk && !buscando && <Check size={14} className="text-emerald-400" />}
+            {cepOk && !buscando && <Check size="0.875rem" className="text-emerald-400" />}
           </div>
         </div>
         {cepOk && (
-          <p className="text-emerald-400 text-[9px] font-black uppercase tracking-widest mt-1">
+          <p className="text-emerald-400 text-[0.5625rem] font-black uppercase tracking-widest mt-1">
             CEP encontrado — endereço preenchido automaticamente
           </p>
         )}
         {!cepOk && p.cep.replace(/\D/g, '').length === 8 && !buscando && (
-          <p className="text-amber-400 text-[9px] font-black uppercase tracking-widest mt-1">
+          <p className="text-amber-400 text-[0.5625rem] font-black uppercase tracking-widest mt-1">
             CEP não encontrado — preencha os campos manualmente
           </p>
         )}
@@ -148,18 +148,20 @@ export const Step2Localizacao: React.FC<{
       {/* Coords info */}
       {p.coords ? (
         <div className="flex items-center gap-2 bg-emerald-500/5 border border-emerald-500/15 rounded-xl px-4 py-3">
-          <MapPin size={13} className="text-emerald-400 shrink-0" />
+          <MapPin size="0.8125rem" className="text-emerald-400 shrink-0" />
           <div>
-            <p className="text-emerald-400 text-[9px] font-black uppercase tracking-widest">Coordenadas definidas</p>
-            <p className="text-zinc-400 text-[8px] mt-0.5">
+            <p className="text-emerald-400 text-[0.5625rem] font-black uppercase tracking-widest">
+              Coordenadas definidas
+            </p>
+            <p className="text-zinc-400 text-[0.5rem] mt-0.5">
               Lat {p.coords.lat.toFixed(4)} · Lng {p.coords.lng.toFixed(4)}
             </p>
           </div>
         </div>
       ) : (
         <div className="flex items-center gap-2 bg-zinc-900/40 border border-white/5 rounded-xl px-4 py-3">
-          <MapPin size={13} className="text-zinc-400 shrink-0" />
-          <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">
+          <MapPin size="0.8125rem" className="text-zinc-400 shrink-0" />
+          <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest">
             Digite o CEP para obter coordenadas automáticas
           </p>
         </div>

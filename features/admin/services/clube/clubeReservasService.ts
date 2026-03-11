@@ -37,6 +37,18 @@ export async function resgatarBeneficio(
   eventoId: string,
   userId: string,
 ): Promise<ResgateMV | null> {
+  // Verificar vagas disponíveis antes de resgatar
+  const { data: config } = await supabase
+    .from('mais_vanta_config_evento')
+    .select('vagas_limite, vagas_resgatadas')
+    .eq('id', beneficioId)
+    .maybeSingle();
+  if (config?.vagas_limite != null && config.vagas_limite > 0) {
+    if ((config.vagas_resgatadas ?? 0) >= config.vagas_limite) {
+      console.error('[clubeReservas] resgatarBeneficio: vagas esgotadas');
+      return null;
+    }
+  }
   const { data, error } = await supabase
     .from('resgates_mv_evento')
     .insert({ beneficio_id: beneficioId, evento_id: eventoId, user_id: userId })
@@ -46,6 +58,11 @@ export async function resgatarBeneficio(
     console.error('[clubeReservas] resgatarBeneficio:', error.message);
     return null;
   }
+  // Incrementar vagas_resgatadas
+  await supabase
+    .from('mais_vanta_config_evento')
+    .update({ vagas_resgatadas: (config?.vagas_resgatadas ?? 0) + 1 })
+    .eq('id', beneficioId);
   return rowToResgate(data);
 }
 
@@ -98,6 +115,14 @@ export async function getResgatesPendentePost(): Promise<ResgateMV[]> {
     .eq('status', 'PENDENTE_POST')
     .eq('post_verificado', false);
   return (data ?? []).map(rowToResgate);
+}
+
+/** Membro envia link do post (sem marcar como verificado) */
+export async function enviarPostUrl(resgateId: string, postUrl: string): Promise<void> {
+  await supabase
+    .from('resgates_mv_evento')
+    .update({ post_url: postUrl, status: 'PENDENTE_POST' } as never)
+    .eq('id', resgateId);
 }
 
 /** Verificar post de resgate (admin) */

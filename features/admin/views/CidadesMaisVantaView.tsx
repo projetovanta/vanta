@@ -63,7 +63,7 @@ export const CidadesMaisVantaView: React.FC = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <MapPin size={18} className="text-[#FFD300]" />
+          <MapPin size="1.125rem" className="text-[#FFD300]" />
           <h2 className="text-white font-bold text-sm">Cidades do Programa</h2>
           <span className="text-zinc-400 text-xs">({cidades.length})</span>
         </div>
@@ -74,9 +74,9 @@ export const CidadesMaisVantaView: React.FC = () => {
             setNome('');
             setEstado('');
           }}
-          className="flex items-center gap-1.5 px-3 py-1.5 bg-[#FFD300] text-black rounded-lg text-[10px] font-black uppercase tracking-wider active:scale-95 transition-all"
+          className="flex items-center gap-1.5 px-3 py-1.5 bg-[#FFD300] text-black rounded-lg text-[0.625rem] font-black uppercase tracking-wider active:scale-95 transition-all"
         >
-          <Plus size={12} />
+          <Plus size="0.75rem" />
           Nova Cidade
         </button>
       </div>
@@ -100,7 +100,7 @@ export const CidadesMaisVantaView: React.FC = () => {
           <div className="flex gap-2">
             <button
               onClick={handleSave}
-              className="flex-1 py-2 bg-[#FFD300] text-black rounded-lg text-[10px] font-black uppercase tracking-wider active:scale-95 transition-all"
+              className="flex-1 py-2 bg-[#FFD300] text-black rounded-lg text-[0.625rem] font-black uppercase tracking-wider active:scale-95 transition-all"
             >
               {editId ? 'Salvar' : 'Criar'}
             </button>
@@ -109,7 +109,7 @@ export const CidadesMaisVantaView: React.FC = () => {
                 setShowForm(false);
                 setEditId(null);
               }}
-              className="px-4 py-2 bg-zinc-800 text-zinc-400 rounded-lg text-[10px] font-black uppercase tracking-wider active:scale-95 transition-all"
+              className="px-4 py-2 bg-zinc-800 text-zinc-400 rounded-lg text-[0.625rem] font-black uppercase tracking-wider active:scale-95 transition-all"
             >
               Cancelar
             </button>
@@ -124,7 +124,7 @@ export const CidadesMaisVantaView: React.FC = () => {
         </div>
       ) : cidades.length === 0 ? (
         <div className="text-center py-12">
-          <MapPin size={32} className="text-zinc-700 mx-auto mb-2" />
+          <MapPin size="2rem" className="text-zinc-700 mx-auto mb-2" />
           <p className="text-zinc-400 text-xs">Nenhuma cidade cadastrada</p>
         </div>
       ) : (
@@ -137,15 +137,15 @@ export const CidadesMaisVantaView: React.FC = () => {
               }`}
             >
               <div className="w-9 h-9 bg-zinc-800 rounded-full flex items-center justify-center shrink-0">
-                <MapPin size={16} className="text-[#FFD300]" />
+                <MapPin size="1rem" className="text-[#FFD300]" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-white text-sm font-semibold truncate">{c.nome}</p>
-                <div className="flex items-center gap-2 text-[10px] text-zinc-400">
+                <div className="flex items-center gap-2 text-[0.625rem] text-zinc-400">
                   {c.estado && <span>{c.estado}</span>}
                   {c.gerenteId && (
                     <span className="flex items-center gap-0.5">
-                      <UserCheck size={10} />
+                      <UserCheck size="0.625rem" />
                       Gerente definido
                     </span>
                   )}
@@ -157,16 +157,16 @@ export const CidadesMaisVantaView: React.FC = () => {
                   onClick={() => startEdit(c)}
                   className="w-7 h-7 bg-zinc-800 rounded-full flex items-center justify-center border border-white/5 active:scale-90 transition-all"
                 >
-                  <Edit3 size={12} className="text-zinc-400" />
+                  <Edit3 size="0.75rem" className="text-zinc-400" />
                 </button>
                 <button
                   onClick={() => toggleAtivo(c)}
                   className="w-7 h-7 bg-zinc-800 rounded-full flex items-center justify-center border border-white/5 active:scale-90 transition-all"
                 >
                   {c.ativo ? (
-                    <ToggleRight size={14} className="text-green-400" />
+                    <ToggleRight size="0.875rem" className="text-green-400" />
                   ) : (
-                    <ToggleLeft size={14} className="text-zinc-400" />
+                    <ToggleLeft size="0.875rem" className="text-zinc-400" />
                   )}
                 </button>
               </div>

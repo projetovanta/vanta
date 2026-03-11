@@ -52,7 +52,7 @@ export class ErrorBoundary extends BaseComponent {
           Recarregar
         </button>
         {import.meta.env.DEV && this.state.error && (
-          <pre className="mt-6 max-w-sm overflow-auto rounded-lg bg-white/5 p-4 text-left text-[10px] text-red-400">
+          <pre className="mt-6 max-w-sm overflow-auto rounded-lg bg-white/5 p-4 text-left text-[0.625rem] text-red-400">
             {this.state.error.message}
           </pre>
         )}

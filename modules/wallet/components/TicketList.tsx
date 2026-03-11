@@ -64,17 +64,17 @@ const TransferirModal: React.FC<{
 
         <div className="flex items-start justify-between">
           <div>
-            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">Transferir Ingresso</p>
+            <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest">Transferir Ingresso</p>
             <p className="text-white font-bold text-base mt-0.5 truncate">{ticket.tituloEvento}</p>
             {ticket.variacaoLabel && <p className="text-zinc-400 text-xs mt-0.5">{ticket.variacaoLabel}</p>}
           </div>
           <button onClick={onClose} className="p-1.5 text-zinc-400 active:text-white transition-colors">
-            <X size={14} />
+            <X size="0.875rem" />
           </button>
         </div>
 
         <div className="space-y-2">
-          <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">Para quem?</p>
+          <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest">Para quem?</p>
           <input
             type="text"
             placeholder="Buscar membro por nome..."
@@ -113,7 +113,7 @@ const TransferirModal: React.FC<{
                 className="w-7 h-7 rounded-full object-cover shrink-0"
               />
               <p className="text-white text-sm flex-1 truncate">{destinatario.nome}</p>
-              <Check size={14} className="text-[#FFD300] shrink-0" />
+              <Check size="0.875rem" className="text-[#FFD300] shrink-0" />
             </div>
           )}
         </div>
@@ -121,12 +121,12 @@ const TransferirModal: React.FC<{
         <button
           onClick={() => destinatario && onConfirmar(destinatario.id, destinatario.nome)}
           disabled={!destinatario}
-          className="w-full py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl font-bold text-[10px] uppercase tracking-[0.2em] text-white active:scale-95 transition-all disabled:opacity-30 disabled:scale-100"
+          className="w-full py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl font-bold text-[0.625rem] uppercase tracking-[0.2em] text-white active:scale-95 transition-all disabled:opacity-30 disabled:scale-100"
         >
           Transferir Ingresso
         </button>
 
-        <p className="text-center text-zinc-700 text-[8px]">
+        <p className="text-center text-zinc-700 text-[0.5rem]">
           Após a transferência, o ingresso sai da sua carteira permanentemente.
         </p>
       </div>
@@ -167,9 +167,9 @@ export const TicketList: React.FC<TicketListProps> = React.memo(
                   />
                   <div className="w-12 h-12 bg-black rounded-xl flex items-center justify-center shrink-0 border border-white/5">
                     {isPast ? (
-                      <Lock size={20} className="text-zinc-400" />
+                      <Lock size="1.25rem" className="text-zinc-400" />
                     ) : (
-                      <QrCode size={20} className="text-white" />
+                      <QrCode size="1.25rem" className="text-white" />
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -179,12 +179,12 @@ export const TicketList: React.FC<TicketListProps> = React.memo(
                       {ticket.variacaoLabel ? ` · ${ticket.variacaoLabel}` : ''}
                     </p>
                     {ticket.isAcompanhante && ticket.nomeTitular && (
-                      <p className="text-cyan-400/80 text-[9px] mt-1 flex items-center gap-1 font-bold">
-                        <UserPlus size={9} /> Acompanhante · {ticket.nomeTitular}
+                      <p className="text-cyan-400/80 text-[0.5625rem] mt-1 flex items-center gap-1 font-bold">
+                        <UserPlus size="0.5625rem" /> Acompanhante · {ticket.nomeTitular}
                       </p>
                     )}
                     <span
-                      className={`inline-block mt-2 text-[9px] px-2 py-0.5 rounded border uppercase font-bold tracking-wider ${
+                      className={`inline-block mt-2 text-[0.5625rem] px-2 py-0.5 rounded border uppercase font-bold tracking-wider ${
                         ticket.status === 'TRANSFERIDO'
                           ? 'bg-purple-900/30 text-purple-400 border-purple-500/20'
                           : isPast
@@ -211,9 +211,9 @@ export const TicketList: React.FC<TicketListProps> = React.memo(
                         e.stopPropagation();
                         setTransferTarget(ticket);
                       }}
-                      className="shrink-0 flex items-center gap-1.5 px-3 py-2 bg-purple-950/40 border border-purple-500/20 text-purple-400 rounded-xl text-[9px] font-black uppercase tracking-wider active:scale-90 transition-all"
+                      className="shrink-0 flex items-center gap-1.5 px-3 py-2 bg-purple-950/40 border border-purple-500/20 text-purple-400 rounded-xl text-[0.5625rem] font-black uppercase tracking-wider active:scale-90 transition-all"
                     >
-                      <ArrowRightLeft size={10} />
+                      <ArrowRightLeft size="0.625rem" />
                       Transferir
                     </button>
                   )}
@@ -221,7 +221,7 @@ export const TicketList: React.FC<TicketListProps> = React.memo(
                   {ticket.status === 'USADO' && (
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden rounded-2xl">
                       <span
-                        className="text-[9px] font-black uppercase tracking-[0.3em] px-5 py-1.5 border-2 border-emerald-500/40 text-emerald-500/40 rounded"
+                        className="text-[0.5625rem] font-black uppercase tracking-[0.3em] px-5 py-1.5 border-2 border-emerald-500/40 text-emerald-500/40 rounded"
                         style={{ transform: 'rotate(-22deg)' }}
                       >
                         UTILIZADO
@@ -231,7 +231,7 @@ export const TicketList: React.FC<TicketListProps> = React.memo(
                   {ticket.status === 'TRANSFERIDO' && (
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden rounded-2xl">
                       <span
-                        className="text-[9px] font-black uppercase tracking-[0.3em] px-5 py-1.5 border-2 border-yellow-500/40 text-yellow-500/40 rounded"
+                        className="text-[0.5625rem] font-black uppercase tracking-[0.3em] px-5 py-1.5 border-2 border-yellow-500/40 text-yellow-500/40 rounded"
                         style={{ transform: 'rotate(-22deg)' }}
                       >
                         TRANSFERIDO
@@ -241,7 +241,7 @@ export const TicketList: React.FC<TicketListProps> = React.memo(
                   {ticket.status === 'EXPIRADO' && (
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden rounded-2xl">
                       <span
-                        className="text-[9px] font-black uppercase tracking-[0.3em] px-5 py-1.5 border-2 border-red-500/40 text-red-500/40 rounded"
+                        className="text-[0.5625rem] font-black uppercase tracking-[0.3em] px-5 py-1.5 border-2 border-red-500/40 text-red-500/40 rounded"
                         style={{ transform: 'rotate(-22deg)' }}
                       >
                         NÃO UTILIZADO
@@ -273,16 +273,16 @@ export const TicketList: React.FC<TicketListProps> = React.memo(
                     className={`w-12 h-12 bg-black rounded-xl flex items-center justify-center shrink-0 border border-white/5 ${!isPast ? 'cursor-pointer active:scale-90 transition-transform' : ''}`}
                   >
                     {isPast ? (
-                      <Lock size={20} className="text-zinc-400" />
+                      <Lock size="1.25rem" className="text-zinc-400" />
                     ) : (
-                      <Gift size={20} className="text-[#FFD300]" />
+                      <Gift size="1.25rem" className="text-[#FFD300]" />
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
                     <h3 className="font-bold text-white text-sm truncate">{ticket.tituloEvento}</h3>
                     <p className="text-zinc-400 text-xs mt-0.5">{ticket.dataEvento}</p>
                     <span
-                      className={`inline-block mt-2 text-[9px] px-2 py-0.5 rounded border uppercase font-bold tracking-wider ${isPast ? 'bg-zinc-800 text-zinc-400 border-zinc-700' : 'bg-[#FFD300]/10 text-[#FFD300] border-[#FFD300]/20'}`}
+                      className={`inline-block mt-2 text-[0.5625rem] px-2 py-0.5 rounded border uppercase font-bold tracking-wider ${isPast ? 'bg-zinc-800 text-zinc-400 border-zinc-700' : 'bg-[#FFD300]/10 text-[#FFD300] border-[#FFD300]/20'}`}
                     >
                       {isPast ? 'Encerrado' : 'Cortesia'}
                     </span>
@@ -293,9 +293,9 @@ export const TicketList: React.FC<TicketListProps> = React.memo(
                         e.stopPropagation();
                         onDevolverCortesia(ticket);
                       }}
-                      className="shrink-0 flex items-center gap-1.5 px-3 py-2 bg-red-950/40 border border-red-500/20 text-red-400 rounded-xl text-[9px] font-black uppercase tracking-wider active:scale-90 transition-all"
+                      className="shrink-0 flex items-center gap-1.5 px-3 py-2 bg-red-950/40 border border-red-500/20 text-red-400 rounded-xl text-[0.5625rem] font-black uppercase tracking-wider active:scale-90 transition-all"
                     >
-                      <RotateCcw size={10} />
+                      <RotateCcw size="0.625rem" />
                       Devolver
                     </button>
                   )}

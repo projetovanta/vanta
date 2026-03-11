@@ -94,23 +94,23 @@ const ReembolsoModal: React.FC<{
 
         <div className="flex items-start gap-3">
           <div className="w-10 h-10 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center shrink-0">
-            <ReembolsoIcon size={18} className="text-orange-400" />
+            <ReembolsoIcon size="1.125rem" className="text-orange-400" />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">Solicitar Reembolso</p>
+            <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest">Solicitar Reembolso</p>
             <p className="text-white font-bold text-base mt-0.5 truncate">{ticket.tituloEvento}</p>
             {ticket.variacaoLabel && <p className="text-zinc-400 text-xs mt-0.5">{ticket.variacaoLabel}</p>}
           </div>
           <button onClick={onClose} className="p-1.5 text-zinc-400 active:text-white transition-colors">
-            <X size={14} />
+            <X size="0.875rem" />
           </button>
         </div>
 
         {elegibilidade && !elegibilidade.pode && (
           <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-4 space-y-2">
             <p className="text-red-400 font-bold text-sm">Não elegível para reembolso automático</p>
-            <p className="text-zinc-400 text-[9px]">{elegibilidade.motivo}</p>
-            <p className="text-zinc-400 text-[9px] mt-3">
+            <p className="text-zinc-400 text-[0.5625rem]">{elegibilidade.motivo}</p>
+            <p className="text-zinc-400 text-[0.5625rem] mt-3">
               Entre em contato com o produtor se você acha que isso é um erro.
             </p>
           </div>
@@ -120,26 +120,26 @@ const ReembolsoModal: React.FC<{
           <>
             <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-4 space-y-2">
               <p className="text-emerald-400 font-bold text-sm">Você está elegível para reembolso</p>
-              <p className="text-zinc-400 text-[9px]">
+              <p className="text-zinc-400 text-[0.5625rem]">
                 Direito de arrependimento (CDC Art. 49) — você tem 7 dias a partir da compra e no mínimo 48h antes do
                 evento.
               </p>
             </div>
 
-            {erro && <p className="text-red-400 text-[10px] font-black uppercase tracking-widest">{erro}</p>}
+            {erro && <p className="text-red-400 text-[0.625rem] font-black uppercase tracking-widest">{erro}</p>}
 
             <button
               onClick={handleConfirmar}
               disabled={loading}
-              className="w-full py-4 bg-orange-500 text-white font-black text-[10px] uppercase tracking-[0.2em] rounded-xl flex items-center justify-center gap-2 active:scale-[0.97] transition-all disabled:opacity-50 disabled:pointer-events-none"
+              className="w-full py-4 bg-orange-500 text-white font-black text-[0.625rem] uppercase tracking-[0.2em] rounded-xl flex items-center justify-center gap-2 active:scale-[0.97] transition-all disabled:opacity-50 disabled:pointer-events-none"
             >
               {loading ? (
                 <>
-                  <Loader2 size={14} className="animate-spin" /> Processando...
+                  <Loader2 size="0.875rem" className="animate-spin" /> Processando...
                 </>
               ) : (
                 <>
-                  <Check size={14} /> Solicitar Reembolso
+                  <Check size="0.875rem" /> Solicitar Reembolso
                 </>
               )}
             </button>
@@ -203,17 +203,17 @@ const TransferirModal: React.FC<{
 
         <div className="flex items-start justify-between">
           <div>
-            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">Transferir Ingresso</p>
+            <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest">Transferir Ingresso</p>
             <p className="text-white font-bold text-base mt-0.5 truncate">{ticket.tituloEvento}</p>
             {ticket.variacaoLabel && <p className="text-zinc-400 text-xs mt-0.5">{ticket.variacaoLabel}</p>}
           </div>
           <button onClick={onClose} className="p-1.5 text-zinc-400 active:text-white transition-colors">
-            <X size={14} />
+            <X size="0.875rem" />
           </button>
         </div>
 
         <div className="space-y-2">
-          <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">Para quem?</p>
+          <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest">Para quem?</p>
           <input
             type="text"
             placeholder="Buscar membro por nome..."
@@ -255,7 +255,7 @@ const TransferirModal: React.FC<{
                 className="w-7 h-7 rounded-full object-cover shrink-0"
               />
               <p className="text-white text-sm flex-1 truncate">{destinatario.nome}</p>
-              <Check size={14} className="text-[#FFD300] shrink-0" />
+              <Check size="0.875rem" className="text-[#FFD300] shrink-0" />
             </div>
           )}
         </div>
@@ -263,11 +263,11 @@ const TransferirModal: React.FC<{
         <button
           onClick={() => destinatario && onConfirmar(destinatario.id, destinatario.nome)}
           disabled={!destinatario}
-          className="w-full py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl font-bold text-[10px] uppercase tracking-[0.2em] text-white active:scale-95 transition-all disabled:opacity-30 disabled:scale-100"
+          className="w-full py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl font-bold text-[0.625rem] uppercase tracking-[0.2em] text-white active:scale-95 transition-all disabled:opacity-30 disabled:scale-100"
         >
           Transferir Ingresso
         </button>
-        <p className="text-center text-zinc-700 text-[8px]">
+        <p className="text-center text-zinc-700 text-[0.5rem]">
           Após a transferência, o ingresso sai da sua carteira permanentemente.
         </p>
       </div>
@@ -323,7 +323,7 @@ const TitularModal: React.FC<{
         <div className="w-10 h-1 bg-zinc-700 rounded-full mx-auto" />
 
         <div>
-          <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">Dados do Titular</p>
+          <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest">Dados do Titular</p>
           <p className="text-white font-bold text-base mt-0.5">Preencha para usar o ingresso</p>
           <p className="text-zinc-400 text-xs mt-1">
             {ticket.variacaoLabel ? `${ticket.tituloEvento} · ${ticket.variacaoLabel}` : ticket.tituloEvento}
@@ -332,7 +332,7 @@ const TitularModal: React.FC<{
 
         <div className="space-y-3">
           <div>
-            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5">Nome completo</p>
+            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5">Nome completo</p>
             <input
               type="text"
               placeholder="Nome do titular do ingresso"
@@ -343,7 +343,7 @@ const TitularModal: React.FC<{
             />
           </div>
           <div>
-            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5">CPF</p>
+            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5">CPF</p>
             <input
               type="text"
               inputMode="numeric"
@@ -353,21 +353,21 @@ const TitularModal: React.FC<{
               className="w-full bg-zinc-900/60 border border-white/5 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-[#FFD300]/30 placeholder-zinc-700"
             />
           </div>
-          {erro && <p className="text-red-400 text-[10px] font-black uppercase tracking-widest">{erro}</p>}
+          {erro && <p className="text-red-400 text-[0.625rem] font-black uppercase tracking-widest">{erro}</p>}
         </div>
 
         <button
           onClick={handleSave}
           disabled={!valid || loading}
-          className="w-full py-4 bg-[#FFD300] text-black font-black text-[10px] uppercase tracking-[0.2em] rounded-xl flex items-center justify-center gap-2 active:scale-[0.97] transition-all disabled:opacity-30 disabled:pointer-events-none"
+          className="w-full py-4 bg-[#FFD300] text-black font-black text-[0.625rem] uppercase tracking-[0.2em] rounded-xl flex items-center justify-center gap-2 active:scale-[0.97] transition-all disabled:opacity-30 disabled:pointer-events-none"
         >
           {loading ? (
             <>
-              <Loader2 size={14} className="animate-spin" /> Salvando...
+              <Loader2 size="0.875rem" className="animate-spin" /> Salvando...
             </>
           ) : (
             <>
-              <Check size={14} /> Confirmar Titular
+              <Check size="0.875rem" /> Confirmar Titular
             </>
           )}
         </button>
@@ -403,12 +403,12 @@ const MiniQR: React.FC<{ ticketId: string; accentBorder: string }> = ({ ticketId
 
   return (
     <div className="relative w-full h-full bg-white rounded-2xl p-2 flex items-center justify-center">
-      <QRCodeSVG value={token} size={112} level="L" bgColor="#FFFFFF" fgColor="#000000" />
+      <QRCodeSVG value={token} size="7rem" level="L" bgColor="#FFFFFF" fgColor="#000000" />
       <div
         className="absolute w-8 h-8 bg-zinc-950 rounded-lg flex items-center justify-center border"
         style={{ borderColor: accentBorder }}
       >
-        <Shield size={12} className="text-emerald-400" />
+        <Shield size="0.75rem" className="text-emerald-400" />
       </div>
     </div>
   );
@@ -489,16 +489,16 @@ export const EventTicketsCarousel: React.FC<Props> = ({
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
           >
-            <ArrowLeft size={18} className="text-zinc-400" />
+            <ArrowLeft size="1.125rem" className="text-zinc-400" />
           </button>
           <div className="flex-1 min-w-0">
-            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-0.5">
+            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-0.5">
               {tickets.length === 1 ? '1 ingresso' : `${tickets.length} ingressos`}
             </p>
             <h1 style={TYPOGRAPHY.screenTitle} className="text-base italic truncate leading-none">
               {titulo}
             </h1>
-            <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mt-0.5">{data}</p>
+            <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest mt-0.5">{data}</p>
           </div>
         </div>
       </div>
@@ -542,18 +542,18 @@ export const EventTicketsCarousel: React.FC<Props> = ({
                 style={{ scrollSnapAlign: 'start' }}
               >
                 {/* Ticket Neon */}
-                <div className="w-full max-w-[300px] rounded-3xl p-px" style={{ background: grad }}>
+                <div className="w-full max-w-[18.75rem] rounded-3xl p-px" style={{ background: grad }}>
                   <div className="bg-zinc-950 rounded-[calc(1.5rem-1px)] overflow-hidden">
                     {/* Topo */}
                     <div className="px-6 pt-6 pb-4 flex flex-col items-center text-center">
                       <p
-                        className="text-[8px] font-black uppercase tracking-[0.35em] mb-1"
+                        className="text-[0.5rem] font-black uppercase tracking-[0.35em] mb-1"
                         style={{ color: accentColor, opacity: 0.7 }}
                       >
                         {isCortesia ? 'Cortesia Digital' : 'Ingresso Digital'}
                       </p>
                       {ticket.isMeiaEntrada && (
-                        <span className="inline-block mb-3 text-[7px] font-black uppercase tracking-widest text-cyan-300 bg-cyan-500/20 border border-cyan-400/30 px-2 py-0.5 rounded-full">
+                        <span className="inline-block mb-3 text-[0.4375rem] font-black uppercase tracking-widest text-cyan-300 bg-cyan-500/20 border border-cyan-400/30 px-2 py-0.5 rounded-full">
                           Meia-entrada
                         </span>
                       )}
@@ -567,13 +567,13 @@ export const EventTicketsCarousel: React.FC<Props> = ({
                             <>
                               <div className="relative w-36 h-36 rounded-2xl flex items-center justify-center border border-white/5 mb-3 bg-zinc-900">
                                 <div className="flex flex-col items-center gap-2">
-                                  <Clock size={28} className="text-zinc-400" />
-                                  <p className="text-[8px] font-black uppercase tracking-widest text-zinc-400 px-2 text-center">
+                                  <Clock size="1.75rem" className="text-zinc-400" />
+                                  <p className="text-[0.5rem] font-black uppercase tracking-widest text-zinc-400 px-2 text-center">
                                     Disponível no início do evento
                                   </p>
                                 </div>
                               </div>
-                              <p className="text-[8px] font-black uppercase tracking-widest text-zinc-700 mb-4">
+                              <p className="text-[0.5rem] font-black uppercase tracking-widest text-zinc-700 mb-4">
                                 QR liberado no horário de início
                               </p>
                             </>
@@ -583,13 +583,13 @@ export const EventTicketsCarousel: React.FC<Props> = ({
                             <>
                               <div className="relative w-36 h-36 rounded-2xl flex items-center justify-center border border-white/5 mb-3 bg-zinc-900">
                                 <div className="flex flex-col items-center gap-2">
-                                  <Lock size={28} className="text-zinc-700" />
-                                  <p className="text-[8px] font-black uppercase tracking-widest text-zinc-700 px-2 text-center">
+                                  <Lock size="1.75rem" className="text-zinc-700" />
+                                  <p className="text-[0.5rem] font-black uppercase tracking-widest text-zinc-700 px-2 text-center">
                                     Evento encerrado
                                   </p>
                                 </div>
                               </div>
-                              <p className="text-[8px] font-black uppercase tracking-widest text-zinc-700 mb-4">
+                              <p className="text-[0.5rem] font-black uppercase tracking-widest text-zinc-700 mb-4">
                                 Ingresso expirado
                               </p>
                             </>
@@ -603,8 +603,8 @@ export const EventTicketsCarousel: React.FC<Props> = ({
                             >
                               {needsTitular(ticket) ? (
                                 <div className="absolute inset-0 bg-zinc-900/80 rounded-2xl flex flex-col items-center justify-center gap-2 z-10">
-                                  <User size={28} className="text-[#FFD300]" />
-                                  <p className="text-[8px] font-black uppercase tracking-widest text-[#FFD300]">
+                                  <User size="1.75rem" className="text-[#FFD300]" />
+                                  <p className="text-[0.5rem] font-black uppercase tracking-widest text-[#FFD300]">
                                     Preencher dados
                                   </p>
                                 </div>
@@ -612,7 +612,7 @@ export const EventTicketsCarousel: React.FC<Props> = ({
                                 <MiniQR ticketId={ticket.id} accentBorder={accentBorder} />
                               )}
                             </button>
-                            <p className="text-[8px] font-black uppercase tracking-widest text-zinc-700 mb-4">
+                            <p className="text-[0.5rem] font-black uppercase tracking-widest text-zinc-700 mb-4">
                               {needsTitular(ticket)
                                 ? 'Preencha nome e CPF para usar'
                                 : 'Toque para ampliar · Anti-fraude'}
@@ -625,11 +625,11 @@ export const EventTicketsCarousel: React.FC<Props> = ({
                         {ticket.variacaoLabel ?? (isCortesia ? 'Cortesia' : 'Acesso Geral')}
                       </p>
                       {ticket.nomeTitular?.trim() && (
-                        <p className="text-zinc-400 text-[9px] font-bold mt-1 truncate max-w-full">
+                        <p className="text-zinc-400 text-[0.5625rem] font-bold mt-1 truncate max-w-full">
                           {ticket.nomeTitular}
                         </p>
                       )}
-                      <p className="text-zinc-700 text-[8px] font-black uppercase tracking-widest mt-1 truncate max-w-full">
+                      <p className="text-zinc-700 text-[0.5rem] font-black uppercase tracking-widest mt-1 truncate max-w-full">
                         {titulo}
                       </p>
                     </div>
@@ -644,7 +644,7 @@ export const EventTicketsCarousel: React.FC<Props> = ({
                     {/* Rodapé */}
                     <div className="px-6 py-4 flex flex-col items-center gap-3">
                       <span
-                        className="text-[8px] font-black uppercase tracking-[0.3em] px-3 py-1.5 rounded-full border"
+                        className="text-[0.5rem] font-black uppercase tracking-[0.3em] px-3 py-1.5 rounded-full border"
                         style={{ background: accentBg, borderColor: accentBorder, color: accentColor }}
                       >
                         {statusLabel}
@@ -661,17 +661,17 @@ export const EventTicketsCarousel: React.FC<Props> = ({
                             {userId && (
                               <button
                                 onClick={() => setReembolsoTarget(ticket)}
-                                className="flex-none py-2.5 px-3 bg-orange-950/40 border border-orange-500/20 text-orange-400 rounded-xl text-[9px] font-black uppercase tracking-wider active:scale-95 transition-all flex items-center justify-center gap-1.5"
+                                className="flex-none py-2.5 px-3 bg-orange-950/40 border border-orange-500/20 text-orange-400 rounded-xl text-[0.5625rem] font-black uppercase tracking-wider active:scale-95 transition-all flex items-center justify-center gap-1.5"
                               >
-                                <ReembolsoIcon size={10} /> Reembolsar
+                                <ReembolsoIcon size="0.625rem" /> Reembolsar
                               </button>
                             )}
                             {onTransferirIngresso && (
                               <button
                                 onClick={() => setTransfer(ticket)}
-                                className="flex-1 py-2.5 bg-purple-950/40 border border-purple-500/20 text-purple-400 rounded-xl text-[9px] font-black uppercase tracking-wider active:scale-95 transition-all flex items-center justify-center gap-1.5"
+                                className="flex-1 py-2.5 bg-purple-950/40 border border-purple-500/20 text-purple-400 rounded-xl text-[0.5625rem] font-black uppercase tracking-wider active:scale-95 transition-all flex items-center justify-center gap-1.5"
                               >
-                                <ArrowRightLeft size={10} /> Transferir
+                                <ArrowRightLeft size="0.625rem" /> Transferir
                               </button>
                             )}
                             {isCortesia && onDevolverCortesia && (
@@ -680,9 +680,9 @@ export const EventTicketsCarousel: React.FC<Props> = ({
                                   onDevolverCortesia(ticket);
                                   onBack();
                                 }}
-                                className="flex-1 py-2.5 bg-red-950/40 border border-red-500/20 text-red-400 rounded-xl text-[9px] font-black uppercase tracking-wider active:scale-95 transition-all flex items-center justify-center gap-1.5"
+                                className="flex-1 py-2.5 bg-red-950/40 border border-red-500/20 text-red-400 rounded-xl text-[0.5625rem] font-black uppercase tracking-wider active:scale-95 transition-all flex items-center justify-center gap-1.5"
                               >
-                                <RotateCcw size={10} /> Devolver
+                                <RotateCcw size="0.625rem" /> Devolver
                               </button>
                             )}
                           </div>

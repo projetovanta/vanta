@@ -353,9 +353,9 @@ export const SupabaseDiagnosticView: React.FC<{ onBack: () => void }> = ({ onBac
   };
 
   const statusIcon = (s: DiagStatus) => {
-    if (s === 'ok') return <CheckCircle2 size={14} className="text-emerald-400 shrink-0" />;
-    if (s === 'warning') return <AlertTriangle size={14} className="text-amber-400 shrink-0" />;
-    return <XCircle size={14} className="text-red-400 shrink-0" />;
+    if (s === 'ok') return <CheckCircle2 size="0.875rem" className="text-emerald-400 shrink-0" />;
+    if (s === 'warning') return <AlertTriangle size="0.875rem" className="text-amber-400 shrink-0" />;
+    return <XCircle size="0.875rem" className="text-red-400 shrink-0" />;
   };
 
   return (
@@ -368,7 +368,7 @@ export const SupabaseDiagnosticView: React.FC<{ onBack: () => void }> = ({ onBac
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
           >
-            <ArrowLeft size={18} className="text-zinc-400" />
+            <ArrowLeft size="1.125rem" className="text-zinc-400" />
           </button>
           <div className="flex-1 min-w-0">
             <p style={TYPOGRAPHY.sectionKicker} className="mb-1">
@@ -383,8 +383,8 @@ export const SupabaseDiagnosticView: React.FC<{ onBack: () => void }> = ({ onBac
         {/* Credenciais runtime */}
         <div className="flex gap-2 mb-3">
           <div className="flex-1 min-w-0">
-            <label className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mb-1 flex items-center gap-1">
-              <Key size={8} /> PAT
+            <label className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest mb-1 flex items-center gap-1">
+              <Key size="0.5rem" /> PAT
             </label>
             <input
               type="password"
@@ -395,7 +395,7 @@ export const SupabaseDiagnosticView: React.FC<{ onBack: () => void }> = ({ onBac
             />
           </div>
           <div className="flex-1 min-w-0">
-            <label className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mb-1 block">
+            <label className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest mb-1 block">
               Project Ref
             </label>
             <input
@@ -413,9 +413,9 @@ export const SupabaseDiagnosticView: React.FC<{ onBack: () => void }> = ({ onBac
           aria-label="Carregando"
           onClick={runDiagnostic}
           disabled={scanning || !pat || !projectRef}
-          className="w-full py-3.5 bg-[#FFD300] text-black font-black text-[10px] uppercase tracking-[0.2em] rounded-xl flex items-center justify-center gap-2 active:scale-[0.97] transition-all disabled:opacity-50"
+          className="w-full py-3.5 bg-[#FFD300] text-black font-black text-[0.625rem] uppercase tracking-[0.2em] rounded-xl flex items-center justify-center gap-2 active:scale-[0.97] transition-all disabled:opacity-50"
         >
-          {scanning ? <Loader2 size={14} className="animate-spin" /> : <RefreshCw size={14} />}
+          {scanning ? <Loader2 size="0.875rem" className="animate-spin" /> : <RefreshCw size="0.875rem" />}
           {scanning ? 'Escaneando...' : scanned ? 'Escanear Novamente' : 'Iniciar Diagnóstico'}
         </button>
 
@@ -423,24 +423,24 @@ export const SupabaseDiagnosticView: React.FC<{ onBack: () => void }> = ({ onBac
         {scanned && !scanning && !lastError && (
           <div className="flex items-center gap-4 mt-4">
             <div className="flex items-center gap-1.5">
-              <CheckCircle2 size={12} className="text-emerald-400" />
-              <span className="text-emerald-400 text-[10px] font-black">{counts.ok}</span>
+              <CheckCircle2 size="0.75rem" className="text-emerald-400" />
+              <span className="text-emerald-400 text-[0.625rem] font-black">{counts.ok}</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <AlertTriangle size={12} className="text-amber-400" />
-              <span className="text-amber-400 text-[10px] font-black">{counts.warning}</span>
+              <AlertTriangle size="0.75rem" className="text-amber-400" />
+              <span className="text-amber-400 text-[0.625rem] font-black">{counts.warning}</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <XCircle size={12} className="text-red-400" />
-              <span className="text-red-400 text-[10px] font-black">{counts.error}</span>
+              <XCircle size="0.75rem" className="text-red-400" />
+              <span className="text-red-400 text-[0.625rem] font-black">{counts.error}</span>
             </div>
             {fixableItems.length > 0 && (
               <button
                 onClick={executeAllFixes}
                 disabled={executing === 'all'}
-                className="ml-auto px-4 py-2 bg-emerald-500/15 border border-emerald-500/25 rounded-xl text-emerald-400 text-[9px] font-black uppercase tracking-wider active:scale-95 transition-all disabled:opacity-50 flex items-center gap-1.5"
+                className="ml-auto px-4 py-2 bg-emerald-500/15 border border-emerald-500/25 rounded-xl text-emerald-400 text-[0.5625rem] font-black uppercase tracking-wider active:scale-95 transition-all disabled:opacity-50 flex items-center gap-1.5"
               >
-                {executing === 'all' ? <Loader2 size={10} className="animate-spin" /> : <Plus size={10} />}
+                {executing === 'all' ? <Loader2 size="0.625rem" className="animate-spin" /> : <Plus size="0.625rem" />}
                 Criar tudo ({fixableItems.length})
               </button>
             )}
@@ -452,11 +452,11 @@ export const SupabaseDiagnosticView: React.FC<{ onBack: () => void }> = ({ onBac
       <div className="flex-1 overflow-y-auto no-scrollbar p-5 space-y-3 max-w-3xl mx-auto w-full">
         {!scanned && !scanning && (
           <div className="flex flex-col items-center py-20 gap-4 text-center">
-            <Database size={36} className="text-zinc-800" />
-            <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">
+            <Database size="2.25rem" className="text-zinc-800" />
+            <p className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest">
               Diagnóstico do Banco de Dados
             </p>
-            <p className="text-zinc-700 text-xs max-w-[260px] leading-relaxed">
+            <p className="text-zinc-700 text-xs max-w-[16.25rem] leading-relaxed">
               Verifica tabelas, colunas, policies RLS, funções, buckets e realtime. Mostra o que falta e permite criar
               automaticamente.
             </p>
@@ -465,8 +465,8 @@ export const SupabaseDiagnosticView: React.FC<{ onBack: () => void }> = ({ onBac
 
         {scanning && (
           <div className="flex flex-col items-center py-20 gap-4">
-            <Loader2 size={28} className="text-[#FFD300] animate-spin" />
-            <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">
+            <Loader2 size="1.75rem" className="text-[#FFD300] animate-spin" />
+            <p className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest">
               Consultando information_schema...
             </p>
           </div>
@@ -474,9 +474,9 @@ export const SupabaseDiagnosticView: React.FC<{ onBack: () => void }> = ({ onBac
 
         {lastError && (
           <div className="bg-red-500/10 border border-red-500/20 rounded-2xl p-5 text-center">
-            <XCircle size={24} className="text-red-400 mx-auto mb-3" />
+            <XCircle size="1.5rem" className="text-red-400 mx-auto mb-3" />
             <p className="text-red-300 text-xs font-bold mb-2">Erro de Conexão</p>
-            <p className="text-zinc-400 text-[10px] leading-relaxed">{lastError}</p>
+            <p className="text-zinc-400 text-[0.625rem] leading-relaxed">{lastError}</p>
           </div>
         )}
 
@@ -499,25 +499,25 @@ export const SupabaseDiagnosticView: React.FC<{ onBack: () => void }> = ({ onBac
                     className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
                     style={{ backgroundColor: `${catInfo.color}15`, border: `1px solid ${catInfo.color}25` }}
                   >
-                    <CatIcon size={14} style={{ color: catInfo.color }} />
+                    <CatIcon size="0.875rem" style={{ color: catInfo.color }} />
                   </div>
                   <div className="flex-1 min-w-0 text-left">
                     <p className="text-white text-sm font-bold">{catInfo.label}</p>
-                    <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">
+                    <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest">
                       {items.filter(i => i.status === 'ok').length}/{items.length} ok
                       {hasIssues &&
                         ` · ${items.filter(i => i.status !== 'ok').length} pendente${items.filter(i => i.status !== 'ok').length > 1 ? 's' : ''}`}
                     </p>
                   </div>
                   {hasIssues ? (
-                    <AlertTriangle size={14} className="text-amber-400 shrink-0" />
+                    <AlertTriangle size="0.875rem" className="text-amber-400 shrink-0" />
                   ) : (
-                    <CheckCircle2 size={14} className="text-emerald-400 shrink-0" />
+                    <CheckCircle2 size="0.875rem" className="text-emerald-400 shrink-0" />
                   )}
                   {isExpanded ? (
-                    <ChevronUp size={14} className="text-zinc-400" />
+                    <ChevronUp size="0.875rem" className="text-zinc-400" />
                   ) : (
-                    <ChevronDown size={14} className="text-zinc-400" />
+                    <ChevronDown size="0.875rem" className="text-zinc-400" />
                   )}
                 </button>
 
@@ -528,18 +528,18 @@ export const SupabaseDiagnosticView: React.FC<{ onBack: () => void }> = ({ onBac
                         {statusIcon(item.status)}
                         <div className="flex-1 min-w-0">
                           <p className="text-white text-xs font-bold truncate">{item.label}</p>
-                          <p className="text-zinc-400 text-[10px] leading-relaxed mt-0.5">{item.detail}</p>
+                          <p className="text-zinc-400 text-[0.625rem] leading-relaxed mt-0.5">{item.detail}</p>
                         </div>
                         {item.fixSQL && item.status !== 'ok' && (
                           <button
                             onClick={() => executeFixSQL(item.fixSQL!, item.label)}
                             disabled={executing === item.label}
-                            className="shrink-0 px-3 py-1.5 bg-[#FFD300]/10 border border-[#FFD300]/20 rounded-lg text-[#FFD300] text-[8px] font-black uppercase tracking-wider active:scale-90 transition-all disabled:opacity-50 flex items-center gap-1"
+                            className="shrink-0 px-3 py-1.5 bg-[#FFD300]/10 border border-[#FFD300]/20 rounded-lg text-[#FFD300] text-[0.5rem] font-black uppercase tracking-wider active:scale-90 transition-all disabled:opacity-50 flex items-center gap-1"
                           >
                             {executing === item.label ? (
-                              <Loader2 size={8} className="animate-spin" />
+                              <Loader2 size="0.5rem" className="animate-spin" />
                             ) : (
-                              <Plus size={8} />
+                              <Plus size="0.5rem" />
                             )}
                             Criar
                           </button>

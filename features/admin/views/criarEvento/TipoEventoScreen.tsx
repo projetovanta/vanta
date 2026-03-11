@@ -15,7 +15,7 @@ export const TipoEventoScreen: React.FC<Props> = ({ onSelect }) => {
     return (
       <div className="flex-1 flex flex-col items-center justify-center p-6 gap-6">
         <div className="text-center mb-4">
-          <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">Novo Evento</p>
+          <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2">Novo Evento</p>
           <h1 style={TYPOGRAPHY.screenTitle} className="text-2xl italic">
             Tipo de Venda
           </h1>
@@ -28,11 +28,11 @@ export const TipoEventoScreen: React.FC<Props> = ({ onSelect }) => {
         >
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-2xl bg-zinc-800 border border-white/5 flex items-center justify-center shrink-0">
-              <Ticket size={20} className="text-[#FFD300]" />
+              <Ticket size="1.25rem" className="text-[#FFD300]" />
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-white font-bold text-base leading-none">Com Venda no VANTA</p>
-              <p className="text-zinc-400 text-[10px] mt-1 leading-relaxed">
+              <p className="text-zinc-400 text-[0.625rem] mt-1 leading-relaxed">
                 Ingressos vendidos pela plataforma. Checkout, lotes, variações e financeiro integrados.
               </p>
             </div>
@@ -41,7 +41,7 @@ export const TipoEventoScreen: React.FC<Props> = ({ onSelect }) => {
             {['Checkout integrado', 'Lotes e variações', 'Financeiro'].map(t => (
               <span
                 key={t}
-                className="text-[7px] font-black uppercase tracking-widest text-zinc-400 bg-zinc-800 border border-white/5 px-2 py-0.5 rounded-full"
+                className="text-[0.4375rem] font-black uppercase tracking-widest text-zinc-400 bg-zinc-800 border border-white/5 px-2 py-0.5 rounded-full"
               >
                 {t}
               </span>
@@ -55,11 +55,11 @@ export const TipoEventoScreen: React.FC<Props> = ({ onSelect }) => {
         >
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-2xl bg-zinc-800 border border-white/5 flex items-center justify-center shrink-0">
-              <ListChecks size={20} className="text-emerald-400" />
+              <ListChecks size="1.25rem" className="text-emerald-400" />
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-white font-bold text-base leading-none">Sem Venda no VANTA</p>
-              <p className="text-zinc-400 text-[10px] mt-1 leading-relaxed">
+              <p className="text-zinc-400 text-[0.625rem] mt-1 leading-relaxed">
                 Venda de ingressos em outra plataforma. Evento no feed, listas e check-in pelo VANTA.
               </p>
             </div>
@@ -68,7 +68,7 @@ export const TipoEventoScreen: React.FC<Props> = ({ onSelect }) => {
             {['Feed e visibilidade', 'Listas e check-in', 'Venda externa'].map(t => (
               <span
                 key={t}
-                className="text-[7px] font-black uppercase tracking-widest text-zinc-400 bg-zinc-800 border border-white/5 px-2 py-0.5 rounded-full"
+                className="text-[0.4375rem] font-black uppercase tracking-widest text-zinc-400 bg-zinc-800 border border-white/5 px-2 py-0.5 rounded-full"
               >
                 {t}
               </span>
@@ -87,10 +87,10 @@ export const TipoEventoScreen: React.FC<Props> = ({ onSelect }) => {
           onClick={() => setVendaVanta(null)}
           className="flex items-center gap-1 text-zinc-400 text-xs mb-4 mx-auto active:text-white transition-colors"
         >
-          <ArrowLeft size={14} />
+          <ArrowLeft size="0.875rem" />
           <span>Voltar</span>
         </button>
-        <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">
+        <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2">
           {vendaVanta ? 'Com Venda no VANTA' : 'Sem Venda no VANTA'}
         </p>
         <h1 style={TYPOGRAPHY.screenTitle} className="text-2xl italic">
@@ -105,11 +105,11 @@ export const TipoEventoScreen: React.FC<Props> = ({ onSelect }) => {
       >
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-2xl bg-zinc-800 border border-white/5 flex items-center justify-center shrink-0">
-            <Users size={20} className="text-[#FFD300]" />
+            <Users size="1.25rem" className="text-[#FFD300]" />
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-white font-bold text-base leading-none">Com Sócio</p>
-            <p className="text-zinc-400 text-[10px] mt-1 leading-relaxed">
+            <p className="text-zinc-400 text-[0.625rem] mt-1 leading-relaxed">
               Convide um sócio para co-produzir o evento. Inclui negociação de permissões e split financeiro.
             </p>
           </div>
@@ -118,7 +118,7 @@ export const TipoEventoScreen: React.FC<Props> = ({ onSelect }) => {
           {[vendaVanta ? '5 etapas' : '4 etapas', 'Split financeiro', 'Convite ao sócio'].map(t => (
             <span
               key={t}
-              className="text-[7px] font-black uppercase tracking-widest text-zinc-400 bg-zinc-800 border border-white/5 px-2 py-0.5 rounded-full"
+              className="text-[0.4375rem] font-black uppercase tracking-widest text-zinc-400 bg-zinc-800 border border-white/5 px-2 py-0.5 rounded-full"
             >
               {t}
             </span>
@@ -132,11 +132,11 @@ export const TipoEventoScreen: React.FC<Props> = ({ onSelect }) => {
       >
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-2xl bg-zinc-800 border border-white/5 flex items-center justify-center shrink-0">
-            <Building2 size={20} className="text-emerald-400" />
+            <Building2 size="1.25rem" className="text-emerald-400" />
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-white font-bold text-base leading-none">Festa da Casa</p>
-            <p className="text-zinc-400 text-[10px] mt-1 leading-relaxed">
+            <p className="text-zinc-400 text-[0.625rem] mt-1 leading-relaxed">
               Evento 100% da casa. Sem sócio, sem split. {vendaVanta ? 'Gerente opcional.' : 'Simples e direto.'}
             </p>
           </div>
@@ -149,7 +149,7 @@ export const TipoEventoScreen: React.FC<Props> = ({ onSelect }) => {
           ].map(t => (
             <span
               key={t}
-              className="text-[7px] font-black uppercase tracking-widest text-zinc-400 bg-zinc-800 border border-white/5 px-2 py-0.5 rounded-full"
+              className="text-[0.4375rem] font-black uppercase tracking-widest text-zinc-400 bg-zinc-800 border border-white/5 px-2 py-0.5 rounded-full"
             >
               {t}
             </span>

@@ -95,7 +95,7 @@ const FuncaoModal: React.FC<FuncaoModalProps> = ({ onClose, onSave }) => {
             className={inputCls}
           />
           <div>
-            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">Permissões</p>
+            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2">Permissões</p>
             <div className="space-y-2">
               {TODAS_PERMISSOES.map(p => (
                 <button
@@ -113,25 +113,25 @@ const FuncaoModal: React.FC<FuncaoModalProps> = ({ onClose, onSave }) => {
                       sel.has(p) ? 'bg-[#FFD300] border-[#FFD300]' : 'border-zinc-700'
                     }`}
                   >
-                    {sel.has(p) && <Check size={10} className="text-black" />}
+                    {sel.has(p) && <Check size="0.625rem" className="text-black" />}
                   </span>
                 </button>
               ))}
             </div>
           </div>
-          {erro && <p className="text-red-400 text-[10px] font-black uppercase tracking-widest">{erro}</p>}
+          {erro && <p className="text-red-400 text-[0.625rem] font-black uppercase tracking-widest">{erro}</p>}
           <div className="flex gap-2 pt-1" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
             <button
               onClick={onClose}
-              className="flex-1 py-3.5 bg-zinc-900 border border-white/10 rounded-xl text-zinc-400 text-[10px] font-black uppercase tracking-widest active:scale-95 transition-all"
+              className="flex-1 py-3.5 bg-zinc-900 border border-white/10 rounded-xl text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest active:scale-95 transition-all"
             >
               Cancelar
             </button>
             <button
               onClick={handleSave}
-              className="flex-1 py-3.5 bg-[#FFD300] text-black rounded-xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-1.5 active:scale-95 transition-all"
+              className="flex-1 py-3.5 bg-[#FFD300] text-black rounded-xl text-[0.625rem] font-black uppercase tracking-widest flex items-center justify-center gap-1.5 active:scale-95 transition-all"
             >
-              <Check size={12} /> Criar
+              <Check size="0.75rem" /> Criar
             </button>
           </div>
         </div>
@@ -183,20 +183,20 @@ export const TabCargosPermissoes: React.FC<{
       >
         <div>
           <p className="text-black font-black text-sm uppercase tracking-wider leading-none">+ Nova Função</p>
-          <p className="text-black/50 text-[10px] font-bold mt-1">Crie cargos customizados com permissões</p>
+          <p className="text-black/50 text-[0.625rem] font-bold mt-1">Crie cargos customizados com permissões</p>
         </div>
         <div className="w-10 h-10 bg-black/10 rounded-xl flex items-center justify-center shrink-0">
-          <Settings2 size={18} className="text-black" />
+          <Settings2 size="1.125rem" className="text-black" />
         </div>
       </button>
 
       {cargos.length === 0 && (
         <div className="flex flex-col items-center py-12 gap-3">
-          <Settings2 size={28} className="text-zinc-800" />
-          <p className="text-zinc-700 text-[10px] font-black uppercase tracking-widest text-center">
+          <Settings2 size="1.75rem" className="text-zinc-800" />
+          <p className="text-zinc-700 text-[0.625rem] font-black uppercase tracking-widest text-center">
             Nenhuma função criada ainda
           </p>
-          <p className="text-zinc-800 text-[9px] text-center leading-relaxed">
+          <p className="text-zinc-800 text-[0.5625rem] text-center leading-relaxed">
             Crie funções customizadas para sua equipe
           </p>
         </div>
@@ -210,14 +210,14 @@ export const TabCargosPermissoes: React.FC<{
               onClick={() => handleDelete(cargo.id)}
               className="w-8 h-8 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center shrink-0 active:scale-90 transition-all ml-2"
             >
-              <Trash2 size={13} className="text-red-400" />
+              <Trash2 size="0.8125rem" className="text-red-400" />
             </button>
           </div>
           <div className="flex flex-wrap gap-1.5">
             {cargoToPermissoes(cargo).map(p => (
               <span
                 key={p}
-                className="px-2.5 py-1 rounded-lg bg-[#FFD300]/10 border border-[#FFD300]/20 text-[#FFD300] text-[8px] font-black uppercase tracking-wider"
+                className="px-2.5 py-1 rounded-lg bg-[#FFD300]/10 border border-[#FFD300]/20 text-[#FFD300] text-[0.5rem] font-black uppercase tracking-wider"
               >
                 {PERMISSAO_LABELS[p]}
               </span>

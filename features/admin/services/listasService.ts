@@ -700,10 +700,10 @@ export const listasService = {
     eventoData: string;
     eventoDataFim?: string;
     eventoLocal: string;
-    tetoGlobalTotal: number;
+    tetoGlobalTotal: number | null;
     regras: {
       label: string;
-      tetoGlobal: number;
+      tetoGlobal: number | null;
       cor?: string;
       valor?: number;
       horaCorte?: string;
@@ -732,8 +732,8 @@ export const listasService = {
     const regrasInsert = data.regras.map(r => ({
       lista_id: listaId,
       label: r.label,
-      teto_global: r.tetoGlobal,
-      saldo_banco: r.tetoGlobal,
+      teto_global: r.tetoGlobal ?? null,
+      saldo_banco: r.tetoGlobal ?? null,
       cor: r.cor ?? null,
       valor: r.valor ?? null,
       genero: r.genero ?? 'U',

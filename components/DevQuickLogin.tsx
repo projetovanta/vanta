@@ -352,22 +352,22 @@ export function DevQuickLogin() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-1.5">
                         <span className="text-sm font-medium text-white truncate">{u.nome}</span>
-                        {isCurrent && <span className="text-[10px] text-yellow-400">●</span>}
+                        {isCurrent && <span className="text-[0.625rem] text-yellow-400">●</span>}
                       </div>
-                      <div className="text-[11px] text-gray-500 truncate">{u.email}</div>
+                      <div className="text-[0.6875rem] text-gray-500 truncate">{u.email}</div>
                     </div>
 
                     {/* Badges */}
                     <div className="flex flex-col items-end gap-0.5 shrink-0">
                       <span
-                        className={`text-[9px] px-1.5 py-0.5 rounded-full ${roleBadgeColor[u.role] ?? roleBadgeColor.vanta_guest}`}
+                        className={`text-[0.5625rem] px-1.5 py-0.5 rounded-full ${roleBadgeColor[u.role] ?? roleBadgeColor.vanta_guest}`}
                       >
                         {roleLabel[u.role] ?? u.role.replace('vanta_', '')}
                       </span>
                       {u.cargosRbac.map(c => (
                         <span
                           key={c}
-                          className={`text-[9px] px-1.5 py-0.5 rounded-full ${cargoBadgeColor[c] ?? 'bg-gray-500/20 text-gray-400'}`}
+                          className={`text-[0.5625rem] px-1.5 py-0.5 rounded-full ${cargoBadgeColor[c] ?? 'bg-gray-500/20 text-gray-400'}`}
                         >
                           {cargoLabel[c] ?? c}
                         </span>

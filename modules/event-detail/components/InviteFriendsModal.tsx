@@ -48,7 +48,7 @@ export const InviteFriendsModal: React.FC<InviteFriendsModalProps> = ({
           <h2 style={TYPOGRAPHY.screenTitle} className="text-2xl">
             Convidar Amigos
           </h2>
-          <p className="text-zinc-400 text-[10px] font-bold uppercase tracking-widest mt-1">
+          <p className="text-zinc-400 text-[0.625rem] font-bold uppercase tracking-widest mt-1">
             Selecione quem vai com você
           </p>
         </div>
@@ -56,13 +56,13 @@ export const InviteFriendsModal: React.FC<InviteFriendsModalProps> = ({
           onClick={onClose}
           className="w-12 h-12 bg-zinc-900/50 rounded-full flex items-center justify-center active:scale-90"
         >
-          <X size={20} className="text-zinc-400" />
+          <X size="1.25rem" className="text-zinc-400" />
         </button>
       </div>
 
       <div className="px-6 py-6">
         <div className="relative">
-          <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
+          <Search size="1.125rem" className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
           <input
             type="text"
             placeholder="Buscar amigos..."
@@ -73,7 +73,7 @@ export const InviteFriendsModal: React.FC<InviteFriendsModalProps> = ({
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-6 pb-32 space-y-2 no-scrollbar">
+      <div className="flex-1 overflow-y-auto px-6 pb-6 space-y-2 no-scrollbar">
         {filteredFriends.length > 0 ? (
           filteredFriends.map(f => (
             <button
@@ -88,7 +88,7 @@ export const InviteFriendsModal: React.FC<InviteFriendsModalProps> = ({
               </div>
               <div className="flex-1 text-left min-w-0">
                 <h4 className="text-sm font-bold text-zinc-200 truncate">{f.nome}</h4>
-                <p className="text-[10px] text-zinc-400 truncate">@{f.email.split('@')[0]}</p>
+                <p className="text-[0.625rem] text-zinc-400 truncate">@{f.email.split('@')[0]}</p>
               </div>
               <div
                 className={`w-6 h-6 rounded-full border flex items-center justify-center transition-all ${
@@ -97,7 +97,7 @@ export const InviteFriendsModal: React.FC<InviteFriendsModalProps> = ({
                     : 'border-zinc-700 text-transparent'
                 }`}
               >
-                <Check size={14} strokeWidth={3} />
+                <Check size="0.875rem" strokeWidth={3} />
               </div>
             </button>
           ))
@@ -117,7 +117,7 @@ export const InviteFriendsModal: React.FC<InviteFriendsModalProps> = ({
           }}
           className="w-full py-4 bg-[#FFD300] disabled:bg-zinc-800 disabled:text-zinc-400 text-black font-bold text-xs uppercase tracking-[0.2em] rounded-xl shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2"
         >
-          <Send size={16} />
+          <Send size="1rem" />
           Enviar Convites ({selectedIds.size})
         </button>
       </div>

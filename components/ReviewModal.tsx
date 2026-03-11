@@ -46,14 +46,14 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ eventoId, eventoNome, userId,
       onClick={onClose}
     >
       <div
-        className="w-full max-w-md bg-zinc-900 rounded-t-3xl p-6 pb-[env(safe-area-inset-bottom,16px)]"
+        className="w-full max-w-[500px] bg-zinc-900 rounded-t-3xl p-6 pb-[env(safe-area-inset-bottom,16px)]"
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-white font-bold text-base truncate flex-1 mr-2">Avaliar Evento</h3>
           <button onClick={onClose} className="text-zinc-400 active:text-white p-1">
-            <X size={20} />
+            <X size="1.25rem" />
           </button>
         </div>
 
@@ -77,7 +77,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ eventoId, eventoNome, userId,
                   className="p-1 active:scale-110 transition-transform"
                 >
                   <Star
-                    size={36}
+                    size="2.25rem"
                     fill={n <= displayRating ? '#FFD300' : 'transparent'}
                     stroke={n <= displayRating ? '#FFD300' : '#52525b'}
                     strokeWidth={1.5}
@@ -107,12 +107,13 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ eventoId, eventoNome, userId,
             />
 
             {/* Botão enviar */}
-            <button aria-label="Enviar"
+            <button
+              aria-label="Enviar"
               onClick={handleSubmit}
               disabled={rating === 0 || sending}
               className="w-full flex items-center justify-center gap-2 bg-white text-black font-bold py-3 rounded-xl disabled:opacity-30 active:bg-zinc-200 transition-all shrink-0"
             >
-              <Send size={16} />
+              <Send size="1rem" />
               {sending ? 'Enviando...' : 'Enviar Avaliação'}
             </button>
           </>

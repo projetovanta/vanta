@@ -11,10 +11,13 @@ import { TimeFilterModal } from './components/TimeFilterModal';
 import { PriceFilterModal } from './components/PriceFilterModal';
 import { getMinPrice } from '../../utils';
 import { authService } from '../../services/authService';
+import { useBloqueados } from '../../hooks/useBloqueados';
 import { supabase } from '../../services/supabaseClient';
 import { useAuthStore } from '../../stores/authStore';
 import { useExtrasStore } from '../../stores/extrasStore';
 import { useDebounce } from '../../hooks/useDebounce';
+import { BeneficiosMVTab } from './components/BeneficiosMVTab';
+import { clubeService } from '../../features/admin/services/clubeService';
 
 interface SearchViewProps {
   onEventClick: (evento: Evento) => void;
@@ -27,11 +30,14 @@ const ITEMS_PER_PAGE = 10;
 export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberClick, onComunidadeClick }) => {
   const currentCity = useAuthStore(s => s.selectedCity);
   const EVENTOS = useExtrasStore(s => s.allEvents);
+  const bloqueados = useBloqueados();
   const searchEventsServerSide = useExtrasStore(s => s.searchEventsServerSide);
   const [query, setQuery] = useState('');
   const debouncedQuery = useDebounce(query, 300);
   const [serverSearchResults, setServerSearchResults] = useState<Evento[] | null>(null);
-  const [activeTab, setActiveTab] = useState<'EVENTS' | 'PEOPLE'>('EVENTS');
+  const [activeTab, setActiveTab] = useState<'EVENTS' | 'PEOPLE' | 'BENEFICIOS'>('EVENTS');
+  const currentUserId = useAuthStore(s => s.currentAccount?.id ?? '');
+  const isMembroMV = useMemo(() => clubeService.isMembro(currentUserId), [currentUserId]);
   const [selectedCities, setSelectedCities] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedTimeFilter, setSelectedTimeFilter] = useState<string | null>(null);
@@ -40,7 +46,6 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
   const [isEstiloFilterOpen, setIsEstiloFilterOpen] = useState(false);
   const [isTimeFilterOpen, setIsTimeFilterOpen] = useState(false);
   const [isPriceFilterOpen, setIsPriceFilterOpen] = useState(false);
-  const [beneficiosFilter, setBeneficiosFilter] = useState(false);
   const [displayLimit, setDisplayLimit] = useState(ITEMS_PER_PAGE);
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -85,7 +90,6 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
     setSelectedCategories([]);
     setSelectedTimeFilter(null);
     setMaxPrice(null);
-    setBeneficiosFilter(false);
     setDisplayLimit(ITEMS_PER_PAGE);
   };
 
@@ -155,9 +159,6 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
     if (maxPrice !== null) {
       data = data.filter(e => getMinPrice(e) <= maxPrice);
     }
-    if (beneficiosFilter) {
-      data = data.filter(e => e.temBeneficioMaisVanta);
-    }
     // Filtro client-side por texto só quando NÃO temos resultado server-side
     if (debouncedQuery && !serverSearchResults) {
       const lowerQuery = debouncedQuery.toLowerCase();
@@ -178,7 +179,6 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
     selectedCities,
     selectedTimeFilter,
     maxPrice,
-    beneficiosFilter,
     displayLimit,
   ]);
 
@@ -197,7 +197,7 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
       try {
         const r = await authService.buscarMembros(debouncedQuery, 20);
         if (cancelled) return;
-        setPeopleResults(r);
+        setPeopleResults(r.filter(m => !bloqueados.has(m.id)));
       } catch (err) {
         console.error('[SearchView] busca pessoas:', err);
       } finally {
@@ -248,8 +248,7 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
     selectedCategories.length === 0 &&
     selectedCities.length === 0 &&
     !selectedTimeFilter &&
-    maxPrice === null &&
-    !beneficiosFilter;
+    maxPrice === null;
 
   return (
     <div className="absolute inset-0 flex flex-col bg-[#0a0a0a] animate-in fade-in duration-300">
@@ -259,6 +258,7 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
         setQuery={setQuery}
         onClearSearch={clearAllFilters}
         activeTab={activeTab}
+        isMembroMV={isMembroMV}
         onTabChange={tab => {
           setActiveTab(tab);
           clearAllFilters();
@@ -271,18 +271,20 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
         onOpenTimeFilter={() => setIsTimeFilterOpen(true)}
         maxPrice={maxPrice}
         onOpenPriceFilter={() => setIsPriceFilterOpen(true)}
-        beneficiosFilter={beneficiosFilter}
-        onToggleBeneficios={() => {
-          setBeneficiosFilter(p => !p);
-          setDisplayLimit(ITEMS_PER_PAGE);
-        }}
       />
-      <div ref={contentRef} onScroll={handleScroll} className="flex-1 overflow-y-auto no-scrollbar px-6 pt-6 pb-32">
-        {activeTab === 'EVENTS' ? (
+      <div ref={contentRef} onScroll={handleScroll} className="flex-1 overflow-y-auto no-scrollbar px-6 pt-6 pb-4">
+        {activeTab === 'BENEFICIOS' ? (
+          <BeneficiosMVTab
+            userId={currentUserId}
+            filteredEvents={visibleEvents}
+            query={debouncedQuery}
+            onEventClick={onEventClick}
+          />
+        ) : activeTab === 'EVENTS' ? (
           <>
             {comunidadeSpotlight && (
               <div className="mb-6 animate-in fade-in duration-300">
-                <p className="text-[8px] font-black uppercase tracking-widest text-[#FFD300]/70 mb-3">
+                <p className="text-[0.5rem] font-black uppercase tracking-widest text-[#FFD300]/70 mb-3">
                   Comunidade encontrada
                 </p>
                 <button
@@ -299,30 +301,32 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
-                        <Building2 size={20} className="text-zinc-400" />
+                        <Building2 size="1.25rem" className="text-zinc-400" />
                       </div>
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-[7px] font-black uppercase tracking-widest bg-[#FFD300]/15 text-[#FFD300] px-2 py-0.5 rounded">
+                      <span className="text-[0.4375rem] font-black uppercase tracking-widest bg-[#FFD300]/15 text-[#FFD300] px-2 py-0.5 rounded">
                         Comunidade
                       </span>
                     </div>
                     <p className="text-white font-bold text-sm truncate">{comunidadeSpotlight.comunidade.nome}</p>
-                    <p className="text-zinc-400 text-[10px] mt-0.5">Entre para ver todos os eventos</p>
+                    <p className="text-zinc-400 text-[0.625rem] mt-0.5">Entre para ver todos os eventos</p>
                     {comunidadeSpotlight.comunidade.cidade && (
                       <div className="flex items-center gap-1 mt-1">
-                        <MapPin size={9} className="text-zinc-400" />
-                        <p className="text-zinc-400 text-[10px] truncate">{comunidadeSpotlight.comunidade.cidade}</p>
+                        <MapPin size="0.5625rem" className="text-zinc-400" />
+                        <p className="text-zinc-400 text-[0.625rem] truncate">
+                          {comunidadeSpotlight.comunidade.cidade}
+                        </p>
                       </div>
                     )}
                   </div>
-                  <ChevronRight size={16} className="text-[#FFD300] shrink-0" />
+                  <ChevronRight size="1rem" className="text-[#FFD300] shrink-0" />
                 </button>
                 {comunidadeSpotlight.eventos.length > 0 && (
                   <>
-                    <p className="text-[8px] font-black uppercase tracking-widest text-zinc-400 mb-3">
+                    <p className="text-[0.5rem] font-black uppercase tracking-widest text-zinc-400 mb-3">
                       Próximos eventos neste local
                     </p>
                     <div className="space-y-3 mb-6">
@@ -337,7 +341,7 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
                           </div>
                           <div className="flex-1 min-w-0">
                             <p className="text-white text-sm font-bold truncate">{e.titulo}</p>
-                            <p className="text-zinc-400 text-[10px] mt-0.5">
+                            <p className="text-zinc-400 text-[0.625rem] mt-0.5">
                               {e.data} · {e.horario}
                             </p>
                           </div>

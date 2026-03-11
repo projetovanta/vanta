@@ -18,9 +18,9 @@ export const PresencaList: React.FC<PresencaListProps> = ({ events, isPast }) =>
         <div key={event.id} className="bg-zinc-900/30 border border-white/5 rounded-2xl p-4 flex items-center gap-4">
           <div className="w-12 h-12 bg-zinc-800 rounded-xl flex items-center justify-center shrink-0">
             {isPast ? (
-              <Clock size={20} className="text-zinc-400" />
+              <Clock size="1.25rem" className="text-zinc-400" />
             ) : (
-              <CheckCircle size={20} className="text-zinc-400" />
+              <CheckCircle size="1.25rem" className="text-zinc-400" />
             )}
           </div>
           <div className="flex-1 min-w-0">
@@ -28,7 +28,7 @@ export const PresencaList: React.FC<PresencaListProps> = ({ events, isPast }) =>
             <p className="text-zinc-400 text-xs truncate">
               {event.data} • {event.horario}
             </p>
-            <p className="text-[9px] text-zinc-400 mt-1 uppercase tracking-wider">
+            <p className="text-[0.5625rem] text-zinc-400 mt-1 uppercase tracking-wider">
               {isPast ? 'Evento concluído' : 'Apenas nome na lista'}
             </p>
           </div>

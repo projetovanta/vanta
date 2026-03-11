@@ -58,13 +58,13 @@ export const SubTabEventos: React.FC<Props> = ({
           <div className="space-y-2">
             {/* Legenda */}
             <div className="flex items-center gap-4 px-1 py-2">
-              <span className="flex items-center gap-1 text-[9px]">
+              <span className="flex items-center gap-1 text-[0.5625rem]">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block" /> Postou
               </span>
-              <span className="flex items-center gap-1 text-[9px]">
+              <span className="flex items-center gap-1 text-[0.5625rem]">
                 <span className="w-2 h-2 rounded-full bg-amber-500 inline-block" /> Não postou
               </span>
-              <span className="flex items-center gap-1 text-[9px]">
+              <span className="flex items-center gap-1 text-[0.5625rem]">
                 <span className="w-2 h-2 rounded-full bg-red-500 inline-block" /> Não compareceu
               </span>
             </div>
@@ -113,17 +113,17 @@ export const SubTabEventos: React.FC<Props> = ({
                           <img loading="lazy" src={p.foto} alt="" className="w-full h-full object-cover" />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center">
-                            <User size={14} className="text-zinc-400" />
+                            <User size="0.875rem" className="text-zinc-400" />
                           </div>
                         )}
                       </button>
                       <div className="flex-1 min-w-0">
                         <p className="text-white text-xs font-bold truncate">{p?.nome || r.userId.slice(0, 8)}</p>
                         {membro?.instagramHandle && (
-                          <p className="text-zinc-400 text-[9px]">@{membro.instagramHandle}</p>
+                          <p className="text-zinc-400 text-[0.5625rem]">@{membro.instagramHandle}</p>
                         )}
                       </div>
-                      <span className={`text-[8px] font-black uppercase px-2 py-0.5 rounded ${statusLabelColor}`}>
+                      <span className={`text-[0.5rem] font-black uppercase px-2 py-0.5 rounded ${statusLabelColor}`}>
                         {statusLabel}
                       </span>
                     </div>
@@ -134,9 +134,9 @@ export const SubTabEventos: React.FC<Props> = ({
                       {compareceu && !postou && (
                         <button
                           onClick={() => toastFn('sucesso', `Lembrete enviado para ${p?.nome || 'membro'}`)}
-                          className="flex items-center gap-1 px-2.5 py-1.5 bg-amber-500/10 border border-amber-500/20 rounded-lg text-amber-400 text-[9px] font-bold active:scale-90 transition-all"
+                          className="flex items-center gap-1 px-2.5 py-1.5 bg-amber-500/10 border border-amber-500/20 rounded-lg text-amber-400 text-[0.5625rem] font-bold active:scale-90 transition-all"
                         >
-                          <AlertTriangle size={10} /> Lembrar de postar
+                          <AlertTriangle size="0.625rem" /> Lembrar de postar
                         </button>
                       )}
                       {/* Registrar infração (no-show ou não postou) */}
@@ -166,14 +166,14 @@ export const SubTabEventos: React.FC<Props> = ({
                             toastFn(result.acao === 'AVISO' ? 'aviso' : 'erro', msgs[result.acao]);
                             await onRefresh();
                           }}
-                          className="flex items-center gap-1 px-2.5 py-1.5 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-[9px] font-bold active:scale-90 transition-all"
+                          className="flex items-center gap-1 px-2.5 py-1.5 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-[0.5625rem] font-bold active:scale-90 transition-all"
                         >
-                          <X size={10} /> Registrar infração ({noShow ? 'no-show' : 'não postou'})
+                          <X size="0.625rem" /> Registrar infração ({noShow ? 'no-show' : 'não postou'})
                         </button>
                       )}
                       {clubeService.estaBloqueado(r.userId) && (
-                        <span className="text-red-400 text-[9px] font-bold flex items-center gap-1">
-                          <AlertTriangle size={10} />{' '}
+                        <span className="text-red-400 text-[0.5625rem] font-bold flex items-center gap-1">
+                          <AlertTriangle size="0.625rem" />{' '}
                           {clubeService.isBanidoPermanente(r.userId)
                             ? 'Banido permanentemente'
                             : `Bloqueado até ${formatDate(clubeService.getBloqueioAte(r.userId) || '')}`}
@@ -185,9 +185,9 @@ export const SubTabEventos: React.FC<Props> = ({
                           href={r.postUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center gap-1 text-emerald-400 text-[9px] font-bold"
+                          className="flex items-center gap-1 text-emerald-400 text-[0.5625rem] font-bold"
                         >
-                          <ExternalLink size={10} /> Ver post
+                          <ExternalLink size="0.625rem" /> Ver post
                         </a>
                       )}
                     </div>

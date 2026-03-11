@@ -49,13 +49,13 @@ const LogEntry: React.FC<{ entry: DevLogEntry }> = ({ entry }) => {
   const [expanded, setExpanded] = useState(false);
   return (
     <div
-      className={`px-2 py-1 text-[11px] font-mono cursor-pointer hover:bg-white/5 ${LEVEL_BG[entry.level] || ''}`}
+      className={`px-2 py-1 text-[0.6875rem] font-mono cursor-pointer hover:bg-white/5 ${LEVEL_BG[entry.level] || ''}`}
       onClick={() => setExpanded(!expanded)}
     >
       <span className="text-gray-500">{formatTime(entry.timestamp)}</span> <span>{entry.emoji}</span>{' '}
       <span className="text-gray-300">[{entry.category}]</span> <span className="text-gray-100">{entry.message}</span>
       {expanded && entry.data && (
-        <pre className="mt-1 text-[10px] text-gray-400 whitespace-pre-wrap break-all">
+        <pre className="mt-1 text-[0.625rem] text-gray-400 whitespace-pre-wrap break-all">
           {JSON.stringify(entry.data, null, 2)}
         </pre>
       )}
@@ -103,7 +103,7 @@ export function DevLogPanel() {
               e.stopPropagation();
               handleExportReport();
             }}
-            className="rounded-full bg-red-600/90 border border-red-500 px-2 py-1 text-[10px] font-mono text-white shadow-lg backdrop-blur-sm animate-pulse"
+            className="rounded-full bg-red-600/90 border border-red-500 px-2 py-1 text-[0.625rem] font-mono text-white shadow-lg backdrop-blur-sm animate-pulse"
             title="Copiar erros pro clipboard"
           >
             📋 {errorCount + warnCount} erros
@@ -111,15 +111,15 @@ export function DevLogPanel() {
         )}
         <button
           onClick={() => setIsOpen(true)}
-          className="rounded-full bg-gray-900/90 border border-gray-700 px-2 py-1 text-[10px] font-mono shadow-lg backdrop-blur-sm flex items-center gap-1"
+          className="rounded-full bg-gray-900/90 border border-gray-700 px-2 py-1 text-[0.625rem] font-mono shadow-lg backdrop-blur-sm flex items-center gap-1"
           title="Abrir DevLog"
         >
           <span>🔍</span>
           {errorCount > 0 && (
-            <span className="bg-red-500 text-white rounded-full px-1.5 min-w-[16px] text-center">{errorCount}</span>
+            <span className="bg-red-500 text-white rounded-full px-1.5 min-w-[1rem] text-center">{errorCount}</span>
           )}
           {warnCount > 0 && (
-            <span className="bg-yellow-500 text-black rounded-full px-1.5 min-w-[16px] text-center">{warnCount}</span>
+            <span className="bg-yellow-500 text-black rounded-full px-1.5 min-w-[1rem] text-center">{warnCount}</span>
           )}
           {!hasProblems && <span className="text-green-400">{entries.length}</span>}
         </button>
@@ -128,16 +128,16 @@ export function DevLogPanel() {
   }
 
   return (
-    <div className="fixed bottom-0 right-0 z-[9999] w-full max-w-md h-[50vh] flex flex-col bg-gray-950/95 border-t border-l border-gray-700 rounded-tl-lg shadow-2xl backdrop-blur-sm font-mono text-xs">
+    <div className="fixed bottom-0 right-0 z-[9999] w-full max-w-[500px] h-[50vh] flex flex-col bg-gray-950/95 border-t border-l border-gray-700 rounded-tl-lg shadow-2xl backdrop-blur-sm font-mono text-xs">
       {/* Header */}
       <div className="flex items-center justify-between px-3 py-2 border-b border-gray-800 shrink-0">
         <div className="flex items-center gap-2">
           <span className="font-bold text-white">DevLog</span>
           {errorCount > 0 && (
-            <span className="bg-red-500 text-white rounded-full px-1.5 text-[10px]">{errorCount} erros</span>
+            <span className="bg-red-500 text-white rounded-full px-1.5 text-[0.625rem]">{errorCount} erros</span>
           )}
           {warnCount > 0 && (
-            <span className="bg-yellow-500 text-black rounded-full px-1.5 text-[10px]">{warnCount} warns</span>
+            <span className="bg-yellow-500 text-black rounded-full px-1.5 text-[0.625rem]">{warnCount} warns</span>
           )}
           <span className="text-gray-500">{entries.length} total</span>
         </div>
@@ -145,7 +145,7 @@ export function DevLogPanel() {
           {(errorCount > 0 || warnCount > 0) && (
             <button
               onClick={handleExportReport}
-              className="bg-red-600 text-white rounded px-1.5 py-0.5 text-[10px] hover:bg-red-500"
+              className="bg-red-600 text-white rounded px-1.5 py-0.5 text-[0.625rem] hover:bg-red-500"
               title="Copiar só erros (pra colar no Claude)"
             >
               📋 Erros
@@ -169,14 +169,14 @@ export function DevLogPanel() {
           <button
             key={f}
             onClick={() => setFilter(f)}
-            className={`px-2 py-0.5 rounded text-[10px] shrink-0 ${
+            className={`px-2 py-0.5 rounded text-[0.625rem] shrink-0 ${
               filter === f ? 'bg-purple-600 text-white' : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
             }`}
           >
             {f || 'Todos'}
           </button>
         ))}
-        <label className="flex items-center gap-1 text-[10px] text-gray-500 ml-auto shrink-0">
+        <label className="flex items-center gap-1 text-[0.625rem] text-gray-500 ml-auto shrink-0">
           <input
             type="checkbox"
             checked={autoScroll}

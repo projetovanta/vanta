@@ -1,7 +1,9 @@
 import React from 'react';
-import { ArrowLeft, Share2, Heart } from 'lucide-react';
+import { ArrowLeft, Share2, Heart, Flag } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
 import { Evento } from '../../../types';
+import { ReportModal } from '../../../components/ReportModal';
+import { globalToast } from '../../../components/Toast';
 
 interface EventHeaderProps {
   evento: Evento;
@@ -9,6 +11,7 @@ interface EventHeaderProps {
   onShareSuccess?: (msg: string) => void;
   isFavorited?: boolean;
   onToggleFavorite?: () => void;
+  onReport?: () => void;
 }
 
 export const EventHeader: React.FC<EventHeaderProps> = ({
@@ -17,6 +20,7 @@ export const EventHeader: React.FC<EventHeaderProps> = ({
   onShareSuccess,
   isFavorited,
   onToggleFavorite,
+  onReport,
 }) => {
   const handleShare = async () => {
     const url = `https://maisvanta.com/event/${evento.id}`;
@@ -60,7 +64,7 @@ export const EventHeader: React.FC<EventHeaderProps> = ({
           onClick={onBack}
           className="p-3 bg-black/20 backdrop-blur-md rounded-full border border-white/10 text-white active:scale-90 transition-transform"
         >
-          <ArrowLeft size={20} />
+          <ArrowLeft size="1.25rem" />
         </button>
         <div className="flex items-center gap-2">
           {onToggleFavorite && (
@@ -69,7 +73,7 @@ export const EventHeader: React.FC<EventHeaderProps> = ({
               className="p-3 bg-black/20 backdrop-blur-md rounded-full border border-white/10 active:scale-90 transition-transform"
             >
               <Heart
-                size={18}
+                size="1.125rem"
                 fill={isFavorited ? '#FFD300' : 'none'}
                 className={isFavorited ? 'text-[#FFD300]' : 'text-white'}
               />
@@ -80,13 +84,22 @@ export const EventHeader: React.FC<EventHeaderProps> = ({
             onClick={handleShare}
             className="p-3 bg-black/20 backdrop-blur-md rounded-full border border-white/10 text-white active:scale-90 transition-transform"
           >
-            <Share2 size={18} />
+            <Share2 size="1.125rem" />
           </button>
+          {onReport && (
+            <button
+              aria-label="Denunciar"
+              onClick={onReport}
+              className="p-3 bg-black/20 backdrop-blur-md rounded-full border border-white/10 text-zinc-400 active:scale-90 transition-transform"
+            >
+              <Flag size="1rem" />
+            </button>
+          )}
         </div>
       </div>
 
       <div className="absolute bottom-10 left-0 right-0 p-6 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/80 to-transparent pt-20">
-        <span className="px-3 py-1 bg-[#FFD300] text-black text-[9px] font-black uppercase tracking-widest rounded-full mb-3 inline-block shadow-[0_0_15px_rgba(255,211,0,0.4)]">
+        <span className="px-3 py-1 bg-[#FFD300] text-black text-[0.5625rem] font-black uppercase tracking-widest rounded-full mb-3 inline-block shadow-[0_0_15px_rgba(255,211,0,0.4)]">
           {evento.formato || evento.categoria}
         </span>
         <h1

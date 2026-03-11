@@ -29,7 +29,7 @@ const CustomTooltip: React.FC<{
   const pct = total > 0 ? ((d.value / total) * 100).toFixed(1) : '0';
   return (
     <div className="bg-zinc-900 border border-white/10 rounded-xl px-3 py-2 shadow-xl">
-      <p className="text-zinc-300 text-[10px] font-bold truncate">{d.name}</p>
+      <p className="text-zinc-300 text-[0.625rem] font-bold truncate">{d.name}</p>
       <p className="text-white text-xs font-black">
         {formatValue(d.value)} ({pct}%)
       </p>
@@ -106,9 +106,9 @@ export const VantaPieChart: React.FC<Props> = ({
               }`}
             >
               <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: d.color }} />
-              <p className="flex-1 min-w-0 text-zinc-300 text-[11px] font-bold truncate">{d.name}</p>
-              <p className="text-zinc-500 text-[10px] shrink-0">{pct}%</p>
-              <p className="text-zinc-400 text-[11px] font-bold shrink-0">{formatValue(d.value)}</p>
+              <p className="flex-1 min-w-0 text-zinc-300 text-[0.6875rem] font-bold truncate">{d.name}</p>
+              <p className="text-zinc-500 text-[0.625rem] shrink-0">{pct}%</p>
+              <p className="text-zinc-400 text-[0.6875rem] font-bold shrink-0">{formatValue(d.value)}</p>
             </button>
           );
         })}

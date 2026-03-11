@@ -256,12 +256,12 @@ const EventoCaixaView: React.FC<{
         `}</style>
 
         <div
-          className="w-full max-w-[300px] rounded-3xl p-px animate-in slide-in-from-bottom duration-300"
+          className="w-full max-w-[18.75rem] rounded-3xl p-px animate-in slide-in-from-bottom duration-300"
           style={{ background: 'linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%)' }}
         >
           <div className="bg-zinc-950 rounded-[calc(1.5rem-1px)] overflow-hidden backdrop-blur-xl">
             <div className="px-6 pt-6 pb-4 flex flex-col items-center text-center">
-              <p className="text-[8px] font-black uppercase tracking-[0.35em] text-purple-400/70 mb-4">
+              <p className="text-[0.5rem] font-black uppercase tracking-[0.35em] text-purple-400/70 mb-4">
                 Ingresso Emitido
               </p>
 
@@ -279,7 +279,7 @@ const EventoCaixaView: React.FC<{
                 {qrToken ? (
                   <QRCodeSVG
                     value={qrToken}
-                    size={112}
+                    size="7rem"
                     fgColor="#e4e4e7"
                     bgColor="#09090b"
                     style={{ borderRadius: 4 }}
@@ -289,7 +289,7 @@ const EventoCaixaView: React.FC<{
                 )}
                 {/* Logo VANTA no centro */}
                 <div className="absolute w-8 h-8 bg-zinc-950 rounded-lg flex items-center justify-center border border-purple-500/30">
-                  <Sparkles size={14} className="text-[#FFD300]" />
+                  <Sparkles size="0.875rem" className="text-[#FFD300]" />
                 </div>
                 {/* Shimmer anti-print */}
                 <div
@@ -301,8 +301,8 @@ const EventoCaixaView: React.FC<{
                 />
                 {/* Watermark de tempo */}
                 <div className="absolute bottom-1.5 right-1.5 flex items-center gap-0.5 opacity-40">
-                  <Clock size={7} className="text-purple-300" />
-                  <span className="text-[6px] font-black text-purple-300 tabular-nums">{clockTime}</span>
+                  <Clock size="0.4375rem" className="text-purple-300" />
+                  <span className="text-[0.5rem] font-black text-purple-300 tabular-nums">{clockTime}</span>
                 </div>
               </div>
 
@@ -321,8 +321,8 @@ const EventoCaixaView: React.FC<{
               >
                 {fmtBRL(variacao.valor)}
               </p>
-              <p className="text-zinc-400 text-[10px] mt-1 truncate max-w-full">{email}</p>
-              <p className="text-zinc-700 text-[8px] font-black uppercase tracking-widest mt-1">{evento.nome}</p>
+              <p className="text-zinc-400 text-[0.625rem] mt-1 truncate max-w-full">{email}</p>
+              <p className="text-zinc-700 text-[0.5rem] font-black uppercase tracking-widest mt-1">{evento.nome}</p>
             </div>
 
             {/* Separador perfurado */}
@@ -338,7 +338,7 @@ const EventoCaixaView: React.FC<{
                 style={{ background: 'rgba(139,92,246,0.08)', borderColor: 'rgba(139,92,246,0.25)' }}
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-purple-400 shrink-0" />
-                <span className="text-[8px] font-black uppercase tracking-[0.3em] text-purple-300">
+                <span className="text-[0.5rem] font-black uppercase tracking-[0.3em] text-purple-300">
                   Vendido na Porta
                 </span>
                 <span className="w-1.5 h-1.5 rounded-full bg-purple-400 shrink-0" />
@@ -351,30 +351,30 @@ const EventoCaixaView: React.FC<{
                 >
                   {ownerFound ? (
                     <>
-                      <Check size={9} className="text-emerald-400" />
-                      <span className="text-[7px] font-black uppercase tracking-widest text-emerald-400">
+                      <Check size="0.5625rem" className="text-emerald-400" />
+                      <span className="text-[0.4375rem] font-black uppercase tracking-widest text-emerald-400">
                         Enviado ao app
                       </span>
                     </>
                   ) : (
                     <>
-                      <Mail size={9} className="text-amber-400" />
-                      <span className="text-[7px] font-black uppercase tracking-widest text-amber-400">
+                      <Mail size="0.5625rem" className="text-amber-400" />
+                      <span className="text-[0.4375rem] font-black uppercase tracking-widest text-amber-400">
                         Enviado por e-mail
                       </span>
                     </>
                   )}
                 </div>
               )}
-              <p className="text-zinc-700 text-[8px] font-black">{emissaoLabel}</p>
-              {ticketId && <p className="text-zinc-800 text-[7px] font-black tracking-widest">{ticketId}</p>}
+              <p className="text-zinc-700 text-[0.5rem] font-black">{emissaoLabel}</p>
+              {ticketId && <p className="text-zinc-800 text-[0.4375rem] font-black tracking-widest">{ticketId}</p>}
             </div>
           </div>
         </div>
 
         <button
           onClick={reiniciar}
-          className="mt-7 px-8 py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-[0.3em] rounded-xl active:scale-[0.98] transition-all"
+          className="mt-7 px-8 py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-[0.3em] rounded-xl active:scale-[0.98] transition-all"
         >
           Nova Venda
         </button>
@@ -388,7 +388,7 @@ const EventoCaixaView: React.FC<{
       <div className="flex-1 overflow-y-auto no-scrollbar p-6 space-y-5 max-w-3xl mx-auto w-full">
         {/* Resumo */}
         <div className="p-4 bg-zinc-900/40 border border-white/5 rounded-2xl">
-          <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mb-1">Ingresso</p>
+          <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest mb-1">Ingresso</p>
           <p className="text-white font-bold text-sm">
             {sel.variacao.area} · {genLabel(sel.variacao)}
           </p>
@@ -404,15 +404,15 @@ const EventoCaixaView: React.FC<{
           >
             {ownerFound ? (
               <>
-                <Check size={14} className="text-emerald-400 mt-0.5 shrink-0" />
-                <p className="text-emerald-300 text-[10px] leading-relaxed">
+                <Check size="0.875rem" className="text-emerald-400 mt-0.5 shrink-0" />
+                <p className="text-emerald-300 text-[0.625rem] leading-relaxed">
                   Ingresso será enviado direto para o app do comprador.
                 </p>
               </>
             ) : (
               <>
-                <Mail size={14} className="text-amber-400 mt-0.5 shrink-0" />
-                <p className="text-amber-300 text-[10px] leading-relaxed">
+                <Mail size="0.875rem" className="text-amber-400 mt-0.5 shrink-0" />
+                <p className="text-amber-300 text-[0.625rem] leading-relaxed">
                   Comprador não tem cadastro no app. O ingresso será enviado por e-mail.
                 </p>
               </>
@@ -441,26 +441,26 @@ const EventoCaixaView: React.FC<{
             </div>
           ) : (
             <div className="w-32 h-32 rounded-full bg-zinc-900/60 border-2 border-dashed border-white/10 flex items-center justify-center">
-              <Camera size={32} className="text-zinc-700" />
+              <Camera size="2rem" className="text-zinc-700" />
             </div>
           )}
 
           {camDenied ? (
             <div className="flex flex-col items-center gap-2">
               <div className="flex items-center gap-1.5 text-red-400">
-                <AlertTriangle size={12} />
-                <span className="text-[10px] font-black uppercase tracking-widest">Câmera bloqueada</span>
+                <AlertTriangle size="0.75rem" />
+                <span className="text-[0.625rem] font-black uppercase tracking-widest">Câmera bloqueada</span>
               </div>
-              <p className="text-zinc-400 text-[9px] text-center max-w-[220px]">
+              <p className="text-zinc-400 text-[0.5625rem] text-center max-w-[13.75rem]">
                 Libere o acesso à câmera nas configurações do navegador.
               </p>
             </div>
           ) : cameraActive ? (
             <button
               onClick={capturePhoto}
-              className="px-6 py-3 bg-purple-600 border border-purple-500/30 text-white rounded-xl text-[10px] font-black uppercase tracking-widest active:scale-95 transition-all flex items-center gap-2"
+              className="px-6 py-3 bg-purple-600 border border-purple-500/30 text-white rounded-xl text-[0.625rem] font-black uppercase tracking-widest active:scale-95 transition-all flex items-center gap-2"
             >
-              <Camera size={14} />
+              <Camera size="0.875rem" />
               Capturar
             </button>
           ) : (
@@ -473,14 +473,14 @@ const EventoCaixaView: React.FC<{
                     }
                   : startCamera
               }
-              className="px-6 py-3 bg-zinc-800 border border-white/10 text-zinc-300 rounded-xl text-[10px] font-black uppercase tracking-widest active:scale-95 transition-all flex items-center gap-2"
+              className="px-6 py-3 bg-zinc-800 border border-white/10 text-zinc-300 rounded-xl text-[0.625rem] font-black uppercase tracking-widest active:scale-95 transition-all flex items-center gap-2"
             >
-              <Camera size={14} />
+              <Camera size="0.875rem" />
               {selfiePreview ? 'Tirar Nova Selfie' : 'Abrir Câmera'}
             </button>
           )}
 
-          <p className="text-zinc-400 text-[9px] text-center leading-relaxed max-w-[200px]">
+          <p className="text-zinc-400 text-[0.5625rem] text-center leading-relaxed max-w-[12.5rem]">
             Opcional — foto usada na portaria para conferência de identidade
           </p>
         </div>
@@ -493,13 +493,13 @@ const EventoCaixaView: React.FC<{
             }}
             className="w-12 h-12 bg-zinc-900 border border-white/10 rounded-xl flex items-center justify-center active:scale-90 transition-all shrink-0"
           >
-            <X size={16} className="text-zinc-400" />
+            <X size="1rem" className="text-zinc-400" />
           </button>
           <button
             onClick={confirmarVenda}
-            className="flex-1 h-12 bg-[#FFD300] text-black rounded-xl font-black text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 active:scale-[0.97] transition-all"
+            className="flex-1 h-12 bg-[#FFD300] text-black rounded-xl font-black text-[0.625rem] uppercase tracking-widest flex items-center justify-center gap-2 active:scale-[0.97] transition-all"
           >
-            <Check size={14} /> Confirmar Venda
+            <Check size="0.875rem" /> Confirmar Venda
           </button>
         </div>
       </div>
@@ -511,7 +511,9 @@ const EventoCaixaView: React.FC<{
     return (
       <div className="flex-1 overflow-y-auto no-scrollbar p-6 space-y-5 max-w-3xl mx-auto w-full">
         <div className="p-5 bg-zinc-900/40 border border-white/5 rounded-2xl">
-          <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mb-2">Ingresso selecionado</p>
+          <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest mb-2">
+            Ingresso selecionado
+          </p>
           <p className="text-white font-bold">
             {sel.variacao.area} · {genLabel(sel.variacao)}
           </p>
@@ -520,7 +522,7 @@ const EventoCaixaView: React.FC<{
         </div>
 
         <div>
-          <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2 block">
+          <label className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2 block">
             E-mail do comprador
           </label>
           <input
@@ -535,7 +537,7 @@ const EventoCaixaView: React.FC<{
             autoFocus
           />
           {emailErro && (
-            <p className="text-red-400 text-[10px] font-black uppercase tracking-widest mt-1.5">{emailErro}</p>
+            <p className="text-red-400 text-[0.625rem] font-black uppercase tracking-widest mt-1.5">{emailErro}</p>
           )}
         </div>
 
@@ -547,12 +549,12 @@ const EventoCaixaView: React.FC<{
             }}
             className="w-12 h-12 bg-zinc-900 border border-white/10 rounded-xl flex items-center justify-center active:scale-90 transition-all shrink-0"
           >
-            <X size={16} className="text-zinc-400" />
+            <X size="1rem" className="text-zinc-400" />
           </button>
           <button
             onClick={handleEmailNext}
             disabled={!email}
-            className="flex-1 h-12 bg-[#FFD300] text-black rounded-xl font-black text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 active:scale-[0.97] transition-all disabled:opacity-30 disabled:pointer-events-none"
+            className="flex-1 h-12 bg-[#FFD300] text-black rounded-xl font-black text-[0.625rem] uppercase tracking-widest flex items-center justify-center gap-2 active:scale-[0.97] transition-all disabled:opacity-30 disabled:pointer-events-none"
           >
             Continuar →
           </button>
@@ -566,7 +568,9 @@ const EventoCaixaView: React.FC<{
     return (
       <div className="flex-1 overflow-y-auto no-scrollbar p-6 space-y-5 max-w-3xl mx-auto w-full">
         <div className="p-4 bg-zinc-900/40 border border-white/5 rounded-2xl">
-          <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mb-1">Ingresso selecionado</p>
+          <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest mb-1">
+            Ingresso selecionado
+          </p>
           <p className="text-white font-bold text-sm">
             {sel.variacao.area} · {genLabel(sel.variacao)}
           </p>
@@ -575,11 +579,14 @@ const EventoCaixaView: React.FC<{
 
         {/* Nome completo */}
         <div>
-          <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2 block">
+          <label className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2 block">
             Nome completo
           </label>
           <div className="relative">
-            <User size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none" />
+            <User
+              size="0.875rem"
+              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none"
+            />
             <input
               className="w-full bg-zinc-900/60 border border-white/5 rounded-xl pl-9 pr-4 py-3 text-white text-sm outline-none focus:border-[#FFD300]/30 placeholder-zinc-700"
               placeholder="Nome Sobrenome"
@@ -592,13 +599,13 @@ const EventoCaixaView: React.FC<{
             />
           </div>
           {nomeErro && (
-            <p className="text-red-400 text-[10px] font-black uppercase tracking-widest mt-1.5">{nomeErro}</p>
+            <p className="text-red-400 text-[0.625rem] font-black uppercase tracking-widest mt-1.5">{nomeErro}</p>
           )}
         </div>
 
         {/* CPF */}
         <div>
-          <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2 block">CPF</label>
+          <label className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2 block">CPF</label>
           <input
             className="w-full bg-zinc-900/60 border border-white/5 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-[#FFD300]/30 placeholder-zinc-700 tabular-nums"
             placeholder="000.000.000-00"
@@ -609,7 +616,9 @@ const EventoCaixaView: React.FC<{
             }}
             inputMode="numeric"
           />
-          {cpfErro && <p className="text-red-400 text-[10px] font-black uppercase tracking-widest mt-1.5">{cpfErro}</p>}
+          {cpfErro && (
+            <p className="text-red-400 text-[0.625rem] font-black uppercase tracking-widest mt-1.5">{cpfErro}</p>
+          )}
         </div>
 
         <div className="flex gap-2">
@@ -619,12 +628,12 @@ const EventoCaixaView: React.FC<{
             }}
             className="w-12 h-12 bg-zinc-900 border border-white/10 rounded-xl flex items-center justify-center active:scale-90 transition-all shrink-0"
           >
-            <X size={16} className="text-zinc-400" />
+            <X size="1rem" className="text-zinc-400" />
           </button>
           <button
             onClick={handleCadastroNext}
             disabled={!nome || cpf.replace(/\D/g, '').length < 11}
-            className="flex-1 h-12 bg-[#FFD300] text-black rounded-xl font-black text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 active:scale-[0.97] transition-all disabled:opacity-30 disabled:pointer-events-none"
+            className="flex-1 h-12 bg-[#FFD300] text-black rounded-xl font-black text-[0.625rem] uppercase tracking-widest flex items-center justify-center gap-2 active:scale-[0.97] transition-all disabled:opacity-30 disabled:pointer-events-none"
           >
             Continuar →
           </button>
@@ -640,20 +649,20 @@ const EventoCaixaView: React.FC<{
       <div className="flex items-center justify-center gap-1.5">
         {syncing ? (
           <>
-            <RefreshCw size={9} className="text-blue-400 animate-spin shrink-0" />
-            <span className="text-blue-400 text-[8px] font-black uppercase tracking-widest">
+            <RefreshCw size="0.5625rem" className="text-blue-400 animate-spin shrink-0" />
+            <span className="text-blue-400 text-[0.5rem] font-black uppercase tracking-widest">
               Sincronizando {pendingSyncCount}...
             </span>
           </>
         ) : isOnline ? (
           <>
             <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
-            <span className="text-emerald-500 text-[8px] font-black uppercase tracking-widest">Realtime ativo</span>
+            <span className="text-emerald-500 text-[0.5rem] font-black uppercase tracking-widest">Realtime ativo</span>
           </>
         ) : (
           <>
-            <WifiOff size={9} className="text-amber-400 shrink-0" />
-            <span className="text-amber-400 text-[8px] font-black uppercase tracking-widest">
+            <WifiOff size="0.5625rem" className="text-amber-400 shrink-0" />
+            <span className="text-amber-400 text-[0.5rem] font-black uppercase tracking-widest">
               Offline{pendingSyncCount > 0 ? ` · ${pendingSyncCount} pendente${pendingSyncCount > 1 ? 's' : ''}` : ''}
             </span>
           </>
@@ -663,12 +672,12 @@ const EventoCaixaView: React.FC<{
       {lotesAtivos.length === 0 ? (
         <div className="flex flex-col items-center py-20 gap-4">
           <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center">
-            <Tag size={28} className="text-zinc-700" />
+            <Tag size="1.75rem" className="text-zinc-700" />
           </div>
-          <p className="text-zinc-700 text-[10px] font-black uppercase tracking-widest text-center">
+          <p className="text-zinc-700 text-[0.625rem] font-black uppercase tracking-widest text-center">
             Nenhum lote ativo
           </p>
-          <p className="text-zinc-800 text-[9px] text-center leading-relaxed max-w-[200px]">
+          <p className="text-zinc-800 text-[0.5625rem] text-center leading-relaxed max-w-[12.5rem]">
             Todos os lotes estão encerrados ou sem capacidade disponível.
           </p>
         </div>
@@ -678,11 +687,11 @@ const EventoCaixaView: React.FC<{
             <div className="px-5 pt-4 pb-3 border-b border-white/5">
               <div className="flex items-center justify-between">
                 <p className="text-white font-bold text-sm">{lote.nome}</p>
-                <span className="text-[8px] font-black uppercase tracking-wider px-2 py-1 rounded-full bg-emerald-500/15 text-emerald-400">
+                <span className="text-[0.5rem] font-black uppercase tracking-wider px-2 py-1 rounded-full bg-emerald-500/15 text-emerald-400">
                   Ativo
                 </span>
               </div>
-              <p className="text-zinc-400 text-[9px] mt-0.5">
+              <p className="text-zinc-400 text-[0.5625rem] mt-0.5">
                 {lote.vendidos} / {lote.limitTotal} vendidos
               </p>
             </div>
@@ -698,7 +707,7 @@ const EventoCaixaView: React.FC<{
                       <p className="text-white text-sm font-medium leading-none">
                         {v.area} · {genLabel(v)}
                       </p>
-                      <p className="text-zinc-400 text-[9px] mt-0.5 font-black uppercase tracking-widest">
+                      <p className="text-zinc-400 text-[0.5625rem] mt-0.5 font-black uppercase tracking-widest">
                         {disponivel > 0 ? `${disponivel} disponíveis` : 'Esgotado'}
                       </p>
                     </div>
@@ -706,7 +715,7 @@ const EventoCaixaView: React.FC<{
                     <button
                       onClick={() => handleVender(lote, v)}
                       disabled={disponivel <= 0}
-                      className="px-4 py-2 bg-[#FFD300] text-black rounded-xl font-black text-[9px] uppercase tracking-widest active:scale-95 transition-all shrink-0 disabled:opacity-25 disabled:pointer-events-none"
+                      className="px-4 py-2 bg-[#FFD300] text-black rounded-xl font-black text-[0.5625rem] uppercase tracking-widest active:scale-95 transition-all shrink-0 disabled:opacity-25 disabled:pointer-events-none"
                     >
                       Vender
                     </button>

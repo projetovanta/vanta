@@ -129,7 +129,7 @@ export const ParceirosMaisVantaView: React.FC = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Store size={18} className="text-[#FFD300]" />
+          <Store size="1.125rem" className="text-[#FFD300]" />
           <h2 className="text-white font-bold text-sm">Parceiros</h2>
           <span className="text-zinc-400 text-xs">({parceiros.length})</span>
         </div>
@@ -138,9 +138,9 @@ export const ParceirosMaisVantaView: React.FC = () => {
             resetForm();
             setShowForm(true);
           }}
-          className="flex items-center gap-1.5 px-3 py-1.5 bg-[#FFD300] text-black rounded-lg text-[10px] font-black uppercase tracking-wider active:scale-95 transition-all"
+          className="flex items-center gap-1.5 px-3 py-1.5 bg-[#FFD300] text-black rounded-lg text-[0.625rem] font-black uppercase tracking-wider active:scale-95 transition-all"
         >
-          <Plus size={12} />
+          <Plus size="0.75rem" />
           Novo Parceiro
         </button>
       </div>
@@ -163,7 +163,7 @@ export const ParceirosMaisVantaView: React.FC = () => {
               <button
                 key={t.value}
                 onClick={() => setTipo(t.value)}
-                className={`px-2.5 py-1 rounded-lg text-[9px] font-bold uppercase tracking-wider border transition-all ${
+                className={`px-2.5 py-1 rounded-lg text-[0.5625rem] font-bold uppercase tracking-wider border transition-all ${
                   tipo === t.value
                     ? 'bg-[#FFD300] text-black border-transparent'
                     : 'bg-zinc-800 text-zinc-400 border-white/5'
@@ -180,13 +180,13 @@ export const ParceirosMaisVantaView: React.FC = () => {
               <button
                 key={c.id}
                 onClick={() => setCidadeId(c.id)}
-                className={`px-2.5 py-1 rounded-lg text-[9px] font-bold uppercase tracking-wider border transition-all flex items-center gap-1 ${
+                className={`px-2.5 py-1 rounded-lg text-[0.5625rem] font-bold uppercase tracking-wider border transition-all flex items-center gap-1 ${
                   cidadeId === c.id
                     ? 'bg-[#FFD300] text-black border-transparent'
                     : 'bg-zinc-800 text-zinc-400 border-white/5'
                 }`}
               >
-                <MapPin size={10} />
+                <MapPin size="0.625rem" />
                 {c.nome}
               </button>
             ))}
@@ -232,19 +232,19 @@ export const ParceirosMaisVantaView: React.FC = () => {
           {/* Plano (só no edit) */}
           {editId && (
             <div>
-              <p className="text-zinc-400 text-[10px] font-bold uppercase tracking-wider mb-1.5">Plano</p>
+              <p className="text-zinc-400 text-[0.625rem] font-bold uppercase tracking-wider mb-1.5">Plano</p>
               <div className="flex gap-1.5">
                 {PLANOS_PARCEIRO.map(p => (
                   <button
                     key={p.value}
                     onClick={() => setPlano(p.value)}
-                    className={`flex-1 py-2 rounded-lg text-[10px] font-black uppercase tracking-wider border transition-all ${
+                    className={`flex-1 py-2 rounded-lg text-[0.625rem] font-black uppercase tracking-wider border transition-all ${
                       plano === p.value ? 'border-transparent text-black' : 'bg-zinc-800 text-zinc-400 border-white/5'
                     }`}
                     style={plano === p.value ? { backgroundColor: p.cor } : {}}
                   >
                     <span className="block">{p.label}</span>
-                    <span className="block text-[8px] opacity-70">{p.resgates}</span>
+                    <span className="block text-[0.5rem] opacity-70">{p.resgates}</span>
                   </button>
                 ))}
               </div>
@@ -254,7 +254,7 @@ export const ParceirosMaisVantaView: React.FC = () => {
           <div className="flex gap-2">
             <button
               onClick={handleSave}
-              className="flex-1 py-2 bg-[#FFD300] text-black rounded-lg text-[10px] font-black uppercase tracking-wider active:scale-95 transition-all"
+              className="flex-1 py-2 bg-[#FFD300] text-black rounded-lg text-[0.625rem] font-black uppercase tracking-wider active:scale-95 transition-all"
             >
               {editId ? 'Salvar' : 'Criar'}
             </button>
@@ -263,7 +263,7 @@ export const ParceirosMaisVantaView: React.FC = () => {
                 setShowForm(false);
                 resetForm();
               }}
-              className="px-4 py-2 bg-zinc-800 text-zinc-400 rounded-lg text-[10px] font-black uppercase tracking-wider active:scale-95 transition-all"
+              className="px-4 py-2 bg-zinc-800 text-zinc-400 rounded-lg text-[0.625rem] font-black uppercase tracking-wider active:scale-95 transition-all"
             >
               Cancelar
             </button>
@@ -278,7 +278,7 @@ export const ParceirosMaisVantaView: React.FC = () => {
         </div>
       ) : parceiros.length === 0 ? (
         <div className="text-center py-12">
-          <Store size={32} className="text-zinc-700 mx-auto mb-2" />
+          <Store size="2rem" className="text-zinc-700 mx-auto mb-2" />
           <p className="text-zinc-400 text-xs">Nenhum parceiro cadastrado</p>
         </div>
       ) : (
@@ -294,14 +294,14 @@ export const ParceirosMaisVantaView: React.FC = () => {
               >
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-zinc-800 rounded-xl flex items-center justify-center shrink-0 border border-white/5">
-                    <Store size={18} className="text-[#FFD300]" />
+                    <Store size="1.125rem" className="text-[#FFD300]" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-white text-sm font-semibold truncate">{p.nome}</p>
-                    <div className="flex items-center gap-2 text-[10px] text-zinc-400 mt-0.5">
+                    <div className="flex items-center gap-2 text-[0.625rem] text-zinc-400 mt-0.5">
                       <span>{TIPOS_PARCEIRO.find(t => t.value === p.tipo)?.label ?? p.tipo}</span>
                       <span className="flex items-center gap-0.5">
-                        <MapPin size={9} />
+                        <MapPin size="0.5625rem" />
                         {cidadeNome(p.cidadeId)}
                       </span>
                       {planoInfo && (
@@ -316,38 +316,38 @@ export const ParceirosMaisVantaView: React.FC = () => {
                       onClick={() => startEdit(p)}
                       className="w-7 h-7 bg-zinc-800 rounded-full flex items-center justify-center border border-white/5 active:scale-90 transition-all"
                     >
-                      <Edit3 size={12} className="text-zinc-400" />
+                      <Edit3 size="0.75rem" className="text-zinc-400" />
                     </button>
                     <button
                       onClick={() => toggleAtivo(p)}
                       className="w-7 h-7 bg-zinc-800 rounded-full flex items-center justify-center border border-white/5 active:scale-90 transition-all"
                     >
                       {p.ativo ? (
-                        <ToggleRight size={14} className="text-green-400" />
+                        <ToggleRight size="0.875rem" className="text-green-400" />
                       ) : (
-                        <ToggleLeft size={14} className="text-zinc-400" />
+                        <ToggleLeft size="0.875rem" className="text-zinc-400" />
                       )}
                     </button>
                   </div>
                 </div>
 
                 {/* Stats */}
-                <div className="flex items-center gap-3 mt-2 text-[10px] text-zinc-400">
+                <div className="flex items-center gap-3 mt-2 text-[0.625rem] text-zinc-400">
                   {p.instagramHandle && (
                     <span className="flex items-center gap-0.5">
-                      <Instagram size={10} />
+                      <Instagram size="0.625rem" />
                       {p.instagramHandle}
                     </span>
                   )}
                   {p.contatoTelefone && (
                     <span className="flex items-center gap-0.5">
-                      <Phone size={10} />
+                      <Phone size="0.625rem" />
                       {p.contatoTelefone}
                     </span>
                   )}
                   {p.contatoEmail && (
                     <span className="flex items-center gap-0.5">
-                      <Mail size={10} className="shrink-0" />
+                      <Mail size="0.625rem" className="shrink-0" />
                       <span className="truncate">{p.contatoEmail}</span>
                     </span>
                   )}

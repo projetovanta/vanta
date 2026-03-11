@@ -110,7 +110,7 @@ export const PortariaListaDashView: React.FC<PortListaDashProps> = ({
         <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic leading-none text-white">
           {isGerente ? 'Ger. Portaria Lista' : 'Portaria Lista'}
         </h1>
-        <p className="text-[10px] text-zinc-400 font-black uppercase tracking-wider mt-1">
+        <p className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-wider mt-1">
           {portariaNodes.length} evento{portariaNodes.length !== 1 ? 's' : ''}
         </p>
       </div>
@@ -124,7 +124,7 @@ export const PortariaListaDashView: React.FC<PortListaDashProps> = ({
             <span>
               {filtroEventoId ? metricas.find(m => m.eventoId === filtroEventoId)?.eventoNome : 'Todos os eventos'}
             </span>
-            <ChevronDown size={14} className="text-zinc-400" />
+            <ChevronDown size="0.875rem" className="text-zinc-400" />
           </button>
           {showDropdown && (
             <div className="absolute left-6 right-6 top-full z-20 bg-zinc-900 border border-white/10 rounded-xl overflow-hidden shadow-xl">
@@ -164,29 +164,29 @@ export const PortariaListaDashView: React.FC<PortListaDashProps> = ({
             <div className="grid grid-cols-2 gap-2.5 mb-4">
               <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-3 flex flex-col gap-1">
                 <div className="flex items-center gap-1.5">
-                  <UserCheck size={11} className="text-emerald-400 shrink-0" />
-                  <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider">Check-ins</p>
+                  <UserCheck size="0.6875rem" className="text-emerald-400 shrink-0" />
+                  <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-wider">Check-ins</p>
                 </div>
                 <p className="text-lg font-bold text-emerald-400 leading-none">{dados.totalCheckins}</p>
               </div>
               <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-3 flex flex-col gap-1">
                 <div className="flex items-center gap-1.5">
-                  <ClipboardList size={11} className="text-orange-400 shrink-0" />
-                  <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider">Pendentes</p>
+                  <ClipboardList size="0.6875rem" className="text-orange-400 shrink-0" />
+                  <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-wider">Pendentes</p>
                 </div>
                 <p className="text-lg font-bold text-orange-400 leading-none">{dados.totalPendentes}</p>
               </div>
               <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-3 flex flex-col gap-1">
                 <div className="flex items-center gap-1.5">
-                  <Users size={11} className="text-blue-400 shrink-0" />
-                  <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider">Total Nomes</p>
+                  <Users size="0.6875rem" className="text-blue-400 shrink-0" />
+                  <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-wider">Total Nomes</p>
                 </div>
                 <p className="text-lg font-bold text-white leading-none">{dados.totalNomes}</p>
               </div>
               <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-3 flex flex-col gap-1">
                 <div className="flex items-center gap-1.5">
-                  <TrendingUp size={11} className="text-[#FFD300] shrink-0" />
-                  <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider">Concluído</p>
+                  <TrendingUp size="0.6875rem" className="text-[#FFD300] shrink-0" />
+                  <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-wider">Concluído</p>
                 </div>
                 <p className="text-lg font-bold text-[#FFD300] leading-none">{dados.pctConcluido}%</p>
               </div>
@@ -201,11 +201,14 @@ export const PortariaListaDashView: React.FC<PortListaDashProps> = ({
                 }`}
               >
                 <div className="flex items-center gap-2">
-                  <TrendingUp size={14} className={tendencia === 'acima' ? 'text-emerald-400' : 'text-orange-400'} />
+                  <TrendingUp
+                    size="0.875rem"
+                    className={tendencia === 'acima' ? 'text-emerald-400' : 'text-orange-400'}
+                  />
                   <p className={`text-xs font-bold ${tendencia === 'acima' ? 'text-emerald-400' : 'text-orange-400'}`}>
                     {tendencia === 'acima' ? 'Acima' : 'Abaixo'} da média
                   </p>
-                  <p className="text-[10px] text-zinc-400">
+                  <p className="text-[0.625rem] text-zinc-400">
                     ({eventoSelecionado?.checkins} vs média {dados.media.toFixed(0)})
                   </p>
                 </div>
@@ -214,7 +217,7 @@ export const PortariaListaDashView: React.FC<PortListaDashProps> = ({
 
             {metricas.length > 1 && !filtroEventoId && (
               <div className="mb-4">
-                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider mb-2">
+                <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-wider mb-2">
                   Comparativo por Evento
                 </p>
                 <div className="space-y-2">
@@ -232,7 +235,7 @@ export const PortariaListaDashView: React.FC<PortListaDashProps> = ({
                             style={{ width: `${Math.min(pct, 200)}%` }}
                           />
                         </div>
-                        <p className="text-[9px] text-zinc-400 mt-1">{m.pendentes} pendentes</p>
+                        <p className="text-[0.5625rem] text-zinc-400 mt-1">{m.pendentes} pendentes</p>
                       </div>
                     );
                   })}
@@ -241,16 +244,16 @@ export const PortariaListaDashView: React.FC<PortListaDashProps> = ({
             )}
 
             <div className="space-y-2">
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider">Ações rápidas</p>
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-wider">Ações rápidas</p>
               <button
                 onClick={onOpenPortaria}
                 className="w-full flex items-center justify-between bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 active:scale-[0.98] transition-all"
               >
                 <div className="flex items-center gap-3">
-                  <ClipboardList size={16} className="text-emerald-400 shrink-0" />
+                  <ClipboardList size="1rem" className="text-emerald-400 shrink-0" />
                   <p className="text-sm text-white font-bold">Abrir Portaria Lista</p>
                 </div>
-                <ArrowRight size={14} className="text-zinc-400 shrink-0" />
+                <ArrowRight size="0.875rem" className="text-zinc-400 shrink-0" />
               </button>
               {isGerente && onOpenEquipe && (
                 <button
@@ -258,10 +261,10 @@ export const PortariaListaDashView: React.FC<PortListaDashProps> = ({
                   className="w-full flex items-center justify-between bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 active:scale-[0.98] transition-all"
                 >
                   <div className="flex items-center gap-3">
-                    <Users size={16} className="text-blue-400 shrink-0" />
+                    <Users size="1rem" className="text-blue-400 shrink-0" />
                     <p className="text-sm text-white font-bold">Gerenciar Equipe</p>
                   </div>
-                  <ArrowRight size={14} className="text-zinc-400 shrink-0" />
+                  <ArrowRight size="0.875rem" className="text-zinc-400 shrink-0" />
                 </button>
               )}
             </div>

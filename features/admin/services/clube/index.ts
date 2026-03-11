@@ -32,6 +32,10 @@ import * as passport from './clubePassportService';
 import * as instagram from './clubeInstagramService';
 import * as config from './clubeConfigService';
 import { clubeConvitesService } from './clubeConvitesService';
+import * as convitesIndicacao from './clubeConvitesIndicacaoService';
+import * as planosProdutor from './clubePlanosService';
+import * as notifProdutor from './clubeNotifProdutorService';
+import * as conviteEspecial from './clubeConviteEspecialService';
 
 // ── Service ──────────────────────────────────────────────────────────────────
 export const clubeService = {
@@ -100,21 +104,6 @@ export const clubeService = {
   getSolicitacaoByUserId: solicitacoes.getSolicitacaoByUserId,
   solicitarEntrada: solicitacoes.solicitarEntrada,
   convidarAmigo: solicitacoes.convidarAmigo,
-  convidarParaMaisVanta(masterId: string, membroUserId: string, tier: import('../../../../types').TierMaisVanta) {
-    return solicitacoes.convidarParaMaisVanta(masterId, membroUserId, tier, this.enviarNotificacaoClube.bind(this));
-  },
-  aceitarConviteMaisVanta(
-    solId: string,
-    instagramHandle: string,
-    verificacao?: { verificado: boolean; verificadoEm?: string; codigo?: string },
-  ) {
-    return solicitacoes.aceitarConviteMaisVanta(
-      solId,
-      instagramHandle,
-      verificacao,
-      this.enviarNotificacaoClube.bind(this),
-    );
-  },
   aprovarSolicitacao(
     solId: string,
     tier: import('../../../../types').TierMaisVanta,
@@ -134,10 +123,9 @@ export const clubeService = {
       notaInterna,
     );
   },
-  rejeitarSolicitacao: solicitacoes.rejeitarSolicitacao,
   adiarSolicitacao: solicitacoes.adiarSolicitacao,
 
-  // ── Benefícios MV por evento (mais_vanta_lotes_evento) ──────────────────
+  // ── Benefícios MV por evento (mais_vanta_config_evento) ──────────────────
   getBeneficiosEvento: lotes.getBeneficiosEvento,
   salvarBeneficiosEvento: lotes.salvarBeneficiosEvento,
   removerBeneficiosEvento: lotes.removerBeneficiosEvento,
@@ -158,6 +146,7 @@ export const clubeService = {
   getResgatesEventoAsync: reservas.getResgatesEvento,
   cancelarResgate: reservas.cancelarResgate,
   getResgatesPendentePostAsync: reservas.getResgatesPendentePost,
+  enviarPostUrl: reservas.enviarPostUrl,
   verificarPostResgate: reservas.verificarPost,
 
   // ── Reservas (stubs legados — consumers síncronos) ─────────────────────
@@ -246,6 +235,38 @@ export const clubeService = {
     }
   },
 
-  // ── Convites (link externo) ────────────────────────────────────────────────
+  // ── Convites admin (link externo) ──────────────────────────────────────────
   convites: clubeConvitesService,
+
+  // ── Convites de indicação (membro→membro) ────────────────────────────────
+  gerarConviteIndicacao: convitesIndicacao.gerarConvite,
+  listarConvitesIndicacao: convitesIndicacao.listarConvitesMembro,
+  buscarConviteIndicacaoPorCodigo: convitesIndicacao.buscarConvitePorCodigo,
+  usarConviteIndicacao: convitesIndicacao.usarConvite,
+  gerarConvitesIniciais: convitesIndicacao.gerarConvitesIniciais,
+  adicionarConviteIndicacao: convitesIndicacao.adicionarConvite,
+  getLinkConviteIndicacao: convitesIndicacao.getLinkConvite,
+
+  // ── Planos do produtor ────────────────────────────────────────────────────
+  listarPlanosProdutor: planosProdutor.listarPlanos,
+  criarPlanoProdutor: planosProdutor.criarPlano,
+  atualizarPlanoProdutor: planosProdutor.atualizarPlano,
+  deletarPlanoProdutor: planosProdutor.deletarPlano,
+  listarAtribuicoesPlano: planosProdutor.listarAtribuicoes,
+  atribuirPlanoProdutor: planosProdutor.atribuirPlano,
+  cancelarPlanoProdutor: planosProdutor.cancelarPlanoProdutor,
+  getPlanoAtivoProdutor: planosProdutor.getPlanoAtivoProdutor,
+  verificarLimiteEventos: planosProdutor.verificarLimiteEventos,
+
+  // Notificações produtor→membros
+  solicitarNotificacaoMV: notifProdutor.solicitarNotificacao,
+  listarSolicitacoesNotifEvento: notifProdutor.listarSolicitacoesEvento,
+  listarNotifPendentes: notifProdutor.listarPendentes,
+  aprovarSolicitacaoNotif: notifProdutor.aprovarSolicitacaoNotif,
+  rejeitarSolicitacaoNotif: notifProdutor.rejeitarSolicitacaoNotif,
+
+  // ── Convite especial do Vanta (V3 S6) ─────────────────────────────────────
+  buscarMembrosPorFiltro: conviteEspecial.buscarMembrosPorFiltro,
+  enviarConvitesEspeciais: conviteEspecial.enviarConvitesEspeciais,
+  listarConvitesEspeciaisEvento: conviteEspecial.listarConvitesEspeciaisEvento,
 };

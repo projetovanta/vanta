@@ -99,7 +99,7 @@ export const TabMesas: React.FC<Props> = ({ eventoId, mesasAtivo, plantaMesas, o
       <div className="flex items-center justify-between p-4 bg-zinc-900/40 border border-white/5 rounded-2xl">
         <div>
           <p className="text-white font-bold text-sm">Mesas / Camarotes</p>
-          <p className="text-zinc-400 text-[9px]">Habilitar seleção de mesa neste evento</p>
+          <p className="text-zinc-400 text-[0.5625rem]">Habilitar seleção de mesa neste evento</p>
         </div>
         <button
           onClick={() => {
@@ -118,7 +118,7 @@ export const TabMesas: React.FC<Props> = ({ eventoId, mesasAtivo, plantaMesas, o
         <>
           {/* Upload de planta */}
           <div className="space-y-2">
-            <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest ml-1">Planta do Local</p>
+            <p className="text-[0.5625rem] text-zinc-400 font-black uppercase tracking-widest ml-1">Planta do Local</p>
             {planta ? (
               <div className="relative rounded-2xl overflow-hidden border border-white/5">
                 <img
@@ -131,7 +131,7 @@ export const TabMesas: React.FC<Props> = ({ eventoId, mesasAtivo, plantaMesas, o
                   onClick={() => fileRef.current?.click()}
                   className="absolute top-2 right-2 p-2 bg-black/60 backdrop-blur-sm rounded-full border border-white/10 active:scale-90 transition-all"
                 >
-                  <Upload size={14} className="text-zinc-400" />
+                  <Upload size="0.875rem" className="text-zinc-400" />
                 </button>
               </div>
             ) : (
@@ -141,11 +141,11 @@ export const TabMesas: React.FC<Props> = ({ eventoId, mesasAtivo, plantaMesas, o
                 className="w-full aspect-[16/9] border-2 border-dashed border-white/10 rounded-2xl flex flex-col items-center justify-center gap-2 text-zinc-400 active:border-[#FFD300]/30 transition-all"
               >
                 {uploading ? (
-                  <Loader2 size={20} className="animate-spin text-zinc-400" />
+                  <Loader2 size="1.25rem" className="animate-spin text-zinc-400" />
                 ) : (
                   <>
-                    <Upload size={20} />
-                    <span className="text-[9px] font-black uppercase tracking-widest">Upload da planta</span>
+                    <Upload size="1.25rem" />
+                    <span className="text-[0.5625rem] font-black uppercase tracking-widest">Upload da planta</span>
                   </>
                 )}
               </button>
@@ -157,8 +157,10 @@ export const TabMesas: React.FC<Props> = ({ eventoId, mesasAtivo, plantaMesas, o
           {planta && (
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest ml-1">Posicionar Mesas</p>
-                <p className="text-[8px] text-zinc-700">Clique na imagem para adicionar</p>
+                <p className="text-[0.5625rem] text-zinc-400 font-black uppercase tracking-widest ml-1">
+                  Posicionar Mesas
+                </p>
+                <p className="text-[0.5rem] text-zinc-700">Clique na imagem para adicionar</p>
               </div>
               <div
                 ref={imgRef}
@@ -183,7 +185,7 @@ export const TabMesas: React.FC<Props> = ({ eventoId, mesasAtivo, plantaMesas, o
                         setFormCap(String(m.capacidade));
                         setFormValor(String(m.valor));
                       }}
-                      className={`absolute w-7 h-7 -ml-3.5 -mt-3.5 rounded-full border-2 flex items-center justify-center text-[7px] font-black transition-all ${
+                      className={`absolute w-7 h-7 -ml-3.5 -mt-3.5 rounded-full border-2 flex items-center justify-center text-[0.4375rem] font-black transition-all ${
                         isEdit ? 'scale-125 z-10' : 'active:scale-110'
                       }`}
                       style={{
@@ -208,7 +210,7 @@ export const TabMesas: React.FC<Props> = ({ eventoId, mesasAtivo, plantaMesas, o
               <div className="flex items-center justify-between">
                 <p className="text-[#FFD300] font-bold text-sm">Editar Mesa</p>
                 <button onClick={() => setEditMesa(null)} className="text-zinc-400 active:text-zinc-400">
-                  <X size={16} />
+                  <X size="1rem" />
                 </button>
               </div>
               <div className="space-y-2">
@@ -220,7 +222,9 @@ export const TabMesas: React.FC<Props> = ({ eventoId, mesasAtivo, plantaMesas, o
                 />
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Capacidade</label>
+                    <label className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">
+                      Capacidade
+                    </label>
                     <input
                       value={formCap}
                       onChange={e => setFormCap(e.target.value)}
@@ -230,7 +234,9 @@ export const TabMesas: React.FC<Props> = ({ eventoId, mesasAtivo, plantaMesas, o
                     />
                   </div>
                   <div>
-                    <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Valor (R$)</label>
+                    <label className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">
+                      Valor (R$)
+                    </label>
                     <input
                       value={formValor}
                       onChange={e => setFormValor(e.target.value)}
@@ -245,15 +251,15 @@ export const TabMesas: React.FC<Props> = ({ eventoId, mesasAtivo, plantaMesas, o
               <div className="flex gap-2">
                 <button
                   onClick={handleSaveEdit}
-                  className="flex-1 py-3 bg-[#FFD300] text-black font-bold text-[9px] uppercase tracking-widest rounded-xl active:scale-95 transition-all"
+                  className="flex-1 py-3 bg-[#FFD300] text-black font-bold text-[0.5625rem] uppercase tracking-widest rounded-xl active:scale-95 transition-all"
                 >
                   Salvar
                 </button>
                 <button
                   onClick={() => handleRemove(editMesa.id)}
-                  className="py-3 px-4 bg-red-500/10 border border-red-500/20 text-red-400 font-bold text-[9px] uppercase tracking-widest rounded-xl active:scale-95 transition-all"
+                  className="py-3 px-4 bg-red-500/10 border border-red-500/20 text-red-400 font-bold text-[0.5625rem] uppercase tracking-widest rounded-xl active:scale-95 transition-all"
                 >
-                  <Trash2 size={14} />
+                  <Trash2 size="0.875rem" />
                 </button>
               </div>
             </div>
@@ -262,11 +268,11 @@ export const TabMesas: React.FC<Props> = ({ eventoId, mesasAtivo, plantaMesas, o
           {/* Lista de mesas */}
           {loading ? (
             <div className="flex items-center justify-center py-8">
-              <Loader2 size={20} className="text-zinc-400 animate-spin" />
+              <Loader2 size="1.25rem" className="text-zinc-400 animate-spin" />
             </div>
           ) : mesas.length > 0 ? (
             <div className="space-y-2">
-              <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest ml-1">
+              <p className="text-[0.5625rem] text-zinc-400 font-black uppercase tracking-widest ml-1">
                 Mesas ({mesas.length})
               </p>
               {mesas.map((m, i) => {
@@ -276,20 +282,20 @@ export const TabMesas: React.FC<Props> = ({ eventoId, mesasAtivo, plantaMesas, o
                     key={m.id}
                     className="flex items-center gap-3 p-3 bg-zinc-900/40 border border-white/5 rounded-xl"
                   >
-                    <div className="w-7 h-7 rounded-full bg-[#FFD300]/10 border border-[#FFD300]/20 flex items-center justify-center text-[#FFD300] text-[9px] font-black shrink-0">
+                    <div className="w-7 h-7 rounded-full bg-[#FFD300]/10 border border-[#FFD300]/20 flex items-center justify-center text-[#FFD300] text-[0.5625rem] font-black shrink-0">
                       {i + 1}
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-white text-sm font-bold truncate">{m.label}</p>
-                      <p className="text-zinc-400 text-[9px]">
+                      <p className="text-zinc-400 text-[0.5625rem]">
                         {m.capacidade} pessoas · {fmtBrl(m.valor)}
                       </p>
                     </div>
-                    <span className={`text-[8px] font-black uppercase tracking-wider ${st.cor}`}>{st.label}</span>
+                    <span className={`text-[0.5rem] font-black uppercase tracking-wider ${st.cor}`}>{st.label}</span>
                     {m.status === 'RESERVADA' && (
                       <button
                         onClick={() => handleLiberar(m.id)}
-                        className="text-[8px] text-amber-400 font-bold uppercase active:opacity-60"
+                        className="text-[0.5rem] text-amber-400 font-bold uppercase active:opacity-60"
                       >
                         Liberar
                       </button>
@@ -300,8 +306,8 @@ export const TabMesas: React.FC<Props> = ({ eventoId, mesasAtivo, plantaMesas, o
             </div>
           ) : planta ? (
             <div className="text-center py-6">
-              <Plus size={20} className="text-zinc-700 mx-auto mb-2" />
-              <p className="text-zinc-400 text-[10px]">Clique na planta para adicionar mesas</p>
+              <Plus size="1.25rem" className="text-zinc-700 mx-auto mb-2" />
+              <p className="text-zinc-400 text-[0.625rem]">Clique na planta para adicionar mesas</p>
             </div>
           ) : null}
         </>

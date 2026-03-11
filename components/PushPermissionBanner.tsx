@@ -70,11 +70,11 @@ export const PushPermissionBanner: React.FC<Props> = ({
           {/* Ícone principal */}
           <div className="relative">
             <div className="w-20 h-20 rounded-3xl bg-[#FFD300]/15 border border-[#FFD300]/25 flex items-center justify-center">
-              <BellRing size={36} className="text-[#FFD300]" />
+              <BellRing size="2.25rem" className="text-[#FFD300]" />
             </div>
             {/* Dot de notificação */}
             <div className="absolute -top-1 -right-1 w-5 h-5 bg-[#FFD300] rounded-full flex items-center justify-center">
-              <span className="text-black text-[9px] font-black">1</span>
+              <span className="text-black text-[0.5625rem] font-black">1</span>
             </div>
           </div>
         </div>
@@ -90,24 +90,24 @@ export const PushPermissionBanner: React.FC<Props> = ({
               <div className="mt-5 bg-zinc-900/60 border border-white/5 rounded-2xl p-4 space-y-3">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center shrink-0">
-                    <Share size={14} className="text-zinc-400" />
+                    <Share size="0.875rem" className="text-zinc-400" />
                   </div>
-                  <p className="text-zinc-400 text-[11px] leading-snug">
+                  <p className="text-zinc-400 text-[0.6875rem] leading-snug">
                     Toque no botão <span className="text-white font-bold">Compartilhar</span> do Safari
                   </p>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center shrink-0">
-                    <PlusSquare size={14} className="text-zinc-400" />
+                    <PlusSquare size="0.875rem" className="text-zinc-400" />
                   </div>
-                  <p className="text-zinc-400 text-[11px] leading-snug">
+                  <p className="text-zinc-400 text-[0.6875rem] leading-snug">
                     Selecione <span className="text-white font-bold">Adicionar à Tela de Início</span>
                   </p>
                 </div>
               </div>
               <button
                 onClick={() => setDismissed(true)}
-                className="w-full mt-5 py-4 rounded-xl bg-zinc-900 border border-white/10 text-zinc-400 text-[10px] font-bold uppercase tracking-[0.2em] active:scale-[0.98] transition-all"
+                className="w-full mt-5 py-4 rounded-xl bg-zinc-900 border border-white/10 text-zinc-400 text-[0.625rem] font-bold uppercase tracking-[0.2em] active:scale-[0.98] transition-all"
               >
                 Entendi
               </button>
@@ -115,7 +115,7 @@ export const PushPermissionBanner: React.FC<Props> = ({
           ) : (
             <>
               <h2 className="text-white text-lg font-bold text-center leading-tight">Não perca nada</h2>
-              <p className="text-zinc-400 text-xs text-center mt-2.5 leading-relaxed max-w-[240px] mx-auto">
+              <p className="text-zinc-400 text-xs text-center mt-2.5 leading-relaxed max-w-[15rem] mx-auto">
                 Ative as notificações para saber em primeira mão sobre eventos, ingressos e novidades.
               </p>
 
@@ -128,7 +128,7 @@ export const PushPermissionBanner: React.FC<Props> = ({
                 ].map(item => (
                   <div key={item.text} className="flex items-center gap-3 px-1">
                     <span className="text-sm">{item.emoji}</span>
-                    <span className="text-zinc-400 text-[11px]">{item.text}</span>
+                    <span className="text-zinc-400 text-[0.6875rem]">{item.text}</span>
                   </div>
                 ))}
               </div>
@@ -137,23 +137,23 @@ export const PushPermissionBanner: React.FC<Props> = ({
               <button
                 onClick={handleAllow}
                 disabled={loading}
-                className="w-full mt-6 py-4 rounded-xl bg-[#FFD300] text-black text-[10px] font-bold uppercase tracking-[0.2em] flex items-center justify-center gap-2 active:scale-[0.98] transition-all disabled:opacity-50"
+                className="w-full mt-6 py-4 rounded-xl bg-[#FFD300] text-black text-[0.625rem] font-bold uppercase tracking-[0.2em] flex items-center justify-center gap-2 active:scale-[0.98] transition-all disabled:opacity-50"
               >
                 {loading ? (
                   <>
-                    <Bell size={14} className="animate-pulse" />
+                    <Bell size="0.875rem" className="animate-pulse" />
                     Ativando...
                   </>
                 ) : (
                   <>
-                    <Bell size={14} />
+                    <Bell size="0.875rem" />
                     Ativar notificações
                   </>
                 )}
               </button>
               <button
                 onClick={() => setDismissed(true)}
-                className="w-full mt-2 py-3 text-zinc-400 text-[10px] font-bold uppercase tracking-[0.15em] active:text-zinc-400 transition-all"
+                className="w-full mt-2 py-3 text-zinc-400 text-[0.625rem] font-bold uppercase tracking-[0.15em] active:text-zinc-400 transition-all"
               >
                 Agora não
               </button>
@@ -166,7 +166,7 @@ export const PushPermissionBanner: React.FC<Props> = ({
           onClick={() => setDismissed(true)}
           className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/5 flex items-center justify-center active:scale-90 transition-all"
         >
-          <X size={14} className="text-zinc-400" />
+          <X size="0.875rem" className="text-zinc-400" />
         </button>
       </div>
     </div>

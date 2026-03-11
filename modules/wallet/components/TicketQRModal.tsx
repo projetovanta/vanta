@@ -74,7 +74,7 @@ export const TicketQRModal: React.FC<TicketQRModalProps> = ({ ticket, onClose })
     <div className="absolute inset-0 z-[200] flex items-center justify-center p-6 animate-in fade-in duration-200">
       <div className="absolute inset-0 bg-black/90 backdrop-blur-md" role="presentation" onClick={onClose} />
 
-      <div className="relative w-full max-w-[300px] bg-[#1a1a1a] rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl animate-in zoom-in-95 duration-300">
+      <div className="relative w-full max-w-[18.75rem] bg-[#1a1a1a] rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl animate-in zoom-in-95 duration-300">
         {/* Header gradiente */}
         <div
           className="p-6 text-center"
@@ -85,10 +85,12 @@ export const TicketQRModal: React.FC<TicketQRModalProps> = ({ ticket, onClose })
           }}
         >
           <h3 className="text-sm font-bold text-white mb-1 leading-tight truncate">{ticket.tituloEvento}</h3>
-          <p className="text-white/70 text-[10px] uppercase tracking-wider">{ticket.dataEvento}</p>
-          {ticket.variacaoLabel && <p className="text-white/90 text-[9px] font-bold mt-1">{ticket.variacaoLabel}</p>}
+          <p className="text-white/70 text-[0.625rem] uppercase tracking-wider">{ticket.dataEvento}</p>
+          {ticket.variacaoLabel && (
+            <p className="text-white/90 text-[0.5625rem] font-bold mt-1">{ticket.variacaoLabel}</p>
+          )}
           {ticket.isMeiaEntrada && (
-            <span className="inline-block mt-1.5 text-[8px] font-black uppercase tracking-widest text-cyan-300 bg-cyan-500/20 border border-cyan-400/30 px-2.5 py-0.5 rounded-full">
+            <span className="inline-block mt-1.5 text-[0.5rem] font-black uppercase tracking-widest text-cyan-300 bg-cyan-500/20 border border-cyan-400/30 px-2.5 py-0.5 rounded-full">
               Meia-entrada
             </span>
           )}
@@ -101,11 +103,11 @@ export const TicketQRModal: React.FC<TicketQRModalProps> = ({ ticket, onClose })
           <div className="absolute -right-3 top-0 w-6 h-6 bg-[#1a1a1a] rounded-full translate-y-[-50%]" />
 
           {/* QR Code real com JWT dinâmico */}
-          <div className="w-full max-w-[200px] aspect-square mb-3 relative">
+          <div className="w-full max-w-[12.5rem] aspect-square mb-3 relative">
             {token ? (
               <QRCodeSVG
                 value={token}
-                size={200}
+                size="12.5rem"
                 level="M"
                 bgColor="#FFFFFF"
                 fgColor="#000000"
@@ -120,25 +122,25 @@ export const TicketQRModal: React.FC<TicketQRModalProps> = ({ ticket, onClose })
 
           {/* Relógio watermark */}
           <div className="flex items-center gap-1.5 mb-2">
-            <Shield size={10} className="text-emerald-600" />
+            <Shield size="0.625rem" className="text-emerald-600" />
             <p className="text-black font-mono text-xs font-bold tracking-wider">{clockTime}</p>
           </div>
 
           {/* Barra de progresso de renovação */}
-          <div className="w-full max-w-[180px] h-1 bg-zinc-200 rounded-full overflow-hidden mb-2">
+          <div className="w-full max-w-[11.25rem] h-1 bg-zinc-200 rounded-full overflow-hidden mb-2">
             <div
               className="h-full bg-emerald-500 transition-all duration-1000 ease-linear rounded-full"
               style={{ width: `${(secondsLeft / (REFRESH_INTERVAL / 1000)) * 100}%` }}
             />
           </div>
 
-          <p className="text-zinc-400 text-[8px] uppercase tracking-widest text-center">
+          <p className="text-zinc-400 text-[0.5rem] uppercase tracking-widest text-center">
             Renova em {secondsLeft}s · Anti-fraude ativo
           </p>
 
           {/* Nome do titular */}
           {ticket.nomeTitular?.trim() && (
-            <p className="text-zinc-400 text-[9px] font-bold mt-2 truncate max-w-full">{ticket.nomeTitular}</p>
+            <p className="text-zinc-400 text-[0.5625rem] font-bold mt-2 truncate max-w-full">{ticket.nomeTitular}</p>
           )}
 
           {/* Botão abrir comprovante meia-entrada */}
@@ -150,8 +152,8 @@ export const TicketQRModal: React.FC<TicketQRModalProps> = ({ ticket, onClose })
               }}
               className="mt-3 flex items-center gap-1.5 px-4 py-2 bg-cyan-500/10 border border-cyan-500/20 rounded-xl active:scale-95 transition-all"
             >
-              <FileCheck size={12} className="text-cyan-500" />
-              <span className="text-cyan-500 text-[9px] font-black uppercase tracking-wider">
+              <FileCheck size="0.75rem" className="text-cyan-500" />
+              <span className="text-cyan-500 text-[0.5625rem] font-black uppercase tracking-wider">
                 Abrir Comprovante{compFotos.length > 1 ? ` (${compFotos.length})` : ''}
               </span>
             </button>
@@ -163,7 +165,7 @@ export const TicketQRModal: React.FC<TicketQRModalProps> = ({ ticket, onClose })
           onClick={onClose}
           className="absolute top-3 right-3 p-1.5 bg-black/20 hover:bg-black/40 rounded-full text-white/70 hover:text-white transition-colors"
         >
-          <X size={14} />
+          <X size="0.875rem" />
         </button>
       </div>
 
@@ -171,14 +173,14 @@ export const TicketQRModal: React.FC<TicketQRModalProps> = ({ ticket, onClose })
       {compModalOpen && compFotos.length > 0 && (
         <div className="absolute inset-0 z-[210] flex flex-col items-center justify-center p-4 animate-in fade-in duration-200">
           <div className="absolute inset-0 bg-black/90" role="presentation" onClick={() => setCompModalOpen(false)} />
-          <div className="relative w-full max-w-md animate-in zoom-in-95 duration-300">
+          <div className="relative w-full max-w-[500px] animate-in zoom-in-95 duration-300">
             {compFotos.length > 1 && (
               <div className="flex gap-1 mb-3 justify-center relative z-10">
                 {compFotos.map((f, i) => (
                   <button
                     key={f.label}
                     onClick={() => setCompFotoIdx(i)}
-                    className={`px-3 py-1.5 rounded-lg text-[9px] font-bold uppercase tracking-wider transition-all ${
+                    className={`px-3 py-1.5 rounded-lg text-[0.5625rem] font-bold uppercase tracking-wider transition-all ${
                       compFotoIdx === i ? 'bg-white/10 text-white' : 'text-zinc-400'
                     }`}
                   >
@@ -202,7 +204,7 @@ export const TicketQRModal: React.FC<TicketQRModalProps> = ({ ticket, onClose })
               onClick={() => setCompModalOpen(false)}
               className="absolute top-3 right-3 p-2 bg-black/60 rounded-full z-10"
             >
-              <X size={16} className="text-white" />
+              <X size="1rem" className="text-white" />
             </button>
           </div>
         </div>

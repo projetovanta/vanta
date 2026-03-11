@@ -111,7 +111,7 @@ export const RadarView: React.FC<RadarViewProps> = ({ onEventSelect }) => {
             <span
               className={`w-1.5 h-1.5 rounded-full shrink-0 ${radar.filteredEvents.length > 0 ? 'bg-[#FFD300] animate-pulse shadow-[0_0_8px_#FFD300]' : 'bg-zinc-600'}`}
             ></span>
-            <p className="text-[#FFD300] text-[10px] uppercase tracking-widest font-bold drop-shadow-md">
+            <p className="text-[#FFD300] text-[0.625rem] uppercase tracking-widest font-bold drop-shadow-md">
               {radar.customDateLabel}
             </p>
           </div>
@@ -125,7 +125,7 @@ export const RadarView: React.FC<RadarViewProps> = ({ onEventSelect }) => {
                 radar.resetToToday();
                 radar.setShowLiveOnly(false);
               }}
-              className={`px-3 py-1.5 rounded-full text-[9px] font-bold uppercase tracking-widest transition-all ${radar.isToday && !radar.showLiveOnly ? 'bg-[#FFD300] text-black shadow-[0_0_15px_rgba(255,211,0,0.4)]' : 'text-zinc-400 hover:text-white'}`}
+              className={`px-3 py-1.5 rounded-full text-[0.5625rem] font-bold uppercase tracking-widest transition-all ${radar.isToday && !radar.showLiveOnly ? 'bg-[#FFD300] text-black shadow-[0_0_15px_rgba(255,211,0,0.4)]' : 'text-zinc-400 hover:text-white'}`}
             >
               Hoje
             </button>
@@ -135,9 +135,9 @@ export const RadarView: React.FC<RadarViewProps> = ({ onEventSelect }) => {
                 radar.resetToToday();
                 radar.setShowLiveOnly(true);
               }}
-              className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-[9px] font-bold uppercase tracking-widest transition-all ${radar.showLiveOnly ? 'bg-red-500 text-white shadow-[0_0_15px_rgba(239,68,68,0.5)]' : 'text-zinc-400 hover:text-white'}`}
+              className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-[0.5625rem] font-bold uppercase tracking-widest transition-all ${radar.showLiveOnly ? 'bg-red-500 text-white shadow-[0_0_15px_rgba(239,68,68,0.5)]' : 'text-zinc-400 hover:text-white'}`}
             >
-              <Radio size={10} className={radar.showLiveOnly ? 'animate-pulse' : ''} />
+              <Radio size="0.625rem" className={radar.showLiveOnly ? 'animate-pulse' : ''} />
               Ao Vivo
             </button>
             <div className="w-[1px] h-3 bg-white/10 mx-0.5" />
@@ -148,25 +148,25 @@ export const RadarView: React.FC<RadarViewProps> = ({ onEventSelect }) => {
                 radar.handleDateSelect(d.toISOString().split('T')[0]);
                 radar.setShowLiveOnly(false);
               }}
-              className={`px-3 py-1.5 rounded-full text-[9px] font-bold uppercase tracking-widest transition-all ${radar.customDateLabel === 'Amanhã' && !radar.showLiveOnly ? 'bg-[#FFD300] text-black shadow-[0_0_15px_rgba(255,211,0,0.4)]' : 'text-zinc-400 hover:text-white'}`}
+              className={`px-3 py-1.5 rounded-full text-[0.5625rem] font-bold uppercase tracking-widest transition-all ${radar.customDateLabel === 'Amanhã' && !radar.showLiveOnly ? 'bg-[#FFD300] text-black shadow-[0_0_15px_rgba(255,211,0,0.4)]' : 'text-zinc-400 hover:text-white'}`}
             >
               Amanhã
             </button>
             <div className="w-[1px] h-3 bg-white/10 mx-0.5" />
             <button
               onClick={() => radar.setIsCalendarOpen(true)}
-              className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-[9px] font-bold uppercase tracking-widest transition-all ${!radar.isToday && radar.customDateLabel !== 'Amanhã' ? 'bg-[#FFD300] text-black shadow-[0_0_15px_rgba(255,211,0,0.4)]' : 'bg-transparent text-zinc-400 hover:text-white'}`}
+              className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-[0.5625rem] font-bold uppercase tracking-widest transition-all ${!radar.isToday && radar.customDateLabel !== 'Amanhã' ? 'bg-[#FFD300] text-black shadow-[0_0_15px_rgba(255,211,0,0.4)]' : 'bg-transparent text-zinc-400 hover:text-white'}`}
             >
-              <CalendarIcon size={10} />
+              <CalendarIcon size="0.625rem" />
               {!radar.isToday && radar.customDateLabel !== 'Amanhã' && <span>{radar.customDateLabel}</span>}
             </button>
           </div>
           {!radar.isToday && (
             <button
               onClick={radar.resetToToday}
-              className="bg-black/60 backdrop-blur-md border border-white/5 px-3 py-1.5 rounded-full flex items-center gap-2 text-[8px] font-black uppercase tracking-[0.2em] text-[#FFD300] shadow-lg animate-in slide-in-from-top-2"
+              className="bg-black/60 backdrop-blur-md border border-white/5 px-3 py-1.5 rounded-full flex items-center gap-2 text-[0.5rem] font-black uppercase tracking-[0.2em] text-[#FFD300] shadow-lg animate-in slide-in-from-top-2"
             >
-              <RotateCcw size={10} />
+              <RotateCcw size="0.625rem" />
               Voltar para Hoje
             </button>
           )}
@@ -185,7 +185,7 @@ export const RadarView: React.FC<RadarViewProps> = ({ onEventSelect }) => {
               <button
                 key={opt.label}
                 onClick={() => radar.setSelectedRadius(opt.value)}
-                className={`shrink-0 px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest transition-all border ${
+                className={`shrink-0 px-3 py-1 rounded-full text-[0.5rem] font-black uppercase tracking-widest transition-all border ${
                   radar.selectedRadius === opt.value
                     ? 'bg-[#FFD300] text-black border-[#FFD300] shadow-[0_0_8px_rgba(255,211,0,0.3)]'
                     : 'bg-black/70 backdrop-blur text-zinc-400 border-white/10'
@@ -204,9 +204,9 @@ export const RadarView: React.FC<RadarViewProps> = ({ onEventSelect }) => {
                   else globalToast('aviso', 'Permita o acesso à localização nas configurações do navegador.');
                 });
               }}
-              className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#FFD300] text-black text-[8px] font-black uppercase tracking-widest border border-[#FFD300] shadow-[0_0_8px_rgba(255,211,0,0.3)] active:scale-95 transition-all"
+              className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#FFD300] text-black text-[0.5rem] font-black uppercase tracking-widest border border-[#FFD300] shadow-[0_0_8px_rgba(255,211,0,0.3)] active:scale-95 transition-all"
             >
-              <LocateFixed size={12} />
+              <LocateFixed size="0.75rem" />
               Ativar localização
             </button>
           </div>
@@ -217,7 +217,7 @@ export const RadarView: React.FC<RadarViewProps> = ({ onEventSelect }) => {
       {radar.loading && radar.filteredEvents.length === 0 && (
         <div className="absolute inset-0 z-[500] flex items-center justify-center pointer-events-none">
           <div className="bg-black/80 backdrop-blur-xl border border-white/10 p-6 rounded-full shadow-2xl animate-in zoom-in-95 duration-300">
-            <Loader2 size={32} className="text-[#FFD300] animate-spin" />
+            <Loader2 size="2rem" className="text-[#FFD300] animate-spin" />
           </div>
         </div>
       )}
@@ -225,15 +225,15 @@ export const RadarView: React.FC<RadarViewProps> = ({ onEventSelect }) => {
       {/* Banner discreto — sem eventos para a data */}
       {!radar.loading && radar.filteredEvents.length === 0 && (
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[500] pointer-events-auto">
-          <div className="bg-black/80 backdrop-blur-xl border border-white/10 rounded-2xl px-5 py-4 shadow-2xl text-center animate-in zoom-in-95 duration-300 max-w-[260px]">
+          <div className="bg-black/80 backdrop-blur-xl border border-white/10 rounded-2xl px-5 py-4 shadow-2xl text-center animate-in zoom-in-95 duration-300 max-w-[16.25rem]">
             <p className="text-zinc-400 text-xs mb-3">
               Nenhum evento para <span className="text-white font-bold">{radar.customDateLabel}</span>
             </p>
             <button
               onClick={() => radar.findClosestEventGlobal()}
-              className="text-[#FFD300] text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5 mx-auto active:opacity-50"
+              className="text-[#FFD300] text-[0.625rem] font-black uppercase tracking-widest flex items-center gap-1.5 mx-auto active:opacity-50"
             >
-              Ver próximo <ArrowRight size={12} />
+              Ver próximo <ArrowRight size="0.75rem" />
             </button>
           </div>
         </div>
@@ -246,20 +246,20 @@ export const RadarView: React.FC<RadarViewProps> = ({ onEventSelect }) => {
           onClick={radar.handleRecenter}
           className={`w-10 h-10 backdrop-blur border rounded-full flex items-center justify-center shadow-lg transition-all active:scale-95 ${radar.userLocation ? 'bg-zinc-900/90 border-[#FFD300]/30 text-[#FFD300] shadow-[#FFD300]/10' : 'bg-zinc-800/50 border-white/5 text-zinc-400'}`}
         >
-          <Crosshair size={18} />
+          <Crosshair size="1.125rem" />
         </button>
         <div className="h-4" />
         <button
           onClick={() => radar.handleZoom('in')}
           className="w-10 h-10 bg-zinc-900/90 backdrop-blur border border-white/10 rounded-full flex items-center justify-center text-zinc-300 shadow-lg active:bg-zinc-800"
         >
-          <Plus size={18} />
+          <Plus size="1.125rem" />
         </button>
         <button
           onClick={() => radar.handleZoom('out')}
           className="w-10 h-10 bg-zinc-900/90 backdrop-blur border border-white/10 rounded-full flex items-center justify-center text-zinc-300 shadow-lg active:bg-zinc-800"
         >
-          <Minus size={18} />
+          <Minus size="1.125rem" />
         </button>
       </div>
 
@@ -278,9 +278,9 @@ export const RadarView: React.FC<RadarViewProps> = ({ onEventSelect }) => {
         <div className="absolute bottom-24 left-4 right-4 z-[1000] animate-in slide-in-from-bottom-4 duration-300">
           <div
             onClick={() => onEventSelect(radar.activeEvent!)}
-            className="bg-[#0A0A0A]/95 backdrop-blur-2xl border border-[#FFD300]/20 rounded-[1.5rem] p-4 shadow-2xl flex gap-4 cursor-pointer active:scale-[0.98] transition-transform"
+            className="bg-[#0A0A0A]/95 backdrop-blur-2xl border border-[#FFD300]/20 rounded-[1.5rem] p-3 shadow-2xl flex gap-3 cursor-pointer active:scale-[0.98] transition-transform"
           >
-            <div className="w-20 h-20 rounded-xl overflow-hidden shrink-0 relative">
+            <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 relative">
               <img
                 src={radar.activeEvent.imagem}
                 className="w-full h-full object-cover"
@@ -289,13 +289,13 @@ export const RadarView: React.FC<RadarViewProps> = ({ onEventSelect }) => {
               />
             </div>
             <div className="flex-1 min-w-0 flex flex-col justify-center">
-              <span className="text-[9px] font-bold text-[#FFD300] uppercase tracking-wider mb-1">
+              <span className="text-[0.5rem] font-bold text-[#FFD300] uppercase tracking-wider mb-0.5">
                 {radar.activeEvent.formato || radar.activeEvent.categoria}
               </span>
-              <h3 style={TYPOGRAPHY.cardTitle} className="text-base text-white leading-tight mb-1 truncate">
+              <h3 style={TYPOGRAPHY.cardTitle} className="text-sm text-white leading-tight mb-0.5 truncate">
                 {radar.activeEvent.titulo}
               </h3>
-              <p className="text-zinc-400 text-xs mb-2">
+              <p className="text-zinc-400 text-[0.625rem] mb-1.5">
                 {radar.activeEvent.data} • {radar.activeEvent.horario}
                 {radar.activeEvent.coords &&
                   (() => {
@@ -306,8 +306,8 @@ export const RadarView: React.FC<RadarViewProps> = ({ onEventSelect }) => {
                   })()}
               </p>
               <div className="flex items-center gap-3">
-                <div className="flex items-center text-[10px] font-bold text-white group">
-                  Ver detalhes <ArrowRight size={12} className="ml-1 group-hover:translate-x-1 text-[#FFD300]" />
+                <div className="flex items-center text-[0.625rem] font-bold text-white group">
+                  Ver detalhes <ArrowRight size="0.75rem" className="ml-1 group-hover:translate-x-1 text-[#FFD300]" />
                 </div>
                 {radar.activeEvent.coords && (
                   <button
@@ -317,9 +317,9 @@ export const RadarView: React.FC<RadarViewProps> = ({ onEventSelect }) => {
                       const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
                       window.open(url, '_blank');
                     }}
-                    className="flex items-center gap-1 text-[10px] font-bold text-[#FFD300] active:opacity-50"
+                    className="flex items-center gap-1 text-[0.625rem] font-bold text-[#FFD300] active:opacity-50"
                   >
-                    <Navigation size={10} />
+                    <Navigation size="0.625rem" />
                     Ir
                   </button>
                 )}

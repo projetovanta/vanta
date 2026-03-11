@@ -21,10 +21,10 @@ export const CitySelector: React.FC<{
           onClick={onClose}
           className="absolute top-4 right-4 p-1.5 bg-black/50 rounded-full text-zinc-400 hover:text-white transition-colors z-10"
         >
-          <X size={14} />
+          <X size="0.875rem" />
         </button>
         <div className="p-4">
-          <h4 style={TYPOGRAPHY.uiLabel} className="text-[7px] text-center opacity-40 mb-3">
+          <h4 style={TYPOGRAPHY.uiLabel} className="text-[0.4375rem] text-center opacity-40 mb-3">
             Selecionar Localidade
           </h4>
           <div className="space-y-0.5">
@@ -36,10 +36,10 @@ export const CitySelector: React.FC<{
               className={`w-full flex items-center justify-between py-2.5 px-3 rounded-xl ${!selectedCity ? 'bg-[#FFD300]/10 text-[#FFD300]' : 'text-zinc-400'}`}
             >
               <div className="flex items-center">
-                <MapPin size={12} className="mr-2.5" />
-                <span className="text-[11px] font-bold uppercase">Todas as cidades</span>
+                <MapPin size="0.75rem" className="mr-2.5" />
+                <span className="text-[0.6875rem] font-bold uppercase">Todas as cidades</span>
               </div>
-              {!selectedCity && <Check size={12} />}
+              {!selectedCity && <Check size="0.75rem" />}
             </button>
             {cidades.map(city => (
               <button
@@ -51,17 +51,17 @@ export const CitySelector: React.FC<{
                 className={`w-full flex items-center justify-between py-2.5 px-3 rounded-xl ${selectedCity === city ? 'bg-[#FFD300]/10 text-[#FFD300]' : 'text-zinc-400'}`}
               >
                 <div className="flex items-center">
-                  <MapPin size={12} className="mr-2.5" />
-                  <span className="text-[11px] font-bold uppercase">{city}</span>
+                  <MapPin size="0.75rem" className="mr-2.5" />
+                  <span className="text-[0.6875rem] font-bold uppercase">{city}</span>
                 </div>
-                {selectedCity === city && <Check size={12} />}
+                {selectedCity === city && <Check size="0.75rem" />}
               </button>
             ))}
           </div>
         </div>
         <button
           onClick={onClose}
-          className="w-full py-3 bg-black/40 border-t border-white/5 text-[8px] font-black uppercase text-zinc-400"
+          className="w-full py-3 bg-black/40 border-t border-white/5 text-[0.5rem] font-black uppercase text-zinc-400"
         >
           Fechar
         </button>

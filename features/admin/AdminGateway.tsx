@@ -167,7 +167,7 @@ export const AdminGateway: React.FC<Props> = ({ onBack }) => {
             <div>
               <div className="flex items-center gap-2 mb-3">
                 <div className="w-1.5 h-1.5 rounded-full bg-[#FFD300] animate-pulse" />
-                <p className="text-[#FFD300]/60 text-[9px] font-black uppercase tracking-[0.25em]">
+                <p className="text-[#FFD300]/60 text-[0.5625rem] font-black uppercase tracking-[0.25em]">
                   Painel Administrativo
                 </p>
               </div>
@@ -180,13 +180,13 @@ export const AdminGateway: React.FC<Props> = ({ onBack }) => {
               onClick={onBack}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
             >
-              <ArrowLeft size={18} className="text-zinc-400" />
+              <ArrowLeft size="1.125rem" className="text-zinc-400" />
             </button>
           </div>
         </div>
 
         {/* Conteúdo */}
-        <div className="flex-1 overflow-y-auto no-scrollbar p-6 flex flex-col gap-5 justify-center max-w-md mx-auto w-full">
+        <div className="flex-1 overflow-y-auto no-scrollbar p-6 flex flex-col gap-5 justify-center max-w-[500px] mx-auto w-full">
           {!accessData ? (
             <div className="flex flex-col items-center justify-center gap-4 py-16">
               <div className="w-10 h-10 border-2 border-[#FFD300]/30 border-t-[#FFD300] rounded-full animate-spin" />
@@ -195,11 +195,11 @@ export const AdminGateway: React.FC<Props> = ({ onBack }) => {
           ) : !temOpcoes ? (
             <div className="flex flex-col items-center justify-center gap-4 py-16">
               <div className="w-14 h-14 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center">
-                <Shield size={24} className="text-zinc-700" />
+                <Shield size="1.5rem" className="text-zinc-700" />
               </div>
               <div className="text-center">
                 <p className="text-zinc-400 text-sm font-semibold">Sem atribuições ativas</p>
-                <p className="text-zinc-700 text-[10px] font-black uppercase tracking-widest mt-1">
+                <p className="text-zinc-700 text-[0.625rem] font-black uppercase tracking-widest mt-1">
                   Solicite acesso ao administrador
                 </p>
               </div>
@@ -223,7 +223,7 @@ export const AdminGateway: React.FC<Props> = ({ onBack }) => {
                         className="w-6 h-6 rounded-full object-cover shrink-0"
                       />
                     ) : (
-                      <Building2 size={14} className={destinoSelecionado ? 'text-[#FFD300]' : 'text-zinc-400'} />
+                      <Building2 size="0.875rem" className={destinoSelecionado ? 'text-[#FFD300]' : 'text-zinc-400'} />
                     )}
                     <span
                       className={`text-sm font-semibold truncate ${destinoSelecionado ? 'text-white' : 'text-zinc-400'}`}
@@ -232,7 +232,7 @@ export const AdminGateway: React.FC<Props> = ({ onBack }) => {
                     </span>
                   </div>
                   <ChevronDown
-                    size={16}
+                    size="1rem"
                     className={`text-zinc-400 shrink-0 transition-transform ${listaAberta ? 'rotate-180' : ''}`}
                   />
                 </button>
@@ -241,7 +241,7 @@ export const AdminGateway: React.FC<Props> = ({ onBack }) => {
                 {listaAberta && (
                   <div className="absolute top-full left-0 right-0 mt-2 z-10 bg-zinc-900/40 backdrop-blur-2xl rounded-[2rem] border border-white/10 overflow-hidden shadow-2xl">
                     <div className="p-4">
-                      <h4 style={TYPOGRAPHY.uiLabel} className="text-[9px] text-center opacity-40 mb-3">
+                      <h4 style={TYPOGRAPHY.uiLabel} className="text-[0.5625rem] text-center opacity-40 mb-3">
                         Selecionar Comunidade
                       </h4>
                       <div className="space-y-0.5">
@@ -266,11 +266,11 @@ export const AdminGateway: React.FC<Props> = ({ onBack }) => {
                                   className="w-5 h-5 rounded-full object-cover mr-2.5 shrink-0"
                                 />
                               ) : (
-                                <Building2 size={12} className="mr-2.5 shrink-0" />
+                                <Building2 size="0.75rem" className="mr-2.5 shrink-0" />
                               )}
-                              <span className="text-[11px] font-bold uppercase truncate">{d.nome}</span>
+                              <span className="text-[0.6875rem] font-bold uppercase truncate">{d.nome}</span>
                             </div>
-                            {selecionadoId === d.id && <Check size={12} className="shrink-0" />}
+                            {selecionadoId === d.id && <Check size="0.75rem" className="shrink-0" />}
                           </button>
                         ))}
                       </div>
@@ -287,10 +287,10 @@ export const AdminGateway: React.FC<Props> = ({ onBack }) => {
                   }
                   className="w-full flex items-center gap-2.5 bg-[#FFD300]/10 border border-[#FFD300]/20 rounded-xl px-4 py-2.5 active:bg-[#FFD300]/20 transition-all"
                 >
-                  <Globe size={14} className="text-[#FFD300] shrink-0" />
+                  <Globe size="0.875rem" className="text-[#FFD300] shrink-0" />
                   <div className="flex-1 min-w-0">
                     <p className="text-[#FFD300] text-xs font-bold">Visão Global</p>
-                    <p className="text-[#FFD300]/50 text-[9px] font-black uppercase tracking-widest">
+                    <p className="text-[#FFD300]/50 text-[0.5625rem] font-black uppercase tracking-widest">
                       Acesso completo à plataforma
                     </p>
                   </div>
@@ -301,9 +301,9 @@ export const AdminGateway: React.FC<Props> = ({ onBack }) => {
               {destinoSelecionado && (
                 <button
                   onClick={() => setConfirmado(destinoSelecionado)}
-                  className="w-full py-2.5 rounded-xl bg-[#FFD300] text-black text-[10px] font-black uppercase tracking-widest active:scale-[0.98] transition-all flex items-center justify-center gap-1.5"
+                  className="w-full py-2.5 rounded-xl bg-[#FFD300] text-black text-[0.625rem] font-black uppercase tracking-widest active:scale-[0.98] transition-all flex items-center justify-center gap-1.5"
                 >
-                  <Check size={13} strokeWidth={3} />
+                  <Check size="0.8125rem" strokeWidth={3} />
                   Confirmar
                 </button>
               )}

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { ArrowLeft, Send, Shield, MoreVertical, X, Search, ChevronUp, ChevronDown } from 'lucide-react';
+import { ArrowLeft, Send, Shield, MoreVertical, X, Search, ChevronUp, ChevronDown, Flag } from 'lucide-react';
 import { Chat, Membro } from '../../../types';
 import { PublicProfilePreviewView } from '../../profile/PublicProfilePreviewView';
 import { MessageBubble } from './MessageBubble';
@@ -7,6 +7,8 @@ import { useAuthStore } from '../../../stores/authStore';
 import { useSocialStore } from '../../../stores/socialStore';
 import { useChatStore } from '../../../stores/chatStore';
 import { useDebounce } from '../../../hooks/useDebounce';
+import { ReportModal } from '../../../components/ReportModal';
+import { globalToast } from '../../../components/Toast';
 
 interface ChatRoomViewProps {
   chat: Chat;
@@ -38,6 +40,8 @@ export const ChatRoomView: React.FC<ChatRoomViewProps> = ({ chat, onBack }) => {
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
   const [searchIndex, setSearchIndex] = useState(0);
   const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
+  const [showReport, setShowReport] = useState(false);
+  const [showChatMenu, setShowChatMenu] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messageRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -134,7 +138,7 @@ export const ChatRoomView: React.FC<ChatRoomViewProps> = ({ chat, onBack }) => {
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center active:scale-90 transition-transform"
           >
-            <ArrowLeft size={18} />
+            <ArrowLeft size="1.125rem" />
           </button>
           <div
             onClick={() => setShowProfileModal(true)}
@@ -160,7 +164,7 @@ export const ChatRoomView: React.FC<ChatRoomViewProps> = ({ chat, onBack }) => {
               <h3 className="text-sm font-bold text-white mb-1">{participantNome}</h3>
               <div className="flex items-center gap-1">
                 <span className={`w-1.5 h-1.5 rounded-full ${isOnline ? 'bg-emerald-500' : 'bg-zinc-600'}`} />
-                <span className="text-[9px] font-black uppercase text-zinc-400 tracking-widest">
+                <span className="text-[0.5625rem] font-black uppercase text-zinc-400 tracking-widest">
                   {isOnline ? 'Online' : 'Offline'}
                 </span>
               </div>
@@ -178,11 +182,31 @@ export const ChatRoomView: React.FC<ChatRoomViewProps> = ({ chat, onBack }) => {
             }}
             className={`w-10 h-10 flex items-center justify-center rounded-full transition-colors ${showSearch ? 'text-[#FFD300]' : 'text-zinc-400'}`}
           >
-            <Search size={18} />
+            <Search size="1.125rem" />
           </button>
-          <button aria-label="Mais opções" className="w-10 h-10 flex items-center justify-center text-zinc-400">
-            <MoreVertical size={20} />
-          </button>
+          <div className="relative">
+            <button
+              aria-label="Mais opções"
+              onClick={() => setShowChatMenu(v => !v)}
+              className="w-10 h-10 flex items-center justify-center text-zinc-400"
+            >
+              <MoreVertical size="1.25rem" />
+            </button>
+            {showChatMenu && (
+              <div className="absolute right-0 top-full mt-1 bg-zinc-900 border border-white/10 rounded-xl shadow-2xl overflow-hidden z-50 min-w-[10rem] animate-in fade-in zoom-in-95 duration-150">
+                <button
+                  onClick={() => {
+                    setShowChatMenu(false);
+                    setShowReport(true);
+                  }}
+                  className="w-full flex items-center gap-2.5 px-4 py-3 text-red-400 text-[0.6875rem] font-semibold active:bg-zinc-800 transition-colors"
+                >
+                  <Flag size="0.875rem" />
+                  Denunciar
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -202,20 +226,20 @@ export const ChatRoomView: React.FC<ChatRoomViewProps> = ({ chat, onBack }) => {
           />
           {searchResults.length > 0 && (
             <div className="flex items-center gap-1 shrink-0">
-              <span className="text-[10px] text-zinc-400 font-medium">
+              <span className="text-[0.625rem] text-zinc-400 font-medium">
                 {searchIndex + 1}/{searchResults.length}
               </span>
               <button
                 onClick={() => setSearchIndex(i => Math.max(0, i - 1))}
                 className="w-8 h-8 flex items-center justify-center text-zinc-400 active:scale-90"
               >
-                <ChevronUp size={16} />
+                <ChevronUp size="1rem" />
               </button>
               <button
                 onClick={() => setSearchIndex(i => Math.min(searchResults.length - 1, i + 1))}
                 className="w-8 h-8 flex items-center justify-center text-zinc-400 active:scale-90"
               >
-                <ChevronDown size={16} />
+                <ChevronDown size="1rem" />
               </button>
             </div>
           )}
@@ -227,7 +251,7 @@ export const ChatRoomView: React.FC<ChatRoomViewProps> = ({ chat, onBack }) => {
             }}
             className="text-zinc-400 active:scale-90"
           >
-            <X size={18} />
+            <X size="1.125rem" />
           </button>
         </div>
       )}
@@ -236,8 +260,8 @@ export const ChatRoomView: React.FC<ChatRoomViewProps> = ({ chat, onBack }) => {
       <div className="flex-1 min-h-0 overflow-y-auto p-6 space-y-6 no-scrollbar">
         <div className="text-center py-8">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-900/50 rounded-full border border-white/5">
-            <Shield size={10} className="text-[#FFD300]" />
-            <span className="text-[8px] font-black uppercase tracking-widest text-zinc-400">Conexão Segura</span>
+            <Shield size="0.625rem" className="text-[#FFD300]" />
+            <span className="text-[0.5rem] font-black uppercase tracking-widest text-zinc-400">Conexão Segura</span>
           </div>
         </div>
         {chat.messages.map(msg => {
@@ -282,7 +306,7 @@ export const ChatRoomView: React.FC<ChatRoomViewProps> = ({ chat, onBack }) => {
               disabled={!inputText.trim()}
               className="w-14 h-14 bg-[#FFD300] rounded-2xl flex items-center justify-center text-black shadow-lg shadow-[#FFD300]/10 disabled:opacity-40"
             >
-              <Send size={20} fill="currentColor" />
+              <Send size="1.25rem" fill="currentColor" />
             </button>
           </div>
         </div>
@@ -292,7 +316,7 @@ export const ChatRoomView: React.FC<ChatRoomViewProps> = ({ chat, onBack }) => {
           style={{ paddingBottom: 'calc(1.25rem + env(safe-area-inset-bottom, 0px))' }}
         >
           <div className="flex items-center gap-3 bg-zinc-900/60 border border-white/8 rounded-2xl px-4 py-3">
-            <Shield size={16} className="text-zinc-400 shrink-0" />
+            <Shield size="1rem" className="text-zinc-400 shrink-0" />
             <p className="text-zinc-400 text-xs leading-snug flex-1">
               Adicione <span className="text-zinc-300 font-semibold">{participantNome}</span> como amigo para enviar
               mensagens.
@@ -308,7 +332,7 @@ export const ChatRoomView: React.FC<ChatRoomViewProps> = ({ chat, onBack }) => {
             onClick={() => setShowProfileModal(false)}
             className="absolute top-6 right-6 w-10 h-10 bg-black/40 backdrop-blur-md rounded-full flex items-center justify-center border border-white/10 text-white z-[310] active:scale-90"
           >
-            <X size={20} />
+            <X size="1.25rem" />
           </button>
           <PublicProfilePreviewView
             profile={participant}
@@ -346,6 +370,19 @@ export const ChatRoomView: React.FC<ChatRoomViewProps> = ({ chat, onBack }) => {
           </div>
         </div>
       )}
+
+      <ReportModal
+        isOpen={showReport}
+        onClose={() => setShowReport(false)}
+        tipo="CHAT"
+        alvoUserId={chat.participantId}
+        alvoNome={participantNome}
+        showBlockOption
+        onSuccess={msg => globalToast(msg.includes('Erro') ? 'erro' : 'sucesso', msg)}
+      />
+
+      {/* Fechar menu ao clicar fora */}
+      {showChatMenu && <div className="absolute inset-0 z-40" onClick={() => setShowChatMenu(false)} />}
     </div>
   );
 };

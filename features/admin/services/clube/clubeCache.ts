@@ -23,11 +23,11 @@ type ClubeConfigRow = Database['public']['Tables']['clube_config']['Row'];
 // ── Hierarquia de tiers (legado para compat) ─────────────────────────────────
 /** @deprecated Use clubeService.getTiers() para tiers dinâmicos */
 export const TIER_ORDER: Record<TierMaisVanta, number> = {
-  desconto: 0,
-  convidado: 1,
-  presenca: 2,
+  lista: 0,
+  presenca: 1,
+  social: 2,
   creator: 3,
-  vanta_black: 4,
+  black: 4,
 };
 
 // ── Cache de tiers dinâmicos ─────────────────────────────────────────────────
@@ -60,7 +60,8 @@ export const rowToTierDef = (r: TierRow): TierMaisVantaDef => ({
 
 export const rowToMembro = (r: MembroRow): MembroClubeVanta => ({
   userId: r.user_id ?? '',
-  tier: (r.tier as TierMaisVanta) ?? 'desconto',
+  tier: (r.tier as TierMaisVanta) ?? 'lista',
+  creatorSublevel: (r as Record<string, unknown>).creator_sublevel as MembroClubeVanta['creatorSublevel'],
   instagramHandle: r.instagram_handle ?? undefined,
   instagramSeguidores: r.instagram_seguidores ?? undefined,
   aprovadoPor: r.aprovado_por ?? '',
@@ -80,6 +81,10 @@ export const rowToMembro = (r: MembroRow): MembroClubeVanta => ({
   tags: (r.tags as string[]) ?? undefined,
   notaInterna: r.nota_interna ?? undefined,
   status: r.status ?? undefined,
+  cidadePrincipal: (r as Record<string, unknown>).cidade_principal as string | undefined,
+  cidadesAtivas: (r as Record<string, unknown>).cidades_ativas as string[] | undefined,
+  convitesDisponiveis: (r as Record<string, unknown>).convites_disponiveis as number | undefined,
+  convitesUsados: (r as Record<string, unknown>).convites_usados as number | undefined,
 });
 
 export const rowToPassport = (r: PassportRow): PassportAprovacao => ({
@@ -97,7 +102,7 @@ export const rowToPassport = (r: PassportRow): PassportAprovacao => ({
 export const rowToLote = (_r: Record<string, unknown>): LoteMaisVanta => ({
   id: '',
   eventoId: '',
-  tierMinimo: 'convidado' as TierMaisVanta,
+  tierMinimo: 'lista' as TierMaisVanta,
   quantidade: 0,
   reservados: 0,
   acompanhantes: 0,
@@ -133,22 +138,31 @@ export const rowToSolicitacao = (r: SolicitacaoRow): SolicitacaoClube => ({
   profissao: (r as Record<string, unknown>).profissao as string | undefined,
   comoConheceu: (r as Record<string, unknown>).como_conheceu as string | undefined,
   indicadoPorTexto: (r as Record<string, unknown>).indicado_por_texto as string | undefined,
+  indicadoPor: (r as Record<string, unknown>).indicado_por as string | undefined,
+  conviteId: (r as Record<string, unknown>).convite_id as string | undefined,
+  cidade: (r as Record<string, unknown>).cidade as string | undefined,
+  baldeSugerido: (r as Record<string, unknown>).balde_sugerido as string | undefined,
 });
 
 export const rowToConfig = (r: ClubeConfigRow) => ({
   id: r.id,
   comunidadeId: r.comunidade_id,
-  // DB columns bronze/prata/ouro/diamante → app tiers convidado/presenca/creator/vanta_black
-  beneficiosConvidado: (r.beneficios_bronze as BeneficioId[]) ?? [],
+  // DB columns bronze/prata/ouro/diamante → app tiers lista/presenca/social/creator/black
+  beneficiosLista: (r.beneficios_bronze as BeneficioId[]) ?? [],
   beneficiosPresenca: (r.beneficios_prata as BeneficioId[]) ?? [],
   beneficiosCreator: (r.beneficios_ouro as BeneficioId[]) ?? [],
-  beneficiosVantaBlack: (r.beneficios_diamante as BeneficioId[]) ?? [],
-  limiteConvidado: r.limite_bronze ?? 0,
+  beneficiosBlack: (r.beneficios_diamante as BeneficioId[]) ?? [],
+  limiteLista: r.limite_bronze ?? 0,
   limitePresenca: r.limite_prata ?? 0,
   limiteCreator: r.limite_ouro ?? 0,
-  limiteVantaBlack: r.limite_diamante ?? 0,
+  limiteBlack: r.limite_diamante ?? 0,
   prazoPostHoras: r.prazo_post_horas ?? 12,
   infracoesLimite: r.infracoes_limite ?? 3,
   bloqueio1Dias: r.bloqueio1_dias ?? 30,
   bloqueio2Dias: r.bloqueio2_dias ?? 60,
+  convitesLista: ((r as Record<string, unknown>).convites_lista as number) ?? 1,
+  convitesPresenca: ((r as Record<string, unknown>).convites_presenca as number) ?? 3,
+  convitesSocial: ((r as Record<string, unknown>).convites_social as number) ?? 5,
+  convitesCreator: ((r as Record<string, unknown>).convites_creator as number) ?? 7,
+  convitesBlack: ((r as Record<string, unknown>).convites_black as number) ?? 10,
 });

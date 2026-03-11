@@ -6,7 +6,7 @@
 - `modules/profile/EditProfileView.tsx` (638L) — edição de perfil
 - `modules/profile/PublicProfilePreviewView.tsx` (564L) — preview público
 - `modules/profile/ComprovanteMeiaSection.tsx` (494L) — upload comprovante meia
-- `modules/profile/ClubeOptInView.tsx` (280L) — opt-in MAIS VANTA
+- `modules/profile/ClubeOptInView.tsx` (~670L) — opt-in MAIS VANTA (centralizado verticalmente via margin auto)
 - `modules/profile/HistoricoView.tsx` (259L) — histórico de eventos
 - `modules/profile/PreferencesView.tsx` (83L) — preferências do app
 - `modules/profile/components/InterestSelector.tsx` (280L) — seletor de interesses

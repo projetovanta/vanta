@@ -103,10 +103,10 @@ const TransferirCortesiaModal: React.FC<{
         {enviado ? (
           <div className="flex flex-col items-center justify-center py-14 px-6 gap-4">
             <div className="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
-              <Check size={28} className="text-emerald-400" />
+              <Check size="1.75rem" className="text-emerald-400" />
             </div>
             <p className="text-white font-bold text-lg text-center">Cortesia enviada!</p>
-            <p className="text-zinc-400 text-[11px] text-center leading-relaxed">
+            <p className="text-zinc-400 text-[0.6875rem] text-center leading-relaxed">
               {destinatario?.nome} receberá o ingresso na carteira em instantes.
             </p>
           </div>
@@ -116,7 +116,7 @@ const TransferirCortesiaModal: React.FC<{
               <h2 style={TYPOGRAPHY.screenTitle} className="text-lg italic">
                 Transferir Cortesia
               </h2>
-              <p className="text-zinc-400 text-[10px] mt-1">
+              <p className="text-zinc-400 text-[0.625rem] mt-1">
                 Saldo disponível: <span className="text-[#FFD300] font-black">{saldo}</span> cortesia
                 {saldo !== 1 ? 's' : ''}
               </p>
@@ -126,13 +126,15 @@ const TransferirCortesiaModal: React.FC<{
               {/* Tipo de ingresso */}
               {config && config.variacoes.length > 0 && (
                 <div>
-                  <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">Tipo de ingresso</p>
+                  <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2">
+                    Tipo de ingresso
+                  </p>
                   <div className="flex flex-wrap gap-2">
                     {config.variacoes.map(v => (
                       <button
                         key={v}
                         onClick={() => setVariacaoLabel(v)}
-                        className={`px-3.5 py-2 rounded-xl border text-[9px] font-black uppercase tracking-wider transition-all ${
+                        className={`px-3.5 py-2 rounded-xl border text-[0.5625rem] font-black uppercase tracking-wider transition-all ${
                           variacaoLabel === v
                             ? 'bg-[#FFD300] text-black border-transparent'
                             : 'bg-zinc-900/60 text-zinc-400 border-white/5 active:bg-zinc-800'
@@ -147,7 +149,7 @@ const TransferirCortesiaModal: React.FC<{
 
               {/* Destinatário */}
               <div>
-                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">Destinatário</p>
+                <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2">Destinatário</p>
                 {destinatario ? (
                   <div className="flex items-center gap-3 p-3.5 bg-zinc-900/60 border border-[#FFD300]/20 rounded-xl">
                     <img
@@ -163,13 +165,13 @@ const TransferirCortesiaModal: React.FC<{
                       }}
                       className="text-zinc-400 active:text-red-400 transition-colors shrink-0"
                     >
-                      <X size={14} />
+                      <X size="0.875rem" />
                     </button>
                   </div>
                 ) : (
                   <div className="relative">
                     <div className="flex items-center gap-3 bg-zinc-900/60 border border-white/5 rounded-xl px-4 py-2.5 focus-within:border-[#FFD300]/30">
-                      <Search size={14} className="text-zinc-400 shrink-0" />
+                      <Search size="0.875rem" className="text-zinc-400 shrink-0" />
                       <input
                         value={query}
                         onChange={e => {
@@ -200,7 +202,7 @@ const TransferirCortesiaModal: React.FC<{
                             />
                             <div className="min-w-0">
                               <p className="text-white font-bold text-sm leading-none truncate">{m.nome}</p>
-                              <p className="text-zinc-400 text-[10px] mt-0.5 truncate">{m.email}</p>
+                              <p className="text-zinc-400 text-[0.625rem] mt-0.5 truncate">{m.email}</p>
                             </div>
                           </button>
                         ))}
@@ -212,7 +214,7 @@ const TransferirCortesiaModal: React.FC<{
 
               {/* Quantidade */}
               <div>
-                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">Quantidade</p>
+                <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2">Quantidade</p>
                 <input
                   value={quantidade}
                   onChange={e => setQuantidade(e.target.value)}
@@ -224,7 +226,7 @@ const TransferirCortesiaModal: React.FC<{
                 />
               </div>
 
-              {erro && <p className="text-red-400 text-[10px] font-black uppercase tracking-widest">{erro}</p>}
+              {erro && <p className="text-red-400 text-[0.625rem] font-black uppercase tracking-widest">{erro}</p>}
             </div>
 
             <div
@@ -233,16 +235,16 @@ const TransferirCortesiaModal: React.FC<{
             >
               <button
                 onClick={onClose}
-                className="flex-1 py-4 bg-zinc-900 border border-white/10 rounded-xl text-zinc-400 text-[10px] font-black uppercase tracking-widest active:scale-95 transition-all"
+                className="flex-1 py-4 bg-zinc-900 border border-white/10 rounded-xl text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest active:scale-95 transition-all"
               >
                 Cancelar
               </button>
               <button
                 onClick={handleEnviar}
                 disabled={!destinatario || !variacaoLabel || !quantidade || parseInt(quantidade) <= 0}
-                className="flex-1 py-4 bg-[#FFD300] text-black rounded-xl text-[10px] font-black uppercase tracking-widest disabled:opacity-40 active:scale-95 transition-all font-bold flex items-center justify-center gap-2"
+                className="flex-1 py-4 bg-[#FFD300] text-black rounded-xl text-[0.625rem] font-black uppercase tracking-widest disabled:opacity-40 active:scale-95 transition-all font-bold flex items-center justify-center gap-2"
               >
-                <Gift size={12} /> Enviar
+                <Gift size="0.75rem" /> Enviar
               </button>
             </div>
           </>
@@ -266,11 +268,15 @@ export const TabCortesias: React.FC<{
     return (
       <div className="flex flex-col items-center py-16 gap-4">
         <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center">
-          <Gift size={28} className="text-zinc-700" />
+          <Gift size="1.75rem" className="text-zinc-700" />
         </div>
         <div className="text-center">
-          <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">Sem cortesias configuradas.</p>
-          <p className="text-zinc-700 text-[10px] italic mt-1">Ative cortesias ao criar o evento no próximo evento.</p>
+          <p className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest">
+            Sem cortesias configuradas.
+          </p>
+          <p className="text-zinc-700 text-[0.625rem] italic mt-1">
+            Ative cortesias ao criar o evento no próximo evento.
+          </p>
         </div>
       </div>
     );
@@ -287,7 +293,7 @@ export const TabCortesias: React.FC<{
     <div className="space-y-4">
       {/* Saldo hero */}
       <div className="p-6 bg-zinc-900/40 border border-white/5 rounded-3xl">
-        <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mb-4">Cortesias do Evento</p>
+        <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest mb-4">Cortesias do Evento</p>
         <div className="flex items-end justify-between mb-4">
           <div className="flex items-baseline gap-2">
             <span className="text-white font-black text-5xl leading-none">{saldo}</span>
@@ -295,7 +301,7 @@ export const TabCortesias: React.FC<{
           </div>
           <div className="text-right pb-1">
             <p className="text-[#FFD300] font-black text-3xl leading-none">{usados}</p>
-            <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">enviadas</p>
+            <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest">enviadas</p>
           </div>
         </div>
         <div className="w-full h-4 bg-zinc-800 rounded-full overflow-hidden mb-3">
@@ -304,7 +310,7 @@ export const TabCortesias: React.FC<{
             style={{ width: `${Math.min(pct, 100)}%` }}
           />
         </div>
-        <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">
+        <p className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest">
           {saldo} disponíve{saldo !== 1 ? 'is' : 'l'}
         </p>
         {temPerTipo &&
@@ -314,11 +320,11 @@ export const TabCortesias: React.FC<{
               <div className="mt-4 space-y-1.5">
                 {Object.entries(saldoTipo).map(([tipo, { limite, usado, saldo: s }]) => (
                   <div key={tipo} className="flex items-center justify-between gap-2">
-                    <p className="text-zinc-400 text-[10px] font-bold truncate flex-1 min-w-0">{tipo}</p>
-                    <p className="text-zinc-400 text-[9px] shrink-0">
+                    <p className="text-zinc-400 text-[0.625rem] font-bold truncate flex-1 min-w-0">{tipo}</p>
+                    <p className="text-zinc-400 text-[0.5625rem] shrink-0">
                       {usado}/{limite}
                     </p>
-                    <p className={`text-[10px] font-black shrink-0 ${s > 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                    <p className={`text-[0.625rem] font-black shrink-0 ${s > 0 ? 'text-emerald-400' : 'text-red-400'}`}>
                       {s}
                     </p>
                   </div>
@@ -336,10 +342,10 @@ export const TabCortesias: React.FC<{
         >
           <div>
             <p className="text-black font-black text-sm uppercase tracking-wider leading-none">Transferir Cortesias</p>
-            <p className="text-black/50 text-[10px] font-bold mt-1">Enviar ingressos para equipe ou convidados</p>
+            <p className="text-black/50 text-[0.625rem] font-bold mt-1">Enviar ingressos para equipe ou convidados</p>
           </div>
           <div className="w-10 h-10 bg-black/10 rounded-xl flex items-center justify-center shrink-0">
-            <Gift size={18} className="text-black" />
+            <Gift size="1.125rem" className="text-black" />
           </div>
         </button>
       )}
@@ -347,20 +353,20 @@ export const TabCortesias: React.FC<{
       {/* Histórico */}
       {logs.length > 0 && (
         <>
-          <p className="text-zinc-700 text-[9px] font-black uppercase tracking-widest px-1">Histórico</p>
+          <p className="text-zinc-700 text-[0.5625rem] font-black uppercase tracking-widest px-1">Histórico</p>
           <div className="space-y-0">
             {logs.map((log, i) => (
               <div key={log.id} className="flex gap-3 relative">
-                {i < logs.length - 1 && <div className="absolute left-[6px] top-4 bottom-0 w-px bg-zinc-800" />}
+                {i < logs.length - 1 && <div className="absolute left-[0.375rem] top-4 bottom-0 w-px bg-zinc-800" />}
                 <div className="w-3 h-3 rounded-full bg-[#FFD300]/20 border border-[#FFD300]/40 shrink-0 mt-1" />
                 <div className="pb-5 flex-1 min-w-0">
-                  <p className="text-zinc-200 text-[11px] leading-snug">
+                  <p className="text-zinc-200 text-[0.6875rem] leading-snug">
                     <span className="text-zinc-300 font-bold">{log.remetenteNome}</span> enviou{' '}
                     <span className="text-[#FFD300] font-bold">{log.quantidade}</span> cortesia
                     {log.quantidade > 1 ? 's' : ''} ({log.variacaoLabel}) para{' '}
                     <span className="text-zinc-300 font-bold">{log.destinatarioNome}</span>
                   </p>
-                  <p className="text-zinc-700 text-[9px] mt-1 font-black">
+                  <p className="text-zinc-700 text-[0.5625rem] mt-1 font-black">
                     {new Date(log.ts).toLocaleString('pt-BR', {
                       day: '2-digit',
                       month: 'short',
@@ -376,7 +382,7 @@ export const TabCortesias: React.FC<{
       )}
 
       {logs.length === 0 && (
-        <p className="text-zinc-700 text-[10px] font-black uppercase tracking-widest text-center py-6">
+        <p className="text-zinc-700 text-[0.625rem] font-black uppercase tracking-widest text-center py-6">
           Nenhuma cortesia enviada ainda
         </p>
       )}

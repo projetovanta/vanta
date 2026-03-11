@@ -105,7 +105,7 @@ export const EventoPrivadoFormView: React.FC<Props> = ({ comunidadeId, comunidad
   if (loading) {
     return (
       <div className="absolute inset-0 flex items-center justify-center bg-[#050505]">
-        <Loader2 size={24} className="text-zinc-400 animate-spin" />
+        <Loader2 size="1.5rem" className="text-zinc-400 animate-spin" />
       </div>
     );
   }
@@ -114,7 +114,7 @@ export const EventoPrivadoFormView: React.FC<Props> = ({ comunidadeId, comunidad
     return (
       <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#050505] px-8 gap-5">
         <div className="w-16 h-16 rounded-full bg-emerald-500/10 flex items-center justify-center">
-          <CheckCircle size={32} className="text-emerald-400" />
+          <CheckCircle size="2rem" className="text-emerald-400" />
         </div>
         <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white text-center">
           Solicitação enviada!
@@ -134,7 +134,7 @@ export const EventoPrivadoFormView: React.FC<Props> = ({ comunidadeId, comunidad
 
   const inputClass =
     'w-full bg-zinc-900/50 border border-white/10 rounded-xl py-3 px-4 text-sm text-white placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/50 transition-colors';
-  const labelClass = 'text-[10px] font-black uppercase tracking-widest text-zinc-400 mb-1.5';
+  const labelClass = 'text-[0.625rem] font-black uppercase tracking-widest text-zinc-400 mb-1.5';
 
   return (
     <div className="absolute inset-0 flex flex-col bg-[#050505] overflow-hidden">
@@ -145,15 +145,15 @@ export const EventoPrivadoFormView: React.FC<Props> = ({ comunidadeId, comunidad
           onClick={onBack}
           className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
         >
-          <ArrowLeft size={18} className="text-zinc-400" />
+          <ArrowLeft size="1.125rem" className="text-zinc-400" />
         </button>
         <div className="flex-1 min-w-0">
           <h1 style={TYPOGRAPHY.screenTitle} className="text-base text-white truncate">
             Evento Privado
           </h1>
-          <p className="text-[10px] text-zinc-400 truncate">{comunidadeNome}</p>
+          <p className="text-[0.625rem] text-zinc-400 truncate">{comunidadeNome}</p>
         </div>
-        <PartyPopper size={20} className="text-[#FFD300] shrink-0" />
+        <PartyPopper size="1.25rem" className="text-[#FFD300] shrink-0" />
       </div>
 
       {/* Content */}
@@ -237,7 +237,7 @@ export const EventoPrivadoFormView: React.FC<Props> = ({ comunidadeId, comunidad
           <div>
             <p className={labelClass}>Data do evento *</p>
             <VantaDatePicker value={dataEvento} onChange={setDataEvento} className={inputClass} />
-            <p className="text-[9px] text-zinc-400 mt-1">Ou descreva uma estimativa:</p>
+            <p className="text-[0.5625rem] text-zinc-400 mt-1">Ou descreva uma estimativa:</p>
             <input
               type="text"
               value={dataEstimativa}
@@ -282,7 +282,7 @@ export const EventoPrivadoFormView: React.FC<Props> = ({ comunidadeId, comunidad
                   <button
                     key={f}
                     onClick={() => toggleItem(formatosSel, f, setFormatosSel)}
-                    className={`px-3 py-1.5 rounded-full text-[11px] font-bold border transition-all active:scale-95 ${
+                    className={`px-3 py-1.5 rounded-full text-[0.6875rem] font-bold border transition-all active:scale-95 ${
                       formatosSel.includes(f)
                         ? 'bg-[#FFD300] border-[#FFD300] text-black'
                         : 'bg-zinc-900 border-zinc-700 text-zinc-400'
@@ -304,7 +304,7 @@ export const EventoPrivadoFormView: React.FC<Props> = ({ comunidadeId, comunidad
                   <button
                     key={a}
                     onClick={() => toggleItem(atracoesSel, a, setAtracoesSel)}
-                    className={`px-3 py-1.5 rounded-full text-[11px] font-bold border transition-all active:scale-95 ${
+                    className={`px-3 py-1.5 rounded-full text-[0.6875rem] font-bold border transition-all active:scale-95 ${
                       atracoesSel.includes(a)
                         ? 'bg-[#FFD300] border-[#FFD300] text-black'
                         : 'bg-zinc-900 border-zinc-700 text-zinc-400'
@@ -340,10 +340,10 @@ export const EventoPrivadoFormView: React.FC<Props> = ({ comunidadeId, comunidad
           } disabled:opacity-50`}
         >
           {sending ? (
-            <Loader2 size={16} className="animate-spin" />
+            <Loader2 size="1rem" className="animate-spin" />
           ) : (
             <>
-              <Send size={14} />
+              <Send size="0.875rem" />
               Enviar Solicitação
             </>
           )}

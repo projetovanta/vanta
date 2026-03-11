@@ -66,6 +66,11 @@ import { EditarLotesSubView } from './EditarLotesSubView';
 import { EditarListaSubView } from './EditarListaSubView';
 import { ComemoracaoConfigSubView } from './ComemoracaoConfigSubView';
 import { SerieChips } from './SerieChips';
+import { PreEventoView } from './PreEventoView';
+import { OperacaoView } from './OperacaoView';
+import { PosEventoView } from './PosEventoView';
+import { getEventAnalytics } from '../../services/analytics';
+import type { EventAnalytics } from '../../services/analytics/types';
 import { reviewsService } from '../../services/reviewsService';
 import type { ReviewEvento } from '../../../../types';
 
@@ -127,6 +132,28 @@ export const EventoDashboard: React.FC<{
     if (dInicio > agora) return 'futuro';
     return 'encerrado';
   }, [evento]);
+
+  // ── Event Analytics (para views temporais) ──────────────────────────────────
+  const [eventAnalytics, setEventAnalytics] = useState<EventAnalytics | null>(null);
+  const [analyticsLoading, setAnalyticsLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    setAnalyticsLoading(true);
+    getEventAnalytics(eventoId)
+      .then(data => {
+        if (!cancelled) {
+          setEventAnalytics(data);
+          setAnalyticsLoading(false);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setAnalyticsLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [eventoId]);
 
   // ── Dados reais (async) ──────────────────────────────────────────────────────
   const [vendasLog, setVendasLog] = useState<VendaLog[]>([]);
@@ -451,8 +478,8 @@ export const EventoDashboard: React.FC<{
   }) => (
     <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-3 flex flex-col gap-1.5 min-w-0">
       <div className="flex items-center gap-1.5">
-        <Icon size={12} className={`shrink-0 ${accent ? 'text-[#FFD300]' : 'text-zinc-400'}`} />
-        <p className="text-[9px] text-zinc-400 font-bold uppercase tracking-wider truncate">{label}</p>
+        <Icon size="0.75rem" className={`shrink-0 ${accent ? 'text-[#FFD300]' : 'text-zinc-400'}`} />
+        <p className="text-[0.5625rem] text-zinc-400 font-bold uppercase tracking-wider truncate">{label}</p>
       </div>
       <p className={`text-xl font-bold leading-none truncate ${accent ? 'text-[#FFD300]' : 'text-white'}`}>{value}</p>
       {badges && badges.length > 0 && (
@@ -460,7 +487,7 @@ export const EventoDashboard: React.FC<{
           {badges.map(b => (
             <span
               key={b.label}
-              className="text-[7px] font-bold px-1.5 py-0.5 rounded-full"
+              className="text-[0.4375rem] font-bold px-1.5 py-0.5 rounded-full"
               style={{ backgroundColor: `${b.color}20`, color: b.color }}
             >
               {b.label} {b.value}
@@ -476,7 +503,7 @@ export const EventoDashboard: React.FC<{
               style={{ width: `${Math.min(Math.round((progress.current / progress.max) * 100), 100)}%` }}
             />
           </div>
-          <p className="text-[7px] text-zinc-400 mt-0.5">
+          <p className="text-[0.4375rem] text-zinc-400 mt-0.5">
             {progress.current}/{progress.max}
           </p>
         </div>
@@ -488,12 +515,12 @@ export const EventoDashboard: React.FC<{
     <div className="flex-1 flex flex-col overflow-hidden">
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
       <div className="relative shrink-0">
-        <div className="aspect-[16/7] max-h-[240px] w-full">
+        <div className="aspect-[16/7] max-h-[15rem] w-full">
           {evento.foto ? (
             <img loading="lazy" src={evento.foto} alt={evento.nome} className="w-full h-full object-cover" />
           ) : (
             <div className="w-full h-full bg-zinc-900 flex items-center justify-center">
-              <Calendar size={32} className="text-zinc-800" />
+              <Calendar size="2rem" className="text-zinc-800" />
             </div>
           )}
         </div>
@@ -509,12 +536,12 @@ export const EventoDashboard: React.FC<{
           onClick={onBack}
           className="absolute top-4 left-4 w-9 h-9 bg-black/50 backdrop-blur-md rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
         >
-          <ArrowLeft size={16} className="text-white" />
+          <ArrowLeft size="1rem" className="text-white" />
         </button>
 
         <div className="absolute top-4 right-4">
           <span
-            className={`text-[8px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full border ${statusColor}`}
+            className={`text-[0.5rem] font-black uppercase tracking-wider px-2.5 py-1 rounded-full border ${statusColor}`}
           >
             {status === 'ao_vivo' && (
               <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse mr-1 align-middle" />
@@ -529,15 +556,15 @@ export const EventoDashboard: React.FC<{
           </h1>
           <div className="flex items-center gap-3 flex-wrap">
             <div className="flex items-center gap-1">
-              <Clock size={10} className="text-[#FFD300]/70" />
-              <span className="text-zinc-400 text-[10px] font-semibold">
+              <Clock size="0.625rem" className="text-[#FFD300]/70" />
+              <span className="text-zinc-400 text-[0.625rem] font-semibold">
                 {fmtData(evento.dataInicio)} · {fmtHora(evento.dataInicio)}
               </span>
             </div>
             {evento.local && (
               <div className="flex items-center gap-1">
-                <MapPin size={10} className="text-zinc-400" />
-                <span className="text-zinc-400 text-[10px] truncate max-w-[150px]">{evento.local}</span>
+                <MapPin size="0.625rem" className="text-zinc-400" />
+                <span className="text-zinc-400 text-[0.625rem] truncate max-w-[9.375rem]">{evento.local}</span>
               </div>
             )}
           </div>
@@ -560,7 +587,7 @@ export const EventoDashboard: React.FC<{
         {/* ── 6 KPIs ──────────────────────────────────────────────────────── */}
         {dataLoading ? (
           <div className="flex items-center justify-center py-6">
-            <Loader2 size={20} className="text-zinc-400 animate-spin" />
+            <Loader2 size="1.25rem" className="text-zinc-400 animate-spin" />
           </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2.5 mb-5 -mt-1">
@@ -603,8 +630,8 @@ export const EventoDashboard: React.FC<{
         {!dataLoading && kpis.capacidade > 0 && (
           <div className="mb-5">
             <div className="flex items-center justify-between mb-1">
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Ocupação</p>
-              <p className="text-[10px] text-zinc-400 font-semibold">{kpis.ocupacao}%</p>
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">Ocupação</p>
+              <p className="text-[0.625rem] text-zinc-400 font-semibold">{kpis.ocupacao}%</p>
             </div>
             <div className="h-2 bg-zinc-800 rounded-full overflow-hidden">
               <div
@@ -627,8 +654,8 @@ export const EventoDashboard: React.FC<{
                     : 'bg-amber-500/10 border-amber-500/30 text-amber-400'
                 }`}
               >
-                <AlertTriangle size={14} className="shrink-0" />
-                <p className="text-[11px] font-bold leading-tight">{a.msg}</p>
+                <AlertTriangle size="0.875rem" className="shrink-0" />
+                <p className="text-[0.6875rem] font-bold leading-tight">{a.msg}</p>
               </div>
             ))}
           </div>
@@ -640,7 +667,7 @@ export const EventoDashboard: React.FC<{
             {/* Vendas por Dia */}
             {chartVendasDia.length > 1 && (
               <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-4">
-                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-3">Vendas por Dia</p>
+                <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-3">Vendas por Dia</p>
                 <ResponsiveContainer width="100%" height={140}>
                   <BarChart data={chartVendasDia}>
                     <XAxis dataKey="dia" tick={{ fill: '#52525b', fontSize: 9 }} axisLine={false} tickLine={false} />
@@ -664,7 +691,7 @@ export const EventoDashboard: React.FC<{
             {/* Origem dos Ingressos */}
             {chartOrigem.length > 0 && (
               <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-4">
-                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-3">Origem</p>
+                <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-3">Origem</p>
                 <VantaPieChart data={chartOrigem} height={140} />
               </div>
             )}
@@ -672,13 +699,13 @@ export const EventoDashboard: React.FC<{
             {/* Vendas por Variação */}
             {chartVariacao.length > 0 && (
               <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-4">
-                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-3">Por Variação</p>
+                <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-3">Por Variação</p>
                 <div className="space-y-2">
                   {chartVariacao.map(v => (
                     <div key={v.label}>
                       <div className="flex items-center justify-between mb-0.5">
-                        <span className="text-[10px] text-zinc-400 font-semibold truncate">{v.label}</span>
-                        <span className="text-[10px] text-zinc-400 font-bold shrink-0 ml-2">{v.qtd}</span>
+                        <span className="text-[0.625rem] text-zinc-400 font-semibold truncate">{v.label}</span>
+                        <span className="text-[0.625rem] text-zinc-400 font-bold shrink-0 ml-2">{v.qtd}</span>
                       </div>
                       <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
                         <div className="h-full bg-[#FFD300] rounded-full" style={{ width: `${v.pct}%` }} />
@@ -692,7 +719,9 @@ export const EventoDashboard: React.FC<{
             {/* Vendas Acumuladas (linha) */}
             {chartAcumulado.length > 1 && (
               <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-4">
-                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-3">Vendas Acumuladas</p>
+                <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-3">
+                  Vendas Acumuladas
+                </p>
                 <ResponsiveContainer width="100%" height={140}>
                   <LineChart data={chartAcumulado}>
                     <XAxis dataKey="dia" tick={{ fill: '#52525b', fontSize: 9 }} axisLine={false} tickLine={false} />
@@ -716,9 +745,9 @@ export const EventoDashboard: React.FC<{
             {/* Check-in ao Vivo + Pico de Vendas */}
             <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-4">
               <div className="flex items-center gap-2 mb-3">
-                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Check-in</p>
+                <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">Check-in</p>
                 {status === 'ao_vivo' && (
-                  <span className="flex items-center gap-1 text-[7px] font-black uppercase text-emerald-400">
+                  <span className="flex items-center gap-1 text-[0.4375rem] font-black uppercase text-emerald-400">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                     Ao Vivo
                   </span>
@@ -727,12 +756,12 @@ export const EventoDashboard: React.FC<{
               <div className="flex items-end gap-4">
                 <div>
                   <p className="text-3xl font-bold text-white leading-none">{kpis.totalCheckins}</p>
-                  <p className="text-[9px] text-zinc-400 mt-1">presentes</p>
+                  <p className="text-[0.5625rem] text-zinc-400 mt-1">presentes</p>
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-[9px] text-zinc-400 font-semibold">Ocupação</span>
-                    <span className="text-[9px] text-zinc-400 font-bold">{kpis.ocupacao}%</span>
+                    <span className="text-[0.5625rem] text-zinc-400 font-semibold">Ocupação</span>
+                    <span className="text-[0.5625rem] text-zinc-400 font-bold">{kpis.ocupacao}%</span>
                   </div>
                   <div className="h-2.5 bg-zinc-800 rounded-full overflow-hidden">
                     <div
@@ -744,8 +773,8 @@ export const EventoDashboard: React.FC<{
               </div>
               {picoVendas && (
                 <div className="mt-3 pt-3 border-t border-white/5 flex items-center gap-2">
-                  <Zap size={12} className="text-amber-400 shrink-0" />
-                  <p className="text-[9px] text-zinc-400">
+                  <Zap size="0.75rem" className="text-amber-400 shrink-0" />
+                  <p className="text-[0.5625rem] text-zinc-400">
                     Pico: <span className="text-white font-bold">{picoVendas.hora}</span> — {picoVendas.quantidade}{' '}
                     vendas
                   </p>
@@ -756,47 +785,47 @@ export const EventoDashboard: React.FC<{
         )}
 
         {/* ── Editar Evento — atalhos rápidos ────────────────────────────── */}
-        <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-3">Editar Evento</p>
+        <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-3">Editar Evento</p>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-5">
           <button
             onClick={() => setSubView('EDITAR')}
             className="flex items-center gap-2.5 p-3 bg-zinc-900/50 border border-white/5 rounded-xl active:bg-white/5 transition-all"
           >
-            <Pencil size={13} className="text-[#FFD300] shrink-0" />
+            <Pencil size="0.8125rem" className="text-[#FFD300] shrink-0" />
             <span className="text-xs font-bold text-white truncate">Geral</span>
           </button>
           <button
             onClick={() => setSubView('EDITAR_LOTES')}
             className="flex items-center gap-2.5 p-3 bg-zinc-900/50 border border-white/5 rounded-xl active:bg-white/5 transition-all"
           >
-            <Ticket size={13} className="text-[#60a5fa] shrink-0" />
+            <Ticket size="0.8125rem" className="text-[#60a5fa] shrink-0" />
             <span className="text-xs font-bold text-white truncate">Lotes</span>
           </button>
           <button
             onClick={() => setSubView('EDITAR_LISTA')}
             className="flex items-center gap-2.5 p-3 bg-zinc-900/50 border border-white/5 rounded-xl active:bg-white/5 transition-all"
           >
-            <List size={13} className="text-[#a78bfa] shrink-0" />
+            <List size="0.8125rem" className="text-[#a78bfa] shrink-0" />
             <span className="text-xs font-bold text-white truncate">Lista</span>
           </button>
           <button
             onClick={() => setSubView('DUPLICAR')}
             className="flex items-center gap-2.5 p-3 bg-zinc-900/50 border border-white/5 rounded-xl active:bg-white/5 transition-all"
           >
-            <Copy size={13} className="text-purple-400 shrink-0" />
+            <Copy size="0.8125rem" className="text-purple-400 shrink-0" />
             <span className="text-xs font-bold text-white truncate">Duplicar</span>
           </button>
           <button
             onClick={() => setSubView('COMEMORACAO_CONFIG')}
             className="flex items-center gap-2.5 p-3 bg-zinc-900/50 border border-white/5 rounded-xl active:bg-white/5 transition-all"
           >
-            <Cake size={13} className="text-pink-400 shrink-0" />
+            <Cake size="0.8125rem" className="text-pink-400 shrink-0" />
             <span className="text-xs font-bold text-white truncate">Comemoração</span>
           </button>
         </div>
 
         {/* ── Módulos — Vendas e Ingressos ────────────────────────────── */}
-        <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-3">Vendas e Ingressos</p>
+        <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-3">Vendas e Ingressos</p>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5 mb-5">
           {(
             [
@@ -834,7 +863,7 @@ export const EventoDashboard: React.FC<{
                 className="relative flex flex-col p-4 bg-zinc-900/40 border border-white/5 rounded-xl active:bg-white/5 transition-all text-left"
               >
                 {!ativo && (
-                  <span className="absolute top-2 right-2 text-[7px] font-black text-[#FFD300] bg-[#FFD300]/10 border border-[#FFD300]/20 rounded px-1.5 py-0.5 uppercase tracking-wider">
+                  <span className="absolute top-2 right-2 text-[0.4375rem] font-black text-[#FFD300] bg-[#FFD300]/10 border border-[#FFD300]/20 rounded px-1.5 py-0.5 uppercase tracking-wider">
                     Ativar
                   </span>
                 )}
@@ -842,19 +871,19 @@ export const EventoDashboard: React.FC<{
                   className={`w-8 h-8 rounded-lg flex items-center justify-center mb-3 ${!ativo ? 'opacity-30' : ''}`}
                   style={{ backgroundColor: `${m.color}15`, border: `1px solid ${m.color}30` }}
                 >
-                  <m.icon size={14} style={{ color: m.color }} />
+                  <m.icon size="0.875rem" style={{ color: m.color }} />
                 </div>
                 <p className={`text-xs font-bold leading-tight mb-0.5 ${ativo ? 'text-white' : 'text-zinc-400'}`}>
                   {m.label}
                 </p>
-                <p className="text-zinc-400 text-[9px] font-medium">{m.sub}</p>
+                <p className="text-zinc-400 text-[0.5625rem] font-medium">{m.sub}</p>
               </button>
             );
           })}
         </div>
 
         {/* ── Módulos — Operacional ──────────────────────────────────── */}
-        <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-3">Operacional</p>
+        <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-3">Operacional</p>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5 mb-5">
           {(
             [
@@ -908,7 +937,7 @@ export const EventoDashboard: React.FC<{
                 className="relative flex flex-col p-4 bg-zinc-900/40 border border-white/5 rounded-xl active:bg-white/5 transition-all text-left"
               >
                 {!ativo && (
-                  <span className="absolute top-2 right-2 text-[7px] font-black text-[#FFD300] bg-[#FFD300]/10 border border-[#FFD300]/20 rounded px-1.5 py-0.5 uppercase tracking-wider">
+                  <span className="absolute top-2 right-2 text-[0.4375rem] font-black text-[#FFD300] bg-[#FFD300]/10 border border-[#FFD300]/20 rounded px-1.5 py-0.5 uppercase tracking-wider">
                     Ativar
                   </span>
                 )}
@@ -916,19 +945,19 @@ export const EventoDashboard: React.FC<{
                   className={`w-8 h-8 rounded-lg flex items-center justify-center mb-3 ${!ativo ? 'opacity-30' : ''}`}
                   style={{ backgroundColor: `${m.color}15`, border: `1px solid ${m.color}30` }}
                 >
-                  <m.icon size={14} style={{ color: m.color }} />
+                  <m.icon size="0.875rem" style={{ color: m.color }} />
                 </div>
                 <p className={`text-xs font-bold leading-tight mb-0.5 ${ativo ? 'text-white' : 'text-zinc-400'}`}>
                   {m.label}
                 </p>
-                <p className="text-zinc-400 text-[9px] font-medium">{m.sub}</p>
+                <p className="text-zinc-400 text-[0.5625rem] font-medium">{m.sub}</p>
               </button>
             );
           })}
         </div>
 
         {/* ── Módulos — Financeiro ───────────────────────────────────── */}
-        <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-3">Financeiro</p>
+        <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-3">Financeiro</p>
         <div className="grid grid-cols-2 gap-2.5 mb-5">
           {(
             [
@@ -958,7 +987,7 @@ export const EventoDashboard: React.FC<{
                 className="relative flex flex-col p-4 bg-zinc-900/40 border border-white/5 rounded-xl active:bg-white/5 transition-all text-left"
               >
                 {!ativo && (
-                  <span className="absolute top-2 right-2 text-[7px] font-black text-[#FFD300] bg-[#FFD300]/10 border border-[#FFD300]/20 rounded px-1.5 py-0.5 uppercase tracking-wider">
+                  <span className="absolute top-2 right-2 text-[0.4375rem] font-black text-[#FFD300] bg-[#FFD300]/10 border border-[#FFD300]/20 rounded px-1.5 py-0.5 uppercase tracking-wider">
                     Ativar
                   </span>
                 )}
@@ -966,19 +995,19 @@ export const EventoDashboard: React.FC<{
                   className={`w-8 h-8 rounded-lg flex items-center justify-center mb-3 ${!ativo ? 'opacity-30' : ''}`}
                   style={{ backgroundColor: `${m.color}15`, border: `1px solid ${m.color}30` }}
                 >
-                  <m.icon size={14} style={{ color: m.color }} />
+                  <m.icon size="0.875rem" style={{ color: m.color }} />
                 </div>
                 <p className={`text-xs font-bold leading-tight mb-0.5 ${ativo ? 'text-white' : 'text-zinc-400'}`}>
                   {m.label}
                 </p>
-                <p className="text-zinc-400 text-[9px] font-medium">{m.sub}</p>
+                <p className="text-zinc-400 text-[0.5625rem] font-medium">{m.sub}</p>
               </button>
             );
           })}
         </div>
 
         {/* ── Módulos — Analytics ────────────────────────────────────── */}
-        <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-3">Analytics</p>
+        <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-3">Analytics</p>
         <div className="grid grid-cols-2 gap-2.5">
           {(
             [
@@ -1008,7 +1037,7 @@ export const EventoDashboard: React.FC<{
                 className="relative flex flex-col p-4 bg-zinc-900/40 border border-white/5 rounded-xl active:bg-white/5 transition-all text-left"
               >
                 {!ativo && (
-                  <span className="absolute top-2 right-2 text-[7px] font-black text-[#FFD300] bg-[#FFD300]/10 border border-[#FFD300]/20 rounded px-1.5 py-0.5 uppercase tracking-wider">
+                  <span className="absolute top-2 right-2 text-[0.4375rem] font-black text-[#FFD300] bg-[#FFD300]/10 border border-[#FFD300]/20 rounded px-1.5 py-0.5 uppercase tracking-wider">
                     Ativar
                   </span>
                 )}
@@ -1016,12 +1045,12 @@ export const EventoDashboard: React.FC<{
                   className={`w-8 h-8 rounded-lg flex items-center justify-center mb-3 ${!ativo ? 'opacity-30' : ''}`}
                   style={{ backgroundColor: `${m.color}15`, border: `1px solid ${m.color}30` }}
                 >
-                  <m.icon size={14} style={{ color: m.color }} />
+                  <m.icon size="0.875rem" style={{ color: m.color }} />
                 </div>
                 <p className={`text-xs font-bold leading-tight mb-0.5 ${ativo ? 'text-white' : 'text-zinc-400'}`}>
                   {m.label}
                 </p>
-                <p className="text-zinc-400 text-[9px] font-medium">{m.sub}</p>
+                <p className="text-zinc-400 text-[0.5625rem] font-medium">{m.sub}</p>
               </button>
             );
           })}
@@ -1030,14 +1059,14 @@ export const EventoDashboard: React.FC<{
         {/* ── Reviews (só para eventos encerrados) ───────────────── */}
         {status === 'encerrado' && reviewsMedia.count > 0 && (
           <div className="mt-5">
-            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-3">Reviews do Público</p>
+            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-3">Reviews do Público</p>
             <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-4 mb-3">
               <div className="flex items-center gap-3">
                 <div className="flex items-center gap-1">
                   {[1, 2, 3, 4, 5].map(i => (
                     <Star
                       key={i}
-                      size={16}
+                      size="1rem"
                       className={
                         i <= Math.round(reviewsMedia.media) ? 'text-[#FFD300] fill-[#FFD300]' : 'text-zinc-700'
                       }
@@ -1045,7 +1074,7 @@ export const EventoDashboard: React.FC<{
                   ))}
                 </div>
                 <p className="text-white font-bold text-lg leading-none">{reviewsMedia.media.toFixed(1)}</p>
-                <p className="text-zinc-400 text-[10px] font-semibold">({reviewsMedia.count} avaliações)</p>
+                <p className="text-zinc-400 text-[0.625rem] font-semibold">({reviewsMedia.count} avaliações)</p>
               </div>
             </div>
             {reviews.length > 0 && (
@@ -1057,17 +1086,17 @@ export const EventoDashboard: React.FC<{
                         {[1, 2, 3, 4, 5].map(i => (
                           <Star
                             key={i}
-                            size={10}
+                            size="0.625rem"
                             className={i <= r.rating ? 'text-[#FFD300] fill-[#FFD300]' : 'text-zinc-700'}
                           />
                         ))}
                       </div>
-                      <p className="text-zinc-400 text-[9px]">
+                      <p className="text-zinc-400 text-[0.5625rem]">
                         {new Date(r.criadoEm).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })}
                       </p>
                     </div>
                     {r.comentario && (
-                      <p className="text-zinc-400 text-[11px] leading-relaxed line-clamp-3">{r.comentario}</p>
+                      <p className="text-zinc-400 text-[0.6875rem] leading-relaxed line-clamp-3">{r.comentario}</p>
                     )}
                   </div>
                 ))}
@@ -1076,9 +1105,24 @@ export const EventoDashboard: React.FC<{
           </div>
         )}
 
+        {/* ── Inteligência Temporal ─────────────────────────────── */}
+        {evento && (
+          <div className="mt-5">
+            {status === 'futuro' && (
+              <PreEventoView evento={evento} analytics={eventAnalytics} loading={analyticsLoading} />
+            )}
+            {status === 'ao_vivo' && (
+              <OperacaoView evento={evento} analytics={eventAnalytics} loading={analyticsLoading} />
+            )}
+            {status === 'encerrado' && (
+              <PosEventoView evento={evento} analytics={eventAnalytics} loading={analyticsLoading} />
+            )}
+          </div>
+        )}
+
         {evento.descricao && (
           <div className="mt-5 bg-zinc-900/40 border border-white/5 rounded-xl p-4">
-            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">Descrição</p>
+            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2">Descrição</p>
             <p className="text-zinc-400 text-xs leading-relaxed line-clamp-4">{evento.descricao}</p>
           </div>
         )}

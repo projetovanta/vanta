@@ -51,7 +51,7 @@ export const ResetPasswordView: React.FC<Props> = ({ onComplete }) => {
     return (
       <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#050505] px-8 text-center">
         <div className="w-20 h-20 bg-zinc-900 rounded-full flex items-center justify-center mb-6 border border-[#FFD300]/20">
-          <Check size={32} className="text-[#FFD300]" />
+          <Check size="2rem" className="text-[#FFD300]" />
         </div>
         <h1 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-3">
           Senha redefinida!
@@ -66,7 +66,7 @@ export const ResetPasswordView: React.FC<Props> = ({ onComplete }) => {
       <div className="w-full max-w-sm">
         <div className="flex flex-col items-center mb-10">
           <div className="w-16 h-16 bg-zinc-900 rounded-full flex items-center justify-center mb-4 border border-white/10">
-            <Lock size={24} className="text-[#FFD300]" />
+            <Lock size="1.5rem" className="text-[#FFD300]" />
           </div>
           <h1 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-2">
             Nova Senha
@@ -89,7 +89,7 @@ export const ResetPasswordView: React.FC<Props> = ({ onComplete }) => {
               onClick={() => setShowPass(p => !p)}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400"
             >
-              {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
+              {showPass ? <EyeOff size="1rem" /> : <Eye size="1rem" />}
             </button>
           </div>
 
@@ -103,7 +103,7 @@ export const ResetPasswordView: React.FC<Props> = ({ onComplete }) => {
 
           {error && (
             <div className="flex items-center gap-2 text-red-400 text-xs">
-              <AlertTriangle size={14} />
+              <AlertTriangle size="0.875rem" />
               {error}
             </div>
           )}

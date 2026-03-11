@@ -194,7 +194,7 @@ const useDragElement = (
 
 const Field: React.FC<{ label: string; children: React.ReactNode }> = ({ label, children }) => (
   <div className="space-y-1.5">
-    <label className="text-[9px] text-zinc-400 font-black uppercase tracking-widest ml-1">{label}</label>
+    <label className="text-[0.5625rem] text-zinc-400 font-black uppercase tracking-widest ml-1">{label}</label>
     {children}
   </div>
 );
@@ -295,7 +295,7 @@ const CidadeSelector: React.FC<{
         }`}
       >
         <span>GLOBAL</span>
-        <span className="text-[9px] font-black uppercase tracking-widest">
+        <span className="text-[0.5625rem] font-black uppercase tracking-widest">
           {isGlobal ? 'Ativo' : 'Clique para ativar'}
         </span>
       </button>
@@ -310,14 +310,14 @@ const CidadeSelector: React.FC<{
                 >
                   {c}
                   <button type="button" onClick={() => removeCidade(c)} className="active:scale-90">
-                    <X size={10} />
+                    <X size="0.625rem" />
                   </button>
                 </span>
               ))}
             </div>
           )}
           <div className="relative">
-            <Search size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
+            <Search size="0.875rem" className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
             <input
               value={query}
               onChange={e => {
@@ -588,7 +588,7 @@ const CardModal: React.FC<{
             onClick={safeClose}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
           >
-            <ArrowLeft size={18} className="text-zinc-400" />
+            <ArrowLeft size="1.125rem" className="text-zinc-400" />
           </button>
         </div>
       </div>
@@ -616,7 +616,7 @@ const CardModal: React.FC<{
             <div className="relative">
               {form.eventoId && selectedEventName ? (
                 <div className="flex items-center gap-2 bg-zinc-900/60 border border-[#FFD300]/20 rounded-xl px-4 py-3">
-                  <Check size={14} className="text-[#FFD300] shrink-0" />
+                  <Check size="0.875rem" className="text-[#FFD300] shrink-0" />
                   <span className="text-white text-sm truncate flex-1">{selectedEventName}</span>
                   <button
                     type="button"
@@ -634,13 +634,13 @@ const CardModal: React.FC<{
                     }}
                     className="w-6 h-6 bg-zinc-800 rounded-full flex items-center justify-center shrink-0 active:scale-90"
                   >
-                    <X size={10} className="text-zinc-400" />
+                    <X size="0.625rem" className="text-zinc-400" />
                   </button>
                 </div>
               ) : (
                 <>
                   <div className="relative">
-                    <Search size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
+                    <Search size="0.875rem" className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
                     <input
                       value={eventQuery}
                       onChange={e => {
@@ -653,7 +653,7 @@ const CardModal: React.FC<{
                     />
                     {searchingEvents && (
                       <Loader2
-                        size={14}
+                        size="0.875rem"
                         className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 animate-spin"
                       />
                     )}
@@ -676,7 +676,7 @@ const CardModal: React.FC<{
                           </div>
                           <div className="min-w-0 flex-1">
                             <p className="text-white text-sm font-medium truncate">{ev.nome}</p>
-                            <p className="text-zinc-400 text-[10px]">{ev.cidade || 'Sem cidade'}</p>
+                            <p className="text-zinc-400 text-[0.625rem]">{ev.cidade || 'Sem cidade'}</p>
                           </div>
                         </button>
                       ))}
@@ -735,11 +735,11 @@ const CardModal: React.FC<{
               className="flex-1 h-16 bg-zinc-900/60 border border-white/5 rounded-xl flex flex-col items-center justify-center gap-1 active:border-[#FFD300]/30 transition-all disabled:opacity-40"
             >
               {uploadingImg ? (
-                <Loader2 size={18} className="text-zinc-400 animate-spin" />
+                <Loader2 size="1.125rem" className="text-zinc-400 animate-spin" />
               ) : (
-                <ImagePlus size={18} className="text-zinc-400" />
+                <ImagePlus size="1.125rem" className="text-zinc-400" />
               )}
-              <span className="text-[8px] font-black uppercase tracking-widest text-zinc-400">
+              <span className="text-[0.5rem] font-black uppercase tracking-widest text-zinc-400">
                 {uploadingImg ? 'Enviando…' : 'Foto / Câmera'}
               </span>
             </button>
@@ -751,7 +751,7 @@ const CardModal: React.FC<{
                   onClick={() => set('imagem', '')}
                   className="absolute top-0.5 right-0.5 w-5 h-5 bg-black/70 rounded-full flex items-center justify-center active:scale-90"
                 >
-                  <X size={10} className="text-white" />
+                  <X size="0.625rem" className="text-white" />
                 </button>
               </div>
             )}
@@ -841,15 +841,15 @@ const CardModal: React.FC<{
         <div className="space-y-3 pt-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Eye size={12} className="text-[#FFD300]" />
-              <span className="text-[9px] text-zinc-400 font-black uppercase tracking-widest">
+              <Eye size="0.75rem" className="text-[#FFD300]" />
+              <span className="text-[0.5625rem] text-zinc-400 font-black uppercase tracking-widest">
                 Preview — arraste os textos para posicionar
               </span>
             </div>
             <button
               type="button"
               onClick={() => setShowGuides(g => !g)}
-              className={`text-[8px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border transition-colors ${showGuides ? 'bg-[#FFD300]/20 border-[#FFD300]/40 text-[#FFD300]' : 'bg-zinc-900 border-white/10 text-zinc-500'}`}
+              className={`text-[0.5rem] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border transition-colors ${showGuides ? 'bg-[#FFD300]/20 border-[#FFD300]/40 text-[#FFD300]' : 'bg-zinc-900 border-white/10 text-zinc-500'}`}
             >
               Guias
             </button>
@@ -993,10 +993,10 @@ const CardModal: React.FC<{
 
           {/* Sliders de tamanho */}
           <div className="space-y-2 pt-1">
-            <p className="text-[9px] text-zinc-500 font-black uppercase tracking-widest">Tamanho dos elementos</p>
+            <p className="text-[0.5625rem] text-zinc-500 font-black uppercase tracking-widest">Tamanho dos elementos</p>
             {form.badge.trim() && (
               <div className="flex items-center gap-3">
-                <span className="text-[9px] text-zinc-400 w-16 shrink-0">Selo</span>
+                <span className="text-[0.5625rem] text-zinc-400 w-16 shrink-0">Selo</span>
                 <VantaSlider
                   min={0.5}
                   max={2.5}
@@ -1005,12 +1005,12 @@ const CardModal: React.FC<{
                   onChange={setBadgeScale}
                   className="flex-1"
                 />
-                <span className="text-[9px] text-zinc-500 w-8 text-right">{Math.round(badgeScale * 100)}%</span>
+                <span className="text-[0.5625rem] text-zinc-500 w-8 text-right">{Math.round(badgeScale * 100)}%</span>
               </div>
             )}
             {form.titulo.trim() && (
               <div className="flex items-center gap-3">
-                <span className="text-[9px] text-zinc-400 w-16 shrink-0">Título</span>
+                <span className="text-[0.5625rem] text-zinc-400 w-16 shrink-0">Título</span>
                 <VantaSlider
                   min={0.5}
                   max={2.5}
@@ -1019,12 +1019,12 @@ const CardModal: React.FC<{
                   onChange={setTituloScale}
                   className="flex-1"
                 />
-                <span className="text-[9px] text-zinc-500 w-8 text-right">{Math.round(tituloScale * 100)}%</span>
+                <span className="text-[0.5625rem] text-zinc-500 w-8 text-right">{Math.round(tituloScale * 100)}%</span>
               </div>
             )}
             {form.subtitulo.trim() && (
               <div className="flex items-center gap-3">
-                <span className="text-[9px] text-zinc-400 w-16 shrink-0">Subtítulo</span>
+                <span className="text-[0.5625rem] text-zinc-400 w-16 shrink-0">Subtítulo</span>
                 <VantaSlider
                   min={0.5}
                   max={2.5}
@@ -1033,7 +1033,9 @@ const CardModal: React.FC<{
                   onChange={setSubtituloScale}
                   className="flex-1"
                 />
-                <span className="text-[9px] text-zinc-500 w-8 text-right">{Math.round(subtituloScale * 100)}%</span>
+                <span className="text-[0.5625rem] text-zinc-500 w-8 text-right">
+                  {Math.round(subtituloScale * 100)}%
+                </span>
               </div>
             )}
           </div>
@@ -1053,9 +1055,9 @@ const CardModal: React.FC<{
             })
           }
           disabled={!canSave || isSaving || uploadingImg}
-          className="w-full py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-[0.3em] rounded-xl flex items-center justify-center gap-2 disabled:opacity-40 active:scale-[0.98] transition-all"
+          className="w-full py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-[0.3em] rounded-xl flex items-center justify-center gap-2 disabled:opacity-40 active:scale-[0.98] transition-all"
         >
-          {isSaving ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />}
+          {isSaving ? <Loader2 size="0.875rem" className="animate-spin" /> : <Check size="0.875rem" />}
           {isSaving ? 'Salvando...' : 'Salvar Card'}
         </button>
       </div>
@@ -1210,7 +1212,7 @@ export const VantaIndicaView: React.FC<{ onBack: () => void; userId?: string }> 
               <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic">
                 VANTA Indica
               </h1>
-              <span className="text-[9px] font-black text-zinc-400 bg-zinc-900 border border-white/5 px-2 py-0.5 rounded-full">
+              <span className="text-[0.5625rem] font-black text-zinc-400 bg-zinc-900 border border-white/5 px-2 py-0.5 rounded-full">
                 {ativos.length} ativo{ativos.length !== 1 ? 's' : ''}
               </span>
             </div>
@@ -1220,15 +1222,15 @@ export const VantaIndicaView: React.FC<{ onBack: () => void; userId?: string }> 
               onClick={() => setModal({ open: true, data: EMPTY })}
               className="flex items-center gap-2 px-4 py-2.5 bg-[#FFD300]/10 border border-[#FFD300]/20 rounded-xl active:scale-95 transition-all"
             >
-              <Plus size={14} className="text-[#FFD300]" />
-              <span className="text-[#FFD300] text-[10px] font-black uppercase tracking-wider">Novo</span>
+              <Plus size="0.875rem" className="text-[#FFD300]" />
+              <span className="text-[#FFD300] text-[0.625rem] font-black uppercase tracking-wider">Novo</span>
             </button>
             <button
               aria-label="Voltar"
               onClick={onBack}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
             >
-              <ArrowLeft size={18} className="text-zinc-400" />
+              <ArrowLeft size="1.125rem" className="text-zinc-400" />
             </button>
           </div>
         </div>
@@ -1237,16 +1239,18 @@ export const VantaIndicaView: React.FC<{ onBack: () => void; userId?: string }> 
       <div className="flex-1 overflow-y-auto no-scrollbar p-5 space-y-3">
         {loading && (
           <div className="flex flex-col items-center py-20 gap-4">
-            <Loader2 size={24} className="text-zinc-700 animate-spin" />
-            <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">Carregando cards...</p>
+            <Loader2 size="1.5rem" className="text-zinc-700 animate-spin" />
+            <p className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest">Carregando cards...</p>
           </div>
         )}
         {!loading && cards.length === 0 && (
           <div className="flex flex-col items-center py-20 gap-4">
             <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center">
-              <Compass size={28} className="text-zinc-700" />
+              <Compass size="1.75rem" className="text-zinc-700" />
             </div>
-            <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">Nenhum card criado ainda.</p>
+            <p className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest">
+              Nenhum card criado ainda.
+            </p>
           </div>
         )}
 
@@ -1263,7 +1267,7 @@ export const VantaIndicaView: React.FC<{ onBack: () => void; userId?: string }> 
                   {card.imagem ? (
                     <img src={card.imagem} alt={card.titulo} className="w-full h-full object-cover" loading="lazy" />
                   ) : (
-                    <span className="text-[9px] font-black text-zinc-700 uppercase tracking-widest">
+                    <span className="text-[0.5625rem] font-black text-zinc-700 uppercase tracking-widest">
                       {card.badge.slice(0, 3)}
                     </span>
                   )}
@@ -1273,7 +1277,7 @@ export const VantaIndicaView: React.FC<{ onBack: () => void; userId?: string }> 
                 <div className="flex-1 min-w-0 p-4">
                   <div className="flex items-start justify-between gap-2 mb-1">
                     <span
-                      className={`text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full border ${cfg.bg} ${cfg.text} ${cfg.border}`}
+                      className={`text-[0.5rem] font-black uppercase tracking-widest px-2 py-0.5 rounded-full border ${cfg.bg} ${cfg.text} ${cfg.border}`}
                     >
                       {cfg.label}
                     </span>
@@ -1283,17 +1287,17 @@ export const VantaIndicaView: React.FC<{ onBack: () => void; userId?: string }> 
                         onClick={() => handleEdit(card)}
                         className="w-7 h-7 bg-zinc-900 border border-white/10 rounded-lg flex items-center justify-center active:scale-90 transition-all"
                       >
-                        <Edit2 size={11} className="text-zinc-400" />
+                        <Edit2 size="0.6875rem" className="text-zinc-400" />
                       </button>
                     </div>
                   </div>
                   <p className="text-white font-bold text-sm leading-tight truncate">{card.titulo}</p>
-                  <p className="text-zinc-400 text-[10px] mt-0.5 truncate">{card.subtitulo}</p>
+                  <p className="text-zinc-400 text-[0.625rem] mt-0.5 truncate">{card.subtitulo}</p>
                   <div className="flex items-center gap-1.5 mt-2">
                     <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: cfg.dot }} />
-                    <p className="text-zinc-700 text-[8px] font-black uppercase tracking-widest">{card.badge}</p>
+                    <p className="text-zinc-700 text-[0.5rem] font-black uppercase tracking-widest">{card.badge}</p>
                     <span className="text-zinc-800">·</span>
-                    <p className="text-zinc-700 text-[8px]">{card.alvoLocalidades[0] || 'GLOBAL'}</p>
+                    <p className="text-zinc-700 text-[0.5rem]">{card.alvoLocalidades[0] || 'GLOBAL'}</p>
                   </div>
                 </div>
               </div>
@@ -1302,7 +1306,7 @@ export const VantaIndicaView: React.FC<{ onBack: () => void; userId?: string }> 
         })}
 
         {inativos.length > 0 && ativos.length > 0 && (
-          <p className="text-zinc-800 text-[9px] font-black uppercase tracking-widest text-center pt-2">
+          <p className="text-zinc-800 text-[0.5625rem] font-black uppercase tracking-widest text-center pt-2">
             {inativos.length} inativo{inativos.length !== 1 ? 's' : ''} oculto{inativos.length !== 1 ? 's' : ''} na home
           </p>
         )}

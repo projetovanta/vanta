@@ -82,6 +82,8 @@ export const EditarLotesSubView: React.FC<Props> = ({ eventoId, onBack, currentU
             loteId: b.loteId ?? '',
             listaVarId: b.listaId ?? '',
             descontoPercentual: String(b.descontoPercentual ?? 0),
+            creatorSublevelMinimo: b.creatorSublevelMinimo ?? '',
+            vagasLimite: b.vagasLimite != null ? String(b.vagasLimite) : '',
           })),
         });
       }
@@ -147,7 +149,7 @@ export const EditarLotesSubView: React.FC<Props> = ({ eventoId, onBack, currentU
       });
     }
 
-    // MAIS VANTA — salvar benefícios por tier (mais_vanta_lotes_evento)
+    // MAIS VANTA — salvar benefícios por tier (mais_vanta_config_evento)
     if (maisVantaEvento.enabled) {
       const ativos = maisVantaEvento.beneficios.filter(b => b.ativo && (b.loteId || b.listaVarId));
       await clubeService.salvarBeneficiosEvento(
@@ -157,7 +159,9 @@ export const EditarLotesSubView: React.FC<Props> = ({ eventoId, onBack, currentU
           tipo: b.tipo,
           loteId: b.tipo === 'ingresso' ? b.loteId : null,
           listaId: b.tipo === 'lista' ? b.listaVarId : null,
-          descontoPercentual: b.tierId === 'desconto' ? parseInt(b.descontoPercentual) || null : null,
+          descontoPercentual: b.tierId === 'lista' ? parseInt(b.descontoPercentual) || null : null,
+          creatorSublevelMinimo: b.tierId === 'creator' && b.creatorSublevelMinimo ? b.creatorSublevelMinimo : null,
+          vagasLimite: b.vagasLimite ? parseInt(b.vagasLimite) || null : null,
           ativo: true,
         })),
       );
@@ -173,12 +177,12 @@ export const EditarLotesSubView: React.FC<Props> = ({ eventoId, onBack, currentU
     return (
       <div className="absolute inset-0 bg-[#0A0A0A] flex flex-col items-center justify-center p-10 gap-6">
         <div className="w-16 h-16 rounded-full bg-emerald-500/20 flex items-center justify-center">
-          <Check size={28} className="text-emerald-400" />
+          <Check size="1.75rem" className="text-emerald-400" />
         </div>
         <p className="text-white font-bold text-lg">Lotes atualizados</p>
         <button
           onClick={onBack}
-          className="mt-4 px-8 py-3 bg-[#FFD300] text-black rounded-xl text-[10px] font-black uppercase tracking-widest"
+          className="mt-4 px-8 py-3 bg-[#FFD300] text-black rounded-xl text-[0.625rem] font-black uppercase tracking-widest"
         >
           Voltar ao Painel
         </button>
@@ -203,7 +207,7 @@ export const EditarLotesSubView: React.FC<Props> = ({ eventoId, onBack, currentU
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0 mt-1"
           >
-            <ArrowLeft size={18} className="text-zinc-400" />
+            <ArrowLeft size="1.125rem" className="text-zinc-400" />
           </button>
         </div>
       </div>
@@ -220,15 +224,15 @@ export const EditarLotesSubView: React.FC<Props> = ({ eventoId, onBack, currentU
           setMaisVantaEvento={setMaisVantaEvento}
           comunidadeId={comunidadeId}
         />
-        {erro && <p className="mt-4 text-red-400 text-[10px] font-black uppercase tracking-widest">{erro}</p>}
+        {erro && <p className="mt-4 text-red-400 text-[0.625rem] font-black uppercase tracking-widest">{erro}</p>}
       </div>
       <div className="px-6 pb-8 safe-bottom pt-3 border-t border-white/5 shrink-0">
         <button
           onClick={handleSalvar}
           disabled={saving}
-          className="w-full py-3.5 bg-[#FFD300] text-black rounded-xl text-[10px] font-black uppercase tracking-widest active:scale-95 transition-all font-bold disabled:opacity-50 flex items-center justify-center gap-2"
+          className="w-full py-3.5 bg-[#FFD300] text-black rounded-xl text-[0.625rem] font-black uppercase tracking-widest active:scale-95 transition-all font-bold disabled:opacity-50 flex items-center justify-center gap-2"
         >
-          {saving ? <Loader2 size={14} className="animate-spin" /> : null}
+          {saving ? <Loader2 size="0.875rem" className="animate-spin" /> : null}
           Salvar Lotes
         </button>
       </div>

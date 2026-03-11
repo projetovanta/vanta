@@ -21,10 +21,10 @@ export const SubTabPosts: React.FC<Props> = ({ pendentePosts, perfis, onVerifica
           <div className="flex items-center justify-between">
             <div className="flex-1 min-w-0">
               <p className="text-white font-bold text-sm truncate">{perfis[r.userId]?.nome || r.userId.slice(0, 8)}</p>
-              <p className="text-zinc-400 text-[9px] mt-1">Reservado em {formatDate(r.reservadoEm)}</p>
+              <p className="text-zinc-400 text-[0.5625rem] mt-1">Reservado em {formatDate(r.reservadoEm)}</p>
             </div>
             <span
-              className={`text-[8px] font-black uppercase px-2 py-0.5 rounded ${
+              className={`text-[0.5rem] font-black uppercase px-2 py-0.5 rounded ${
                 r.postUrl ? 'bg-amber-500/15 text-amber-400' : 'bg-zinc-800 text-zinc-400'
               }`}
             >
@@ -37,22 +37,22 @@ export const SubTabPosts: React.FC<Props> = ({ pendentePosts, perfis, onVerifica
                 href={r.postUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1 text-[#FFD300] text-[10px] font-bold"
+                className="flex items-center gap-1 text-[#FFD300] text-[0.625rem] font-bold"
               >
-                <ExternalLink size={10} /> Ver
+                <ExternalLink size="0.625rem" /> Ver
               </a>
               <button
                 onClick={() => onVerificarAuto(r.id, r.postUrl!)}
-                className="flex items-center gap-1 px-2.5 py-1.5 bg-purple-500/20 border border-purple-500/30 rounded-lg text-purple-400 text-[9px] font-black uppercase active:scale-90 transition-all"
+                className="flex items-center gap-1 px-2.5 py-1.5 bg-purple-500/20 border border-purple-500/30 rounded-lg text-purple-400 text-[0.5625rem] font-black uppercase active:scale-90 transition-all"
                 title="Verificar via Meta API"
               >
-                <Zap size={10} /> Auto
+                <Zap size="0.625rem" /> Auto
               </button>
               <button
                 onClick={() => onVerificarPost(r.id)}
-                className="ml-auto flex items-center gap-1 px-2.5 py-1.5 bg-emerald-500/20 border border-emerald-500/30 rounded-lg text-emerald-400 text-[9px] font-black uppercase active:scale-90 transition-all"
+                className="ml-auto flex items-center gap-1 px-2.5 py-1.5 bg-emerald-500/20 border border-emerald-500/30 rounded-lg text-emerald-400 text-[0.5625rem] font-black uppercase active:scale-90 transition-all"
               >
-                <Check size={10} /> Manual
+                <Check size="0.625rem" /> Manual
               </button>
             </div>
           )}

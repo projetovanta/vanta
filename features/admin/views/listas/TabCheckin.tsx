@@ -77,7 +77,7 @@ export const TabCheckin: React.FC<{
   return (
     <div className="flex-1 flex flex-col min-h-0">
       <div className="flex items-center gap-2 bg-zinc-900/60 border border-white/5 rounded-xl px-3 py-2.5 focus-within:border-[#FFD300]/30 mb-4 shrink-0">
-        <Search size={13} className="text-zinc-400 shrink-0" />
+        <Search size="0.8125rem" className="text-zinc-400 shrink-0" />
         <input
           value={busca}
           onChange={e => setBusca(e.target.value)}
@@ -86,7 +86,7 @@ export const TabCheckin: React.FC<{
         />
         {busca && (
           <button onClick={() => setBusca('')}>
-            <X size={12} className="text-zinc-400" />
+            <X size="0.75rem" className="text-zinc-400" />
           </button>
         )}
       </div>
@@ -94,19 +94,19 @@ export const TabCheckin: React.FC<{
       <div className="flex gap-3 mb-4 shrink-0">
         <div className="flex-1 bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center">
           <p className="text-white font-black text-xl">{lista.convidados.filter(c => !c.checkedIn).length}</p>
-          <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mt-0.5">Aguardando</p>
+          <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest mt-0.5">Aguardando</p>
         </div>
         <div className="flex-1 bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center">
           <p className="text-emerald-400 font-black text-xl">{lista.convidados.filter(c => c.checkedIn).length}</p>
-          <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mt-0.5">Dentro</p>
+          <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest mt-0.5">Dentro</p>
         </div>
       </div>
 
       <div className="flex-1 overflow-y-auto no-scrollbar space-y-2">
         {convidados.length === 0 && (
           <div className="flex flex-col items-center py-16 gap-3">
-            <Users size={28} className="text-zinc-800" />
-            <p className="text-zinc-700 text-[10px] font-black uppercase tracking-widest">
+            <Users size="1.75rem" className="text-zinc-800" />
+            <p className="text-zinc-700 text-[0.625rem] font-black uppercase tracking-widest">
               {busca ? 'Nenhum resultado' : 'Nenhum convidado'}
             </p>
           </div>
@@ -133,11 +133,11 @@ export const TabCheckin: React.FC<{
                         className="w-1.5 h-1.5 rounded-full shrink-0"
                         style={{ backgroundColor: regra.cor ?? '#71717a' }}
                       />
-                      <span className="text-zinc-400 text-[9px] font-black truncate">{regra.label}</span>
+                      <span className="text-zinc-400 text-[0.5625rem] font-black truncate">{regra.label}</span>
                     </span>
                   )}
                   {abobora && !c.checkedIn && (
-                    <span className="text-amber-400 text-[8px] font-black">
+                    <span className="text-amber-400 text-[0.5rem] font-black">
                       {regra?.valor ? `R$${regra.valor}` : `⚠ ${regra?.horaCorte}`}
                     </span>
                   )}
@@ -145,15 +145,15 @@ export const TabCheckin: React.FC<{
               </div>
               {c.checkedIn ? (
                 <div className="flex items-center gap-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-2.5 py-1 shrink-0">
-                  <Check size={10} className="text-emerald-400" />
-                  <span className="text-emerald-400 text-[9px] font-black">Dentro</span>
+                  <Check size="0.625rem" className="text-emerald-400" />
+                  <span className="text-emerald-400 text-[0.5625rem] font-black">Dentro</span>
                 </div>
               ) : (
                 <button
                   onClick={() => handleCheckin(c.id)}
-                  className="flex items-center gap-1.5 px-3 py-2 bg-zinc-900 border border-white/10 rounded-xl text-zinc-300 text-[10px] font-black uppercase tracking-wider active:bg-[#FFD300]/10 active:border-[#FFD300]/30 active:text-[#FFD300] transition-all shrink-0"
+                  className="flex items-center gap-1.5 px-3 py-2 bg-zinc-900 border border-white/10 rounded-xl text-zinc-300 text-[0.625rem] font-black uppercase tracking-wider active:bg-[#FFD300]/10 active:border-[#FFD300]/30 active:text-[#FFD300] transition-all shrink-0"
                 >
-                  <Check size={11} />
+                  <Check size="0.6875rem" />
                   Confirmar
                 </button>
               )}
@@ -196,13 +196,13 @@ export const TabCheckin: React.FC<{
                 R${avisoPagamento.valor.toFixed(2).replace('.', ',')}
               </span>
             </p>
-            <p className="text-[9px] text-zinc-500 font-black uppercase tracking-widest">Como vai pagar?</p>
+            <p className="text-[0.5625rem] text-zinc-500 font-black uppercase tracking-widest">Como vai pagar?</p>
             <div className="flex gap-2">
               {(['DINHEIRO', 'CARTAO', 'PIX'] as const).map(forma => (
                 <button
                   key={forma}
                   onClick={() => confirmarPagamento(forma)}
-                  className="flex-1 py-3 bg-[#FFD300]/10 border border-[#FFD300]/30 rounded-xl text-[#FFD300] text-[10px] font-bold uppercase tracking-wider active:scale-95 transition-transform"
+                  className="flex-1 py-3 bg-[#FFD300]/10 border border-[#FFD300]/30 rounded-xl text-[#FFD300] text-[0.625rem] font-bold uppercase tracking-wider active:scale-95 transition-transform"
                 >
                   {forma === 'DINHEIRO' ? 'Dinheiro' : forma === 'CARTAO' ? 'Cartão' : 'Pix'}
                 </button>
@@ -210,7 +210,7 @@ export const TabCheckin: React.FC<{
             </div>
             <button
               onClick={() => setAvisoPagamento(null)}
-              className="w-full py-2 bg-zinc-800 border border-white/10 rounded-xl text-zinc-400 text-[10px] font-bold uppercase tracking-wider"
+              className="w-full py-2 bg-zinc-800 border border-white/10 rounded-xl text-zinc-400 text-[0.625rem] font-bold uppercase tracking-wider"
             >
               Cancelar
             </button>

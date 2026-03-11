@@ -82,14 +82,14 @@ export const AssinaturasMaisVantaView: React.FC<{
               onClick={handleRefresh}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
             >
-              <RefreshCw size={16} className="text-zinc-400" />
+              <RefreshCw size="1rem" className="text-zinc-400" />
             </button>
             <button
               aria-label="Voltar"
               onClick={onBack}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
             >
-              <ArrowLeft size={18} className="text-zinc-400" />
+              <ArrowLeft size="1.125rem" className="text-zinc-400" />
             </button>
           </div>
         </div>
@@ -98,25 +98,25 @@ export const AssinaturasMaisVantaView: React.FC<{
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5 mb-4">
           <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center">
             <p className="text-emerald-400 font-black text-2xl leading-none">{totais.ativas}</p>
-            <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider mt-1">Ativas</p>
+            <p className="text-zinc-400 text-[0.5625rem] font-bold uppercase tracking-wider mt-1">Ativas</p>
           </div>
           <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center">
             <p className="text-amber-400 font-black text-2xl leading-none">{totais.pendentes}</p>
-            <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider mt-1">Pendentes</p>
+            <p className="text-zinc-400 text-[0.5625rem] font-bold uppercase tracking-wider mt-1">Pendentes</p>
           </div>
           <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center">
             <p className="text-[#FFD300] font-black text-xl leading-none">{fmtBRL(totais.mrr)}</p>
-            <p className="text-zinc-400 text-[9px] font-bold uppercase tracking-wider mt-1">MRR</p>
+            <p className="text-zinc-400 text-[0.5625rem] font-bold uppercase tracking-wider mt-1">MRR</p>
           </div>
         </div>
 
         {/* Filtros */}
-        <div className="flex gap-1.5 overflow-x-auto no-scrollbar">
+        <div className="flex flex-wrap gap-1.5">
           {filtros.map(f => (
             <button
               key={f.id}
               onClick={() => setFiltro(f.id)}
-              className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider shrink-0 border transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-[0.5625rem] font-black uppercase tracking-wider border transition-all ${
                 filtro === f.id
                   ? 'bg-[#FFD300] text-black border-transparent'
                   : 'bg-zinc-900/60 text-zinc-400 border-white/5 active:bg-zinc-800'
@@ -133,9 +133,9 @@ export const AssinaturasMaisVantaView: React.FC<{
         {assinaturas.length === 0 && (
           <div className="flex flex-col items-center justify-center py-16 gap-4">
             <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center">
-              <Crown size={28} className="text-zinc-700" />
+              <Crown size="1.75rem" className="text-zinc-700" />
             </div>
-            <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">
+            <p className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest">
               {filtro === 'TODAS' ? 'Nenhuma assinatura encontrada' : `Nenhuma assinatura ${filtro.toLowerCase()}`}
             </p>
           </div>
@@ -154,34 +154,34 @@ export const AssinaturasMaisVantaView: React.FC<{
                   <img loading="lazy" src={foto} alt="" className="w-12 h-12 rounded-xl object-cover shrink-0" />
                 ) : (
                   <div className="w-12 h-12 rounded-xl bg-zinc-800 border border-white/5 flex items-center justify-center shrink-0">
-                    <Building2 size={20} className="text-zinc-400" />
+                    <Building2 size="1.25rem" className="text-zinc-400" />
                   </div>
                 )}
                 <div className="flex-1 min-w-0">
                   <p className="text-white font-bold text-sm truncate">{getComunidadeNome(a.comunidadeId)}</p>
                   <div className="flex items-center gap-2 mt-1">
                     <span
-                      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md border text-[8px] font-black uppercase tracking-wider ${st.color}`}
+                      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md border text-[0.5rem] font-black uppercase tracking-wider ${st.color}`}
                     >
-                      <StIcon size={9} /> {st.label}
+                      <StIcon size="0.5625rem" /> {st.label}
                     </span>
-                    <span className="text-[#FFD300] text-[9px] font-black">{plano.nome}</span>
+                    <span className="text-[#FFD300] text-[0.5625rem] font-black">{plano.nome}</span>
                   </div>
                 </div>
                 <div className="text-right shrink-0">
                   <p className="text-white font-black text-sm">R${a.valorMensal}</p>
-                  <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">/mês</p>
+                  <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest">/mês</p>
                 </div>
               </div>
 
               {/* Detalhes + Ações */}
               <div className="mt-3 pt-3 border-t border-white/5">
                 <div className="flex flex-wrap gap-x-4 gap-y-1 mb-3">
-                  <p className="text-zinc-400 text-[9px]">
+                  <p className="text-zinc-400 text-[0.5625rem]">
                     <span className="text-zinc-400 font-bold">Membros:</span> {plano.membros}
                   </p>
                   {a.inicio && (
-                    <p className="text-zinc-400 text-[9px]">
+                    <p className="text-zinc-400 text-[0.5625rem]">
                       <span className="text-zinc-400 font-bold">Início:</span>{' '}
                       {new Date(a.inicio).toLocaleDateString('pt-BR', {
                         day: '2-digit',
@@ -191,7 +191,7 @@ export const AssinaturasMaisVantaView: React.FC<{
                     </p>
                   )}
                   {a.fim && (
-                    <p className="text-zinc-400 text-[9px]">
+                    <p className="text-zinc-400 text-[0.5625rem]">
                       <span className="text-zinc-400 font-bold">Fim:</span>{' '}
                       {new Date(a.fim).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' })}
                     </p>
@@ -207,7 +207,7 @@ export const AssinaturasMaisVantaView: React.FC<{
                           nome: getComunidadeNome(a.comunidadeId),
                         })
                       }
-                      className="flex-1 py-2 bg-emerald-500/15 border border-emerald-500/25 rounded-xl text-emerald-400 text-[9px] font-black uppercase tracking-widest active:scale-95 transition-all"
+                      className="flex-1 py-2 bg-emerald-500/15 border border-emerald-500/25 rounded-xl text-emerald-400 text-[0.5625rem] font-black uppercase tracking-widest active:scale-95 transition-all"
                     >
                       Ativar
                     </button>
@@ -221,7 +221,7 @@ export const AssinaturasMaisVantaView: React.FC<{
                           nome: getComunidadeNome(a.comunidadeId),
                         })
                       }
-                      className="flex-1 py-2 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-[9px] font-black uppercase tracking-widest active:scale-95 transition-all"
+                      className="flex-1 py-2 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-[0.5625rem] font-black uppercase tracking-widest active:scale-95 transition-all"
                     >
                       Cancelar
                     </button>
@@ -246,7 +246,7 @@ export const AssinaturasMaisVantaView: React.FC<{
             <p className="text-white font-bold text-sm text-center">
               {confirmar.acao === 'ATIVAR' ? 'Ativar assinatura?' : 'Cancelar assinatura?'}
             </p>
-            <p className="text-zinc-400 text-[10px] text-center leading-relaxed">
+            <p className="text-zinc-400 text-[0.625rem] text-center leading-relaxed">
               {confirmar.acao === 'ATIVAR'
                 ? `A assinatura de "${confirmar.nome}" será ativada imediatamente.`
                 : `A assinatura de "${confirmar.nome}" será cancelada. O módulo MAIS VANTA será desativado.`}
@@ -255,7 +255,7 @@ export const AssinaturasMaisVantaView: React.FC<{
               <button
                 onClick={() => setConfirmar(null)}
                 disabled={loading}
-                className="flex-1 py-3 bg-zinc-900 border border-white/10 rounded-xl text-zinc-400 text-[9px] font-black uppercase tracking-widest active:scale-95 transition-all disabled:opacity-40"
+                className="flex-1 py-3 bg-zinc-900 border border-white/10 rounded-xl text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest active:scale-95 transition-all disabled:opacity-40"
               >
                 Voltar
               </button>
@@ -272,7 +272,7 @@ export const AssinaturasMaisVantaView: React.FC<{
                   setConfirmar(null);
                   setTick(t => t + 1);
                 }}
-                className={`flex-1 py-3 rounded-xl text-[9px] font-black uppercase tracking-widest active:scale-95 transition-all disabled:opacity-40 ${
+                className={`flex-1 py-3 rounded-xl text-[0.5625rem] font-black uppercase tracking-widest active:scale-95 transition-all disabled:opacity-40 ${
                   confirmar.acao === 'ATIVAR' ? 'bg-emerald-500 text-black' : 'bg-red-500 text-white'
                 }`}
               >

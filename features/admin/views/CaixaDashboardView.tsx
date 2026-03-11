@@ -105,7 +105,7 @@ export const CaixaDashboardView: React.FC<CaixaDashProps> = ({ onBack, currentUs
         <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic leading-none text-white">
           Dashboard Caixa
         </h1>
-        <p className="text-[10px] text-zinc-400 font-black uppercase tracking-wider mt-1">
+        <p className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-wider mt-1">
           {caixaNodes.length} evento{caixaNodes.length !== 1 ? 's' : ''}
         </p>
       </div>
@@ -120,7 +120,7 @@ export const CaixaDashboardView: React.FC<CaixaDashProps> = ({ onBack, currentUs
             <span>
               {filtroEventoId ? metricas.find(m => m.eventoId === filtroEventoId)?.eventoNome : 'Todos os eventos'}
             </span>
-            <ChevronDown size={14} className="text-zinc-400" />
+            <ChevronDown size="0.875rem" className="text-zinc-400" />
           </button>
           {showDropdown && (
             <div className="absolute left-6 right-6 top-full z-20 bg-zinc-900 border border-white/10 rounded-xl overflow-hidden shadow-xl">
@@ -162,29 +162,29 @@ export const CaixaDashboardView: React.FC<CaixaDashProps> = ({ onBack, currentUs
             <div className="grid grid-cols-2 gap-2.5 mb-4">
               <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-3 flex flex-col gap-1">
                 <div className="flex items-center gap-1.5">
-                  <ShoppingCart size={11} className="text-[#FFD300] shrink-0" />
-                  <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider">Vendas</p>
+                  <ShoppingCart size="0.6875rem" className="text-[#FFD300] shrink-0" />
+                  <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-wider">Vendas</p>
                 </div>
                 <p className="text-lg font-bold text-[#FFD300] leading-none">{dados.totalVendas}</p>
               </div>
               <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-3 flex flex-col gap-1">
                 <div className="flex items-center gap-1.5">
-                  <DollarSign size={11} className="text-emerald-400 shrink-0" />
-                  <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider">Valor Total</p>
+                  <DollarSign size="0.6875rem" className="text-emerald-400 shrink-0" />
+                  <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-wider">Valor Total</p>
                 </div>
                 <p className="text-lg font-bold text-emerald-400 leading-none truncate">{fmtBRL(dados.totalValor)}</p>
               </div>
               <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-3 flex flex-col gap-1">
                 <div className="flex items-center gap-1.5">
-                  <TrendingUp size={11} className="text-purple-400 shrink-0" />
-                  <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider">Média/evento</p>
+                  <TrendingUp size="0.6875rem" className="text-purple-400 shrink-0" />
+                  <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-wider">Média/evento</p>
                 </div>
                 <p className="text-lg font-bold text-white leading-none">{dados.media.toFixed(0)}</p>
               </div>
               <div className="bg-zinc-900/50 border border-white/5 rounded-xl p-3 flex flex-col gap-1">
                 <div className="flex items-center gap-1.5">
-                  <Package size={11} className="text-blue-400 shrink-0" />
-                  <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider">Disponíveis</p>
+                  <Package size="0.6875rem" className="text-blue-400 shrink-0" />
+                  <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-wider">Disponíveis</p>
                 </div>
                 <p className="text-lg font-bold text-white leading-none">{dados.totalDisp}</p>
               </div>
@@ -200,11 +200,14 @@ export const CaixaDashboardView: React.FC<CaixaDashProps> = ({ onBack, currentUs
                 }`}
               >
                 <div className="flex items-center gap-2">
-                  <TrendingUp size={14} className={tendencia === 'acima' ? 'text-emerald-400' : 'text-orange-400'} />
+                  <TrendingUp
+                    size="0.875rem"
+                    className={tendencia === 'acima' ? 'text-emerald-400' : 'text-orange-400'}
+                  />
                   <p className={`text-xs font-bold ${tendencia === 'acima' ? 'text-emerald-400' : 'text-orange-400'}`}>
                     {tendencia === 'acima' ? 'Acima' : 'Abaixo'} da média
                   </p>
-                  <p className="text-[10px] text-zinc-400">
+                  <p className="text-[0.625rem] text-zinc-400">
                     ({eventoSelecionado?.vendasQtd} vendas vs média {dados.media.toFixed(0)})
                   </p>
                 </div>
@@ -214,7 +217,7 @@ export const CaixaDashboardView: React.FC<CaixaDashProps> = ({ onBack, currentUs
             {/* Comparativo evento a evento */}
             {metricas.length > 1 && !filtroEventoId && (
               <div className="mb-4">
-                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider mb-2">
+                <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-wider mb-2">
                   Comparativo por Evento
                 </p>
                 <div className="space-y-2">
@@ -232,7 +235,7 @@ export const CaixaDashboardView: React.FC<CaixaDashProps> = ({ onBack, currentUs
                             style={{ width: `${Math.min(pct, 200)}%` }}
                           />
                         </div>
-                        <p className="text-[9px] text-zinc-400 mt-1">{fmtBRL(m.vendasValor)}</p>
+                        <p className="text-[0.5625rem] text-zinc-400 mt-1">{fmtBRL(m.vendasValor)}</p>
                       </div>
                     );
                   })}
@@ -242,7 +245,7 @@ export const CaixaDashboardView: React.FC<CaixaDashProps> = ({ onBack, currentUs
 
             {/* Atalhos */}
             <div className="space-y-2">
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-wider">Ações rápidas</p>
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-wider">Ações rápidas</p>
               {(filtroEventoId ? [metricas.find(m => m.eventoId === filtroEventoId)!] : metricas).map(
                 m =>
                   m && (
@@ -252,13 +255,13 @@ export const CaixaDashboardView: React.FC<CaixaDashProps> = ({ onBack, currentUs
                       className="w-full flex items-center justify-between bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 active:scale-[0.98] transition-all"
                     >
                       <div className="flex items-center gap-3 min-w-0">
-                        <ShoppingCart size={16} className="text-[#FFD300] shrink-0" />
+                        <ShoppingCart size="1rem" className="text-[#FFD300] shrink-0" />
                         <div className="min-w-0">
                           <p className="text-sm text-white font-bold truncate">Abrir Caixa</p>
-                          <p className="text-[10px] text-zinc-400 truncate">{m.eventoNome}</p>
+                          <p className="text-[0.625rem] text-zinc-400 truncate">{m.eventoNome}</p>
                         </div>
                       </div>
-                      <ArrowRight size={14} className="text-zinc-400 shrink-0" />
+                      <ArrowRight size="0.875rem" className="text-zinc-400 shrink-0" />
                     </button>
                   ),
               )}

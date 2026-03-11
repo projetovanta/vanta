@@ -37,8 +37,8 @@ export const LogsTab: React.FC<{ comunidade: Comunidade }> = ({ comunidade }) =>
   if (loading) {
     return (
       <div className="flex flex-col items-center py-12 gap-3">
-        <RefreshCw size={20} className="text-zinc-400 animate-spin" />
-        <p className="text-zinc-700 text-[10px] font-black uppercase tracking-widest">Carregando logs...</p>
+        <RefreshCw size="1.25rem" className="text-zinc-400 animate-spin" />
+        <p className="text-zinc-700 text-[0.625rem] font-black uppercase tracking-widest">Carregando logs...</p>
       </div>
     );
   }
@@ -46,18 +46,18 @@ export const LogsTab: React.FC<{ comunidade: Comunidade }> = ({ comunidade }) =>
   if (allLogs.length === 0) {
     return (
       <div className="flex flex-col items-center py-12 gap-4">
-        <Clock size={28} className="text-zinc-800" />
-        <p className="text-zinc-700 text-[10px] font-black uppercase tracking-widest text-center">
+        <Clock size="1.75rem" className="text-zinc-800" />
+        <p className="text-zinc-700 text-[0.625rem] font-black uppercase tracking-widest text-center">
           Nenhuma atividade registrada
         </p>
-        <p className="text-zinc-800 text-[9px] italic text-center max-w-[220px]">
+        <p className="text-zinc-800 text-[0.5625rem] italic text-center max-w-[13.75rem]">
           Edições, mudanças na equipe e novos eventos serão registrados aqui.
         </p>
         <button
           onClick={handleRefresh}
-          className="mt-2 flex items-center gap-1.5 px-4 py-2 bg-zinc-900 border border-white/5 rounded-xl text-zinc-400 text-[9px] font-black uppercase tracking-wider active:scale-95 transition-all"
+          className="mt-2 flex items-center gap-1.5 px-4 py-2 bg-zinc-900 border border-white/5 rounded-xl text-zinc-400 text-[0.5625rem] font-black uppercase tracking-wider active:scale-95 transition-all"
         >
-          <RefreshCw size={12} /> Atualizar
+          <RefreshCw size="0.75rem" /> Atualizar
         </button>
       </div>
     );
@@ -69,9 +69,9 @@ export const LogsTab: React.FC<{ comunidade: Comunidade }> = ({ comunidade }) =>
         <button
           onClick={handleRefresh}
           disabled={loading}
-          className="flex items-center gap-1.5 px-3 py-1.5 bg-zinc-900/60 border border-white/5 rounded-lg text-zinc-400 text-[9px] font-black uppercase tracking-wider active:scale-95 transition-all disabled:opacity-40"
+          className="flex items-center gap-1.5 px-3 py-1.5 bg-zinc-900/60 border border-white/5 rounded-lg text-zinc-400 text-[0.5625rem] font-black uppercase tracking-wider active:scale-95 transition-all disabled:opacity-40"
         >
-          <RefreshCw size={11} className={loading ? 'animate-spin' : ''} /> Atualizar
+          <RefreshCw size="0.6875rem" className={loading ? 'animate-spin' : ''} /> Atualizar
         </button>
       </div>
 
@@ -101,7 +101,7 @@ export const LogsTab: React.FC<{ comunidade: Comunidade }> = ({ comunidade }) =>
                   <span className="text-zinc-400">{humanized}</span>
                 )}
               </p>
-              <p className="text-zinc-400 text-[9px]">
+              <p className="text-zinc-400 text-[0.5625rem]">
                 {dateLabel} · {timeLabel}
               </p>
             </div>
@@ -110,7 +110,7 @@ export const LogsTab: React.FC<{ comunidade: Comunidade }> = ({ comunidade }) =>
       })}
 
       {allLogs.length > 50 && (
-        <p className="text-zinc-700 text-[9px] text-center pt-3">Mostrando 50 de {allLogs.length} logs</p>
+        <p className="text-zinc-700 text-[0.5625rem] text-center pt-3">Mostrando 50 de {allLogs.length} logs</p>
       )}
     </div>
   );

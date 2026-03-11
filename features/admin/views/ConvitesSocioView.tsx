@@ -65,13 +65,13 @@ const ModalRecusa: React.FC<{
         <div className="px-6 pt-2 flex gap-3" style={{ paddingBottom: '1.5rem' }}>
           <button
             onClick={onCancelar}
-            className="flex-1 py-4 bg-zinc-900 border border-white/10 text-zinc-400 font-black text-[10px] uppercase tracking-widest rounded-xl active:scale-95 transition-all"
+            className="flex-1 py-4 bg-zinc-900 border border-white/10 text-zinc-400 font-black text-[0.625rem] uppercase tracking-widest rounded-xl active:scale-95 transition-all"
           >
             Cancelar
           </button>
           <button
             onClick={() => onConfirmar(motivo.trim())}
-            className="flex-1 py-4 bg-red-500 text-white font-bold text-[10px] uppercase tracking-widest rounded-xl active:scale-95 transition-all"
+            className="flex-1 py-4 bg-red-500 text-white font-bold text-[0.625rem] uppercase tracking-widest rounded-xl active:scale-95 transition-all"
           >
             Confirmar Recusa
           </button>
@@ -131,7 +131,7 @@ const ModalContraProposta: React.FC<{
 
           {/* Split */}
           <div>
-            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">Split da Receita</p>
+            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2">Split da Receita</p>
             <VantaSlider min={10} max={90} value={splitSocio} onChange={setSplitSocio} className="w-full" />
             <div className="flex justify-between mt-1">
               <span className="text-emerald-400 text-xs font-bold">Sócio: {splitSocio}%</span>
@@ -141,7 +141,9 @@ const ModalContraProposta: React.FC<{
 
           {/* Permissões */}
           <div>
-            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">Permissões do Produtor</p>
+            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2">
+              Permissões do Produtor
+            </p>
             <div className="space-y-1.5">
               {PERMISSOES_DISPONIVEIS.map(p => (
                 <button
@@ -156,7 +158,7 @@ const ModalContraProposta: React.FC<{
                       permissoes.includes(p) ? 'border-purple-400 bg-purple-400' : 'border-zinc-600'
                     }`}
                   >
-                    {permissoes.includes(p) && <Check size={8} className="text-black" strokeWidth={3} />}
+                    {permissoes.includes(p) && <Check size="0.5rem" className="text-black" strokeWidth={3} />}
                   </div>
                   <span className="text-zinc-300 text-xs">{p.replace(/_/g, ' ')}</span>
                 </button>
@@ -166,7 +168,7 @@ const ModalContraProposta: React.FC<{
 
           {/* Mensagem */}
           <div>
-            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">Mensagem (opcional)</p>
+            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2">Mensagem (opcional)</p>
             <textarea
               value={mensagem}
               onChange={e => setMensagem(e.target.value)}
@@ -180,7 +182,7 @@ const ModalContraProposta: React.FC<{
         <div className="px-6 pt-3 flex gap-3 shrink-0" style={{ paddingBottom: '1.5rem' }}>
           <button
             onClick={onCancelar}
-            className="flex-1 py-4 bg-zinc-900 border border-white/10 text-zinc-400 font-black text-[10px] uppercase tracking-widest rounded-xl active:scale-95 transition-all"
+            className="flex-1 py-4 bg-zinc-900 border border-white/10 text-zinc-400 font-black text-[0.625rem] uppercase tracking-widest rounded-xl active:scale-95 transition-all"
           >
             Cancelar
           </button>
@@ -193,7 +195,7 @@ const ModalContraProposta: React.FC<{
                 mensagem: mensagem.trim() || undefined,
               })
             }
-            className="flex-1 py-4 bg-cyan-500 text-white font-bold text-[10px] uppercase tracking-widest rounded-xl active:scale-95 transition-all"
+            className="flex-1 py-4 bg-cyan-500 text-white font-bold text-[0.625rem] uppercase tracking-widest rounded-xl active:scale-95 transition-all"
           >
             Enviar Proposta
           </button>
@@ -216,7 +218,7 @@ const SectionBlock: React.FC<{
   >
     <div className="flex items-center gap-2">
       {icon}
-      <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest">{title}</p>
+      <p className="text-[0.5625rem] text-zinc-400 font-black uppercase tracking-widest">{title}</p>
     </div>
     {children}
   </div>
@@ -282,7 +284,7 @@ const ConviteDetalheView: React.FC<{
           <img loading="lazy" src={evento.foto} alt={evento.nome} className="w-full h-full object-cover" />
         ) : (
           <div className="w-full h-full bg-zinc-900 flex items-center justify-center">
-            <Image size={32} className="text-zinc-800" />
+            <Image size="2rem" className="text-zinc-800" />
           </div>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/30 to-transparent" />
@@ -291,21 +293,21 @@ const ConviteDetalheView: React.FC<{
           onClick={onBack}
           className="absolute top-8 left-4 w-10 h-10 bg-black/60 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
         >
-          <ArrowLeft size={18} className="text-white" />
+          <ArrowLeft size="1.125rem" className="text-white" />
         </button>
         <div className="absolute bottom-4 left-5 right-5">
           <div className="flex items-center gap-2 mb-2">
-            <span className="text-[7px] font-black uppercase tracking-[0.2em] text-amber-400 bg-amber-400/15 border border-amber-400/20 px-2.5 py-1 rounded-full inline-block">
+            <span className="text-[0.4375rem] font-black uppercase tracking-[0.2em] text-amber-400 bg-amber-400/15 border border-amber-400/20 px-2.5 py-1 rounded-full inline-block">
               Convite Pendente
             </span>
             {(evento.rodadaNegociacao ?? 1) > 1 && (
-              <span className="text-[7px] font-black uppercase tracking-[0.2em] text-cyan-400 bg-cyan-400/15 border border-cyan-400/20 px-2.5 py-1 rounded-full inline-block">
+              <span className="text-[0.4375rem] font-black uppercase tracking-[0.2em] text-cyan-400 bg-cyan-400/15 border border-cyan-400/20 px-2.5 py-1 rounded-full inline-block">
                 Rodada {evento.rodadaNegociacao}/3
               </span>
             )}
           </div>
           <p className="text-white font-bold text-xl leading-tight truncate">{evento.nome}</p>
-          <p className="text-zinc-400 text-[10px] mt-1 truncate">
+          <p className="text-zinc-400 text-[0.625rem] mt-1 truncate">
             {evento.comunidade.nome} · {evento.cidade}
           </p>
         </div>
@@ -313,28 +315,28 @@ const ConviteDetalheView: React.FC<{
 
       <div className="flex-1 overflow-y-auto no-scrollbar p-5 space-y-3 max-w-3xl mx-auto w-full">
         {/* Info do Evento */}
-        <SectionBlock icon={<Mail size={14} className="text-amber-400" />} title="Informacoes do Evento">
+        <SectionBlock icon={<Mail size="0.875rem" className="text-amber-400" />} title="Informacoes do Evento">
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1">Data / Hora</p>
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1">Data / Hora</p>
               <p className="text-white text-xs font-bold leading-tight">{formatDateTime(evento.dataInicio)}</p>
             </div>
             <div>
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1">Local</p>
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1">Local</p>
               <p className="text-white text-xs font-bold truncate">{evento.local}</p>
             </div>
             <div>
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1">Produtor</p>
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1">Produtor</p>
               <p className="text-white text-xs font-bold truncate">{evento.criadorNome ?? '—'}</p>
             </div>
             <div>
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1">Formato</p>
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1">Formato</p>
               <p className="text-white text-xs font-bold truncate">{evento.formato || evento.categoria || '—'}</p>
             </div>
           </div>
           {evento.descricao && (
             <div>
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1">Descricao</p>
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1">Descricao</p>
               <p className="text-zinc-400 text-xs leading-relaxed line-clamp-4">{evento.descricao}</p>
             </div>
           )}
@@ -342,19 +344,19 @@ const ConviteDetalheView: React.FC<{
 
         {/* Proposta Financeira */}
         <SectionBlock
-          icon={<Percent size={14} className="text-emerald-400" />}
+          icon={<Percent size="0.875rem" className="text-emerald-400" />}
           title="Proposta Financeira"
           borderColor="rgba(16,185,129,0.15)"
         >
           <div className="grid grid-cols-2 gap-3">
             <div className="bg-emerald-500/5 border border-emerald-500/10 rounded-xl px-4 py-3 text-center">
-              <p className="text-[8px] text-emerald-400/60 font-black uppercase tracking-widest mb-1">
+              <p className="text-[0.5rem] text-emerald-400/60 font-black uppercase tracking-widest mb-1">
                 Sua Parte (Socio)
               </p>
               <p className="text-emerald-400 text-2xl font-black">{evento.splitSocio ?? 70}%</p>
             </div>
             <div className="bg-zinc-900/80 border border-white/5 rounded-xl px-4 py-3 text-center">
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1">Produtor</p>
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1">Produtor</p>
               <p className="text-zinc-400 text-2xl font-black">{evento.splitProdutor ?? 30}%</p>
             </div>
           </div>
@@ -364,10 +366,10 @@ const ConviteDetalheView: React.FC<{
               const suaParte = faturEstimado * ((evento.splitSocio ?? 70) / 100);
               return (
                 <div className="bg-zinc-950/50 rounded-xl px-3 py-2.5">
-                  <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1">
+                  <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1">
                     Estimativa (lotacao max.)
                   </p>
-                  <p className="text-zinc-300 text-[10px] leading-relaxed">
+                  <p className="text-zinc-300 text-[0.625rem] leading-relaxed">
                     Faturamento bruto:{' '}
                     <span className="text-white font-bold">
                       R$ {faturEstimado.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
@@ -385,7 +387,7 @@ const ConviteDetalheView: React.FC<{
         {/* Mensagem de negociação */}
         {evento.mensagemNegociacao && (
           <SectionBlock
-            icon={<MessageSquare size={14} className="text-cyan-400" />}
+            icon={<MessageSquare size="0.875rem" className="text-cyan-400" />}
             title="Última Mensagem"
             borderColor="rgba(6,182,212,0.15)"
           >
@@ -396,7 +398,7 @@ const ConviteDetalheView: React.FC<{
         {/* Permissoes oferecidas ao Produtor */}
         {evento.permissoesProdutor && evento.permissoesProdutor.length > 0 && (
           <SectionBlock
-            icon={<Shield size={14} className="text-purple-400" />}
+            icon={<Shield size="0.875rem" className="text-purple-400" />}
             title="Permissoes do Produtor"
             borderColor="rgba(168,139,250,0.15)"
           >
@@ -406,14 +408,14 @@ const ConviteDetalheView: React.FC<{
                   key={p}
                   className="flex items-center gap-2 bg-purple-500/5 border border-purple-500/10 rounded-xl px-3 py-2"
                 >
-                  <Check size={12} className="text-purple-400 shrink-0" />
+                  <Check size="0.75rem" className="text-purple-400 shrink-0" />
                   <p className="text-zinc-300 text-xs">{p.replace(/_/g, ' ')}</p>
                 </div>
               ))}
             </div>
             <div className="flex items-start gap-2 bg-zinc-950/50 rounded-xl px-3 py-2">
-              <AlertTriangle size={11} className="text-zinc-400 shrink-0 mt-0.5" />
-              <p className="text-zinc-400 text-[9px] leading-relaxed">
+              <AlertTriangle size="0.6875rem" className="text-zinc-400 shrink-0 mt-0.5" />
+              <p className="text-zinc-400 text-[0.5625rem] leading-relaxed">
                 O produtor tera acesso a esses modulos no evento. Voce pode ajustar depois.
               </p>
             </div>
@@ -422,12 +424,12 @@ const ConviteDetalheView: React.FC<{
 
         {/* Ingressos */}
         {evento.lotes.length > 0 && (
-          <SectionBlock icon={<Banknote size={14} className="text-blue-400" />} title="Ingressos Configurados">
+          <SectionBlock icon={<Banknote size="0.875rem" className="text-blue-400" />} title="Ingressos Configurados">
             {evento.lotes.map(lote => (
               <div key={lote.id} className="space-y-1.5">
                 <div className="flex items-center justify-between">
                   <p className="text-zinc-300 text-xs font-bold truncate">{lote.nome}</p>
-                  <span className="text-zinc-400 text-[9px]">{lote.limitTotal} ingressos</span>
+                  <span className="text-zinc-400 text-[0.5625rem]">{lote.limitTotal} ingressos</span>
                 </div>
                 <div className="bg-zinc-950/50 rounded-xl overflow-hidden">
                   {lote.variacoes.map(v => (
@@ -456,25 +458,25 @@ const ConviteDetalheView: React.FC<{
         <button
           onClick={() => setShowRecusa(true)}
           disabled={aceitando || enviandoProposta}
-          className="py-4 px-3 bg-zinc-900 border border-red-500/20 text-red-400 font-bold text-[10px] uppercase tracking-widest rounded-2xl flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all disabled:opacity-40"
+          className="py-4 px-3 bg-zinc-900 border border-red-500/20 text-red-400 font-bold text-[0.625rem] uppercase tracking-widest rounded-2xl flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all disabled:opacity-40"
         >
-          <X size={14} /> Recusar
+          <X size="0.875rem" /> Recusar
         </button>
         {podeContrapor && (
           <button
             onClick={() => setShowContraProposta(true)}
             disabled={aceitando || enviandoProposta}
-            className="flex-1 py-4 bg-zinc-900 border border-cyan-500/20 text-cyan-400 font-bold text-[10px] uppercase tracking-widest rounded-2xl flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all disabled:opacity-40"
+            className="flex-1 py-4 bg-zinc-900 border border-cyan-500/20 text-cyan-400 font-bold text-[0.625rem] uppercase tracking-widest rounded-2xl flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all disabled:opacity-40"
           >
-            <Repeat size={14} /> Contra-proposta
+            <Repeat size="0.875rem" /> Contra-proposta
           </button>
         )}
         <button
           onClick={handleAceitar}
           disabled={aceitando || enviandoProposta}
-          className="flex-1 py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-widest rounded-2xl flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all disabled:opacity-60"
+          className="flex-1 py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-widest rounded-2xl flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all disabled:opacity-60"
         >
-          {aceitando ? <Clock size={14} className="animate-spin" /> : <Check size={14} />}
+          {aceitando ? <Clock size="0.875rem" className="animate-spin" /> : <Check size="0.875rem" />}
           {aceitando ? 'Aceitando...' : 'Aceitar'}
         </button>
       </div>
@@ -551,7 +553,7 @@ export const ConvitesSocioView: React.FC<{
                 Convites
               </h1>
               {convites.length > 0 && (
-                <span className="bg-amber-500 text-black text-[9px] font-black px-2.5 py-1 rounded-full">
+                <span className="bg-amber-500 text-black text-[0.5625rem] font-black px-2.5 py-1 rounded-full">
                   {convites.length}
                 </span>
               )}
@@ -562,7 +564,7 @@ export const ConvitesSocioView: React.FC<{
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all mt-1"
           >
-            <ArrowLeft size={18} className="text-zinc-400" />
+            <ArrowLeft size="1.125rem" className="text-zinc-400" />
           </button>
         </div>
       </div>
@@ -572,9 +574,9 @@ export const ConvitesSocioView: React.FC<{
         {convites.length === 0 && (
           <div className="flex flex-col items-center py-20 gap-4">
             <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center">
-              <Mail size={28} className="text-zinc-700" />
+              <Mail size="1.75rem" className="text-zinc-700" />
             </div>
-            <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest text-center">
+            <p className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest text-center">
               Nenhum convite pendente.
             </p>
           </div>
@@ -594,24 +596,24 @@ export const ConvitesSocioView: React.FC<{
                 </div>
               ) : (
                 <div className="w-24 shrink-0 bg-zinc-800 flex items-center justify-center aspect-square">
-                  <Mail size={24} className="text-amber-500/40" />
+                  <Mail size="1.5rem" className="text-amber-500/40" />
                 </div>
               )}
               <div className="flex-1 min-w-0 py-4 pr-4">
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-[7px] font-black uppercase tracking-widest text-amber-400 bg-amber-400/15 border border-amber-400/20 px-2 py-0.5 rounded-full">
+                  <span className="text-[0.4375rem] font-black uppercase tracking-widest text-amber-400 bg-amber-400/15 border border-amber-400/20 px-2 py-0.5 rounded-full">
                     Convite
                   </span>
                 </div>
                 <p className="text-white font-bold text-sm leading-tight truncate mb-0.5">{ev.nome}</p>
-                <p className="text-zinc-400 text-[10px] truncate mb-1">
+                <p className="text-zinc-400 text-[0.625rem] truncate mb-1">
                   {ev.criadorNome ?? 'Produtor'} · {ev.comunidade.nome}
                 </p>
-                <p className="text-zinc-700 text-[9px]">{formatDateTime(ev.dataInicio)}</p>
-                <p className="text-emerald-400/80 text-[9px] font-bold mt-1 truncate">{splitLabel}</p>
+                <p className="text-zinc-700 text-[0.5625rem]">{formatDateTime(ev.dataInicio)}</p>
+                <p className="text-emerald-400/80 text-[0.5625rem] font-bold mt-1 truncate">{splitLabel}</p>
               </div>
               <div className="flex items-center pr-3 shrink-0">
-                <ChevronRight size={14} className="text-zinc-700" />
+                <ChevronRight size="0.875rem" className="text-zinc-700" />
               </div>
             </button>
           );

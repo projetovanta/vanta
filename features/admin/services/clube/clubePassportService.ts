@@ -20,7 +20,7 @@ export function isPassportAprovado(userId: string, comunidadeId: string): boolea
   );
   if (!passport) return false;
   const membroOrder = TIER_ORDER[membro.tier] ?? 0;
-  const minOrder = TIER_ORDER[(comunidade.tierMinimoMaisVanta ?? 'desconto') as TierMaisVanta] ?? 1;
+  const minOrder = TIER_ORDER[(comunidade.tierMinimoMaisVanta ?? 'lista') as TierMaisVanta] ?? 1;
   return membroOrder >= minOrder;
 }
 
@@ -43,11 +43,30 @@ export function getCidadesDisponiveis(): string[] {
 }
 
 export async function solicitarPassport(userId: string, cidade: string): Promise<PassportAprovacao> {
-  const row = { user_id: userId, cidade, status: 'PENDENTE', solicitado_em: tsBR() };
+  // V3: membro aprovado no clube ganha acesso automático à cidade (sem curadoria)
+  const membro = _membros.get(userId);
+  const autoAprovar = membro?.ativo === true;
+  const now = tsBR();
+  const row = {
+    user_id: userId,
+    cidade,
+    status: autoAprovar ? 'APROVADO' : 'PENDENTE',
+    solicitado_em: now,
+    ...(autoAprovar ? { resolvido_em: now } : {}),
+  };
   const { data, error } = await supabase.from('passport_aprovacoes').insert(row).select().single();
   if (error) throw error;
   const p = rowToPassport(data);
   _passports.push(p);
+  // Atualizar cidades_ativas no membro
+  if (autoAprovar) {
+    const cidades = membro?.cidadesAtivas ?? [];
+    if (!cidades.includes(cidade)) {
+      const novasCidades = [...cidades, cidade];
+      await supabase.from('membros_clube').update({ cidades_ativas: novasCidades }).eq('user_id', userId);
+      if (membro) membro.cidadesAtivas = novasCidades;
+    }
+  }
   bump();
   return p;
 }
@@ -92,6 +111,16 @@ export async function aprovarPassport(
       corpo: `Seu passaporte para ${cidadeLabel} foi aprovado. Você já pode participar de eventos exclusivos.`,
       data: { tipo: 'PASSPORT_APROVADO' },
     }).catch(() => {});
+    // Atualizar cidades_ativas
+    if (p.cidade) {
+      const membro = _membros.get(p.userId);
+      const cidades = membro?.cidadesAtivas ?? [];
+      if (!cidades.includes(p.cidade)) {
+        const novasCidades = [...cidades, p.cidade];
+        await supabase.from('membros_clube').update({ cidades_ativas: novasCidades }).eq('user_id', p.userId);
+        if (membro) membro.cidadesAtivas = novasCidades;
+      }
+    }
   }
   bump();
 }

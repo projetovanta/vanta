@@ -9,11 +9,11 @@ export const ProximosEventosTab: React.FC<{ comunidadeId: string }> = ({ comunid
   if (eventos.length === 0) {
     return (
       <div className="flex flex-col items-center py-16 gap-4">
-        <Calendar size={32} className="text-zinc-800" />
-        <p className="text-zinc-700 text-[10px] font-black uppercase tracking-widest text-center">
+        <Calendar size="2rem" className="text-zinc-800" />
+        <p className="text-zinc-700 text-[0.625rem] font-black uppercase tracking-widest text-center">
           Nenhum evento futuro
         </p>
-        <p className="text-zinc-800 text-[9px] italic text-center">Crie eventos na aba Criar.</p>
+        <p className="text-zinc-800 text-[0.5625rem] italic text-center">Crie eventos na aba Criar.</p>
       </div>
     );
   }
@@ -25,7 +25,7 @@ export const ProximosEventosTab: React.FC<{ comunidadeId: string }> = ({ comunid
         return (
           <div
             key={e.id}
-            className="relative rounded-2xl overflow-hidden bg-zinc-900/40 border border-white/5 min-h-[88px]"
+            className="relative rounded-2xl overflow-hidden bg-zinc-900/40 border border-white/5 min-h-[5.5rem]"
           >
             {e.foto && (
               <>
@@ -40,14 +40,14 @@ export const ProximosEventosTab: React.FC<{ comunidadeId: string }> = ({ comunid
             )}
             <div className="relative flex items-center justify-between px-5 py-5">
               <div className="flex-1 min-w-0 mr-3">
-                <p className="text-[#FFD300] text-[8px] font-black uppercase tracking-[0.15em] mb-1">{dataLabel}</p>
+                <p className="text-[#FFD300] text-[0.5rem] font-black uppercase tracking-[0.15em] mb-1">{dataLabel}</p>
                 <p className="text-white font-bold text-sm leading-tight truncate">{e.nome}</p>
-                <p className="text-zinc-400 text-[10px] mt-0.5">
+                <p className="text-zinc-400 text-[0.625rem] mt-0.5">
                   {e.lotes.length} lote{e.lotes.length !== 1 ? 's' : ''} · {e.equipe.length} na equipe
                 </p>
               </div>
               <div className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center shrink-0">
-                <ChevronRight size={14} className="text-white" />
+                <ChevronRight size="0.875rem" className="text-white" />
               </div>
             </div>
           </div>

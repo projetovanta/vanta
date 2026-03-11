@@ -64,7 +64,7 @@ export const SolicitacoesParceriaView: React.FC<{
             <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic truncate">
               {detalhe.nome}
             </h1>
-            <p className="text-zinc-400 text-[10px] mt-1">
+            <p className="text-zinc-400 text-[0.625rem] mt-1">
               {detalhe.userName ?? 'Usuário'} · {new Date(detalhe.criadoEm).toLocaleDateString('pt-BR')}
             </p>
           </div>
@@ -72,7 +72,7 @@ export const SolicitacoesParceriaView: React.FC<{
             onClick={() => setDetalhe(null)}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all mt-1"
           >
-            <ArrowLeft size={18} className="text-zinc-400" />
+            <ArrowLeft size="1.125rem" className="text-zinc-400" />
           </button>
         </div>
 
@@ -100,7 +100,7 @@ export const SolicitacoesParceriaView: React.FC<{
           {/* Presença digital */}
           <Section title="Presença Digital">
             <div className="flex items-center gap-2">
-              <Instagram size={14} className="text-pink-400" />
+              <Instagram size="0.875rem" className="text-pink-400" />
               <a
                 href={`https://instagram.com/${detalhe.instagram.replace('@', '')}`}
                 target="_blank"
@@ -112,7 +112,7 @@ export const SolicitacoesParceriaView: React.FC<{
             </div>
             {detalhe.site && (
               <div className="flex items-center gap-2">
-                <ExternalLink size={14} className="text-blue-400" />
+                <ExternalLink size="0.875rem" className="text-blue-400" />
                 <a
                   href={detalhe.site}
                   target="_blank"
@@ -125,7 +125,7 @@ export const SolicitacoesParceriaView: React.FC<{
             )}
             {detalhe.googleMaps && (
               <div className="flex items-center gap-2">
-                <MapPin size={14} className="text-emerald-400" />
+                <MapPin size="0.875rem" className="text-emerald-400" />
                 <a
                   href={detalhe.googleMaps}
                   target="_blank"
@@ -151,7 +151,7 @@ export const SolicitacoesParceriaView: React.FC<{
               {detalhe.intencoes.map(int => (
                 <span
                   key={int}
-                  className="text-[9px] font-bold uppercase tracking-widest px-2.5 py-1 bg-[#FFD300]/10 text-[#FFD300] rounded-full border border-[#FFD300]/20"
+                  className="text-[0.5625rem] font-bold uppercase tracking-widest px-2.5 py-1 bg-[#FFD300]/10 text-[#FFD300] rounded-full border border-[#FFD300]/20"
                 >
                   {int.replace(/_/g, ' ')}
                 </span>
@@ -174,12 +174,12 @@ export const SolicitacoesParceriaView: React.FC<{
                 <img src={detalhe.userFoto} alt="" className="w-10 h-10 rounded-full object-cover" />
               ) : (
                 <div className="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center">
-                  <Users size={16} className="text-zinc-400" />
+                  <Users size="1rem" className="text-zinc-400" />
                 </div>
               )}
               <div>
                 <p className="text-white text-sm font-bold">{detalhe.userName ?? '—'}</p>
-                {detalhe.userInstagram && <p className="text-zinc-400 text-[10px]">{detalhe.userInstagram}</p>}
+                {detalhe.userInstagram && <p className="text-zinc-400 text-[0.625rem]">{detalhe.userInstagram}</p>}
               </div>
             </div>
           </Section>
@@ -187,7 +187,7 @@ export const SolicitacoesParceriaView: React.FC<{
           {/* Rejeição inline */}
           {detalhe.status === 'PENDENTE' && (
             <div className="bg-zinc-900/50 border border-white/5 rounded-2xl p-4 space-y-3">
-              <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest">
+              <p className="text-[0.5625rem] text-zinc-400 font-black uppercase tracking-widest">
                 Motivo da rejeição (se aplicável)
               </p>
               <textarea
@@ -210,18 +210,18 @@ export const SolicitacoesParceriaView: React.FC<{
             <button
               onClick={handleRejeitar}
               disabled={rejeitando}
-              className="flex-1 py-4 bg-zinc-900 border border-red-500/20 text-red-400 font-bold text-[10px] uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all disabled:opacity-40"
+              className="flex-1 py-4 bg-zinc-900 border border-red-500/20 text-red-400 font-bold text-[0.625rem] uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all disabled:opacity-40"
             >
-              <X size={14} /> Rejeitar
+              <X size="0.875rem" /> Rejeitar
             </button>
             <button
               onClick={() => {
                 // TODO: abrir fluxo de criar comunidade pré-preenchida
                 globalToast('info', 'Funcionalidade em desenvolvimento: criar comunidade a partir da solicitação.');
               }}
-              className="flex-1 py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all"
+              className="flex-1 py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all"
             >
-              <Check size={14} /> Aprovar e Criar
+              <Check size="0.875rem" /> Aprovar e Criar
             </button>
           </div>
         )}
@@ -252,7 +252,7 @@ export const SolicitacoesParceriaView: React.FC<{
           onClick={onBack}
           className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all mt-1"
         >
-          <ArrowLeft size={18} className="text-zinc-400" />
+          <ArrowLeft size="1.125rem" className="text-zinc-400" />
         </button>
       </div>
 
@@ -266,7 +266,7 @@ export const SolicitacoesParceriaView: React.FC<{
           <button
             key={t.id}
             onClick={() => setAba(t.id)}
-            className={`flex-1 py-3 text-center text-[10px] font-black uppercase tracking-widest transition-all ${
+            className={`flex-1 py-3 text-center text-[0.625rem] font-black uppercase tracking-widest transition-all ${
               aba === t.id
                 ? 'text-[#FFD300] border-b-2 border-[#FFD300]'
                 : 'text-zinc-400 border-b-2 border-transparent'
@@ -280,14 +280,14 @@ export const SolicitacoesParceriaView: React.FC<{
       <div className="flex-1 overflow-y-auto no-scrollbar p-5 space-y-3 max-w-lg mx-auto w-full">
         {loading ? (
           <div className="flex items-center justify-center py-16">
-            <Clock size={24} className="text-zinc-700 animate-spin" />
+            <Clock size="1.5rem" className="text-zinc-700 animate-spin" />
           </div>
         ) : solicitacoes.length === 0 ? (
           <div className="flex flex-col items-center py-16 gap-4">
             <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center">
-              <Building2 size={28} className="text-zinc-700" />
+              <Building2 size="1.75rem" className="text-zinc-700" />
             </div>
-            <p className="text-zinc-700 text-[10px] font-black uppercase tracking-widest">
+            <p className="text-zinc-700 text-[0.625rem] font-black uppercase tracking-widest">
               Nenhuma solicitação {aba === 'PENDENTE' ? 'pendente' : aba === 'APROVADA' ? 'aprovada' : 'rejeitada'}
             </p>
           </div>
@@ -300,33 +300,33 @@ export const SolicitacoesParceriaView: React.FC<{
             >
               <div className="w-12 h-12 rounded-xl bg-zinc-900 border border-white/5 flex items-center justify-center shrink-0">
                 {s.tipo === 'PRODUTORA' ? (
-                  <Zap size={20} className="text-purple-400" />
+                  <Zap size="1.25rem" className="text-purple-400" />
                 ) : (
-                  <Building2 size={20} className="text-blue-400" />
+                  <Building2 size="1.25rem" className="text-blue-400" />
                 )}
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-white font-bold text-sm truncate">{s.nome}</p>
-                <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mt-0.5">
+                <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest mt-0.5">
                   {s.cidade} · {s.categoria}
                 </p>
-                <p className="text-zinc-700 text-[9px] mt-0.5">
+                <p className="text-zinc-700 text-[0.5625rem] mt-0.5">
                   {s.userName ?? 'Usuário'} · {new Date(s.criadoEm).toLocaleDateString('pt-BR')}
                 </p>
               </div>
               <div className="shrink-0">
                 {s.status === 'PENDENTE' && (
-                  <span className="text-[7px] font-black uppercase tracking-widest px-2 py-1 bg-amber-500/15 text-amber-400 rounded-full border border-amber-500/20">
+                  <span className="text-[0.4375rem] font-black uppercase tracking-widest px-2 py-1 bg-amber-500/15 text-amber-400 rounded-full border border-amber-500/20">
                     Pendente
                   </span>
                 )}
                 {s.status === 'APROVADA' && (
-                  <span className="text-[7px] font-black uppercase tracking-widest px-2 py-1 bg-emerald-500/15 text-emerald-400 rounded-full border border-emerald-500/20">
+                  <span className="text-[0.4375rem] font-black uppercase tracking-widest px-2 py-1 bg-emerald-500/15 text-emerald-400 rounded-full border border-emerald-500/20">
                     Aprovada
                   </span>
                 )}
                 {s.status === 'REJEITADA' && (
-                  <span className="text-[7px] font-black uppercase tracking-widest px-2 py-1 bg-red-500/15 text-red-400 rounded-full border border-red-500/20">
+                  <span className="text-[0.4375rem] font-black uppercase tracking-widest px-2 py-1 bg-red-500/15 text-red-400 rounded-full border border-red-500/20">
                     Rejeitada
                   </span>
                 )}
@@ -342,14 +342,14 @@ export const SolicitacoesParceriaView: React.FC<{
 // ── Helpers ──────────────────────────────────────────────────────────────────
 const Section: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
   <div className="bg-zinc-900/50 border border-white/5 rounded-2xl p-4 space-y-2.5">
-    <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest">{title}</p>
+    <p className="text-[0.5625rem] text-zinc-400 font-black uppercase tracking-widest">{title}</p>
     {children}
   </div>
 );
 
 const InfoRow: React.FC<{ label: string; value: string }> = ({ label, value }) => (
   <div className="flex items-start gap-2">
-    <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest w-24 shrink-0 pt-0.5">{label}</p>
+    <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest w-24 shrink-0 pt-0.5">{label}</p>
     <p className="text-zinc-300 text-xs">{value}</p>
   </div>
 );

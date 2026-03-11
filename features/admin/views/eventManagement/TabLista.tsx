@@ -171,37 +171,39 @@ export const TabLista: React.FC<{
         <div className="flex items-center p-4 bg-zinc-900/80 border border-white/5 rounded-2xl backdrop-blur-sm gap-3">
           <div className="text-center flex-1">
             <p className="text-white font-black text-2xl leading-none">{filtrados.length}</p>
-            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mt-0.5">na lista</p>
+            <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest mt-0.5">na lista</p>
           </div>
           <div className="w-px h-8 bg-white/5 shrink-0" />
           <div className="text-center flex-1">
             <p className="text-emerald-400 font-black text-2xl leading-none">{dentroCount}</p>
-            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mt-0.5">dentro</p>
+            <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest mt-0.5">dentro</p>
           </div>
           <div className="w-px h-8 bg-white/5 shrink-0" />
           <div className="text-center flex-1">
             <p className="text-zinc-400 font-black text-2xl leading-none">{filtrados.length - dentroCount}</p>
-            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mt-0.5">aguardando</p>
+            <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest mt-0.5">aguardando</p>
           </div>
         </div>
         {/* Badge de conectividade */}
         <div className="flex items-center justify-center gap-1.5 mt-2">
           {syncing ? (
             <>
-              <RefreshCw size={9} className="text-blue-400 animate-spin shrink-0" />
-              <span className="text-blue-400 text-[8px] font-black uppercase tracking-widest">
+              <RefreshCw size="0.5625rem" className="text-blue-400 animate-spin shrink-0" />
+              <span className="text-blue-400 text-[0.5rem] font-black uppercase tracking-widest">
                 Sincronizando {pendingSyncCount}...
               </span>
             </>
           ) : isOnline ? (
             <>
               <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
-              <span className="text-emerald-500 text-[8px] font-black uppercase tracking-widest">Realtime ativo</span>
+              <span className="text-emerald-500 text-[0.5rem] font-black uppercase tracking-widest">
+                Realtime ativo
+              </span>
             </>
           ) : (
             <>
-              <WifiOff size={9} className="text-amber-400 shrink-0" />
-              <span className="text-amber-400 text-[8px] font-black uppercase tracking-widest">
+              <WifiOff size="0.5625rem" className="text-amber-400 shrink-0" />
+              <span className="text-amber-400 text-[0.5rem] font-black uppercase tracking-widest">
                 Offline{pendingSyncCount > 0 ? ` · ${pendingSyncCount} pendente${pendingSyncCount > 1 ? 's' : ''}` : ''}
               </span>
             </>
@@ -211,7 +213,10 @@ export const TabLista: React.FC<{
 
       {/* Search Bar */}
       <div className="relative">
-        <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none" />
+        <Search
+          size="0.875rem"
+          className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none"
+        />
         <input
           value={search}
           onChange={e => setSearch(e.target.value)}
@@ -223,14 +228,14 @@ export const TabLista: React.FC<{
             onClick={() => setSearch('')}
             className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 active:text-white transition-all"
           >
-            <X size={13} />
+            <X size="0.8125rem" />
           </button>
         )}
       </div>
 
       {/* Formulário de inserção */}
       <div className="p-4 bg-zinc-900/40 border border-white/5 rounded-2xl space-y-3">
-        <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">Inserir convidado</p>
+        <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest">Inserir convidado</p>
 
         {/* Pills de categoria */}
         <div className="flex gap-1.5 flex-wrap">
@@ -241,7 +246,7 @@ export const TabLista: React.FC<{
               <button
                 key={r.id}
                 onClick={() => setRegraId(r.id)}
-                className={`flex items-center gap-1 px-3 py-1.5 rounded-xl border text-[9px] font-black uppercase tracking-wide transition-all ${
+                className={`flex items-center gap-1 px-3 py-1.5 rounded-xl border text-[0.5625rem] font-black uppercase tracking-wide transition-all ${
                   ativo
                     ? 'bg-[#FFD300] text-black border-transparent'
                     : 'bg-zinc-900 text-zinc-400 border-white/5 active:bg-zinc-800'
@@ -249,11 +254,13 @@ export const TabLista: React.FC<{
               >
                 {r.label}
                 {r.valor && r.valor > 0 && (
-                  <span className={`text-[7px] font-black ${ativo ? 'text-black/50' : 'text-amber-500/70'}`}>
+                  <span className={`text-[0.4375rem] font-black ${ativo ? 'text-black/50' : 'text-amber-500/70'}`}>
                     R${r.valor}
                   </span>
                 )}
-                <span className={`text-[8px] font-black ${ativo ? 'text-black/60' : 'text-zinc-400'}`}>·{saldo}</span>
+                <span className={`text-[0.5rem] font-black ${ativo ? 'text-black/60' : 'text-zinc-400'}`}>
+                  ·{saldo}
+                </span>
               </button>
             );
           })}
@@ -276,21 +283,21 @@ export const TabLista: React.FC<{
           />
         </div>
 
-        {erro && <p className="text-red-400 text-[10px] font-black uppercase tracking-widest">{erro}</p>}
+        {erro && <p className="text-red-400 text-[0.625rem] font-black uppercase tracking-widest">{erro}</p>}
 
         <button
           onClick={handleAdicionar}
-          className="w-full py-3 bg-[#FFD300] text-black rounded-xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-1.5 active:scale-95 transition-all"
+          className="w-full py-3 bg-[#FFD300] text-black rounded-xl text-[0.625rem] font-black uppercase tracking-widest flex items-center justify-center gap-1.5 active:scale-95 transition-all"
         >
-          <Plus size={12} /> Adicionar
+          <Plus size="0.75rem" /> Adicionar
         </button>
       </div>
 
       {/* Barra de resumo (só promoter) */}
       {!isSocio && meusTotais.length > 0 && (
         <div className="flex items-center justify-between p-3.5 bg-zinc-900/40 border border-white/5 rounded-xl">
-          <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">Meus Convidados</p>
-          <p className="text-white text-[10px] font-black">
+          <p className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest">Meus Convidados</p>
+          <p className="text-white text-[0.625rem] font-black">
             <span className="text-emerald-400">{meusEntrar}</span>
             <span className="text-zinc-400"> de </span>
             <span>{meusTotais.length}</span>
@@ -302,8 +309,8 @@ export const TabLista: React.FC<{
       {/* Lista — ordem alfabética */}
       {filtrados.length === 0 && (
         <div className="flex flex-col items-center py-10 gap-4">
-          <Users size={32} className="text-zinc-800" />
-          <p className="text-zinc-700 text-[10px] font-black uppercase tracking-widest text-center">
+          <Users size="2rem" className="text-zinc-800" />
+          <p className="text-zinc-700 text-[0.625rem] font-black uppercase tracking-widest text-center">
             {search
               ? 'Nenhum resultado para a busca'
               : isSocio
@@ -343,11 +350,11 @@ export const TabLista: React.FC<{
                 </p>
                 <div className="flex items-center gap-1.5 flex-wrap">
                   {/* Inserido por */}
-                  <p className="text-zinc-400 text-[9px] truncate">via {c.inseridoPorNome}</p>
+                  <p className="text-zinc-400 text-[0.5625rem] truncate">via {c.inseridoPorNome}</p>
                   {/* Variação / regra */}
                   <span
                     style={cor ? { backgroundColor: cor + '15', borderColor: cor + '30', color: cor } : {}}
-                    className={`text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full border ${
+                    className={`text-[0.5rem] font-black uppercase tracking-widest px-2 py-0.5 rounded-full border ${
                       cor ? '' : 'bg-zinc-900 text-zinc-400 border-white/5'
                     }`}
                   >
@@ -355,7 +362,7 @@ export const TabLista: React.FC<{
                   </span>
                   {/* Efeito Abóbora — regra paga ou com horário expirado, sem check-in */}
                   {pago && !dentro && (
-                    <span className="text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full border bg-amber-500/10 border-amber-500/20 text-amber-400">
+                    <span className="text-[0.5rem] font-black uppercase tracking-widest px-2 py-0.5 rounded-full border bg-amber-500/10 border-amber-500/20 text-amber-400">
                       {regra?.valor && regra.valor > 0 ? `R$${regra.valor}` : `Expirou ${regra?.horaCorte}`}
                     </span>
                   )}
@@ -366,14 +373,14 @@ export const TabLista: React.FC<{
               {dentro ? (
                 <div className="flex items-center gap-1.5 shrink-0">
                   <div className="w-7 h-7 rounded-full bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center">
-                    <Check size={11} className="text-emerald-400" />
+                    <Check size="0.6875rem" className="text-emerald-400" />
                   </div>
-                  <span className="text-[9px] font-black uppercase tracking-widest text-emerald-500">Dentro</span>
+                  <span className="text-[0.5625rem] font-black uppercase tracking-widest text-emerald-500">Dentro</span>
                 </div>
               ) : (
                 <button
                   onClick={() => handleCheckin(c.id)}
-                  className="shrink-0 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-[9px] font-black uppercase tracking-wider text-zinc-400 hover:bg-[#FFD300]/10 hover:text-[#FFD300] hover:border-[#FFD300]/20 active:scale-95 transition-all"
+                  className="shrink-0 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-[0.5625rem] font-black uppercase tracking-wider text-zinc-400 hover:bg-[#FFD300]/10 hover:text-[#FFD300] hover:border-[#FFD300]/20 active:scale-95 transition-all"
                 >
                   Check-in
                 </button>
@@ -417,13 +424,13 @@ export const TabLista: React.FC<{
                 R${avisoPagamento.valor.toFixed(2).replace('.', ',')}
               </span>
             </p>
-            <p className="text-[9px] text-zinc-500 font-black uppercase tracking-widest">Como vai pagar?</p>
+            <p className="text-[0.5625rem] text-zinc-500 font-black uppercase tracking-widest">Como vai pagar?</p>
             <div className="flex gap-2">
               {(['DINHEIRO', 'CARTAO', 'PIX'] as const).map(forma => (
                 <button
                   key={forma}
                   onClick={() => confirmarPagamento(forma)}
-                  className="flex-1 py-3 bg-[#FFD300]/10 border border-[#FFD300]/30 rounded-xl text-[#FFD300] text-[10px] font-bold uppercase tracking-wider active:scale-95 transition-transform"
+                  className="flex-1 py-3 bg-[#FFD300]/10 border border-[#FFD300]/30 rounded-xl text-[#FFD300] text-[0.625rem] font-bold uppercase tracking-wider active:scale-95 transition-transform"
                 >
                   {forma === 'DINHEIRO' ? 'Dinheiro' : forma === 'CARTAO' ? 'Cartão' : 'Pix'}
                 </button>
@@ -431,7 +438,7 @@ export const TabLista: React.FC<{
             </div>
             <button
               onClick={() => setAvisoPagamento(null)}
-              className="w-full py-2 bg-zinc-800 border border-white/10 rounded-xl text-zinc-400 text-[10px] font-bold uppercase tracking-wider"
+              className="w-full py-2 bg-zinc-800 border border-white/10 rounded-xl text-zinc-400 text-[0.625rem] font-bold uppercase tracking-wider"
             >
               Cancelar
             </button>

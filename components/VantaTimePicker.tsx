@@ -30,7 +30,7 @@ export const VantaTimePicker: React.FC<VantaTimePickerProps> = ({
         className={`flex items-center gap-2 text-left ${className || 'w-full bg-zinc-900/60 border border-white/5 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-[#FFD300]/30'}`}
         style={style}
       >
-        <Clock size={14} className="text-zinc-500 shrink-0" />
+        <Clock size="0.875rem" className="text-zinc-500 shrink-0" />
         <span className={value ? 'text-white' : 'text-zinc-500'}>{value || placeholder}</span>
       </button>
 
@@ -103,7 +103,7 @@ const TimePickerModal: React.FC<TimePickerModalProps> = ({ value, step, onSelect
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-[#FFD300] font-serif italic text-lg">Escolha o Horário</h2>
           <button type="button" onClick={onClose} className="p-1.5 bg-zinc-900 rounded-full text-zinc-400">
-            <X size={16} />
+            <X size="1rem" />
           </button>
         </div>
 
@@ -118,10 +118,10 @@ const TimePickerModal: React.FC<TimePickerModalProps> = ({ value, step, onSelect
         <div className="flex gap-3 mb-4">
           {/* Horas */}
           <div className="flex-1">
-            <p className="text-zinc-500 text-[8px] font-black uppercase tracking-widest text-center mb-1.5">Hora</p>
+            <p className="text-zinc-500 text-[0.5rem] font-black uppercase tracking-widest text-center mb-1.5">Hora</p>
             <div
               ref={hourRef}
-              className="h-[200px] overflow-y-auto no-scrollbar rounded-xl bg-zinc-900/40 border border-white/5"
+              className="h-[12.5rem] overflow-y-auto no-scrollbar rounded-xl bg-zinc-900/40 border border-white/5"
             >
               {hours.map(hr => (
                 <button
@@ -141,10 +141,10 @@ const TimePickerModal: React.FC<TimePickerModalProps> = ({ value, step, onSelect
 
           {/* Minutos */}
           <div className="flex-1">
-            <p className="text-zinc-500 text-[8px] font-black uppercase tracking-widest text-center mb-1.5">Min</p>
+            <p className="text-zinc-500 text-[0.5rem] font-black uppercase tracking-widest text-center mb-1.5">Min</p>
             <div
               ref={minRef}
-              className="h-[200px] overflow-y-auto no-scrollbar rounded-xl bg-zinc-900/40 border border-white/5"
+              className="h-[12.5rem] overflow-y-auto no-scrollbar rounded-xl bg-zinc-900/40 border border-white/5"
             >
               {minutes.map(mn => (
                 <button
@@ -167,7 +167,7 @@ const TimePickerModal: React.FC<TimePickerModalProps> = ({ value, step, onSelect
         <button
           type="button"
           onClick={() => onSelect(`${fmt(selH)}:${fmt(selM)}`)}
-          className="w-full py-3 bg-[#FFD300] text-black text-[10px] font-black uppercase tracking-[0.3em] rounded-xl active:scale-[0.98] transition-all"
+          className="w-full py-3 bg-[#FFD300] text-black text-[0.625rem] font-black uppercase tracking-[0.3em] rounded-xl active:scale-[0.98] transition-all"
         >
           Confirmar
         </button>

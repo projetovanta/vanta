@@ -31,7 +31,7 @@ export const RestrictedModal: React.FC<RestrictedModalProps> = ({
       >
         <div className="flex flex-col items-center text-center gap-4">
           <div className="w-12 h-12 bg-[#FFD300]/10 rounded-full flex items-center justify-center">
-            <Lock size={20} className="text-[#FFD300]" />
+            <Lock size="1.25rem" className="text-[#FFD300]" />
           </div>
           <div>
             <h3 className="text-white text-base font-bold mb-1">Área Restrita</h3>

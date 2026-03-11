@@ -30,7 +30,7 @@ export const CargoModal: React.FC<Props> = ({ membro, papeis, onSelect, onClose 
           </div>
           <div className="min-w-0 flex-1">
             <p className="text-white font-bold text-base leading-none truncate">{membro.nome}</p>
-            <p className="text-zinc-400 text-[10px] mt-0.5 truncate">{membro.email}</p>
+            <p className="text-zinc-400 text-[0.625rem] mt-0.5 truncate">{membro.email}</p>
           </div>
         </div>
         <div className="p-5 space-y-2">
@@ -50,7 +50,7 @@ export const CargoModal: React.FC<Props> = ({ membro, papeis, onSelect, onClose 
                 >
                   {p.label}
                 </p>
-                <p className="text-zinc-400 text-[9px]">{p.desc}</p>
+                <p className="text-zinc-400 text-[0.5625rem]">{p.desc}</p>
               </div>
             </button>
           ))}
@@ -58,9 +58,9 @@ export const CargoModal: React.FC<Props> = ({ membro, papeis, onSelect, onClose 
         <div className="px-5" style={{ paddingBottom: 'max(2rem, env(safe-area-inset-bottom, 2rem))' }}>
           <button
             onClick={() => onSelect(membro, papel)}
-            className="w-full py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-[0.3em] rounded-xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all"
+            className="w-full py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-[0.3em] rounded-xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all"
           >
-            <Check size={13} /> Adicionar à Equipe
+            <Check size="0.8125rem" /> Adicionar à Equipe
           </button>
         </div>
       </div>

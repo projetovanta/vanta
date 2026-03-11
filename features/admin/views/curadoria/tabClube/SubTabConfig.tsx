@@ -41,11 +41,11 @@ export const SubTabConfig: React.FC<Props> = ({
   const d = configDraft;
 
   const TIER_CONFIG_KEY: Record<TierMaisVanta, { benef: keyof ClubeConfig; lim: keyof ClubeConfig }> = {
-    desconto: { benef: 'beneficiosConvidado', lim: 'limiteConvidado' },
-    convidado: { benef: 'beneficiosConvidado', lim: 'limiteConvidado' },
+    lista: { benef: 'beneficiosLista', lim: 'limiteLista' },
     presenca: { benef: 'beneficiosPresenca', lim: 'limitePresenca' },
+    social: { benef: 'beneficiosPresenca', lim: 'limitePresenca' },
     creator: { benef: 'beneficiosCreator', lim: 'limiteCreator' },
-    vanta_black: { benef: 'beneficiosVantaBlack', lim: 'limiteVantaBlack' },
+    black: { benef: 'beneficiosBlack', lim: 'limiteBlack' },
   };
 
   const getBeneficios = (tier: TierMaisVanta): BeneficioId[] => {
@@ -122,18 +122,18 @@ export const SubTabConfig: React.FC<Props> = ({
             onClick={() => setEditandoTier(null)}
             className="flex items-center gap-2 text-zinc-400 text-xs mb-3 active:scale-95 transition-all"
           >
-            <ArrowLeft size={16} /> Voltar
+            <ArrowLeft size="1rem" /> Voltar
           </button>
           <div className="flex items-center gap-3">
             <div
               className="w-12 h-12 rounded-xl flex items-center justify-center border"
               style={{ borderColor: TIER_COLORS[tier] + '30', backgroundColor: TIER_COLORS[tier] + '10' }}
             >
-              <Crown size={20} style={{ color: TIER_COLORS[tier] }} />
+              <Crown size="1.25rem" style={{ color: TIER_COLORS[tier] }} />
             </div>
             <div>
               <h2 className="text-white font-bold text-lg">Tier {TIER_LABELS[tier]}</h2>
-              <p className="text-zinc-400 text-[10px]">
+              <p className="text-zinc-400 text-[0.625rem]">
                 {membrosDoTier.length} membro{membrosDoTier.length !== 1 ? 's' : ''} ativo
                 {membrosDoTier.length !== 1 ? 's' : ''}
               </p>
@@ -145,7 +145,7 @@ export const SubTabConfig: React.FC<Props> = ({
         <div className="flex-1 overflow-y-auto no-scrollbar px-6 py-5 space-y-5">
           {/* Benefícios — toggles selecionáveis */}
           <div>
-            <p className="text-zinc-400 text-[10px] uppercase font-black tracking-wider mb-3">Benefícios</p>
+            <p className="text-zinc-400 text-[0.625rem] uppercase font-black tracking-wider mb-3">Benefícios</p>
             <div className="space-y-2">
               {BENEFICIOS_DISPONIVEIS.map(b => {
                 const ativo = beneficiosAtivos.includes(b.id);
@@ -163,17 +163,17 @@ export const SubTabConfig: React.FC<Props> = ({
                         ativo ? 'bg-[#FFD300]/20' : 'bg-zinc-800'
                       }`}
                     >
-                      <Icon size={14} className={ativo ? 'text-[#FFD300]' : 'text-zinc-400'} />
+                      <Icon size="0.875rem" className={ativo ? 'text-[#FFD300]' : 'text-zinc-400'} />
                     </div>
                     <div className="flex-1 min-w-0 text-left">
                       <p className={`text-xs font-bold ${ativo ? 'text-white' : 'text-zinc-400'}`}>{b.label}</p>
-                      <p className="text-zinc-400 text-[9px]">{b.desc}</p>
+                      <p className="text-zinc-400 text-[0.5625rem]">{b.desc}</p>
                     </div>
                     <div className="shrink-0">
                       {ativo ? (
-                        <ToggleRight size={24} className="text-[#FFD300]" />
+                        <ToggleRight size="1.5rem" className="text-[#FFD300]" />
                       ) : (
-                        <ToggleLeft size={24} className="text-zinc-700" />
+                        <ToggleLeft size="1.5rem" className="text-zinc-700" />
                       )}
                     </div>
                   </button>
@@ -184,7 +184,7 @@ export const SubTabConfig: React.FC<Props> = ({
 
           {/* Limite */}
           <div>
-            <p className="text-zinc-400 text-[10px] uppercase font-black tracking-wider mb-2">Limite de Membros</p>
+            <p className="text-zinc-400 text-[0.625rem] uppercase font-black tracking-wider mb-2">Limite de Membros</p>
             <div className="flex items-center gap-3">
               <input
                 type="number"
@@ -198,10 +198,12 @@ export const SubTabConfig: React.FC<Props> = ({
             {limite > 0 && (
               <div className="mt-3">
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-zinc-400 text-[9px]">
+                  <span className="text-zinc-400 text-[0.5625rem]">
                     {membrosDoTier.length} / {limite}
                   </span>
-                  {membrosDoTier.length >= limite && <span className="text-red-400 text-[9px] font-bold">Lotado</span>}
+                  {membrosDoTier.length >= limite && (
+                    <span className="text-red-400 text-[0.5625rem] font-bold">Lotado</span>
+                  )}
                 </div>
                 <div className="bg-zinc-800 rounded-full h-2 overflow-hidden">
                   <div
@@ -219,7 +221,7 @@ export const SubTabConfig: React.FC<Props> = ({
           {/* Membros deste tier (preview) */}
           {membrosDoTier.length > 0 && (
             <div>
-              <p className="text-zinc-400 text-[10px] uppercase font-black tracking-wider mb-2">
+              <p className="text-zinc-400 text-[0.625rem] uppercase font-black tracking-wider mb-2">
                 Membros ({membrosDoTier.length})
               </p>
               <div className="space-y-1.5">
@@ -234,19 +236,19 @@ export const SubTabConfig: React.FC<Props> = ({
                           <img loading="lazy" src={p.foto} alt="" className="w-full h-full object-cover" />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center">
-                            <User size={12} className="text-zinc-400" />
+                            <User size="0.75rem" className="text-zinc-400" />
                           </div>
                         )}
                       </div>
                       <span className="text-white text-xs truncate flex-1">{p?.nome || m.userId.slice(0, 8)}</span>
                       {m.instagramHandle && (
-                        <span className="text-zinc-400 text-[9px] shrink-0">@{m.instagramHandle}</span>
+                        <span className="text-zinc-400 text-[0.5625rem] shrink-0">@{m.instagramHandle}</span>
                       )}
                     </div>
                   );
                 })}
                 {membrosDoTier.length > 5 && (
-                  <p className="text-zinc-400 text-[9px] text-center py-1">+{membrosDoTier.length - 5} membros</p>
+                  <p className="text-zinc-400 text-[0.5625rem] text-center py-1">+{membrosDoTier.length - 5} membros</p>
                 )}
               </div>
             </div>
@@ -260,7 +262,7 @@ export const SubTabConfig: React.FC<Props> = ({
             disabled={salvandoConfig}
             className="w-full flex items-center justify-center gap-2 py-3 bg-[#FFD300] text-black font-bold text-xs rounded-xl active:scale-95 transition-all disabled:opacity-40"
           >
-            <Save size={14} /> {salvandoConfig ? 'Salvando...' : `Salvar ${TIER_LABELS[tier]}`}
+            <Save size="0.875rem" /> {salvandoConfig ? 'Salvando...' : `Salvar ${TIER_LABELS[tier]}`}
           </button>
         </div>
       </div>
@@ -272,26 +274,26 @@ export const SubTabConfig: React.FC<Props> = ({
       {/* Resumo KPIs */}
       <div className="bg-zinc-900/60 border border-[#FFD300]/10 rounded-2xl p-4">
         <div className="flex items-center gap-2 mb-3">
-          <Crown size={14} className="text-[#FFD300]" />
+          <Crown size="0.875rem" className="text-[#FFD300]" />
           <p className="text-[#FFD300] font-bold text-xs">Resumo do Clube</p>
         </div>
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-wider">Total Membros</p>
+            <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-wider">Total Membros</p>
             <p className="text-white font-bold text-lg">{membros.length}</p>
           </div>
           <div>
-            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-wider">Solicitações</p>
+            <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-wider">Solicitações</p>
             <p className="text-white font-bold text-lg">{solicitacoesCount}</p>
           </div>
           <div>
-            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-wider">Com Dívida Social</p>
+            <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-wider">Com Dívida Social</p>
             <p className="text-amber-400 font-bold text-lg">
               {membros.filter(m => clubeService.temDividaSocial(m.userId)).length}
             </p>
           </div>
           <div>
-            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-wider">Bloqueados/Banidos</p>
+            <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-wider">Bloqueados/Banidos</p>
             <p className="text-red-400 font-bold text-lg">
               {membros.filter(m => clubeService.estaBloqueado(m.userId)).length}
             </p>
@@ -300,7 +302,7 @@ export const SubTabConfig: React.FC<Props> = ({
       </div>
 
       {/* Tiers — lista limpa, clicável para editar */}
-      <p className="text-zinc-400 text-[10px] uppercase font-black tracking-wider">Tiers</p>
+      <p className="text-zinc-400 text-[0.625rem] uppercase font-black tracking-wider">Tiers</p>
       {getTierOptions().map(tier => {
         const membrosDoTier = membros.filter(m => m.tier === tier);
         const limite = getLimite(tier);
@@ -317,14 +319,14 @@ export const SubTabConfig: React.FC<Props> = ({
                 className="w-10 h-10 rounded-xl flex items-center justify-center border shrink-0"
                 style={{ borderColor: TIER_COLORS[tier] + '30', backgroundColor: TIER_COLORS[tier] + '10' }}
               >
-                <Crown size={16} style={{ color: TIER_COLORS[tier] }} />
+                <Crown size="1rem" style={{ color: TIER_COLORS[tier] }} />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-white font-bold text-sm">{TIER_LABELS[tier]}</p>
                 {benefLabels.length > 0 ? (
-                  <p className="text-zinc-400 text-[10px] line-clamp-1">{benefLabels.join(' · ')}</p>
+                  <p className="text-zinc-400 text-[0.625rem] line-clamp-1">{benefLabels.join(' · ')}</p>
                 ) : (
-                  <p className="text-zinc-400 text-[10px]">Sem benefícios definidos</p>
+                  <p className="text-zinc-400 text-[0.625rem]">Sem benefícios definidos</p>
                 )}
               </div>
               <div className="text-right shrink-0">
@@ -333,24 +335,24 @@ export const SubTabConfig: React.FC<Props> = ({
                   {limite > 0 ? <span className="text-zinc-400">/{limite}</span> : ''}
                 </p>
                 {limite > 0 && membrosDoTier.length >= limite ? (
-                  <p className="text-red-400 text-[8px] font-bold">Lotado</p>
+                  <p className="text-red-400 text-[0.5rem] font-bold">Lotado</p>
                 ) : (
-                  <p className="text-zinc-400 text-[8px]">membros</p>
+                  <p className="text-zinc-400 text-[0.5rem]">membros</p>
                 )}
               </div>
-              <ChevronRight size={14} className="text-zinc-400 shrink-0" />
+              <ChevronRight size="0.875rem" className="text-zinc-400 shrink-0" />
             </div>
           </button>
         );
       })}
 
       {/* Regras gerais */}
-      <p className="text-zinc-400 text-[10px] uppercase font-black tracking-wider mt-2">Regras Gerais</p>
+      <p className="text-zinc-400 text-[0.625rem] uppercase font-black tracking-wider mt-2">Regras Gerais</p>
       <div className="bg-zinc-900/60 border border-white/5 rounded-2xl p-4 space-y-4">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-white text-xs font-bold">Prazo para postar</p>
-            <p className="text-zinc-400 text-[9px]">Horas após o evento para publicar</p>
+            <p className="text-zinc-400 text-[0.5625rem]">Horas após o evento para publicar</p>
           </div>
           <div className="flex items-center gap-1.5">
             <input
@@ -361,15 +363,15 @@ export const SubTabConfig: React.FC<Props> = ({
               onChange={e => setDraft('prazoPostHoras', parseInt(e.target.value) || 12)}
               className="w-14 bg-black/30 border border-white/5 rounded-lg px-2 py-1.5 text-white text-xs text-center focus:border-white/20 focus:outline-none"
             />
-            <span className="text-zinc-400 text-[9px]">h</span>
+            <span className="text-zinc-400 text-[0.5625rem]">h</span>
           </div>
         </div>
         {/* Sistema de Infrações Progressivo */}
-        <p className="text-zinc-400 text-[9px] font-black uppercase tracking-wider pt-2">Sistema de Infrações</p>
+        <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-wider pt-2">Sistema de Infrações</p>
         <div className="flex items-center justify-between">
           <div>
             <p className="text-white text-xs font-bold">Limite de infrações</p>
-            <p className="text-zinc-400 text-[9px]">Até bloquear (no-show + não postou)</p>
+            <p className="text-zinc-400 text-[0.5625rem]">Até bloquear (no-show + não postou)</p>
           </div>
           <div className="flex items-center gap-1.5">
             <input
@@ -385,7 +387,7 @@ export const SubTabConfig: React.FC<Props> = ({
         <div className="flex items-center justify-between">
           <div>
             <p className="text-white text-xs font-bold">1º Bloqueio</p>
-            <p className="text-zinc-400 text-[9px]">Dias bloqueado na 1ª vez</p>
+            <p className="text-zinc-400 text-[0.5625rem]">Dias bloqueado na 1ª vez</p>
           </div>
           <div className="flex items-center gap-1.5">
             <input
@@ -396,13 +398,13 @@ export const SubTabConfig: React.FC<Props> = ({
               onChange={e => setDraft('bloqueio1Dias', parseInt(e.target.value) || 30)}
               className="w-14 bg-black/30 border border-white/5 rounded-lg px-2 py-1.5 text-white text-xs text-center focus:border-white/20 focus:outline-none"
             />
-            <span className="text-zinc-400 text-[9px]">dias</span>
+            <span className="text-zinc-400 text-[0.5625rem]">dias</span>
           </div>
         </div>
         <div className="flex items-center justify-between">
           <div>
             <p className="text-white text-xs font-bold">2º Bloqueio (reincidência)</p>
-            <p className="text-zinc-400 text-[9px]">Dias + aviso de exclusão definitiva</p>
+            <p className="text-zinc-400 text-[0.5625rem]">Dias + aviso de exclusão definitiva</p>
           </div>
           <div className="flex items-center gap-1.5">
             <input
@@ -413,9 +415,49 @@ export const SubTabConfig: React.FC<Props> = ({
               onChange={e => setDraft('bloqueio2Dias', parseInt(e.target.value) || 60)}
               className="w-14 bg-black/30 border border-white/5 rounded-lg px-2 py-1.5 text-white text-xs text-center focus:border-white/20 focus:outline-none"
             />
-            <span className="text-zinc-400 text-[9px]">dias</span>
+            <span className="text-zinc-400 text-[0.5625rem]">dias</span>
           </div>
         </div>
+      </div>
+
+      {/* Convites de Indicação por Tier */}
+      <div className="bg-zinc-900/60 border border-white/5 rounded-2xl p-4 space-y-3">
+        <p className="text-[0.5625rem] font-black uppercase tracking-widest text-zinc-400">
+          Convites de indicação por tier
+        </p>
+        <p className="text-zinc-500 text-[0.625rem]">Quantidade de convites que cada membro recebe ao ser aprovado.</p>
+        {(['lista', 'presenca', 'social', 'creator', 'black'] as TierMaisVanta[]).map(tier => {
+          const configKey = `convites${tier.charAt(0).toUpperCase() + tier.slice(1)}` as keyof ClubeConfig;
+          const defaults: Record<string, number> = { lista: 1, presenca: 3, social: 5, creator: 7, black: 10 };
+          const valor =
+            (d[configKey] as number | undefined) ?? (cfg?.[configKey] as number | undefined) ?? defaults[tier];
+          return (
+            <div key={tier} className="flex items-center justify-between">
+              <span className="text-white text-xs font-semibold capitalize">
+                {tier === 'lista'
+                  ? 'Lista'
+                  : tier === 'presenca'
+                    ? 'Presença'
+                    : tier === 'social'
+                      ? 'Social'
+                      : tier === 'creator'
+                        ? 'Creator'
+                        : 'Black'}
+              </span>
+              <div className="flex items-center gap-2">
+                <input
+                  type="number"
+                  min={0}
+                  max={50}
+                  value={valor}
+                  onChange={e => setDraft(configKey, parseInt(e.target.value) || 0)}
+                  className="w-14 bg-black/30 border border-white/5 rounded-lg px-2 py-1.5 text-white text-xs text-center focus:border-white/20 focus:outline-none"
+                />
+                <span className="text-zinc-400 text-[0.5625rem]">convites</span>
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       {/* Botão salvar regras gerais */}
@@ -426,7 +468,7 @@ export const SubTabConfig: React.FC<Props> = ({
           disabled={salvandoConfig}
           className="w-full flex items-center justify-center gap-2 py-3 bg-[#FFD300] text-black font-bold text-xs rounded-xl active:scale-95 transition-all disabled:opacity-40"
         >
-          <Save size={14} /> {salvandoConfig ? 'Salvando...' : 'Salvar Configuração'}
+          <Save size="0.875rem" /> {salvandoConfig ? 'Salvando...' : 'Salvar Configuração'}
         </button>
       )}
     </div>

@@ -54,7 +54,7 @@ const TABELAS_OBRIGATORIAS = [
   'clube_config',
   'planos_mais_vanta',
   'tiers_mais_vanta',
-  'mais_vanta_lotes_evento',
+  'mais_vanta_config_evento',
   'solicitacoes_clube',
   'membros_clube',
   'assinaturas_mais_vanta',

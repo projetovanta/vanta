@@ -9,6 +9,7 @@ import { useSocialStore } from '../../stores/socialStore';
 import { useDebounce } from '../../hooks/useDebounce';
 import { moodService, MoodData } from '../../services/moodService';
 import { Skeleton } from '../../components/Skeleton';
+import { useBloqueados } from '../../hooks/useBloqueados';
 
 interface MessagesViewProps {
   onOpenChat: (member: Membro) => void;
@@ -18,6 +19,7 @@ export const MessagesView: React.FC<MessagesViewProps> = ({ onOpenChat }) => {
   const chats = useChatStore(s => s.chats);
   const onlineUsers = useChatStore(s => s.onlineUsers);
   const mutualFriends = useSocialStore(s => s.mutualFriends);
+  const bloqueados = useBloqueados();
   const [query, setQuery] = useState('');
   const debouncedQuery = useDebounce(query, 300);
   const [isNewChatModalOpen, setIsNewChatModalOpen] = useState(false);
@@ -35,11 +37,12 @@ export const MessagesView: React.FC<MessagesViewProps> = ({ onOpenChat }) => {
 
   const filteredChats = useMemo(() => {
     return chats.filter(chat => {
+      if (bloqueados.has(chat.participantId)) return false;
       const nome = chat.participantNome ?? '';
       const searchStr = (nome + chat.lastMessage).toLowerCase();
       return searchStr.includes(debouncedQuery.toLowerCase());
     });
-  }, [chats, debouncedQuery]);
+  }, [chats, debouncedQuery, bloqueados]);
 
   const handleStartNewChat = (member: Membro) => {
     setIsNewChatModalOpen(false);
@@ -71,13 +74,13 @@ export const MessagesView: React.FC<MessagesViewProps> = ({ onOpenChat }) => {
             onClick={() => setIsNewChatModalOpen(true)}
             className="px-4 py-2 bg-zinc-900 border border-white/10 rounded-full flex items-center gap-2 active:scale-95 transition-all group"
           >
-            <Plus size={14} className="text-[#FFD300] group-hover:rotate-90 transition-transform" />
-            <span className="text-[10px] font-black uppercase tracking-widest text-zinc-300">Nova</span>
+            <Plus size="0.875rem" className="text-[#FFD300] group-hover:rotate-90 transition-transform" />
+            <span className="text-[0.625rem] font-black uppercase tracking-widest text-zinc-300">Nova</span>
           </button>
         </div>
         <div className="relative group">
           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <Search size={18} className="text-zinc-400 transition-colors" />
+            <Search size="1.125rem" className="text-zinc-400 transition-colors" />
           </div>
           <input
             type="text"
@@ -88,7 +91,7 @@ export const MessagesView: React.FC<MessagesViewProps> = ({ onOpenChat }) => {
           />
         </div>
       </div>
-      <div className="flex-1 overflow-y-auto no-scrollbar px-6 pt-6 pb-28 space-y-2">
+      <div className="flex-1 overflow-y-auto no-scrollbar px-6 pt-6 pb-4 space-y-2">
         {filteredChats.length === 0 && isFirstLoad ? (
           <>
             {[1, 2, 3].map(i => (
@@ -124,7 +127,7 @@ export const MessagesView: React.FC<MessagesViewProps> = ({ onOpenChat }) => {
         ) : (
           <div className="py-32 text-center animate-in fade-in duration-700">
             <div className="w-16 h-16 bg-zinc-900 rounded-full flex items-center justify-center mx-auto mb-6 border border-white/5 opacity-40">
-              <MessageSquare size={24} className="text-zinc-400" />
+              <MessageSquare size="1.5rem" className="text-zinc-400" />
             </div>
             <p className="text-zinc-400 italic text-sm">
               {query ? 'Nenhuma conversa encontrada.' : 'Sua caixa está vazia. Comece uma conexão!'}

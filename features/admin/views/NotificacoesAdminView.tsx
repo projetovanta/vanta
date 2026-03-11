@@ -280,7 +280,7 @@ export const NotificacoesAdminView: React.FC<{ onBack: () => void }> = ({ onBack
           onClick={onBack}
           className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all mt-1"
         >
-          <ArrowLeft size={18} className="text-zinc-400" />
+          <ArrowLeft size="1.125rem" className="text-zinc-400" />
         </button>
       </div>
 
@@ -288,17 +288,17 @@ export const NotificacoesAdminView: React.FC<{ onBack: () => void }> = ({ onBack
         {/* Preview */}
         {(titulo || mensagem) && (
           <div className="mx-5 mt-5">
-            <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest mb-2 ml-1">Preview</p>
+            <p className="text-[0.5625rem] text-zinc-400 font-black uppercase tracking-widest mb-2 ml-1">Preview</p>
             <div className="bg-zinc-900/60 border border-white/5 rounded-2xl p-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-[#FFD300]/15 border border-[#FFD300]/20 flex items-center justify-center shrink-0">
-                  <Bell size={16} className="text-[#FFD300]" />
+                  <Bell size="1rem" className="text-[#FFD300]" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-white font-bold text-sm leading-none mb-0.5 truncate">
                     {titulo || 'Título da campanha'}
                   </p>
-                  <p className="text-zinc-400 text-[10px] leading-relaxed line-clamp-2">
+                  <p className="text-zinc-400 text-[0.625rem] leading-relaxed line-clamp-2">
                     {mensagem || 'Sua mensagem aparecerá aqui...'}
                   </p>
                 </div>
@@ -308,17 +308,17 @@ export const NotificacoesAdminView: React.FC<{ onBack: () => void }> = ({ onBack
                 {canais.map(c => (
                   <span
                     key={c}
-                    className="text-[7px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#FFD300]/10 text-[#FFD300] border border-[#FFD300]/20"
+                    className="text-[0.4375rem] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#FFD300]/10 text-[#FFD300] border border-[#FFD300]/20"
                   >
                     {c === 'IN_APP' ? 'In-App' : c === 'PUSH' ? 'Push' : 'Email'}
                   </span>
                 ))}
                 {acao !== 'AVISO' && (
-                  <span className="text-[7px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 truncate max-w-[45%]">
+                  <span className="text-[0.4375rem] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 truncate max-w-[45%]">
                     {getAcaoLabel()}
                   </span>
                 )}
-                <span className="text-zinc-400 text-[8px] font-black uppercase tracking-widest ml-auto truncate max-w-[40%]">
+                <span className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest ml-auto truncate max-w-[40%]">
                   {getSegLabel()}
                   {destCount !== null && !countLoading && ` (${destCount})`}
                 </span>
@@ -330,7 +330,7 @@ export const NotificacoesAdminView: React.FC<{ onBack: () => void }> = ({ onBack
         <div className="p-5 space-y-5">
           {/* Canais */}
           <div className="space-y-1.5">
-            <label className="text-[9px] text-zinc-400 font-black uppercase tracking-widest ml-1">Canais</label>
+            <label className="text-[0.5625rem] text-zinc-400 font-black uppercase tracking-widest ml-1">Canais</label>
             <div className="flex gap-2">
               {[
                 { id: 'IN_APP' as CanalCampanha, label: 'In-App', Icon: Bell },
@@ -348,7 +348,7 @@ export const NotificacoesAdminView: React.FC<{ onBack: () => void }> = ({ onBack
                         : 'bg-zinc-900/40 border-white/5 text-zinc-400 active:bg-zinc-900/60'
                     }`}
                   >
-                    <Icon size={14} />
+                    <Icon size="0.875rem" />
                     {label}
                   </button>
                 );
@@ -358,7 +358,7 @@ export const NotificacoesAdminView: React.FC<{ onBack: () => void }> = ({ onBack
 
           {/* Título */}
           <div className="space-y-1.5">
-            <label className="text-[9px] text-zinc-400 font-black uppercase tracking-widest ml-1">Título</label>
+            <label className="text-[0.5625rem] text-zinc-400 font-black uppercase tracking-widest ml-1">Título</label>
             <input
               value={titulo}
               onChange={e => setTitulo(e.target.value)}
@@ -369,7 +369,7 @@ export const NotificacoesAdminView: React.FC<{ onBack: () => void }> = ({ onBack
 
           {/* Mensagem */}
           <div className="space-y-1.5">
-            <label className="text-[9px] text-zinc-400 font-black uppercase tracking-widest ml-1">Mensagem</label>
+            <label className="text-[0.5625rem] text-zinc-400 font-black uppercase tracking-widest ml-1">Mensagem</label>
             <textarea
               value={mensagem}
               onChange={e => setMensagem(e.target.value)}
@@ -381,8 +381,8 @@ export const NotificacoesAdminView: React.FC<{ onBack: () => void }> = ({ onBack
 
           {/* Sobre o quê? (Ação / Deep Link) */}
           <div className="space-y-2">
-            <label className="text-[9px] text-zinc-400 font-black uppercase tracking-widest ml-1 flex items-center gap-1.5">
-              <Target size={10} className="text-zinc-400" />
+            <label className="text-[0.5625rem] text-zinc-400 font-black uppercase tracking-widest ml-1 flex items-center gap-1.5">
+              <Target size="0.625rem" className="text-zinc-400" />
               Sobre o quê?
             </label>
             <div className="grid grid-cols-3 gap-2">
@@ -403,9 +403,9 @@ export const NotificacoesAdminView: React.FC<{ onBack: () => void }> = ({ onBack
                         : 'bg-zinc-900/40 border-white/5 active:bg-zinc-900/60'
                     }`}
                   >
-                    <Icon size={14} className={ativo ? 'text-emerald-400' : 'text-zinc-400'} />
+                    <Icon size="0.875rem" className={ativo ? 'text-emerald-400' : 'text-zinc-400'} />
                     <span
-                      className={`text-[8px] font-bold text-center leading-tight ${ativo ? 'text-emerald-400' : 'text-zinc-400'}`}
+                      className={`text-[0.5rem] font-bold text-center leading-tight ${ativo ? 'text-emerald-400' : 'text-zinc-400'}`}
                     >
                       {a.label}
                     </span>
@@ -429,7 +429,7 @@ export const NotificacoesAdminView: React.FC<{ onBack: () => void }> = ({ onBack
                       : `Selecionar ${acao === 'NOVO_EVENTO' ? 'evento' : 'comunidade'}...`}
                   </span>
                   <ChevronDown
-                    size={14}
+                    size="0.875rem"
                     className={`text-zinc-400 transition-transform shrink-0 ml-2 ${acaoDropdownOpen ? 'rotate-180' : ''}`}
                   />
                 </button>
@@ -465,12 +465,12 @@ export const NotificacoesAdminView: React.FC<{ onBack: () => void }> = ({ onBack
           {/* Destinatários */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <label className="text-[9px] text-zinc-400 font-black uppercase tracking-widest ml-1">
+              <label className="text-[0.5625rem] text-zinc-400 font-black uppercase tracking-widest ml-1">
                 Destinatários
               </label>
               {destCount !== null && (
                 <span
-                  className={`text-[9px] font-bold ${countLoading ? 'text-zinc-400 animate-pulse' : 'text-[#FFD300]'}`}
+                  className={`text-[0.5625rem] font-bold ${countLoading ? 'text-zinc-400 animate-pulse' : 'text-[#FFD300]'}`}
                 >
                   ~{destCount} {destCount === 1 ? 'membro' : 'membros'}
                 </span>
@@ -496,8 +496,8 @@ export const NotificacoesAdminView: React.FC<{ onBack: () => void }> = ({ onBack
                         : 'bg-zinc-900/40 border-white/5 active:bg-zinc-900/60'
                     }`}
                   >
-                    <Icon size={16} className={ativo ? 'text-[#FFD300]' : 'text-zinc-400'} />
-                    <span className={`text-[9px] font-bold ${ativo ? 'text-[#FFD300]' : 'text-zinc-400'}`}>
+                    <Icon size="1rem" className={ativo ? 'text-[#FFD300]' : 'text-zinc-400'} />
+                    <span className={`text-[0.5625rem] font-bold ${ativo ? 'text-[#FFD300]' : 'text-zinc-400'}`}>
                       {seg.label}
                     </span>
                   </button>
@@ -518,7 +518,7 @@ export const NotificacoesAdminView: React.FC<{ onBack: () => void }> = ({ onBack
                       : `Selecionar ${segTipo === 'TAG' ? 'tag' : segTipo === 'COMUNIDADE' ? 'comunidade' : segTipo === 'EVENTO' ? 'evento' : 'cidade'}...`}
                   </span>
                   <ChevronDown
-                    size={14}
+                    size="0.875rem"
                     className={`text-zinc-400 transition-transform ${dropdownOpen ? 'rotate-180' : ''}`}
                   />
                 </button>
@@ -568,13 +568,13 @@ export const NotificacoesAdminView: React.FC<{ onBack: () => void }> = ({ onBack
                       : 'Campanha disparada!'}
                   </p>
                   {canais.includes('IN_APP') && (
-                    <p className="text-zinc-400 text-[10px]">
+                    <p className="text-zinc-400 text-[0.625rem]">
                       In-App: {resultado.inApp.enviados} enviados
                       {resultado.inApp.erros > 0 ? `, ${resultado.inApp.erros} erros` : ''}
                     </p>
                   )}
                   {canais.includes('PUSH') && (
-                    <p className="text-zinc-400 text-[10px]">
+                    <p className="text-zinc-400 text-[0.625rem]">
                       Push: {resultado.push.enviados} enviados
                       {resultado.push.erros > 0 ? `, ${resultado.push.erros} erros` : ''}
                       {resultado.push.enviados === 0 && resultado.push.erros === 0
@@ -583,7 +583,7 @@ export const NotificacoesAdminView: React.FC<{ onBack: () => void }> = ({ onBack
                     </p>
                   )}
                   {canais.includes('EMAIL') && (
-                    <p className="text-zinc-400 text-[10px]">
+                    <p className="text-zinc-400 text-[0.625rem]">
                       Email: {resultado.email.enviados} enviados
                       {resultado.email.erros > 0 ? `, ${resultado.email.erros} erros` : ''}
                     </p>
@@ -599,13 +599,13 @@ export const NotificacoesAdminView: React.FC<{ onBack: () => void }> = ({ onBack
         <button
           onClick={handleSend}
           disabled={!canSend || status !== 'IDLE'}
-          className={`w-full py-4 rounded-xl font-bold text-[10px] uppercase tracking-[0.3em] flex items-center justify-center gap-3 transition-all disabled:opacity-40 ${
+          className={`w-full py-4 rounded-xl font-bold text-[0.625rem] uppercase tracking-[0.3em] flex items-center justify-center gap-3 transition-all disabled:opacity-40 ${
             status === 'SENT' ? 'bg-emerald-500 text-white' : 'bg-[#FFD300] text-black'
           }`}
         >
-          {status === 'SENDING' && <Loader2 size={14} className="animate-spin" />}
-          {status === 'SENT' && <Check size={14} />}
-          {status === 'IDLE' && <Send size={14} />}
+          {status === 'SENDING' && <Loader2 size="0.875rem" className="animate-spin" />}
+          {status === 'SENT' && <Check size="0.875rem" />}
+          {status === 'IDLE' && <Send size="0.875rem" />}
           {status === 'SENDING' ? 'Enviando...' : status === 'SENT' ? 'Enviado!' : 'Disparar Campanha'}
         </button>
       </div>

@@ -57,9 +57,9 @@ export const MessageBubble: React.FC<MessageBubbleProps> = React.memo(
     const renderReceipt = () => {
       if (!isMe || isDeleted) return null;
       if (msg.isRead) {
-        return <span className="text-[#FFD300] text-[9px] font-black ml-1">✓✓</span>;
+        return <span className="text-[#FFD300] text-[0.5625rem] font-black ml-1">✓✓</span>;
       }
-      return <span className="text-zinc-400 text-[9px] font-black ml-1">✓</span>;
+      return <span className="text-zinc-400 text-[0.5625rem] font-black ml-1">✓</span>;
     };
 
     return (
@@ -77,7 +77,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = React.memo(
           }}
         >
           <div
-            className={`p-4 text-[13px] rounded-3xl ${
+            className={`p-4 text-[0.8125rem] rounded-3xl ${
               isDeleted
                 ? 'bg-zinc-900/50 border border-white/5 text-zinc-400 italic'
                 : isMe
@@ -95,7 +95,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = React.memo(
                 <button
                   key={emoji}
                   onClick={() => onReact(msg.id, emoji)}
-                  className={`px-2 py-0.5 rounded-full text-[11px] border transition-all active:scale-90 ${
+                  className={`px-2 py-0.5 rounded-full text-[0.6875rem] border transition-all active:scale-90 ${
                     hasMe
                       ? 'bg-[#FFD300]/20 border-[#FFD300]/40 text-[#FFD300]'
                       : 'bg-zinc-900/60 border-white/10 text-zinc-400'
@@ -109,7 +109,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = React.memo(
           )}
 
           <div className="flex items-center mt-1.5">
-            <span className="text-[8px] text-zinc-700 uppercase font-black">
+            <span className="text-[0.5rem] text-zinc-700 uppercase font-black">
               {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
             </span>
             {renderReceipt()}
@@ -147,7 +147,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = React.memo(
                   }}
                   className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-red-900/30 active:scale-90 transition-all text-red-400 ml-1 border-l border-white/10 pl-1"
                 >
-                  <Trash2 size={16} />
+                  <Trash2 size="1rem" />
                 </button>
               )}
             </div>

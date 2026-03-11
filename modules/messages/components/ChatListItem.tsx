@@ -35,20 +35,20 @@ export const ChatListItem: React.FC<ChatListItemProps> = React.memo(({ chat, onC
         />
         {chat.unreadCount > 0 && (
           <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full border-2 border-black flex items-center justify-center shadow-lg">
-            <span className="text-[10px] font-black text-white">{chat.unreadCount}</span>
+            <span className="text-[0.625rem] font-black text-white">{chat.unreadCount}</span>
           </div>
         )}
       </div>
       <div className="flex-1 min-w-0 text-left">
         <div className="flex justify-between items-start mb-0.5">
-          <h3 className="text-[14px] font-bold text-white truncate">
+          <h3 className="text-[0.875rem] font-bold text-white truncate">
             {nome}
-            {moodEmoji ? <span className="ml-1 text-[12px]">{moodEmoji}</span> : null}
+            {moodEmoji ? <span className="ml-1 text-[0.75rem]">{moodEmoji}</span> : null}
           </h3>
-          <span className="text-[10px] text-zinc-400 font-medium">{formatRelativeTime(chat.lastMessageTime)}</span>
+          <span className="text-[0.625rem] text-zinc-400 font-medium">{formatRelativeTime(chat.lastMessageTime)}</span>
         </div>
         <p
-          className={`text-[12px] truncate italic ${chat.unreadCount > 0 ? 'text-zinc-200 font-bold' : 'text-zinc-400 font-light'}`}
+          className={`text-[0.75rem] truncate italic ${chat.unreadCount > 0 ? 'text-zinc-200 font-bold' : 'text-zinc-400 font-light'}`}
         >
           {chat.lastMessage || 'Nenhuma mensagem trocada.'}
         </p>

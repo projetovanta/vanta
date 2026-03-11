@@ -125,7 +125,7 @@ export const ParticipantesView: React.FC<{
             <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic truncate">
               Participantes
             </h1>
-            <p className="text-zinc-400 text-[9px] truncate mt-0.5">{eventoNome}</p>
+            <p className="text-zinc-400 text-[0.5625rem] truncate mt-0.5">{eventoNome}</p>
           </div>
           <div className="flex items-center gap-2 shrink-0 mt-1">
             {tickets.length > 0 && (
@@ -134,7 +134,7 @@ export const ParticipantesView: React.FC<{
                 onClick={exportCSV}
                 className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
               >
-                <Download size={16} className="text-zinc-400" />
+                <Download size="1rem" className="text-zinc-400" />
               </button>
             )}
             <button
@@ -142,7 +142,7 @@ export const ParticipantesView: React.FC<{
               onClick={onBack}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
             >
-              <ArrowLeft size={18} className="text-zinc-400" />
+              <ArrowLeft size="1.125rem" className="text-zinc-400" />
             </button>
           </div>
         </div>
@@ -153,9 +153,9 @@ export const ParticipantesView: React.FC<{
         {tickets.length === 0 ? (
           <div className="flex flex-col items-center py-16 gap-4">
             <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center">
-              <Users size={28} className="text-zinc-700" />
+              <Users size="1.75rem" className="text-zinc-700" />
             </div>
-            <p className="text-zinc-700 text-[10px] font-black uppercase tracking-widest text-center">
+            <p className="text-zinc-700 text-[0.625rem] font-black uppercase tracking-widest text-center">
               Nenhum ingresso emitido
             </p>
           </div>
@@ -172,16 +172,18 @@ export const ParticipantesView: React.FC<{
                         {ticket.nomeTitular || ticket.email}
                       </span>
                       <span
-                        className={`text-[7px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded-full shrink-0 ${st.cls}`}
+                        className={`text-[0.4375rem] font-black uppercase tracking-widest px-1.5 py-0.5 rounded-full shrink-0 ${st.cls}`}
                       >
                         {st.label}
                       </span>
                     </div>
-                    {ticket.nomeTitular && <p className="text-zinc-400 text-[9px] truncate mb-0.5">{ticket.email}</p>}
-                    <p className="text-zinc-400 text-[9px] truncate">
+                    {ticket.nomeTitular && (
+                      <p className="text-zinc-400 text-[0.5625rem] truncate mb-0.5">{ticket.email}</p>
+                    )}
+                    <p className="text-zinc-400 text-[0.5625rem] truncate">
                       {ticket.variacaoLabel} · R$ {ticket.valor}
                     </p>
-                    <p className="text-zinc-700 text-[8px] mt-0.5">
+                    <p className="text-zinc-700 text-[0.5rem] mt-0.5">
                       {new Date(ticket.emitidoEm).toLocaleDateString('pt-BR', {
                         day: '2-digit',
                         month: 'short',
@@ -195,7 +197,7 @@ export const ParticipantesView: React.FC<{
                       onClick={() => openMenu(ticket.id)}
                       className="w-8 h-8 rounded-full bg-zinc-800 border border-white/5 flex items-center justify-center active:scale-90 transition-all shrink-0"
                     >
-                      <MoreHorizontal size={14} className="text-zinc-400" />
+                      <MoreHorizontal size="0.875rem" className="text-zinc-400" />
                     </button>
                   )}
                 </div>
@@ -207,21 +209,21 @@ export const ParticipantesView: React.FC<{
                       onClick={() => openTitular(ticket)}
                       className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-zinc-800/60 active:bg-zinc-700/60 transition-all text-left"
                     >
-                      <UserPen size={14} className="text-zinc-400 shrink-0" />
+                      <UserPen size="0.875rem" className="text-zinc-400 shrink-0" />
                       <span className="text-zinc-300 text-xs">Trocar Titular</span>
                     </button>
                     <button
                       onClick={() => handleReenviar(ticket)}
                       className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-zinc-800/60 active:bg-zinc-700/60 transition-all text-left"
                     >
-                      <Mail size={14} className="text-zinc-400 shrink-0" />
+                      <Mail size="0.875rem" className="text-zinc-400 shrink-0" />
                       <span className="text-zinc-300 text-xs">Reenviar E-mail</span>
                     </button>
                     <button
                       onClick={() => openCancelar(ticket.id)}
                       className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-red-500/10 active:bg-red-500/20 transition-all text-left"
                     >
-                      <Trash2 size={14} className="text-red-400 shrink-0" />
+                      <Trash2 size="0.875rem" className="text-red-400 shrink-0" />
                       <span className="text-red-400 text-xs">Cancelar Ingresso</span>
                     </button>
                   </div>
@@ -250,13 +252,13 @@ export const ParticipantesView: React.FC<{
                 onClick={closeModal}
                 className="w-9 h-9 rounded-full bg-zinc-800 flex items-center justify-center active:scale-90 transition-all"
               >
-                <X size={16} className="text-zinc-400" />
+                <X size="1rem" className="text-zinc-400" />
               </button>
             </div>
 
             <div className="space-y-3 mb-5">
               <div>
-                <label className="text-zinc-400 text-[9px] font-black uppercase tracking-widest block mb-1.5">
+                <label className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest block mb-1.5">
                   Nome do Titular
                 </label>
                 <input
@@ -267,7 +269,7 @@ export const ParticipantesView: React.FC<{
                 />
               </div>
               <div>
-                <label className="text-zinc-400 text-[9px] font-black uppercase tracking-widest block mb-1.5">
+                <label className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest block mb-1.5">
                   E-mail
                 </label>
                 <input
@@ -300,7 +302,7 @@ export const ParticipantesView: React.FC<{
           >
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-full bg-red-500/15 flex items-center justify-center shrink-0">
-                <AlertTriangle size={18} className="text-red-400" />
+                <AlertTriangle size="1.125rem" className="text-red-400" />
               </div>
               <div>
                 <p style={TYPOGRAPHY.sectionKicker} className="mb-0.5">

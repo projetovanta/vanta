@@ -184,6 +184,27 @@ export type Database = {
         };
         Relationships: [];
       };
+      bloqueios: {
+        Row: {
+          bloqueado_id: string;
+          bloqueador_id: string;
+          criado_em: string;
+          id: string;
+        };
+        Insert: {
+          bloqueado_id: string;
+          bloqueador_id: string;
+          criado_em?: string;
+          id?: string;
+        };
+        Update: {
+          bloqueado_id?: string;
+          bloqueador_id?: string;
+          criado_em?: string;
+          id?: string;
+        };
+        Relationships: [];
+      };
       cargos: {
         Row: {
           atribuido_em: string;
@@ -353,6 +374,11 @@ export type Database = {
           bloqueio1_dias: number | null;
           bloqueio2_dias: number | null;
           comunidade_id: string;
+          convites_black: number;
+          convites_creator: number;
+          convites_lista: number;
+          convites_presenca: number;
+          convites_social: number;
           dias_castigo: number | null;
           id: string;
           infracoes_limite: number | null;
@@ -371,6 +397,11 @@ export type Database = {
           bloqueio1_dias?: number | null;
           bloqueio2_dias?: number | null;
           comunidade_id: string;
+          convites_black?: number;
+          convites_creator?: number;
+          convites_lista?: number;
+          convites_presenca?: number;
+          convites_social?: number;
           dias_castigo?: number | null;
           id?: string;
           infracoes_limite?: number | null;
@@ -389,6 +420,11 @@ export type Database = {
           bloqueio1_dias?: number | null;
           bloqueio2_dias?: number | null;
           comunidade_id?: string;
+          convites_black?: number;
+          convites_creator?: number;
+          convites_lista?: number;
+          convites_presenca?: number;
+          convites_social?: number;
           dias_castigo?: number | null;
           id?: string;
           infracoes_limite?: number | null;
@@ -930,6 +966,51 @@ export type Database = {
           },
         ];
       };
+      convites_clube: {
+        Row: {
+          codigo: string;
+          criado_em: string;
+          id: string;
+          membro_id: string;
+          status: string;
+          usado_em: string | null;
+          usado_por: string | null;
+        };
+        Insert: {
+          codigo?: string;
+          criado_em?: string;
+          id?: string;
+          membro_id: string;
+          status?: string;
+          usado_em?: string | null;
+          usado_por?: string | null;
+        };
+        Update: {
+          codigo?: string;
+          criado_em?: string;
+          id?: string;
+          membro_id?: string;
+          status?: string;
+          usado_em?: string | null;
+          usado_por?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'convites_clube_membro_id_fkey';
+            columns: ['membro_id'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'convites_clube_usado_por_fkey';
+            columns: ['usado_por'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
       convites_mais_vanta: {
         Row: {
           aceito_em: string | null;
@@ -1321,6 +1402,48 @@ export type Database = {
           },
         ];
       };
+      denuncias: {
+        Row: {
+          alvo_comunidade_id: string | null;
+          alvo_evento_id: string | null;
+          alvo_user_id: string | null;
+          atualizado_em: string | null;
+          criado_em: string;
+          descricao: string | null;
+          id: string;
+          motivo: string;
+          reporter_id: string;
+          status: string;
+          tipo: string;
+        };
+        Insert: {
+          alvo_comunidade_id?: string | null;
+          alvo_evento_id?: string | null;
+          alvo_user_id?: string | null;
+          atualizado_em?: string | null;
+          criado_em?: string;
+          descricao?: string | null;
+          id?: string;
+          motivo: string;
+          reporter_id: string;
+          status?: string;
+          tipo: string;
+        };
+        Update: {
+          alvo_comunidade_id?: string | null;
+          alvo_evento_id?: string | null;
+          alvo_user_id?: string | null;
+          atualizado_em?: string | null;
+          criado_em?: string;
+          descricao?: string | null;
+          id?: string;
+          motivo?: string;
+          reporter_id?: string;
+          status?: string;
+          tipo?: string;
+        };
+        Relationships: [];
+      };
       equipe_evento: {
         Row: {
           created_at: string;
@@ -1446,6 +1569,7 @@ export type Database = {
           local: string;
           mesas_ativo: boolean | null;
           motivo_rejeicao: string | null;
+          mv_avaliacao: string | null;
           nome: string;
           permissoes_produtor: string[] | null;
           planta_mesas: string | null;
@@ -1515,6 +1639,7 @@ export type Database = {
           local?: string;
           mesas_ativo?: boolean | null;
           motivo_rejeicao?: string | null;
+          mv_avaliacao?: string | null;
           nome: string;
           permissoes_produtor?: string[] | null;
           planta_mesas?: string | null;
@@ -1584,6 +1709,7 @@ export type Database = {
           local?: string;
           mesas_ativo?: boolean | null;
           motivo_rejeicao?: string | null;
+          mv_avaliacao?: string | null;
           nome?: string;
           permissoes_produtor?: string[] | null;
           planta_mesas?: string | null;
@@ -1894,19 +2020,19 @@ export type Database = {
           created_at: string;
           evento_id: string;
           id: string;
-          teto_global_total: number;
+          teto_global_total: number | null;
         };
         Insert: {
           created_at?: string;
           evento_id: string;
           id?: string;
-          teto_global_total?: number;
+          teto_global_total?: number | null;
         };
         Update: {
           created_at?: string;
           evento_id?: string;
           id?: string;
-          teto_global_total?: number;
+          teto_global_total?: number | null;
         };
         Relationships: [
           {
@@ -2016,10 +2142,11 @@ export type Database = {
         };
         Relationships: [];
       };
-      mais_vanta_lotes_evento: {
+      mais_vanta_config_evento: {
         Row: {
           ativo: boolean;
           created_at: string;
+          creator_sublevel_minimo: string | null;
           desconto_percentual: number | null;
           evento_id: string;
           id: string;
@@ -2027,10 +2154,13 @@ export type Database = {
           lote_id: string | null;
           tier_minimo: string;
           tipo: string;
+          vagas_limite: number | null;
+          vagas_resgatadas: number | null;
         };
         Insert: {
           ativo?: boolean;
           created_at?: string;
+          creator_sublevel_minimo?: string | null;
           desconto_percentual?: number | null;
           evento_id: string;
           id?: string;
@@ -2038,10 +2168,13 @@ export type Database = {
           lote_id?: string | null;
           tier_minimo: string;
           tipo: string;
+          vagas_limite?: number | null;
+          vagas_resgatadas?: number | null;
         };
         Update: {
           ativo?: boolean;
           created_at?: string;
+          creator_sublevel_minimo?: string | null;
           desconto_percentual?: number | null;
           evento_id?: string;
           id?: string;
@@ -2049,6 +2182,8 @@ export type Database = {
           lote_id?: string | null;
           tier_minimo?: string;
           tipo?: string;
+          vagas_limite?: number | null;
+          vagas_resgatadas?: number | null;
         };
         Relationships: [
           {
@@ -2088,8 +2223,13 @@ export type Database = {
           castigo_motivo: string | null;
           categoria: string | null;
           cidade_base: string | null;
+          cidade_principal: string | null;
+          cidades_ativas: string[] | null;
           comunidade_origem: string | null;
           convidado_por: string | null;
+          convites_disponiveis: number | null;
+          convites_usados: number | null;
+          creator_sublevel: string | null;
           genero: string | null;
           id: string;
           instagram_handle: string | null;
@@ -2118,8 +2258,13 @@ export type Database = {
           castigo_motivo?: string | null;
           categoria?: string | null;
           cidade_base?: string | null;
+          cidade_principal?: string | null;
+          cidades_ativas?: string[] | null;
           comunidade_origem?: string | null;
           convidado_por?: string | null;
+          convites_disponiveis?: number | null;
+          convites_usados?: number | null;
+          creator_sublevel?: string | null;
           genero?: string | null;
           id?: string;
           instagram_handle?: string | null;
@@ -2148,8 +2293,13 @@ export type Database = {
           castigo_motivo?: string | null;
           categoria?: string | null;
           cidade_base?: string | null;
+          cidade_principal?: string | null;
+          cidades_ativas?: string[] | null;
           comunidade_origem?: string | null;
           convidado_por?: string | null;
+          convites_disponiveis?: number | null;
+          convites_usados?: number | null;
+          creator_sublevel?: string | null;
           genero?: string | null;
           id?: string;
           instagram_handle?: string | null;
@@ -2249,6 +2399,126 @@ export type Database = {
           text?: string;
         };
         Relationships: [];
+      };
+      mv_convites_especiais: {
+        Row: {
+          beneficio_id: string | null;
+          criado_em: string;
+          enviado_por: string;
+          evento_id: string;
+          id: string;
+          mensagem: string | null;
+          status: string;
+          user_id: string;
+        };
+        Insert: {
+          beneficio_id?: string | null;
+          criado_em?: string;
+          enviado_por: string;
+          evento_id: string;
+          id?: string;
+          mensagem?: string | null;
+          status?: string;
+          user_id: string;
+        };
+        Update: {
+          beneficio_id?: string | null;
+          criado_em?: string;
+          enviado_por?: string;
+          evento_id?: string;
+          id?: string;
+          mensagem?: string | null;
+          status?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'mv_convites_especiais_beneficio_id_fkey';
+            columns: ['beneficio_id'];
+            isOneToOne: false;
+            referencedRelation: 'mais_vanta_config_evento';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'mv_convites_especiais_enviado_por_fkey';
+            columns: ['enviado_por'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'mv_convites_especiais_evento_id_fkey';
+            columns: ['evento_id'];
+            isOneToOne: false;
+            referencedRelation: 'eventos_admin';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'mv_convites_especiais_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      mv_solicitacoes_notificacao: {
+        Row: {
+          criado_em: string;
+          evento_id: string;
+          id: string;
+          membros_notificados: number | null;
+          mensagem: string;
+          produtor_id: string;
+          resolvido_em: string | null;
+          resolvido_por: string | null;
+          status: string;
+        };
+        Insert: {
+          criado_em?: string;
+          evento_id: string;
+          id?: string;
+          membros_notificados?: number | null;
+          mensagem?: string;
+          produtor_id: string;
+          resolvido_em?: string | null;
+          resolvido_por?: string | null;
+          status?: string;
+        };
+        Update: {
+          criado_em?: string;
+          evento_id?: string;
+          id?: string;
+          membros_notificados?: number | null;
+          mensagem?: string;
+          produtor_id?: string;
+          resolvido_em?: string | null;
+          resolvido_por?: string | null;
+          status?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'mv_solicitacoes_notificacao_evento_id_fkey';
+            columns: ['evento_id'];
+            isOneToOne: false;
+            referencedRelation: 'eventos_admin';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'mv_solicitacoes_notificacao_produtor_id_fkey';
+            columns: ['produtor_id'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'mv_solicitacoes_notificacao_resolvido_por_fkey';
+            columns: ['resolvido_por'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
       };
       niveis_prestigio: {
         Row: {
@@ -2642,6 +2912,68 @@ export type Database = {
         };
         Relationships: [];
       };
+      planos_produtor: {
+        Row: {
+          ativo: boolean;
+          atualizado_em: string;
+          criado_em: string;
+          descricao: string | null;
+          id: string;
+          limite_eventos_mes: number;
+          limite_notificacoes_mes: number;
+          limite_resgates_evento: number;
+          nome: string;
+          ordem: number;
+          personalizado_para: string | null;
+          preco_evento_extra: number;
+          preco_mensal: number;
+          preco_notificacao_extra: number;
+          tiers_acessiveis: string[];
+        };
+        Insert: {
+          ativo?: boolean;
+          atualizado_em?: string;
+          criado_em?: string;
+          descricao?: string | null;
+          id?: string;
+          limite_eventos_mes?: number;
+          limite_notificacoes_mes?: number;
+          limite_resgates_evento?: number;
+          nome: string;
+          ordem?: number;
+          personalizado_para?: string | null;
+          preco_evento_extra?: number;
+          preco_mensal?: number;
+          preco_notificacao_extra?: number;
+          tiers_acessiveis?: string[];
+        };
+        Update: {
+          ativo?: boolean;
+          atualizado_em?: string;
+          criado_em?: string;
+          descricao?: string | null;
+          id?: string;
+          limite_eventos_mes?: number;
+          limite_notificacoes_mes?: number;
+          limite_resgates_evento?: number;
+          nome?: string;
+          ordem?: number;
+          personalizado_para?: string | null;
+          preco_evento_extra?: number;
+          preco_mensal?: number;
+          preco_notificacao_extra?: number;
+          tiers_acessiveis?: string[];
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'planos_produtor_personalizado_para_fkey';
+            columns: ['personalizado_para'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
       pmf_responses: {
         Row: {
           created_at: string | null;
@@ -2666,6 +2998,51 @@ export type Database = {
             foreignKeyName: 'pmf_responses_user_id_fkey';
             columns: ['user_id'];
             isOneToOne: true;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      produtor_plano: {
+        Row: {
+          criado_em: string;
+          fim: string | null;
+          id: string;
+          inicio: string;
+          plano_id: string;
+          produtor_id: string;
+          status: string;
+        };
+        Insert: {
+          criado_em?: string;
+          fim?: string | null;
+          id?: string;
+          inicio?: string;
+          plano_id: string;
+          produtor_id: string;
+          status?: string;
+        };
+        Update: {
+          criado_em?: string;
+          fim?: string | null;
+          id?: string;
+          inicio?: string;
+          plano_id?: string;
+          produtor_id?: string;
+          status?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'produtor_plano_plano_id_fkey';
+            columns: ['plano_id'];
+            isOneToOne: false;
+            referencedRelation: 'planos_produtor';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'produtor_plano_produtor_id_fkey';
+            columns: ['produtor_id'];
+            isOneToOne: false;
             referencedRelation: 'profiles';
             referencedColumns: ['id'];
           },
@@ -3001,8 +3378,8 @@ export type Database = {
           id: string;
           label: string;
           lista_id: string;
-          saldo_banco: number;
-          teto_global: number;
+          saldo_banco: number | null;
+          teto_global: number | null;
           tipo: string | null;
           valor: number | null;
         };
@@ -3016,8 +3393,8 @@ export type Database = {
           id?: string;
           label: string;
           lista_id: string;
-          saldo_banco?: number;
-          teto_global?: number;
+          saldo_banco?: number | null;
+          teto_global?: number | null;
           tipo?: string | null;
           valor?: number | null;
         };
@@ -3031,8 +3408,8 @@ export type Database = {
           id?: string;
           label?: string;
           lista_id?: string;
-          saldo_banco?: number;
-          teto_global?: number;
+          saldo_banco?: number | null;
+          teto_global?: number | null;
           tipo?: string | null;
           valor?: number | null;
         };
@@ -3171,7 +3548,7 @@ export type Database = {
             foreignKeyName: 'resgates_mv_evento_beneficio_id_fkey';
             columns: ['beneficio_id'];
             isOneToOne: false;
-            referencedRelation: 'mais_vanta_lotes_evento';
+            referencedRelation: 'mais_vanta_config_evento';
             referencedColumns: ['id'];
           },
           {
@@ -3328,11 +3705,15 @@ export type Database = {
       };
       solicitacoes_clube: {
         Row: {
+          balde_sugerido: string | null;
+          cidade: string | null;
           codigo_verificacao: string | null;
           como_conheceu: string | null;
           convidado_por: string | null;
+          convite_id: string | null;
           criado_em: string;
           id: string;
+          indicado_por: string | null;
           instagram_handle: string;
           instagram_seguidores: number | null;
           instagram_verificado: boolean | null;
@@ -3346,11 +3727,15 @@ export type Database = {
           user_id: string;
         };
         Insert: {
+          balde_sugerido?: string | null;
+          cidade?: string | null;
           codigo_verificacao?: string | null;
           como_conheceu?: string | null;
           convidado_por?: string | null;
+          convite_id?: string | null;
           criado_em?: string;
           id?: string;
+          indicado_por?: string | null;
           instagram_handle: string;
           instagram_seguidores?: number | null;
           instagram_verificado?: boolean | null;
@@ -3364,11 +3749,15 @@ export type Database = {
           user_id: string;
         };
         Update: {
+          balde_sugerido?: string | null;
+          cidade?: string | null;
           codigo_verificacao?: string | null;
           como_conheceu?: string | null;
           convidado_por?: string | null;
+          convite_id?: string | null;
           criado_em?: string;
           id?: string;
+          indicado_por?: string | null;
           instagram_handle?: string;
           instagram_seguidores?: number | null;
           instagram_verificado?: boolean | null;
@@ -4024,6 +4413,7 @@ export type Database = {
         Args: { p_evento_id: string; p_socio_id: string };
         Returns: Json;
       };
+      anonimizar_conta: { Args: never; Returns: undefined };
       buscar_membros: {
         Args: { max_results?: number; search_query: string };
         Returns: {
@@ -4120,6 +4510,7 @@ export type Database = {
           local: string;
           mesas_ativo: boolean | null;
           motivo_rejeicao: string | null;
+          mv_avaliacao: string | null;
           nome: string;
           permissoes_produtor: string[] | null;
           planta_mesas: string | null;

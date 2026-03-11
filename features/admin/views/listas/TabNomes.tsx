@@ -13,7 +13,7 @@ const Toast: React.FC<{ msg: string; onDone: () => void }> = ({ msg, onDone }) =
   return (
     <div className="absolute bottom-6 left-4 right-4 z-[200] flex items-center gap-3 bg-[#1a1a1a] border border-[#FFD300]/30 rounded-2xl px-5 py-4 shadow-2xl">
       <div className="w-7 h-7 rounded-full bg-[#FFD300]/10 flex items-center justify-center shrink-0">
-        <Check size={14} className="text-[#FFD300]" />
+        <Check size="0.875rem" className="text-[#FFD300]" />
       </div>
       <p className="text-white text-sm font-semibold flex-1 min-w-0">{msg}</p>
     </div>
@@ -51,18 +51,18 @@ const ConvidadosList: React.FC<{
           className={`flex items-center gap-3 px-4 py-3 ${idx < shown.length - 1 ? 'border-b border-white/5' : ''}`}
         >
           <div className="w-8 h-8 rounded-full bg-zinc-800 border border-white/10 flex items-center justify-center shrink-0">
-            <span className="text-zinc-400 text-[10px] font-black">{c.nome.charAt(0).toUpperCase()}</span>
+            <span className="text-zinc-400 text-[0.625rem] font-black">{c.nome.charAt(0).toUpperCase()}</span>
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-white text-sm font-semibold truncate">{c.nome}</p>
-            <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest truncate">
+            <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest truncate">
               por {c.inseridoPorNome}
             </p>
           </div>
           {c.checkedIn ? (
             <div className="flex items-center gap-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-2 py-0.5 shrink-0">
-              <Check size={9} className="text-emerald-400" />
-              <span className="text-emerald-400 text-[8px] font-black">Dentro</span>
+              <Check size="0.5625rem" className="text-emerald-400" />
+              <span className="text-emerald-400 text-[0.5rem] font-black">Dentro</span>
             </div>
           ) : abobora ? (
             <div className="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0" />
@@ -72,7 +72,7 @@ const ConvidadosList: React.FC<{
         </div>
       ))}
       {visible < convs.length && (
-        <p className="text-center text-zinc-400 text-[9px] font-black uppercase tracking-widest py-3">
+        <p className="text-center text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest py-3">
           {convs.length - visible} restantes · role para ver mais
         </p>
       )}
@@ -137,18 +137,18 @@ export const TabNomes: React.FC<{
         <div className="flex gap-3 mb-4 shrink-0">
           <div className="flex-1 bg-zinc-900/40 border border-white/5 rounded-2xl p-4 text-center">
             <p className="text-white font-black text-2xl">{totalInseridos}</p>
-            <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mt-1">Inseridos</p>
+            <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest mt-1">Inseridos</p>
           </div>
           <div className="flex-1 bg-zinc-900/40 border border-white/5 rounded-2xl p-4 text-center">
             <p className="text-[#FFD300] font-black text-2xl">{totalEntraram}</p>
-            <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mt-1">Entraram</p>
+            <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest mt-1">Entraram</p>
           </div>
         </div>
       )}
 
       <div className="flex items-center gap-2 mb-4 shrink-0">
         <div className="flex-1 flex items-center gap-2 bg-zinc-900/60 border border-white/5 rounded-xl px-3 py-2.5 focus-within:border-[#FFD300]/30">
-          <Search size={13} className="text-zinc-400 shrink-0" />
+          <Search size="0.8125rem" className="text-zinc-400 shrink-0" />
           <input
             value={busca}
             onChange={e => setBusca(e.target.value)}
@@ -157,15 +157,15 @@ export const TabNomes: React.FC<{
           />
           {busca && (
             <button onClick={() => setBusca('')}>
-              <X size={12} className="text-zinc-400" />
+              <X size="0.75rem" className="text-zinc-400" />
             </button>
           )}
         </div>
         <button
           onClick={() => setModalOpen(true)}
-          className="flex items-center gap-1.5 px-3 py-2.5 bg-[#FFD300] text-black font-black text-[10px] uppercase tracking-wider rounded-xl shrink-0 active:scale-95 transition-all"
+          className="flex items-center gap-1.5 px-3 py-2.5 bg-[#FFD300] text-black font-black text-[0.625rem] uppercase tracking-wider rounded-xl shrink-0 active:scale-95 transition-all"
         >
-          <Plus size={12} />
+          <Plus size="0.75rem" />
           Adicionar
         </button>
       </div>
@@ -173,8 +173,8 @@ export const TabNomes: React.FC<{
       <div className="flex-1 overflow-y-auto no-scrollbar space-y-3">
         {convidados.length === 0 && (
           <div className="flex flex-col items-center py-16 gap-3">
-            <Users size={28} className="text-zinc-800" />
-            <p className="text-zinc-700 text-[10px] font-black uppercase tracking-widest">
+            <Users size="1.75rem" className="text-zinc-800" />
+            <p className="text-zinc-700 text-[0.625rem] font-black uppercase tracking-widest">
               {busca ? 'Nenhum resultado' : 'Nenhum convidado ainda'}
             </p>
           </div>
@@ -194,20 +194,20 @@ export const TabNomes: React.FC<{
                 <span className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: regra.cor ?? '#71717a' }} />
                 <div className="flex-1 min-w-0 text-left">
                   <p className="text-white text-sm font-bold truncate">{regra.label}</p>
-                  <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest mt-0.5">
+                  <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest mt-0.5">
                     {convs.length} nome{convs.length > 1 ? 's' : ''} · {checkins} dentro
                   </p>
                 </div>
                 {abobora && (
                   <div className="flex items-center gap-1 bg-amber-500/10 border border-amber-500/20 rounded-lg px-2 py-1 shrink-0">
-                    <Clock size={9} className="text-amber-400" />
-                    <span className="text-amber-400 text-[8px] font-black">
+                    <Clock size="0.5625rem" className="text-amber-400" />
+                    <span className="text-amber-400 text-[0.5rem] font-black">
                       {regra.valor ? `R$${regra.valor}` : `Expirou ${regra.horaCorte}`}
                     </span>
                   </div>
                 )}
                 <ChevronRight
-                  size={14}
+                  size="0.875rem"
                   className={`text-zinc-700 shrink-0 transition-transform ${expandido ? 'rotate-90' : ''}`}
                 />
               </button>

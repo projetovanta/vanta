@@ -222,7 +222,7 @@ export const CriarComunidadeView: React.FC<{
     return (
       <div className="absolute inset-0 bg-[#0A0A0A] flex flex-col items-center justify-center p-10 gap-6">
         <div className="w-20 h-20 rounded-full bg-[#FFD300]/10 border border-[#FFD300]/30 flex items-center justify-center">
-          <Check size={36} className="text-[#FFD300]" />
+          <Check size="2.25rem" className="text-[#FFD300]" />
         </div>
         <div className="text-center">
           <h2 style={TYPOGRAPHY.screenTitle} className="text-2xl italic mb-2">
@@ -236,7 +236,7 @@ export const CriarComunidadeView: React.FC<{
         </div>
         <button
           onClick={onBack}
-          className="w-full max-w-xs py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-[0.3em] rounded-2xl active:scale-[0.98] transition-all"
+          className="w-full max-w-xs py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-[0.3em] rounded-2xl active:scale-[0.98] transition-all"
         >
           Voltar para Comunidades
         </button>
@@ -262,7 +262,7 @@ export const CriarComunidadeView: React.FC<{
             onClick={safeBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0 mt-1"
           >
-            <ArrowLeft size={18} className="text-zinc-400" />
+            <ArrowLeft size="1.125rem" className="text-zinc-400" />
           </button>
         </div>
 
@@ -271,7 +271,7 @@ export const CriarComunidadeView: React.FC<{
           {([1, 2, 3] as const).map((s, i) => (
             <React.Fragment key={s}>
               <div
-                className={`w-6 h-6 rounded-full flex items-center justify-center text-[9px] font-black border transition-all shrink-0 ${
+                className={`w-6 h-6 rounded-full flex items-center justify-center text-[0.5625rem] font-black border transition-all shrink-0 ${
                   step === s
                     ? 'bg-[#FFD300] border-[#FFD300] text-black'
                     : step > s
@@ -279,7 +279,7 @@ export const CriarComunidadeView: React.FC<{
                       : 'bg-zinc-900 border-white/10 text-zinc-400'
                 }`}
               >
-                {step > s ? <Check size={10} /> : s}
+                {step > s ? <Check size="0.625rem" /> : s}
               </div>
               {i < 2 && <div className={`flex-1 h-px ${step > s ? 'bg-[#FFD300]/20' : 'bg-white/5'}`} />}
             </React.Fragment>
@@ -289,7 +289,7 @@ export const CriarComunidadeView: React.FC<{
           {STEP_LABELS.map((l, i) => (
             <p
               key={l}
-              className={`text-[7px] font-black uppercase tracking-widest ${step === i + 1 ? 'text-[#FFD300]' : 'text-zinc-700'}`}
+              className={`text-[0.4375rem] font-black uppercase tracking-widest ${step === i + 1 ? 'text-[#FFD300]' : 'text-zinc-700'}`}
               style={{ width: '33%', textAlign: i === 0 ? 'left' : i === 2 ? 'right' : 'center' }}
             >
               {l}
@@ -364,7 +364,7 @@ export const CriarComunidadeView: React.FC<{
             setProdutores={setProdutores}
           />
         )}
-        {erro && <p className="mt-4 text-red-400 text-[10px] font-black uppercase tracking-widest">{erro}</p>}
+        {erro && <p className="mt-4 text-red-400 text-[0.625rem] font-black uppercase tracking-widest">{erro}</p>}
       </div>
 
       {/* Nav */}
@@ -375,14 +375,14 @@ export const CriarComunidadeView: React.FC<{
               setErro('');
               setStep(s => (s - 1) as 1 | 2 | 3);
             }}
-            className="flex-1 py-3.5 bg-zinc-900 border border-white/10 rounded-xl text-zinc-400 text-[10px] font-black uppercase tracking-widest active:scale-95 transition-all"
+            className="flex-1 py-3.5 bg-zinc-900 border border-white/10 rounded-xl text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest active:scale-95 transition-all"
           >
             Anterior
           </button>
         )}
         <button
           onClick={avancar}
-          className="flex-1 py-3.5 bg-[#FFD300] text-black rounded-xl text-[10px] font-black uppercase tracking-widest active:scale-95 transition-all"
+          className="flex-1 py-3.5 bg-[#FFD300] text-black rounded-xl text-[0.625rem] font-black uppercase tracking-widest active:scale-95 transition-all"
         >
           {step === 3 ? 'Criar Comunidade' : 'Próximo'}
         </button>

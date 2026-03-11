@@ -87,7 +87,7 @@ const ColorPickerModal: React.FC<{
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-[#FFD300] font-serif italic text-lg">Escolha a Cor</h2>
           <button type="button" onClick={onClose} className="p-1.5 bg-zinc-900 rounded-full text-zinc-400">
-            <X size={16} />
+            <X size="1rem" />
           </button>
         </div>
 
@@ -118,7 +118,7 @@ const ColorPickerModal: React.FC<{
             >
               {hex.toLowerCase() === c.toLowerCase() && (
                 <Check
-                  size={10}
+                  size="0.625rem"
                   className="mx-auto"
                   style={{
                     color:
@@ -133,7 +133,7 @@ const ColorPickerModal: React.FC<{
         <button
           type="button"
           onClick={() => onSelect(hex)}
-          className="w-full py-3 bg-[#FFD300] text-black text-[10px] font-black uppercase tracking-[0.3em] rounded-xl active:scale-[0.98] transition-all"
+          className="w-full py-3 bg-[#FFD300] text-black text-[0.625rem] font-black uppercase tracking-[0.3em] rounded-xl active:scale-[0.98] transition-all"
         >
           Confirmar
         </button>

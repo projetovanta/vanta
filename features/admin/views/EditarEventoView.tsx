@@ -222,7 +222,7 @@ export const EditarEventoView: React.FC<{
       if (gerenteM) setGerente({ membroId: gerenteM.id, nome: gerenteM.nome, email: '', foto: '' });
     }
 
-    // MAIS VANTA — carregar benefícios de mais_vanta_lotes_evento
+    // MAIS VANTA — carregar benefícios de mais_vanta_config_evento
     void clubeService.getBeneficiosEvento(eventoId).then(beneficiosDB => {
       if (beneficiosDB.length > 0) {
         setMaisVantaEvento({
@@ -234,6 +234,8 @@ export const EditarEventoView: React.FC<{
             loteId: b.loteId ?? '',
             listaVarId: b.listaId ?? '',
             descontoPercentual: String(b.descontoPercentual ?? 0),
+            creatorSublevelMinimo: b.creatorSublevelMinimo ?? '',
+            vagasLimite: b.vagasLimite != null ? String(b.vagasLimite) : '',
           })),
         });
       }
@@ -500,7 +502,7 @@ export const EditarEventoView: React.FC<{
         }
       }
 
-      // MAIS VANTA — salvar benefícios por tier (mais_vanta_lotes_evento)
+      // MAIS VANTA — salvar benefícios por tier (mais_vanta_config_evento)
       if (maisVantaEvento.enabled) {
         const ativos = maisVantaEvento.beneficios.filter(b => b.ativo && (b.loteId || b.listaVarId));
         await clubeService.salvarBeneficiosEvento(
@@ -510,7 +512,9 @@ export const EditarEventoView: React.FC<{
             tipo: b.tipo,
             loteId: b.tipo === 'ingresso' ? b.loteId : null,
             listaId: b.tipo === 'lista' ? b.listaVarId : null,
-            descontoPercentual: b.tierId === 'desconto' ? parseInt(b.descontoPercentual) || null : null,
+            descontoPercentual: b.tierId === 'lista' ? parseInt(b.descontoPercentual) || null : null,
+            creatorSublevelMinimo: b.tierId === 'creator' && b.creatorSublevelMinimo ? b.creatorSublevelMinimo : null,
+            vagasLimite: b.vagasLimite ? parseInt(b.vagasLimite) || null : null,
             ativo: true,
           })),
         );
@@ -582,7 +586,7 @@ export const EditarEventoView: React.FC<{
   if (loading) {
     return (
       <div className="absolute inset-0 bg-[#0A0A0A] flex items-center justify-center">
-        <Loader2 size={24} className="text-zinc-400 animate-spin" />
+        <Loader2 size="1.5rem" className="text-zinc-400 animate-spin" />
       </div>
     );
   }
@@ -591,7 +595,7 @@ export const EditarEventoView: React.FC<{
     return (
       <div className="absolute inset-0 bg-[#0A0A0A] flex flex-col items-center justify-center p-10 gap-6">
         <div className="w-20 h-20 rounded-full bg-zinc-900 border border-white/10 flex items-center justify-center">
-          <Check size={36} className="text-emerald-400" />
+          <Check size="2.25rem" className="text-emerald-400" />
         </div>
         <div className="text-center">
           <h2 style={TYPOGRAPHY.screenTitle} className="text-2xl italic mb-2">
@@ -601,7 +605,7 @@ export const EditarEventoView: React.FC<{
         </div>
         <button
           onClick={onBack}
-          className="w-full max-w-xs py-4 bg-zinc-800 border border-white/10 text-zinc-300 font-bold text-[10px] uppercase tracking-[0.3em] rounded-2xl active:scale-[0.98] transition-all"
+          className="w-full max-w-xs py-4 bg-zinc-800 border border-white/10 text-zinc-300 font-bold text-[0.625rem] uppercase tracking-[0.3em] rounded-2xl active:scale-[0.98] transition-all"
         >
           Voltar
         </button>
@@ -613,7 +617,7 @@ export const EditarEventoView: React.FC<{
     return (
       <div className="absolute inset-0 bg-[#0A0A0A] flex flex-col items-center justify-center p-10 gap-4">
         <p className="text-red-400 text-sm font-bold">Comunidade não encontrada para este evento.</p>
-        <button onClick={onBack} className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">
+        <button onClick={onBack} className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest">
           Voltar
         </button>
       </div>
@@ -643,7 +647,7 @@ export const EditarEventoView: React.FC<{
             onClick={safeBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0 mt-1"
           >
-            <ArrowLeft size={18} className="text-zinc-400" />
+            <ArrowLeft size="1.125rem" className="text-zinc-400" />
           </button>
         </div>
 
@@ -652,7 +656,7 @@ export const EditarEventoView: React.FC<{
           {Array.from({ length: TOTAL_STEPS }, (_, i) => i + 1).map((s, i) => (
             <React.Fragment key={s}>
               <div
-                className={`w-6 h-6 rounded-full flex items-center justify-center text-[9px] font-black border transition-all shrink-0 ${
+                className={`w-6 h-6 rounded-full flex items-center justify-center text-[0.5625rem] font-black border transition-all shrink-0 ${
                   step === s
                     ? 'bg-[#FFD300] border-[#FFD300] text-black'
                     : step > s
@@ -660,7 +664,7 @@ export const EditarEventoView: React.FC<{
                       : 'bg-zinc-900 border-white/10 text-zinc-400'
                 }`}
               >
-                {step > s ? <Check size={10} /> : s}
+                {step > s ? <Check size="0.625rem" /> : s}
               </div>
               {i < TOTAL_STEPS - 1 && <div className={`flex-1 h-px ${step > s ? 'bg-[#FFD300]/20' : 'bg-white/5'}`} />}
             </React.Fragment>
@@ -670,7 +674,7 @@ export const EditarEventoView: React.FC<{
           {STEP_LABELS.map((l, i) => (
             <p
               key={l}
-              className={`text-[7px] font-black uppercase tracking-widest ${step === i + 1 ? 'text-[#FFD300]' : 'text-zinc-700'}`}
+              className={`text-[0.4375rem] font-black uppercase tracking-widest ${step === i + 1 ? 'text-[#FFD300]' : 'text-zinc-700'}`}
               style={{
                 width: `${100 / TOTAL_STEPS}%`,
                 textAlign: i === 0 ? 'left' : i === TOTAL_STEPS - 1 ? 'right' : 'center',
@@ -711,9 +715,9 @@ export const EditarEventoView: React.FC<{
             />
             {/* Campos extras — Slug + Reembolso (só no editar) */}
             <div className="mt-6 space-y-4">
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Link Público</p>
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">Link Público</p>
               <div>
-                <label className="text-zinc-400 text-[10px] font-bold mb-1 block">
+                <label className="text-zinc-400 text-[0.625rem] font-bold mb-1 block">
                   Slug (URL pública: /evento/slug)
                 </label>
                 <input
@@ -726,16 +730,16 @@ export const EditarEventoView: React.FC<{
                   className="w-full px-4 py-3 bg-zinc-900 border border-white/5 rounded-xl text-white text-sm placeholder:text-zinc-700 outline-none focus:border-[#FFD300]/30"
                 />
                 {slug && (
-                  <p className="text-zinc-400 text-[9px] mt-1">
+                  <p className="text-zinc-400 text-[0.5625rem] mt-1">
                     {window.location.origin}/evento/{slug}
                   </p>
                 )}
               </div>
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mt-4">
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mt-4">
                 Política de Reembolso
               </p>
               <div>
-                <label className="text-zinc-400 text-[10px] font-bold mb-1 block">Prazo (dias)</label>
+                <label className="text-zinc-400 text-[0.625rem] font-bold mb-1 block">Prazo (dias)</label>
                 <input
                   value={prazoReembolsoDias}
                   onChange={e => {
@@ -748,7 +752,7 @@ export const EditarEventoView: React.FC<{
                 />
               </div>
               <div>
-                <label className="text-zinc-400 text-[10px] font-bold mb-1 block">Condições (texto livre)</label>
+                <label className="text-zinc-400 text-[0.625rem] font-bold mb-1 block">Condições (texto livre)</label>
                 <textarea
                   value={politicaReembolso}
                   onChange={e => {
@@ -812,7 +816,7 @@ export const EditarEventoView: React.FC<{
           />
         )}
         {step === 5 && tipoFluxo === 'COM_SOCIO' && <Step5Financeiro split={split} setSplit={setSplit} socio={socio} />}
-        {erro && <p className="mt-4 text-red-400 text-[10px] font-black uppercase tracking-widest">{erro}</p>}
+        {erro && <p className="mt-4 text-red-400 text-[0.625rem] font-black uppercase tracking-widest">{erro}</p>}
       </div>
 
       {/* Navegação */}
@@ -820,14 +824,14 @@ export const EditarEventoView: React.FC<{
         {step > 1 && (
           <button
             onClick={voltar}
-            className="flex-1 py-3.5 bg-zinc-900 border border-white/10 rounded-xl text-zinc-400 text-[10px] font-black uppercase tracking-widest active:scale-95 transition-all"
+            className="flex-1 py-3.5 bg-zinc-900 border border-white/10 rounded-xl text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest active:scale-95 transition-all"
           >
             Anterior
           </button>
         )}
         <button
           onClick={avancar}
-          className="flex-1 py-3.5 bg-[#FFD300] text-black rounded-xl text-[10px] font-black uppercase tracking-widest active:scale-95 transition-all font-bold"
+          className="flex-1 py-3.5 bg-[#FFD300] text-black rounded-xl text-[0.625rem] font-black uppercase tracking-widest active:scale-95 transition-all font-bold"
         >
           {step === TOTAL_STEPS ? 'Salvar Alterações' : 'Próximo'}
         </button>

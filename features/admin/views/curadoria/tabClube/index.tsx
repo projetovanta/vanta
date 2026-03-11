@@ -120,7 +120,7 @@ export const TabClube: React.FC<Props> = ({ adminId, toastFn, comunidadeId }) =>
   }, [refresh]);
 
   const handleAprovar = async (solId: string) => {
-    const tier = tierSelects[solId] || 'desconto';
+    const tier = tierSelects[solId] || 'lista';
     const tags = tagsSelects[solId] || [];
     const notaInterna = notasInternas[solId] || '';
     try {
@@ -129,16 +129,6 @@ export const TabClube: React.FC<Props> = ({ adminId, toastFn, comunidadeId }) =>
       await refresh();
     } catch {
       toastFn('erro', 'Erro ao aprovar');
-    }
-  };
-
-  const handleRejeitar = async (solId: string) => {
-    try {
-      await clubeService.rejeitarSolicitacao(solId, adminId);
-      toastFn('sucesso', 'Solicitação rejeitada');
-      await refresh();
-    } catch {
-      toastFn('erro', 'Erro ao rejeitar');
     }
   };
 
@@ -261,21 +251,20 @@ export const TabClube: React.FC<Props> = ({ adminId, toastFn, comunidadeId }) =>
         tierSelects={tierSelects}
         onTierSelectChange={(id, tier) => setTierSelects(p => ({ ...p, [id]: tier }))}
         onAprovar={handleAprovar}
-        onRejeitar={handleRejeitar}
         onClose={() => setPerfilDetalhe(null)}
       />
     );
   }
 
   return (
-    <div className="flex-1 overflow-y-auto no-scrollbar px-6 pt-4 pb-32">
+    <div className="flex-1 overflow-y-auto no-scrollbar px-6 pt-4 pb-6">
       {/* Sub-tabs — scroll horizontal snap (mobile) */}
-      <div className="flex gap-1.5 mb-4 overflow-x-auto snap-x snap-mandatory no-scrollbar -mx-6 px-6">
+      <div className="flex flex-wrap gap-1.5 mb-4">
         {tabItems.map(t => (
           <button
             key={t.id}
             onClick={() => setSubTab(t.id)}
-            className={`snap-start px-2.5 py-2 rounded-xl text-[8px] font-black uppercase tracking-wider border transition-all shrink-0 whitespace-nowrap ${
+            className={`px-2.5 py-2 rounded-xl text-[0.5rem] font-black uppercase tracking-wider border transition-all ${
               subTab === t.id
                 ? 'bg-[#FFD300]/10 border-[#FFD300]/30 text-[#FFD300]'
                 : 'bg-zinc-900 border-white/5 text-zinc-400'
@@ -283,7 +272,7 @@ export const TabClube: React.FC<Props> = ({ adminId, toastFn, comunidadeId }) =>
           >
             {t.label}{' '}
             {t.count > 0 && (
-              <span className="ml-1 bg-[#FFD300] text-black px-1 rounded-full text-[7px]">{t.count}</span>
+              <span className="ml-1 bg-[#FFD300] text-black px-1 rounded-full text-[0.4375rem]">{t.count}</span>
             )}
           </button>
         ))}
@@ -300,7 +289,6 @@ export const TabClube: React.FC<Props> = ({ adminId, toastFn, comunidadeId }) =>
           onTagsChange={(id, tags) => setTagsSelects(p => ({ ...p, [id]: tags }))}
           onNotaInternaChange={(id, nota) => setNotasInternas(p => ({ ...p, [id]: nota }))}
           onAprovar={handleAprovar}
-          onRejeitar={handleRejeitar}
           onAdiar={handleAdiar}
           onOpenPerfil={setPerfilDetalhe}
           onOpenInstagram={openInstagram}

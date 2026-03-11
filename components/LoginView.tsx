@@ -156,7 +156,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onRegister, onC
             onClick={() => setConfirmClose(true)}
             className="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-black/40 border border-white/10 flex items-center justify-center text-white/60 active:text-white active:bg-black/60 transition-all backdrop-blur-sm"
           >
-            <X size={16} />
+            <X size="1rem" />
           </button>
         )}
 
@@ -182,7 +182,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onRegister, onC
               className="contents"
             >
               <div>
-                <p className="text-[11px] text-white/70 font-black uppercase tracking-widest mb-1.5">E-mail</p>
+                <p className="text-[0.6875rem] text-white/70 font-black uppercase tracking-widest mb-1.5">E-mail</p>
                 <input
                   type="email"
                   value={email}
@@ -196,14 +196,14 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onRegister, onC
 
               <div>
                 <div className="flex items-center justify-between mb-1.5">
-                  <p className="text-[11px] text-white/70 font-black uppercase tracking-widest">Senha</p>
+                  <p className="text-[0.6875rem] text-white/70 font-black uppercase tracking-widest">Senha</p>
                   <button
                     type="button"
                     onClick={() => {
                       setResetMode(true);
                       setResetEmail(email);
                     }}
-                    className="text-[10px] text-[#FFD300]/80 font-bold uppercase tracking-wider active:text-[#FFD300] transition-colors"
+                    className="text-[0.625rem] text-[#FFD300]/80 font-bold uppercase tracking-wider active:text-[#FFD300] transition-colors"
                   >
                     Esqueci minha senha
                   </button>
@@ -222,21 +222,21 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onRegister, onC
                     onClick={() => setShowSenha(p => !p)}
                     className="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 active:text-white transition-colors"
                   >
-                    {showSenha ? <EyeOff size={16} /> : <Eye size={16} />}
+                    {showSenha ? <EyeOff size="1rem" /> : <Eye size="1rem" />}
                   </button>
                 </div>
               </div>
 
               {erro && (
-                <p className="text-red-400 text-[10px] font-black uppercase tracking-widest animate-pulse text-center">
+                <p className="text-red-400 text-[0.625rem] font-black uppercase tracking-widest animate-pulse text-center">
                   {erro}
                 </p>
               )}
 
               {isLocked && lockCountdown > 0 && (
                 <div className="flex items-center gap-2 justify-center bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3">
-                  <Lock size={12} className="text-red-400 shrink-0" />
-                  <p className="text-red-400 text-[10px] font-black uppercase tracking-widest">
+                  <Lock size="0.75rem" className="text-red-400 shrink-0" />
+                  <p className="text-red-400 text-[0.625rem] font-black uppercase tracking-widest">
                     Bloqueado por {lockCountdown}s
                   </p>
                 </div>
@@ -246,11 +246,11 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onRegister, onC
                 <button
                   type="submit"
                   disabled={loading || isLocked}
-                  className="w-full py-3 bg-[#FFD300] text-black font-bold text-[11px] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="w-full py-3 bg-[#FFD300] text-black font-bold text-[0.6875rem] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                   {loading ? (
                     <>
-                      <Loader size={13} className="animate-spin" /> Entrando…
+                      <Loader size="0.8125rem" className="animate-spin" /> Entrando…
                     </>
                   ) : (
                     'Entrar'
@@ -260,7 +260,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onRegister, onC
                 <button
                   type="button"
                   onClick={onRegister}
-                  className="w-full py-2.5 border border-white/25 rounded-xl text-white font-bold text-[11px] uppercase tracking-[0.18em] active:scale-95 transition-all text-center"
+                  className="w-full py-2.5 border border-white/25 rounded-xl text-white font-bold text-[0.6875rem] uppercase tracking-[0.18em] active:scale-95 transition-all text-center"
                 >
                   Não tenho conta — Cadastrar
                 </button>
@@ -279,7 +279,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onRegister, onC
               {!resetSent ? (
                 <>
                   <div>
-                    <p className="text-[11px] text-white/70 font-black uppercase tracking-widest mb-1.5">E-mail</p>
+                    <p className="text-[0.6875rem] text-white/70 font-black uppercase tracking-widest mb-1.5">E-mail</p>
                     <input
                       type="email"
                       value={resetEmail}
@@ -293,7 +293,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onRegister, onC
                   </div>
 
                   {resetErro && (
-                    <p className="text-red-400 text-[10px] font-black uppercase tracking-widest animate-pulse text-center">
+                    <p className="text-red-400 text-[0.625rem] font-black uppercase tracking-widest animate-pulse text-center">
                       {resetErro}
                     </p>
                   )}
@@ -305,7 +305,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onRegister, onC
                   >
                     {resetLoading ? (
                       <>
-                        <Loader size={14} className="animate-spin" /> Enviando…
+                        <Loader size="0.875rem" className="animate-spin" /> Enviando…
                       </>
                     ) : (
                       'Enviar link de recuperação'
@@ -315,7 +315,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onRegister, onC
               ) : (
                 <div className="flex flex-col items-center gap-3 py-4">
                   <div className="w-14 h-14 rounded-full bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center">
-                    <Check size={24} className="text-emerald-400" />
+                    <Check size="1.5rem" className="text-emerald-400" />
                   </div>
                   <p className="text-white font-bold text-sm text-center">Link enviado!</p>
                   <p className="text-white/50 text-xs text-center leading-relaxed">
@@ -330,7 +330,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onRegister, onC
                   setResetSent(false);
                   setResetErro('');
                 }}
-                className="w-full py-3.5 border border-white/25 rounded-xl text-white font-bold text-[11px] uppercase tracking-[0.18em] active:scale-95 transition-all text-center"
+                className="w-full py-3.5 border border-white/25 rounded-xl text-white font-bold text-[0.6875rem] uppercase tracking-[0.18em] active:scale-95 transition-all text-center"
               >
                 Voltar ao login
               </button>
@@ -355,13 +355,13 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onRegister, onC
                   setConfirmClose(false);
                   onClose?.();
                 }}
-                className="w-full py-3 bg-white/10 border border-white/15 rounded-xl text-white/80 font-bold text-[11px] uppercase tracking-[0.18em] active:scale-95 transition-all"
+                className="w-full py-3 bg-white/10 border border-white/15 rounded-xl text-white/80 font-bold text-[0.6875rem] uppercase tracking-[0.18em] active:scale-95 transition-all"
               >
                 Sim, sair mesmo assim
               </button>
               <button
                 onClick={() => setConfirmClose(false)}
-                className="w-full py-3 bg-[#FFD300] text-black font-bold text-[11px] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all"
+                className="w-full py-3 bg-[#FFD300] text-black font-bold text-[0.6875rem] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all"
               >
                 Continuar e me cadastrar
               </button>

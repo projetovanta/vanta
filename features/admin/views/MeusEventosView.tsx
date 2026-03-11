@@ -111,7 +111,7 @@ export const MeusEventosView: React.FC<{
           onClick={onBack}
           className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all mt-1"
         >
-          <ArrowLeft size={18} className="text-zinc-400" />
+          <ArrowLeft size="1.125rem" className="text-zinc-400" />
         </button>
       </div>
 
@@ -130,7 +130,7 @@ export const MeusEventosView: React.FC<{
           <button
             key={t.id}
             onClick={() => setAba(t.id)}
-            className={`flex-1 py-3 text-center text-[10px] font-black uppercase tracking-widest transition-all ${
+            className={`flex-1 py-3 text-center text-[0.625rem] font-black uppercase tracking-widest transition-all ${
               aba === t.id
                 ? 'text-[#FFD300] border-b-2 border-[#FFD300]'
                 : 'text-zinc-400 border-b-2 border-transparent'
@@ -139,7 +139,7 @@ export const MeusEventosView: React.FC<{
             {t.label}
             {t.count > 0 && (
               <span
-                className={`ml-1.5 text-[8px] px-1.5 py-0.5 rounded-full ${
+                className={`ml-1.5 text-[0.5rem] px-1.5 py-0.5 rounded-full ${
                   aba === t.id ? 'bg-[#FFD300]/15 text-[#FFD300]' : 'bg-zinc-800 text-zinc-400'
                 }`}
               >
@@ -154,7 +154,7 @@ export const MeusEventosView: React.FC<{
       {aba === 'rejeitados' && rejeitados.length > 0 && (
         <div className="px-5 pt-3 pb-1 shrink-0 space-y-2">
           <div className="relative">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+            <Search size="0.875rem" className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
             <input
               type="text"
               value={buscaRejeitados}
@@ -182,9 +182,9 @@ export const MeusEventosView: React.FC<{
         {listaAtual.length === 0 ? (
           <div className="flex flex-col items-center py-16 gap-4">
             <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center">
-              <ListChecks size={28} className="text-zinc-700" />
+              <ListChecks size="1.75rem" className="text-zinc-700" />
             </div>
-            <p className="text-zinc-700 text-[10px] font-black uppercase tracking-widest text-center">
+            <p className="text-zinc-700 text-[0.625rem] font-black uppercase tracking-widest text-center">
               {aba === 'ativos'
                 ? 'Nenhum evento ativo'
                 : aba === 'passados'
@@ -193,7 +193,7 @@ export const MeusEventosView: React.FC<{
                     ? 'Nenhuma correção pendente'
                     : 'Nenhum evento rejeitado'}
             </p>
-            <p className="text-zinc-800 text-[9px] text-center leading-relaxed">
+            <p className="text-zinc-800 text-[0.5625rem] text-center leading-relaxed">
               {aba === 'ativos'
                 ? 'Crie eventos pelo painel da comunidade.'
                 : aba === 'passados'
@@ -225,44 +225,44 @@ export const MeusEventosView: React.FC<{
                 <div className="flex-1 min-w-0">
                   <p className="text-white font-bold text-sm leading-tight truncate mb-1">{ev.nome}</p>
                   <div className="flex items-center gap-1 mb-0.5">
-                    <Calendar size={10} className="text-zinc-400 shrink-0" />
-                    <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">{dataLabel}</p>
+                    <Calendar size="0.625rem" className="text-zinc-400 shrink-0" />
+                    <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest">{dataLabel}</p>
                   </div>
                   <div className="flex items-center gap-1">
-                    <MapPin size={10} className="text-zinc-400 shrink-0" />
-                    <p className="text-zinc-400 text-[9px] truncate">{ev.local}</p>
+                    <MapPin size="0.625rem" className="text-zinc-400 shrink-0" />
+                    <p className="text-zinc-400 text-[0.5625rem] truncate">{ev.local}</p>
                   </div>
                 </div>
                 <div className="flex flex-col items-end gap-1.5 shrink-0">
                   {statusEvento === 'ao_vivo' && (
-                    <span className="text-[7px] font-black uppercase tracking-widest px-1.5 py-0.5 bg-emerald-500/15 text-emerald-400 rounded-full border border-emerald-500/30 flex items-center gap-1">
+                    <span className="text-[0.4375rem] font-black uppercase tracking-widest px-1.5 py-0.5 bg-emerald-500/15 text-emerald-400 rounded-full border border-emerald-500/30 flex items-center gap-1">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                       ao vivo
                     </span>
                   )}
                   {statusEvento === 'futuro' && (
-                    <span className="text-[7px] font-black uppercase tracking-widest px-1.5 py-0.5 bg-[#FFD300]/10 text-[#FFD300] rounded-full border border-[#FFD300]/20">
+                    <span className="text-[0.4375rem] font-black uppercase tracking-widest px-1.5 py-0.5 bg-[#FFD300]/10 text-[#FFD300] rounded-full border border-[#FFD300]/20">
                       programado
                     </span>
                   )}
                   {statusEvento === 'encerrado' && (
-                    <span className="text-[7px] font-black uppercase tracking-widest px-1.5 py-0.5 bg-zinc-800/60 text-zinc-400 rounded-full border border-white/5">
+                    <span className="text-[0.4375rem] font-black uppercase tracking-widest px-1.5 py-0.5 bg-zinc-800/60 text-zinc-400 rounded-full border border-white/5">
                       encerrado
                     </span>
                   )}
                   {ev.statusEvento === 'EM_REVISAO' && (
-                    <span className="text-[7px] font-black uppercase tracking-widest px-1.5 py-0.5 bg-amber-500/15 text-amber-400 rounded-full border border-amber-500/30 flex items-center gap-1">
-                      <AlertTriangle size={8} />
+                    <span className="text-[0.4375rem] font-black uppercase tracking-widest px-1.5 py-0.5 bg-amber-500/15 text-amber-400 rounded-full border border-amber-500/30 flex items-center gap-1">
+                      <AlertTriangle size="0.5rem" />
                       correção {ev.rodadaRejeicao ?? 0}/3
                     </span>
                   )}
                   {ev.statusEvento === 'CANCELADO' && (ev.rodadaRejeicao ?? 0) > 0 && (
-                    <span className="text-[7px] font-black uppercase tracking-widest px-1.5 py-0.5 bg-red-500/15 text-red-400 rounded-full border border-red-500/30">
+                    <span className="text-[0.4375rem] font-black uppercase tracking-widest px-1.5 py-0.5 bg-red-500/15 text-red-400 rounded-full border border-red-500/30">
                       rejeitado
                     </span>
                   )}
                   {ev.socios?.some(s => s.status === 'PENDENTE' || s.status === 'NEGOCIANDO') && (
-                    <span className="text-[7px] font-black uppercase tracking-widest px-1.5 py-0.5 bg-cyan-500/15 text-cyan-400 rounded-full border border-cyan-500/30">
+                    <span className="text-[0.4375rem] font-black uppercase tracking-widest px-1.5 py-0.5 bg-cyan-500/15 text-cyan-400 rounded-full border border-cyan-500/30">
                       {ev.socios.find(s => s.status === 'NEGOCIANDO') ? 'negociando' : 'aguardando sócio'}
                     </span>
                   )}
@@ -270,7 +270,7 @@ export const MeusEventosView: React.FC<{
                     s => s.status === 'RECUSADO' || s.status === 'CANCELADO' || s.status === 'EXPIRADO',
                   ) &&
                     !ev.socios.some(s => s.status === 'ACEITO') && (
-                      <span className="text-[7px] font-black uppercase tracking-widest px-1.5 py-0.5 bg-orange-500/15 text-orange-400 rounded-full border border-orange-500/30">
+                      <span className="text-[0.4375rem] font-black uppercase tracking-widest px-1.5 py-0.5 bg-orange-500/15 text-orange-400 rounded-full border border-orange-500/30">
                         {ev.socios.find(s => s.status === 'EXPIRADO')
                           ? 'expirado'
                           : ev.socios.find(s => s.status === 'CANCELADO')
@@ -285,12 +285,12 @@ export const MeusEventosView: React.FC<{
                     {ev.motivoRejeicao && <p className="text-red-400 text-xs italic">{ev.motivoRejeicao}</p>}
                     {Object.entries(ev.rejeicaoCampos).map(([campo, comentario]) => (
                       <div key={campo} className="flex items-start gap-2">
-                        <AlertTriangle size={10} className="text-red-400 shrink-0 mt-0.5" />
+                        <AlertTriangle size="0.625rem" className="text-red-400 shrink-0 mt-0.5" />
                         <div className="min-w-0">
-                          <span className="text-red-400 text-[10px] font-bold uppercase">
+                          <span className="text-red-400 text-[0.625rem] font-bold uppercase">
                             {campo.replace(/_/g, ' ')}
                           </span>
-                          {comentario && <p className="text-zinc-400 text-[10px]">{comentario}</p>}
+                          {comentario && <p className="text-zinc-400 text-[0.625rem]">{comentario}</p>}
                         </div>
                       </div>
                     ))}
@@ -309,7 +309,7 @@ export const MeusEventosView: React.FC<{
               disabled={paginaRejeitados === 0}
               className="w-8 h-8 rounded-lg bg-zinc-900 border border-white/10 flex items-center justify-center text-zinc-400 disabled:opacity-30"
             >
-              <ChevronLeft size={14} />
+              <ChevronLeft size="0.875rem" />
             </button>
             <span className="text-zinc-400 text-xs">
               {paginaRejeitados + 1} / {totalPaginas}
@@ -319,7 +319,7 @@ export const MeusEventosView: React.FC<{
               disabled={paginaRejeitados >= totalPaginas - 1}
               className="w-8 h-8 rounded-lg bg-zinc-900 border border-white/10 flex items-center justify-center text-zinc-400 disabled:opacity-30"
             >
-              <ChevronRight size={14} />
+              <ChevronRight size="0.875rem" />
             </button>
           </div>
         )}

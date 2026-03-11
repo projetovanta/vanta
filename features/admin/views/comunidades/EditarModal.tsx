@@ -252,15 +252,15 @@ export const EditarModal: React.FC<{
             onClick={safeClose}
             className="w-8 h-8 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10"
           >
-            <X size={14} className="text-zinc-400" />
+            <X size="0.875rem" className="text-zinc-400" />
           </button>
         </div>
 
         <div className="flex-1 overflow-y-auto no-scrollbar p-6 space-y-5">
           {/* Imagens */}
           <div className="space-y-2.5">
-            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Imagens</p>
-            <p className="text-[8px] text-zinc-700 font-black uppercase tracking-widest">
+            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">Imagens</p>
+            <p className="text-[0.5rem] text-zinc-700 font-black uppercase tracking-widest">
               Perfil: 400×400 · 1:1 — Capa: 1200×400 · 3:1
             </p>
             <div className="flex gap-3 items-end">
@@ -275,10 +275,10 @@ export const EditarModal: React.FC<{
                     <div className="w-full h-full bg-zinc-900" />
                   )}
                   <div className="absolute inset-0 bg-black/50 opacity-0 group-active:opacity-100 flex items-center justify-center">
-                    <Camera size={16} className="text-white" />
+                    <Camera size="1rem" className="text-white" />
                   </div>
                 </button>
-                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Perfil</p>
+                <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">Perfil</p>
                 <input
                   ref={fotoRef}
                   type="file"
@@ -299,10 +299,10 @@ export const EditarModal: React.FC<{
                     <div className="w-full h-full bg-zinc-900" />
                   )}
                   <div className="absolute inset-0 bg-black/50 opacity-0 group-active:opacity-100 flex items-center justify-center">
-                    <Camera size={16} className="text-white" />
+                    <Camera size="1rem" className="text-white" />
                   </div>
                 </button>
-                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Capa</p>
+                <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">Capa</p>
                 <input
                   ref={capaRef}
                   type="file"
@@ -316,7 +316,7 @@ export const EditarModal: React.FC<{
 
           {/* Bio */}
           <div className="space-y-1.5">
-            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Descrição / Bio</p>
+            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">Descrição / Bio</p>
             <textarea
               value={descricao}
               onChange={e => setDescricao(e.target.value)}
@@ -327,7 +327,7 @@ export const EditarModal: React.FC<{
 
           {/* Endereço */}
           <div className="space-y-1.5">
-            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Endereço / Local</p>
+            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">Endereço / Local</p>
             {isMaster ? (
               <input
                 defaultValue={comunidade.endereco}
@@ -338,15 +338,15 @@ export const EditarModal: React.FC<{
                 onClick={() => setShowEndAlert(true)}
                 className="w-full flex items-center gap-3 bg-zinc-900/40 border border-white/5 rounded-xl px-4 py-3 text-left"
               >
-                <MapPin size={13} className="text-zinc-400 shrink-0" />
+                <MapPin size="0.8125rem" className="text-zinc-400 shrink-0" />
                 <p className="text-zinc-400 text-sm flex-1 truncate">{comunidade.endereco}</p>
-                <AlertTriangle size={12} className="text-zinc-700 shrink-0" />
+                <AlertTriangle size="0.75rem" className="text-zinc-700 shrink-0" />
               </button>
             )}
             {showEndAlert && (
               <div className="flex items-start gap-2 bg-amber-500/8 border border-amber-500/20 rounded-xl px-3 py-2.5">
-                <AlertTriangle size={12} className="text-amber-400 shrink-0 mt-0.5" />
-                <p className="text-amber-400/80 text-[10px] leading-relaxed">
+                <AlertTriangle size="0.75rem" className="text-amber-400 shrink-0 mt-0.5" />
+                <p className="text-amber-400/80 text-[0.625rem] leading-relaxed">
                   Somente administradores do VANTA podem alterar endereços de comunidades.
                 </p>
               </div>
@@ -366,16 +366,16 @@ export const EditarModal: React.FC<{
           {/* Contrato Vanta */}
           <div className="space-y-3 pt-1 border-t border-white/5">
             <div className="flex items-center gap-2">
-              <Lock size={10} className="text-[#FFD300]/70 shrink-0" />
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Contrato Vanta</p>
+              <Lock size="0.625rem" className="text-[#FFD300]/70 shrink-0" />
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">Contrato Vanta</p>
             </div>
-            <p className="text-[8px] text-zinc-700 font-black uppercase tracking-widest leading-relaxed">
+            <p className="text-[0.5rem] text-zinc-700 font-black uppercase tracking-widest leading-relaxed">
               Lucro do VANTA por ingresso vendido nesta comunidade. Definido pelo master.
             </p>
 
             {/* Taxa % — lucro da plataforma */}
             <div className="space-y-1.5">
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">
                 Taxa Vanta — Lucro por ingresso (%)
               </p>
               {isMaster ? (
@@ -397,7 +397,7 @@ export const EditarModal: React.FC<{
                   onClick={() => setShowFeeAlert(true)}
                   className="w-full flex items-center gap-3 bg-zinc-900/40 border border-white/5 rounded-xl px-4 py-3 text-left"
                 >
-                  <Lock size={12} className="text-zinc-700 shrink-0" />
+                  <Lock size="0.75rem" className="text-zinc-700 shrink-0" />
                   <p className="text-zinc-400 text-sm flex-1">
                     {comunidade.vanta_fee_percent !== undefined
                       ? `${(comunidade.vanta_fee_percent * 100).toFixed(1)}%`
@@ -409,7 +409,7 @@ export const EditarModal: React.FC<{
 
             {/* Taxa Fixa — valor adicional por ingresso */}
             <div className="space-y-1.5">
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">
                 Taxa Fixa por ingresso (R$)
               </p>
               {isMaster ? (
@@ -430,7 +430,7 @@ export const EditarModal: React.FC<{
                   onClick={() => setShowFeeAlert(true)}
                   className="w-full flex items-center gap-3 bg-zinc-900/40 border border-white/5 rounded-xl px-4 py-3 text-left"
                 >
-                  <Lock size={12} className="text-zinc-700 shrink-0" />
+                  <Lock size="0.75rem" className="text-zinc-700 shrink-0" />
                   <p className="text-zinc-400 text-sm flex-1">
                     {comunidade.vanta_fee_fixed !== undefined
                       ? `R$ ${comunidade.vanta_fee_fixed.toFixed(2)}`
@@ -443,8 +443,8 @@ export const EditarModal: React.FC<{
             {/* Alerta taxa bloqueada */}
             {showFeeAlert && (
               <div className="flex items-start gap-2 bg-amber-500/8 border border-amber-500/20 rounded-xl px-3 py-2.5">
-                <AlertTriangle size={12} className="text-amber-400 shrink-0 mt-0.5" />
-                <p className="text-amber-400/80 text-[10px] leading-relaxed">
+                <AlertTriangle size="0.75rem" className="text-amber-400 shrink-0 mt-0.5" />
+                <p className="text-amber-400/80 text-[0.625rem] leading-relaxed">
                   Somente administradores do VANTA podem alterar taxas contratuais.
                 </p>
               </div>
@@ -452,21 +452,23 @@ export const EditarModal: React.FC<{
 
             {/* Info: taxa VANTA sempre do cliente */}
             <div className="bg-[#FFD300]/5 border border-[#FFD300]/15 rounded-xl px-3 py-2">
-              <p className="text-[8px] text-[#FFD300]/70 font-black uppercase tracking-widest">Taxa de Serviço VANTA</p>
-              <p className="text-zinc-400 text-[9px] leading-relaxed mt-0.5">
+              <p className="text-[0.5rem] text-[#FFD300]/70 font-black uppercase tracking-widest">
+                Taxa de Serviço VANTA
+              </p>
+              <p className="text-zinc-400 text-[0.5625rem] leading-relaxed mt-0.5">
                 Sempre cobrada do cliente no checkout. O organizador recebe o valor integral do ingresso.
               </p>
             </div>
 
             {/* Modo gateway — quem paga o processamento */}
             <div className="space-y-1.5">
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Quem paga o Gateway?</p>
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">Quem paga o Gateway?</p>
               <div className="flex gap-2">
                 {(['ABSORVER', 'REPASSAR'] as const).map(mode => (
                   <button
                     key={mode}
                     onClick={() => setGatewayMode(mode)}
-                    className={`flex-1 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all border ${
+                    className={`flex-1 py-2.5 rounded-xl text-[0.5625rem] font-black uppercase tracking-widest transition-all border ${
                       gatewayMode === mode
                         ? 'bg-[#FFD300]/15 border-[#FFD300]/40 text-[#FFD300]'
                         : 'bg-zinc-900/40 border-white/5 text-zinc-400 active:text-zinc-300'
@@ -476,7 +478,7 @@ export const EditarModal: React.FC<{
                   </button>
                 ))}
               </div>
-              <p className="text-zinc-700 text-[9px] leading-relaxed">
+              <p className="text-zinc-700 text-[0.5625rem] leading-relaxed">
                 {gatewayMode === 'ABSORVER'
                   ? 'O custo de processamento do pagamento é descontado do repasse ao organizador.'
                   : 'O custo de processamento é cobrado do cliente no checkout.'}
@@ -487,8 +489,8 @@ export const EditarModal: React.FC<{
           {/* Split Taxa VANTA — master only */}
           {isMaster && (
             <div className="space-y-3 pt-1 border-t border-white/5">
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Repasse da taxa VANTA</p>
-              <p className="text-zinc-700 text-[9px] leading-relaxed">
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">Repasse da taxa VANTA</p>
+              <p className="text-zinc-700 text-[0.5625rem] leading-relaxed">
                 Percentual da taxa VANTA que o master repassa ao sócio/gerente desta comunidade.
               </p>
               <div className="flex items-center gap-2">
@@ -502,7 +504,7 @@ export const EditarModal: React.FC<{
                   className="w-24 bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-[#FFD300]/40"
                 />
                 <span className="text-zinc-400 text-xs">%</span>
-                <span className="text-zinc-700 text-[9px] ml-2">
+                <span className="text-zinc-700 text-[0.5625rem] ml-2">
                   {repasseStr === '0' ? 'Sem repasse' : `${repasseStr}% repassado`}
                 </span>
               </div>
@@ -512,15 +514,15 @@ export const EditarModal: React.FC<{
           {/* Taxas Avançadas — master only */}
           {isMaster && (
             <div className="space-y-3 pt-1 border-t border-white/5">
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">
                 Taxas Avançadas (Padrão Comunidade)
               </p>
-              <p className="text-zinc-700 text-[9px] leading-relaxed">
+              <p className="text-zinc-700 text-[0.5625rem] leading-relaxed">
                 Valores padrão para novos eventos. O produtor pode propor alterações na criação do evento.
               </p>
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">
+                  <label className="text-[0.4375rem] text-zinc-400 font-black uppercase tracking-widest">
                     Taxa Processamento (%)
                   </label>
                   <input
@@ -535,7 +537,7 @@ export const EditarModal: React.FC<{
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">
+                  <label className="text-[0.4375rem] text-zinc-400 font-black uppercase tracking-widest">
                     Taxa Porta (%)
                   </label>
                   <input
@@ -550,7 +552,7 @@ export const EditarModal: React.FC<{
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">
+                  <label className="text-[0.4375rem] text-zinc-400 font-black uppercase tracking-widest">
                     Taxa Mínima (R$)
                   </label>
                   <input
@@ -564,7 +566,7 @@ export const EditarModal: React.FC<{
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">
+                  <label className="text-[0.4375rem] text-zinc-400 font-black uppercase tracking-widest">
                     Cota Nomes Lista
                   </label>
                   <input
@@ -578,7 +580,7 @@ export const EditarModal: React.FC<{
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">
+                  <label className="text-[0.4375rem] text-zinc-400 font-black uppercase tracking-widest">
                     R$/Nome Excedente
                   </label>
                   <input
@@ -592,7 +594,7 @@ export const EditarModal: React.FC<{
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">
+                  <label className="text-[0.4375rem] text-zinc-400 font-black uppercase tracking-widest">
                     Cota Cortesias
                   </label>
                   <input
@@ -606,7 +608,7 @@ export const EditarModal: React.FC<{
                   />
                 </div>
                 <div className="col-span-2 space-y-1">
-                  <label className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">
+                  <label className="text-[0.4375rem] text-zinc-400 font-black uppercase tracking-widest">
                     % Cortesia Excedente (sobre valor face)
                   </label>
                   <input
@@ -628,15 +630,15 @@ export const EditarModal: React.FC<{
           <div className="space-y-3 pt-1 border-t border-white/5">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <PartyPopper size={10} className="text-purple-400/70 shrink-0" />
-                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Evento Privado</p>
+                <PartyPopper size="0.625rem" className="text-purple-400/70 shrink-0" />
+                <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">Evento Privado</p>
               </div>
               <button
                 onClick={() => setEpAtivo(!epAtivo)}
                 className={`w-10 h-5 rounded-full transition-all relative ${epAtivo ? 'bg-[#FFD300]' : 'bg-zinc-700'}`}
               >
                 <div
-                  className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-all ${epAtivo ? 'left-[22px]' : 'left-0.5'}`}
+                  className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-all ${epAtivo ? 'left-[1.375rem]' : 'left-0.5'}`}
                 />
               </button>
             </div>
@@ -644,7 +646,7 @@ export const EditarModal: React.FC<{
             {epAtivo && (
               <div className="space-y-3">
                 <div className="space-y-1">
-                  <label className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">
+                  <label className="text-[0.4375rem] text-zinc-400 font-black uppercase tracking-widest">
                     Texto de Apresentação
                   </label>
                   <textarea
@@ -658,19 +660,21 @@ export const EditarModal: React.FC<{
 
                 {/* Formatos */}
                 <div className="space-y-1">
-                  <label className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">Formatos</label>
+                  <label className="text-[0.4375rem] text-zinc-400 font-black uppercase tracking-widest">
+                    Formatos
+                  </label>
                   <div className="flex flex-wrap gap-1.5">
                     {epFormatos.map((f, i) => (
                       <span
                         key={i}
-                        className="flex items-center gap-1 bg-purple-500/10 border border-purple-500/20 text-purple-300 text-[10px] font-bold px-2.5 py-1 rounded-full"
+                        className="flex items-center gap-1 bg-purple-500/10 border border-purple-500/20 text-purple-300 text-[0.625rem] font-bold px-2.5 py-1 rounded-full"
                       >
                         {f}
                         <button
                           onClick={() => setEpFormatos(epFormatos.filter((_, idx) => idx !== i))}
                           className="text-purple-400/50 hover:text-purple-300"
                         >
-                          <X size={10} />
+                          <X size="0.625rem" />
                         </button>
                       </span>
                     ))}
@@ -698,26 +702,28 @@ export const EditarModal: React.FC<{
                       }}
                       className="w-9 h-9 bg-purple-500/10 border border-purple-500/20 rounded-xl flex items-center justify-center shrink-0"
                     >
-                      <Plus size={14} className="text-purple-400" />
+                      <Plus size="0.875rem" className="text-purple-400" />
                     </button>
                   </div>
                 </div>
 
                 {/* Atrações */}
                 <div className="space-y-1">
-                  <label className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">Atrações</label>
+                  <label className="text-[0.4375rem] text-zinc-400 font-black uppercase tracking-widest">
+                    Atrações
+                  </label>
                   <div className="flex flex-wrap gap-1.5">
                     {epAtracoes.map((a, i) => (
                       <span
                         key={i}
-                        className="flex items-center gap-1 bg-blue-500/10 border border-blue-500/20 text-blue-300 text-[10px] font-bold px-2.5 py-1 rounded-full"
+                        className="flex items-center gap-1 bg-blue-500/10 border border-blue-500/20 text-blue-300 text-[0.625rem] font-bold px-2.5 py-1 rounded-full"
                       >
                         {a}
                         <button
                           onClick={() => setEpAtracoes(epAtracoes.filter((_, idx) => idx !== i))}
                           className="text-blue-400/50 hover:text-blue-300"
                         >
-                          <X size={10} />
+                          <X size="0.625rem" />
                         </button>
                       </span>
                     ))}
@@ -745,28 +751,28 @@ export const EditarModal: React.FC<{
                       }}
                       className="w-9 h-9 bg-blue-500/10 border border-blue-500/20 rounded-xl flex items-center justify-center shrink-0"
                     >
-                      <Plus size={14} className="text-blue-400" />
+                      <Plus size="0.875rem" className="text-blue-400" />
                     </button>
                   </div>
                 </div>
 
                 {/* Faixas de Capacidade */}
                 <div className="space-y-1">
-                  <label className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">
+                  <label className="text-[0.4375rem] text-zinc-400 font-black uppercase tracking-widest">
                     Faixas de Capacidade
                   </label>
                   <div className="flex flex-wrap gap-1.5">
                     {epFaixas.map((f, i) => (
                       <span
                         key={i}
-                        className="flex items-center gap-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2.5 py-1 rounded-full"
+                        className="flex items-center gap-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-[0.625rem] font-bold px-2.5 py-1 rounded-full"
                       >
                         {f}
                         <button
                           onClick={() => setEpFaixas(epFaixas.filter((_, idx) => idx !== i))}
                           className="text-emerald-400/50 hover:text-emerald-300"
                         >
-                          <X size={10} />
+                          <X size="0.625rem" />
                         </button>
                       </span>
                     ))}
@@ -794,7 +800,7 @@ export const EditarModal: React.FC<{
                       }}
                       className="w-9 h-9 bg-emerald-500/10 border border-emerald-500/20 rounded-xl flex items-center justify-center shrink-0"
                     >
-                      <Plus size={14} className="text-emerald-400" />
+                      <Plus size="0.875rem" className="text-emerald-400" />
                     </button>
                   </div>
                 </div>
@@ -806,10 +812,12 @@ export const EditarModal: React.FC<{
           {isMaster && (
             <div className="space-y-3 pt-1 border-t border-white/5">
               <div className="flex items-center gap-2">
-                <ArrowRightLeft size={10} className="text-amber-400/70 shrink-0" />
-                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Transferir Titularidade</p>
+                <ArrowRightLeft size="0.625rem" className="text-amber-400/70 shrink-0" />
+                <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">
+                  Transferir Titularidade
+                </p>
               </div>
-              <p className="text-zinc-700 text-[9px] leading-relaxed">
+              <p className="text-zinc-700 text-[0.5625rem] leading-relaxed">
                 Transferir a propriedade desta comunidade para outro membro.
                 {comunidade.donoId && nomesMap[comunidade.donoId] && (
                   <>
@@ -819,7 +827,7 @@ export const EditarModal: React.FC<{
                 )}
               </p>
               {membrosComunidade.length === 0 ? (
-                <p className="text-zinc-700 text-[9px]">Nenhum membro disponível para transferência.</p>
+                <p className="text-zinc-700 text-[0.5625rem]">Nenhum membro disponível para transferência.</p>
               ) : (
                 <>
                   <VantaDropdown
@@ -835,18 +843,18 @@ export const EditarModal: React.FC<{
                   {novoDonoId && !showTransferConfirm && (
                     <button
                       onClick={() => setShowTransferConfirm(true)}
-                      className="w-full py-3 bg-amber-500/15 border border-amber-500/30 text-amber-400 rounded-xl text-[9px] font-black uppercase tracking-widest active:scale-[0.98] transition-all"
+                      className="w-full py-3 bg-amber-500/15 border border-amber-500/30 text-amber-400 rounded-xl text-[0.5625rem] font-black uppercase tracking-widest active:scale-[0.98] transition-all"
                     >
                       Transferir para {nomesMap[novoDonoId] || novoDonoId}
                     </button>
                   )}
                   {showTransferConfirm && (
                     <div className="bg-red-500/8 border border-red-500/20 rounded-xl p-3 space-y-2">
-                      <p className="text-red-400 text-[10px] font-bold">Tem certeza? Esta ação é irreversível.</p>
+                      <p className="text-red-400 text-[0.625rem] font-bold">Tem certeza? Esta ação é irreversível.</p>
                       <div className="flex gap-2">
                         <button
                           onClick={() => setShowTransferConfirm(false)}
-                          className="flex-1 py-2.5 bg-zinc-900 border border-white/10 rounded-xl text-zinc-400 text-[9px] font-black uppercase tracking-widest"
+                          className="flex-1 py-2.5 bg-zinc-900 border border-white/10 rounded-xl text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest"
                         >
                           Cancelar
                         </button>
@@ -855,7 +863,7 @@ export const EditarModal: React.FC<{
                             onSave({ donoId: novoDonoId } as Partial<Comunidade>);
                             setShowTransferConfirm(false);
                           }}
-                          className="flex-1 py-2.5 bg-red-500/20 border border-red-500/30 text-red-400 rounded-xl text-[9px] font-black uppercase tracking-widest"
+                          className="flex-1 py-2.5 bg-red-500/20 border border-red-500/30 text-red-400 rounded-xl text-[0.5625rem] font-black uppercase tracking-widest"
                         >
                           Confirmar
                         </button>
@@ -874,9 +882,9 @@ export const EditarModal: React.FC<{
         >
           <button
             onClick={handleSave}
-            className="w-full py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-[0.3em] rounded-xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all"
+            className="w-full py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-[0.3em] rounded-xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all"
           >
-            <Check size={13} /> Salvar
+            <Check size="0.8125rem" /> Salvar
           </button>
         </div>
       </div>

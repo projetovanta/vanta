@@ -43,6 +43,7 @@ function rowWithJoinToDeal(r: Record<string, unknown>): DealMaisVanta {
   if (parceiro) {
     deal.parceiroNome = parceiro.nome as string;
     deal.parceiroFotoUrl = (parceiro.foto_url as string) ?? undefined;
+    deal.parceiroTipo = (parceiro.tipo as string) ?? undefined;
   }
   if (cidade) {
     deal.cidadeNome = cidade.nome as string;
@@ -54,7 +55,7 @@ export const clubeDealsService = {
   async listar(): Promise<DealMaisVanta[]> {
     const { data } = await supabase
       .from('deals_mais_vanta')
-      .select('*, parceiros_mais_vanta(nome, foto_url), cidades_mais_vanta(nome)')
+      .select('*, parceiros_mais_vanta(nome, foto_url, tipo), cidades_mais_vanta(nome)')
       .order('criado_em', { ascending: false });
     return (data ?? []).map(r => rowWithJoinToDeal(r as Record<string, unknown>));
   },
@@ -62,7 +63,7 @@ export const clubeDealsService = {
   async listarPorCidade(cidadeId: string): Promise<DealMaisVanta[]> {
     const { data } = await supabase
       .from('deals_mais_vanta')
-      .select('*, parceiros_mais_vanta(nome, foto_url), cidades_mais_vanta(nome)')
+      .select('*, parceiros_mais_vanta(nome, foto_url, tipo), cidades_mais_vanta(nome)')
       .eq('cidade_id', cidadeId)
       .eq('status', 'ATIVO')
       .order('criado_em', { ascending: false });
@@ -72,7 +73,7 @@ export const clubeDealsService = {
   async listarPorParceiro(parceiroId: string): Promise<DealMaisVanta[]> {
     const { data } = await supabase
       .from('deals_mais_vanta')
-      .select('*, parceiros_mais_vanta(nome, foto_url), cidades_mais_vanta(nome)')
+      .select('*, parceiros_mais_vanta(nome, foto_url, tipo), cidades_mais_vanta(nome)')
       .eq('parceiro_id', parceiroId)
       .order('criado_em', { ascending: false });
     return (data ?? []).map(r => rowWithJoinToDeal(r as Record<string, unknown>));
@@ -81,7 +82,7 @@ export const clubeDealsService = {
   async buscarPorId(id: string): Promise<DealMaisVanta | null> {
     const { data } = await supabase
       .from('deals_mais_vanta')
-      .select('*, parceiros_mais_vanta(nome, foto_url), cidades_mais_vanta(nome)')
+      .select('*, parceiros_mais_vanta(nome, foto_url, tipo), cidades_mais_vanta(nome)')
       .eq('id', id)
       .maybeSingle();
     return data ? rowWithJoinToDeal(data as Record<string, unknown>) : null;

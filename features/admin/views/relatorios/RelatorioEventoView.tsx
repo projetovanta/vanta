@@ -69,12 +69,12 @@ export const RelatorioEventoView: React.FC<Props> = ({ evento, role, currentUser
             onClick={onBack}
             className="w-9 h-9 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0 mt-0.5"
           >
-            <ArrowLeft size={16} className="text-zinc-400" />
+            <ArrowLeft size="1rem" className="text-zinc-400" />
           </button>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
-              <BarChart3 size={12} className="text-[#FFD300] shrink-0" />
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Relatório</p>
+              <BarChart3 size="0.75rem" className="text-[#FFD300] shrink-0" />
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">Relatório</p>
             </div>
             <p className="text-white text-sm font-bold truncate mt-0.5">{evento.nome}</p>
           </div>
@@ -83,8 +83,8 @@ export const RelatorioEventoView: React.FC<Props> = ({ evento, role, currentUser
             onClick={refresh}
             className="flex items-center gap-1 px-2 py-1 bg-zinc-900 border border-white/10 rounded-lg active:scale-90 transition-all shrink-0"
           >
-            <RefreshCw size={10} className="text-zinc-400" />
-            <p className="text-zinc-400 text-[8px]">{tempoStr}</p>
+            <RefreshCw size="0.625rem" className="text-zinc-400" />
+            <p className="text-zinc-400 text-[0.5rem]">{tempoStr}</p>
           </button>
         </div>
 
@@ -93,9 +93,9 @@ export const RelatorioEventoView: React.FC<Props> = ({ evento, role, currentUser
           <div className="mb-3">
             <button
               onClick={() => exportRelatorioExcel(evento, listas, tickets)}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-950/40 border border-emerald-500/20 text-emerald-400 rounded-lg text-[9px] font-black uppercase tracking-wider active:scale-95 transition-all"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-950/40 border border-emerald-500/20 text-emerald-400 rounded-lg text-[0.5625rem] font-black uppercase tracking-wider active:scale-95 transition-all"
             >
-              <Download size={10} /> Exportar Excel
+              <Download size="0.625rem" /> Exportar Excel
             </button>
           </div>
         )}
@@ -106,7 +106,7 @@ export const RelatorioEventoView: React.FC<Props> = ({ evento, role, currentUser
             <button
               key={t}
               onClick={() => setTab(t)}
-              className={`py-3 px-4 text-[11px] font-black uppercase tracking-widest border-b-2 transition-all ${
+              className={`py-3 px-4 text-[0.6875rem] font-black uppercase tracking-widest border-b-2 transition-all ${
                 tab === t ? 'border-[#FFD300] text-[#FFD300]' : 'border-transparent text-zinc-400 active:text-zinc-400'
               }`}
             >

@@ -37,7 +37,10 @@ export const VantaDropdown: React.FC<{
         >
           {selected?.label || placeholder || 'Selecione'}
         </span>
-        <ChevronDown size={12} className={`text-zinc-400 shrink-0 transition-transform ${open ? 'rotate-180' : ''}`} />
+        <ChevronDown
+          size="0.75rem"
+          className={`text-zinc-400 shrink-0 transition-transform ${open ? 'rotate-180' : ''}`}
+        />
       </button>
       {open && (
         <div className="absolute z-50 top-full mt-1 left-0 right-0 bg-zinc-900 border border-white/10 rounded-xl overflow-hidden shadow-2xl max-h-48 overflow-y-auto no-scrollbar">
@@ -56,7 +59,7 @@ export const VantaDropdown: React.FC<{
             >
               {o.color && <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: o.color }} />}
               <span className={o.color ? '' : 'text-zinc-300'}>{o.label}</span>
-              {o.value === value && <Check size={10} className="ml-auto text-[#FFD300]" />}
+              {o.value === value && <Check size="0.625rem" className="ml-auto text-[#FFD300]" />}
             </button>
           ))}
         </div>

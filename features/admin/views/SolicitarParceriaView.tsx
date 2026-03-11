@@ -82,7 +82,7 @@ const ChipSelect: React.FC<{
               : 'bg-zinc-900/60 border-white/5 text-zinc-400'
           }`}
         >
-          {active && <Check size={10} className="inline mr-1" />}
+          {active && <Check size="0.625rem" className="inline mr-1" />}
           {opt}
         </button>
       );
@@ -92,7 +92,7 @@ const ChipSelect: React.FC<{
 
 // ── Label ───────────────────────────────────────────────────────────────────
 const Label: React.FC<{ children: React.ReactNode; required?: boolean }> = ({ children, required }) => (
-  <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5">
+  <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5">
     {children} {required && <span className="text-red-400">*</span>}
   </p>
 );
@@ -221,9 +221,9 @@ export const SolicitarParceriaView: React.FC<{
             onClick={step > 1 ? () => setStep(s => s - 1) : onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
           >
-            <ArrowLeft size={18} className="text-zinc-400" />
+            <ArrowLeft size="1.125rem" className="text-zinc-400" />
           </button>
-          <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest">Passo {step} de 4</p>
+          <p className="text-[0.5625rem] text-zinc-400 font-black uppercase tracking-widest">Passo {step} de 4</p>
         </div>
         <p style={TYPOGRAPHY.sectionKicker} className="mb-1">
           Parceria VANTA
@@ -263,11 +263,11 @@ export const SolicitarParceriaView: React.FC<{
                       tipo === t.key ? 'bg-[#FFD300]/10 border-[#FFD300]/30' : 'bg-zinc-900/60 border-white/5'
                     }`}
                   >
-                    <Building2 size={16} className={tipo === t.key ? 'text-[#FFD300] mb-1' : 'text-zinc-400 mb-1'} />
+                    <Building2 size="1rem" className={tipo === t.key ? 'text-[#FFD300] mb-1' : 'text-zinc-400 mb-1'} />
                     <p className={`text-xs font-bold ${tipo === t.key ? 'text-[#FFD300]' : 'text-zinc-400'}`}>
                       {t.label}
                     </p>
-                    <p className="text-[9px] text-zinc-400 mt-0.5">{t.desc}</p>
+                    <p className="text-[0.5625rem] text-zinc-400 mt-0.5">{t.desc}</p>
                   </button>
                 ))}
               </div>
@@ -338,7 +338,7 @@ export const SolicitarParceriaView: React.FC<{
                 inputMode="numeric"
               />
               {telefone && (
-                <p className="text-[10px] text-zinc-400 mt-1">
+                <p className="text-[0.625rem] text-zinc-400 mt-1">
                   {telefone.length >= 10
                     ? `(${telefone.slice(0, 2)}) ${telefone.slice(2, telefone.length === 11 ? 7 : 6)}-${telefone.slice(telefone.length === 11 ? 7 : 6)}`
                     : 'Digite DDD + número'}
@@ -354,7 +354,7 @@ export const SolicitarParceriaView: React.FC<{
             <div>
               <Label required>Instagram</Label>
               <div className="relative">
-                <Instagram size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+                <Instagram size="0.875rem" className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
                 <input
                   value={instagram}
                   onChange={e => setInstagram(e.target.value)}
@@ -366,7 +366,7 @@ export const SolicitarParceriaView: React.FC<{
             <div>
               <Label>Site</Label>
               <div className="relative">
-                <ExternalLink size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+                <ExternalLink size="0.875rem" className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
                 <input
                   value={site}
                   onChange={e => setSite(e.target.value)}
@@ -406,7 +406,7 @@ export const SolicitarParceriaView: React.FC<{
                         onClick={() => handleFotoRemove(i)}
                         className="absolute top-0.5 right-0.5 w-5 h-5 bg-black/70 rounded-full flex items-center justify-center"
                       >
-                        <XIcon size={12} className="text-white" />
+                        <XIcon size="0.75rem" className="text-white" />
                       </button>
                     </div>
                   ))}
@@ -417,7 +417,7 @@ export const SolicitarParceriaView: React.FC<{
                   onClick={() => fileInputRef.current?.click()}
                   className="w-full bg-zinc-900/60 border border-dashed border-white/10 rounded-xl p-4 flex flex-col items-center gap-1.5 active:scale-[0.98] transition-all"
                 >
-                  <Upload size={20} className="text-zinc-400" />
+                  <Upload size="1.25rem" className="text-zinc-400" />
                   <p className="text-zinc-400 text-xs">Toque para adicionar fotos</p>
                 </button>
               )}
@@ -448,13 +448,13 @@ export const SolicitarParceriaView: React.FC<{
                           active ? 'border-[#FFD300] bg-[#FFD300]' : 'border-zinc-600'
                         }`}
                       >
-                        {active && <Check size={10} className="text-black" />}
+                        {active && <Check size="0.625rem" className="text-black" />}
                       </span>
                       <div>
                         <p className={`text-sm font-bold ${active ? 'text-[#FFD300]' : 'text-zinc-300'}`}>
                           {int.label}
                         </p>
-                        <p className="text-[10px] text-zinc-400 mt-0.5">{int.desc}</p>
+                        <p className="text-[0.625rem] text-zinc-400 mt-0.5">{int.desc}</p>
                       </div>
                     </div>
                   </button>
@@ -504,8 +504,8 @@ export const SolicitarParceriaView: React.FC<{
 
             {/* Termos */}
             <div className="bg-zinc-900/60 border border-white/5 rounded-xl p-4 space-y-3 mt-2">
-              <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest">Termos de Parceria</p>
-              <div className="text-zinc-400 text-[10px] leading-relaxed space-y-1.5">
+              <p className="text-[0.5625rem] text-zinc-400 font-black uppercase tracking-widest">Termos de Parceria</p>
+              <div className="text-zinc-400 text-[0.625rem] leading-relaxed space-y-1.5">
                 <p>Ao enviar esta solicitação, você declara que:</p>
                 <p>• Todas as informações fornecidas são verdadeiras</p>
                 <p>
@@ -523,7 +523,7 @@ export const SolicitarParceriaView: React.FC<{
                     aceiteTermos ? 'border-[#FFD300] bg-[#FFD300]' : 'border-zinc-600'
                   }`}
                 >
-                  {aceiteTermos && <Check size={10} className="text-black" />}
+                  {aceiteTermos && <Check size="0.625rem" className="text-black" />}
                 </span>
                 <p className={`text-xs ${aceiteTermos ? 'text-[#FFD300] font-bold' : 'text-zinc-400'}`}>
                   Li e aceito os Termos de Parceria
@@ -545,15 +545,15 @@ export const SolicitarParceriaView: React.FC<{
           <button
             onClick={() => setStep(s => s + 1)}
             disabled={!canNext()}
-            className="w-full py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all disabled:opacity-40"
+            className="w-full py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all disabled:opacity-40"
           >
-            Próximo <ArrowRight size={14} />
+            Próximo <ArrowRight size="0.875rem" />
           </button>
         ) : (
           <button
             onClick={handleEnviar}
             disabled={!canNext() || enviando}
-            className="w-full py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all disabled:opacity-40"
+            className="w-full py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all disabled:opacity-40"
           >
             {enviando ? 'Enviando...' : 'Enviar Solicitação'}
           </button>

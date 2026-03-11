@@ -471,7 +471,7 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
   if (loading) {
     return (
       <div className="absolute inset-0 z-50 bg-[#0A0A0A] flex items-center justify-center">
-        <Loader2 size={32} className="text-amber-400 animate-spin" />
+        <Loader2 size="2rem" className="text-amber-400 animate-spin" />
       </div>
     );
   }
@@ -479,7 +479,7 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
   if (erro || !convite) {
     return (
       <div className="absolute inset-0 z-50 bg-[#0A0A0A] flex flex-col items-center justify-center gap-4 px-8">
-        <AlertTriangle size={32} className="text-red-400" />
+        <AlertTriangle size="2rem" className="text-red-400" />
         <p className="text-zinc-400 text-sm text-center">{erro ?? 'Erro ao carregar.'}</p>
         <button
           onClick={onClose}
@@ -524,14 +524,14 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
             onClick={onClose}
             className="w-9 h-9 rounded-full bg-zinc-900 border border-white/10 flex items-center justify-center active:scale-90 transition-all"
           >
-            <ArrowLeft size={16} className="text-white" />
+            <ArrowLeft size="1rem" className="text-white" />
           </button>
           <div className="flex-1 min-w-0">
             <p className="text-white font-bold text-sm truncate">{convite.nome}</p>
-            <p className="text-zinc-400 text-[10px] truncate">Rodada {convite.rodada}/3</p>
+            <p className="text-zinc-400 text-[0.625rem] truncate">Rodada {convite.rodada}/3</p>
           </div>
           <span
-            className={`text-[8px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border ${statusColor}`}
+            className={`text-[0.5rem] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border ${statusColor}`}
           >
             {statusLabel}
           </span>
@@ -545,25 +545,25 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
             <img src={convite.foto} alt="" className="w-10 h-10 rounded-lg object-cover shrink-0" />
           ) : (
             <div className="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center shrink-0">
-              <Calendar size={16} className="text-zinc-400" />
+              <Calendar size="1rem" className="text-zinc-400" />
             </div>
           )}
           <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-2 text-[10px] text-zinc-400">
-              <Clock size={10} className="text-amber-400/60 shrink-0" />
+            <div className="flex items-center gap-2 text-[0.625rem] text-zinc-400">
+              <Clock size="0.625rem" className="text-amber-400/60 shrink-0" />
               <span className="truncate">{fmtData(convite.dataInicio)}</span>
             </div>
             {convite.local && (
-              <div className="flex items-center gap-2 text-[10px] text-zinc-400 mt-0.5">
-                <MapPin size={10} className="text-zinc-400 shrink-0" />
+              <div className="flex items-center gap-2 text-[0.625rem] text-zinc-400 mt-0.5">
+                <MapPin size="0.625rem" className="text-zinc-400 shrink-0" />
                 <span className="truncate">{convite.local}</span>
               </div>
             )}
           </div>
         </div>
         {convite.prazoResposta && !encerrada && (
-          <div className="mt-2 flex items-center gap-1.5 text-[9px] text-orange-400/80">
-            <Clock size={10} />
+          <div className="mt-2 flex items-center gap-1.5 text-[0.5625rem] text-orange-400/80">
+            <Clock size="0.625rem" />
             <span>Responder até {fmtPrazo(convite.prazoResposta)}</span>
           </div>
         )}
@@ -585,7 +585,7 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
           if (isSistema) {
             return (
               <div key={i} className="flex justify-center">
-                <span className="text-[9px] text-zinc-400 bg-zinc-900/50 px-3 py-1 rounded-full">
+                <span className="text-[0.5625rem] text-zinc-400 bg-zinc-900/50 px-3 py-1 rounded-full">
                   {p.acao === 'expirar' ? 'Prazo expirado — negociação encerrada' : p.acao}
                 </span>
               </div>
@@ -612,11 +612,11 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
               >
                 <div className="flex items-center justify-between gap-3 mb-1.5">
                   <span
-                    className={`text-[9px] font-bold uppercase tracking-widest ${isMe ? 'text-[#FFD300]/70' : 'text-zinc-400'}`}
+                    className={`text-[0.5625rem] font-bold uppercase tracking-widest ${isMe ? 'text-[#FFD300]/70' : 'text-zinc-400'}`}
                   >
                     {isProdutor ? nomeProdutor : nomeSocio}
                   </span>
-                  <span className="text-[8px] text-zinc-400">{acaoLabel}</span>
+                  <span className="text-[0.5rem] text-zinc-400">{acaoLabel}</span>
                 </div>
 
                 {p.percentual !== undefined && (
@@ -627,7 +627,7 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
 
                 {p.mensagem && <p className="text-zinc-300 text-xs leading-relaxed mt-1 italic">"{p.mensagem}"</p>}
 
-                <p className="text-[8px] text-zinc-400 mt-2 text-right">{fmtData(p.created_at)}</p>
+                <p className="text-[0.5rem] text-zinc-400 mt-2 text-right">{fmtData(p.created_at)}</p>
               </div>
             </div>
           );
@@ -645,9 +645,9 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
             <button
               onClick={() => setShowRecusar(true)}
               disabled={enviando}
-              className="py-3.5 px-4 bg-zinc-900 border border-red-500/20 text-red-400 font-bold text-[10px] uppercase tracking-widest rounded-2xl flex items-center gap-1.5 active:scale-[0.98] transition-all disabled:opacity-40"
+              className="py-3.5 px-4 bg-zinc-900 border border-red-500/20 text-red-400 font-bold text-[0.625rem] uppercase tracking-widest rounded-2xl flex items-center gap-1.5 active:scale-[0.98] transition-all disabled:opacity-40"
             >
-              <X size={14} /> {papel === 'produtor' ? 'Cancelar' : 'Recusar'}
+              <X size="0.875rem" /> {papel === 'produtor' ? 'Cancelar' : 'Recusar'}
             </button>
             {podeContrapor && (
               <button
@@ -657,17 +657,17 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
                   setNovaMensagem('');
                 }}
                 disabled={enviando}
-                className="flex-1 py-3.5 bg-zinc-900 border border-cyan-500/20 text-cyan-400 font-bold text-[10px] uppercase tracking-widest rounded-2xl flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all disabled:opacity-40"
+                className="flex-1 py-3.5 bg-zinc-900 border border-cyan-500/20 text-cyan-400 font-bold text-[0.625rem] uppercase tracking-widest rounded-2xl flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all disabled:opacity-40"
               >
-                <MessageSquare size={14} /> Contrapor
+                <MessageSquare size="0.875rem" /> Contrapor
               </button>
             )}
             <button
               onClick={() => setShowConfirmAceitar(true)}
               disabled={enviando}
-              className="flex-1 py-3.5 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-widest rounded-2xl flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all disabled:opacity-60"
+              className="flex-1 py-3.5 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-widest rounded-2xl flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all disabled:opacity-60"
             >
-              <Check size={14} /> Aceitar {convite.splitSocio}%
+              <Check size="0.875rem" /> Aceitar {convite.splitSocio}%
             </button>
           </div>
         </div>
@@ -680,7 +680,7 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
           style={{ paddingBottom: 'calc(1rem + env(safe-area-inset-bottom, 0px))' }}
         >
           <p className="text-zinc-400 text-xs">
-            <Clock size={12} className="inline mr-1 -mt-0.5" />
+            <Clock size="0.75rem" className="inline mr-1 -mt-0.5" />
             Aguardando resposta {papel === 'socio' ? 'do produtor' : 'do sócio'}...
           </p>
         </div>
@@ -695,7 +695,7 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
           <div className={`text-center py-3 rounded-xl border ${statusColor}`}>
             <p className="text-xs font-bold">{statusLabel}</p>
             {convite.status === 'ACEITO' && (
-              <p className="text-[10px] mt-1 opacity-70">
+              <p className="text-[0.625rem] mt-1 opacity-70">
                 Percentual final: {convite.splitSocio}% sócio / {convite.splitProdutor}% produtor
               </p>
             )}
@@ -708,13 +708,13 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
                   setReiniciarPercentual(String(convite.splitSocio));
                   setReiniciarMensagem('');
                 }}
-                className="flex-1 py-3 bg-zinc-900 border border-cyan-500/20 text-cyan-400 font-bold text-[10px] uppercase tracking-widest rounded-xl flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all"
+                className="flex-1 py-3 bg-zinc-900 border border-cyan-500/20 text-cyan-400 font-bold text-[0.625rem] uppercase tracking-widest rounded-xl flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all"
               >
-                <RefreshCw size={14} /> Reiniciar negociação
+                <RefreshCw size="0.875rem" /> Reiniciar negociação
               </button>
               <button
                 onClick={onClose}
-                className="py-3 px-4 bg-zinc-900 border border-white/10 text-zinc-400 font-bold text-[10px] uppercase tracking-widest rounded-xl active:scale-[0.98] transition-all"
+                className="py-3 px-4 bg-zinc-900 border border-white/10 text-zinc-400 font-bold text-[0.625rem] uppercase tracking-widest rounded-xl active:scale-[0.98] transition-all"
               >
                 Fechar
               </button>
@@ -729,10 +729,10 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
           className="shrink-0 px-4 pt-3 border-t border-cyan-500/20 bg-cyan-500/5"
           style={{ paddingBottom: 'calc(1rem + env(safe-area-inset-bottom, 0px))' }}
         >
-          <p className="text-cyan-400 text-[10px] font-bold uppercase tracking-widest mb-3">Nova proposta</p>
+          <p className="text-cyan-400 text-[0.625rem] font-bold uppercase tracking-widest mb-3">Nova proposta</p>
           <div className="space-y-3">
             <div>
-              <label className="text-[9px] text-cyan-400/70 font-bold uppercase tracking-widest block mb-1">
+              <label className="text-[0.5625rem] text-cyan-400/70 font-bold uppercase tracking-widest block mb-1">
                 Percentual pro sócio
               </label>
               <div className="flex items-center gap-2">
@@ -751,7 +751,7 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
               </div>
             </div>
             <div>
-              <label className="text-[9px] text-cyan-400/70 font-bold uppercase tracking-widest block mb-1">
+              <label className="text-[0.5625rem] text-cyan-400/70 font-bold uppercase tracking-widest block mb-1">
                 Mensagem <span className="text-zinc-400">({reiniciarMensagem.length}/500)</span>
               </label>
               <textarea
@@ -765,16 +765,16 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
             <div className="flex gap-2">
               <button
                 onClick={() => setShowReiniciar(false)}
-                className="py-3 px-4 bg-zinc-900 border border-white/10 text-zinc-400 font-bold text-[10px] uppercase tracking-widest rounded-xl active:scale-[0.98] transition-all"
+                className="py-3 px-4 bg-zinc-900 border border-white/10 text-zinc-400 font-bold text-[0.625rem] uppercase tracking-widest rounded-xl active:scale-[0.98] transition-all"
               >
                 Cancelar
               </button>
               <button
                 onClick={handleReiniciar}
                 disabled={enviando || !reiniciarPercentual}
-                className="flex-1 py-3 bg-cyan-500 text-black font-bold text-[10px] uppercase tracking-widest rounded-xl flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all disabled:opacity-40"
+                className="flex-1 py-3 bg-cyan-500 text-black font-bold text-[0.625rem] uppercase tracking-widest rounded-xl flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all disabled:opacity-40"
               >
-                {enviando ? <Loader2 size={14} className="animate-spin" /> : <Send size={14} />}
+                {enviando ? <Loader2 size="0.875rem" className="animate-spin" /> : <Send size="0.875rem" />}
                 Enviar nova proposta
               </button>
             </div>
@@ -790,7 +790,7 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
         >
           <div className="space-y-3">
             <div>
-              <label className="text-[9px] text-cyan-400 font-bold uppercase tracking-widest block mb-1">
+              <label className="text-[0.5625rem] text-cyan-400 font-bold uppercase tracking-widest block mb-1">
                 Novo percentual pro sócio
               </label>
               <div className="flex items-center gap-2">
@@ -809,7 +809,7 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
               </div>
             </div>
             <div>
-              <label className="text-[9px] text-cyan-400 font-bold uppercase tracking-widest block mb-1">
+              <label className="text-[0.5625rem] text-cyan-400 font-bold uppercase tracking-widest block mb-1">
                 Mensagem <span className="text-zinc-400">({novaMensagem.length}/500)</span>
               </label>
               <textarea
@@ -823,16 +823,16 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
             <div className="flex gap-2">
               <button
                 onClick={() => setShowContrapor(false)}
-                className="py-3 px-4 bg-zinc-900 border border-white/10 text-zinc-400 font-bold text-[10px] uppercase tracking-widest rounded-xl active:scale-[0.98] transition-all"
+                className="py-3 px-4 bg-zinc-900 border border-white/10 text-zinc-400 font-bold text-[0.625rem] uppercase tracking-widest rounded-xl active:scale-[0.98] transition-all"
               >
                 Cancelar
               </button>
               <button
                 onClick={handleContrapor}
                 disabled={enviando || !novoPercentual}
-                className="flex-1 py-3 bg-cyan-500 text-black font-bold text-[10px] uppercase tracking-widest rounded-xl flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all disabled:opacity-40"
+                className="flex-1 py-3 bg-cyan-500 text-black font-bold text-[0.625rem] uppercase tracking-widest rounded-xl flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all disabled:opacity-40"
               >
-                {enviando ? <Loader2 size={14} className="animate-spin" /> : <Send size={14} />}
+                {enviando ? <Loader2 size="0.875rem" className="animate-spin" /> : <Send size="0.875rem" />}
                 Enviar contraproposta
               </button>
             </div>
@@ -846,11 +846,11 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
           <div className="bg-[#111] border border-white/10 rounded-2xl p-6 max-w-sm w-full space-y-4">
             <p className="text-white font-bold text-sm text-center">Confirmar acordo</p>
             <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-4 text-center">
-              <p className="text-[9px] text-emerald-400/60 font-black uppercase tracking-widest mb-1">
+              <p className="text-[0.5625rem] text-emerald-400/60 font-black uppercase tracking-widest mb-1">
                 Percentual do sócio
               </p>
               <p className="text-emerald-400 text-3xl font-black">{convite.splitSocio}%</p>
-              <p className="text-zinc-400 text-[10px] mt-1">Produtor: {convite.splitProdutor}%</p>
+              <p className="text-zinc-400 text-[0.625rem] mt-1">Produtor: {convite.splitProdutor}%</p>
             </div>
             <p className="text-zinc-400 text-xs text-center">
               O evento será publicado automaticamente após a confirmação.
@@ -858,16 +858,16 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
             <div className="flex gap-2">
               <button
                 onClick={() => setShowConfirmAceitar(false)}
-                className="flex-1 py-3 bg-zinc-900 border border-white/10 text-zinc-400 font-bold text-[10px] uppercase tracking-widest rounded-xl active:scale-[0.98] transition-all"
+                className="flex-1 py-3 bg-zinc-900 border border-white/10 text-zinc-400 font-bold text-[0.625rem] uppercase tracking-widest rounded-xl active:scale-[0.98] transition-all"
               >
                 Voltar
               </button>
               <button
                 onClick={handleAceitar}
                 disabled={enviando}
-                className="flex-1 py-3 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-widest rounded-xl flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all disabled:opacity-60"
+                className="flex-1 py-3 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-widest rounded-xl flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all disabled:opacity-60"
               >
-                {enviando ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />}
+                {enviando ? <Loader2 size="0.875rem" className="animate-spin" /> : <Check size="0.875rem" />}
                 Confirmar
               </button>
             </div>
@@ -900,7 +900,7 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
                   setShowRecusar(false);
                   setMotivoRecusa('');
                 }}
-                className="flex-1 py-3 bg-zinc-900 border border-white/10 text-zinc-400 font-bold text-[10px] uppercase tracking-widest rounded-xl active:scale-[0.98] transition-all"
+                className="flex-1 py-3 bg-zinc-900 border border-white/10 text-zinc-400 font-bold text-[0.625rem] uppercase tracking-widest rounded-xl active:scale-[0.98] transition-all"
               >
                 Voltar
               </button>
@@ -908,9 +908,9 @@ export const NegociacaoSocioView: React.FC<Props> = ({ eventoId, userId, papel, 
                 aria-label="Carregando"
                 onClick={handleRecusar}
                 disabled={enviando}
-                className="flex-1 py-3 bg-red-500/20 border border-red-500/30 text-red-400 font-bold text-[10px] uppercase tracking-widest rounded-xl flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all disabled:opacity-40"
+                className="flex-1 py-3 bg-red-500/20 border border-red-500/30 text-red-400 font-bold text-[0.625rem] uppercase tracking-widest rounded-xl flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all disabled:opacity-40"
               >
-                {enviando ? <Loader2 size={14} className="animate-spin" /> : <X size={14} />}
+                {enviando ? <Loader2 size="0.875rem" className="animate-spin" /> : <X size="0.875rem" />}
                 {papel === 'produtor' ? 'Cancelar convite' : 'Recusar'}
               </button>
             </div>

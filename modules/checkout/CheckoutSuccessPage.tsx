@@ -127,7 +127,7 @@ export const CheckoutSuccessPage: React.FC = () => {
     >
       {status === 'polling' && (
         <div className="flex flex-col items-center gap-4 text-center">
-          <Loader2 size={40} className="text-[#FFD300] animate-spin" />
+          <Loader2 size="2.5rem" className="text-[#FFD300] animate-spin" />
           <p className="font-serif italic text-xl text-white">Confirmando pagamento...</p>
           <p className="text-zinc-400 text-xs">Aguarde enquanto processamos seu pagamento.</p>
         </div>
@@ -136,25 +136,25 @@ export const CheckoutSuccessPage: React.FC = () => {
       {status === 'confirmed' && (
         <div className="flex flex-col items-center gap-4 text-center">
           <div className="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
-            <Check size={28} className="text-emerald-400" />
+            <Check size="1.75rem" className="text-emerald-400" />
           </div>
           <p className="font-serif italic text-2xl text-white">
             {qtdIngressos === 1 ? 'Ingresso Confirmado!' : `${qtdIngressos} Ingressos Confirmados!`}
           </p>
           {eventoNome && <p className="text-zinc-400 text-xs">{eventoNome}</p>}
-          <p className="text-zinc-400 text-[10px]">Seus ingressos já aparecem na Carteira do App.</p>
+          <p className="text-zinc-400 text-[0.625rem]">Seus ingressos já aparecem na Carteira do App.</p>
 
           <div className="flex flex-col gap-3 w-full max-w-xs mt-4">
             <button
               onClick={handleShare}
               className="flex items-center justify-center gap-2 px-5 py-3 bg-zinc-800/80 border border-white/10 rounded-xl active:scale-95 transition-all"
             >
-              <Share2 size={14} className="text-[#FFD300]" />
+              <Share2 size="0.875rem" className="text-[#FFD300]" />
               <span className="text-xs font-bold text-white">Compartilhar</span>
             </button>
             <button
               onClick={() => window.close()}
-              className="w-full py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl font-bold text-[10px] uppercase tracking-[0.2em] text-white active:scale-95 transition-all"
+              className="w-full py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl font-bold text-[0.625rem] uppercase tracking-[0.2em] text-white active:scale-95 transition-all"
             >
               Voltar ao App
             </button>
@@ -165,7 +165,7 @@ export const CheckoutSuccessPage: React.FC = () => {
       {(status === 'failed' || status === 'timeout') && (
         <div className="flex flex-col items-center gap-4 text-center">
           <div className="w-16 h-16 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
-            <AlertTriangle size={28} className="text-amber-400" />
+            <AlertTriangle size="1.75rem" className="text-amber-400" />
           </div>
           <p className="font-serif italic text-xl text-white">
             {status === 'timeout' ? 'Processamento demorado' : 'Erro no pagamento'}
@@ -177,7 +177,7 @@ export const CheckoutSuccessPage: React.FC = () => {
           </p>
           <button
             onClick={() => window.close()}
-            className="mt-4 w-full max-w-xs py-4 bg-zinc-800 border border-white/10 rounded-xl font-bold text-[10px] uppercase tracking-[0.2em] text-white active:scale-95 transition-all"
+            className="mt-4 w-full max-w-xs py-4 bg-zinc-800 border border-white/10 rounded-xl font-bold text-[0.625rem] uppercase tracking-[0.2em] text-white active:scale-95 transition-all"
           >
             Voltar ao App
           </button>

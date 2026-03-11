@@ -93,7 +93,7 @@ export const EventFeed: React.FC<{
             </div>
             <div className="flex gap-3 px-5">
               {[1, 2, 3].map(j => (
-                <div key={j} className="shrink-0 w-[42vw] max-w-[180px]">
+                <div key={j} className="shrink-0 w-[42vw] max-w-[11.25rem]">
                   <div className="rounded-2xl overflow-hidden bg-[#161616] border border-white/5">
                     <div className="aspect-[4/5] bg-zinc-800/30 animate-pulse" />
                     <div className="p-3 space-y-2">
@@ -152,9 +152,9 @@ const CategoryRow: React.FC<{
         {eventos.length > 3 && (
           <button
             onClick={() => onViewAll(categoria)}
-            className="flex items-center gap-1 text-[9px] text-zinc-400 font-black uppercase tracking-widest active:text-[#FFD300] transition-colors"
+            className="flex items-center gap-1 text-[0.5625rem] text-zinc-400 font-black uppercase tracking-widest active:text-[#FFD300] transition-colors"
           >
-            Ver todos <ChevronRight size={12} />
+            Ver todos <ChevronRight size="0.75rem" />
           </button>
         )}
       </div>
@@ -162,7 +162,7 @@ const CategoryRow: React.FC<{
       {/* Carrossel horizontal */}
       <div ref={scrollRef} className="flex gap-3 overflow-x-auto no-scrollbar px-5 snap-x snap-mandatory">
         {visibleEvents.map(e => (
-          <div key={e.id} className="shrink-0 w-[42vw] max-w-[180px] snap-start">
+          <div key={e.id} className="shrink-0 w-[42vw] max-w-[11.25rem] snap-start">
             <EventCard
               evento={e}
               onClick={onEventClick}
@@ -174,11 +174,11 @@ const CategoryRow: React.FC<{
         {hasMore && (
           <button
             onClick={() => onViewAll(categoria)}
-            className="shrink-0 w-[42vw] max-w-[180px] snap-start flex flex-col items-center justify-center gap-2 rounded-2xl border border-white/10 bg-[#161616] aspect-[4/5] active:scale-95 transition-transform"
+            className="shrink-0 w-[42vw] max-w-[11.25rem] snap-start flex flex-col items-center justify-center gap-2 rounded-2xl border border-white/10 bg-[#161616] aspect-[4/5] active:scale-95 transition-transform"
           >
-            <ChevronRight size={24} className="text-[#FFD300]" />
-            <span className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Ver Mais</span>
-            <span className="text-[9px] text-zinc-400">+{eventos.length - MAX_VISIBLE} eventos</span>
+            <ChevronRight size="1.5rem" className="text-[#FFD300]" />
+            <span className="text-[0.625rem] font-black text-zinc-400 uppercase tracking-widest">Ver Mais</span>
+            <span className="text-[0.5625rem] text-zinc-400">+{eventos.length - MAX_VISIBLE} eventos</span>
           </button>
         )}
       </div>

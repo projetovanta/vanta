@@ -51,7 +51,7 @@ const SectionBlock: React.FC<{
   >
     <div className="flex items-center gap-2">
       {icon}
-      <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest">{title}</p>
+      <p className="text-[0.5625rem] text-zinc-400 font-black uppercase tracking-widest">{title}</p>
     </div>
     {children}
   </div>
@@ -75,10 +75,10 @@ const CampoEditavel: React.FC<{
             ativo ? 'border-red-500 bg-red-500' : 'border-zinc-700 hover:border-zinc-500'
           }`}
         >
-          {ativo && <Check size={8} className="text-white" />}
+          {ativo && <Check size="0.5rem" className="text-white" />}
         </span>
         <div className="min-w-0 flex-1">
-          <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-0.5">{label}</p>
+          <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-0.5">{label}</p>
           {children}
         </div>
       </button>
@@ -89,7 +89,7 @@ const CampoEditavel: React.FC<{
           onChange={e => onComentario(campoKey, e.target.value)}
           onClick={e => e.stopPropagation()}
           placeholder="O que precisa mudar..."
-          className="w-full mt-2 ml-6 bg-zinc-900/50 border border-red-500/20 rounded-lg px-3 py-1.5 text-[11px] text-zinc-300 outline-none focus:border-red-500/40 placeholder-zinc-700"
+          className="w-full mt-2 ml-6 bg-zinc-900/50 border border-red-500/20 rounded-lg px-3 py-1.5 text-[0.6875rem] text-zinc-300 outline-none focus:border-red-500/40 placeholder-zinc-700"
           style={{ width: 'calc(100% - 1.5rem)' }}
         />
       )}
@@ -226,7 +226,7 @@ const EventoDetalheView: React.FC<{
           <img loading="lazy" src={evento.foto} alt={evento.nome} className="w-full h-full object-cover" />
         ) : (
           <div className="w-full h-full bg-zinc-900 flex items-center justify-center">
-            <Image size={32} className="text-zinc-800" />
+            <Image size="2rem" className="text-zinc-800" />
           </div>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/30 to-transparent" />
@@ -235,21 +235,21 @@ const EventoDetalheView: React.FC<{
           onClick={onBack}
           className="absolute top-8 left-4 w-10 h-10 bg-black/60 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
         >
-          <ArrowLeft size={18} className="text-white" />
+          <ArrowLeft size="1.125rem" className="text-white" />
         </button>
         <div className="absolute bottom-4 left-5 right-5">
           <div className="flex items-center gap-2 mb-2">
-            <span className="text-[7px] font-black uppercase tracking-[0.2em] text-amber-400 bg-amber-400/15 border border-amber-400/20 px-2.5 py-1 rounded-full inline-block">
+            <span className="text-[0.4375rem] font-black uppercase tracking-[0.2em] text-amber-400 bg-amber-400/15 border border-amber-400/20 px-2.5 py-1 rounded-full inline-block">
               Aguardando Aprovação
             </span>
             {isSemVenda && (
-              <span className="text-[7px] font-black uppercase tracking-[0.2em] text-blue-400 bg-blue-400/15 border border-blue-400/20 px-2.5 py-1 rounded-full inline-block">
+              <span className="text-[0.4375rem] font-black uppercase tracking-[0.2em] text-blue-400 bg-blue-400/15 border border-blue-400/20 px-2.5 py-1 rounded-full inline-block">
                 Sem Venda
               </span>
             )}
           </div>
           <p className="text-white font-bold text-xl leading-tight truncate">{evento.nome}</p>
-          <p className="text-zinc-400 text-[10px] mt-1 truncate">
+          <p className="text-zinc-400 text-[0.625rem] mt-1 truncate">
             {evento.comunidade.nome} · {evento.cidade}
           </p>
         </div>
@@ -257,11 +257,11 @@ const EventoDetalheView: React.FC<{
 
       <div className="flex-1 overflow-y-auto no-scrollbar p-5 space-y-3 max-w-3xl mx-auto w-full">
         {/* 🖼️ 1. Validação de Conteúdo — campos com checkbox inline */}
-        <SectionBlock icon={<Image size={14} className="text-blue-400" />} title="Validação de Conteúdo">
+        <SectionBlock icon={<Image size="0.875rem" className="text-blue-400" />} title="Validação de Conteúdo">
           {Object.keys(camposSelecionados).length > 0 && (
             <div className="flex items-center gap-2 bg-amber-500/5 border border-amber-500/15 rounded-xl px-3 py-1.5 mb-1">
-              <AlertTriangle size={10} className="text-amber-400 shrink-0" />
-              <p className="text-amber-400 text-[9px]">
+              <AlertTriangle size="0.625rem" className="text-amber-400 shrink-0" />
+              <p className="text-amber-400 text-[0.5625rem]">
                 {Object.keys(camposSelecionados).length} campo(s) selecionado(s) para edição
               </p>
             </div>
@@ -354,7 +354,7 @@ const EventoDetalheView: React.FC<{
             </CampoEditavel>
           </div>
           <div className="pt-1">
-            <p className="text-zinc-700 text-[8px] italic">
+            <p className="text-zinc-700 text-[0.5rem] italic">
               Criador: {evento.criadorNome ?? '—'} · {evento.comunidade.nome}
             </p>
           </div>
@@ -362,11 +362,11 @@ const EventoDetalheView: React.FC<{
 
         {/* 🎟️ 2. Configuração de Ingressos (só COM VENDA) */}
         {!isSemVenda && (
-          <SectionBlock icon={<Ticket size={14} className="text-purple-400" />} title="Configuração de Ingressos">
+          <SectionBlock icon={<Ticket size="0.875rem" className="text-purple-400" />} title="Configuração de Ingressos">
             {evento.lotes.length === 0 ? (
               <div className="flex items-center gap-2 bg-red-500/5 border border-red-500/15 rounded-xl px-3 py-2">
-                <AlertTriangle size={12} className="text-red-400 shrink-0" />
-                <p className="text-red-400 text-[10px] font-semibold">Nenhum lote configurado</p>
+                <AlertTriangle size="0.75rem" className="text-red-400 shrink-0" />
+                <p className="text-red-400 text-[0.625rem] font-semibold">Nenhum lote configurado</p>
               </div>
             ) : (
               <div className="space-y-3">
@@ -408,16 +408,20 @@ const EventoDetalheView: React.FC<{
                   <div className="flex items-center justify-between">
                     <p className="text-zinc-300 text-xs font-bold truncate">{lote.nome}</p>
                     <span
-                      className={`text-[7px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded-full ${lote.ativo ? 'bg-emerald-500/15 text-emerald-400' : 'bg-zinc-800 text-zinc-400'}`}
+                      className={`text-[0.4375rem] font-black uppercase tracking-widest px-1.5 py-0.5 rounded-full ${lote.ativo ? 'bg-emerald-500/15 text-emerald-400' : 'bg-zinc-800 text-zinc-400'}`}
                     >
                       {lote.ativo ? 'Ativo' : 'Inativo'}
                     </span>
                   </div>
                   <div className="bg-zinc-950/50 rounded-xl overflow-hidden">
                     <div className="grid grid-cols-[1fr_auto_auto] gap-x-3 px-3 py-1.5 border-b border-white/5">
-                      <p className="text-[7px] text-zinc-700 font-black uppercase tracking-widest">Tipo</p>
-                      <p className="text-[7px] text-zinc-700 font-black uppercase tracking-widest text-right">Preço</p>
-                      <p className="text-[7px] text-zinc-700 font-black uppercase tracking-widest text-right">Qtd</p>
+                      <p className="text-[0.4375rem] text-zinc-700 font-black uppercase tracking-widest">Tipo</p>
+                      <p className="text-[0.4375rem] text-zinc-700 font-black uppercase tracking-widest text-right">
+                        Preço
+                      </p>
+                      <p className="text-[0.4375rem] text-zinc-700 font-black uppercase tracking-widest text-right">
+                        Qtd
+                      </p>
                     </div>
                     {lote.variacoes.map(v => (
                       <div
@@ -442,11 +446,11 @@ const EventoDetalheView: React.FC<{
 
         {/* 🔗 2b. Info Sem Venda */}
         {isSemVenda && (
-          <SectionBlock icon={<Link size={14} className="text-blue-400" />} title="Evento Sem Venda">
+          <SectionBlock icon={<Link size="0.875rem" className="text-blue-400" />} title="Evento Sem Venda">
             <div className="space-y-2">
               <div className="flex items-start gap-2 bg-blue-500/5 border border-blue-500/15 rounded-xl px-3 py-2">
-                <Info size={12} className="text-blue-400 shrink-0 mt-0.5" />
-                <p className="text-zinc-400 text-[10px] leading-relaxed">
+                <Info size="0.75rem" className="text-blue-400 shrink-0 mt-0.5" />
+                <p className="text-zinc-400 text-[0.625rem] leading-relaxed">
                   Este evento vende ingressos fora do VANTA.{' '}
                   {evento.linkExterno && <span className="text-blue-300">Link: {evento.linkExterno}</span>}
                   {evento.plataformaExterna && <span className="text-zinc-400"> · {evento.plataformaExterna}</span>}
@@ -459,13 +463,13 @@ const EventoDetalheView: React.FC<{
         {/* 💰 3. Acordo Financeiro (COM VENDA) */}
         {!isSemVenda && (
           <SectionBlock
-            icon={<Banknote size={14} className="text-emerald-400" />}
+            icon={<Banknote size="0.875rem" className="text-emerald-400" />}
             title="Acordo Financeiro"
             borderColor="rgba(16,185,129,0.15)"
           >
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
+                <label className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
                   Taxa VANTA %
                 </label>
                 <div className="relative">
@@ -482,7 +486,7 @@ const EventoDetalheView: React.FC<{
                 </div>
               </div>
               <div>
-                <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
+                <label className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
                   Taxa Fixa / Ingresso
                 </label>
                 <div className="relative">
@@ -501,12 +505,14 @@ const EventoDetalheView: React.FC<{
 
             {/* Info: taxa VANTA sempre do cliente */}
             <div className="bg-[#FFD300]/5 border border-[#FFD300]/15 rounded-xl px-3 py-2">
-              <p className="text-[8px] text-[#FFD300]/70 font-black uppercase tracking-widest">Taxa de Serviço</p>
-              <p className="text-zinc-400 text-[9px] leading-relaxed mt-0.5">Sempre cobrada do cliente no checkout.</p>
+              <p className="text-[0.5rem] text-[#FFD300]/70 font-black uppercase tracking-widest">Taxa de Serviço</p>
+              <p className="text-zinc-400 text-[0.5625rem] leading-relaxed mt-0.5">
+                Sempre cobrada do cliente no checkout.
+              </p>
             </div>
 
             <div>
-              <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2 block">
+              <label className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2 block">
                 Quem paga o Gateway?
               </label>
               <div className="flex gap-2">
@@ -514,7 +520,7 @@ const EventoDetalheView: React.FC<{
                   <button
                     key={m}
                     onClick={() => setGatewayMode(m)}
-                    className={`flex-1 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-wider border transition-all ${
+                    className={`flex-1 py-2.5 rounded-xl text-[0.625rem] font-black uppercase tracking-wider border transition-all ${
                       gatewayMode === m
                         ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
                         : 'bg-zinc-900/60 border-white/5 text-zinc-400'
@@ -525,8 +531,8 @@ const EventoDetalheView: React.FC<{
                 ))}
               </div>
               <div className="flex items-start gap-2 mt-2 bg-zinc-950/50 rounded-xl px-3 py-2">
-                <Info size={11} className="text-zinc-400 shrink-0 mt-0.5" />
-                <p className="text-zinc-400 text-[9px] leading-relaxed">
+                <Info size="0.6875rem" className="text-zinc-400 shrink-0 mt-0.5" />
+                <p className="text-zinc-400 text-[0.5625rem] leading-relaxed">
                   {gatewayMode === 'ABSORVER'
                     ? 'O custo de processamento é descontado do repasse ao organizador.'
                     : 'O custo de processamento é cobrado do cliente no checkout.'}
@@ -537,7 +543,7 @@ const EventoDetalheView: React.FC<{
             {/* ── Taxas detalhadas ── */}
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
+                <label className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
                   Processamento %
                 </label>
                 <div className="relative">
@@ -554,7 +560,7 @@ const EventoDetalheView: React.FC<{
                 </div>
               </div>
               <div>
-                <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
+                <label className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
                   Taxa Porta %
                 </label>
                 <div className="relative">
@@ -573,7 +579,7 @@ const EventoDetalheView: React.FC<{
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
+                <label className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
                   Mínimo / Ingresso
                 </label>
                 <div className="relative">
@@ -589,7 +595,7 @@ const EventoDetalheView: React.FC<{
                 </div>
               </div>
               <div>
-                <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
+                <label className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
                   Fixo Evento
                 </label>
                 <div className="relative">
@@ -607,7 +613,7 @@ const EventoDetalheView: React.FC<{
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
+                <label className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
                   Cota Nomes Lista
                 </label>
                 <input
@@ -619,7 +625,7 @@ const EventoDetalheView: React.FC<{
                 />
               </div>
               <div>
-                <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
+                <label className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
                   R$ / Nome Excedente
                 </label>
                 <div className="relative">
@@ -637,7 +643,7 @@ const EventoDetalheView: React.FC<{
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
+                <label className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
                   Cota Cortesias
                 </label>
                 <input
@@ -649,7 +655,7 @@ const EventoDetalheView: React.FC<{
                 />
               </div>
               <div>
-                <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
+                <label className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
                   Cortesia Exc. %
                 </label>
                 <div className="relative">
@@ -667,7 +673,7 @@ const EventoDetalheView: React.FC<{
               </div>
             </div>
             <div>
-              <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
+              <label className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
                 Prazo Pagamento (dias pós-evento)
               </label>
               <input
@@ -688,10 +694,10 @@ const EventoDetalheView: React.FC<{
                 const taxaServico = exemplar.valor * pct + fix;
                 return (
                   <div className="bg-emerald-500/5 border border-emerald-500/10 rounded-xl px-3 py-2.5">
-                    <p className="text-[8px] text-emerald-400/60 font-black uppercase tracking-widest mb-1">
+                    <p className="text-[0.5rem] text-emerald-400/60 font-black uppercase tracking-widest mb-1">
                       Simulação
                     </p>
-                    <p className="text-zinc-300 text-[10px] leading-relaxed">
+                    <p className="text-zinc-300 text-[0.625rem] leading-relaxed">
                       Ingresso de <span className="text-white font-bold">R$ {exemplar.valor.toFixed(2)}</span> → taxa
                       serviço <span className="text-emerald-400 font-bold">R$ {taxaServico.toFixed(2)}</span> (cliente)
                       · organizador recebe <span className="text-white font-bold">R$ {exemplar.valor.toFixed(2)}</span>
@@ -705,17 +711,17 @@ const EventoDetalheView: React.FC<{
         {/* 💼 3b. Proposta VANTA (SEM VENDA) */}
         {isSemVenda && (
           <SectionBlock
-            icon={<Percent size={14} className="text-[#FFD300]" />}
+            icon={<Percent size="0.875rem" className="text-[#FFD300]" />}
             title="Proposta VANTA"
             borderColor="rgba(255,211,0,0.15)"
           >
-            <p className="text-zinc-400 text-[10px] leading-relaxed">
+            <p className="text-zinc-400 text-[0.625rem] leading-relaxed">
               Configure a proposta de afiliado para este evento. O organizador receberá e poderá aceitar, recusar ou
               negociar (até 3 rodadas).
             </p>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
+                <label className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
                   Comissão %
                 </label>
                 <div className="relative">
@@ -732,7 +738,7 @@ const EventoDetalheView: React.FC<{
                 </div>
               </div>
               <div>
-                <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
+                <label className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
                   Código Afiliado
                 </label>
                 <input
@@ -745,7 +751,7 @@ const EventoDetalheView: React.FC<{
               </div>
             </div>
             <div>
-              <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
+              <label className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block">
                 Mensagem ao organizador
               </label>
               <textarea
@@ -757,8 +763,8 @@ const EventoDetalheView: React.FC<{
               />
             </div>
             <div className="flex items-start gap-2 bg-[#FFD300]/5 border border-[#FFD300]/15 rounded-xl px-3 py-2">
-              <MessageSquare size={11} className="text-[#FFD300] shrink-0 mt-0.5" />
-              <p className="text-zinc-400 text-[9px] leading-relaxed">
+              <MessageSquare size="0.6875rem" className="text-[#FFD300] shrink-0 mt-0.5" />
+              <p className="text-zinc-400 text-[0.5625rem] leading-relaxed">
                 O organizador poderá aceitar ou negociar em até 3 rodadas. Se recusar todas, o evento é publicado sem
                 acordo.
               </p>
@@ -792,15 +798,15 @@ const EventoDetalheView: React.FC<{
                 setCamposSelecionados({});
                 setMotivoRejeicao('');
               }}
-              className="flex-1 py-4 bg-zinc-900 border border-white/10 text-zinc-400 font-bold text-[10px] uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all"
+              className="flex-1 py-4 bg-zinc-900 border border-white/10 text-zinc-400 font-bold text-[0.625rem] uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all"
             >
               Limpar
             </button>
             <button
               onClick={handleRejeitar}
-              className="flex-1 py-4 bg-amber-500 text-black font-bold text-[10px] uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all"
+              className="flex-1 py-4 bg-amber-500 text-black font-bold text-[0.625rem] uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all"
             >
-              <Send size={14} /> Solicitar Edições ({Object.keys(camposSelecionados).length})
+              <Send size="0.875rem" /> Solicitar Edições ({Object.keys(camposSelecionados).length})
             </button>
           </>
         ) : (
@@ -808,21 +814,21 @@ const EventoDetalheView: React.FC<{
             <button
               onClick={handleRejeitar}
               disabled={aprovando}
-              className="flex-1 py-4 bg-zinc-900 border border-red-500/20 text-red-400 font-bold text-[10px] uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all disabled:opacity-40"
+              className="flex-1 py-4 bg-zinc-900 border border-red-500/20 text-red-400 font-bold text-[0.625rem] uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all disabled:opacity-40"
             >
-              <X size={14} /> Rejeitar
+              <X size="0.875rem" /> Rejeitar
             </button>
             <button
               onClick={handleAprovar}
               disabled={aprovando}
-              className="flex-1 py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all disabled:opacity-60"
+              className="flex-1 py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all disabled:opacity-60"
             >
               {aprovando ? (
-                <Clock size={14} className="animate-spin" />
+                <Clock size="0.875rem" className="animate-spin" />
               ) : isSemVenda ? (
-                <Send size={14} />
+                <Send size="0.875rem" />
               ) : (
-                <Check size={14} />
+                <Check size="0.875rem" />
               )}
               {aprovando ? (isSemVenda ? 'Enviando...' : 'Aprovando...') : isSemVenda ? 'Enviar Proposta' : 'Aprovar'}
             </button>
@@ -870,14 +876,14 @@ const ModalRejeicaoEdicao: React.FC<{
         <div className="px-6 pt-2 pb-6 flex gap-3">
           <button
             onClick={onCancelar}
-            className="flex-1 py-4 bg-zinc-900 border border-white/10 text-zinc-400 font-black text-[10px] uppercase tracking-widest rounded-xl active:scale-95 transition-all"
+            className="flex-1 py-4 bg-zinc-900 border border-white/10 text-zinc-400 font-black text-[0.625rem] uppercase tracking-widest rounded-xl active:scale-95 transition-all"
           >
             Cancelar
           </button>
           <button
             onClick={() => motivo.trim() && onConfirmar(motivo.trim())}
             disabled={!motivo.trim()}
-            className="flex-1 py-4 bg-red-500 text-white font-bold text-[10px] uppercase tracking-widest rounded-xl disabled:opacity-40 active:scale-95 transition-all"
+            className="flex-1 py-4 bg-red-500 text-white font-bold text-[0.625rem] uppercase tracking-widest rounded-xl disabled:opacity-40 active:scale-95 transition-all"
           >
             Confirmar
           </button>
@@ -971,7 +977,7 @@ export const EventosPendentesView: React.FC<{
                 Pendentes
               </h1>
               {pendentes.length > 0 && (
-                <span className="bg-amber-500 text-black text-[9px] font-black px-2.5 py-1 rounded-full">
+                <span className="bg-amber-500 text-black text-[0.5625rem] font-black px-2.5 py-1 rounded-full">
                   {pendentes.length}
                 </span>
               )}
@@ -982,7 +988,7 @@ export const EventosPendentesView: React.FC<{
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all mt-1"
           >
-            <ArrowLeft size={18} className="text-zinc-400" />
+            <ArrowLeft size="1.125rem" className="text-zinc-400" />
           </button>
         </div>
       </div>
@@ -992,9 +998,9 @@ export const EventosPendentesView: React.FC<{
         {pendentes.length === 0 && (
           <div className="flex flex-col items-center py-20 gap-4">
             <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center">
-              <ClipboardList size={28} className="text-zinc-700" />
+              <ClipboardList size="1.75rem" className="text-zinc-700" />
             </div>
-            <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest text-center">
+            <p className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest text-center">
               Nenhum evento aguardando aprovação.
             </p>
           </div>
@@ -1016,27 +1022,27 @@ export const EventosPendentesView: React.FC<{
                 </div>
               ) : (
                 <div className="w-24 shrink-0 bg-zinc-800 flex items-center justify-center aspect-square">
-                  <Clock size={24} className="text-zinc-700" />
+                  <Clock size="1.5rem" className="text-zinc-700" />
                 </div>
               )}
               <div className="flex-1 min-w-0 py-4 pr-4">
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-[7px] font-black uppercase tracking-widest text-amber-400 bg-amber-400/15 border border-amber-400/20 px-2 py-0.5 rounded-full">
+                  <span className="text-[0.4375rem] font-black uppercase tracking-widest text-amber-400 bg-amber-400/15 border border-amber-400/20 px-2 py-0.5 rounded-full">
                     Pendente
                   </span>
                   {ev.vendaVanta === false && (
-                    <span className="text-[7px] font-black uppercase tracking-widest text-blue-400 bg-blue-400/15 border border-blue-400/20 px-2 py-0.5 rounded-full">
+                    <span className="text-[0.4375rem] font-black uppercase tracking-widest text-blue-400 bg-blue-400/15 border border-blue-400/20 px-2 py-0.5 rounded-full">
                       Sem Venda
                     </span>
                   )}
                 </div>
                 <p className="text-white font-bold text-sm leading-tight truncate mb-0.5">{ev.nome}</p>
-                <p className="text-zinc-400 text-[10px] truncate mb-1">
+                <p className="text-zinc-400 text-[0.625rem] truncate mb-1">
                   {ev.comunidade.nome} · {ev.cidade}
                 </p>
-                <p className="text-zinc-700 text-[9px]">{formatDateTime(ev.dataInicio)}</p>
+                <p className="text-zinc-700 text-[0.5625rem]">{formatDateTime(ev.dataInicio)}</p>
                 {menorPreco < Infinity && (
-                  <p className="text-[#FFD300] text-[10px] font-black uppercase tracking-widest mt-1">
+                  <p className="text-[#FFD300] text-[0.625rem] font-black uppercase tracking-widest mt-1">
                     a partir de R$ {menorPreco.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                   </p>
                 )}
@@ -1049,9 +1055,9 @@ export const EventosPendentesView: React.FC<{
         {edicoesPendentes.length > 0 && (
           <>
             <div className="flex items-center gap-2 pt-4 pb-1">
-              <Gavel size={14} className="text-blue-400" />
-              <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest">Edições Pendentes</p>
-              <span className="bg-blue-500 text-white text-[9px] font-black px-2 py-0.5 rounded-full">
+              <Gavel size="0.875rem" className="text-blue-400" />
+              <p className="text-[0.5625rem] text-zinc-400 font-black uppercase tracking-widest">Edições Pendentes</p>
+              <span className="bg-blue-500 text-white text-[0.5625rem] font-black px-2 py-0.5 rounded-full">
                 {edicoesPendentes.length}
               </span>
             </div>
@@ -1060,29 +1066,29 @@ export const EventosPendentesView: React.FC<{
               return (
                 <div key={`ed-${ev.id}`} className="bg-zinc-900/40 border border-blue-500/15 rounded-2xl p-4 space-y-2">
                   <div className="flex items-center gap-2">
-                    <span className="text-[7px] font-black uppercase tracking-widest text-blue-400 bg-blue-400/15 border border-blue-400/20 px-2 py-0.5 rounded-full">
+                    <span className="text-[0.4375rem] font-black uppercase tracking-widest text-blue-400 bg-blue-400/15 border border-blue-400/20 px-2 py-0.5 rounded-full">
                       Edição
                     </span>
                     <p className="text-white font-bold text-sm truncate flex-1">{ev.nome}</p>
                   </div>
-                  <p className="text-zinc-400 text-[10px] truncate">
+                  <p className="text-zinc-400 text-[0.625rem] truncate">
                     {ev.comunidade.nome} · {campos.length} campo(s) alterado(s)
                   </p>
                   {campos.length > 0 && (
-                    <p className="text-zinc-700 text-[9px] truncate">Campos: {campos.join(', ')}</p>
+                    <p className="text-zinc-700 text-[0.5625rem] truncate">Campos: {campos.join(', ')}</p>
                   )}
                   <div className="flex gap-2 pt-1">
                     <button
                       onClick={() => setRejeicaoEdicao(ev)}
-                      className="flex-1 py-2.5 bg-zinc-900 border border-red-500/20 text-red-400 font-bold text-[9px] uppercase tracking-widest rounded-xl flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all"
+                      className="flex-1 py-2.5 bg-zinc-900 border border-red-500/20 text-red-400 font-bold text-[0.5625rem] uppercase tracking-widest rounded-xl flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all"
                     >
-                      <X size={12} /> Rejeitar
+                      <X size="0.75rem" /> Rejeitar
                     </button>
                     <button
                       onClick={() => handleAprovarEdicao(ev)}
-                      className="flex-1 py-2.5 bg-blue-500 text-white font-bold text-[9px] uppercase tracking-widest rounded-xl flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all"
+                      className="flex-1 py-2.5 bg-blue-500 text-white font-bold text-[0.5625rem] uppercase tracking-widest rounded-xl flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all"
                     >
-                      <Check size={12} /> Aprovar
+                      <Check size="0.75rem" /> Aprovar
                     </button>
                   </div>
                 </div>

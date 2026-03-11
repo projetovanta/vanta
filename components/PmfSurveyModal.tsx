@@ -39,13 +39,13 @@ export const PmfSurveyModal: React.FC<{ userId: string; onClose: () => void }> =
           aria-label="Fechar"
           className="absolute top-4 right-4 text-zinc-400 hover:text-white transition-colors"
         >
-          <X size={18} />
+          <X size="1.125rem" />
         </button>
         <h2 className="text-white text-sm font-bold mb-1">Uma pergunta rápida</h2>
         <p className="text-zinc-400 text-xs mb-6 leading-relaxed">
           Se o VANTA deixasse de existir amanhã, como você se sentiria?
         </p>
-        {error && <p className="text-red-400 text-[10px] mb-3">Erro ao enviar. Tente novamente.</p>}
+        {error && <p className="text-red-400 text-[0.625rem] mb-3">Erro ao enviar. Tente novamente.</p>}
         <div className="flex flex-col gap-3">
           {OPTIONS.map(opt => (
             <button
@@ -55,7 +55,7 @@ export const PmfSurveyModal: React.FC<{ userId: string; onClose: () => void }> =
               className="w-full py-3 px-4 rounded-xl text-xs font-bold transition-all border border-white/5 hover:border-white/20 disabled:opacity-50 flex items-center justify-center gap-2"
               style={{ color: opt.color }}
             >
-              {submitting && <Loader2 size={12} className="animate-spin" />}
+              {submitting && <Loader2 size="0.75rem" className="animate-spin" />}
               {opt.label}
             </button>
           ))}

@@ -78,19 +78,19 @@ export const FriendsGoingSection: React.FC<{
   return (
     <div className="py-4 w-full">
       <div className="flex items-center gap-2 px-5 mb-3">
-        <Users size={14} className="text-[#FFD300]" />
+        <Users size="0.875rem" className="text-[#FFD300]" />
         <h3 style={TYPOGRAPHY.sectionKicker} className="text-sm">
           Amigos vão
         </h3>
       </div>
       <div className="flex gap-3 overflow-x-auto no-scrollbar px-5 snap-x snap-mandatory">
         {friendEvents.map(evento => (
-          <div key={evento.id} className="shrink-0 w-[42vw] max-w-[180px] snap-start relative">
+          <div key={evento.id} className="shrink-0 w-[42vw] max-w-[11.25rem] snap-start relative">
             <EventCard evento={evento} onClick={onEventClick} onComunidadeClick={onComunidadeClick} />
             {(friendCountByEvent[evento.id] || 0) > 0 && (
               <div className="absolute top-2 left-2 z-40 flex items-center gap-1 bg-black/70 backdrop-blur-md px-1.5 py-0.5 rounded-full">
-                <Users size={7} className="text-[#FFD300]" />
-                <span className="text-[7px] font-black text-white tracking-wider">
+                <Users size="0.4375rem" className="text-[#FFD300]" />
+                <span className="text-[0.4375rem] font-black text-white tracking-wider">
                   {friendCountByEvent[evento.id]} amigo{(friendCountByEvent[evento.id] || 0) > 1 ? 's' : ''}
                 </span>
               </div>

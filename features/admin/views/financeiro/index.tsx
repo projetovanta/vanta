@@ -17,6 +17,7 @@ import { exportCSV, exportPDF } from '../../../../utils/exportUtils';
 import { TYPOGRAPHY } from '../../../../constants';
 import { Notificacao } from '../../../../types';
 import { eventosAdminService, ContractedFees, SolicitacaoSaque } from '../../services/eventosAdminService';
+import { getResumoFinanceiroComunidade, getResumoFinanceiroEvento } from '../../services/eventosAdminFinanceiro';
 import { rbacService } from '../../services/rbacService';
 import { supabase } from '../../../../services/supabaseClient';
 import { VantaPieChart } from '../../components/VantaPieChart';
@@ -167,36 +168,46 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
     [currentUserId, svcVersion],
   );
 
-  // Saldo consolidado GG-C — soma dos eventos da(s) comunidade(s) onde é GERENTE
-  // e que tem acesso soberano (autorizado)
-  const saldoConsolidado = useMemo(() => {
-    if (!isGGC) return null;
+  // Saldo consolidado GG-C — usa getResumoFinanceiroComunidade para dados corretos
+  const [saldoConsolidado, setSaldoConsolidado] = useState<{
+    totalBruto: number;
+    totalLiquido: number;
+    totalEventos: number;
+    detalhe: { nome: string; liquido: number }[];
+  } | null>(null);
+  useEffect(() => {
+    if (!isGGC) {
+      setSaldoConsolidado(null);
+      return;
+    }
     const comunidades = rbacService
       .getAtribuicoes(currentUserId)
       .filter(a => a.ativo && a.tenant.tipo === 'COMUNIDADE' && a.cargo === 'GERENTE')
       .map(a => a.tenant.id);
-    let totalBruto = 0;
-    let totalLiquido = 0;
-    let totalEventos = 0;
-    const detalhe: { nome: string; liquido: number }[] = [];
-    for (const comId of comunidades) {
-      const eventos = eventosAdminService.getEventos().filter(e => e.comunidadeId === comId);
-      for (const ev of eventos) {
-        const temAcesso = rbacService.temAcessoSoberano(currentUserId, ev.id);
-        if (!temAcesso) continue;
-        const variacoes = ev.lotes.flatMap(l => l.variacoes);
-        const bruto = variacoes.reduce((s, v) => s + v.vendidos * v.valor, 0);
-        const totalIngressosEv = variacoes.reduce((s, v) => s + v.vendidos, 0);
-        const fees = eventosAdminService.getContractedFees(ev.id);
-        // Taxa VANTA sempre do cliente — produtor recebe bruto
-        const liquido = bruto;
-        totalBruto += bruto;
-        totalLiquido += liquido;
-        totalEventos++;
-        detalhe.push({ nome: ev.nome, liquido });
+    let cancelled = false;
+    (async () => {
+      let totalBruto = 0;
+      let totalLiquido = 0;
+      let totalEventos = 0;
+      const detalhe: { nome: string; liquido: number }[] = [];
+      for (const comId of comunidades) {
+        const resumo = await getResumoFinanceiroComunidade(comId);
+        const eventos = eventosAdminService.getEventos().filter(e => e.comunidadeId === comId);
+        for (const ev of eventos) {
+          const temAcesso = rbacService.temAcessoSoberano(currentUserId, ev.id);
+          if (!temAcesso) continue;
+          const evResumo = await getResumoFinanceiroEvento(ev.id);
+          totalEventos++;
+          detalhe.push({ nome: ev.nome, liquido: evResumo.receitaLiquida });
+        }
+        totalBruto += resumo.receitaBruta;
+        totalLiquido += resumo.receitaLiquida;
       }
-    }
-    return { totalBruto, totalLiquido, totalEventos, detalhe };
+      if (!cancelled) setSaldoConsolidado({ totalBruto, totalLiquido, totalEventos, detalhe });
+    })();
+    return () => {
+      cancelled = true;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUserId, svcVersion, isGGC]);
 
@@ -230,19 +241,23 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
     [meusEventos],
   );
   const ticketMedio = totalIngressosTodos > 0 ? Math.round((saldo.totalVendas / totalIngressosTodos) * 100) / 100 : 0;
-  const receitaVanta = useMemo(
-    () =>
-      meusEventos
-        .flatMap(ev => ev.lotes.flatMap(l => l.variacoes))
-        .reduce((s, v) => {
-          const fees = eventosAdminService.getContractedFees(
-            meusEventos.find(e => e.lotes.some(l => l.variacoes.some(vv => vv.id === v.id)))?.id ?? '',
-          );
-          return s + Math.round((v.vendidos * v.valor * fees.feePercent + fees.feeFixed * v.vendidos) * 100) / 100;
-        }, 0),
+  // Taxa VANTA calculada via service (já desconta reembolsos/chargebacks)
+  const [receitaVanta, setReceitaVanta] = useState(0);
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      let total = 0;
+      for (const ev of meusEventos) {
+        const resumo = await getResumoFinanceiroEvento(ev.id);
+        total += resumo.taxaVanta;
+      }
+      if (!cancelled) setReceitaVanta(Math.round(total * 100) / 100);
+    })();
+    return () => {
+      cancelled = true;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [meusEventos, svcVersion],
-  );
+  }, [meusEventos, svcVersion]);
 
   // ── Export ─────────────────────────────────────────────────────────────────
   const handleExportCSV = useCallback(() => {
@@ -479,7 +494,7 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
               title="CSV"
               className="w-9 h-9 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
             >
-              <Download size={14} className="text-zinc-400" />
+              <Download size="0.875rem" className="text-zinc-400" />
             </button>
             <button
               aria-label="Documento"
@@ -487,14 +502,14 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
               title="PDF"
               className="w-9 h-9 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
             >
-              <FileText size={14} className="text-zinc-400" />
+              <FileText size="0.875rem" className="text-zinc-400" />
             </button>
             <button
               aria-label="Voltar"
               onClick={onBack}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
             >
-              <ArrowLeft size={18} className="text-zinc-400" />
+              <ArrowLeft size="1.125rem" className="text-zinc-400" />
             </button>
           </div>
         </div>
@@ -505,7 +520,7 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
         {saqueOk && (
           <div className="flex items-center gap-3 p-4 bg-emerald-500/10 border border-emerald-500/25 rounded-2xl animate-in slide-in-from-top duration-300">
             <div className="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center shrink-0">
-              <Check size={14} className="text-emerald-400" />
+              <Check size="0.875rem" className="text-emerald-400" />
             </div>
             <p className="text-emerald-300 text-xs font-bold flex-1 min-w-0">
               Saque solicitado com sucesso! Processamento em até 2 dias úteis.
@@ -517,16 +532,16 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
         <div className="grid grid-cols-2 gap-3">
           <div className="bg-zinc-900/40 border border-white/5 rounded-2xl p-4">
             <div className="w-9 h-9 rounded-xl bg-[#FFD300]/10 border border-[#FFD300]/20 flex items-center justify-center mb-3">
-              <Banknote size={16} className="text-[#FFD300]" />
+              <Banknote size="1rem" className="text-[#FFD300]" />
             </div>
-            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1">Saldo Disponível</p>
+            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1">Saldo Disponível</p>
             <p className="text-white font-black text-lg leading-none">{fmtBRL(saldo.saldoDisponivel)}</p>
           </div>
           <div className="bg-zinc-900/40 border border-white/5 rounded-2xl p-4">
             <div className="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mb-3">
-              <Clock size={16} className="text-amber-400" />
+              <Clock size="1rem" className="text-amber-400" />
             </div>
-            <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1">A Receber</p>
+            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1">A Receber</p>
             <p className="text-amber-300 font-black text-lg leading-none">{fmtBRL(saldo.aReceber)}</p>
           </div>
         </div>
@@ -535,18 +550,18 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
         {isGGC && saldoConsolidado && saldoConsolidado.totalEventos > 0 && (
           <div className="bg-zinc-900/40 border border-white/5 rounded-2xl p-5 space-y-4">
             <div className="flex items-center gap-2">
-              <Building2 size={12} className="text-purple-400 shrink-0" />
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">
+              <Building2 size="0.75rem" className="text-purple-400 shrink-0" />
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">
                 Saldo Consolidado — Comunidade
               </p>
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-0.5">
-                <p className="text-[8px] text-zinc-700 font-black uppercase tracking-widest">Receita Bruta</p>
+                <p className="text-[0.5rem] text-zinc-700 font-black uppercase tracking-widest">Receita Bruta</p>
                 <p className="text-white font-black text-base leading-none">{fmtBRL(saldoConsolidado.totalBruto)}</p>
               </div>
               <div className="space-y-0.5">
-                <p className="text-[8px] text-zinc-700 font-black uppercase tracking-widest">Líquido Total</p>
+                <p className="text-[0.5rem] text-zinc-700 font-black uppercase tracking-widest">Líquido Total</p>
                 <p className="text-emerald-400 font-black text-base leading-none">
                   {fmtBRL(saldoConsolidado.totalLiquido)}
                 </p>
@@ -555,8 +570,8 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
             {saldoConsolidado.detalhe.length > 1 && (
               <div className="space-y-3 pt-2 border-t border-white/5">
                 <div className="flex items-center gap-2">
-                  <PieChartIcon size={11} className="text-purple-400" />
-                  <p className="text-[8px] text-zinc-700 font-black uppercase tracking-widest">Receita por Evento</p>
+                  <PieChartIcon size="0.6875rem" className="text-purple-400" />
+                  <p className="text-[0.5rem] text-zinc-700 font-black uppercase tracking-widest">Receita por Evento</p>
                 </div>
                 <VantaPieChart
                   data={saldoConsolidado.detalhe
@@ -574,7 +589,7 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
               </div>
             )}
             {saldoConsolidado.totalEventos === 0 && (
-              <p className="text-zinc-700 text-[10px] font-black uppercase tracking-widest">
+              <p className="text-zinc-700 text-[0.625rem] font-black uppercase tracking-widest">
                 Nenhum evento autorizado ainda.
               </p>
             )}
@@ -583,25 +598,29 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
 
         {/* ── KPIs de Performance ─────────────────────────────────────────── */}
         <div className="bg-zinc-900/40 border border-white/5 rounded-2xl p-5 space-y-4">
-          <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Performance</p>
+          <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">Performance</p>
 
           {/* Receita Vanta + Ticket Médio */}
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
               <div className="flex items-center gap-1.5">
-                <Percent size={10} className="text-[#FFD300] shrink-0" />
-                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest truncate">Receita Vanta</p>
+                <Percent size="0.625rem" className="text-[#FFD300] shrink-0" />
+                <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest truncate">
+                  Receita Vanta
+                </p>
               </div>
               <p className="text-[#FFD300] font-black text-base leading-none">{fmtBRL(receitaVanta)}</p>
-              <p className="text-zinc-700 text-[8px]">taxas sobre vendas</p>
+              <p className="text-zinc-700 text-[0.5rem]">taxas sobre vendas</p>
             </div>
             <div className="space-y-1">
               <div className="flex items-center gap-1.5">
-                <Tag size={10} className="text-zinc-400 shrink-0" />
-                <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest truncate">Ticket Médio</p>
+                <Tag size="0.625rem" className="text-zinc-400 shrink-0" />
+                <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest truncate">
+                  Ticket Médio
+                </p>
               </div>
               <p className="text-zinc-300 font-black text-base leading-none">{fmtBRL(ticketMedio)}</p>
-              <p className="text-zinc-700 text-[8px]">{totalIngressosTodos} ingressos</p>
+              <p className="text-zinc-700 text-[0.5rem]">{totalIngressosTodos} ingressos</p>
             </div>
           </div>
         </div>
@@ -609,8 +628,8 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
         {/* Total bruto + selo de modo de taxa */}
         <div className="flex items-center justify-between px-4 py-3 bg-zinc-900/20 border border-white/5 rounded-xl">
           <div className="flex items-center gap-2">
-            <TrendingUp size={13} className="text-zinc-400" />
-            <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">Total Bruto de Vendas</p>
+            <TrendingUp size="0.8125rem" className="text-zinc-400" />
+            <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest">Total Bruto de Vendas</p>
           </div>
           <p className="text-zinc-400 text-sm font-bold">{fmtBRL(saldo.totalVendas)}</p>
         </div>
@@ -621,7 +640,7 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
             {/* Selo taxa serviço */}
             <div className="flex items-center gap-2 px-3 py-2 rounded-xl border bg-[#FFD300]/5 border-[#FFD300]/15">
               <div className="w-1.5 h-1.5 rounded-full shrink-0 bg-[#FFD300]" />
-              <p className="text-[9px] font-black uppercase tracking-wider text-[#FFD300]/70">
+              <p className="text-[0.5625rem] font-black uppercase tracking-wider text-[#FFD300]/70">
                 Taxa Serviço: Sempre no checkout
               </p>
             </div>
@@ -639,7 +658,7 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
                 }`}
               />
               <p
-                className={`text-[9px] font-black uppercase tracking-wider ${
+                className={`text-[0.5625rem] font-black uppercase tracking-wider ${
                   contractedFees.gatewayMode === 'REPASSAR' ? 'text-sky-400' : 'text-zinc-400'
                 }`}
               >
@@ -651,10 +670,10 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
 
         {/* Dados para recebimento */}
         <div className="bg-zinc-900/40 border border-white/5 rounded-2xl p-5 space-y-4">
-          <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">Dados para Recebimento</p>
+          <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">Dados para Recebimento</p>
 
           <div className="space-y-1.5">
-            <p className="text-[8px] text-zinc-700 font-black uppercase tracking-widest">Tipo de Chave PIX</p>
+            <p className="text-[0.5rem] text-zinc-700 font-black uppercase tracking-widest">Tipo de Chave PIX</p>
             <div className="grid grid-cols-2 gap-1.5">
               {PIX_TIPOS.map(tipo => (
                 <button
@@ -663,7 +682,7 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
                     setPixTipo(tipo);
                     setPixSaved(false);
                   }}
-                  className={`py-2.5 rounded-xl text-[9px] font-black uppercase tracking-wider transition-all border ${
+                  className={`py-2.5 rounded-xl text-[0.5625rem] font-black uppercase tracking-wider transition-all border ${
                     pixTipo === tipo
                       ? 'bg-[#FFD300]/10 border-[#FFD300]/30 text-[#FFD300]'
                       : 'bg-zinc-900/40 border-white/5 text-zinc-400 active:border-white/20'
@@ -676,7 +695,7 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
           </div>
 
           <div className="space-y-1.5">
-            <p className="text-[8px] text-zinc-700 font-black uppercase tracking-widest">Chave PIX</p>
+            <p className="text-[0.5rem] text-zinc-700 font-black uppercase tracking-widest">Chave PIX</p>
             <input
               value={pixChave}
               onChange={e => {
@@ -708,11 +727,11 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
                 });
             }}
             disabled={pixChave.trim().length < 3}
-            className="w-full py-3 bg-zinc-800 border border-white/5 rounded-xl text-[9px] font-black uppercase tracking-widest text-zinc-400 active:text-white active:bg-zinc-700 transition-all disabled:opacity-30 flex items-center justify-center gap-2"
+            className="w-full py-3 bg-zinc-800 border border-white/5 rounded-xl text-[0.5625rem] font-black uppercase tracking-widest text-zinc-400 active:text-white active:bg-zinc-700 transition-all disabled:opacity-30 flex items-center justify-center gap-2"
           >
             {pixSaved ? (
               <>
-                <Check size={12} className="text-emerald-400" />
+                <Check size="0.75rem" className="text-emerald-400" />
                 <span className="text-emerald-400">Salvo</span>
               </>
             ) : (
@@ -728,17 +747,19 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
             <div className="space-y-3">
               <div className="flex items-center gap-3 p-4 bg-emerald-500/10 border border-emerald-500/25 rounded-2xl">
                 <div className="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center shrink-0">
-                  <Check size={14} className="text-emerald-400" />
+                  <Check size="0.875rem" className="text-emerald-400" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-emerald-300 text-xs font-bold leading-none mb-0.5">Evento encerrado</p>
-                  <p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest">{eventoSaque.nome}</p>
+                  <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest">
+                    {eventoSaque.nome}
+                  </p>
                 </div>
               </div>
               <button
                 onClick={() => setShowModal(true)}
                 disabled={saldo.saldoDisponivel <= 0 || pixChave.trim().length < 3}
-                className="w-full py-3 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] transition-all active:scale-[0.98] disabled:opacity-30 disabled:pointer-events-none border border-emerald-500/20 text-emerald-400"
+                className="w-full py-3 rounded-2xl font-black text-[0.625rem] uppercase tracking-[0.2em] transition-all active:scale-[0.98] disabled:opacity-30 disabled:pointer-events-none border border-emerald-500/20 text-emerald-400"
                 style={{ background: 'rgba(16,185,129,0.08)' }}
               >
                 Solicitar Saque para Comunidade
@@ -747,10 +768,10 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
           ) : (
             <button
               onClick={() => setShowFechaModal(true)}
-              className="w-full py-4 rounded-2xl font-black text-[10px] uppercase tracking-[0.25em] transition-all active:scale-[0.98] flex items-center justify-center gap-2 border border-white/10 text-white/70"
+              className="w-full py-4 rounded-2xl font-black text-[0.625rem] uppercase tracking-[0.25em] transition-all active:scale-[0.98] flex items-center justify-center gap-2 border border-white/10 text-white/70"
               style={{ background: 'rgba(255,255,255,0.04)' }}
             >
-              <Flag size={14} className="text-white/40" /> Fechar Evento
+              <Flag size="0.875rem" className="text-white/40" /> Fechar Evento
             </button>
           ))}
 
@@ -759,7 +780,7 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
           <button
             onClick={() => setShowModal(true)}
             disabled={saldo.saldoDisponivel <= 0 || pixChave.trim().length < 3}
-            className="w-full py-4 rounded-2xl font-black text-[10px] uppercase tracking-[0.25em] transition-all active:scale-[0.98] disabled:opacity-30 disabled:pointer-events-none"
+            className="w-full py-4 rounded-2xl font-black text-[0.625rem] uppercase tracking-[0.25em] transition-all active:scale-[0.98] disabled:opacity-30 disabled:pointer-events-none"
             style={{ background: 'linear-gradient(135deg, #8b5cf6, #ec4899)', color: '#fff' }}
           >
             Solicitar Saque

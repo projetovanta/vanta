@@ -72,31 +72,31 @@ export const EventCard: React.FC<EventCardProps> = React.memo(
             className="w-full h-full object-cover opacity-90"
             fallback={
               <div className="w-full h-full bg-zinc-900 flex items-center justify-center">
-                <span className="text-zinc-700 text-[9px] font-black uppercase tracking-widest">Sem Imagem</span>
+                <span className="text-zinc-700 text-[0.5625rem] font-black uppercase tracking-widest">Sem Imagem</span>
               </div>
             }
           />
           <div
-            className={`absolute top-0 right-0 z-30 px-2 py-1.5 rounded-bl-xl font-black text-[7px] tracking-widest max-w-[65%] truncate ${badge.className}`}
+            className={`absolute top-0 right-0 z-30 px-2 py-1.5 rounded-bl-xl font-black text-[0.4375rem] tracking-widest max-w-[65%] truncate ${badge.className}`}
           >
             {badge.text}
           </div>
           <div className="absolute inset-0 p-3 flex flex-col justify-end bg-gradient-to-t from-black/90 via-black/20 to-transparent">
             <div className="flex items-center gap-1.5 mb-1.5">
-              <span className="px-2 py-0.5 rounded-md bg-[#FFD300] text-black text-[8px] font-black uppercase tracking-wider truncate max-w-[60%]">
+              <span className="px-2 py-0.5 rounded-md bg-[#FFD300] text-black text-[0.5rem] font-black uppercase tracking-wider truncate max-w-[60%]">
                 {' '}
                 {/* lint-layout-ok */}
                 {evento.formato || evento.categoria}
               </span>
               {evento.temBeneficioMaisVanta && (
-                <span className="flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-gradient-to-r from-[#FFD300]/20 to-[#FFD300]/5 border border-[#FFD300]/30 text-[#FFD300] text-[8px] font-black uppercase tracking-wider shrink-0">
+                <span className="flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-gradient-to-r from-[#FFD300]/20 to-[#FFD300]/5 border border-[#FFD300]/30 text-[#FFD300] text-[0.5rem] font-black uppercase tracking-wider shrink-0">
                   {' '}
                   {/* lint-layout-ok */}
-                  <Crown size={8} /> MV
+                  <Crown size="0.5rem" /> MV
                 </span>
               )}
             </div>
-            <h3 className="font-serif text-[15px] text-white leading-snug line-clamp-2">{evento.titulo}</h3>
+            <h3 className="font-serif text-[0.9375rem] text-white leading-snug line-clamp-2">{evento.titulo}</h3>
           </div>
         </div>
         <div className="px-3 py-2.5 border-t border-white/5 flex items-center justify-between gap-2 min-w-0">
@@ -104,8 +104,8 @@ export const EventCard: React.FC<EventCardProps> = React.memo(
             onClick={handleLocalClick}
             className={`flex items-center gap-1.5 min-w-0 flex-1 ${evento.comunidade && onComunidadeClick ? 'active:opacity-70' : ''}`}
           >
-            <MapPin size={11} className="text-[#FFD300] shrink-0" />
-            <span className="text-[10px] text-zinc-400 font-semibold truncate text-left">
+            <MapPin size="0.6875rem" className="text-[#FFD300] shrink-0" />
+            <span className="text-[0.625rem] text-zinc-400 font-semibold truncate text-left">
               {' '}
               {/* lint-layout-ok */}
               {localLabel}
@@ -113,10 +113,10 @@ export const EventCard: React.FC<EventCardProps> = React.memo(
           </button>
           {!evento.ocultarValor && minPrice > 0 && (
             <div className="shrink-0 text-right">
-              <p className="text-[8px] text-zinc-400 uppercase font-bold tracking-wider leading-none">A partir de</p>{' '}
+              <p className="text-[0.5rem] text-zinc-400 uppercase font-bold tracking-wider leading-none">A partir de</p>{' '}
               {/* lint-layout-ok */}
               <p
-                className="text-[13px] text-[#FFD300] leading-tight" // lint-layout-ok
+                className="text-[0.8125rem] text-[#FFD300] leading-tight" // lint-layout-ok
                 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 700 }}
               >
                 R$ {minPrice.toFixed(2).replace('.', ',')}
@@ -124,7 +124,7 @@ export const EventCard: React.FC<EventCardProps> = React.memo(
             </div>
           )}
           {evento.ocultarValor && (
-            <span className="text-[12px] font-serif italic text-[#FFD300] shrink-0">Consulta</span>
+            <span className="text-[0.75rem] font-serif italic text-[#FFD300] shrink-0">Consulta</span>
           )}
         </div>
       </div>

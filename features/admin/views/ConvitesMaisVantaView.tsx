@@ -25,7 +25,7 @@ export const ConvitesMaisVantaView: React.FC<{
   // Form
   const [showForm, setShowForm] = useState(false);
   const [tipo, setTipo] = useState<TipoConvite>('MEMBRO');
-  const [tier, setTier] = useState('desconto');
+  const [tier, setTier] = useState('lista');
   const [cidadeId, setCidadeId] = useState('');
   const [parceiroNome, setParceiroNome] = useState('');
 
@@ -128,13 +128,13 @@ export const ConvitesMaisVantaView: React.FC<{
       {/* Header */}
       <div className="shrink-0 flex items-center gap-3 px-4 py-3 border-b border-white/5">
         <button onClick={onBack} className="p-1.5 text-zinc-400 active:text-white" aria-label="Voltar">
-          <ArrowLeft size={16} />
+          <ArrowLeft size="1rem" />
         </button>
-        <Send size={14} className="text-[#FFD300]" />
+        <Send size="0.875rem" className="text-[#FFD300]" />
         <h1 className="text-white font-bold text-sm">Convites MAIS VANTA</h1>
         <button
           onClick={() => setShowForm(true)}
-          className="ml-auto px-3 py-1.5 bg-[#FFD300] text-black font-black text-[9px] uppercase tracking-widest rounded-xl active:scale-95 transition-all"
+          className="ml-auto px-3 py-1.5 bg-[#FFD300] text-black font-black text-[0.5625rem] uppercase tracking-widest rounded-xl active:scale-95 transition-all"
         >
           Novo Convite
         </button>
@@ -144,11 +144,11 @@ export const ConvitesMaisVantaView: React.FC<{
       <div className="flex-1 overflow-y-auto no-scrollbar p-4 space-y-3">
         {loading ? (
           <div className="flex items-center justify-center py-20">
-            <Loader2 size={20} className="text-zinc-400 animate-spin" />
+            <Loader2 size="1.25rem" className="text-zinc-400 animate-spin" />
           </div>
         ) : convites.length === 0 ? (
           <div className="text-center py-20">
-            <Send size={28} className="mx-auto text-zinc-700 mb-3" />
+            <Send size="1.75rem" className="mx-auto text-zinc-700 mb-3" />
             <p className="text-zinc-400 text-xs">Nenhum convite criado ainda</p>
           </div>
         ) : (
@@ -163,9 +163,9 @@ export const ConvitesMaisVantaView: React.FC<{
                     }`}
                   >
                     {c.tipo === 'MEMBRO' ? (
-                      <Crown size={14} className="text-[#FFD300]" />
+                      <Crown size="0.875rem" className="text-[#FFD300]" />
                     ) : (
-                      <Store size={14} className="text-purple-400" />
+                      <Store size="0.875rem" className="text-purple-400" />
                     )}
                   </div>
                   <div className="min-w-0 flex-1">
@@ -174,13 +174,13 @@ export const ConvitesMaisVantaView: React.FC<{
                         ? `Membro ${c.tier ?? ''}`
                         : `Parceiro${c.parceiro_nome ? ` — ${c.parceiro_nome}` : ''}`}
                     </p>
-                    <p className="text-zinc-400 text-[9px] truncate">
+                    <p className="text-zinc-400 text-[0.5625rem] truncate">
                       {c.cidade_nome ? `${c.cidade_nome} · ` : ''}
                       Criado por {c.criador_nome ?? 'Master'}
                     </p>
                   </div>
                   <span
-                    className={`text-[9px] font-black uppercase tracking-wider ${expirado ? 'text-zinc-400' : statusColor(c.status)}`}
+                    className={`text-[0.5625rem] font-black uppercase tracking-wider ${expirado ? 'text-zinc-400' : statusColor(c.status)}`}
                   >
                     {expirado ? 'Expirado' : statusLabel(c.status)}
                   </span>
@@ -189,16 +189,16 @@ export const ConvitesMaisVantaView: React.FC<{
                 {/* Info de aceitação */}
                 {c.status === 'ACEITO' && c.aceito_nome && (
                   <div className="flex items-center gap-1.5 mb-2 ml-11">
-                    <UserCheck size={10} className="text-green-500" />
-                    <span className="text-green-500 text-[9px]">Aceito por {c.aceito_nome}</span>
+                    <UserCheck size="0.625rem" className="text-green-500" />
+                    <span className="text-green-500 text-[0.5625rem]">Aceito por {c.aceito_nome}</span>
                   </div>
                 )}
 
                 {/* Expira em */}
                 {c.status === 'PENDENTE' && !expirado && (
                   <div className="flex items-center gap-1.5 mb-2 ml-11">
-                    <Clock size={10} className="text-zinc-400" />
-                    <span className="text-zinc-400 text-[9px]">
+                    <Clock size="0.625rem" className="text-zinc-400" />
+                    <span className="text-zinc-400 text-[0.5625rem]">
                       Expira em {new Date(c.expira_em).toLocaleDateString('pt-BR')}
                     </span>
                   </div>
@@ -209,18 +209,22 @@ export const ConvitesMaisVantaView: React.FC<{
                   <div className="flex gap-2 mt-3 ml-11">
                     <button
                       onClick={() => handleCopiar(c.token, c.id)}
-                      className="flex items-center gap-1.5 px-3 py-1.5 bg-zinc-800 border border-white/10 rounded-xl text-zinc-300 text-[9px] font-bold active:scale-95 transition-all"
+                      className="flex items-center gap-1.5 px-3 py-1.5 bg-zinc-800 border border-white/10 rounded-xl text-zinc-300 text-[0.5625rem] font-bold active:scale-95 transition-all"
                       aria-label="Copiar link do convite"
                     >
-                      {copiadoId === c.id ? <Check size={10} className="text-green-500" /> : <Copy size={10} />}
+                      {copiadoId === c.id ? (
+                        <Check size="0.625rem" className="text-green-500" />
+                      ) : (
+                        <Copy size="0.625rem" />
+                      )}
                       {copiadoId === c.id ? 'Copiado!' : 'Copiar Link'}
                     </button>
                     <button
                       onClick={() => handleCancelar(c.id)}
-                      className="flex items-center gap-1.5 px-3 py-1.5 bg-zinc-800 border border-white/10 rounded-xl text-red-400 text-[9px] font-bold active:scale-95 transition-all"
+                      className="flex items-center gap-1.5 px-3 py-1.5 bg-zinc-800 border border-white/10 rounded-xl text-red-400 text-[0.5625rem] font-bold active:scale-95 transition-all"
                       aria-label="Cancelar convite"
                     >
-                      <Trash2 size={10} /> Cancelar
+                      <Trash2 size="0.625rem" /> Cancelar
                     </button>
                   </div>
                 )}
@@ -248,24 +252,24 @@ export const ConvitesMaisVantaView: React.FC<{
               <div className="flex items-center justify-between mb-6">
                 <p className="text-white font-bold text-base">Novo Convite</p>
                 <button onClick={() => setShowForm(false)} className="p-1.5 text-zinc-400" aria-label="Fechar">
-                  <X size={14} />
+                  <X size="0.875rem" />
                 </button>
               </div>
 
               {/* Tipo */}
-              <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">Tipo</p>
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2">Tipo</p>
               <div className="flex gap-2 mb-5">
                 {(['MEMBRO', 'PARCEIRO'] as TipoConvite[]).map(t => (
                   <button
                     key={t}
                     onClick={() => setTipo(t)}
-                    className={`flex-1 py-3 rounded-xl text-[10px] font-black uppercase tracking-wider border transition-all flex items-center justify-center gap-2 ${
+                    className={`flex-1 py-3 rounded-xl text-[0.625rem] font-black uppercase tracking-wider border transition-all flex items-center justify-center gap-2 ${
                       tipo === t
                         ? 'bg-[#FFD300]/15 border-[#FFD300]/30 text-[#FFD300]'
                         : 'bg-zinc-900 border-white/5 text-zinc-400'
                     }`}
                   >
-                    {t === 'MEMBRO' ? <Crown size={12} /> : <Store size={12} />}
+                    {t === 'MEMBRO' ? <Crown size="0.75rem" /> : <Store size="0.75rem" />}
                     {t === 'MEMBRO' ? 'Membro' : 'Parceiro'}
                   </button>
                 ))}
@@ -274,13 +278,13 @@ export const ConvitesMaisVantaView: React.FC<{
               {/* Tier (só membro) */}
               {tipo === 'MEMBRO' && (
                 <div className="mb-5">
-                  <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">Nível</p>
+                  <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2">Nível</p>
                   <div className="flex flex-wrap gap-2">
                     {tiers.map(t => (
                       <button
                         key={t.id}
                         onClick={() => setTier(t.id)}
-                        className={`px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider border transition-all ${
+                        className={`px-3 py-2 rounded-xl text-[0.625rem] font-black uppercase tracking-wider border transition-all ${
                           tier === t.id
                             ? 'bg-[#FFD300]/15 border-[#FFD300]/30 text-[#FFD300]'
                             : 'bg-zinc-900 border-white/5 text-zinc-400'
@@ -296,7 +300,7 @@ export const ConvitesMaisVantaView: React.FC<{
               {/* Nome parceiro (só parceiro) */}
               {tipo === 'PARCEIRO' && (
                 <div className="mb-5">
-                  <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">
+                  <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2">
                     Nome do Estabelecimento
                   </p>
                   <input
@@ -312,13 +316,13 @@ export const ConvitesMaisVantaView: React.FC<{
               {/* Cidade */}
               {cidades.length > 0 && (
                 <div className="mb-5">
-                  <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-2">
+                  <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2">
                     Cidade (opcional)
                   </p>
                   <div className="flex flex-wrap gap-2">
                     <button
                       onClick={() => setCidadeId('')}
-                      className={`px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider border transition-all ${
+                      className={`px-3 py-2 rounded-xl text-[0.625rem] font-black uppercase tracking-wider border transition-all ${
                         !cidadeId
                           ? 'bg-[#FFD300]/15 border-[#FFD300]/30 text-[#FFD300]'
                           : 'bg-zinc-900 border-white/5 text-zinc-400'
@@ -330,7 +334,7 @@ export const ConvitesMaisVantaView: React.FC<{
                       <button
                         key={c.id}
                         onClick={() => setCidadeId(c.id)}
-                        className={`px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider border transition-all ${
+                        className={`px-3 py-2 rounded-xl text-[0.625rem] font-black uppercase tracking-wider border transition-all ${
                           cidadeId === c.id
                             ? 'bg-[#FFD300]/15 border-[#FFD300]/30 text-[#FFD300]'
                             : 'bg-zinc-900 border-white/5 text-zinc-400'
@@ -344,7 +348,7 @@ export const ConvitesMaisVantaView: React.FC<{
               )}
 
               {/* Info */}
-              <p className="text-zinc-400 text-[10px] leading-relaxed mb-5">
+              <p className="text-zinc-400 text-[0.625rem] leading-relaxed mb-5">
                 Um link único será gerado. Envie por WhatsApp ou email. O link expira em 7 dias e só pode ser usado uma
                 vez.
               </p>
@@ -353,22 +357,22 @@ export const ConvitesMaisVantaView: React.FC<{
               <div className="flex gap-3">
                 <button
                   onClick={() => setShowForm(false)}
-                  className="flex-1 py-4 bg-zinc-900 border border-white/10 text-zinc-400 font-black text-[10px] uppercase tracking-widest rounded-2xl active:scale-95 transition-all"
+                  className="flex-1 py-4 bg-zinc-900 border border-white/10 text-zinc-400 font-black text-[0.625rem] uppercase tracking-widest rounded-2xl active:scale-95 transition-all"
                 >
                   Cancelar
                 </button>
                 <button
                   onClick={() => void handleCriar()}
                   disabled={criando}
-                  className="flex-1 py-4 bg-[#FFD300] text-black font-black text-[10px] uppercase tracking-widest rounded-2xl active:scale-95 transition-all disabled:opacity-40 flex items-center justify-center gap-2"
+                  className="flex-1 py-4 bg-[#FFD300] text-black font-black text-[0.625rem] uppercase tracking-widest rounded-2xl active:scale-95 transition-all disabled:opacity-40 flex items-center justify-center gap-2"
                 >
                   {criando ? (
                     <>
-                      <Loader2 size={14} className="animate-spin" /> Criando...
+                      <Loader2 size="0.875rem" className="animate-spin" /> Criando...
                     </>
                   ) : (
                     <>
-                      <Send size={14} /> Gerar Link
+                      <Send size="0.875rem" /> Gerar Link
                     </>
                   )}
                 </button>

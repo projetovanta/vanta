@@ -305,10 +305,6 @@ export const CriarEventoView: React.FC<{
   const validarStep3 = (): boolean => {
     if (!listasEnabled || varsLista.length === 0) return true;
     for (const v of varsLista) {
-      if (!v.limite || parseInt(v.limite) <= 0) {
-        setErro('Informe o limite de cada variação.');
-        return false;
-      }
       if (v.validadeTipo === 'HORARIO' && !v.validadeHora) {
         setErro('Informe o horário limite da lista.');
         return false;
@@ -454,7 +450,7 @@ export const CriarEventoView: React.FC<{
         if (errRec) console.error('[CriarEventoView] gerar_ocorrencias_recorrente:', errRec);
       }
 
-      // MAIS VANTA — salvar benefícios por tier (mais_vanta_lotes_evento)
+      // MAIS VANTA — salvar benefícios por tier (mais_vanta_config_evento)
       if (maisVantaEvento.enabled) {
         const ativos = maisVantaEvento.beneficios.filter(b => b.ativo && (b.loteId || b.listaVarId));
         if (ativos.length > 0) {
@@ -465,7 +461,9 @@ export const CriarEventoView: React.FC<{
               tipo: b.tipo,
               loteId: b.tipo === 'ingresso' ? b.loteId : null,
               listaId: b.tipo === 'lista' ? b.listaVarId : null,
-              descontoPercentual: b.tierId === 'desconto' ? parseInt(b.descontoPercentual) || null : null,
+              descontoPercentual: b.tierId === 'lista' ? parseInt(b.descontoPercentual) || null : null,
+              creatorSublevelMinimo: b.tierId === 'creator' && b.creatorSublevelMinimo ? b.creatorSublevelMinimo : null,
+              vagasLimite: b.vagasLimite ? parseInt(b.vagasLimite) || null : null,
               ativo: true,
             })),
           );
@@ -490,18 +488,19 @@ export const CriarEventoView: React.FC<{
       });
 
       if (listasEnabled) {
-        const regrasValidas = varsLista.filter(v => parseInt(v.limite) > 0);
+        const regrasValidas = varsLista;
         if (regrasValidas.length > 0) {
+          const totalLimite = regrasValidas.reduce((s, v) => s + (parseInt(v.limite) || 0), 0);
           const listaId = await listasService.criarLista({
             eventoId,
             eventoNome: nome.trim(),
             eventoData: dataInicio,
             eventoDataFim: dataFim,
             eventoLocal: comunidade.nome,
-            tetoGlobalTotal: regrasValidas.reduce((s, v) => s + parseInt(v.limite), 0),
+            tetoGlobalTotal: totalLimite || null,
             regras: regrasValidas.map(v => ({
               label: buildLabel(v),
-              tetoGlobal: parseInt(v.limite),
+              tetoGlobal: v.limite ? parseInt(v.limite) : null,
               cor: v.cor,
               valor: v.tipo !== 'VIP' && v.valor ? parseFloat(v.valor) : undefined,
               horaCorte: v.validadeTipo === 'HORARIO' && v.validadeHora ? v.validadeHora : undefined,
@@ -631,7 +630,7 @@ export const CriarEventoView: React.FC<{
               onClick={onBack}
               className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0 mt-1"
             >
-              <ArrowLeft size={18} className="text-zinc-400" />
+              <ArrowLeft size="1.125rem" className="text-zinc-400" />
             </button>
           </div>
         </div>
@@ -650,7 +649,7 @@ export const CriarEventoView: React.FC<{
     return (
       <div className="absolute inset-0 bg-[#0A0A0A] flex flex-col items-center justify-center p-10 gap-6">
         <div className="w-20 h-20 rounded-full bg-zinc-900 border border-white/10 flex items-center justify-center">
-          <Clock size={36} className="text-zinc-400" />
+          <Clock size="2.25rem" className="text-zinc-400" />
         </div>
         <div className="text-center">
           <h2 style={TYPOGRAPHY.screenTitle} className="text-2xl italic mb-2">
@@ -673,7 +672,7 @@ export const CriarEventoView: React.FC<{
           </p>
         </div>
         <div className="w-full max-w-xs bg-zinc-900/60 border border-white/5 rounded-2xl p-4 text-center">
-          <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest mb-1">Status</p>
+          <p className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest mb-1">Status</p>
           <p className="font-bold text-sm text-amber-400">{isComSocio ? 'Aguardando sócio' : 'Aguardando aprovação'}</p>
         </div>
         {isComSocio && socio?.email && (
@@ -705,22 +704,22 @@ export const CriarEventoView: React.FC<{
               }
             }}
             disabled={conviteEnviado}
-            className={`w-full max-w-xs py-4 font-bold text-[10px] uppercase tracking-[0.3em] rounded-2xl active:scale-[0.98] transition-all flex items-center justify-center gap-2 ${conviteEnviado ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-[#FFD300] text-black'}`}
+            className={`w-full max-w-xs py-4 font-bold text-[0.625rem] uppercase tracking-[0.3em] rounded-2xl active:scale-[0.98] transition-all flex items-center justify-center gap-2 ${conviteEnviado ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-[#FFD300] text-black'}`}
           >
             {conviteEnviado ? (
               <>
-                <Check size={14} /> Convite enviado!
+                <Check size="0.875rem" /> Convite enviado!
               </>
             ) : (
               <>
-                <Mail size={14} /> Enviar convite por email
+                <Mail size="0.875rem" /> Enviar convite por email
               </>
             )}
           </button>
         )}
         <button
           onClick={onBack}
-          className="w-full max-w-xs py-4 bg-zinc-800 border border-white/10 text-zinc-300 font-bold text-[10px] uppercase tracking-[0.3em] rounded-2xl active:scale-[0.98] transition-all"
+          className="w-full max-w-xs py-4 bg-zinc-800 border border-white/10 text-zinc-300 font-bold text-[0.625rem] uppercase tracking-[0.3em] rounded-2xl active:scale-[0.98] transition-all"
         >
           Voltar para a Comunidade
         </button>
@@ -753,7 +752,7 @@ export const CriarEventoView: React.FC<{
             onClick={safeBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0 mt-1"
           >
-            <ArrowLeft size={18} className="text-zinc-400" />
+            <ArrowLeft size="1.125rem" className="text-zinc-400" />
           </button>
         </div>
 
@@ -762,7 +761,7 @@ export const CriarEventoView: React.FC<{
           {Array.from({ length: TOTAL_STEPS }, (_, i) => i + 1).map((s, i) => (
             <React.Fragment key={s}>
               <div
-                className={`w-6 h-6 rounded-full flex items-center justify-center text-[9px] font-black border transition-all shrink-0 ${
+                className={`w-6 h-6 rounded-full flex items-center justify-center text-[0.5625rem] font-black border transition-all shrink-0 ${
                   step === s
                     ? 'bg-[#FFD300] border-[#FFD300] text-black'
                     : step > s
@@ -770,7 +769,7 @@ export const CriarEventoView: React.FC<{
                       : 'bg-zinc-900 border-white/10 text-zinc-400'
                 }`}
               >
-                {step > s ? <Check size={10} /> : s}
+                {step > s ? <Check size="0.625rem" /> : s}
               </div>
               {i < TOTAL_STEPS - 1 && <div className={`flex-1 h-px ${step > s ? 'bg-[#FFD300]/20' : 'bg-white/5'}`} />}
             </React.Fragment>
@@ -780,7 +779,7 @@ export const CriarEventoView: React.FC<{
           {STEP_LABELS.map((l, i) => (
             <p
               key={l}
-              className={`text-[7px] font-black uppercase tracking-widest ${step === i + 1 ? 'text-[#FFD300]' : 'text-zinc-700'}`}
+              className={`text-[0.4375rem] font-black uppercase tracking-widest ${step === i + 1 ? 'text-[#FFD300]' : 'text-zinc-700'}`}
               style={{
                 width: `${100 / TOTAL_STEPS}%`,
                 textAlign: i === 0 ? 'left' : i === TOTAL_STEPS - 1 ? 'right' : 'center',
@@ -874,7 +873,7 @@ export const CriarEventoView: React.FC<{
           />
         )}
         {STEP_LABELS[step - 1] === 'Financeiro' && <Step5Financeiro split={split} setSplit={setSplit} socio={socio} />}
-        {erro && <p className="mt-4 text-red-400 text-[10px] font-black uppercase tracking-widest">{erro}</p>}
+        {erro && <p className="mt-4 text-red-400 text-[0.625rem] font-black uppercase tracking-widest">{erro}</p>}
       </div>
 
       {/* Navegação */}
@@ -882,14 +881,14 @@ export const CriarEventoView: React.FC<{
         {step > 1 && (
           <button
             onClick={voltar}
-            className="flex-1 py-3.5 bg-zinc-900 border border-white/10 rounded-xl text-zinc-400 text-[10px] font-black uppercase tracking-widest active:scale-95 transition-all"
+            className="flex-1 py-3.5 bg-zinc-900 border border-white/10 rounded-xl text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest active:scale-95 transition-all"
           >
             Anterior
           </button>
         )}
         <button
           onClick={avancar}
-          className="flex-1 py-3.5 bg-[#FFD300] text-black rounded-xl text-[10px] font-black uppercase tracking-widest active:scale-95 transition-all font-bold"
+          className="flex-1 py-3.5 bg-[#FFD300] text-black rounded-xl text-[0.625rem] font-black uppercase tracking-widest active:scale-95 transition-all font-bold"
         >
           {step === TOTAL_STEPS ? (tipoFluxo === 'COM_SOCIO' ? 'Enviar Convite' : 'Enviar para Aprovação') : 'Próximo'}
         </button>

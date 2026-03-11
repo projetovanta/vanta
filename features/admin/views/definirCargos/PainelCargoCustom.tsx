@@ -75,7 +75,7 @@ export const PainelCargoCustom: React.FC<PainelCustomProps> = ({ estado, setEsta
             <p className={labelCls}>Cotas por variação</p>
 
             {estado.listas.cotas.length === 0 && (
-              <p className="text-zinc-700 text-[9px] italic">
+              <p className="text-zinc-700 text-[0.5625rem] italic">
                 Nenhuma variação adicionada. Adicione ao menos uma com limite &gt; 0.
               </p>
             )}
@@ -101,7 +101,7 @@ export const PainelCargoCustom: React.FC<PainelCustomProps> = ({ estado, setEsta
                   onClick={() => removeCota(idx)}
                   className="w-8 h-8 flex items-center justify-center rounded-lg bg-zinc-800 border border-white/5 active:scale-90 transition-all shrink-0"
                 >
-                  <X size={13} className="text-zinc-400" />
+                  <X size="0.8125rem" className="text-zinc-400" />
                 </button>
               </div>
             ))}
@@ -109,9 +109,9 @@ export const PainelCargoCustom: React.FC<PainelCustomProps> = ({ estado, setEsta
             <button
               type="button"
               onClick={addCota}
-              className="flex items-center gap-1.5 text-[#FFD300]/70 text-[10px] font-black uppercase tracking-widest mt-1 active:opacity-60 transition-all"
+              className="flex items-center gap-1.5 text-[#FFD300]/70 text-[0.625rem] font-black uppercase tracking-widest mt-1 active:opacity-60 transition-all"
             >
-              <Plus size={11} />
+              <Plus size="0.6875rem" />
               Adicionar outra variação
             </button>
           </div>

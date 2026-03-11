@@ -97,7 +97,7 @@ export const ComemoracaoConfigSubView: React.FC<Props> = ({ eventoId, onBack }) 
     return (
       <div className="absolute inset-0 flex flex-col bg-[#050505] overflow-hidden">
         <div className="flex items-center justify-center flex-1">
-          <Loader2 size={20} className="text-zinc-400 animate-spin" />
+          <Loader2 size="1.25rem" className="text-zinc-400 animate-spin" />
         </div>
       </div>
     );
@@ -112,13 +112,13 @@ export const ComemoracaoConfigSubView: React.FC<Props> = ({ eventoId, onBack }) 
           onClick={onBack}
           className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
         >
-          <ArrowLeft size={18} className="text-zinc-400" />
+          <ArrowLeft size="1.125rem" className="text-zinc-400" />
         </button>
         <div className="flex-1 min-w-0">
           <h1 style={TYPOGRAPHY.screenTitle} className="text-base text-white truncate">
             Comemoração
           </h1>
-          <p className="text-zinc-400 text-[10px] truncate">{evento?.nome ?? 'Evento'}</p>
+          <p className="text-zinc-400 text-[0.625rem] truncate">{evento?.nome ?? 'Evento'}</p>
         </div>
       </div>
 
@@ -127,7 +127,7 @@ export const ComemoracaoConfigSubView: React.FC<Props> = ({ eventoId, onBack }) 
         {/* Toggle */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Cake size={14} className="text-purple-400" />
+            <Cake size="0.875rem" className="text-purple-400" />
             <p className="text-white text-sm font-bold">Aceitar comemoracões</p>
           </div>
           <button
@@ -135,7 +135,7 @@ export const ComemoracaoConfigSubView: React.FC<Props> = ({ eventoId, onBack }) 
             className={`w-12 h-6 rounded-full transition-all relative ${habilitado ? 'bg-[#FFD300]' : 'bg-zinc-700'}`}
           >
             <div
-              className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all ${habilitado ? 'left-[26px]' : 'left-1'}`}
+              className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all ${habilitado ? 'left-[1.625rem]' : 'left-1'}`}
             />
           </button>
         </div>
@@ -144,7 +144,7 @@ export const ComemoracaoConfigSubView: React.FC<Props> = ({ eventoId, onBack }) 
           <>
             {/* Limite */}
             <div className="space-y-1">
-              <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">
+              <label className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">
                 Limite de comemoracões (vazio = sem limite)
               </label>
               <input
@@ -159,7 +159,7 @@ export const ComemoracaoConfigSubView: React.FC<Props> = ({ eventoId, onBack }) 
 
             {/* Deadline */}
             <div className="space-y-1">
-              <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">
+              <label className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">
                 Horário limite para vendas contarem (vazio = até início do evento)
               </label>
               <VantaTimePicker
@@ -171,7 +171,7 @@ export const ComemoracaoConfigSubView: React.FC<Props> = ({ eventoId, onBack }) 
 
             {/* Datas bloqueadas */}
             <div className="space-y-2">
-              <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">
+              <label className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">
                 Datas bloqueadas (não aceitar comemoração)
               </label>
               <div className="flex gap-2">
@@ -189,7 +189,7 @@ export const ComemoracaoConfigSubView: React.FC<Props> = ({ eventoId, onBack }) 
                   }}
                   className="px-3 py-2 bg-purple-500/10 border border-purple-500/20 rounded-xl text-purple-400 active:scale-95 transition-all"
                 >
-                  <Plus size={14} />
+                  <Plus size="0.875rem" />
                 </button>
               </div>
               {datasBloqueadas.length > 0 && (
@@ -197,14 +197,14 @@ export const ComemoracaoConfigSubView: React.FC<Props> = ({ eventoId, onBack }) 
                   {datasBloqueadas.map(d => (
                     <span
                       key={d}
-                      className="flex items-center gap-1 px-2 py-1 bg-red-500/10 border border-red-500/20 rounded-lg text-[10px] text-red-400 font-medium"
+                      className="flex items-center gap-1 px-2 py-1 bg-red-500/10 border border-red-500/20 rounded-lg text-[0.625rem] text-red-400 font-medium"
                     >
                       {d.split('-').reverse().join('/')}
                       <button
                         onClick={() => setDatasBloqueadas(datasBloqueadas.filter(x => x !== d))}
                         className="active:scale-90"
                       >
-                        <X size={10} />
+                        <X size="0.625rem" />
                       </button>
                     </span>
                   ))}
@@ -215,45 +215,45 @@ export const ComemoracaoConfigSubView: React.FC<Props> = ({ eventoId, onBack }) 
             {/* Faixas de benefícios */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <label className="text-[8px] text-zinc-400 font-black uppercase tracking-widest">
+                <label className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">
                   Faixas de Benefícios
                 </label>
                 <button
                   onClick={addFaixa}
-                  className="flex items-center gap-1 px-2.5 py-1.5 bg-purple-500/10 border border-purple-500/20 rounded-lg text-[9px] font-bold text-purple-400 uppercase tracking-wider active:scale-95 transition-all"
+                  className="flex items-center gap-1 px-2.5 py-1.5 bg-purple-500/10 border border-purple-500/20 rounded-lg text-[0.5625rem] font-bold text-purple-400 uppercase tracking-wider active:scale-95 transition-all"
                 >
-                  <Plus size={10} />
+                  <Plus size="0.625rem" />
                   Faixa
                 </button>
               </div>
 
-              <p className="text-zinc-400 text-[10px] leading-relaxed">
+              <p className="text-zinc-400 text-[0.625rem] leading-relaxed">
                 Defina quantas vendas o aniversariante precisa para ganhar cortesias e benefícios de consumo.
               </p>
 
               {faixas.length === 0 && (
                 <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-4 text-center">
                   <p className="text-zinc-400 text-xs">Nenhuma faixa configurada</p>
-                  <p className="text-zinc-700 text-[10px] mt-1">Adicione faixas para premiar aniversariantes</p>
+                  <p className="text-zinc-700 text-[0.625rem] mt-1">Adicione faixas para premiar aniversariantes</p>
                 </div>
               )}
 
               {faixas.map((faixa, idx) => (
                 <div key={idx} className="bg-zinc-900/40 border border-white/5 rounded-xl p-3 space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-[9px] text-purple-400 font-black uppercase tracking-widest">
+                    <span className="text-[0.5625rem] text-purple-400 font-black uppercase tracking-widest">
                       Faixa {idx + 1}
                     </span>
                     <button
                       onClick={() => removeFaixa(idx)}
                       className="w-6 h-6 bg-red-500/10 rounded-lg flex items-center justify-center active:scale-90 transition-all"
                     >
-                      <Trash2 size={10} className="text-red-400" />
+                      <Trash2 size="0.625rem" className="text-red-400" />
                     </button>
                   </div>
                   <div className="grid grid-cols-2 gap-2">
                     <div className="space-y-0.5">
-                      <label className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">
+                      <label className="text-[0.4375rem] text-zinc-400 font-black uppercase tracking-widest">
                         Mín. Vendas
                       </label>
                       <input
@@ -266,7 +266,9 @@ export const ComemoracaoConfigSubView: React.FC<Props> = ({ eventoId, onBack }) 
                       />
                     </div>
                     <div className="space-y-0.5">
-                      <label className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">Cortesias</label>
+                      <label className="text-[0.4375rem] text-zinc-400 font-black uppercase tracking-widest">
+                        Cortesias
+                      </label>
                       <input
                         type="number"
                         min="0"
@@ -278,7 +280,7 @@ export const ComemoracaoConfigSubView: React.FC<Props> = ({ eventoId, onBack }) 
                     </div>
                   </div>
                   <div className="space-y-0.5">
-                    <label className="text-[7px] text-zinc-400 font-black uppercase tracking-widest">
+                    <label className="text-[0.4375rem] text-zinc-400 font-black uppercase tracking-widest">
                       Benefício Consumo (opcional)
                     </label>
                     <input
@@ -304,9 +306,9 @@ export const ComemoracaoConfigSubView: React.FC<Props> = ({ eventoId, onBack }) 
         <button
           onClick={handleSave}
           disabled={saving}
-          className="w-full py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-[0.3em] rounded-xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all disabled:opacity-50"
+          className="w-full py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-[0.3em] rounded-xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all disabled:opacity-50"
         >
-          {saving ? <Loader2 size={13} className="animate-spin" /> : <Check size={13} />}
+          {saving ? <Loader2 size="0.8125rem" className="animate-spin" /> : <Check size="0.8125rem" />}
           Salvar
         </button>
       </div>

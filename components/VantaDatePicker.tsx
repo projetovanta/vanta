@@ -70,7 +70,7 @@ export const VantaDatePicker: React.FC<VantaDatePickerProps> = ({
         className={`flex items-center gap-2 text-left ${className || 'w-full bg-zinc-900/60 border border-white/5 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-[#FFD300]/30'}`}
         style={style}
       >
-        <Calendar size={14} className="text-zinc-500 shrink-0" />
+        <Calendar size="0.875rem" className="text-zinc-500 shrink-0" />
         <span className={value ? 'text-white' : 'text-zinc-500'}>{value ? formatBR(value) : placeholder}</span>
       </button>
 
@@ -173,7 +173,7 @@ const CalendarModal: React.FC<CalendarModalProps> = ({ value, min, max, onSelect
             {showYearPicker ? 'Voltar' : `${MONTH_NAMES[viewDate.getMonth()]} ${viewDate.getFullYear()}`}
           </button>
           <button type="button" onClick={onClose} className="p-1.5 bg-zinc-900 rounded-full text-zinc-400">
-            <X size={16} />
+            <X size="1rem" />
           </button>
         </div>
 
@@ -200,20 +200,20 @@ const CalendarModal: React.FC<CalendarModalProps> = ({ value, min, max, onSelect
             {/* Month nav */}
             <div className="flex justify-between items-center mb-3 px-1">
               <button type="button" onClick={() => changeMonth(-1)} className="p-1 text-zinc-400 hover:text-white">
-                <ChevronLeft size={18} />
+                <ChevronLeft size="1.125rem" />
               </button>
-              <span className="text-white font-bold uppercase tracking-widest text-[10px]">
+              <span className="text-white font-bold uppercase tracking-widest text-[0.625rem]">
                 {MONTH_NAMES[viewDate.getMonth()]} {viewDate.getFullYear()}
               </span>
               <button type="button" onClick={() => changeMonth(1)} className="p-1 text-zinc-400 hover:text-white">
-                <ChevronRight size={18} />
+                <ChevronRight size="1.125rem" />
               </button>
             </div>
 
             {/* Day labels */}
             <div className="grid grid-cols-7 gap-1 mb-1 text-center">
               {DAY_LABELS.map((d, i) => (
-                <span key={i} className="text-[9px] text-zinc-500 font-bold">
+                <span key={i} className="text-[0.5625rem] text-zinc-500 font-bold">
                   {d}
                 </span>
               ))}

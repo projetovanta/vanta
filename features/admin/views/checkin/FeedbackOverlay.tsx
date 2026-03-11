@@ -45,13 +45,13 @@ export const FeedbackOverlay: React.FC<{ tipo: FeedbackTela; nome?: string; onDi
         className="w-28 h-28 rounded-full flex items-center justify-center"
         style={{ background: 'rgba(255,255,255,0.2)' }}
       >
-        <Icon size={56} className="text-white" strokeWidth={2.5} />
+        <Icon size="3.5rem" className="text-white" strokeWidth={2.5} />
       </div>
       <div className="text-center px-8">
         <p className="text-white font-black text-3xl leading-none mb-3">{cfg.titulo}</p>
         <p className="text-white/70 text-sm">{cfg.sub}</p>
       </div>
-      <p className="text-white/40 text-[9px] font-black uppercase tracking-widest">Toque para fechar</p>
+      <p className="text-white/40 text-[0.5625rem] font-black uppercase tracking-widest">Toque para fechar</p>
     </div>
   );
 };

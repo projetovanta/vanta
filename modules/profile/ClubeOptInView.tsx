@@ -19,13 +19,16 @@ import {
   Copy,
   BadgeCheck,
   ShieldAlert,
+  Share2,
+  Ban,
+  OctagonAlert,
 } from 'lucide-react';
 import { TYPOGRAPHY } from '../../constants';
-import { Membro, ReservaMaisVanta, Evento } from '../../types';
+import { Membro, Evento } from '../../types';
+import type { ResgateMV } from '../../features/admin/services/clube/clubeReservasService';
 import { clubeService } from '../../features/admin/services/clubeService';
 import { maisVantaConfigService } from '../../features/admin/services/maisVantaConfigService';
 import { tsBR, todayBR } from '../../utils';
-import { DealsMembroSection } from './DealsMembroSection';
 
 // ── Termos de uso LGPD (fallback se config.termosCustomizados for null) ────────
 const TERMOS_PADRAO = `TERMOS DE USO — CLUBE MAIS VANTA
@@ -66,8 +69,8 @@ interface Props {
 export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, allEvents = [], conviteId }) => {
   const [instagramHandle, setInstagramHandle] = useState(profile.instagram ?? '');
   const [submitting, setSubmitting] = useState(false);
-  const [solicitacaoStatus, setSolicitacaoStatus] = useState<'NONE' | 'PENDENTE' | 'APROVADO' | 'REJEITADO'>('NONE');
-  const [minhasReservas, setMinhasReservas] = useState<ReservaMaisVanta[]>([]);
+  const [solicitacaoStatus, setSolicitacaoStatus] = useState<'NONE' | 'PENDENTE' | 'APROVADO'>('NONE');
+  const [minhasReservas, setMinhasReservas] = useState<ResgateMV[]>([]);
   const [postUrl, setPostUrl] = useState('');
   const [activeTab, setActiveTab] = useState<'ATIVOS' | 'PASSADOS'>('ATIVOS');
   const [cancelTarget, setCancelTarget] = useState<string | null>(null);
@@ -78,6 +81,7 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
   const [profissao, setProfissao] = useState('');
   const [comoConheceu, setComoConheceu] = useState('');
   const [indicadoPor, setIndicadoPor] = useState('');
+  const [cidade, setCidade] = useState('');
   const [comoConheceuAberto, setComoConheceuAberto] = useState(false);
 
   // ── Instagram verificação ──────────────────────────────────────────────────
@@ -96,31 +100,22 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
 
   const membro = useMemo(() => clubeService.getMembroClubeByUserId(profile.id), [profile.id]);
   const temDivida = useMemo(() => clubeService.temDividaSocial(profile.id), [profile.id]);
+  const estaBloqueado = useMemo(() => clubeService.estaBloqueado(profile.id), [profile.id]);
+  const bloqueioAte = useMemo(() => clubeService.getBloqueioAte(profile.id), [profile.id]);
+  const isBanido = useMemo(() => clubeService.isBanidoPermanente(profile.id), [profile.id]);
+  const [infracoes, setInfracoes] = useState<{ id: string; tipo: string; eventoNome: string; criadoEm: string }[]>([]);
+  const [infracoesCount, setInfracoesCount] = useState(0);
 
   useEffect(() => {
     if (isConvite) {
       // Modo convite: verificar se convite é válido
       const sol = clubeService.getSolicitacoes().find(s => s.id === conviteId);
-      if (sol?.status === 'CONVIDADO') {
-        setSolicitacaoStatus('NONE'); // permite preencher
-        // Buscar nome do master que convidou
-        if (sol.convidadoPor) {
-          import('../../services/supabaseClient').then(({ supabase: sb }) => {
-            sb.from('profiles')
-              .select('nome')
-              .eq('id', sol.convidadoPor!)
-              .maybeSingle()
-              .then(({ data }) => {
-                if (data?.nome) setConviteNomeMaster(data.nome as string);
-              });
-          });
-        }
-      } else if (sol?.status === 'APROVADO') {
+      if (sol?.status === 'APROVADO') {
         setSolicitacaoStatus('APROVADO');
       } else {
         setSolicitacaoStatus('NONE');
       }
-      setMinhasReservas(clubeService.getReservasUsuario(profile.id));
+      clubeService.getResgatesUsuarioAsync(profile.id).then(setMinhasReservas);
       return;
     }
 
@@ -130,8 +125,14 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
     if (minha) setSolicitacaoStatus('PENDENTE');
     else if (membro) setSolicitacaoStatus('APROVADO');
 
-    // Carregar minhas reservas
-    setMinhasReservas(clubeService.getReservasUsuario(profile.id));
+    // Carregar minhas reservas + infrações
+    clubeService.getResgatesUsuarioAsync(profile.id).then(setMinhasReservas);
+    clubeService.getInfracoes(profile.id).then(list => {
+      setInfracoes(
+        list.map(i => ({ id: i.id, tipo: i.tipo, eventoNome: i.eventoNome ?? 'Evento', criadoEm: i.criadoEm })),
+      );
+    });
+    clubeService.getInfracoesCount(profile.id).then(setInfracoesCount);
   }, [profile.id, membro, isConvite, conviteId]);
 
   const handleVerificarPerfil = async () => {
@@ -203,6 +204,8 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
         comoConheceu: comoConheceu || undefined,
         profissao: profissao.trim() || undefined,
         indicadoPor: indicadoPor.trim() || undefined,
+        cidade: cidade.trim() || undefined,
+        conviteCodigo: conviteId || undefined,
       });
       setSolicitacaoStatus('PENDENTE');
       onSuccess?.('Solicitação enviada! Aguarde aprovação.');
@@ -213,30 +216,13 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
     setSubmitting(false);
   };
 
-  const handleAceitarConvite = async () => {
-    if (!conviteId || !instagramHandle.trim()) return;
-    setSubmitting(true);
-    try {
-      const handle = instagramHandle.replace('@', '').trim();
-      await clubeService.aceitarConviteMaisVanta(conviteId, handle, {
-        verificado: igVerified,
-        verificadoEm: igVerified ? tsBR() : undefined,
-        codigo: verificationCode,
-      });
-      setSolicitacaoStatus('APROVADO');
-      onSuccess?.('Parabéns! Você agora faz parte do MAIS VANTA!');
-    } catch (err) {
-      console.error('[ClubeOptIn] Erro ao aceitar convite:', err);
-      onSuccess?.('Erro ao aceitar convite. Tente novamente.');
-    }
-    setSubmitting(false);
-  };
+  /** @removed V3: convites agora são links de indicação membro→membro */
 
   const handleEnviarPost = async (reservaId: string) => {
     if (!postUrl.trim()) return;
     try {
-      await clubeService.confirmarPost(reservaId, postUrl.trim());
-      setMinhasReservas(clubeService.getReservasUsuario(profile.id));
+      await clubeService.enviarPostUrl(reservaId, postUrl.trim());
+      clubeService.getResgatesUsuarioAsync(profile.id).then(setMinhasReservas);
       setPostUrl('');
       onSuccess?.('Comprovação enviada!');
     } catch {
@@ -245,8 +231,8 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
   };
 
   // ── Cancelar reserva (sem infração se faltam >12h pro evento) ──
-  const podeCancelar = (r: ReservaMaisVanta) => {
-    if (r.status !== 'RESERVADO') return false;
+  const podeCancelar = (r: ResgateMV) => {
+    if (r.status !== 'RESGATADO') return false;
     const ev = allEvents.find(e => e.id === r.eventoId);
     if (!ev) return true; // sem evento = pode cancelar por segurança
     const inicio = ev.dataReal?.split('T')[0] ?? ev.data?.split('T')[0] ?? '';
@@ -258,8 +244,8 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
   const handleCancelarReserva = async () => {
     if (!cancelTarget) return;
     try {
-      await clubeService.cancelarReserva(cancelTarget);
-      setMinhasReservas(clubeService.getReservasUsuario(profile.id));
+      await clubeService.cancelarResgate(cancelTarget);
+      clubeService.getResgatesUsuarioAsync(profile.id).then(setMinhasReservas);
       onSuccess?.('Reserva cancelada com sucesso');
     } catch {
       onSuccess?.('Erro ao cancelar reserva');
@@ -291,252 +277,390 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
 
   const getEventoNome = (eventoId: string) => allEvents.find(e => e.id === eventoId)?.titulo ?? 'Evento';
 
-  // ── Membro ativo → tela de status com abas ──
+  // ── Membro ativo → tela de status com seções ──
   if (membro) {
     const listaExibida = activeTab === 'ATIVOS' ? reservasAtivas : reservasPassadas;
+    const bloqueioLabel = bloqueioAte
+      ? `Bloqueado até ${bloqueioAte.split('T')[0]?.split('-').reverse().join('/')}`
+      : 'Bloqueado permanentemente';
 
     return (
       <div className="absolute inset-0 bg-[#0a0a0a] flex flex-col overflow-hidden animate-in fade-in duration-300">
-        <div className="flex-1 overflow-y-auto no-scrollbar pt-4 px-6 pb-32">
-          <button
-            aria-label="Voltar"
-            onClick={onBack}
-            className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-transform mb-6"
-          >
-            <ArrowLeft size={18} className="text-white" />
-          </button>
-
-          {/* Header — tier invisível ao membro */}
-          <div className="text-center mb-6">
-            <div
-              className="w-16 h-16 rounded-full mx-auto mb-3 flex items-center justify-center"
-              style={{ background: '#FFD30015', border: '2px solid #FFD30040' }}
+        <div className="flex-1 overflow-y-auto no-scrollbar" style={{ display: 'flex', flexDirection: 'column' }}>
+          <div className="flex flex-col px-6" style={{ margin: 'auto 0', paddingTop: '1rem', paddingBottom: '1rem' }}>
+            <button
+              aria-label="Voltar"
+              onClick={onBack}
+              className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-transform mb-6"
             >
-              <Crown size={28} className="text-[#FFD300]" />
-            </div>
-            <h1 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-1">
-              Mais Vanta
-            </h1>
-            <p className="text-[10px] font-black uppercase tracking-widest text-[#FFD300]">Membro MAIS VANTA</p>
-          </div>
+              <ArrowLeft size="1.125rem" className="text-white" />
+            </button>
 
-          {/* Dívida Social */}
-          {temDivida && (
-            <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/20 rounded-xl p-3 mb-4">
-              <AlertTriangle size={14} className="text-red-400 shrink-0" />
-              <span className="text-red-400 text-[10px] font-bold">
-                Você tem posts pendentes. Envie a comprovação para desbloquear novas reservas.
-              </span>
+            {/* Header — tier invisível ao membro */}
+            <div className="text-center mb-6">
+              <div
+                className="w-16 h-16 rounded-full mx-auto mb-3 flex items-center justify-center"
+                style={{ background: '#FFD30015', border: '2px solid #FFD30040' }}
+              >
+                <Crown size="1.75rem" className="text-[#FFD300]" />
+              </div>
+              <h1 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-1">
+                Mais Vanta
+              </h1>
+              <p className="text-[0.625rem] font-black uppercase tracking-widest text-[#FFD300]">Membro MAIS VANTA</p>
             </div>
-          )}
 
-          {/* Info */}
-          <div className="bg-zinc-900/60 border border-white/5 rounded-2xl p-4 mb-6 space-y-2">
-            {membro.instagramHandle && (
-              <div className="flex items-center gap-2">
-                <Instagram size={12} className="text-zinc-400" />
-                <span className="text-zinc-400 text-xs">@{membro.instagramHandle}</span>
-                {membro.instagramSeguidores && (
-                  <span className="text-zinc-400 text-[9px]">
-                    · {membro.instagramSeguidores.toLocaleString('pt-BR')} seguidores
-                  </span>
+            {/* ══ SEÇÃO: Alertas & Avisos ══ */}
+            {(estaBloqueado || temDivida) && (
+              <div className="space-y-2 mb-5">
+                {/* Banido permanente */}
+                {isBanido && (
+                  <div className="flex items-center gap-2.5 bg-red-500/10 border border-red-500/20 rounded-xl p-3">
+                    <Ban size="0.875rem" className="text-red-400 shrink-0" />
+                    <span className="text-red-400 text-[0.625rem] font-bold">
+                      Sua conta foi suspensa permanentemente. Entre em contato com o suporte.
+                    </span>
+                  </div>
+                )}
+
+                {/* Bloqueio temporário */}
+                {estaBloqueado && !isBanido && (
+                  <div className="flex items-center gap-2.5 bg-red-500/10 border border-red-500/20 rounded-xl p-3">
+                    <OctagonAlert size="0.875rem" className="text-red-400 shrink-0" />
+                    <span className="text-red-400 text-[0.625rem] font-bold">
+                      {bloqueioLabel}. Você não pode resgatar novos benefícios neste período.
+                    </span>
+                  </div>
+                )}
+
+                {/* Dívida Social */}
+                {temDivida && !estaBloqueado && (
+                  <div className="flex items-center gap-2.5 bg-amber-500/10 border border-amber-500/20 rounded-xl p-3">
+                    <AlertTriangle size="0.875rem" className="text-amber-400 shrink-0" />
+                    <span className="text-amber-400 text-[0.625rem] font-bold">
+                      Você tem posts pendentes. Envie a comprovação para desbloquear novas reservas.
+                    </span>
+                  </div>
                 )}
               </div>
             )}
-          </div>
 
-          {/* Abas — Benefícios Ativos / Passados */}
-          <div className="flex gap-0 bg-zinc-900/40 rounded-xl p-1 mb-5">
-            <button
-              onClick={() => setActiveTab('ATIVOS')}
-              className={`flex-1 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'ATIVOS' ? 'bg-[#FFD300] text-black' : 'text-zinc-400'}`}
-            >
-              Ativos{reservasAtivas.length > 0 ? ` (${reservasAtivas.length})` : ''}
-            </button>
-            <button
-              onClick={() => setActiveTab('PASSADOS')}
-              className={`flex-1 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'PASSADOS' ? 'bg-zinc-700 text-white' : 'text-zinc-400'}`}
-            >
-              Passados{reservasPassadas.length > 0 ? ` (${reservasPassadas.length})` : ''}
-            </button>
-          </div>
-
-          {/* Lista de reservas da aba selecionada */}
-          {listaExibida.length === 0 ? (
-            <p className="text-zinc-400 text-xs text-center py-10">
-              {activeTab === 'ATIVOS' ? 'Nenhum benefício ativo' : 'Nenhum benefício passado'}
-            </p>
-          ) : (
-            <div className="space-y-3">
-              {listaExibida.map(r => {
-                const isPendingPost = r.status === 'PENDENTE_POST' || (r.status === 'RESERVADO' && !r.postVerificado);
-                return (
-                  <div key={r.id} className="bg-zinc-900/60 border border-white/5 rounded-2xl p-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-white text-sm font-bold truncate flex-1">{getEventoNome(r.eventoId)}</span>
-                      <span
-                        className={`text-[8px] font-black uppercase px-2 py-0.5 rounded shrink-0 ml-2 ${
-                          r.status === 'USADO'
-                            ? 'bg-emerald-500/15 text-emerald-400'
-                            : r.status === 'CANCELADO'
-                              ? 'bg-red-500/15 text-red-400'
-                              : r.status === 'NO_SHOW'
-                                ? 'bg-red-500/15 text-red-400'
-                                : r.postVerificado
-                                  ? 'bg-emerald-500/15 text-emerald-400'
-                                  : 'bg-amber-500/15 text-amber-400'
-                        }`}
-                      >
-                        {r.status === 'USADO'
-                          ? 'Utilizado'
-                          : r.status === 'CANCELADO'
-                            ? 'Cancelado'
-                            : r.status === 'NO_SHOW'
-                              ? 'Não compareceu'
-                              : r.postVerificado
-                                ? 'Post verificado'
-                                : r.postUrl
-                                  ? 'Aguardando verificação'
-                                  : 'Post pendente'}
+            {/* ══ SEÇÃO: Resumo do Membro ══ */}
+            <div className="bg-zinc-900/60 border border-white/5 rounded-2xl p-4 mb-5">
+              <div className="space-y-2.5">
+                {membro.instagramHandle && (
+                  <div className="flex items-center gap-2">
+                    <Instagram size="0.75rem" className="text-zinc-400 shrink-0" />
+                    <span className="text-zinc-300 text-xs">@{membro.instagramHandle}</span>
+                    {membro.instagramSeguidores && (
+                      <span className="text-zinc-500 text-[0.5625rem]">
+                        · {membro.instagramSeguidores.toLocaleString('pt-BR')} seguidores
                       </span>
-                    </div>
-
-                    {/* Cancelar reserva — somente aba Ativos, se faltam >12h */}
-                    {activeTab === 'ATIVOS' && r.status === 'RESERVADO' && podeCancelar(r) && (
-                      <button
-                        onClick={() => setCancelTarget(r.id)}
-                        className="mt-2 w-full py-2 bg-zinc-800 border border-white/10 rounded-xl text-zinc-400 text-[10px] font-bold uppercase tracking-wider active:scale-95 transition-transform"
-                      >
-                        Cancelar reserva
-                      </button>
-                    )}
-
-                    {/* Aviso: sem tempo pra cancelar */}
-                    {activeTab === 'ATIVOS' && r.status === 'RESERVADO' && !podeCancelar(r) && (
-                      <div className="mt-2 flex items-center gap-1.5">
-                        <Clock size={10} className="text-amber-400" />
-                        <span className="text-amber-400 text-[9px]">
-                          Faltam menos de 12h — cancelamento indisponível
-                        </span>
-                      </div>
-                    )}
-
-                    {/* Enviar comprovação se pendente — somente na aba Ativos */}
-                    {activeTab === 'ATIVOS' && isPendingPost && !r.postUrl && (
-                      <div className="mt-3 space-y-2">
-                        <p className="text-zinc-400 text-[10px]">Envie o link do seu post/story:</p>
-                        <div className="flex gap-2">
-                          <input
-                            value={postUrl}
-                            onChange={e => setPostUrl(e.target.value)}
-                            placeholder="https://instagram.com/p/..."
-                            className="flex-1 bg-black/40 border border-white/10 rounded-lg text-xs text-white px-3 py-2"
-                          />
-                          <button
-                            onClick={() => handleEnviarPost(r.id)}
-                            className="px-3 py-2 bg-[#FFD300] text-black rounded-lg active:scale-90 transition-transform"
-                          >
-                            <Send size={12} />
-                          </button>
-                        </div>
-                      </div>
-                    )}
-
-                    {r.postUrl && !r.postVerificado && (
-                      <div className="flex items-center gap-1.5 mt-2">
-                        <Clock size={10} className="text-amber-400" />
-                        <span className="text-amber-400 text-[9px]">Comprovação enviada — aguardando verificação</span>
-                      </div>
-                    )}
-
-                    {r.postVerificado && (
-                      <div className="flex items-center gap-1.5 mt-2">
-                        <Check size={10} className="text-emerald-400" />
-                        <span className="text-emerald-400 text-[9px]">Post verificado pela equipe</span>
-                      </div>
                     )}
                   </div>
-                );
-              })}
+                )}
+                {membro.cidadePrincipal && (
+                  <div className="flex items-center gap-2">
+                    <MapPin size="0.75rem" className="text-zinc-400 shrink-0" />
+                    <span className="text-zinc-300 text-xs">{membro.cidadePrincipal}</span>
+                  </div>
+                )}
+                {/* Métricas rápidas */}
+                <div className="flex items-center gap-4 pt-1">
+                  <div className="text-center">
+                    <p className="text-white text-sm font-bold">{minhasReservas.length}</p>
+                    <p className="text-zinc-500 text-[0.5rem] font-black uppercase tracking-wider">Resgates</p>
+                  </div>
+                  <div className="w-px h-6 bg-white/5" />
+                  <div className="text-center">
+                    <p className="text-white text-sm font-bold">
+                      {minhasReservas.filter(r => r.postVerificado).length}
+                    </p>
+                    <p className="text-zinc-500 text-[0.5rem] font-black uppercase tracking-wider">Posts</p>
+                  </div>
+                  <div className="w-px h-6 bg-white/5" />
+                  <div className="text-center">
+                    <p className={`text-sm font-bold ${infracoesCount > 0 ? 'text-red-400' : 'text-white'}`}>
+                      {infracoesCount}
+                    </p>
+                    <p className="text-zinc-500 text-[0.5rem] font-black uppercase tracking-wider">Infrações</p>
+                  </div>
+                  <div className="w-px h-6 bg-white/5" />
+                  <div className="text-center">
+                    <p className="text-white text-sm font-bold">{membro?.convitesDisponiveis ?? 0}</p>
+                    <p className="text-zinc-500 text-[0.5rem] font-black uppercase tracking-wider">Convites</p>
+                  </div>
+                </div>
+              </div>
             </div>
-          )}
 
-          {/* MV4: Passaporte Regional — Cidades */}
-          <div className="mt-6">
-            <div className="flex items-center gap-2 mb-3">
-              <Globe size={14} className="text-purple-400" />
-              <span className="text-white text-xs font-bold">Passaporte Regional</span>
-            </div>
-            {(() => {
-              const cidades = clubeService.getCidadesDisponiveis();
+            {/* ══ SEÇÃO: Benefícios — Ativos / Passados ══ */}
+            <div className="mb-5">
+              <div className="flex gap-0 bg-zinc-900/40 rounded-xl p-1 mb-4">
+                <button
+                  onClick={() => setActiveTab('ATIVOS')}
+                  className={`flex-1 py-2.5 rounded-lg text-[0.625rem] font-black uppercase tracking-widest transition-all ${activeTab === 'ATIVOS' ? 'bg-[#FFD300] text-black' : 'text-zinc-400'}`}
+                >
+                  Ativos{reservasAtivas.length > 0 ? ` (${reservasAtivas.length})` : ''}
+                </button>
+                <button
+                  onClick={() => setActiveTab('PASSADOS')}
+                  className={`flex-1 py-2.5 rounded-lg text-[0.625rem] font-black uppercase tracking-widest transition-all ${activeTab === 'PASSADOS' ? 'bg-zinc-700 text-white' : 'text-zinc-400'}`}
+                >
+                  Passados{reservasPassadas.length > 0 ? ` (${reservasPassadas.length})` : ''}
+                </button>
+              </div>
 
-              return (
-                <div className="space-y-2">
-                  {cidades.map(cidade => {
-                    const status = clubeService.getPassportStatus(profile.id, cidade);
-
+              {listaExibida.length === 0 ? (
+                <p className="text-zinc-400 text-xs text-center py-8">
+                  {activeTab === 'ATIVOS' ? 'Nenhum benefício ativo' : 'Nenhum benefício passado'}
+                </p>
+              ) : (
+                <div className="space-y-3">
+                  {listaExibida.map(r => {
+                    const isPendingPost =
+                      r.status === 'PENDENTE_POST' || (r.status === 'RESGATADO' && !r.postVerificado);
                     return (
-                      <div
-                        key={cidade}
-                        className="flex items-center justify-between bg-zinc-900/40 border border-white/5 rounded-xl px-4 py-3"
-                      >
-                        <div className="flex items-center gap-2.5 min-w-0">
-                          <MapPin size={12} className="text-zinc-400 shrink-0" />
-                          <div className="min-w-0">
-                            <p className="text-white text-xs font-semibold truncate">{cidade}</p>
-                          </div>
-                        </div>
-                        {status === 'APROVADO' ? (
-                          <span className="text-[8px] font-black uppercase px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 shrink-0">
-                            Ativo
+                      <div key={r.id} className="bg-zinc-900/60 border border-white/5 rounded-2xl p-4">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-white text-sm font-bold truncate flex-1">
+                            {getEventoNome(r.eventoId)}
                           </span>
-                        ) : status === 'PENDENTE' ? (
-                          <span className="text-[8px] font-black uppercase px-2 py-0.5 rounded bg-amber-500/15 text-amber-400 shrink-0">
-                            Pendente
-                          </span>
-                        ) : (
-                          <button
-                            onClick={async () => {
-                              try {
-                                await clubeService.solicitarPassport(profile.id, cidade);
-                                onSuccess?.('Passaporte solicitado!');
-                              } catch {
-                                onSuccess?.('Erro ao solicitar');
-                              }
-                            }}
-                            className="text-[8px] font-black uppercase px-2.5 py-1 rounded-lg bg-purple-500/15 text-purple-400 border border-purple-500/20 active:scale-90 transition-all shrink-0"
+                          <span
+                            className={`text-[0.5rem] font-black uppercase px-2 py-0.5 rounded shrink-0 ml-2 ${
+                              r.status === 'USADO'
+                                ? 'bg-emerald-500/15 text-emerald-400'
+                                : r.status === 'CANCELADO'
+                                  ? 'bg-red-500/15 text-red-400'
+                                  : r.status === 'NO_SHOW'
+                                    ? 'bg-red-500/15 text-red-400'
+                                    : r.postVerificado
+                                      ? 'bg-emerald-500/15 text-emerald-400'
+                                      : 'bg-amber-500/15 text-amber-400'
+                            }`}
                           >
-                            Solicitar
+                            {r.status === 'USADO'
+                              ? 'Utilizado'
+                              : r.status === 'CANCELADO'
+                                ? 'Cancelado'
+                                : r.status === 'NO_SHOW'
+                                  ? 'Não compareceu'
+                                  : r.postVerificado
+                                    ? 'Post verificado'
+                                    : r.postUrl
+                                      ? 'Aguardando verificação'
+                                      : 'Post pendente'}
+                          </span>
+                        </div>
+
+                        {activeTab === 'ATIVOS' && r.status === 'RESGATADO' && podeCancelar(r) && (
+                          <button
+                            onClick={() => setCancelTarget(r.id)}
+                            className="mt-2 w-full py-2 bg-zinc-800 border border-white/10 rounded-xl text-zinc-400 text-[0.625rem] font-bold uppercase tracking-wider active:scale-95 transition-transform"
+                          >
+                            Cancelar reserva
                           </button>
+                        )}
+
+                        {activeTab === 'ATIVOS' && r.status === 'RESGATADO' && !podeCancelar(r) && (
+                          <div className="mt-2 flex items-center gap-1.5">
+                            <Clock size="0.625rem" className="text-amber-400" />
+                            <span className="text-amber-400 text-[0.5625rem]">
+                              Faltam menos de 12h — cancelamento indisponível
+                            </span>
+                          </div>
+                        )}
+
+                        {activeTab === 'ATIVOS' && isPendingPost && !r.postUrl && (
+                          <div className="mt-3 space-y-2">
+                            <p className="text-zinc-400 text-[0.625rem]">Envie o link do seu post/story:</p>
+                            <div className="flex gap-2">
+                              <input
+                                value={postUrl}
+                                onChange={e => setPostUrl(e.target.value)}
+                                placeholder="https://instagram.com/p/..."
+                                className="flex-1 bg-black/40 border border-white/10 rounded-lg text-xs text-white px-3 py-2"
+                              />
+                              <button
+                                onClick={() => handleEnviarPost(r.id)}
+                                className="px-3 py-2 bg-[#FFD300] text-black rounded-lg active:scale-90 transition-transform"
+                              >
+                                <Send size="0.75rem" />
+                              </button>
+                            </div>
+                          </div>
+                        )}
+
+                        {r.postUrl && !r.postVerificado && (
+                          <div className="flex items-center gap-1.5 mt-2">
+                            <Clock size="0.625rem" className="text-amber-400" />
+                            <span className="text-amber-400 text-[0.5625rem]">
+                              Comprovação enviada — aguardando verificação
+                            </span>
+                          </div>
+                        )}
+
+                        {r.postVerificado && (
+                          <div className="flex items-center gap-1.5 mt-2">
+                            <Check size="0.625rem" className="text-emerald-400" />
+                            <span className="text-emerald-400 text-[0.5625rem]">Post verificado pela equipe</span>
+                          </div>
                         )}
                       </div>
                     );
                   })}
-                  {cidades.length === 0 && (
-                    <p className="text-zinc-400 text-[10px] text-center py-4">Nenhuma cidade disponível</p>
+                </div>
+              )}
+            </div>
+
+            {/* ══ SEÇÃO: Infrações ══ */}
+            {infracoes.length > 0 && (
+              <div className="mb-5">
+                <div className="flex items-center gap-2 mb-3">
+                  <ShieldAlert size="0.875rem" className="text-red-400" />
+                  <span className="text-white text-xs font-bold">Infrações</span>
+                  <span className="text-zinc-500 text-[0.5625rem]">({infracoes.length})</span>
+                </div>
+                <div className="space-y-2">
+                  {infracoes.slice(0, 5).map(inf => (
+                    <div
+                      key={inf.id}
+                      className="flex items-center justify-between bg-red-500/5 border border-red-500/10 rounded-xl px-4 py-3"
+                    >
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <AlertTriangle size="0.625rem" className="text-red-400 shrink-0" />
+                        <div className="min-w-0">
+                          <p className="text-white text-[0.6875rem] font-semibold truncate">{inf.eventoNome}</p>
+                          <p className="text-red-400/70 text-[0.5625rem]">
+                            {inf.tipo === 'NO_SHOW' ? 'Não compareceu' : 'Não postou'}
+                          </p>
+                        </div>
+                      </div>
+                      <span className="text-zinc-500 text-[0.5625rem] shrink-0">
+                        {inf.criadoEm?.split('T')[0]?.split('-').reverse().join('/')}
+                      </span>
+                    </div>
+                  ))}
+                  {infracoes.length > 5 && (
+                    <p className="text-zinc-500 text-[0.5625rem] text-center">
+                      + {infracoes.length - 5} infração{infracoes.length - 5 !== 1 ? 'ões' : ''} anterior
+                      {infracoes.length - 5 !== 1 ? 'es' : ''}
+                    </p>
                   )}
                 </div>
-              );
-            })()}
-          </div>
+              </div>
+            )}
 
-          {/* Deals disponíveis */}
-          <DealsMembroSection userId={profile.id} onSuccess={onSuccess} />
+            {/* ══ SEÇÃO: Passaporte Regional ══ */}
+            <div className="mb-5">
+              <div className="flex items-center gap-2 mb-3">
+                <Globe size="0.875rem" className="text-purple-400" />
+                <span className="text-white text-xs font-bold">Passaporte Regional</span>
+              </div>
+              {(() => {
+                const cidades = clubeService.getCidadesDisponiveis();
 
-          {/* Convidar Amigo */}
-          <div className="mt-6 bg-zinc-900/30 border border-white/5 rounded-2xl p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <UserPlus size={14} className="text-[#FFD300]" />
-              <span className="text-white text-xs font-bold">Convidar amigo para o Clube</span>
+                return (
+                  <div className="space-y-2">
+                    {cidades.map(c => {
+                      const status = clubeService.getPassportStatus(profile.id, c);
+
+                      return (
+                        <div
+                          key={c}
+                          className="flex items-center justify-between bg-zinc-900/40 border border-white/5 rounded-xl px-4 py-3"
+                        >
+                          <div className="flex items-center gap-2.5 min-w-0">
+                            <MapPin size="0.75rem" className="text-zinc-400 shrink-0" />
+                            <p className="text-white text-xs font-semibold truncate">{c}</p>
+                          </div>
+                          {status === 'APROVADO' ? (
+                            <span className="text-[0.5rem] font-black uppercase px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 shrink-0">
+                              Ativo
+                            </span>
+                          ) : status === 'PENDENTE' ? (
+                            <span className="text-[0.5rem] font-black uppercase px-2 py-0.5 rounded bg-amber-500/15 text-amber-400 shrink-0">
+                              Pendente
+                            </span>
+                          ) : (
+                            <button
+                              onClick={async () => {
+                                try {
+                                  await clubeService.solicitarPassport(profile.id, c);
+                                  onSuccess?.('Passaporte solicitado!');
+                                } catch {
+                                  onSuccess?.('Erro ao solicitar');
+                                }
+                              }}
+                              className="text-[0.5rem] font-black uppercase px-2.5 py-1 rounded-lg bg-purple-500/15 text-purple-400 border border-purple-500/20 active:scale-90 transition-all shrink-0"
+                            >
+                              Solicitar
+                            </button>
+                          )}
+                        </div>
+                      );
+                    })}
+                    {cidades.length === 0 && (
+                      <p className="text-zinc-400 text-[0.625rem] text-center py-4">Nenhuma cidade disponível</p>
+                    )}
+                  </div>
+                );
+              })()}
             </div>
-            <p className="text-zinc-400 text-[10px] mb-3">
-              Convites são pré-aprovados com o seu nome. O convidado ainda precisa ser aceito pelo curador.
-            </p>
-            <p className="text-zinc-400 text-[9px] italic">Em breve: busca de amigos por nome</p>
+
+            {/* ══ SEÇÃO: Convites de Indicação ══ */}
+            <div className="mt-5 bg-zinc-900/30 border border-white/5 rounded-2xl p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <UserPlus size="0.875rem" className="text-[#FFD300]" />
+                <span className="text-white text-xs font-bold">Convidar amigos</span>
+              </div>
+              <p className="text-zinc-400 text-[0.625rem] mb-3">
+                Compartilhe seu link exclusivo. Seu amigo preenche a solicitação e passa pela curadoria normalmente.
+              </p>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-zinc-300 text-[0.625rem]">
+                  {membro?.convitesDisponiveis ?? 0} convite{(membro?.convitesDisponiveis ?? 0) !== 1 ? 's' : ''}{' '}
+                  disponíve{(membro?.convitesDisponiveis ?? 0) !== 1 ? 'is' : 'l'}
+                </span>
+                <span className="text-zinc-600 text-[0.5625rem]">·</span>
+                <span className="text-zinc-500 text-[0.5625rem]">
+                  {membro?.convitesUsados ?? 0} usado{(membro?.convitesUsados ?? 0) !== 1 ? 's' : ''}
+                </span>
+              </div>
+              {(membro?.convitesDisponiveis ?? 0) > 0 ? (
+                <button
+                  onClick={async () => {
+                    try {
+                      const convite = await clubeService.gerarConviteIndicacao(profile.id);
+                      const link = clubeService.getLinkConviteIndicacao(convite.codigo);
+                      if (navigator.share) {
+                        await navigator.share({
+                          title: 'Convite MAIS VANTA',
+                          text: 'Você foi convidado para o MAIS VANTA!',
+                          url: link,
+                        });
+                      } else {
+                        await navigator.clipboard.writeText(link);
+                        onSuccess?.('Link copiado!');
+                      }
+                    } catch {
+                      onSuccess?.('Erro ao gerar convite');
+                    }
+                  }}
+                  className="w-full py-3 bg-[#FFD300]/10 border border-[#FFD300]/20 rounded-xl text-[#FFD300] text-[0.625rem] font-bold uppercase tracking-wider active:scale-95 transition-all flex items-center justify-center gap-2"
+                >
+                  <Share2 size="0.75rem" /> Gerar e compartilhar convite
+                </button>
+              ) : (
+                <p className="text-zinc-500 text-[0.5625rem] text-center py-2">
+                  Sem convites disponíveis. Compareça a eventos para ganhar mais!
+                </p>
+              )}
+            </div>
           </div>
         </div>
 
-        {/* Modal confirmar cancelamento de reserva */}
+        {/* Modal confirmar cancelamento */}
         {cancelTarget && (
           <div className="absolute inset-0 z-[400] bg-black/70 backdrop-blur-sm flex items-center justify-center p-6 animate-in fade-in duration-200">
             <div className="bg-zinc-900 border border-white/10 rounded-3xl p-6 w-full max-w-sm">
@@ -570,17 +694,17 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
   if (solicitacaoStatus === 'PENDENTE') {
     return (
       <div className="absolute inset-0 bg-[#0a0a0a] flex flex-col overflow-hidden animate-in fade-in duration-300">
-        <div className="flex-1 overflow-y-auto no-scrollbar pt-4 px-6 pb-32">
+        <div className="flex-1 overflow-y-auto no-scrollbar pt-4 px-6 pb-6">
           <button
             aria-label="Voltar"
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-transform mb-6"
           >
-            <ArrowLeft size={18} className="text-white" />
+            <ArrowLeft size="1.125rem" className="text-white" />
           </button>
           <div className="flex flex-col items-center justify-center py-20 text-center">
             <div className="w-16 h-16 rounded-full bg-amber-500/10 flex items-center justify-center mb-4">
-              <Clock size={28} className="text-amber-400" />
+              <Clock size="1.75rem" className="text-amber-400" />
             </div>
             <h2 className="text-white font-bold text-lg mb-2">Solicitação Enviada</h2>
             <p className="text-zinc-400 text-sm max-w-xs">
@@ -597,19 +721,19 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
   if (optInFase === 1) {
     return (
       <div className="absolute inset-0 bg-[#0a0a0a] flex flex-col overflow-hidden animate-in fade-in duration-300">
-        <div className="flex-1 overflow-y-auto no-scrollbar pt-4 px-6 pb-32">
+        <div className="flex-1 overflow-y-auto no-scrollbar pt-4 px-6 pb-6">
           <button
             aria-label="Voltar"
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-transform mb-6"
           >
-            <ArrowLeft size={18} className="text-white" />
+            <ArrowLeft size="1.125rem" className="text-white" />
           </button>
 
           {/* Hero */}
           <div className="text-center py-4 mb-4">
             <div className="w-16 h-16 rounded-2xl bg-[#FFD300]/10 border border-[#FFD300]/20 flex items-center justify-center mx-auto mb-4">
-              <Sparkles size={28} className="text-[#FFD300]" />
+              <Sparkles size="1.75rem" className="text-[#FFD300]" />
             </div>
             <h1 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-2">
               {maisVantaConfigService.getConfig().nomePrograma}
@@ -626,11 +750,11 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
               return (
                 <div key={i} className="flex items-start gap-4 bg-zinc-900/40 border border-white/5 rounded-2xl p-4">
                   <div className="w-10 h-10 rounded-xl bg-[#FFD300]/10 border border-[#FFD300]/15 flex items-center justify-center shrink-0">
-                    <Icon size={18} className="text-[#FFD300]" />
+                    <Icon size="1.125rem" className="text-[#FFD300]" />
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="text-white font-bold text-sm">{v.titulo}</p>
-                    <p className="text-zinc-400 text-[11px] leading-relaxed mt-0.5 line-clamp-2">{v.descricao}</p>
+                    <p className="text-zinc-400 text-[0.6875rem] leading-relaxed mt-0.5 line-clamp-2">{v.descricao}</p>
                   </div>
                 </div>
               );
@@ -643,7 +767,7 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
             className="w-full py-3.5 rounded-xl bg-[#FFD300] text-black font-bold text-sm flex items-center justify-center gap-2 active:scale-[0.98] transition-all"
           >
             Quero Participar
-            <ChevronRight size={16} />
+            <ChevronRight size="1rem" />
           </button>
         </div>
       </div>
@@ -653,24 +777,24 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
   // Fase 2: Formulário + Termos LGPD
   return (
     <div className="absolute inset-0 bg-[#0a0a0a] flex flex-col overflow-hidden animate-in fade-in duration-300">
-      <div className="flex-1 overflow-y-auto no-scrollbar pt-4 px-6 pb-32">
+      <div className="flex-1 overflow-y-auto no-scrollbar pt-4 px-6 pb-6">
         <button
           onClick={isConvite ? onBack : () => setOptInFase(1)}
           className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-transform mb-6"
         >
-          <ArrowLeft size={18} className="text-white" />
+          <ArrowLeft size="1.125rem" className="text-white" />
         </button>
 
         <div className="text-center mb-6">
           <div className="w-14 h-14 rounded-full bg-[#FFD300]/10 mx-auto mb-3 flex items-center justify-center border-2 border-[#FFD300]/20">
-            <Crown size={24} className="text-[#FFD300]" />
+            <Crown size="1.5rem" className="text-[#FFD300]" />
           </div>
           {isConvite ? (
             <>
               <h1 style={TYPOGRAPHY.screenTitle} className="text-lg text-white mb-1">
                 Você foi convidado!
               </h1>
-              <p className="text-zinc-400 text-[11px] max-w-xs mx-auto">
+              <p className="text-zinc-400 text-[0.6875rem] max-w-xs mx-auto">
                 {conviteNomeMaster ? `${conviteNomeMaster} convidou você` : 'Você recebeu um convite'} para o MAIS
                 VANTA. Preencha seus dados para aceitar.
               </p>
@@ -680,7 +804,7 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
               <h1 style={TYPOGRAPHY.screenTitle} className="text-lg text-white mb-1">
                 Solicitar Entrada
               </h1>
-              <p className="text-zinc-400 text-[11px] max-w-xs mx-auto">
+              <p className="text-zinc-400 text-[0.6875rem] max-w-xs mx-auto">
                 Preencha seus dados. A aprovação está sujeita à análise interna.
               </p>
             </>
@@ -690,12 +814,12 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
         <div className="space-y-4 mb-6">
           {/* Etapa A — @ do Instagram */}
           <div>
-            <label className="text-[9px] font-black uppercase tracking-widest text-zinc-400 mb-2 block">
+            <label className="text-[0.5625rem] font-black uppercase tracking-widest text-zinc-400 mb-2 block">
               Instagram
             </label>
             <div className="flex gap-2">
               <div className="relative flex-1 min-w-0">
-                <Instagram size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+                <Instagram size="0.875rem" className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
                 <input
                   value={instagramHandle}
                   onChange={e => {
@@ -717,22 +841,26 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
                 <button
                   onClick={handleVerificarPerfil}
                   disabled={!instagramHandle.trim() || igStep === 'CHECKING'}
-                  className="shrink-0 px-4 py-3 bg-zinc-800 border border-white/10 rounded-xl text-white text-[10px] font-bold uppercase tracking-wider active:scale-95 transition-all disabled:opacity-30 flex items-center gap-1.5"
+                  className="shrink-0 px-4 py-3 bg-zinc-800 border border-white/10 rounded-xl text-white text-[0.625rem] font-bold uppercase tracking-wider active:scale-95 transition-all disabled:opacity-30 flex items-center gap-1.5"
                 >
-                  {igStep === 'CHECKING' ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />}
+                  {igStep === 'CHECKING' ? (
+                    <Loader2 size="0.75rem" className="animate-spin" />
+                  ) : (
+                    <Check size="0.75rem" />
+                  )}
                   Verificar
                 </button>
               )}
             </div>
-            {igError && <p className="text-red-400 text-[10px] mt-1.5">{igError}</p>}
+            {igError && <p className="text-red-400 text-[0.625rem] mt-1.5">{igError}</p>}
           </div>
 
           {/* Badge: perfil encontrado + seguidores */}
           {igFollowers !== null && igStep !== 'INPUT' && (
             <div className="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 rounded-xl px-3 py-2.5">
-              <BadgeCheck size={14} className="text-emerald-400 shrink-0" />
+              <BadgeCheck size="0.875rem" className="text-emerald-400 shrink-0" />
               <span className="text-emerald-300 text-xs font-semibold">Perfil encontrado</span>
-              <span className="text-emerald-400/60 text-[10px]">·</span>
+              <span className="text-emerald-400/60 text-[0.625rem]">·</span>
               <span className="text-emerald-400 text-xs font-bold">{igFormatted} seguidores</span>
             </div>
           )}
@@ -741,10 +869,12 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
           {(igStep === 'BIO_CHECK' || igStep === 'CHECKING') && igFollowers !== null && (
             <div className="bg-zinc-900/60 border border-white/5 rounded-xl p-4 space-y-3">
               <div className="flex items-center gap-2">
-                <Shield size={12} className="text-[#FFD300] shrink-0" />
-                <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest">Verificar propriedade</p>
+                <Shield size="0.75rem" className="text-[#FFD300] shrink-0" />
+                <p className="text-[0.5625rem] text-zinc-400 font-black uppercase tracking-widest">
+                  Verificar propriedade
+                </p>
               </div>
-              <p className="text-zinc-400 text-[11px] leading-relaxed">
+              <p className="text-zinc-400 text-[0.6875rem] leading-relaxed">
                 Cole o código abaixo na <span className="text-white font-semibold">bio do seu Instagram</span> e clique
                 em verificar.
               </p>
@@ -757,21 +887,21 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
                   onClick={handleCopiarCodigo}
                   className="shrink-0 w-10 h-10 bg-zinc-800 rounded-lg border border-white/10 flex items-center justify-center active:scale-90 transition-all"
                 >
-                  <Copy size={14} className="text-zinc-400" />
+                  <Copy size="0.875rem" className="text-zinc-400" />
                 </button>
               </div>
               <button
                 onClick={handleVerificarBio}
                 disabled={igStep === 'CHECKING'}
-                className="w-full py-3 bg-zinc-800 border border-white/10 rounded-xl text-white text-[10px] font-bold uppercase tracking-wider active:scale-95 transition-all disabled:opacity-30 flex items-center justify-center gap-1.5"
+                className="w-full py-3 bg-zinc-800 border border-white/10 rounded-xl text-white text-[0.625rem] font-bold uppercase tracking-wider active:scale-95 transition-all disabled:opacity-30 flex items-center justify-center gap-1.5"
               >
-                {igStep === 'CHECKING' ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />}
+                {igStep === 'CHECKING' ? <Loader2 size="0.75rem" className="animate-spin" /> : <Check size="0.75rem" />}
                 Já colei, verificar
               </button>
               {bioAttempts >= 2 && (
                 <button
                   onClick={handlePularVerificacao}
-                  className="w-full py-2 text-zinc-400 text-[10px] underline active:opacity-60 transition-opacity"
+                  className="w-full py-2 text-zinc-400 text-[0.625rem] underline active:opacity-60 transition-opacity"
                 >
                   Não consigo verificar — continuar sem verificação
                 </button>
@@ -783,10 +913,10 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
           {igStep === 'VERIFIED' && (
             <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl px-3 py-2.5 space-y-1">
               <div className="flex items-center gap-2">
-                <BadgeCheck size={14} className="text-emerald-400 shrink-0" />
+                <BadgeCheck size="0.875rem" className="text-emerald-400 shrink-0" />
                 <span className="text-emerald-300 text-xs font-semibold">Instagram verificado</span>
               </div>
-              <p className="text-emerald-400/60 text-[10px] pl-[22px]">Pode remover o código da bio agora.</p>
+              <p className="text-emerald-400/60 text-[0.625rem] pl-[1.375rem]">Pode remover o código da bio agora.</p>
             </div>
           )}
 
@@ -794,8 +924,8 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
           {igStep === 'SKIPPED' && (
             <div className="bg-amber-500/5 border border-amber-500/15 rounded-xl px-3 py-2.5">
               <div className="flex items-center gap-2">
-                <ShieldAlert size={14} className="text-amber-400 shrink-0" />
-                <span className="text-amber-300 text-[11px]">
+                <ShieldAlert size="0.875rem" className="text-amber-400 shrink-0" />
+                <span className="text-amber-300 text-[0.6875rem]">
                   Verificação não concluída. Sua solicitação será analisada manualmente pelo admin.
                 </span>
               </div>
@@ -805,7 +935,7 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
 
         {/* Profissão / O que faz */}
         <div className="mb-4">
-          <label className="text-[9px] font-black uppercase tracking-widest text-zinc-400 mb-2 block">
+          <label className="text-[0.5625rem] font-black uppercase tracking-widest text-zinc-400 mb-2 block">
             O que voce faz?
           </label>
           <input
@@ -818,7 +948,7 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
 
         {/* Como conheceu o VANTA */}
         <div className="mb-4">
-          <label className="text-[9px] font-black uppercase tracking-widest text-zinc-400 mb-2 block">
+          <label className="text-[0.5625rem] font-black uppercase tracking-widest text-zinc-400 mb-2 block">
             Como conheceu o VANTA?
           </label>
           <div className="relative">
@@ -830,7 +960,7 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
                 {comoConheceu || 'Selecione uma opção'}
               </span>
               <ChevronRight
-                size={12}
+                size="0.75rem"
                 className={`text-zinc-400 transition-transform ${comoConheceuAberto ? 'rotate-90' : ''}`}
               />
             </button>
@@ -855,9 +985,22 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
           </div>
         </div>
 
+        {/* Cidade */}
+        <div className="mb-4">
+          <label className="text-[0.5625rem] font-black uppercase tracking-widest text-zinc-400 mb-2 block">
+            Sua cidade *
+          </label>
+          <input
+            value={cidade}
+            onChange={e => setCidade(e.target.value)}
+            placeholder="Ex: Rio de Janeiro, São Paulo..."
+            className="w-full px-4 py-3 bg-zinc-900/80 border border-zinc-800 rounded-xl text-white text-sm placeholder-zinc-500 focus:outline-none focus:border-[#FFD300]/20"
+          />
+        </div>
+
         {/* Quem te indicou */}
         <div className="mb-4">
-          <label className="text-[9px] font-black uppercase tracking-widest text-zinc-400 mb-2 block">
+          <label className="text-[0.5625rem] font-black uppercase tracking-widest text-zinc-400 mb-2 block">
             Quem te indicou? (opcional)
           </label>
           <input
@@ -871,8 +1014,8 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
         {/* Aviso importante */}
         <div className="bg-amber-500/5 border border-amber-500/15 rounded-xl p-3 mb-4">
           <div className="flex items-start gap-2">
-            <AlertTriangle size={14} className="text-amber-400 shrink-0 mt-0.5" />
-            <p className="text-amber-300/80 text-[10px] leading-relaxed">
+            <AlertTriangle size="0.875rem" className="text-amber-400 shrink-0 mt-0.5" />
+            <p className="text-amber-300/80 text-[0.625rem] leading-relaxed">
               A solicitação não garante aprovação. Todas as candidaturas passam por análise interna da equipe de
               curadoria.
             </p>
@@ -886,10 +1029,10 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
             className="w-full flex items-center justify-between px-4 py-3 active:bg-white/5 transition-all"
           >
             <div className="flex items-center gap-2">
-              <Shield size={12} className="text-zinc-400" />
+              <Shield size="0.75rem" className="text-zinc-400" />
               <span className="text-zinc-300 text-xs font-semibold">Termos de Uso e Privacidade (LGPD)</span>
             </div>
-            <ChevronRight size={12} className="text-zinc-400" />
+            <ChevronRight size="0.75rem" className="text-zinc-400" />
           </button>
         </div>
 
@@ -899,11 +1042,11 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
           className="w-full flex items-start gap-3 mb-6 text-left active:opacity-80 transition-opacity"
         >
           {aceitouTermos ? (
-            <CheckSquare size={18} className="text-[#FFD300] shrink-0 mt-0.5" />
+            <CheckSquare size="1.125rem" className="text-[#FFD300] shrink-0 mt-0.5" />
           ) : (
-            <Square size={18} className="text-zinc-400 shrink-0 mt-0.5" />
+            <Square size="1.125rem" className="text-zinc-400 shrink-0 mt-0.5" />
           )}
-          <span className="text-zinc-400 text-[10px] leading-relaxed">
+          <span className="text-zinc-400 text-[0.625rem] leading-relaxed">
             Li e concordo com os <span className="text-white font-semibold">Termos de Uso</span>, a{' '}
             <span className="text-white font-semibold">Política de Privacidade (LGPD)</span> e as regras de
             contrapartida do programa MAIS VANTA.
@@ -911,16 +1054,20 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
         </button>
 
         <button
-          onClick={isConvite ? handleAceitarConvite : handleSolicitar}
+          onClick={handleSolicitar}
           disabled={
-            !instagramHandle.trim() || !aceitouTermos || submitting || (igStep !== 'VERIFIED' && igStep !== 'SKIPPED')
+            !instagramHandle.trim() ||
+            !cidade.trim() ||
+            !aceitouTermos ||
+            submitting ||
+            (igStep !== 'VERIFIED' && igStep !== 'SKIPPED')
           }
-          className="w-full py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all disabled:opacity-30"
+          className="w-full py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all disabled:opacity-30"
         >
           {submitting ? 'Processando...' : isConvite ? 'Aceitar Convite' : 'Solicitar Entrada'}
         </button>
 
-        <p className="text-zinc-700 text-[8px] text-center mt-3 leading-relaxed">
+        <p className="text-zinc-700 text-[0.5rem] text-center mt-3 leading-relaxed">
           Seus dados são protegidos pela Lei nº 13.709/2018 (LGPD). Você pode solicitar exclusão a qualquer momento via{' '}
           {maisVantaConfigService.getConfig().emailContato}.
         </p>
@@ -941,15 +1088,15 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
           >
             <div className="flex items-center justify-between px-5 pt-5 pb-3 shrink-0">
               <div className="flex items-center gap-2">
-                <Shield size={14} className="text-[#FFD300]" />
+                <Shield size="0.875rem" className="text-[#FFD300]" />
                 <span className="text-white text-sm font-bold">Termos de Uso — MAIS VANTA</span>
               </div>
               <button onClick={() => setMostrarTermosModal(false)} className="p-1.5 text-zinc-400 active:text-white">
-                <ArrowLeft size={16} />
+                <ArrowLeft size="1rem" />
               </button>
             </div>
             <div className="flex-1 overflow-y-auto no-scrollbar px-5 pb-4">
-              <pre className="text-zinc-400 text-[9px] leading-relaxed whitespace-pre-wrap font-sans">
+              <pre className="text-zinc-400 text-[0.5625rem] leading-relaxed whitespace-pre-wrap font-sans">
                 {maisVantaConfigService.getConfig().termosCustomizados || TERMOS_PADRAO}
               </pre>
             </div>

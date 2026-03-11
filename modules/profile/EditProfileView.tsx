@@ -52,8 +52,8 @@ const PrivacyToggle: React.FC<{ value: PrivacidadeOpcao; onChange: (v: Privacida
       onClick={cycle}
       className={`flex items-center gap-1 px-2 py-1 rounded-lg bg-zinc-900/60 border border-white/5 active:scale-95 transition-all ${display.color}`}
     >
-      <Icon size={10} />
-      <span className="text-[8px] font-black uppercase tracking-wider">{display.label}</span>
+      <Icon size="0.625rem" />
+      <span className="text-[0.5rem] font-black uppercase tracking-wider">{display.label}</span>
     </button>
   );
 };
@@ -310,7 +310,7 @@ export const EditProfileView: React.FC<{
 
   const sectionCls = 'bg-zinc-900/40 rounded-2xl p-5 space-y-5 border border-white/5';
   const sectionTitleCls = 'flex items-center gap-2';
-  const labelCls = 'text-[10px] text-zinc-400 font-black uppercase tracking-widest ml-1';
+  const labelCls = 'text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest ml-1';
   const inputCls =
     'w-full bg-black/30 border border-white/5 rounded-xl p-4 text-white text-sm focus:border-[#FFD300]/40 outline-none';
 
@@ -325,7 +325,7 @@ export const EditProfileView: React.FC<{
           onClick={() => (hasChanges ? setShowExitConfirm(true) : onBack())}
           className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10"
         >
-          <ArrowLeft size={18} />
+          <ArrowLeft size="1.125rem" />
         </button>
         <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic">
           Editar Perfil
@@ -350,7 +350,7 @@ export const EditProfileView: React.FC<{
               </div>
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="p-2.5 rounded-full border backdrop-blur-sm bg-black/40 border-[#FFD300]/30">
-                  <Camera size={18} className="text-[#FFD300]" />
+                  <Camera size="1.125rem" className="text-[#FFD300]" />
                 </div>
               </div>
             </div>
@@ -362,7 +362,7 @@ export const EditProfileView: React.FC<{
                     DEFAULT_AVATARS[formData.genero as keyof typeof DEFAULT_AVATARS] || DEFAULT_AVATARS.MASCULINO;
                   setFormData(p => ({ ...p, foto: defaultAvatar }));
                 }}
-                className="mt-3 text-[9px] text-zinc-400 font-bold uppercase active:text-red-400 transition-colors"
+                className="mt-3 text-[0.5625rem] text-zinc-400 font-bold uppercase active:text-red-400 transition-colors"
               >
                 Remover foto
               </button>
@@ -382,7 +382,7 @@ export const EditProfileView: React.FC<{
           {/* ── SEÇÃO 2: Sobre Mim ────────────────────────────────── */}
           <div className={sectionCls}>
             <div className={sectionTitleCls}>
-              <User size={14} className="text-[#FFD300]" />
+              <User size="0.875rem" className="text-[#FFD300]" />
               <h3 style={TYPOGRAPHY.uiLabel} className="!mb-0">
                 Sobre Mim
               </h3>
@@ -403,7 +403,7 @@ export const EditProfileView: React.FC<{
                 className={`${inputCls} resize-none h-24`}
                 placeholder="Conte um pouco sobre você..."
               />
-              <p className="text-[9px] text-zinc-400 text-right font-bold">
+              <p className="text-[0.5625rem] text-zinc-400 text-right font-bold">
                 {formData.biografia.length}/{BIO_MAX}
               </p>
             </div>
@@ -420,12 +420,12 @@ export const EditProfileView: React.FC<{
                       key={g}
                       type="button"
                       onClick={() => setFormData(p => ({ ...p, genero: g }))}
-                      className={`flex-1 py-2.5 rounded-lg text-[8px] font-black uppercase transition-all flex items-center justify-center gap-1 ${
+                      className={`flex-1 py-2.5 rounded-lg text-[0.5rem] font-black uppercase transition-all flex items-center justify-center gap-1 ${
                         formData.genero === g ? 'bg-[#FFD300] text-black shadow-lg' : 'text-zinc-400'
                       }`}
                     >
                       {g === 'MASCULINO' ? 'Masc' : g === 'FEMININO' ? 'Fem' : 'N/I'}
-                      {formData.genero === g && <Check size={10} strokeWidth={4} />}
+                      {formData.genero === g && <Check size="0.625rem" strokeWidth={4} />}
                     </button>
                   ))}
                 </div>
@@ -463,7 +463,7 @@ export const EditProfileView: React.FC<{
           {/* ── SEÇÃO 3: Contato & Localização ────────────────────── */}
           <div className={sectionCls}>
             <div className={sectionTitleCls}>
-              <MapPin size={14} className="text-[#FFD300]" />
+              <MapPin size="0.875rem" className="text-[#FFD300]" />
               <h3 style={TYPOGRAPHY.uiLabel} className="!mb-0">
                 Contato & Localização
               </h3>
@@ -560,13 +560,13 @@ export const EditProfileView: React.FC<{
           <div className={sectionCls}>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <ImageIcon size={14} className="text-[#FFD300]" />
+                <ImageIcon size="0.875rem" className="text-[#FFD300]" />
                 <h3 style={TYPOGRAPHY.uiLabel} className="!mb-0">
                   Álbum de Fotos
                 </h3>
                 <PrivacyToggle value={privacy.verAlbum} onChange={v => updatePrivacy('verAlbum', v)} />
               </div>
-              <span className="text-[9px] font-black uppercase tracking-widest text-zinc-400">
+              <span className="text-[0.5625rem] font-black uppercase tracking-widest text-zinc-400">
                 {formData.fotos?.length || 0}/{MAX_PHOTOS}
               </span>
             </div>
@@ -584,14 +584,14 @@ export const EditProfileView: React.FC<{
                             onClick={() => triggerFileInput(i)}
                             className="w-7 h-7 bg-black/60 backdrop-blur rounded-lg flex items-center justify-center active:scale-90 transition-transform"
                           >
-                            <Camera size={12} className="text-white" />
+                            <Camera size="0.75rem" className="text-white" />
                           </button>
                           <button
                             type="button"
                             onClick={() => removeAlbumPhoto(i)}
                             className="w-7 h-7 bg-black/60 backdrop-blur rounded-lg flex items-center justify-center active:scale-90 transition-transform"
                           >
-                            <Trash2 size={12} className="text-red-400" />
+                            <Trash2 size="0.75rem" className="text-red-400" />
                           </button>
                         </div>
                       </div>
@@ -601,8 +601,8 @@ export const EditProfileView: React.FC<{
                         onClick={() => !isSaving && triggerFileInput(i)}
                         className="w-full h-full bg-black/30 rounded-xl border border-white/5 border-dashed flex flex-col items-center justify-center gap-1 active:scale-95 transition-all active:border-[#FFD300]/30"
                       >
-                        <Plus size={16} className="text-zinc-700" />
-                        <span className="text-[8px] font-bold uppercase text-zinc-700">{i + 1}</span>
+                        <Plus size="1rem" className="text-zinc-700" />
+                        <span className="text-[0.5rem] font-bold uppercase text-zinc-700">{i + 1}</span>
                       </button>
                     )}
                   </div>
@@ -617,9 +617,9 @@ export const EditProfileView: React.FC<{
               aria-label="Carregando"
               type="submit"
               disabled={isSaving}
-              className="w-full py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-[0.3em] rounded-xl shadow-xl flex items-center justify-center gap-3 disabled:opacity-50 active:scale-95 transition-all"
+              className="w-full py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-[0.3em] rounded-xl shadow-xl flex items-center justify-center gap-3 disabled:opacity-50 active:scale-95 transition-all"
             >
-              {isSaving ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />}
+              {isSaving ? <Loader2 size="0.875rem" className="animate-spin" /> : <Check size="0.875rem" />}
               {isSaving ? 'Salvando...' : 'Confirmar Alterações'}
             </button>
           </div>
@@ -649,10 +649,10 @@ export const EditProfileView: React.FC<{
               onClick={() => setShowExitConfirm(false)}
               className="absolute top-6 right-6 p-2 text-zinc-400 active:text-white transition-colors"
             >
-              <X size={18} />
+              <X size="1.125rem" />
             </button>
             <div className="w-20 h-20 bg-zinc-900 rounded-full flex items-center justify-center mx-auto mb-6 border border-[#FFD300]/20 shadow-xl">
-              <AlertTriangle size={28} className="text-[#FFD300]" />
+              <AlertTriangle size="1.75rem" className="text-[#FFD300]" />
             </div>
             <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-3 italic">
               Sair sem salvar?
@@ -663,13 +663,13 @@ export const EditProfileView: React.FC<{
             <div className="space-y-3">
               <button
                 onClick={() => setShowExitConfirm(false)}
-                className="w-full py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all"
+                className="w-full py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all"
               >
                 Continuar Editando
               </button>
               <button
                 onClick={onBack}
-                className="w-full py-4 text-zinc-400 font-bold text-[10px] uppercase active:opacity-60 transition-all"
+                className="w-full py-4 text-zinc-400 font-bold text-[0.625rem] uppercase active:opacity-60 transition-all"
               >
                 Sair sem salvar
               </button>

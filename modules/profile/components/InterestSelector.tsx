@@ -227,14 +227,14 @@ export const InterestSelector: React.FC<{ selected: string[]; onToggle: (id: str
   if (loading) {
     return (
       <div className="flex items-center justify-center py-8">
-        <Loader2 size={20} className="text-zinc-700 animate-spin" />
+        <Loader2 size="1.25rem" className="text-zinc-700 animate-spin" />
       </div>
     );
   }
 
   if (sections.length === 0) {
     return (
-      <p className="text-zinc-700 text-[10px] font-black uppercase tracking-widest text-center py-6">
+      <p className="text-zinc-700 text-[0.625rem] font-black uppercase tracking-widest text-center py-6">
         Nenhum interesse disponível
       </p>
     );
@@ -254,17 +254,17 @@ export const InterestSelector: React.FC<{ selected: string[]; onToggle: (id: str
               onClick={() => toggleSection(section.key)}
               className="w-full flex items-center justify-between px-4 py-3 active:bg-white/5 transition-colors"
             >
-              <p className="text-[9px] font-black uppercase tracking-[0.2em] text-zinc-400 flex items-center gap-1.5">
+              <p className="text-[0.5625rem] font-black uppercase tracking-[0.2em] text-zinc-400 flex items-center gap-1.5">
                 <span>{section.emoji}</span>
                 <span>{section.title}</span>
                 {selectedCount > 0 && (
-                  <span className="ml-1 px-1.5 py-0.5 bg-[#FFD300]/15 text-[#FFD300] text-[8px] font-black rounded-md">
+                  <span className="ml-1 px-1.5 py-0.5 bg-[#FFD300]/15 text-[#FFD300] text-[0.5rem] font-black rounded-md">
                     {selectedCount}
                   </span>
                 )}
               </p>
               <ChevronDown
-                size={14}
+                size="0.875rem"
                 className={`text-zinc-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
               />
             </button>
@@ -284,13 +284,13 @@ export const InterestSelector: React.FC<{ selected: string[]; onToggle: (id: str
                           : 'border-white/5 bg-zinc-900/50 text-zinc-400'
                       }`}
                     >
-                      {Icon && <Icon size={12} className={isSelected ? 'text-[#FFD300]' : 'text-zinc-400'} />}
+                      {Icon && <Icon size="0.75rem" className={isSelected ? 'text-[#FFD300]' : 'text-zinc-400'} />}
                       <span
-                        className={`text-[10px] font-bold uppercase tracking-wider ${isSelected ? 'text-white' : 'text-zinc-400'}`}
+                        className={`text-[0.625rem] font-bold uppercase tracking-wider ${isSelected ? 'text-white' : 'text-zinc-400'}`}
                       >
                         {item.label}
                       </span>
-                      {isSelected && <Check size={10} className="text-[#FFD300]" />}
+                      {isSelected && <Check size="0.625rem" className="text-[#FFD300]" />}
                     </button>
                   );
                 })}

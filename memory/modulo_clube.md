@@ -1,15 +1,16 @@
-# Criado: 2026-03-06 01:43 | Ultima edicao: 2026-03-10
+# Criado: 2026-03-06 01:43 | Ultima edicao: 2026-03-11
 
-# Modulo: MAIS VANTA (Clube Exclusivo)
+# Modulo: MAIS VANTA (Clube Exclusivo) — V3
 
 ## O que e
 MAIS VANTA = clube exclusivo do VANTA. Camada de benefícios silenciosa sobre eventos.
 Fluxo: usuario solicita entrada → curador aprova com tier (interno, nunca visível) → produtor configura benefícios por tier no evento → membro resgata benefício.
-Tiers: DESCONTO(0), CONVIDADO(1), PRESENCA(2), CREATOR(3), VANTA_BLACK(4). Tier NUNCA exibido ao membro.
+Tiers V3: LISTA(0), PRESENCA(1), SOCIAL(2), CREATOR(3), BLACK(4). Tier NUNCA exibido ao membro.
+CREATOR tem sub-níveis: creator_200k, creator_500k, creator_1m.
 Sem cascata: membro recebe APENAS benefício do SEU tier exato (`===`), não dos tiers abaixo.
 
-### Regras de negócio (confirmadas)
-- **Rejeição silenciosa**: ao rejeitar solicitação, NÃO envia notificação ao membro
+### Regras de negócio (V3)
+- **Não existe rejeição**: todo mundo é aprovado em pelo menos LISTA (tier 0)
 - **Desconto silencioso**: tier `desconto` mostra preço menor sem label "MAIS VANTA" (label genérica "desconto" em emerald)
 - **VANTA BLACK manual**: excluído do Step2Ingressos (config produtor), aparece como card read-only. Configurado só via curadoria
 - **Tags predefinidas**: 33 tags em 6 categorias (Influência, Perfil, Rede, Comportamento, Risco, Fit) — `TagsPredefinidas.tsx`
@@ -25,8 +26,13 @@ Sem cascata: membro recebe APENAS benefício do SEU tier exato (`===`), não dos
 |---|---|---|
 | id | UUID PK | auto |
 | user_id | UUID FK profiles UNIQUE | Membro |
-| tier | TEXT | DESCONTO, CONVIDADO, PRESENCA, CREATOR, VANTA_BLACK |
-| status | TEXT NOT NULL | PENDENTE, APROVADO, REJEITADO, BLOQUEADO, BANIDO (default APROVADO) |
+| tier | TEXT | lista, presenca, social, creator, black |
+| creator_sublevel | TEXT | creator_200k, creator_500k, creator_1m (null se não creator) |
+| status | TEXT NOT NULL | PENDENTE, APROVADO |
+| cidade_principal | TEXT | Cidade informada no formulário |
+| cidades_ativas | TEXT[] | Cidades com acesso ativo |
+| convites_disponiveis | INT | Convites de indicação restantes |
+| convites_usados | INT | Convites já usados |
 | instagram_handle | TEXT | @ do Instagram |
 | instagram_seguidores | INT | Qtd de seguidores |
 | aprovado_por | UUID | Quem aprovou |
@@ -40,19 +46,21 @@ Sem cascata: membro recebe APENAS benefício do SEU tier exato (`===`), não dos
 | tags | TEXT[] | Tags internas padronizadas (nunca visíveis ao membro) |
 | categoria | TEXT | Sync com tier na aprovação (sem constraint) |
 
-### mais_vanta_lotes_evento (benefícios por tier no evento — substitui lotes_mais_vanta)
+### mais_vanta_config_evento (benefícios por tier no evento — renomeada de mais_vanta_lotes_evento)
 | Coluna | Tipo | Descricao |
 |---|---|---|
 | id | UUID PK | auto |
 | evento_id | UUID FK eventos_admin | Evento |
-| tier_minimo | TEXT | DESCONTO, CONVIDADO, PRESENCA, CREATOR, VANTA_BLACK |
-| tipo | TEXT | 'ingresso' ou 'lista' |
+| tier_minimo | TEXT | lista, presenca, social, creator, black |
+| tipo | TEXT | 'ingresso', 'lista' ou 'desconto' |
 | lote_id | UUID FK lotes | Se tipo=ingresso |
 | lista_id | UUID FK listas_evento | Se tipo=lista |
-| desconto_percentual | INT 0-100 | Se tier=desconto |
+| desconto_percentual | INT 0-100 | Se tipo=desconto |
+| creator_sublevel_minimo | TEXT | creator_200k, creator_500k, creator_1m (null se não creator) |
+| vagas_limite | INT | Limite de vagas definido pelo produtor |
+| vagas_resgatadas | INT | Vagas já usadas (default 0) |
 | ativo | BOOLEAN | Default true |
 | created_at | TIMESTAMPTZ | auto |
-Constraint: tipo=ingresso → lote_id NOT NULL + lista_id NULL; tipo=lista → lista_id NOT NULL + lote_id NULL
 
 ### solicitacoes_clube (pedidos de entrada)
 | Coluna | Tipo | Descricao |
@@ -62,10 +70,13 @@ Constraint: tipo=ingresso → lote_id NOT NULL + lista_id NULL; tipo=lista → l
 | instagram_handle | TEXT | @ do Instagram |
 | instagram_seguidores | INT | Seguidores |
 | convidado_por | UUID | Convite |
-| status | TEXT | PENDENTE, APROVADO, REJEITADO, CONVIDADO |
+| status | TEXT | PENDENTE, APROVADO, ADIADO |
 | profissao | TEXT | Profissão / o que faz (nullable) |
 | como_conheceu | TEXT | Como conheceu o VANTA (nullable) |
-| indicado_por_texto | TEXT | Quem indicou — texto livre (nullable, migration 20260311130000) |
+| cidade | TEXT | Cidade informada (nullable) |
+| indicado_por | UUID | Quem indicou via convite (nullable) |
+| convite_id | UUID | Convite usado (nullable) |
+| balde_sugerido | TEXT | Classificação automática (nullable) |
 | criado_em | TIMESTAMPTZ | auto |
 | resolvido_em | TIMESTAMPTZ | Quando decidido |
 | resolvido_por | UUID | Quem decidiu |
@@ -172,7 +183,7 @@ Constraint: tipo=ingresso → lote_id NOT NULL + lista_id NULL; tipo=lista → l
 | concluido_em | TIMESTAMPTZ | Conclusao |
 | UNIQUE(deal_id, user_id) | | 1 aplicacao por membro por deal |
 
-### convites_mais_vanta
+### convites_mais_vanta (legado — convites admin→membro/parceiro)
 | Coluna | Tipo | Descricao |
 |---|---|---|
 | id | UUID PK | auto |
@@ -187,6 +198,43 @@ Constraint: tipo=ingresso → lote_id NOT NULL + lista_id NULL; tipo=lista → l
 | expira_em | TIMESTAMPTZ | Expira em 7 dias |
 | status | TEXT | PENDENTE/ACEITO/EXPIRADO/CANCELADO |
 | criado_em | TIMESTAMPTZ | auto |
+
+### convites_clube (V3 — indicação membro→membro)
+| Coluna | Tipo | Descricao |
+|---|---|---|
+| id | UUID PK | auto |
+| membro_id | UUID FK profiles | Quem gerou o convite |
+| codigo | TEXT UNIQUE | hex 8 bytes, auto |
+| usado_por | UUID FK profiles | Quem usou (nullable) |
+| usado_em | TIMESTAMPTZ | Quando foi usado |
+| status | TEXT | disponivel, usado, expirado |
+| criado_em | TIMESTAMPTZ | auto |
+
+### mv_solicitacoes_notificacao (V3 S5.6 — produtor pede notif para membros)
+| Coluna | Tipo | Descricao |
+|---|---|---|
+| id | UUID PK | auto |
+| evento_id | UUID FK eventos_admin | Evento alvo |
+| produtor_id | UUID FK profiles | Quem pediu |
+| mensagem | TEXT | Texto da notificação |
+| status | TEXT | PENDENTE, APROVADA, REJEITADA, ENVIADA |
+| membros_notificados | INT | Quantos receberam |
+| resolvido_por | UUID FK profiles | Admin que resolveu |
+| resolvido_em | TIMESTAMPTZ | Quando resolveu |
+| criado_em | TIMESTAMPTZ | auto |
+
+### mv_convites_especiais (V3 S6 — convite especial do Vanta)
+| Coluna | Tipo | Descricao |
+|---|---|---|
+| id | UUID PK | auto |
+| evento_id | UUID FK eventos_admin | Evento |
+| user_id | UUID FK profiles | Membro convidado |
+| beneficio_id | UUID FK mais_vanta_config_evento | Benefício vinculado (nullable) |
+| enviado_por | UUID FK profiles | Admin que enviou |
+| mensagem | TEXT | Mensagem do convite |
+| status | TEXT | ENVIADO, VISTO, RESGATADO, IGNORADO |
+| criado_em | TIMESTAMPTZ | auto |
+| UNIQUE(evento_id, user_id) | | Um convite por membro por evento |
 
 ## Fluxos
 
@@ -263,12 +311,28 @@ Constraint: tipo=ingresso → lote_id NOT NULL + lista_id NULL; tipo=lista → l
 | # | Item | Status | Detalhe |
 |---|---|---|---|
 | 1 | Solicitar entrada | OK | solicitacoes_clube |
-| 2 | Aprovar/rejeitar membro | OK | Admin flow |
-| 3 | Tiers (5 lowercase) | OK | desconto/convidado/presenca/creator/vanta_black. CHECK constraints lowercase no banco |
-| 4 | Benefícios MV por evento | OK | mais_vanta_lotes_evento + UI toggle/config. Labels humanas pro produtor. vanta_black = contato direto |
+| 2 | Aprovar membro (sem rejeição) | OK | Admin flow V3 — todo mundo entra em pelo menos LISTA |
+| 3 | Tiers V3 (5 lowercase) | OK | lista/presenca/social/creator/black. CHECK constraints no banco |
+| 4 | Benefícios MV por evento | OK | mais_vanta_config_evento + UI toggle/config. Labels humanas pro produtor. black = contato direto |
 | 5 | Resgatar benefício MV | OK | resgates_mv_evento + clubeReservasService CRUD real + EventDetailView salva no banco |
 | 28 | Termos MV | OK | Modal inline em ClubeOptInView e MaisVantaBeneficioModal. Contrapartidas CONAR antes do resgate |
 | 29 | Campo como conheceu | OK | Dropdown no formulário de solicitação (Redes sociais/Amigo/Evento/Outro) → como_conheceu |
+| 34 | Campo cidade obrigatório | OK | Input texto no formulário ClubeOptInView → solicitacoes_clube.cidade |
+| 35 | Baldes automáticos curadoria | OK | calcularBalde() por seguidores (200K+=creator, 5K+=presenca, else sem_fit). Filtro chips em SubTabSolicitacoes |
+| 36 | Badge balde + cidade na curadoria | OK | SubTabSolicitacoes mostra badge colorido do balde + cidade da solicitação |
+| 37 | Convites de indicação membro→membro | OK | convites_clube + clubeConvitesIndicacaoService (gerar, listar, usar, buscar por código). Link: /mais-vanta?convite=CODIGO |
+| 38 | Config convites por tier | OK | clube_config.convites_lista/presenca/social/creator/black + UI em SubTabConfig |
+| 39 | Convites iniciais na aprovação | OK | aprovarSolicitacao gera N convites conforme config do tier + atualiza membros_clube.convites_disponiveis |
+| 40 | Notificação indicador aprovado | OK | Quando indicado é aprovado, quem indicou recebe notificação in-app + push |
+| 41 | Balde indicado_tier_alto | OK | Solicitação via convite de creator/black vai pro balde 'indicado_tier_alto' na curadoria |
+| 42 | Renovação convites por engajamento | OK | +1 convite ao fazer check-in com resgate (clubeResgatesService) |
+| 43 | UI convites membro | OK | Seção "Convidar amigos" no ClubeOptInView — mostra disponíveis/usados, botão gerar+compartilhar (Web Share API ou clipboard) |
+| 44 | Planos do produtor V3 | OK | planos_produtor + produtor_plano (tabelas). clubePlanosService (CRUD + atribuição). PlanosProdutor view no MaisVantaHubView |
+| 45 | Config plano produtor | OK | nome, precoMensal, limiteEventosMes, limiteResgatesEvento, tiersAcessiveis[], limiteNotificacoesMes, precoEventoExtra, precoNotificacaoExtra, personalizadoPara |
+| 46 | Creator sublevel no benefício | OK | creator_sublevel_minimo em mais_vanta_config_evento. UI seletor 200K+/500K+/1M+ no Step2Ingressos. Elegibilidade verifica sublevel no EventDetailView |
+| 47 | Vagas limite por tier | OK | vagas_limite em mais_vanta_config_evento. Input numérico no Step2Ingressos. Persistido via clubeLotesService |
+| 48 | Labels produtor V3 | OK | TIER_LABELS_PRODUTOR + TIER_DESC_PRODUTOR no Step2Ingressos. Linguagem humana: Público geral, Presença visual, Conexão social, Criadores de conteúdo |
+| 49 | Load/save benefícios com novos campos | OK | CriarEventoView, EditarEventoView, EditarLotesSubView passam creatorSublevelMinimo + vagasLimite. Load preenche campos ao editar evento existente |
 | 30 | Check-in encerra obrigação | OK | convidado/presenca: check-in marca resgate USADO automaticamente (query online) |
 | 31 | Botão Adiar curadoria | OK | Status ADIADO + migration CHECK. Solicitação sai da fila pendentes |
 | 32 | Relatório MV produtor | OK | Seção MAIS VANTA no TabRelatorio (resgates, comparecimento, posts, alcance) |
@@ -279,6 +343,15 @@ Constraint: tipo=ingresso → lote_id NOT NULL + lista_id NULL; tipo=lista → l
 | 8 | Passaporte por cidade | OK | passport_aprovacoes + cidade |
 | 9 | Assinaturas comunidade | OK | assinaturas_mais_vanta |
 | 10 | Convite por membro | OK | convidado_por |
+| 50 | MV avaliação evento | OK | mv_avaliacao em eventos_admin. Eficiente/Ineficiente toggle no TabRelatorio |
+| 51 | Vagas resgatadas tracking | OK | vagas_resgatadas em mais_vanta_config_evento. Incrementado no resgate. Verificado antes de resgatar |
+| 52 | Limite eventos produtor | OK | verificarLimiteEventos() compara count mensal vs plano.limiteEventosMes |
+| 53 | Solicitação notif produtor (V3 S5.6) | OK | mv_solicitacoes_notificacao + clubeNotifProdutorService (solicitar, listar, aprovar, rejeitar). Respeita limite plano |
+| 54 | Convite especial Vanta (V3 S6) | OK | mv_convites_especiais + clubeConviteEspecialService (buscarPorFiltro, enviar, listar). Notif in-app MV_CONVITE_ESPECIAL |
+| 55 | Auto-aprovação passport cidade | OK | Membros ativos do clube aprovados automaticamente ao solicitar passport (V3 style) |
+| 56 | UI notif produtor admin (V3 S5.6) | OK | NotifMVPendentesView — aba "Notif Produtor" no Hub. Lista pendentes, aprovar (dispara push) ou rejeitar |
+| 57 | UI convite especial Vanta (V3 S6) | OK | ConviteEspecialMVView — aba "Convites" no Hub. Filtro tier/cidade/sublevel, seleção membros, enviar convite |
+| 58 | Botão solicitar notif MV (produtor) | OK | TabRelatorio seção MV — botão "Solicitar notificação para membros" abre form inline, envia via clubeService |
 | 11 | RLS todas tabelas MV | OK | Migrations confirmam |
 | 12 | Tiers config | OK | tiers_mais_vanta (4 tiers no banco) |
 | 13 | Planos MV | OK | planos_mais_vanta (3 planos no banco) |

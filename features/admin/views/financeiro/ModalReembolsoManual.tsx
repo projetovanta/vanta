@@ -31,15 +31,15 @@ export const ModalReembolsoManual: React.FC<Props> = ({
       <div className="w-10 h-1 bg-zinc-700 rounded-full mx-auto" />
 
       <div>
-        <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest">Solicitar Reembolso Manual</p>
+        <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest">Solicitar Reembolso Manual</p>
         <p className="text-white font-bold text-base mt-0.5 truncate">{eventoNome}</p>
-        <p className="text-zinc-400 text-[9px] mt-2">
+        <p className="text-zinc-400 text-[0.5625rem] mt-2">
           Use esta opção para solicitar reembolso fora da janela legal (7 dias + 48h).
         </p>
       </div>
 
       <div className="space-y-1.5">
-        <p className="text-[8px] text-zinc-700 font-black uppercase tracking-widest">Motivo do Reembolso</p>
+        <p className="text-[0.5rem] text-zinc-700 font-black uppercase tracking-widest">Motivo do Reembolso</p>
         <textarea
           value={reembolsoMotivo}
           onChange={e => setReembolsoMotivo(e.target.value)}
@@ -49,7 +49,7 @@ export const ModalReembolsoManual: React.FC<Props> = ({
           autoFocus
         />
         {!reembolsoMotivo.trim() && (
-          <p className="text-zinc-700 text-[8px] font-black uppercase tracking-widest">Descreva o motivo</p>
+          <p className="text-zinc-700 text-[0.5rem] font-black uppercase tracking-widest">Descreva o motivo</p>
         )}
       </div>
 
@@ -58,21 +58,21 @@ export const ModalReembolsoManual: React.FC<Props> = ({
           onClick={onClose}
           className="w-12 h-12 bg-zinc-900 border border-white/10 rounded-xl flex items-center justify-center active:scale-90 transition-all shrink-0"
         >
-          <X size={16} className="text-zinc-400" />
+          <X size="1rem" className="text-zinc-400" />
         </button>
         <button
           onClick={onSolicitar}
           disabled={!reembolsoMotivo.trim() || loading}
-          className="flex-1 h-12 rounded-xl font-black text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 active:scale-[0.97] transition-all disabled:opacity-30 disabled:pointer-events-none"
+          className="flex-1 h-12 rounded-xl font-black text-[0.625rem] uppercase tracking-widest flex items-center justify-center gap-2 active:scale-[0.97] transition-all disabled:opacity-30 disabled:pointer-events-none"
           style={{ background: 'linear-gradient(135deg, #ea580c, #f97316)', color: '#fff' }}
         >
           {loading ? (
             <>
-              <Loader2 size={14} className="animate-spin" /> Enviando...
+              <Loader2 size="0.875rem" className="animate-spin" /> Enviando...
             </>
           ) : (
             <>
-              <Check size={14} /> Solicitar
+              <Check size="0.875rem" /> Solicitar
             </>
           )}
         </button>

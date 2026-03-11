@@ -22,24 +22,24 @@ export const SubTabPassaportes: React.FC<Props> = ({ passportsPendentes, perfis,
             <div className="flex-1 min-w-0">
               <p className="text-white font-bold text-sm truncate">{perfis[p.userId]?.nome || p.userId.slice(0, 8)}</p>
               <div className="flex items-center gap-1.5 mt-1">
-                <Globe size={10} className="text-zinc-400" />
-                <span className="text-zinc-400 text-[10px]">Solicitou acesso a nova cidade</span>
+                <Globe size="0.625rem" className="text-zinc-400" />
+                <span className="text-zinc-400 text-[0.625rem]">Solicitou acesso a nova cidade</span>
               </div>
-              <p className="text-zinc-700 text-[8px] mt-1">{formatDate(p.solicitadoEm)}</p>
+              <p className="text-zinc-700 text-[0.5rem] mt-1">{formatDate(p.solicitadoEm)}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <button
               onClick={() => onAprovar(p.id)}
-              className="flex items-center gap-1 px-3 py-1.5 bg-emerald-500/20 border border-emerald-500/30 rounded-lg text-emerald-400 text-[9px] font-black uppercase active:scale-90 transition-all"
+              className="flex items-center gap-1 px-3 py-1.5 bg-emerald-500/20 border border-emerald-500/30 rounded-lg text-emerald-400 text-[0.5625rem] font-black uppercase active:scale-90 transition-all"
             >
-              <Check size={10} /> Aprovar
+              <Check size="0.625rem" /> Aprovar
             </button>
             <button
               onClick={() => onRejeitar(p.id)}
-              className="flex items-center gap-1 px-3 py-1.5 bg-red-500/20 border border-red-500/30 rounded-lg text-red-400 text-[9px] font-black uppercase active:scale-90 transition-all"
+              className="flex items-center gap-1 px-3 py-1.5 bg-red-500/20 border border-red-500/30 rounded-lg text-red-400 text-[0.5625rem] font-black uppercase active:scale-90 transition-all"
             >
-              <X size={10} /> Rejeitar
+              <X size="0.625rem" /> Rejeitar
             </button>
           </div>
         </div>

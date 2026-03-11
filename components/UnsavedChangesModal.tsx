@@ -16,10 +16,10 @@ export const UnsavedChangesModal: React.FC<{
           onClick={onStay}
           className="absolute top-6 right-6 p-2 text-zinc-400 active:text-white transition-colors"
         >
-          <X size={18} />
+          <X size="1.125rem" />
         </button>
         <div className="w-20 h-20 bg-zinc-900 rounded-full flex items-center justify-center mx-auto mb-6 border border-[#FFD300]/20 shadow-xl">
-          <AlertTriangle size={28} className="text-[#FFD300]" />
+          <AlertTriangle size="1.75rem" className="text-[#FFD300]" />
         </div>
         <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-3 italic">
           Sair sem salvar?
@@ -30,13 +30,13 @@ export const UnsavedChangesModal: React.FC<{
         <div className="space-y-3">
           <button
             onClick={onStay}
-            className="w-full py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all"
+            className="w-full py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all"
           >
             Continuar Editando
           </button>
           <button
             onClick={onLeave}
-            className="w-full py-4 text-zinc-400 font-bold text-[10px] uppercase active:opacity-60 transition-all"
+            className="w-full py-4 text-zinc-400 font-bold text-[0.625rem] uppercase active:opacity-60 transition-all"
           >
             Sair sem salvar
           </button>

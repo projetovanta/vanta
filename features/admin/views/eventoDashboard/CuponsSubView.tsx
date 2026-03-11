@@ -83,27 +83,27 @@ export const CuponsSubView: React.FC<{
             onClick={onBack}
             className="w-9 h-9 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
           >
-            <ArrowLeft size={16} className="text-zinc-400" />
+            <ArrowLeft size="1rem" className="text-zinc-400" />
           </button>
           <button
             onClick={() => setShowForm(true)}
-            className="flex items-center gap-1.5 px-3 py-2 bg-[#FFD300]/10 border border-[#FFD300]/20 rounded-xl text-[#FFD300] text-[9px] font-black uppercase tracking-wider active:scale-95 transition-all"
+            className="flex items-center gap-1.5 px-3 py-2 bg-[#FFD300]/10 border border-[#FFD300]/20 rounded-xl text-[#FFD300] text-[0.5625rem] font-black uppercase tracking-wider active:scale-95 transition-all"
           >
-            <Plus size={12} /> Novo Cupom
+            <Plus size="0.75rem" /> Novo Cupom
           </button>
         </div>
-        <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1">Gestão</p>
+        <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1">Gestão</p>
         <h1 className="font-serif italic text-xl text-white">Cupons</h1>
       </div>
 
       <div className="flex-1 overflow-y-auto no-scrollbar p-6 max-w-3xl mx-auto w-full space-y-3">
         {loading ? (
           <div className="flex items-center justify-center py-12">
-            <Loader2 size={20} className="text-zinc-400 animate-spin" />
+            <Loader2 size="1.25rem" className="text-zinc-400 animate-spin" />
           </div>
         ) : cupons.length === 0 ? (
           <div className="text-center py-12">
-            <Tag size={24} className="text-zinc-800 mx-auto mb-3" />
+            <Tag size="1.5rem" className="text-zinc-800 mx-auto mb-3" />
             <p className="text-zinc-400 text-xs">Nenhum cupom criado</p>
           </div>
         ) : (
@@ -120,23 +120,31 @@ export const CuponsSubView: React.FC<{
                     className="p-1 text-zinc-400 active:text-[#FFD300] transition-colors"
                     title="Copiar link com cupom"
                   >
-                    {copied === c.id ? <Check size={13} className="text-emerald-400" /> : <Link2 size={13} />}
+                    {copied === c.id ? (
+                      <Check size="0.8125rem" className="text-emerald-400" />
+                    ) : (
+                      <Link2 size="0.8125rem" />
+                    )}
                   </button>
                   <button
                     onClick={() => handleToggle(c)}
                     className="p-1 text-zinc-400 active:text-[#FFD300] transition-colors"
                   >
-                    {c.ativo ? <ToggleRight size={18} className="text-emerald-400" /> : <ToggleLeft size={18} />}
+                    {c.ativo ? (
+                      <ToggleRight size="1.125rem" className="text-emerald-400" />
+                    ) : (
+                      <ToggleLeft size="1.125rem" />
+                    )}
                   </button>
                   <button
                     onClick={() => handleRemover(c)}
                     className="p-1 text-zinc-400 active:text-red-400 transition-colors"
                   >
-                    <Trash2 size={13} />
+                    <Trash2 size="0.8125rem" />
                   </button>
                 </div>
               </div>
-              <div className="flex items-center gap-3 text-[9px] text-zinc-400 font-bold uppercase tracking-widest">
+              <div className="flex items-center gap-3 text-[0.5625rem] text-zinc-400 font-bold uppercase tracking-widest">
                 <span className="text-[#FFD300]">{c.tipo === 'PERCENTUAL' ? `${c.valor}%` : fmtBrl(c.valor)}</span>
                 <span className="w-1 h-1 rounded-full bg-zinc-700" />
                 <span>
@@ -169,7 +177,7 @@ export const CuponsSubView: React.FC<{
             <div className="flex items-center justify-between">
               <p className="text-white font-bold text-base">Novo Cupom</p>
               <button onClick={() => setShowForm(false)} className="p-1 text-zinc-400">
-                <X size={14} />
+                <X size="0.875rem" />
               </button>
             </div>
             <input
@@ -218,7 +226,7 @@ export const CuponsSubView: React.FC<{
             <button
               onClick={handleCriar}
               disabled={saving || !codigo.trim() || !valor.trim()}
-              className="w-full py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl font-bold text-[10px] uppercase tracking-[0.2em] text-white active:scale-95 transition-all disabled:opacity-30"
+              className="w-full py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl font-bold text-[0.625rem] uppercase tracking-[0.2em] text-white active:scale-95 transition-all disabled:opacity-30"
             >
               {saving ? 'Criando...' : 'Criar Cupom'}
             </button>

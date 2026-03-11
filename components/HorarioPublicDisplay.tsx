@@ -112,10 +112,10 @@ export const HorarioPublicDisplay: React.FC<{
     <div className="px-5 border-t border-white/5">
       <button onClick={() => setModalAberto(p => !p)} className="w-full py-3 text-left">
         <div className="flex items-center gap-2">
-          <Clock size={13} className="text-zinc-400 shrink-0" />
-          <span className="text-[11px] text-zinc-400">{resumo}</span>
+          <Clock size="0.8125rem" className="text-zinc-400 shrink-0" />
+          <span className="text-[0.6875rem] text-zinc-400">{resumo}</span>
           <span
-            className={`text-[8px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full shrink-0 ml-auto border ${
+            className={`text-[0.5rem] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full shrink-0 ml-auto border ${
               abertoAgora
                 ? 'bg-emerald-950 text-emerald-400 border-emerald-800'
                 : 'bg-red-950 text-red-400 border-red-800'
@@ -124,12 +124,12 @@ export const HorarioPublicDisplay: React.FC<{
             {abertoAgora ? 'Aberto' : 'Fechado'}
           </span>
           <ChevronDown
-            size={12}
+            size="0.75rem"
             className={`text-zinc-400 shrink-0 transition-transform duration-200 ${modalAberto ? 'rotate-180' : ''}`}
           />
         </div>
         {overrideHoje && !modalAberto && (
-          <p className="text-[9px] text-amber-400 mt-1 ml-[21px]">
+          <p className="text-[0.5625rem] text-amber-400 mt-1 ml-[1.3125rem]">
             {overrideHoje.motivo ? overrideHoje.motivo : 'Horário especial hoje'}
             {overrideHoje.aberto && overrideHoje.abertura && ` · ${overrideHoje.abertura} – ${overrideHoje.fechamento}`}
           </p>
@@ -139,10 +139,10 @@ export const HorarioPublicDisplay: React.FC<{
       {/* Cascata inline com horários detalhados */}
       <div
         className={`overflow-hidden transition-all duration-300 ease-out ${
-          modalAberto ? 'max-h-[400px] opacity-100 pb-3' : 'max-h-0 opacity-0'
+          modalAberto ? 'max-h-[25rem] opacity-100 pb-3' : 'max-h-0 opacity-0'
         }`}
       >
-        <div className="space-y-0.5 ml-[21px]">
+        <div className="space-y-0.5 ml-[1.3125rem]">
           {[0, 1, 2, 3, 4, 5, 6].map(dia => {
             const h = horarios.find(x => x.dia === dia);
             const isHoje = dia === diaHoje;
@@ -151,22 +151,24 @@ export const HorarioPublicDisplay: React.FC<{
                 key={dia}
                 className={`flex items-center justify-between py-1.5 px-2.5 rounded-lg ${isHoje ? 'bg-white/5' : ''}`}
               >
-                <span className={`text-[10px] w-14 shrink-0 ${isHoje ? 'text-[#FFD300] font-bold' : 'text-zinc-400'}`}>
+                <span
+                  className={`text-[0.625rem] w-14 shrink-0 ${isHoje ? 'text-[#FFD300] font-bold' : 'text-zinc-400'}`}
+                >
                   {DIAS_COMPLETO[dia]}
                 </span>
                 {h?.aberto ? (
-                  <span className={`text-[10px] shrink-0 ${isHoje ? 'text-zinc-300' : 'text-zinc-400'}`}>
+                  <span className={`text-[0.625rem] shrink-0 ${isHoje ? 'text-zinc-300' : 'text-zinc-400'}`}>
                     {h.abertura} – {h.fechamento}
                   </span>
                 ) : (
-                  <span className="text-[10px] text-zinc-700 shrink-0">Fechado</span>
+                  <span className="text-[0.625rem] text-zinc-700 shrink-0">Fechado</span>
                 )}
               </div>
             );
           })}
         </div>
         {overrideHoje && (
-          <p className="text-[9px] text-amber-400 mt-2 ml-[21px] px-2.5">
+          <p className="text-[0.5625rem] text-amber-400 mt-2 ml-[1.3125rem] px-2.5">
             {overrideHoje.motivo || 'Horário especial hoje'}
             {overrideHoje.aberto && overrideHoje.abertura && ` · ${overrideHoje.abertura} – ${overrideHoje.fechamento}`}
           </p>

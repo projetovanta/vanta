@@ -51,14 +51,14 @@ export const ForYouSection: React.FC<{
     /* px-5 individual — carrossel com edge-bleed, não usar px global */
     <div className="py-4 w-full">
       <div className="flex items-center gap-2 px-5 mb-3">
-        <Zap size={14} className="text-[#FFD300]" />
+        <Zap size="0.875rem" className="text-[#FFD300]" />
         <h3 style={TYPOGRAPHY.sectionKicker} className="text-sm">
           Para Você
         </h3>
       </div>
       <div className="flex gap-3 overflow-x-auto no-scrollbar px-5 snap-x snap-mandatory">
         {recommended.map(e => (
-          <div key={e.id} className="shrink-0 w-[42vw] max-w-[180px] snap-start">
+          <div key={e.id} className="shrink-0 w-[42vw] max-w-[11.25rem] snap-start">
             <EventCard evento={e} onClick={onEventClick} onComunidadeClick={onComunidadeClick} />
           </div>
         ))}

@@ -114,7 +114,7 @@ export const DealsMembroSection: React.FC<Props> = ({ userId, onSuccess }) => {
     return (
       <div className="mt-6">
         <div className="flex items-center gap-2 mb-3">
-          <Ticket size={14} className="text-[#FFD300]" />
+          <Ticket size="0.875rem" className="text-[#FFD300]" />
           <span className="text-white text-xs font-bold">Deals Disponíveis</span>
         </div>
         <div className="flex items-center justify-center py-6">
@@ -127,27 +127,27 @@ export const DealsMembroSection: React.FC<Props> = ({ userId, onSuccess }) => {
   return (
     <div className="mt-6">
       <div className="flex items-center gap-2 mb-3">
-        <Ticket size={14} className="text-[#FFD300]" />
+        <Ticket size="0.875rem" className="text-[#FFD300]" />
         <span className="text-white text-xs font-bold">Deals Disponíveis</span>
-        {deals.length > 0 && <span className="text-zinc-400 text-[10px]">({deals.length})</span>}
+        {deals.length > 0 && <span className="text-zinc-400 text-[0.625rem]">({deals.length})</span>}
       </div>
 
       {/* Deal ativo do membro */}
       {meuResgate && (
         <div className="bg-[#FFD300]/5 border border-[#FFD300]/20 rounded-2xl p-4 mb-4">
           <div className="flex items-center gap-2 mb-2">
-            <AlertTriangle size={12} className="text-[#FFD300]" />
-            <span className="text-[#FFD300] text-[10px] font-black uppercase tracking-wider">Deal Ativo</span>
+            <AlertTriangle size="0.75rem" className="text-[#FFD300]" />
+            <span className="text-[#FFD300] text-[0.625rem] font-black uppercase tracking-wider">Deal Ativo</span>
           </div>
           <p className="text-white text-sm font-bold truncate">{meuResgate.dealTitulo ?? 'Deal'}</p>
-          <p className="text-zinc-400 text-[10px] mt-0.5">{meuResgate.parceiroNome}</p>
+          <p className="text-zinc-400 text-[0.625rem] mt-0.5">{meuResgate.parceiroNome}</p>
 
           {/* Status */}
           {(() => {
             const s = statusLabel(meuResgate.status);
             return (
               <span
-                className={`inline-block mt-2 px-2 py-0.5 rounded text-[9px] font-bold uppercase ${s.bg} ${s.color}`}
+                className={`inline-block mt-2 px-2 py-0.5 rounded text-[0.5625rem] font-bold uppercase ${s.bg} ${s.color}`}
               >
                 {s.text}
               </span>
@@ -158,16 +158,16 @@ export const DealsMembroSection: React.FC<Props> = ({ userId, onSuccess }) => {
           {meuResgate.status === 'APLICADO' && (
             <button
               onClick={() => handleCancelar(meuResgate.id)}
-              className="mt-3 w-full py-2 bg-zinc-800 text-zinc-400 rounded-xl text-[10px] font-black uppercase tracking-wider active:scale-95 transition-all flex items-center justify-center gap-1.5"
+              className="mt-3 w-full py-2 bg-zinc-800 text-zinc-400 rounded-xl text-[0.625rem] font-black uppercase tracking-wider active:scale-95 transition-all flex items-center justify-center gap-1.5"
             >
-              <XCircle size={12} />
+              <XCircle size="0.75rem" />
               Cancelar candidatura
             </button>
           )}
 
           {(meuResgate.status === 'CHECK_IN' || meuResgate.status === 'PENDENTE_POST') && !meuResgate.postUrl && (
             <div className="mt-3 space-y-2">
-              <p className="text-zinc-400 text-[10px]">Envie o link do seu post/story:</p>
+              <p className="text-zinc-400 text-[0.625rem]">Envie o link do seu post/story:</p>
               <div className="flex gap-2">
                 <input
                   value={postUrl}
@@ -179,7 +179,7 @@ export const DealsMembroSection: React.FC<Props> = ({ userId, onSuccess }) => {
                   onClick={() => handleEnviarPost(meuResgate.id)}
                   className="px-3 py-2 bg-[#FFD300] text-black rounded-lg active:scale-90 transition-transform"
                 >
-                  <Send size={12} />
+                  <Send size="0.75rem" />
                 </button>
               </div>
             </div>
@@ -187,15 +187,15 @@ export const DealsMembroSection: React.FC<Props> = ({ userId, onSuccess }) => {
 
           {meuResgate.postUrl && !meuResgate.postVerificado && (
             <div className="flex items-center gap-1.5 mt-2">
-              <Clock size={10} className="text-amber-400" />
-              <span className="text-amber-400 text-[9px]">Post enviado — aguardando verificação</span>
+              <Clock size="0.625rem" className="text-amber-400" />
+              <span className="text-amber-400 text-[0.5625rem]">Post enviado — aguardando verificação</span>
             </div>
           )}
 
           {meuResgate.postVerificado && (
             <div className="flex items-center gap-1.5 mt-2">
-              <CheckCircle2 size={10} className="text-green-400" />
-              <span className="text-green-400 text-[9px]">Post verificado</span>
+              <CheckCircle2 size="0.625rem" className="text-green-400" />
+              <span className="text-green-400 text-[0.5625rem]">Post verificado</span>
             </div>
           )}
 
@@ -205,10 +205,10 @@ export const DealsMembroSection: React.FC<Props> = ({ userId, onSuccess }) => {
               className="mt-3 w-full bg-[#FFD300]/10 border border-[#FFD300]/30 rounded-xl p-3 text-center active:scale-95 transition-all"
             >
               <div className="flex items-center justify-center gap-2">
-                <QrCode size={14} className="text-[#FFD300]" />
-                <p className="text-[#FFD300] text-[10px] font-bold">Abrir QR VIP</p>
+                <QrCode size="0.875rem" className="text-[#FFD300]" />
+                <p className="text-[#FFD300] text-[0.625rem] font-bold">Abrir QR VIP</p>
               </div>
-              <p className="text-zinc-400 text-[9px] mt-1">Apresente ao parceiro no local</p>
+              <p className="text-zinc-400 text-[0.5625rem] mt-1">Apresente ao parceiro no local</p>
             </button>
           )}
         </div>
@@ -216,7 +216,7 @@ export const DealsMembroSection: React.FC<Props> = ({ userId, onSuccess }) => {
 
       {/* Lista de deals */}
       {deals.length === 0 ? (
-        <p className="text-zinc-400 text-[10px] text-center py-6">Nenhum deal disponível nas suas cidades</p>
+        <p className="text-zinc-400 text-[0.625rem] text-center py-6">Nenhum deal disponível nas suas cidades</p>
       ) : (
         <div className="space-y-3">
           {deals.map(deal => {
@@ -231,20 +231,20 @@ export const DealsMembroSection: React.FC<Props> = ({ userId, onSuccess }) => {
                 {/* Header */}
                 <div className="flex items-start gap-3">
                   <div className="w-10 h-10 bg-zinc-800 rounded-xl flex items-center justify-center shrink-0 border border-white/5">
-                    <Ticket size={18} className="text-[#FFD300]" />
+                    <Ticket size="1.125rem" className="text-[#FFD300]" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-white text-sm font-bold truncate">{deal.titulo}</p>
-                    <div className="flex items-center gap-2 text-[10px] text-zinc-400 mt-0.5">
+                    <div className="flex items-center gap-2 text-[0.625rem] text-zinc-400 mt-0.5">
                       <span>{deal.parceiroNome}</span>
                       <span className="flex items-center gap-0.5">
-                        <MapPin size={9} />
+                        <MapPin size="0.5625rem" />
                         {deal.cidadeNome ?? cidadesMap[deal.cidadeId] ?? ''}
                       </span>
                     </div>
                   </div>
                   <span
-                    className={`shrink-0 px-2 py-0.5 rounded text-[9px] font-bold uppercase ${
+                    className={`shrink-0 px-2 py-0.5 rounded text-[0.5625rem] font-bold uppercase ${
                       deal.tipo === 'BARTER' ? 'bg-purple-500/15 text-purple-400' : 'bg-green-500/15 text-green-400'
                     }`}
                   >
@@ -257,8 +257,8 @@ export const DealsMembroSection: React.FC<Props> = ({ userId, onSuccess }) => {
 
                 {/* Obrigação barter */}
                 {deal.tipo === 'BARTER' && deal.obrigacaoBarter && (
-                  <div className="flex items-center gap-1.5 mt-2 text-zinc-400 text-[10px]">
-                    <Clock size={10} className="shrink-0" />
+                  <div className="flex items-center gap-1.5 mt-2 text-zinc-400 text-[0.625rem]">
+                    <Clock size="0.625rem" className="shrink-0" />
                     <span className="truncate">{deal.obrigacaoBarter}</span>
                   </div>
                 )}
@@ -272,8 +272,8 @@ export const DealsMembroSection: React.FC<Props> = ({ userId, onSuccess }) => {
 
                 {/* Footer */}
                 <div className="flex items-center justify-between mt-3">
-                  <div className="flex items-center gap-1.5 text-zinc-400 text-[10px]">
-                    <Users size={10} />
+                  <div className="flex items-center gap-1.5 text-zinc-400 text-[0.625rem]">
+                    <Users size="0.625rem" />
                     <span>
                       {vagasRestantes > 0 ? `${vagasRestantes} vaga${vagasRestantes > 1 ? 's' : ''}` : 'Esgotado'}
                     </span>
@@ -284,7 +284,7 @@ export const DealsMembroSection: React.FC<Props> = ({ userId, onSuccess }) => {
                     (() => {
                       const s = statusLabel(resgate.status);
                       return (
-                        <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase ${s.bg} ${s.color}`}>
+                        <span className={`px-2 py-0.5 rounded text-[0.5625rem] font-bold uppercase ${s.bg} ${s.color}`}>
                           {s.text}
                         </span>
                       );
@@ -295,7 +295,7 @@ export const DealsMembroSection: React.FC<Props> = ({ userId, onSuccess }) => {
                     <button
                       onClick={() => handleAplicar(deal)}
                       disabled={aplicando}
-                      className="px-4 py-1.5 bg-[#FFD300] text-black rounded-lg text-[10px] font-black uppercase tracking-wider active:scale-95 transition-all disabled:opacity-50"
+                      className="px-4 py-1.5 bg-[#FFD300] text-black rounded-lg text-[0.625rem] font-black uppercase tracking-wider active:scale-95 transition-all disabled:opacity-50"
                     >
                       {aplicando ? '...' : 'Quero resgatar'}
                     </button>
@@ -303,10 +303,10 @@ export const DealsMembroSection: React.FC<Props> = ({ userId, onSuccess }) => {
 
                   {/* Mensagem se tem deal ativo e não é este */}
                   {!jaAplicou && !esgotado && temDealAtivo && (
-                    <span className="text-zinc-400 text-[9px]">Conclua seu deal ativo primeiro</span>
+                    <span className="text-zinc-400 text-[0.5625rem]">Conclua seu deal ativo primeiro</span>
                   )}
 
-                  {!jaAplicou && esgotado && <span className="text-zinc-400 text-[9px]">Sem vagas</span>}
+                  {!jaAplicou && esgotado && <span className="text-zinc-400 text-[0.5625rem]">Sem vagas</span>}
                 </div>
 
                 {/* Post link se resgate ativo */}
@@ -315,9 +315,9 @@ export const DealsMembroSection: React.FC<Props> = ({ userId, onSuccess }) => {
                     href={resgate.postUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-1 text-zinc-400 text-[10px] mt-2 hover:text-zinc-300 transition-colors"
+                    className="flex items-center gap-1 text-zinc-400 text-[0.625rem] mt-2 hover:text-zinc-300 transition-colors"
                   >
-                    <Eye size={10} /> Ver post
+                    <Eye size="0.625rem" /> Ver post
                   </a>
                 )}
               </div>
@@ -330,7 +330,7 @@ export const DealsMembroSection: React.FC<Props> = ({ userId, onSuccess }) => {
       {meusResgates.filter(r => ['CONCLUIDO', 'CANCELADO', 'RECUSADO', 'NO_SHOW', 'EXPIRADO'].includes(r.status))
         .length > 0 && (
         <div className="mt-6">
-          <p className="text-zinc-400 text-[10px] font-black uppercase tracking-wider mb-2">Histórico</p>
+          <p className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-wider mb-2">Histórico</p>
           <div className="space-y-2">
             {meusResgates
               .filter(r => ['CONCLUIDO', 'CANCELADO', 'RECUSADO', 'NO_SHOW', 'EXPIRADO'].includes(r.status))
@@ -344,9 +344,11 @@ export const DealsMembroSection: React.FC<Props> = ({ userId, onSuccess }) => {
                   >
                     <div className="min-w-0 flex-1">
                       <p className="text-white text-xs truncate">{r.dealTitulo ?? 'Deal'}</p>
-                      <p className="text-zinc-400 text-[9px]">{r.parceiroNome}</p>
+                      <p className="text-zinc-400 text-[0.5625rem]">{r.parceiroNome}</p>
                     </div>
-                    <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase shrink-0 ${s.bg} ${s.color}`}>
+                    <span
+                      className={`px-2 py-0.5 rounded text-[0.5625rem] font-bold uppercase shrink-0 ${s.bg} ${s.color}`}
+                    >
                       {s.text}
                     </span>
                   </div>
@@ -363,24 +365,29 @@ export const DealsMembroSection: React.FC<Props> = ({ userId, onSuccess }) => {
             <div className="flex items-center justify-between">
               <h3 className="text-[#FFD300] font-bold text-sm">QR VIP MAIS VANTA</h3>
               <button onClick={() => setShowQr(false)} className="active:scale-90 transition-all">
-                <X size={18} className="text-zinc-400" />
+                <X size="1.125rem" className="text-zinc-400" />
               </button>
             </div>
 
             <div className="bg-gradient-to-b from-[#FFD300]/20 to-[#FFD300]/5 border-2 border-[#FFD300]/40 rounded-2xl p-6 flex flex-col items-center gap-4">
               <div className="bg-white rounded-xl p-4">
-                <QRCodeSVG value={`vanta://mv/${meuResgate.qrToken}`} size={180} fgColor="#1a1a1a" bgColor="#ffffff" />
+                <QRCodeSVG
+                  value={`vanta://mv/${meuResgate.qrToken}`}
+                  size="11.25rem"
+                  fgColor="#1a1a1a"
+                  bgColor="#ffffff"
+                />
               </div>
               <div className="text-center space-y-1">
                 <p className="text-white font-bold text-sm truncate">{meuResgate.dealTitulo ?? 'Deal'}</p>
-                <p className="text-zinc-400 text-[10px]">{meuResgate.parceiroNome}</p>
-                <p className="text-[#FFD300]/60 text-[8px] font-mono uppercase tracking-widest mt-2">
+                <p className="text-zinc-400 text-[0.625rem]">{meuResgate.parceiroNome}</p>
+                <p className="text-[#FFD300]/60 text-[0.5rem] font-mono uppercase tracking-widest mt-2">
                   {meuResgate.qrToken.slice(0, 8)}...{meuResgate.qrToken.slice(-8)}
                 </p>
               </div>
             </div>
 
-            <p className="text-zinc-500 text-[9px] text-center">
+            <p className="text-zinc-500 text-[0.5625rem] text-center">
               Mostre este QR ao parceiro para registrar seu check-in
             </p>
           </div>

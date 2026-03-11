@@ -46,7 +46,7 @@ const PlanoModal: React.FC<{
   const [limiteEventosMV, setLimiteEventosMV] = useState(plano?.limiteEventosMV ?? 5);
   const [limiteMembros, setLimiteMembros] = useState(plano?.limiteMembros ?? 50);
   const [limiteVagasEvento, setLimiteVagasEvento] = useState(plano?.limiteVagasEvento ?? 10);
-  const [tierMinimo, setTierMinimo] = useState(plano?.tierMinimo ?? 'desconto');
+  const [tierMinimo, setTierMinimo] = useState(plano?.tierMinimo ?? 'lista');
   const [acompanhante, setAcompanhante] = useState(plano?.acompanhante ?? false);
   const [prazoPostHoras, setPrazoPostHoras] = useState(plano?.prazoPostHoras ?? 12);
   const [precoAvulso, setPrecoAvulso] = useState(plano?.precoAvulso ?? 79);
@@ -75,7 +75,7 @@ const PlanoModal: React.FC<{
 
   const inputCls =
     'w-full bg-[#1A1A1A] border border-zinc-800 rounded-xl px-3 py-2.5 text-sm text-white focus:border-[#FFD300]/50 focus:outline-none';
-  const labelCls = 'text-[11px] text-zinc-400 uppercase tracking-wider mb-1';
+  const labelCls = 'text-[0.6875rem] text-zinc-400 uppercase tracking-wider mb-1';
 
   return (
     <div className="absolute inset-0 z-[200] bg-[#0A0A0A] flex flex-col">
@@ -85,7 +85,7 @@ const PlanoModal: React.FC<{
         style={{ paddingTop: '0.75rem' }}
       >
         <button aria-label="Voltar" onClick={onClose} className="p-1.5 rounded-lg hover:bg-white/5">
-          <ArrowLeft size={18} className="text-zinc-400" />
+          <ArrowLeft size="1.125rem" className="text-zinc-400" />
         </button>
         <h2 style={TYPOGRAPHY.cardTitle} className="text-white text-sm">
           {plano ? 'Editar Plano' : 'Novo Plano de Assinatura'}
@@ -131,7 +131,7 @@ const PlanoModal: React.FC<{
               value={precoAvulso}
               onChange={e => setPrecoAvulso(Number(e.target.value))}
             />
-            <p className="text-[10px] text-zinc-400 mt-0.5">0 = entrada gratuita</p>
+            <p className="text-[0.625rem] text-zinc-400 mt-0.5">0 = entrada gratuita</p>
           </div>
         </div>
 
@@ -149,7 +149,7 @@ const PlanoModal: React.FC<{
               />
               <button
                 onClick={() => setLimiteEventosMV(limiteEventosMV === -1 ? 5 : -1)}
-                className={`shrink-0 px-3 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-wider border transition-all ${limiteEventosMV === -1 ? 'bg-[#FFD300] text-black border-transparent' : 'bg-zinc-800 text-zinc-400 border-zinc-700'}`}
+                className={`shrink-0 px-3 py-2.5 rounded-xl text-[0.625rem] font-bold uppercase tracking-wider border transition-all ${limiteEventosMV === -1 ? 'bg-[#FFD300] text-black border-transparent' : 'bg-zinc-800 text-zinc-400 border-zinc-700'}`}
               >
                 Ilimitado
               </button>
@@ -168,7 +168,7 @@ const PlanoModal: React.FC<{
               />
               <button
                 onClick={() => setLimiteMembros(limiteMembros === -1 ? 50 : -1)}
-                className={`shrink-0 px-3 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-wider border transition-all ${limiteMembros === -1 ? 'bg-[#FFD300] text-black border-transparent' : 'bg-zinc-800 text-zinc-400 border-zinc-700'}`}
+                className={`shrink-0 px-3 py-2.5 rounded-xl text-[0.625rem] font-bold uppercase tracking-wider border transition-all ${limiteMembros === -1 ? 'bg-[#FFD300] text-black border-transparent' : 'bg-zinc-800 text-zinc-400 border-zinc-700'}`}
               >
                 Ilimitado
               </button>
@@ -204,7 +204,7 @@ const PlanoModal: React.FC<{
               value={ordem}
               onChange={e => setOrdem(Number(e.target.value))}
             />
-            <p className="text-[10px] text-zinc-400 mt-0.5">Menor = aparece primeiro</p>
+            <p className="text-[0.625rem] text-zinc-400 mt-0.5">Menor = aparece primeiro</p>
           </div>
         </div>
 
@@ -216,7 +216,7 @@ const PlanoModal: React.FC<{
             value={prazoPostHoras}
             onChange={e => setPrazoPostHoras(Number(e.target.value))}
           />
-          <p className="text-[10px] text-zinc-400 mt-0.5">Tempo que o membro tem para postar após o evento</p>
+          <p className="text-[0.625rem] text-zinc-400 mt-0.5">Tempo que o membro tem para postar após o evento</p>
         </div>
 
         {/* Toggles */}
@@ -226,9 +226,9 @@ const PlanoModal: React.FC<{
             className="flex items-center gap-3 w-full p-3 rounded-xl bg-[#141414] border border-zinc-800/50"
           >
             {acompanhante ? (
-              <ToggleRight size={20} className="text-[#FFD300]" />
+              <ToggleRight size="1.25rem" className="text-[#FFD300]" />
             ) : (
-              <ToggleLeft size={20} className="text-zinc-400" />
+              <ToggleLeft size="1.25rem" className="text-zinc-400" />
             )}
             <span className="text-sm text-zinc-300">Permite acompanhante (+1)</span>
           </button>
@@ -237,9 +237,9 @@ const PlanoModal: React.FC<{
             className="flex items-center gap-3 w-full p-3 rounded-xl bg-[#141414] border border-zinc-800/50"
           >
             {destaque ? (
-              <ToggleRight size={20} className="text-[#FFD300]" />
+              <ToggleRight size="1.25rem" className="text-[#FFD300]" />
             ) : (
-              <ToggleLeft size={20} className="text-zinc-400" />
+              <ToggleLeft size="1.25rem" className="text-zinc-400" />
             )}
             <span className="text-sm text-zinc-300">Destacar na vitrine (borda dourada)</span>
           </button>
@@ -248,9 +248,9 @@ const PlanoModal: React.FC<{
             className="flex items-center gap-3 w-full p-3 rounded-xl bg-[#141414] border border-zinc-800/50"
           >
             {ativo ? (
-              <ToggleRight size={20} className="text-emerald-400" />
+              <ToggleRight size="1.25rem" className="text-emerald-400" />
             ) : (
-              <ToggleLeft size={20} className="text-zinc-400" />
+              <ToggleLeft size="1.25rem" className="text-zinc-400" />
             )}
             <span className="text-sm text-zinc-300">Disponível para assinatura</span>
           </button>
@@ -308,7 +308,7 @@ const TierModal: React.FC<{
 
   const inputCls =
     'w-full bg-[#1A1A1A] border border-zinc-800 rounded-xl px-3 py-2.5 text-sm text-white focus:border-[#FFD300]/50 focus:outline-none';
-  const labelCls = 'text-[11px] text-zinc-400 uppercase tracking-wider mb-1';
+  const labelCls = 'text-[0.6875rem] text-zinc-400 uppercase tracking-wider mb-1';
 
   return (
     <div className="absolute inset-0 z-[200] bg-[#0A0A0A] flex flex-col">
@@ -317,7 +317,7 @@ const TierModal: React.FC<{
         style={{ paddingTop: '0.75rem' }}
       >
         <button aria-label="Voltar" onClick={onClose} className="p-1.5 rounded-lg hover:bg-white/5">
-          <ArrowLeft size={18} className="text-zinc-400" />
+          <ArrowLeft size="1.125rem" className="text-zinc-400" />
         </button>
         <h2 style={TYPOGRAPHY.cardTitle} className="text-white text-sm">
           {tier ? 'Editar Nível' : 'Novo Nível'}
@@ -354,7 +354,7 @@ const TierModal: React.FC<{
               value={ordem}
               onChange={e => setOrdem(Number(e.target.value))}
             />
-            <p className="text-[10px] text-zinc-400 mt-0.5">Menor = mais baixo</p>
+            <p className="text-[0.625rem] text-zinc-400 mt-0.5">Menor = mais baixo</p>
           </div>
           <div>
             <p className={labelCls}>Resgates/mês</p>
@@ -367,7 +367,7 @@ const TierModal: React.FC<{
             <div className="mt-1">
               <button
                 onClick={() => setLimiteMensal(limiteMensal === -1 ? 5 : -1)}
-                className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-lg transition-all ${limiteMensal === -1 ? 'bg-[#FFD300] text-black' : 'bg-zinc-800 text-zinc-400'}`}
+                className={`text-[0.625rem] font-bold uppercase tracking-wider px-2 py-0.5 rounded-lg transition-all ${limiteMensal === -1 ? 'bg-[#FFD300] text-black' : 'bg-zinc-800 text-zinc-400'}`}
               >
                 {limiteMensal === -1 ? 'Ilimitado' : 'Sem limite?'}
               </button>
@@ -398,9 +398,9 @@ const TierModal: React.FC<{
           className="flex items-center gap-3 w-full p-3 rounded-xl bg-[#141414] border border-zinc-800/50"
         >
           {ativo ? (
-            <ToggleRight size={20} className="text-emerald-400" />
+            <ToggleRight size="1.25rem" className="text-emerald-400" />
           ) : (
-            <ToggleLeft size={20} className="text-zinc-400" />
+            <ToggleLeft size="1.25rem" className="text-zinc-400" />
           )}
           <span className="text-sm text-zinc-300">Ativo</span>
         </button>
@@ -498,9 +498,9 @@ export const PlanosMaisVantaView: React.FC<{
       {/* Header */}
       <div className="shrink-0 flex items-center gap-3 px-4 py-3 border-b border-zinc-800/50">
         <button aria-label="Voltar" onClick={onBack} className="p-1.5 rounded-lg hover:bg-white/5">
-          <ArrowLeft size={18} className="text-zinc-400" />
+          <ArrowLeft size="1.125rem" className="text-zinc-400" />
         </button>
-        <Crown size={18} className="text-[#FFD300]" />
+        <Crown size="1.125rem" className="text-[#FFD300]" />
         <h2 style={TYPOGRAPHY.cardTitle} className="text-white text-sm">
           Planos & Níveis
         </h2>
@@ -512,14 +512,14 @@ export const PlanosMaisVantaView: React.FC<{
           onClick={() => setAba('planos')}
           className={`flex-1 py-2.5 text-xs font-bold uppercase tracking-wider text-center transition-colors ${aba === 'planos' ? 'text-[#FFD300] border-b-2 border-[#FFD300]' : 'text-zinc-400'}`}
         >
-          <DollarSign size={14} className="inline mr-1" />
+          <DollarSign size="0.875rem" className="inline mr-1" />
           Planos
         </button>
         <button
           onClick={() => setAba('tiers')}
           className={`flex-1 py-2.5 text-xs font-bold uppercase tracking-wider text-center transition-colors ${aba === 'tiers' ? 'text-[#FFD300] border-b-2 border-[#FFD300]' : 'text-zinc-400'}`}
         >
-          <Layers size={14} className="inline mr-1" />
+          <Layers size="0.875rem" className="inline mr-1" />
           Níveis
         </button>
       </div>
@@ -540,7 +540,7 @@ export const PlanosMaisVantaView: React.FC<{
               onClick={() => setModal({ tipo: 'plano' })}
               className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-dashed border-zinc-700 text-zinc-400 hover:border-[#FFD300]/40 hover:text-[#FFD300] transition-colors text-sm"
             >
-              <Plus size={16} /> Criar Plano
+              <Plus size="1rem" /> Criar Plano
             </button>
 
             {planos.map(p => {
@@ -554,9 +554,9 @@ export const PlanosMaisVantaView: React.FC<{
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
                         <h3 className="text-white font-bold text-sm truncate">{p.nome}</h3>
-                        {p.destaque && <Star size={12} className="text-[#FFD300] shrink-0" />}
+                        {p.destaque && <Star size="0.75rem" className="text-[#FFD300] shrink-0" />}
                         {!p.ativo && (
-                          <span className="text-[10px] text-red-400 bg-red-500/10 px-1.5 py-0.5 rounded-full shrink-0">
+                          <span className="text-[0.625rem] text-red-400 bg-red-500/10 px-1.5 py-0.5 rounded-full shrink-0">
                             Inativo
                           </span>
                         )}
@@ -565,33 +565,33 @@ export const PlanosMaisVantaView: React.FC<{
                     </div>
                     <p className="text-[#FFD300] font-bold text-lg shrink-0">
                       R$ {p.precoMensal}
-                      <span className="text-zinc-400 text-[10px]">/mês</span>
+                      <span className="text-zinc-400 text-[0.625rem]">/mês</span>
                     </p>
                   </div>
 
                   {/* Stats */}
                   <div className="flex flex-wrap gap-2 mt-3">
-                    <span className="text-[10px] text-zinc-400 bg-zinc-800/50 px-2 py-1 rounded-full flex items-center gap-1">
-                      <Calendar size={10} />
+                    <span className="text-[0.625rem] text-zinc-400 bg-zinc-800/50 px-2 py-1 rounded-full flex items-center gap-1">
+                      <Calendar size="0.625rem" />
                       {p.limiteEventosMV === -1 ? 'Ilimitado' : p.limiteEventosMV} eventos
                     </span>
-                    <span className="text-[10px] text-zinc-400 bg-zinc-800/50 px-2 py-1 rounded-full flex items-center gap-1">
-                      <Users size={10} />
+                    <span className="text-[0.625rem] text-zinc-400 bg-zinc-800/50 px-2 py-1 rounded-full flex items-center gap-1">
+                      <Users size="0.625rem" />
                       {p.limiteMembros === -1 ? 'Ilimitado' : p.limiteMembros} membros
                     </span>
-                    <span className="text-[10px] text-zinc-400 bg-zinc-800/50 px-2 py-1 rounded-full">
+                    <span className="text-[0.625rem] text-zinc-400 bg-zinc-800/50 px-2 py-1 rounded-full">
                       {p.limiteVagasEvento} vagas/evento
                     </span>
-                    <span className="text-[10px] text-zinc-400 bg-zinc-800/50 px-2 py-1 rounded-full">
+                    <span className="text-[0.625rem] text-zinc-400 bg-zinc-800/50 px-2 py-1 rounded-full">
                       Avulso: R$ {p.precoAvulso}
                     </span>
                     {p.acompanhante && (
-                      <span className="text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-full">
+                      <span className="text-[0.625rem] text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-full">
                         +1 OK
                       </span>
                     )}
                     {assinantes > 0 && (
-                      <span className="text-[10px] text-blue-400 bg-blue-500/10 px-2 py-1 rounded-full">
+                      <span className="text-[0.625rem] text-blue-400 bg-blue-500/10 px-2 py-1 rounded-full">
                         {assinantes} assinante{assinantes > 1 ? 's' : ''}
                       </span>
                     )}
@@ -603,7 +603,7 @@ export const PlanosMaisVantaView: React.FC<{
                       onClick={() => setModal({ tipo: 'plano', plano: p })}
                       className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 text-zinc-300 text-xs hover:bg-white/10"
                     >
-                      <Pencil size={12} /> Editar
+                      <Pencil size="0.75rem" /> Editar
                     </button>
                     {p.ativo ? (
                       <button
@@ -611,7 +611,7 @@ export const PlanosMaisVantaView: React.FC<{
                         disabled={loading}
                         className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-500/10 text-red-400 text-xs hover:bg-red-500/20 disabled:opacity-40"
                       >
-                        <ToggleLeft size={12} /> Desativar
+                        <ToggleLeft size="0.75rem" /> Desativar
                       </button>
                     ) : (
                       <button
@@ -630,7 +630,7 @@ export const PlanosMaisVantaView: React.FC<{
                         disabled={loading}
                         className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 text-xs hover:bg-emerald-500/20 disabled:opacity-40"
                       >
-                        <ToggleRight size={12} /> Reativar
+                        <ToggleRight size="0.75rem" /> Reativar
                       </button>
                     )}
                   </div>
@@ -647,7 +647,7 @@ export const PlanosMaisVantaView: React.FC<{
               onClick={() => setModal({ tipo: 'tier' })}
               className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-dashed border-zinc-700 text-zinc-400 hover:border-[#FFD300]/40 hover:text-[#FFD300] transition-colors text-sm"
             >
-              <Plus size={16} /> Criar Nível
+              <Plus size="1rem" /> Criar Nível
             </button>
 
             {tiers.map((t, idx) => (
@@ -659,9 +659,9 @@ export const PlanosMaisVantaView: React.FC<{
                   <div className="flex items-center gap-2 min-w-0">
                     <div className="w-4 h-4 rounded-full shrink-0" style={{ backgroundColor: t.cor }} />
                     <h3 className="text-white font-bold text-sm truncate">{t.nome}</h3>
-                    <span className="text-[10px] text-zinc-400">Pos. {t.ordem}</span>
+                    <span className="text-[0.625rem] text-zinc-400">Pos. {t.ordem}</span>
                     {!t.ativo && (
-                      <span className="text-[10px] text-red-400 bg-red-500/10 px-1.5 py-0.5 rounded-full shrink-0">
+                      <span className="text-[0.625rem] text-red-400 bg-red-500/10 px-1.5 py-0.5 rounded-full shrink-0">
                         Inativo
                       </span>
                     )}
@@ -677,7 +677,7 @@ export const PlanosMaisVantaView: React.FC<{
                         }}
                         className="p-1 rounded hover:bg-white/5"
                       >
-                        <ChevronUp size={14} className="text-zinc-400" />
+                        <ChevronUp size="0.875rem" className="text-zinc-400" />
                       </button>
                     )}
                     {idx < tiers.length - 1 && (
@@ -690,7 +690,7 @@ export const PlanosMaisVantaView: React.FC<{
                         }}
                         className="p-1 rounded hover:bg-white/5"
                       >
-                        <ChevronDown size={14} className="text-zinc-400" />
+                        <ChevronDown size="0.875rem" className="text-zinc-400" />
                       </button>
                     )}
                   </div>
@@ -699,14 +699,14 @@ export const PlanosMaisVantaView: React.FC<{
                 {/* Benefícios */}
                 <div className="flex flex-wrap gap-1.5 mt-2">
                   {t.beneficios.map(b => (
-                    <span key={b} className="text-[10px] text-zinc-400 bg-zinc-800/50 px-2 py-0.5 rounded-full">
+                    <span key={b} className="text-[0.625rem] text-zinc-400 bg-zinc-800/50 px-2 py-0.5 rounded-full">
                       {getBeneficiosLabel()[b] ?? b}
                     </span>
                   ))}
                 </div>
 
                 <div className="flex items-center gap-3 mt-2">
-                  <span className="text-[10px] text-zinc-400">
+                  <span className="text-[0.625rem] text-zinc-400">
                     Resgates/mês: {t.limiteMensal === -1 ? 'Ilimitado' : t.limiteMensal}
                   </span>
                 </div>
@@ -716,7 +716,7 @@ export const PlanosMaisVantaView: React.FC<{
                     onClick={() => setModal({ tipo: 'tier', tier: t })}
                     className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 text-zinc-300 text-xs hover:bg-white/10"
                   >
-                    <Pencil size={12} /> Editar
+                    <Pencil size="0.75rem" /> Editar
                   </button>
                   {t.ativo ? (
                     <button
@@ -735,7 +735,7 @@ export const PlanosMaisVantaView: React.FC<{
                       disabled={loading}
                       className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-500/10 text-red-400 text-xs hover:bg-red-500/20 disabled:opacity-40"
                     >
-                      <ToggleLeft size={12} /> Desativar
+                      <ToggleLeft size="0.75rem" /> Desativar
                     </button>
                   ) : (
                     <button
@@ -754,7 +754,7 @@ export const PlanosMaisVantaView: React.FC<{
                       disabled={loading}
                       className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 text-xs hover:bg-emerald-500/20 disabled:opacity-40"
                     >
-                      <ToggleRight size={12} /> Reativar
+                      <ToggleRight size="0.75rem" /> Reativar
                     </button>
                   )}
                 </div>
@@ -788,7 +788,7 @@ export const PlanosMaisVantaView: React.FC<{
             onClick={e => e.stopPropagation()}
           >
             <p className="text-white font-bold text-sm text-center">Desativar plano?</p>
-            <p className="text-zinc-400 text-[10px] text-center leading-relaxed">
+            <p className="text-zinc-400 text-[0.625rem] text-center leading-relaxed">
               O plano será desativado e não poderá ser adquirido por novas comunidades. Assinaturas existentes não são
               afetadas.
             </p>
@@ -796,7 +796,7 @@ export const PlanosMaisVantaView: React.FC<{
               <button
                 onClick={() => setConfirmarDesativar(null)}
                 disabled={loading}
-                className="flex-1 py-3 bg-zinc-900 border border-white/10 rounded-xl text-zinc-400 text-[9px] font-black uppercase tracking-widest active:scale-95 transition-all disabled:opacity-40"
+                className="flex-1 py-3 bg-zinc-900 border border-white/10 rounded-xl text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest active:scale-95 transition-all disabled:opacity-40"
               >
                 Voltar
               </button>
@@ -806,7 +806,7 @@ export const PlanosMaisVantaView: React.FC<{
                   await handleDesativarPlano(confirmarDesativar);
                   setConfirmarDesativar(null);
                 }}
-                className="flex-1 py-3 bg-red-500 rounded-xl text-white text-[9px] font-black uppercase tracking-widest active:scale-95 transition-all disabled:opacity-40"
+                className="flex-1 py-3 bg-red-500 rounded-xl text-white text-[0.5625rem] font-black uppercase tracking-widest active:scale-95 transition-all disabled:opacity-40"
               >
                 {loading ? 'Aguarde...' : 'Desativar'}
               </button>

@@ -48,20 +48,20 @@ const FeedbackOverlay: React.FC<{ data: FeedbackData; onDismiss: () => void }> =
         className="w-28 h-28 rounded-full flex items-center justify-center"
         style={{ background: 'rgba(255,255,255,0.2)' }}
       >
-        <Icon size={56} className="text-white" strokeWidth={2.5} />
+        <Icon size="3.5rem" className="text-white" strokeWidth={2.5} />
       </div>
       <div className="text-center px-8">
         <p className="text-white font-black text-3xl leading-none mb-3">{data.titulo}</p>
         <p className="text-white/70 text-sm">{data.sub}</p>
       </div>
-      <p className="text-white/40 text-[9px] font-black uppercase tracking-widest mt-4">Toque para fechar</p>
+      <p className="text-white/40 text-[0.5625rem] font-black uppercase tracking-widest mt-4">Toque para fechar</p>
     </div>
   );
 };
 
 // ── Frame de scanner (placeholder visual) ─────────────────────────────────────
 const ScannerFrame: React.FC<{ scanning: boolean }> = ({ scanning }) => (
-  <div className="relative w-full max-w-[260px] aspect-square mx-auto">
+  <div className="relative w-full max-w-[16.25rem] aspect-square mx-auto">
     {/* Cantos */}
     {(
       ['top-0 left-0', 'top-0 right-0 rotate-90', 'bottom-0 right-0 rotate-180', 'bottom-0 left-0 -rotate-90'] as const
@@ -79,13 +79,13 @@ const ScannerFrame: React.FC<{ scanning: boolean }> = ({ scanning }) => (
             className="absolute left-3 right-3 h-0.5 bg-[#FFD300]/60 rounded-full"
             style={{ animation: 'scan-line 2s ease-in-out infinite', top: '20%' }}
           />
-          <QrCode size={40} className="text-white/20" />
-          <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest">Aguardando QR Code</p>
+          <QrCode size="2.5rem" className="text-white/20" />
+          <p className="text-[0.5625rem] text-zinc-400 font-black uppercase tracking-widest">Aguardando QR Code</p>
         </>
       ) : (
         <>
-          <QrCode size={40} className="text-zinc-700" />
-          <p className="text-[9px] text-zinc-700 font-black uppercase tracking-widest text-center px-4">
+          <QrCode size="2.5rem" className="text-zinc-700" />
+          <p className="text-[0.5625rem] text-zinc-700 font-black uppercase tracking-widest text-center px-4">
             Aponte a câmera para o ingresso
           </p>
         </>
@@ -212,11 +212,11 @@ export const PortariaScannerView: React.FC<Props> = ({ onBack, eventoId }) => {
             onClick={onBack}
             className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
           >
-            <ArrowLeft size={18} className="text-zinc-400" />
+            <ArrowLeft size="1.125rem" className="text-zinc-400" />
           </button>
         </div>
         {eventoAtivo && (
-          <p className="text-zinc-700 text-[9px] font-black uppercase tracking-widest mt-2 truncate">
+          <p className="text-zinc-700 text-[0.5625rem] font-black uppercase tracking-widest mt-2 truncate">
             {eventoAtivo.nome}
           </p>
         )}
@@ -228,12 +228,12 @@ export const PortariaScannerView: React.FC<Props> = ({ onBack, eventoId }) => {
         <div className="flex gap-6">
           <div className="text-center">
             <p className="text-emerald-400 font-black text-3xl leading-none">{contador.validos}</p>
-            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mt-0.5">entradas</p>
+            <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest mt-0.5">entradas</p>
           </div>
           <div className="w-px bg-white/5" />
           <div className="text-center">
             <p className="text-red-400 font-black text-3xl leading-none">{contador.invalidos}</p>
-            <p className="text-zinc-400 text-[8px] font-black uppercase tracking-widest mt-0.5">recusados</p>
+            <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest mt-0.5">recusados</p>
           </div>
         </div>
 
@@ -251,14 +251,14 @@ export const PortariaScannerView: React.FC<Props> = ({ onBack, eventoId }) => {
               />
             ) : (
               <div className="w-7 h-7 rounded-full bg-emerald-500/20 flex items-center justify-center shrink-0">
-                <Check size={12} className="text-emerald-400" />
+                <Check size="0.75rem" className="text-emerald-400" />
               </div>
             )}
             <div className="flex-1 min-w-0">
               <p className="text-emerald-300 text-xs font-bold truncate">
                 {lastTicket.nomeTitular || lastTicket.email}
               </p>
-              <p className="text-zinc-400 text-[9px] truncate">{lastTicket.variacaoLabel}</p>
+              <p className="text-zinc-400 text-[0.5625rem] truncate">{lastTicket.variacaoLabel}</p>
             </div>
           </div>
         )}
@@ -268,28 +268,28 @@ export const PortariaScannerView: React.FC<Props> = ({ onBack, eventoId }) => {
       <div className="px-6 pb-10 pt-4 space-y-3 shrink-0">
         {!evId ? (
           <div className="flex items-center gap-3 p-4 bg-amber-500/10 border border-amber-500/20 rounded-xl">
-            <AlertTriangle size={14} className="text-amber-400 shrink-0" />
+            <AlertTriangle size="0.875rem" className="text-amber-400 shrink-0" />
             <p className="text-amber-300 text-xs font-bold">Nenhum evento com caixa ativo encontrado.</p>
           </div>
         ) : (
           <button
             onClick={handleSimularLeitura}
             disabled={!scanning}
-            className="w-full py-4 rounded-2xl font-black text-[10px] uppercase tracking-[0.3em] transition-all active:scale-[0.98] disabled:opacity-30 disabled:pointer-events-none flex items-center justify-center gap-2"
+            className="w-full py-4 rounded-2xl font-black text-[0.625rem] uppercase tracking-[0.3em] transition-all active:scale-[0.98] disabled:opacity-30 disabled:pointer-events-none flex items-center justify-center gap-2"
             style={{ background: scanning ? 'linear-gradient(135deg, #059669, #10b981)' : '#18181b', color: '#fff' }}
           >
             {scanning ? (
               <>
-                <Scan size={14} /> Simular Leitura
+                <Scan size="0.875rem" /> Simular Leitura
               </>
             ) : (
               <>
-                <RefreshCw size={14} className="animate-spin" /> Processando…
+                <RefreshCw size="0.875rem" className="animate-spin" /> Processando…
               </>
             )}
           </button>
         )}
-        <p className="text-zinc-700 text-[9px] font-black uppercase tracking-widest text-center">
+        <p className="text-zinc-700 text-[0.5625rem] font-black uppercase tracking-widest text-center">
           Em produção: câmera nativa substituirá o botão de simulação
         </p>
       </div>

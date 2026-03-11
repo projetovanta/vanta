@@ -57,7 +57,7 @@ export const CompletarPerfilCPF: React.FC<CompletarPerfilCPFProps> = ({ isOpen, 
       <div className="w-[90%] max-w-sm bg-zinc-900 border border-white/10 rounded-2xl p-6">
         <div className="flex items-center gap-2 mb-2">
           <div className="w-1.5 h-1.5 rounded-full bg-[#FFD300]" />
-          <p className="text-[#FFD300]/60 text-[9px] font-black uppercase tracking-[0.25em]">Dados para compra</p>
+          <p className="text-[#FFD300]/60 text-[0.5625rem] font-black uppercase tracking-[0.25em]">Dados para compra</p>
         </div>
         <h2 className="text-white text-lg font-bold mb-1">Informe seu CPF</h2>
         <p className="text-zinc-400 text-xs mb-5">
@@ -65,7 +65,7 @@ export const CompletarPerfilCPF: React.FC<CompletarPerfilCPFProps> = ({ isOpen, 
         </p>
 
         <div className="mb-4">
-          <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest mb-1.5">CPF</p>
+          <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5">CPF</p>
           <input
             value={cpf}
             onChange={e => setCpf(fmtCPF(e.target.value))}
@@ -94,7 +94,7 @@ export const CompletarPerfilCPF: React.FC<CompletarPerfilCPFProps> = ({ isOpen, 
               <span className="animate-pulse">Salvando…</span>
             ) : (
               <>
-                <Check size={14} /> Confirmar
+                <Check size="0.875rem" /> Confirmar
               </>
             )}
           </button>

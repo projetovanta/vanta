@@ -192,9 +192,9 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({
           </div>
         );
       }
-      if (notif.tipo === 'ANIVERSARIO') return <Bell size={14} className="text-pink-400" />;
+      if (notif.tipo === 'ANIVERSARIO') return <Bell size="0.875rem" className="text-pink-400" />;
       return (
-        <div className="w-8 h-8 rounded-full bg-zinc-800 border border-white/10 flex items-center justify-center text-zinc-400 text-[10px] font-bold">
+        <div className="w-8 h-8 rounded-full bg-zinc-800 border border-white/10 flex items-center justify-center text-zinc-400 text-[0.625rem] font-bold">
           {(notif.titulo?.[0] || '?').toUpperCase()}
         </div>
       );
@@ -202,10 +202,10 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({
 
     // Notificações SISTEMA com links especiais (deep link de campanhas)
     if (notif.tipo === 'SISTEMA') {
-      if (notif.link === 'EDIT_PROFILE') return <UserCog size={14} className="text-blue-400" />;
-      if (notif.link === 'CLUBE') return <Crown size={14} className="text-[#FFD300]" />;
-      if (notif.link === 'WALLET') return <Wallet size={14} className="text-emerald-400" />;
-      if (notif.link.startsWith('comunidade:')) return <Building2 size={14} className="text-purple-400" />;
+      if (notif.link === 'EDIT_PROFILE') return <UserCog size="0.875rem" className="text-blue-400" />;
+      if (notif.link === 'CLUBE') return <Crown size="0.875rem" className="text-[#FFD300]" />;
+      if (notif.link === 'WALLET') return <Wallet size="0.875rem" className="text-emerald-400" />;
+      if (notif.link.startsWith('comunidade:')) return <Building2 size="0.875rem" className="text-purple-400" />;
       // SISTEMA com eventId no link → foto do evento
       const sysEventPhoto = eventPhotoCache[notif.link];
       if (sysEventPhoto) {
@@ -220,7 +220,7 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({
           </div>
         );
       }
-      return <Bell size={14} className="text-[#FFD300]" />;
+      return <Bell size="0.875rem" className="text-[#FFD300]" />;
     }
 
     // Notificações de evento — foto real do evento
@@ -238,37 +238,45 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({
           </div>
         );
       }
-      return <Bell size={14} className="text-[#FFD300]" />;
+      return <Bell size="0.875rem" className="text-[#FFD300]" />;
     }
 
     if (notif.tipo === 'MAIS_VANTA') {
-      return <Crown size={14} className="text-[#FFD300]" />;
+      return <Crown size="0.875rem" className="text-[#FFD300]" />;
     }
 
     if (notif.tipo === 'CORTESIA_PENDENTE') {
-      return <Gift size={14} className="text-emerald-400" />;
+      return <Gift size="0.875rem" className="text-emerald-400" />;
     }
 
     if (notif.tipo === 'REVIEW') {
-      return <Star size={14} className="text-[#FFD300]" />;
+      return <Star size="0.875rem" className="text-[#FFD300]" />;
     }
 
-    return <Bell size={14} className="text-zinc-400" />;
+    return <Bell size="0.875rem" className="text-zinc-400" />;
   };
 
   return (
     <>
       <div className="absolute top-0 left-0 w-full h-full z-[120] animate-in fade-in duration-300">
-        <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" role="presentation" onClick={onClose} />
+        <div className="absolute inset-0 bg-black/40" role="presentation" onClick={onClose} />
         <div className="absolute top-[4.5rem] right-4 left-4 w-auto max-w-xs ml-auto animate-in zoom-in-95 slide-in-from-top-2 duration-300 origin-top-right">
-          <div className="glass-premium rounded-[2.5rem] overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
-            <div className="p-5 bg-zinc-900/80">
+          <div
+            className="rounded-[2.5rem] border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.6)]"
+            style={{
+              background: 'rgba(30,30,30,0.7)',
+              WebkitBackdropFilter: 'blur(80px) saturate(1.8)',
+              backdropFilter: 'blur(80px) saturate(1.8)',
+              isolation: 'isolate',
+            }}
+          >
+            <div className="p-5 rounded-[2.5rem] overflow-hidden">
               <div className="flex justify-between items-center mb-5">
-                <h4 style={TYPOGRAPHY.uiLabel} className="text-[8px] opacity-40">
+                <h4 style={TYPOGRAPHY.uiLabel} className="text-[0.5rem] opacity-40">
                   Notificações
                 </h4>
                 <button onClick={onClose} className="text-zinc-400 active:text-white transition-colors p-1">
-                  <X size={14} />
+                  <X size="0.875rem" />
                 </button>
               </div>
               <div className="flex items-center justify-center gap-1 border-b border-white/10 mb-4 pb-3">
@@ -281,17 +289,17 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({
                   ] as const
                 ).map(([filter, label], idx) => (
                   <React.Fragment key={filter}>
-                    {idx > 0 && <span className="text-[#FFD300]/40 text-[6px] shrink-0">●</span>}
+                    {idx > 0 && <span className="text-[#FFD300]/40 text-[0.375rem] shrink-0">●</span>}
                     <button
                       onClick={() => setActiveFilter(filter)}
-                      className={`px-2 py-1.5 text-[8px] font-black uppercase tracking-wider transition-all rounded-lg ${activeFilter === filter ? 'text-[#FFD300] bg-[#FFD300]/10' : 'text-zinc-400'}`}
+                      className={`px-2 py-1.5 text-[0.5rem] font-black uppercase tracking-wider transition-all rounded-lg ${activeFilter === filter ? 'text-[#FFD300] bg-[#FFD300]/10' : 'text-zinc-400'}`}
                     >
                       {label}
                     </button>
                   </React.Fragment>
                 ))}
               </div>
-              <div ref={listRef} className="space-y-2 max-h-[350px] overflow-y-auto no-scrollbar pb-2">
+              <div ref={listRef} className="space-y-2 max-h-[21.875rem] overflow-y-auto no-scrollbar pb-2">
                 {filteredNotifications.map(notif => {
                   if (removingIds.has(notif.id)) return null;
 
@@ -317,14 +325,14 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({
                       className={`flex flex-col p-2.5 bg-white/[0.02] rounded-2xl border border-white/5 transition-all cursor-pointer active:bg-[#FFD300]/10 ${isAccepting ? 'opacity-50 pointer-events-none' : ''}`}
                     >
                       <div className="flex items-start gap-2.5">
-                        <div className="p-1 bg-zinc-800/80 rounded-xl shrink-0 flex items-center justify-center min-w-[32px] min-h-[32px]">
+                        <div className="p-1 bg-zinc-800/80 rounded-xl shrink-0 flex items-center justify-center min-w-[2rem] min-h-[2rem]">
                           {getIcon(notif)}
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex justify-between items-start mb-0.5">
                             <h5
                               style={TYPOGRAPHY.uiBody}
-                              className={`text-[11px] font-bold truncate pr-2 ${isFriendRequest ? 'text-[#FFD300]' : ''}`}
+                              className={`text-[0.6875rem] font-bold truncate pr-2 ${isFriendRequest ? 'text-[#FFD300]' : ''}`}
                             >
                               {notif.titulo}
                             </h5>
@@ -332,7 +340,9 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({
                               <div className="w-1.5 h-1.5 bg-[#FFD300] rounded-full shadow-[0_0_8px_#FFD300] shrink-0 mt-1" />
                             )}
                           </div>
-                          <p className="text-[9px] leading-tight text-zinc-400 line-clamp-2 italic">{notif.mensagem}</p>
+                          <p className="text-[0.5625rem] leading-tight text-zinc-400 line-clamp-2 italic">
+                            {notif.mensagem}
+                          </p>
                         </div>
                       </div>
                       {isFriendRequest && (
@@ -343,13 +353,13 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({
                               handleAccept(notif.id);
                             }}
                             disabled={isAccepting}
-                            className="flex-1 py-2 bg-[#FFD300] text-black text-[9px] font-black uppercase tracking-wider rounded-lg flex items-center justify-center gap-1 active:scale-95 transition-transform disabled:opacity-50"
+                            className="flex-1 py-2 bg-[#FFD300] text-black text-[0.5625rem] font-black uppercase tracking-wider rounded-lg flex items-center justify-center gap-1 active:scale-95 transition-transform disabled:opacity-50"
                           >
                             {isAccepting ? (
                               <div className="w-3 h-3 border-2 border-black/20 border-t-black rounded-full animate-spin" />
                             ) : (
                               <>
-                                <UserCheck size={10} /> Aceitar
+                                <UserCheck size="0.625rem" /> Aceitar
                               </>
                             )}
                           </button>
@@ -358,9 +368,9 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({
                               e.stopPropagation();
                               handleDecline(notif.id);
                             }}
-                            className="flex-1 py-2 bg-zinc-800 text-zinc-400 text-[9px] font-black uppercase tracking-wider rounded-lg border border-white/5 flex items-center justify-center gap-1 active:scale-95 transition-transform"
+                            className="flex-1 py-2 bg-zinc-800 text-zinc-400 text-[0.5625rem] font-black uppercase tracking-wider rounded-lg border border-white/5 flex items-center justify-center gap-1 active:scale-95 transition-transform"
                           >
-                            <UserX size={10} /> Recusar
+                            <UserX size="0.625rem" /> Recusar
                           </button>
                         </div>
                       )}
@@ -372,9 +382,9 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({
                               onAcceptCortesia?.(notif.link);
                               setRemovingIds(prev => new Set(prev).add(notif.id));
                             }}
-                            className="flex-1 py-2 bg-emerald-500 text-black text-[9px] font-black uppercase tracking-wider rounded-lg flex items-center justify-center gap-1 active:scale-95 transition-transform"
+                            className="flex-1 py-2 bg-emerald-500 text-black text-[0.5625rem] font-black uppercase tracking-wider rounded-lg flex items-center justify-center gap-1 active:scale-95 transition-transform"
                           >
-                            <Gift size={10} /> Aceitar
+                            <Gift size="0.625rem" /> Aceitar
                           </button>
                           <button
                             onClick={e => {
@@ -382,9 +392,9 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({
                               onDeclineCortesia?.(notif.link);
                               setRemovingIds(prev => new Set(prev).add(notif.id));
                             }}
-                            className="flex-1 py-2 bg-zinc-800 text-zinc-400 text-[9px] font-black uppercase tracking-wider rounded-lg border border-white/5 flex items-center justify-center gap-1 active:scale-95 transition-transform"
+                            className="flex-1 py-2 bg-zinc-800 text-zinc-400 text-[0.5625rem] font-black uppercase tracking-wider rounded-lg border border-white/5 flex items-center justify-center gap-1 active:scale-95 transition-transform"
                           >
-                            <X size={10} /> Recusar
+                            <X size="0.625rem" /> Recusar
                           </button>
                         </div>
                       )}
@@ -400,8 +410,8 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({
               }}
               className="w-full py-4 bg-black/40 border-t border-white/5 flex items-center justify-center space-x-2 active:bg-white/5 transition-colors"
             >
-              <Check size={10} className="text-zinc-400" />
-              <span className="text-[8px] font-black uppercase tracking-[0.3em] text-zinc-400">Marcar lidas</span>
+              <Check size="0.625rem" className="text-zinc-400" />
+              <span className="text-[0.5rem] font-black uppercase tracking-[0.3em] text-zinc-400">Marcar lidas</span>
             </button>
           </div>
         </div>
@@ -410,17 +420,17 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({
         <div className="absolute inset-0 z-[500] flex items-center justify-center p-6 bg-black/80 backdrop-blur-sm animate-in fade-in duration-300">
           <div className="bg-[#0A0A0A] border border-white/10 rounded-[2.5rem] p-8 w-full max-w-[85%] text-center shadow-2xl animate-in zoom-in-95 duration-300">
             <div className="w-16 h-16 bg-zinc-900 rounded-full flex items-center justify-center mx-auto mb-6 border border-white/5">
-              <UserX size={28} className="text-zinc-400" />
+              <UserX size="1.75rem" className="text-zinc-400" />
             </div>
             <h2 style={TYPOGRAPHY.screenTitle} className="text-xl mb-3">
               Pedido Recusado
             </h2>
-            <p className="text-zinc-400 text-[10px] uppercase font-bold tracking-widest mb-8 leading-relaxed">
+            <p className="text-zinc-400 text-[0.625rem] uppercase font-bold tracking-widest mb-8 leading-relaxed">
               A solicitação de amizade foi removida.
             </p>
             <button
               onClick={() => setShowDeclineSuccess(false)}
-              className="w-full py-4 bg-zinc-800 text-white font-bold text-[10px] uppercase rounded-xl active:scale-95 transition-all"
+              className="w-full py-4 bg-zinc-800 text-white font-bold text-[0.625rem] uppercase rounded-xl active:scale-95 transition-all"
             >
               Entendido
             </button>

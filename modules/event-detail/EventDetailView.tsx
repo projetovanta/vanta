@@ -23,6 +23,8 @@ import ReviewModal from '../../components/ReviewModal';
 import { ComemoracaoFormView } from '../community/ComemoracaoFormView';
 import { trackEventOpen } from '../../services/analyticsService';
 import type { BeneficioMV } from '../../features/admin/services/clube/clubeLotesService';
+import { ReportModal } from '../../components/ReportModal';
+import { globalToast } from '../../components/Toast';
 
 interface EventDetailViewProps {
   evento: Evento;
@@ -58,6 +60,7 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [showMaisVantaModal, setShowMaisVantaModal] = useState(false);
   const [showComemoracao, setShowComemoracao] = useState(false);
+  const [showReport, setShowReport] = useState(false);
   const [reviewStats, setReviewStats] = useState<{ media: number; count: number }>({ media: 0, count: 0 });
 
   const eventoAdmin = useMemo(() => eventosAdminService.getEvento(evento.id), [evento.id]);
@@ -100,10 +103,24 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
   const beneficioElegivel = useMemo(() => {
     if (!membroClube || !membroClube.ativo || beneficiosMV.length === 0) return null;
     // Sem cascata: membro só acessa benefício configurado exatamente pro tier dele
-    return beneficiosMV.find(b => b.tierMinimo === membroClube.tier) ?? null;
+    const match = beneficiosMV.find(b => b.tierMinimo === membroClube.tier);
+    if (!match) return null;
+    // Creator com sublevel mínimo: verificar se membro atende
+    if (match.tierMinimo === 'creator' && match.creatorSublevelMinimo) {
+      const subOrder = ['creator_200k', 'creator_500k', 'creator_1m'];
+      const membroIdx = subOrder.indexOf(membroClube.creatorSublevel ?? '');
+      const minimoIdx = subOrder.indexOf(match.creatorSublevelMinimo);
+      if (membroIdx < minimoIdx) return null;
+    }
+    return match;
   }, [membroClube, beneficiosMV]);
 
   const temBeneficiosMV = beneficiosMV.length > 0;
+  const vagasEsgotadas =
+    beneficioElegivel != null &&
+    beneficioElegivel.vagasLimite != null &&
+    beneficioElegivel.vagasLimite > 0 &&
+    beneficioElegivel.vagasResgatadas >= beneficioElegivel.vagasLimite;
 
   // Label do benefício para exibição ao membro
   const beneficioLabel = useMemo(() => {
@@ -123,7 +140,7 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
     return 'Lista exclusiva';
   }, [beneficioElegivel, eventoAdmin]);
 
-  const isDescontoOnly = beneficioElegivel?.tierMinimo === 'desconto';
+  const isDescontoOnly = beneficioElegivel?.tierMinimo === 'lista';
   const beneficioDesconto =
     isDescontoOnly && beneficioElegivel?.descontoPercentual ? beneficioElegivel.descontoPercentual : null;
 
@@ -201,10 +218,11 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
           onShareSuccess={onSuccess}
           isFavorited={isFavorited}
           onToggleFavorite={onToggleFavorite}
+          onReport={() => setShowReport(true)}
         />
 
         {/* Content card — sobe por cima da foto */}
-        <div className="relative z-10 -mt-8 bg-[#0a0a0a] rounded-t-[2rem] px-6 pt-6 pb-32 space-y-8">
+        <div className="relative z-10 -mt-8 bg-[#0a0a0a] rounded-t-[2rem] px-6 pt-6 pb-6 space-y-8">
           <div className="w-10 h-1 bg-zinc-700 rounded-full mx-auto -mt-1 mb-2" />
           <EventSocialProof
             eventoId={evento.id}
@@ -225,7 +243,7 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
               onClick={() => setShowComemoracao(true)}
               className="w-full py-3.5 bg-purple-500/10 border border-purple-500/20 rounded-2xl flex items-center justify-center gap-2.5 active:scale-[0.98] transition-all"
             >
-              <Cake size={16} className="text-purple-400" />
+              <Cake size="1rem" className="text-purple-400" />
               <span className="text-purple-300 text-xs font-bold uppercase tracking-widest">Comemorar aqui</span>
             </button>
           )}
@@ -235,7 +253,7 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
           {temBeneficiosMV && !isPast && !isDescontoOnly && (
             <div className="bg-gradient-to-b from-[#FFD300]/5 to-transparent border border-[#FFD300]/15 rounded-2xl p-5 space-y-3">
               <div className="flex items-center gap-2">
-                <Crown size={16} className="text-[#FFD300]" />
+                <Crown size="1rem" className="text-[#FFD300]" />
                 <h3 className="text-[#FFD300] font-black text-xs uppercase tracking-widest">MAIS VANTA</h3>
               </div>
 
@@ -245,35 +263,45 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
                   {beneficioDesconto && (
                     <p className="text-[#FFD300] text-xs font-bold">{beneficioDesconto}% de desconto</p>
                   )}
+                  {beneficioElegivel.vagasLimite != null && beneficioElegivel.vagasLimite > 0 && (
+                    <p className="text-zinc-400 text-[0.625rem]">
+                      Vagas restantes:{' '}
+                      <span className="text-white font-bold">
+                        {Math.max(0, beneficioElegivel.vagasLimite - beneficioElegivel.vagasResgatadas)}
+                      </span>
+                    </p>
+                  )}
                 </div>
               )}
 
               {!isMembro ? (
-                <p className="text-zinc-400 text-[10px] italic">
+                <p className="text-zinc-400 text-[0.625rem] italic">
                   Você não faz parte do Clube MAIS VANTA. Solicite entrada pelo seu perfil.
                 </p>
               ) : estaBloqueado ? (
                 <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/20 rounded-xl p-3">
-                  <Lock size={12} className="text-red-400 shrink-0" />
-                  <span className="text-red-400 text-[10px] font-bold">Você está temporariamente bloqueado</span>
+                  <Lock size="0.75rem" className="text-red-400 shrink-0" />
+                  <span className="text-red-400 text-[0.625rem] font-bold">Você está temporariamente bloqueado</span>
                 </div>
               ) : temDivida ? (
                 <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/20 rounded-xl p-3">
-                  <Lock size={12} className="text-red-400 shrink-0" />
-                  <span className="text-red-400 text-[10px] font-bold">
+                  <Lock size="0.75rem" className="text-red-400 shrink-0" />
+                  <span className="text-red-400 text-[0.625rem] font-bold">
                     Poste o conteúdo pendente antes de fazer novas reservas
                   </span>
                 </div>
               ) : !beneficioElegivel ? (
                 <div className="flex items-center gap-2 bg-zinc-800/50 border border-white/5 rounded-xl p-3">
-                  <Lock size={12} className="text-zinc-400 shrink-0" />
-                  <span className="text-zinc-400 text-[10px]">Este evento não oferece benefício para o seu perfil</span>
+                  <Lock size="0.75rem" className="text-zinc-400 shrink-0" />
+                  <span className="text-zinc-400 text-[0.625rem]">
+                    Este evento não oferece benefício para o seu perfil
+                  </span>
                 </div>
               ) : !passportOk ? (
                 <div className="space-y-2">
                   <div className="flex items-center gap-2 bg-purple-500/10 border border-purple-500/20 rounded-xl p-3">
-                    <Globe size={12} className="text-purple-400 shrink-0" />
-                    <span className="text-purple-400 text-[10px] font-bold">
+                    <Globe size="0.75rem" className="text-purple-400 shrink-0" />
+                    <span className="text-purple-400 text-[0.625rem] font-bold">
                       {passportStatus === 'PENDENTE'
                         ? 'Seu passaporte para esta cidade está em análise'
                         : 'Você precisa de acesso nesta cidade'}
@@ -289,16 +317,29 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
                           onSuccess?.('Erro ao solicitar passaporte');
                         }
                       }}
-                      className="w-full py-2.5 border border-purple-500/30 bg-purple-500/10 text-purple-400 font-bold text-[10px] uppercase tracking-widest rounded-xl active:scale-95 transition-all"
+                      className="w-full py-2.5 border border-purple-500/30 bg-purple-500/10 text-purple-400 font-bold text-[0.625rem] uppercase tracking-widest rounded-xl active:scale-95 transition-all"
                     >
                       Solicitar Acesso Nesta Cidade
                     </button>
                   )}
                 </div>
+              ) : vagasEsgotadas ? (
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 bg-amber-500/10 border border-amber-500/20 rounded-xl p-3">
+                    <Crown size="0.75rem" className="text-amber-400 shrink-0" />
+                    <span className="text-amber-400 text-[0.625rem] font-bold">Vagas esgotadas para este perfil</span>
+                  </div>
+                  <button
+                    onClick={() => onBuy(evento)}
+                    className="w-full py-2.5 border border-[#FFD300]/30 bg-[#FFD300]/10 text-[#FFD300] font-bold text-[0.625rem] uppercase tracking-widest rounded-xl active:scale-95 transition-all"
+                  >
+                    Comprar ingresso normal
+                  </button>
+                </div>
               ) : (
                 <button
                   onClick={() => setShowMaisVantaModal(true)}
-                  className="w-full py-3 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all"
+                  className="w-full py-3 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all"
                 >
                   Resgatar Benefício
                 </button>
@@ -318,7 +359,7 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
                     {[1, 2, 3, 4, 5].map(n => (
                       <Star
                         key={n}
-                        size={16}
+                        size="1rem"
                         fill={n <= Math.round(reviewStats.media) ? '#FFD300' : 'transparent'}
                         stroke={n <= Math.round(reviewStats.media) ? '#FFD300' : '#52525b'}
                         strokeWidth={1.5}
@@ -386,7 +427,7 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
               onClick={fecharSheet}
               className="absolute top-5 right-5 p-1.5 text-zinc-400 hover:text-white transition-colors"
             >
-              <X size={16} />
+              <X size="1rem" />
             </button>
             <div className="w-10 h-1 bg-zinc-700 rounded-full mx-auto mb-5" />
             <p style={TYPOGRAPHY.sectionKicker} className="mb-4">
@@ -417,13 +458,13 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
                           isSelected && !esgotada ? 'border-[#FFD300] bg-[#FFD300]' : 'border-zinc-600'
                         }`}
                       >
-                        {isSelected && !esgotada && <Check size={10} className="text-black" strokeWidth={3} />}
+                        {isSelected && !esgotada && <Check size="0.625rem" className="text-black" strokeWidth={3} />}
                       </div>
                       <p className={`text-sm font-bold ${isSelected && !esgotada ? 'text-white' : 'text-zinc-300'}`}>
                         {areaLabel} · {generoLabel}
                       </p>
                       {esgotada && (
-                        <span className="text-[8px] font-black uppercase tracking-widest text-red-500 bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded-full">
+                        <span className="text-[0.5rem] font-black uppercase tracking-widest text-red-500 bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded-full">
                           Esgotado
                         </span>
                       )}
@@ -440,7 +481,7 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
             <button
               onClick={handleConfirmarCompra}
               disabled={!selectedVariacaoId}
-              className="w-full py-4 bg-[#FFD300] text-black font-bold text-[10px] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all disabled:opacity-30 disabled:scale-100"
+              className="w-full py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all disabled:opacity-30 disabled:scale-100"
             >
               Confirmar compra
             </button>
@@ -494,6 +535,15 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
           />
         </div>
       )}
+
+      <ReportModal
+        isOpen={showReport}
+        onClose={() => setShowReport(false)}
+        tipo="EVENTO"
+        alvoEventoId={evento.id}
+        alvoNome={evento.titulo}
+        onSuccess={msg => globalToast(msg.includes('Erro') ? 'erro' : 'sucesso', msg)}
+      />
     </div>
   );
 };

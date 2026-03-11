@@ -30,20 +30,20 @@ export const NewChatModal: React.FC<{
             Nova Mensagem
           </h2>
           <div className="flex items-center gap-2 mt-1.5">
-            <ShieldCheck size={12} className="text-[#FFD300]" />
-            <p className="text-zinc-400 text-[10px] font-bold uppercase tracking-widest">Apenas amizades</p>
+            <ShieldCheck size="0.75rem" className="text-[#FFD300]" />
+            <p className="text-zinc-400 text-[0.625rem] font-bold uppercase tracking-widest">Apenas amizades</p>
           </div>
         </div>
         <button
           onClick={onClose}
           className="w-12 h-12 bg-zinc-900/50 rounded-full flex items-center justify-center active:scale-90"
         >
-          <X size={20} className="text-zinc-400" />
+          <X size="1.25rem" className="text-zinc-400" />
         </button>
       </div>
       <div className="px-6 py-6 bg-[#0A0A0A]">
         <div className="relative">
-          <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
+          <Search size="1.125rem" className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
           <input
             type="text"
             placeholder="Buscar amigos..."
@@ -66,10 +66,10 @@ export const NewChatModal: React.FC<{
             </div>
             <div className="flex-1 text-left min-w-0">
               <h4 className="text-base font-bold text-zinc-200 truncate">{f.nome}</h4>
-              <p className="text-[11px] text-zinc-400 truncate">@{f.email.split('@')[0]}</p>
+              <p className="text-[0.6875rem] text-zinc-400 truncate">@{f.email.split('@')[0]}</p>
             </div>
             <div className="w-10 h-10 rounded-full bg-zinc-900/50 flex items-center justify-center text-zinc-400 border border-white/5">
-              <UserPlus size={16} />
+              <UserPlus size="1rem" />
             </div>
           </button>
         ))}

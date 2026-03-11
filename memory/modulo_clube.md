@@ -349,6 +349,9 @@ Sem cascata: membro recebe APENAS benefício do SEU tier exato (`===`), não dos
 | 53 | Solicitação notif produtor (V3 S5.6) | OK | mv_solicitacoes_notificacao + clubeNotifProdutorService (solicitar, listar, aprovar, rejeitar). Respeita limite plano |
 | 54 | Convite especial Vanta (V3 S6) | OK | mv_convites_especiais + clubeConviteEspecialService (buscarPorFiltro, enviar, listar). Notif in-app MV_CONVITE_ESPECIAL |
 | 55 | Auto-aprovação passport cidade | OK | Membros ativos do clube aprovados automaticamente ao solicitar passport (V3 style) |
+| 56 | UI notif produtor admin (V3 S5.6) | OK | NotifMVPendentesView — aba "Notif Produtor" no Hub. Lista pendentes, aprovar (dispara push) ou rejeitar |
+| 57 | UI convite especial Vanta (V3 S6) | OK | ConviteEspecialMVView — aba "Convites" no Hub. Filtro tier/cidade/sublevel, seleção membros, enviar convite |
+| 58 | Botão solicitar notif MV (produtor) | OK | TabRelatorio seção MV — botão "Solicitar notificação para membros" abre form inline, envia via clubeService |
 | 11 | RLS todas tabelas MV | OK | Migrations confirmam |
 | 12 | Tiers config | OK | tiers_mais_vanta (4 tiers no banco) |
 | 13 | Planos MV | OK | planos_mais_vanta (3 planos no banco) |

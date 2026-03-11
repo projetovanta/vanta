@@ -4,7 +4,19 @@
  */
 
 import React, { useState } from 'react';
-import { ArrowLeft, Settings, Crown, Compass, SlidersHorizontal, MapPin, Store, Ticket, Briefcase } from 'lucide-react';
+import {
+  ArrowLeft,
+  Settings,
+  Crown,
+  Compass,
+  SlidersHorizontal,
+  MapPin,
+  Store,
+  Ticket,
+  Briefcase,
+  Bell,
+  Sparkles,
+} from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
 import { PlanosMaisVantaView } from './PlanosMaisVantaView';
 import { AssinaturasMaisVantaView } from './AssinaturasMaisVantaView';
@@ -14,6 +26,8 @@ import { CidadesMaisVantaView } from './CidadesMaisVantaView';
 import { ParceirosMaisVantaView } from './ParceirosMaisVantaView';
 import { DealsMaisVantaView } from './DealsMaisVantaView';
 import { PlanosProdutor } from './PlanosProdutor/PlanosProdutor';
+import { NotifMVPendentesView } from './maisVanta/NotifMVPendentesView';
+import { ConviteEspecialMVView } from './maisVanta/ConviteEspecialMVView';
 type AbaHub =
   | 'PLANOS'
   | 'PLANOS_PRODUTOR'
@@ -22,6 +36,8 @@ type AbaHub =
   | 'CIDADES'
   | 'PARCEIROS'
   | 'DEALS'
+  | 'NOTIF_MV'
+  | 'CONVITES_ESP'
   | 'CONFIG';
 
 export const MaisVantaHubView: React.FC<{
@@ -37,6 +53,8 @@ export const MaisVantaHubView: React.FC<{
     { id: 'CIDADES', label: 'Cidades', icon: MapPin },
     { id: 'PARCEIROS', label: 'Parceiros', icon: Store },
     { id: 'DEALS', label: 'Deals', icon: Ticket },
+    { id: 'CONVITES_ESP', label: 'Convites', icon: Sparkles },
+    { id: 'NOTIF_MV', label: 'Notif Produtor', icon: Bell },
     { id: 'ASSINATURAS', label: 'Assinaturas', icon: Crown },
     { id: 'PASSAPORTES', label: 'Passaportes', icon: Compass },
     { id: 'CONFIG', label: 'Config', icon: SlidersHorizontal },
@@ -94,6 +112,8 @@ export const MaisVantaHubView: React.FC<{
         {aba === 'CIDADES' && <CidadesMaisVantaView />}
         {aba === 'PARCEIROS' && <ParceirosMaisVantaView />}
         {aba === 'DEALS' && <DealsMaisVantaView />}
+        {aba === 'CONVITES_ESP' && <ConviteEspecialMVView />}
+        {aba === 'NOTIF_MV' && <NotifMVPendentesView />}
         {aba === 'ASSINATURAS' && <AssinaturasMaisVantaView onBack={() => {}} />}
         {aba === 'PASSAPORTES' && <PassaportesMaisVantaView onBack={() => {}} masterId={masterId} />}
         {aba === 'CONFIG' && <ConfigMaisVantaView />}

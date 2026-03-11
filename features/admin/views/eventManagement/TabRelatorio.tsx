@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { FileText, Star, Printer, Crown, ThumbsUp, ThumbsDown } from 'lucide-react';
+import { FileText, Star, Printer, Crown, ThumbsUp, ThumbsDown, Bell, Send } from 'lucide-react';
 import { gerarRelatorio, RelatorioEvento } from '../../services/relatorioService';
 import { VantaPieChart } from '../../components/VantaPieChart';
 import { CORES_PIZZA } from './types';
-import { fmtBRL } from '../../../../utils';
+import { fmtBRL, tsBR } from '../../../../utils';
 import { supabase } from '../../../../services/supabaseClient';
+import { clubeService } from '../../services/clube';
+import { useAuthStore } from '../../../../stores/authStore';
 
 export const TabRelatorio: React.FC<{ eventoAdminId: string }> = ({ eventoAdminId }) => {
+  const currentUserId = useAuthStore(s => s.currentAccount?.id ?? '');
   const [rel, setRel] = useState<RelatorioEvento | null>(null);
   const [loading, setLoading] = useState(true);
   const [mvStats, setMvStats] = useState<{
@@ -19,6 +22,10 @@ export const TabRelatorio: React.FC<{ eventoAdminId: string }> = ({ eventoAdminI
   } | null>(null);
   const [mvAvaliacao, setMvAvaliacao] = useState<'eficiente' | 'ineficiente' | null>(null);
   const [mvAvalSaving, setMvAvalSaving] = useState(false);
+  const [showNotifForm, setShowNotifForm] = useState(false);
+  const [notifMsg, setNotifMsg] = useState('');
+  const [notifSending, setNotifSending] = useState(false);
+  const [notifResult, setNotifResult] = useState<{ ok: boolean; reason?: string } | null>(null);
 
   const salvarMvAvaliacao = async (val: 'eficiente' | 'ineficiente') => {
     const novo = mvAvaliacao === val ? null : val;
@@ -26,6 +33,18 @@ export const TabRelatorio: React.FC<{ eventoAdminId: string }> = ({ eventoAdminI
     await supabase.from('eventos_admin').update({ mv_avaliacao: novo }).eq('id', eventoAdminId);
     setMvAvaliacao(novo);
     setMvAvalSaving(false);
+  };
+
+  const enviarSolicitacaoNotif = async () => {
+    if (!notifMsg.trim()) return;
+    setNotifSending(true);
+    const result = await clubeService.solicitarNotificacaoMV(eventoAdminId, currentUserId, notifMsg.trim());
+    setNotifResult(result);
+    if (result.ok) {
+      setNotifMsg('');
+      setShowNotifForm(false);
+    }
+    setNotifSending(false);
   };
 
   useEffect(() => {
@@ -426,6 +445,57 @@ export const TabRelatorio: React.FC<{ eventoAdminId: string }> = ({ eventoAdminI
             >
               <ThumbsDown size={12} /> Ineficiente
             </button>
+          </div>
+
+          {/* Solicitar notificação MV (produtor) */}
+          <div className="mt-4 pt-3 border-t border-white/5">
+            {!showNotifForm ? (
+              <button
+                onClick={() => setShowNotifForm(true)}
+                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-zinc-800 border border-white/5 text-zinc-300 text-[10px] font-black uppercase tracking-wider active:scale-95 transition-all"
+              >
+                <Bell size={12} />
+                Solicitar notificação para membros
+              </button>
+            ) : (
+              <div className="space-y-3">
+                <p className="text-zinc-400 text-[10px] font-black uppercase tracking-widest">
+                  Mensagem para membros MAIS VANTA
+                </p>
+                <textarea
+                  value={notifMsg}
+                  onChange={e => setNotifMsg(e.target.value)}
+                  placeholder="Ex: Venha conferir o evento! Temos benefícios exclusivos..."
+                  rows={3}
+                  className="w-full bg-zinc-800 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-zinc-600 resize-none"
+                />
+                <div className="flex gap-2">
+                  <button
+                    onClick={enviarSolicitacaoNotif}
+                    disabled={notifSending || !notifMsg.trim()}
+                    className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-[#FFD300]/10 border border-[#FFD300]/20 text-[#FFD300] text-[10px] font-black uppercase tracking-wider active:scale-95 transition-all disabled:opacity-50"
+                  >
+                    <Send size={12} />
+                    Enviar solicitação
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowNotifForm(false);
+                      setNotifResult(null);
+                    }}
+                    className="px-4 py-2.5 rounded-xl bg-zinc-800 border border-white/5 text-zinc-400 text-[10px] font-black uppercase tracking-wider active:scale-95 transition-all"
+                  >
+                    Cancelar
+                  </button>
+                </div>
+                {notifResult && !notifResult.ok && <p className="text-red-400 text-xs">{notifResult.reason}</p>}
+                {notifResult?.ok && (
+                  <p className="text-emerald-400 text-xs">
+                    Solicitação enviada! O Vanta vai analisar e decidir o envio.
+                  </p>
+                )}
+              </div>
+            )}
           </div>
         </div>
       )}

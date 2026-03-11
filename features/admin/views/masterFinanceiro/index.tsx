@@ -81,7 +81,9 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification 
     allEventos.reduce(
       (sum, ev) => sum + ev.lotes.flatMap(l => l.variacoes).reduce((s, v) => s + v.vendidos * v.valor, 0),
       0,
-    ) - totalReembolsadoAprovado;
+    ) -
+    totalReembolsadoAprovado -
+    totalChargebacks;
 
   const totalIngressosGlobal = allEventos.reduce(
     (sum, ev) => sum + ev.lotes.flatMap(l => l.variacoes).reduce((s, v) => s + v.vendidos, 0),

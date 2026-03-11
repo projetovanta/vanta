@@ -33,6 +33,7 @@ import {
   Sparkles,
   Eye,
   Send,
+  Lightbulb,
   type LucideIcon,
 } from 'lucide-react';
 import type { ContaVanta } from '../../../types';
@@ -77,7 +78,11 @@ export type AdminSubView =
   | 'DEALS_MV'
   | 'CURADORIA_MV'
   | 'CONVITES_MV'
-  | 'ANALYTICS_MV';
+  | 'ANALYTICS_MV'
+  | 'MASTER_DASHBOARD'
+  | 'COMUNIDADE_DASHBOARD'
+  | 'MAIS_VANTA_DASHBOARD'
+  | 'INTELIGENCIA';
 
 export interface SidebarSectionItem {
   id: AdminSubView;
@@ -116,6 +121,20 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
         icon: LayoutDashboard,
         color: COR.GERAL,
         roles: ['vanta_masteradm', 'vanta_socio', 'vanta_gerente'],
+      },
+      {
+        id: 'MASTER_DASHBOARD',
+        label: 'Painel Master',
+        icon: Crown,
+        color: COR.FINANCEIRO,
+        roles: ['vanta_masteradm'],
+      },
+      {
+        id: 'INTELIGENCIA',
+        label: 'Inteligência',
+        icon: Lightbulb,
+        color: COR.MAIS_VANTA,
+        roles: ['vanta_masteradm', 'vanta_gerente', 'vanta_socio'],
       },
       {
         id: 'PENDENCIAS_HUB',
@@ -206,6 +225,13 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
         color: COR.MAIS_VANTA,
         roles: ['vanta_masteradm', 'vanta_gerente'],
       },
+      {
+        id: 'MAIS_VANTA_DASHBOARD',
+        label: 'Painel MV',
+        icon: Sparkles,
+        color: COR.MAIS_VANTA,
+        roles: ['vanta_masteradm'],
+      },
       { id: 'ANALYTICS_MV', label: 'Analytics', icon: BarChart3, color: COR.MAIS_VANTA, roles: ['vanta_masteradm'] },
       { id: 'MONITORAMENTO_MV', label: 'Monitoramento', icon: Eye, color: COR.MAIS_VANTA, roles: ['vanta_masteradm'] },
       { id: 'MAIS_VANTA_HUB', label: 'Config MV', icon: Settings, color: COR.MAIS_VANTA, roles: ['vanta_masteradm'] },
@@ -250,6 +276,13 @@ export const COMMUNITY_SIDEBAR_SECTIONS: SidebarSection[] = [
     label: 'GERAL',
     items: [
       { id: 'DASHBOARD', label: 'Início', icon: LayoutDashboard, color: COR.GERAL, roles: ALL_COMMUNITY_ROLES },
+      {
+        id: 'COMUNIDADE_DASHBOARD',
+        label: 'Painel',
+        icon: BarChart3,
+        color: COR.FINANCEIRO,
+        roles: ['vanta_masteradm', 'vanta_socio', 'vanta_gerente'],
+      },
       { id: 'PENDENCIAS_HUB', label: 'Pendências', icon: AlertCircle, color: COR.GERAL, roles: ALL_COMMUNITY_ROLES },
       {
         id: 'MEUS_EVENTOS',

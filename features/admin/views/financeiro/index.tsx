@@ -17,6 +17,7 @@ import { exportCSV, exportPDF } from '../../../../utils/exportUtils';
 import { TYPOGRAPHY } from '../../../../constants';
 import { Notificacao } from '../../../../types';
 import { eventosAdminService, ContractedFees, SolicitacaoSaque } from '../../services/eventosAdminService';
+import { getResumoFinanceiroComunidade, getResumoFinanceiroEvento } from '../../services/eventosAdminFinanceiro';
 import { rbacService } from '../../services/rbacService';
 import { supabase } from '../../../../services/supabaseClient';
 import { VantaPieChart } from '../../components/VantaPieChart';
@@ -167,36 +168,46 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
     [currentUserId, svcVersion],
   );
 
-  // Saldo consolidado GG-C — soma dos eventos da(s) comunidade(s) onde é GERENTE
-  // e que tem acesso soberano (autorizado)
-  const saldoConsolidado = useMemo(() => {
-    if (!isGGC) return null;
+  // Saldo consolidado GG-C — usa getResumoFinanceiroComunidade para dados corretos
+  const [saldoConsolidado, setSaldoConsolidado] = useState<{
+    totalBruto: number;
+    totalLiquido: number;
+    totalEventos: number;
+    detalhe: { nome: string; liquido: number }[];
+  } | null>(null);
+  useEffect(() => {
+    if (!isGGC) {
+      setSaldoConsolidado(null);
+      return;
+    }
     const comunidades = rbacService
       .getAtribuicoes(currentUserId)
       .filter(a => a.ativo && a.tenant.tipo === 'COMUNIDADE' && a.cargo === 'GERENTE')
       .map(a => a.tenant.id);
-    let totalBruto = 0;
-    let totalLiquido = 0;
-    let totalEventos = 0;
-    const detalhe: { nome: string; liquido: number }[] = [];
-    for (const comId of comunidades) {
-      const eventos = eventosAdminService.getEventos().filter(e => e.comunidadeId === comId);
-      for (const ev of eventos) {
-        const temAcesso = rbacService.temAcessoSoberano(currentUserId, ev.id);
-        if (!temAcesso) continue;
-        const variacoes = ev.lotes.flatMap(l => l.variacoes);
-        const bruto = variacoes.reduce((s, v) => s + v.vendidos * v.valor, 0);
-        const totalIngressosEv = variacoes.reduce((s, v) => s + v.vendidos, 0);
-        const fees = eventosAdminService.getContractedFees(ev.id);
-        // Taxa VANTA sempre do cliente — produtor recebe bruto
-        const liquido = bruto;
-        totalBruto += bruto;
-        totalLiquido += liquido;
-        totalEventos++;
-        detalhe.push({ nome: ev.nome, liquido });
+    let cancelled = false;
+    (async () => {
+      let totalBruto = 0;
+      let totalLiquido = 0;
+      let totalEventos = 0;
+      const detalhe: { nome: string; liquido: number }[] = [];
+      for (const comId of comunidades) {
+        const resumo = await getResumoFinanceiroComunidade(comId);
+        const eventos = eventosAdminService.getEventos().filter(e => e.comunidadeId === comId);
+        for (const ev of eventos) {
+          const temAcesso = rbacService.temAcessoSoberano(currentUserId, ev.id);
+          if (!temAcesso) continue;
+          const evResumo = await getResumoFinanceiroEvento(ev.id);
+          totalEventos++;
+          detalhe.push({ nome: ev.nome, liquido: evResumo.receitaLiquida });
+        }
+        totalBruto += resumo.receitaBruta;
+        totalLiquido += resumo.receitaLiquida;
       }
-    }
-    return { totalBruto, totalLiquido, totalEventos, detalhe };
+      if (!cancelled) setSaldoConsolidado({ totalBruto, totalLiquido, totalEventos, detalhe });
+    })();
+    return () => {
+      cancelled = true;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUserId, svcVersion, isGGC]);
 
@@ -230,19 +241,23 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
     [meusEventos],
   );
   const ticketMedio = totalIngressosTodos > 0 ? Math.round((saldo.totalVendas / totalIngressosTodos) * 100) / 100 : 0;
-  const receitaVanta = useMemo(
-    () =>
-      meusEventos
-        .flatMap(ev => ev.lotes.flatMap(l => l.variacoes))
-        .reduce((s, v) => {
-          const fees = eventosAdminService.getContractedFees(
-            meusEventos.find(e => e.lotes.some(l => l.variacoes.some(vv => vv.id === v.id)))?.id ?? '',
-          );
-          return s + Math.round((v.vendidos * v.valor * fees.feePercent + fees.feeFixed * v.vendidos) * 100) / 100;
-        }, 0),
+  // Taxa VANTA calculada via service (já desconta reembolsos/chargebacks)
+  const [receitaVanta, setReceitaVanta] = useState(0);
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      let total = 0;
+      for (const ev of meusEventos) {
+        const resumo = await getResumoFinanceiroEvento(ev.id);
+        total += resumo.taxaVanta;
+      }
+      if (!cancelled) setReceitaVanta(Math.round(total * 100) / 100);
+    })();
+    return () => {
+      cancelled = true;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [meusEventos, svcVersion],
-  );
+  }, [meusEventos, svcVersion]);
 
   // ── Export ─────────────────────────────────────────────────────────────────
   const handleExportCSV = useCallback(() => {

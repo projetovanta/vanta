@@ -126,6 +126,16 @@ const ProductAnalyticsView = lazy(() =>
   import('./views/ProductAnalyticsView').then(m => ({ default: m.ProductAnalyticsView })),
 );
 const PendenciasHubView = lazy(() => import('./views/PendenciasHubView').then(m => ({ default: m.PendenciasHubView })));
+const MasterDashboardView = lazy(() => import('./views/masterDashboard').then(m => ({ default: m.MasterDashboard })));
+const InsightsDashboardView = lazy(() =>
+  import('./views/insightsDashboard').then(m => ({ default: m.InsightsDashboardView })),
+);
+const ComunidadeDashboardView = lazy(() =>
+  import('./views/comunidadeDashboard').then(m => ({ default: m.ComunidadeDashboard })),
+);
+const MaisVantaDashboardView = lazy(() =>
+  import('./views/maisVantaDashboard').then(m => ({ default: m.MaisVantaDashboard })),
+);
 export const AdminDashboardView: React.FC<{
   onClose: () => void;
   adminNome: string;
@@ -528,6 +538,43 @@ export const AdminDashboardView: React.FC<{
     if (subView === 'CARGOS') {
       if (!isMasterOnly(currentUserId, adminRole)) return guardBlock(back);
       return <DefinirCargosView onBack={back} currentUserId={currentUserId} addNotification={addNotification} />;
+    }
+    // ── Inteligência VANTA ──────────────────────────────────────────────────
+    if (subView === 'INTELIGENCIA') {
+      return <InsightsDashboardView onBack={back} comunidadeId={comunidadeId} />;
+    }
+    // ── Novos Dashboards Analytics ──────────────────────────────────────────
+    if (subView === 'MASTER_DASHBOARD') {
+      if (adminRole !== 'vanta_masteradm') return guardBlock(back);
+      return (
+        <MasterDashboardView
+          onSelectComunidade={(_comId: string) => {
+            // Drill-down to COMUNIDADES view for now
+            setSubView('COMUNIDADES');
+          }}
+          onSelectEvento={(_evId: string) => {
+            setSubView('MEUS_EVENTOS');
+          }}
+        />
+      );
+    }
+    if (subView === 'COMUNIDADE_DASHBOARD') {
+      if (!comunidadeId) return guardBlock(back);
+      const comNome = comunidadesService.get(comunidadeId)?.nome ?? 'Comunidade';
+      return (
+        <ComunidadeDashboardView
+          comunidadeId={comunidadeId}
+          comunidadeNome={comNome}
+          onBack={back}
+          onSelectEvento={(_evId: string) => {
+            setSubView('MEUS_EVENTOS');
+          }}
+        />
+      );
+    }
+    if (subView === 'MAIS_VANTA_DASHBOARD') {
+      if (adminRole !== 'vanta_masteradm') return guardBlock(back);
+      return <MaisVantaDashboardView onBack={back} />;
     }
     // Master: visão global da plataforma
     if (subView === 'FINANCEIRO_MASTER') {

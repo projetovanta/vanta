@@ -2020,19 +2020,19 @@ export type Database = {
           created_at: string;
           evento_id: string;
           id: string;
-          teto_global_total: number;
+          teto_global_total: number | null;
         };
         Insert: {
           created_at?: string;
           evento_id: string;
           id?: string;
-          teto_global_total?: number;
+          teto_global_total?: number | null;
         };
         Update: {
           created_at?: string;
           evento_id?: string;
           id?: string;
-          teto_global_total?: number;
+          teto_global_total?: number | null;
         };
         Relationships: [
           {
@@ -3378,8 +3378,8 @@ export type Database = {
           id: string;
           label: string;
           lista_id: string;
-          saldo_banco: number;
-          teto_global: number;
+          saldo_banco: number | null;
+          teto_global: number | null;
           tipo: string | null;
           valor: number | null;
         };
@@ -3393,8 +3393,8 @@ export type Database = {
           id?: string;
           label: string;
           lista_id: string;
-          saldo_banco?: number;
-          teto_global?: number;
+          saldo_banco?: number | null;
+          teto_global?: number | null;
           tipo?: string | null;
           valor?: number | null;
         };
@@ -3408,8 +3408,8 @@ export type Database = {
           id?: string;
           label?: string;
           lista_id?: string;
-          saldo_banco?: number;
-          teto_global?: number;
+          saldo_banco?: number | null;
+          teto_global?: number | null;
           tipo?: string | null;
           valor?: number | null;
         };

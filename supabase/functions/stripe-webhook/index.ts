@@ -100,6 +100,73 @@ serve(async (req: Request) => {
     switch (event.type) {
       case 'checkout.session.completed': {
         const session = event.data.object;
+        const metaType = session.metadata?.type;
+
+        // ── Ingresso (compra de tickets) ──
+        if (metaType === 'ingresso') {
+          const pedidoId = session.metadata?.pedido_id;
+          if (!pedidoId) {
+            console.error('[stripe-webhook] ingresso: pedido_id ausente no metadata');
+            break;
+          }
+
+          // Buscar pedido
+          const { data: pedido, error: pedidoErr } = await supabase
+            .from('pedidos_checkout')
+            .select('*')
+            .eq('id', pedidoId)
+            .eq('status', 'pendente')
+            .maybeSingle();
+
+          if (pedidoErr || !pedido) {
+            console.error('[stripe-webhook] ingresso: pedido não encontrado ou já processado', { pedidoId, err: pedidoErr?.message });
+            break;
+          }
+
+          const dadosCompra = pedido.dados_compra as { itens?: { variacao_id: string; quantidade: number; valor_unit: number }[]; cupom_id?: string; mesa_id?: string; ref_code?: string };
+          const itens = dadosCompra?.itens ?? [];
+          let allOk = true;
+
+          for (const item of itens) {
+            const { data: result, error: rpcErr } = await supabase.rpc('processar_compra_checkout', {
+              p_evento_id: pedido.evento_id,
+              p_lote_id: pedido.lote_id,
+              p_variacao_id: item.variacao_id,
+              p_email: pedido.email ?? session.customer_email ?? '',
+              p_valor_unit: item.valor_unit,
+              p_quantidade: item.quantidade,
+              p_comprador_id: pedido.user_id,
+            });
+
+            if (rpcErr) {
+              console.error('[stripe-webhook] ingresso: RPC erro', { item, err: rpcErr.message });
+              allOk = false;
+            } else if (result && !result.ok) {
+              console.error('[stripe-webhook] ingresso: RPC negou', { item, result });
+              allOk = false;
+            } else {
+              console.log('[stripe-webhook] ingresso: ticket(s) criado(s)', { variacao: item.variacao_id, qty: item.quantidade });
+            }
+          }
+
+          // Atualizar pedido
+          const nowBRT = new Date(Date.now() - 3 * 3600000).toISOString().replace('Z', '-03:00');
+          const { error: updErr } = await supabase
+            .from('pedidos_checkout')
+            .update({
+              status: allOk ? 'pago' : 'pago',
+              paid_at: nowBRT,
+              stripe_session_id: session.id,
+              stripe_payment_intent_id: session.payment_intent,
+            })
+            .eq('id', pedidoId);
+
+          if (updErr) console.error('[stripe-webhook] ingresso: update pedido erro', updErr.message);
+          console.log('[stripe-webhook] ingresso processado', { pedidoId, itens: itens.length, allOk });
+          break;
+        }
+
+        // ── Assinatura MAIS VANTA ──
         const comunidadeId = session.metadata?.comunidade_id;
         const plano = session.metadata?.plano;
         if (comunidadeId) {

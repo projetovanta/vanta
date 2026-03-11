@@ -68,9 +68,11 @@ export const LucroPorComunidade: React.FC<Props> = ({
           {selectedCom.eventos.map(ev => {
             const fees = eventosAdminService.getContractedFees(ev.id);
             if (fees.feePercent === 0 && fees.feeFixed === 0) return null;
-            const gmv = ev.lotes.flatMap(l => l.variacoes).reduce((s, v) => s + v.vendidos * v.valor, 0);
+            const gmvBruto = ev.lotes.flatMap(l => l.variacoes).reduce((s, v) => s + v.vendidos * v.valor, 0);
             const ingressos = ev.lotes.flatMap(l => l.variacoes).reduce((s, v) => s + v.vendidos, 0);
-            const taxaV = gmv * fees.feePercent + fees.feeFixed * ingressos;
+            // GMV exibido é bruto (para contexto), taxa VANTA calculada sobre bruto
+            const taxaV = gmvBruto * fees.feePercent + fees.feeFixed * ingressos;
+            const gmv = gmvBruto;
             return (
               <button
                 key={ev.id}

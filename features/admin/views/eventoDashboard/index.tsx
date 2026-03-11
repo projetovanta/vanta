@@ -66,6 +66,11 @@ import { EditarLotesSubView } from './EditarLotesSubView';
 import { EditarListaSubView } from './EditarListaSubView';
 import { ComemoracaoConfigSubView } from './ComemoracaoConfigSubView';
 import { SerieChips } from './SerieChips';
+import { PreEventoView } from './PreEventoView';
+import { OperacaoView } from './OperacaoView';
+import { PosEventoView } from './PosEventoView';
+import { getEventAnalytics } from '../../services/analytics';
+import type { EventAnalytics } from '../../services/analytics/types';
 import { reviewsService } from '../../services/reviewsService';
 import type { ReviewEvento } from '../../../../types';
 
@@ -127,6 +132,28 @@ export const EventoDashboard: React.FC<{
     if (dInicio > agora) return 'futuro';
     return 'encerrado';
   }, [evento]);
+
+  // ── Event Analytics (para views temporais) ──────────────────────────────────
+  const [eventAnalytics, setEventAnalytics] = useState<EventAnalytics | null>(null);
+  const [analyticsLoading, setAnalyticsLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    setAnalyticsLoading(true);
+    getEventAnalytics(eventoId)
+      .then(data => {
+        if (!cancelled) {
+          setEventAnalytics(data);
+          setAnalyticsLoading(false);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setAnalyticsLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [eventoId]);
 
   // ── Dados reais (async) ──────────────────────────────────────────────────────
   const [vendasLog, setVendasLog] = useState<VendaLog[]>([]);
@@ -1074,6 +1101,21 @@ export const EventoDashboard: React.FC<{
                   </div>
                 ))}
               </div>
+            )}
+          </div>
+        )}
+
+        {/* ── Inteligência Temporal ─────────────────────────────── */}
+        {evento && (
+          <div className="mt-5">
+            {status === 'futuro' && (
+              <PreEventoView evento={evento} analytics={eventAnalytics} loading={analyticsLoading} />
+            )}
+            {status === 'ao_vivo' && (
+              <OperacaoView evento={evento} analytics={eventAnalytics} loading={analyticsLoading} />
+            )}
+            {status === 'encerrado' && (
+              <PosEventoView evento={evento} analytics={eventAnalytics} loading={analyticsLoading} />
             )}
           </div>
         )}

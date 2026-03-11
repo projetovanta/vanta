@@ -305,10 +305,6 @@ export const CriarEventoView: React.FC<{
   const validarStep3 = (): boolean => {
     if (!listasEnabled || varsLista.length === 0) return true;
     for (const v of varsLista) {
-      if (!v.limite || parseInt(v.limite) <= 0) {
-        setErro('Informe o limite de cada variação.');
-        return false;
-      }
       if (v.validadeTipo === 'HORARIO' && !v.validadeHora) {
         setErro('Informe o horário limite da lista.');
         return false;
@@ -492,18 +488,19 @@ export const CriarEventoView: React.FC<{
       });
 
       if (listasEnabled) {
-        const regrasValidas = varsLista.filter(v => parseInt(v.limite) > 0);
+        const regrasValidas = varsLista;
         if (regrasValidas.length > 0) {
+          const totalLimite = regrasValidas.reduce((s, v) => s + (parseInt(v.limite) || 0), 0);
           const listaId = await listasService.criarLista({
             eventoId,
             eventoNome: nome.trim(),
             eventoData: dataInicio,
             eventoDataFim: dataFim,
             eventoLocal: comunidade.nome,
-            tetoGlobalTotal: regrasValidas.reduce((s, v) => s + parseInt(v.limite), 0),
+            tetoGlobalTotal: totalLimite || null,
             regras: regrasValidas.map(v => ({
               label: buildLabel(v),
-              tetoGlobal: parseInt(v.limite),
+              tetoGlobal: v.limite ? parseInt(v.limite) : null,
               cor: v.cor,
               valor: v.tipo !== 'VIP' && v.valor ? parseFloat(v.valor) : undefined,
               horaCorte: v.validadeTipo === 'HORARIO' && v.validadeHora ? v.validadeHora : undefined,

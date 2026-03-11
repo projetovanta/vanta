@@ -32,13 +32,15 @@ async function getAuthUserId(): Promise<string | null> {
 // --- Cache local de bloqueados ---
 
 let bloqueadosCache: Set<string> | null = null;
+let bloqueadosCacheUserId: string | null = null;
 
 async function ensureCache(userId: string): Promise<Set<string>> {
-  if (bloqueadosCache) return bloqueadosCache;
+  if (bloqueadosCache && bloqueadosCacheUserId === userId) return bloqueadosCache;
 
   const { data } = await supabase.from('bloqueios').select('bloqueado_id').eq('bloqueador_id', userId);
 
   bloqueadosCache = new Set((data ?? []).map(r => r.bloqueado_id));
+  bloqueadosCacheUserId = userId;
   return bloqueadosCache;
 }
 

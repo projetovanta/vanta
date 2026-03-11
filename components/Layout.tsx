@@ -28,7 +28,7 @@ export const TabBar: React.FC<{
           >
             <tab.icon size="1rem" className={`mb-0.5 ${activeTab === tab.id ? 'text-[#FFD300]' : 'text-zinc-400'}`} />
             <span
-              className={`text-[0.375rem] font-black uppercase tracking-[0.2em] ${activeTab === tab.id ? 'text-white' : 'text-zinc-400'}`}
+              className={`text-[0.5rem] font-black uppercase tracking-[0.2em] ${activeTab === tab.id ? 'text-white' : 'text-zinc-400'}`}
             >
               {tab.label}
             </span>

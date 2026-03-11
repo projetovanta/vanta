@@ -201,7 +201,7 @@ const QRModal: React.FC<{ ticket: MyTicket; onClose: () => void }> = ({ ticket, 
               <div className="absolute bottom-1.5 right-1.5 flex items-center gap-0.5 opacity-35">
                 <Clock size="0.4375rem" className={isUsado ? 'text-zinc-400' : 'text-[#FFD300]'} />
                 <span
-                  className={`text-[0.375rem] font-black tabular-nums ${isUsado ? 'text-zinc-400' : 'text-[#FFD300]'}`}
+                  className={`text-[0.5rem] font-black tabular-nums ${isUsado ? 'text-zinc-400' : 'text-[#FFD300]'}`}
                 >
                   {clockTime}
                 </span>

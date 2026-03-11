@@ -302,7 +302,7 @@ const EventoCaixaView: React.FC<{
                 {/* Watermark de tempo */}
                 <div className="absolute bottom-1.5 right-1.5 flex items-center gap-0.5 opacity-40">
                   <Clock size="0.4375rem" className="text-purple-300" />
-                  <span className="text-[0.375rem] font-black text-purple-300 tabular-nums">{clockTime}</span>
+                  <span className="text-[0.5rem] font-black text-purple-300 tabular-nums">{clockTime}</span>
                 </div>
               </div>
 

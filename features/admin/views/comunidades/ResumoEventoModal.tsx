@@ -792,7 +792,7 @@ export const ResumoEventoView: React.FC<{
         {topPromoters.length > 0 && (
           <Section icon={<Users size="0.625rem" className="text-zinc-400" />} title="Ranking de Promoters">
             {/* Filtros */}
-            <div className="flex gap-1.5 mb-3 overflow-x-auto no-scrollbar">
+            <div className="flex flex-wrap gap-1.5 mb-3">
               {[
                 { key: 'total' as PromoterSort, label: 'Nomes' },
                 { key: 'checkins' as PromoterSort, label: 'Entraram' },
@@ -847,7 +847,7 @@ export const ResumoEventoView: React.FC<{
         {/* ══ RANKING LOTES ══ */}
         <Section icon={<Ticket size="0.625rem" className="text-zinc-400" />} title="Ranking de Lotes">
           {/* Filtros */}
-          <div className="flex gap-1.5 mb-3 overflow-x-auto no-scrollbar">
+          <div className="flex flex-wrap gap-1.5 mb-3">
             {[
               { key: 'vendidos' as LoteSort, label: 'Vendidos' },
               { key: 'faturamento' as LoteSort, label: 'Faturamento' },

@@ -116,8 +116,8 @@ export const SubTabSolicitacoes: React.FC<Props> = ({
     <div className="space-y-3">
       {/* Filtro por baldes */}
       {solicitacoes.length > 0 && (
-        <div className="overflow-x-auto no-scrollbar -mx-1 px-1">
-          <div className="flex gap-1.5 pb-2">
+        <div className="-mx-1 px-1">
+          <div className="flex flex-wrap gap-1.5 pb-2">
             {BALDE_CONFIG.map(b => {
               const count = contagens[b.key] || 0;
               const ativo = baldeFiltro === b.key;
@@ -125,7 +125,7 @@ export const SubTabSolicitacoes: React.FC<Props> = ({
                 <button
                   key={b.key}
                   onClick={() => setBaldeFiltro(b.key)}
-                  className={`shrink-0 flex items-center gap-1 px-2.5 py-1.5 rounded-lg border text-[0.5625rem] font-bold uppercase tracking-wider transition-all active:scale-95 ${
+                  className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg border text-[0.5625rem] font-bold uppercase tracking-wider transition-all active:scale-95 ${
                     ativo ? b.cor + ' ring-1 ring-white/20' : 'text-zinc-500 bg-zinc-900/40 border-white/5'
                   }`}
                 >

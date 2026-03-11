@@ -43,14 +43,14 @@ export const DiagnosticoView: React.FC<{ onBack: () => void }> = ({ onBack }) =>
         </div>
 
         {/* Abas */}
-        <div className="flex gap-1.5 overflow-x-auto no-scrollbar">
+        <div className="flex flex-wrap gap-1.5">
           {abas.map(a => {
             const Icon = a.icon;
             return (
               <button
                 key={a.id}
                 onClick={() => setAba(a.id)}
-                className={`px-3 py-1.5 rounded-lg text-[0.5625rem] font-black uppercase tracking-wider shrink-0 border transition-all flex items-center gap-1.5 ${
+                className={`px-3 py-1.5 rounded-lg text-[0.5625rem] font-black uppercase tracking-wider border transition-all flex items-center gap-1.5 ${
                   aba === a.id
                     ? 'bg-[#FFD300] text-black border-transparent'
                     : 'bg-zinc-900/60 text-zinc-400 border-white/5 active:bg-zinc-800'

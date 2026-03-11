@@ -22,7 +22,7 @@ export const KpiCard: React.FC<{
       {prefix}
       {formatValue ? formatValue(value) : value}
     </p>
-    <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest mt-1 truncate w-full text-center">
+    <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-wider mt-1 truncate w-full text-center">
       {label}
     </p>
   </button>
@@ -77,7 +77,7 @@ export const KpiPieCard: React.FC<{
         {value}
         <span className="text-zinc-400 text-xs font-bold">/{total}</span>
       </p>
-      <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest mt-0.5 truncate">{label}</p>
+      <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-wider mt-0.5 truncate">{label}</p>
     </div>
   </button>
 );
@@ -126,7 +126,7 @@ export const KpiDeltaCard: React.FC<{
           {delta}%
         </span>
       </div>
-      <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest mt-0.5 truncate w-full text-center">
+      <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-wider mt-0.5 truncate w-full text-center">
         {label}
       </p>
     </button>

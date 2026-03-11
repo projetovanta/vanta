@@ -33,12 +33,12 @@ export const TabListas: React.FC<Props> = ({ listas, role, currentUserId }) => {
   return (
     <div className="flex-1 flex flex-col min-h-0">
       {/* Sub-tabs */}
-      <div className="flex border-b border-white/5 mb-4 gap-0 overflow-x-auto no-scrollbar shrink-0">
+      <div className="flex flex-wrap border-b border-white/5 mb-4 gap-0 shrink-0">
         {SUB_TABS.map(t => (
           <button
             key={t.id}
             onClick={() => setSubTab(t.id)}
-            className={`py-2.5 px-3 text-[0.5625rem] font-black uppercase tracking-widest border-b-2 transition-all flex items-center gap-1.5 shrink-0 ${
+            className={`py-2.5 px-3 text-[0.5625rem] font-black uppercase tracking-wider border-b-2 transition-all flex items-center gap-1.5 ${
               subTab === t.id
                 ? 'border-[#FFD300] text-[#FFD300]'
                 : 'border-transparent text-zinc-400 active:text-zinc-400'

@@ -175,14 +175,14 @@ export const EventDetailManagement: React.FC<{
           )}
         </div>
         {/* Tabs — horizontal scroll para sócio (5 tabs) */}
-        <div className="flex gap-1 p-1 bg-zinc-900/50 rounded-xl border border-white/5 overflow-x-auto no-scrollbar">
+        <div className="flex flex-wrap gap-1 p-1 bg-zinc-900/50 rounded-xl border border-white/5">
           {TABS.map(t => {
             const isLocked = t.id === 'LISTA' && !temAcessoLista;
             return (
               <button
                 key={t.id}
                 onClick={() => setTab(t.id)}
-                className={`flex-none flex items-center justify-center gap-1 px-3.5 py-2.5 rounded-lg text-[0.5625rem] font-black uppercase tracking-wide transition-all whitespace-nowrap ${
+                className={`flex items-center justify-center gap-1 px-3.5 py-2.5 rounded-lg text-[0.5625rem] font-black uppercase tracking-wide transition-all ${
                   tab === t.id ? 'bg-[#FFD300] text-black' : 'text-zinc-400 active:text-zinc-300'
                 }`}
               >

@@ -137,7 +137,7 @@ export const GestaoComprovantesView: React.FC<Props> = ({ onBack, masterId }) =>
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-1 overflow-x-auto no-scrollbar">
+        <div className="flex flex-wrap gap-1">
           {[
             { id: 'PENDENTES' as Tab, label: 'Pendentes', count: pendentesCount },
             {
@@ -154,7 +154,7 @@ export const GestaoComprovantesView: React.FC<Props> = ({ onBack, masterId }) =>
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
-              className={`shrink-0 px-3 py-1.5 rounded-lg text-[0.625rem] font-bold uppercase tracking-wider transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-[0.625rem] font-bold uppercase tracking-wider transition-all ${
                 tab === t.id ? 'bg-white/10 text-white' : 'text-zinc-400 hover:text-zinc-300'
               }`}
             >

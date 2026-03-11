@@ -208,7 +208,7 @@ export const AuditLogView: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         </div>
 
         {/* Filtros */}
-        <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
+        <div className="flex flex-wrap gap-2 pb-1">
           {FILTROS.map(f => {
             const isActive = filtro === f.id;
             const cor = DOT_CORES[f.id];
@@ -216,7 +216,7 @@ export const AuditLogView: React.FC<{ onBack: () => void }> = ({ onBack }) => {
               <button
                 key={f.id}
                 onClick={() => setFiltro(f.id)}
-                className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[0.5625rem] font-black uppercase tracking-wider border transition-all ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[0.5625rem] font-black uppercase tracking-wider border transition-all ${
                   isActive ? 'border-transparent text-black' : 'bg-zinc-900/60 text-zinc-400 border-white/5'
                 }`}
                 style={isActive ? { backgroundColor: cor } : {}}

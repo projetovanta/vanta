@@ -105,12 +105,12 @@ export const ComunidadeDetalheView: React.FC<{
           <p className="text-zinc-700 text-[0.625rem] mb-4 truncate">{comunidade.endereco}</p>
 
           {/* 4 abas */}
-          <div className="flex gap-1 p-1 bg-zinc-900/50 rounded-xl border border-white/5">
+          <div className="flex flex-wrap gap-1 p-1 bg-zinc-900/50 rounded-xl border border-white/5">
             {TABS.map(t => (
               <button
                 key={t.id}
                 onClick={() => setTab(t.id)}
-                className={`flex-1 py-2 rounded-lg text-[0.4375rem] font-black uppercase tracking-wide transition-all ${
+                className={`px-2.5 py-2 rounded-lg text-[0.4375rem] font-black uppercase tracking-wide transition-all ${
                   tab === t.id ? 'bg-[#FFD300] text-black' : 'text-zinc-400 active:text-zinc-300'
                 }`}
               >

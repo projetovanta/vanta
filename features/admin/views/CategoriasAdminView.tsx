@@ -219,7 +219,7 @@ export const CategoriasAdminView: React.FC<{ onBack: () => void }> = ({ onBack }
       </div>
 
       {/* Tabs — 3 abas */}
-      <div className="shrink-0 px-5 pt-4 pb-2 flex gap-2 overflow-x-auto no-scrollbar snap-x">
+      <div className="shrink-0 px-5 pt-4 pb-2 flex flex-wrap gap-2">
         {(Object.keys(TAB_CONFIG) as TabType[]).map(t => {
           const c = TAB_CONFIG[t];
           const isActive = tab === t;
@@ -227,7 +227,7 @@ export const CategoriasAdminView: React.FC<{ onBack: () => void }> = ({ onBack }
             <button
               key={t}
               onClick={() => setTab(t)}
-              className={`shrink-0 px-4 py-3 rounded-2xl text-[0.5625rem] font-black uppercase tracking-widest border transition-all snap-start ${
+              className={`px-4 py-3 rounded-2xl text-[0.5625rem] font-black uppercase tracking-wider border transition-all ${
                 isActive
                   ? `${c.colorBg} ${c.colorBorder} ${t === 'formatos' || t === 'outros' ? 'text-black' : 'text-white'} shadow-lg`
                   : 'bg-zinc-900/50 border-white/5 text-zinc-400'

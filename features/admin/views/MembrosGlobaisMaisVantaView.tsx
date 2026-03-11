@@ -328,12 +328,12 @@ export const MembrosGlobaisMaisVantaView: React.FC<{
         </div>
 
         {/* Filtros */}
-        <div className="flex gap-1.5 overflow-x-auto no-scrollbar">
+        <div className="flex flex-wrap gap-1.5">
           {filtros.map(f => (
             <button
               key={f.id}
               onClick={() => setFiltro(f.id)}
-              className={`px-3 py-1.5 rounded-lg text-[0.5625rem] font-black uppercase tracking-wider shrink-0 border transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-[0.5625rem] font-black uppercase tracking-wider border transition-all ${
                 filtro === f.id
                   ? 'bg-[#FFD300] text-black border-transparent'
                   : 'bg-zinc-900/60 text-zinc-400 border-white/5 active:bg-zinc-800'

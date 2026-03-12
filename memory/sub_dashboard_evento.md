@@ -1,6 +1,6 @@
 # Criado: 2026-03-06 01:45 | Ultima edicao: 2026-03-07
 
-# Sub-modulo: Dashboard do Evento (9 sub-views + SerieChips)
+# Sub-modulo: Dashboard do Evento (9 sub-views + SerieChips + Views Temporais + Tabs Novas)
 
 ## Pertence a: modulo_evento.md
 
@@ -17,6 +17,14 @@
 | ComemoracaoConfigSubView.tsx | 250 | Config faixas comemoracao por evento |
 | DuplicarModal.tsx | 172 | Copiar config para novo evento |
 | eventoDashboardUtils.ts | 148 | Utilitarios: agruparPorDia, agruparPorOrigem, agruparPorVariacao, calcPicoVendas, contarPorCanal |
+| PreEventoView.tsx | ~80 | View temporal: antes do evento (vendas, previsao, dicas) |
+| OperacaoView.tsx | ~80 | View temporal: durante o evento (check-ins live, operacao) |
+| PosEventoView.tsx | ~80 | View temporal: apos encerramento (resumo, no-show, receita) |
+| VendasTab.tsx | ~90 | Tab vendas detalhadas |
+| PublicoTab.tsx | ~90 | Tab publico + check-ins |
+| PromotersTab.tsx | ~90 | Tab performance promoters |
+| OperacoesTab.tsx | ~90 | Tab operacoes evento |
+| FinanceiroTab.tsx | ~90 | Tab financeiro evento |
 
 ## index.tsx (EventoDashboard, 889L) — Hub principal
 **Tabs/Secoes**:
@@ -117,3 +125,5 @@ Drill-down interativo de publico por origem. Usado no ResumoEventoModal.
 | 15 | Drill-down publico | OK | PublicoDrilldown 356L — donut interativo por origem |
 | 16 | SerieChips recorrente | OK | Navegacao entre ocorrencias + cancelar futuras |
 | 17 | Modal confirmacao cancelar | OK | Substituiu confirm() nativo |
+| 18 | Views temporais | OK | PreEvento/Operacao/PosEvento via getEventAnalytics + status (futuro/ao_vivo/encerrado) |
+| 19 | Tabs novas | OK | Vendas, Publico, Promoters, Operacoes, Financeiro |

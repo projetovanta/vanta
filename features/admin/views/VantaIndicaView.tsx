@@ -35,12 +35,27 @@ const TIPO_CONFIG: Record<TipoIndicaCard, { label: string; dot: string; bg: stri
 };
 
 const ACAO_LABEL: Record<TipoAcaoIndica, string> = {
-  link: 'URL externa',
-  evento: 'ID do evento',
-  cupom: 'Código do cupom',
-  rota: 'Rota interna',
-  comemorar: 'ID da comunidade',
+  link: 'Link externo',
+  evento: 'Evento',
+  comunidade: 'Comunidade',
+  cupom: 'Cupom de desconto',
+  rota: 'Tela do app',
+  comemorar: 'Comemorar aniversário',
 };
+
+const ROTAS_INTERNAS: { value: string; label: string; descricao: string }[] = [
+  { value: 'tab:INICIO', label: 'Inicio', descricao: 'Feed de eventos' },
+  { value: 'tab:BUSCAR', label: 'Explorar', descricao: 'Buscar eventos' },
+  { value: 'tab:RADAR', label: 'Radar', descricao: 'Mapa de eventos' },
+  { value: 'tab:MENSAGENS', label: 'Mensagens', descricao: 'Chat com amigos' },
+  { value: 'perfil:WALLET', label: 'Minha Carteira', descricao: 'Ingressos e acessos' },
+  { value: 'perfil:CLUBE', label: 'MAIS VANTA', descricao: 'Clube de beneficios' },
+  { value: 'perfil:SOLICITAR_PARCERIA', label: 'Seja Parceiro', descricao: 'Oferecer beneficios' },
+  { value: 'perfil:HISTORICO', label: 'Meu Historico', descricao: 'Eventos passados' },
+  { value: 'perfil:EDIT_PROFILE', label: 'Editar Perfil', descricao: 'Completar perfil' },
+  { value: 'perfil:MEIA_ENTRADA', label: 'Meia-Entrada', descricao: 'Upload comprovante' },
+  { value: 'comemorar', label: 'Comemorar Aniversario', descricao: 'Solicitar comemoracao' },
+];
 
 const Toggle: React.FC<{ active: boolean; onChange: () => void }> = ({ active, onChange }) => (
   <button
@@ -431,6 +446,52 @@ const CardModal: React.FC<{
     setEventResults([]);
   };
 
+  // ── Busca de comunidades ──
+  type ComunidadeSearchResult = { id: string; nome: string; cidade: string; foto: string | null };
+  const [comunidadeQuery, setComunidadeQuery] = useState('');
+  const [comunidadeResults, setComunidadeResults] = useState<ComunidadeSearchResult[]>([]);
+  const [searchingComunidades, setSearchingComunidades] = useState(false);
+  const [showComunidadeDropdown, setShowComunidadeDropdown] = useState(false);
+  const [selectedComunidadeName, setSelectedComunidadeName] = useState('');
+  const comunidadeDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const searchComunidades = useCallback((q: string) => {
+    if (comunidadeDebounceRef.current) clearTimeout(comunidadeDebounceRef.current);
+    comunidadeDebounceRef.current = setTimeout(
+      async () => {
+        setSearchingComunidades(true);
+        let query = supabase.from('comunidades').select('id, nome, cidade, foto').order('nome').limit(15);
+        if (q.length >= 2) query = query.ilike('nome', `%${q}%`);
+        const { data } = await query;
+        setComunidadeResults((data as ComunidadeSearchResult[]) || []);
+        setShowComunidadeDropdown(true);
+        setSearchingComunidades(false);
+      },
+      q.length === 0 ? 0 : 300,
+    );
+  }, []);
+
+  const selectComunidade = (c: ComunidadeSearchResult) => {
+    set('acaoTipo', 'comunidade');
+    set('acaoValor', c.id);
+    set('acaoLink', '');
+    setSelectedComunidadeName(c.nome);
+    setComunidadeQuery('');
+    setShowComunidadeDropdown(false);
+    setComunidadeResults([]);
+  };
+
+  // ── Selecionar evento como destino interno ──
+  const selectEventoAsDestino = (ev: EventoSearchResult) => {
+    set('acaoTipo', 'evento');
+    set('acaoValor', ev.id);
+    set('acaoLink', '');
+    setSelectedEventName(ev.nome);
+    setEventQuery('');
+    setShowEventDropdown(false);
+    setEventResults([]);
+  };
+
   // Ao mudar tipo, limpar campos auto-preenchidos se saiu de DESTAQUE_EVENTO
   const handleTipoChange = (newTipo: string) => {
     const wasDest = form.tipo === 'DESTAQUE_EVENTO';
@@ -781,46 +842,194 @@ const CardModal: React.FC<{
           )}
         </Field>
 
-        {/* 8-9. Ação + Link/Rota (só PUBLICIDADE/INFORMATIVO) */}
+        {/* 8-9. Ação ao clicar (só PUBLICIDADE/INFORMATIVO) */}
         {!isDestaque && (
           <>
-            <div className="grid grid-cols-2 gap-3">
-              <Field label="Ação ao clicar">
-                <VantaSelect
-                  value={form.acaoTipo}
-                  onChange={v => set('acaoTipo', v)}
-                  options={(['link', 'rota', 'cupom', 'comemorar'] as TipoAcaoIndica[]).map(t => ({
-                    value: t,
-                    label: ACAO_LABEL[t],
-                  }))}
-                />
-              </Field>
-              <Field label={ACAO_LABEL[form.acaoTipo]}>
+            <Field label="Ação ao clicar">
+              <VantaSelect
+                value={form.acaoTipo}
+                onChange={v => {
+                  set('acaoTipo', v);
+                  set('acaoValor', '');
+                  set('acaoLink', '');
+                  setSelectedEventName('');
+                  setSelectedComunidadeName('');
+                }}
+                options={[
+                  { value: 'link', label: 'Link externo' },
+                  { value: 'rota', label: 'Tela do app' },
+                  { value: 'evento', label: 'Evento' },
+                  { value: 'comunidade', label: 'Comunidade' },
+                  { value: 'cupom', label: 'Cupom de desconto' },
+                  { value: 'comemorar', label: 'Comemorar aniversario' },
+                ]}
+              />
+            </Field>
+
+            {/* Link externo */}
+            {form.acaoTipo === 'link' && (
+              <Field label="URL">
                 <input
-                  value={form.acaoValor}
-                  onChange={e => set('acaoValor', e.target.value)}
-                  placeholder={
-                    form.acaoTipo === 'cupom'
-                      ? 'VANTA20'
-                      : form.acaoTipo === 'rota'
-                        ? '/rota-interna'
-                        : form.acaoTipo === 'comemorar'
-                          ? 'uuid da comunidade'
-                          : 'https://...'
-                  }
+                  value={form.acaoLink}
+                  onChange={e => set('acaoLink', e.target.value)}
+                  placeholder="https://..."
                   className={inputCls}
                 />
               </Field>
-            </div>
+            )}
 
-            <Field label="Link / Rota">
-              <input
-                value={form.acaoLink}
-                onChange={e => set('acaoLink', e.target.value)}
-                placeholder="https://... ou /rota-interna"
-                className={inputCls}
-              />
-            </Field>
+            {/* Tela do app — dropdown de rotas pré-definidas */}
+            {form.acaoTipo === 'rota' && (
+              <Field label="Destino">
+                <VantaSelect
+                  value={form.acaoValor}
+                  onChange={v => set('acaoValor', v)}
+                  options={ROTAS_INTERNAS.map(r => ({
+                    value: r.value,
+                    label: `${r.label} — ${r.descricao}`,
+                  }))}
+                />
+              </Field>
+            )}
+
+            {/* Evento — busca por nome */}
+            {form.acaoTipo === 'evento' && (
+              <Field label="Buscar evento">
+                <div className="relative">
+                  <input
+                    value={selectedEventName || eventQuery}
+                    onChange={e => {
+                      setSelectedEventName('');
+                      setEventQuery(e.target.value);
+                      searchEventos(e.target.value);
+                    }}
+                    onFocus={() => {
+                      if (!selectedEventName) searchEventos(eventQuery);
+                    }}
+                    placeholder="Digite o nome do evento..."
+                    className={inputCls}
+                  />
+                  {showEventDropdown && eventResults.length > 0 && (
+                    <div className="absolute z-50 top-full left-0 right-0 mt-1 bg-zinc-900 border border-white/10 rounded-xl max-h-48 overflow-y-auto no-scrollbar shadow-2xl">
+                      {eventResults.map(ev => (
+                        <button
+                          key={ev.id}
+                          type="button"
+                          onClick={() => selectEventoAsDestino(ev)}
+                          className="w-full flex items-center gap-3 px-3 py-2.5 text-left hover:bg-white/5 active:bg-white/10 transition-colors"
+                        >
+                          {ev.foto && <img src={ev.foto} className="w-8 h-8 rounded-lg object-cover shrink-0" alt="" />}
+                          <div className="min-w-0">
+                            <p className="text-white text-xs font-bold truncate">{ev.nome}</p>
+                            {ev.cidade && <p className="text-zinc-500 text-[0.5rem]">{ev.cidade}</p>}
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                  {searchingEvents && (
+                    <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                      <div className="w-4 h-4 border-2 border-zinc-600 border-t-[#FFD300] rounded-full animate-spin" />
+                    </div>
+                  )}
+                </div>
+              </Field>
+            )}
+
+            {/* Comunidade — busca por nome */}
+            {form.acaoTipo === 'comunidade' && (
+              <Field label="Buscar comunidade">
+                <div className="relative">
+                  <input
+                    value={selectedComunidadeName || comunidadeQuery}
+                    onChange={e => {
+                      setSelectedComunidadeName('');
+                      setComunidadeQuery(e.target.value);
+                      searchComunidades(e.target.value);
+                    }}
+                    onFocus={() => {
+                      if (!selectedComunidadeName) searchComunidades(comunidadeQuery);
+                    }}
+                    placeholder="Digite o nome da comunidade..."
+                    className={inputCls}
+                  />
+                  {showComunidadeDropdown && comunidadeResults.length > 0 && (
+                    <div className="absolute z-50 top-full left-0 right-0 mt-1 bg-zinc-900 border border-white/10 rounded-xl max-h-48 overflow-y-auto no-scrollbar shadow-2xl">
+                      {comunidadeResults.map(c => (
+                        <button
+                          key={c.id}
+                          type="button"
+                          onClick={() => selectComunidade(c)}
+                          className="w-full flex items-center gap-3 px-3 py-2.5 text-left hover:bg-white/5 active:bg-white/10 transition-colors"
+                        >
+                          {c.foto && <img src={c.foto} className="w-8 h-8 rounded-full object-cover shrink-0" alt="" />}
+                          <div className="min-w-0">
+                            <p className="text-white text-xs font-bold truncate">{c.nome}</p>
+                            {c.cidade && <p className="text-zinc-500 text-[0.5rem]">{c.cidade}</p>}
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                  {searchingComunidades && (
+                    <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                      <div className="w-4 h-4 border-2 border-zinc-600 border-t-[#FFD300] rounded-full animate-spin" />
+                    </div>
+                  )}
+                </div>
+              </Field>
+            )}
+
+            {/* Cupom */}
+            {form.acaoTipo === 'cupom' && (
+              <Field label="Codigo do cupom">
+                <input
+                  value={form.acaoValor}
+                  onChange={e => set('acaoValor', e.target.value)}
+                  placeholder="VANTA20"
+                  className={inputCls}
+                />
+              </Field>
+            )}
+
+            {/* Comemorar — busca comunidade para vincular */}
+            {form.acaoTipo === 'comemorar' && (
+              <Field label="Comunidade (opcional)">
+                <div className="relative">
+                  <input
+                    value={selectedComunidadeName || comunidadeQuery}
+                    onChange={e => {
+                      setSelectedComunidadeName('');
+                      setComunidadeQuery(e.target.value);
+                      searchComunidades(e.target.value);
+                    }}
+                    onFocus={() => {
+                      if (!selectedComunidadeName) searchComunidades(comunidadeQuery);
+                    }}
+                    placeholder="Vincular a uma comunidade..."
+                    className={inputCls}
+                  />
+                  {showComunidadeDropdown && comunidadeResults.length > 0 && (
+                    <div className="absolute z-50 top-full left-0 right-0 mt-1 bg-zinc-900 border border-white/10 rounded-xl max-h-48 overflow-y-auto no-scrollbar shadow-2xl">
+                      {comunidadeResults.map(c => (
+                        <button
+                          key={c.id}
+                          type="button"
+                          onClick={() => selectComunidade(c)}
+                          className="w-full flex items-center gap-3 px-3 py-2.5 text-left hover:bg-white/5 active:bg-white/10 transition-colors"
+                        >
+                          {c.foto && <img src={c.foto} className="w-8 h-8 rounded-full object-cover shrink-0" alt="" />}
+                          <div className="min-w-0">
+                            <p className="text-white text-xs font-bold truncate">{c.nome}</p>
+                            {c.cidade && <p className="text-zinc-500 text-[0.5rem]">{c.cidade}</p>}
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </Field>
+            )}
           </>
         )}
 

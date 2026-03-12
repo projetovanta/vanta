@@ -70,7 +70,7 @@ export interface Comunidade {
 // ── VANTA Indica ───────────────────────────────────────────────────────────
 export type TipoIndicaCard = 'DESTAQUE_EVENTO' | 'PUBLICIDADE' | 'INFORMATIVO';
 
-export type TipoAcaoIndica = 'link' | 'evento' | 'cupom' | 'rota' | 'comemorar';
+export type TipoAcaoIndica = 'link' | 'evento' | 'comunidade' | 'cupom' | 'rota' | 'comemorar';
 
 export interface AcaoIndicaCard {
   tipo: TipoAcaoIndica;

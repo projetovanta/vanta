@@ -1551,6 +1551,7 @@ export type Database = {
           cota_nomes_lista: number | null;
           created_at: string;
           created_by: string | null;
+          custos_fixos: number | null;
           data_fim: string | null;
           data_inicio: string;
           descricao: string;
@@ -1621,6 +1622,7 @@ export type Database = {
           cota_nomes_lista?: number | null;
           created_at?: string;
           created_by?: string | null;
+          custos_fixos?: number | null;
           data_fim?: string | null;
           data_inicio: string;
           descricao?: string;
@@ -1691,6 +1693,7 @@ export type Database = {
           cota_nomes_lista?: number | null;
           created_at?: string;
           created_by?: string | null;
+          custos_fixos?: number | null;
           data_fim?: string | null;
           data_inicio?: string;
           descricao?: string;
@@ -1906,6 +1909,58 @@ export type Database = {
           ordem?: number | null;
         };
         Relationships: [];
+      };
+      fidelidade_cliente: {
+        Row: {
+          atualizado_em: string | null;
+          comunidade_id: string;
+          id: string;
+          pontos: number | null;
+          tier: string | null;
+          ultimo_evento_id: string | null;
+          user_id: string;
+        };
+        Insert: {
+          atualizado_em?: string | null;
+          comunidade_id: string;
+          id?: string;
+          pontos?: number | null;
+          tier?: string | null;
+          ultimo_evento_id?: string | null;
+          user_id: string;
+        };
+        Update: {
+          atualizado_em?: string | null;
+          comunidade_id?: string;
+          id?: string;
+          pontos?: number | null;
+          tier?: string | null;
+          ultimo_evento_id?: string | null;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'fidelidade_cliente_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'fidelidade_cliente_ultimo_evento_id_fkey';
+            columns: ['ultimo_evento_id'];
+            isOneToOne: false;
+            referencedRelation: 'eventos_admin';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'fidelidade_cliente_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
       };
       formatos: {
         Row: {
@@ -3206,6 +3261,68 @@ export type Database = {
           },
         ];
       };
+      push_agendados: {
+        Row: {
+          acao_valor: string | null;
+          agendar_para: string;
+          canais: string[];
+          criado_em: string;
+          criado_por: string;
+          enviado_em: string | null;
+          id: string;
+          link_notif: string | null;
+          mensagem: string;
+          resultado: Json | null;
+          segmento_tipo: string;
+          segmento_valor: string | null;
+          status: string;
+          tipo_acao: string | null;
+          titulo: string;
+        };
+        Insert: {
+          acao_valor?: string | null;
+          agendar_para: string;
+          canais?: string[];
+          criado_em?: string;
+          criado_por: string;
+          enviado_em?: string | null;
+          id?: string;
+          link_notif?: string | null;
+          mensagem: string;
+          resultado?: Json | null;
+          segmento_tipo?: string;
+          segmento_valor?: string | null;
+          status?: string;
+          tipo_acao?: string | null;
+          titulo: string;
+        };
+        Update: {
+          acao_valor?: string | null;
+          agendar_para?: string;
+          canais?: string[];
+          criado_em?: string;
+          criado_por?: string;
+          enviado_em?: string | null;
+          id?: string;
+          link_notif?: string | null;
+          mensagem?: string;
+          resultado?: Json | null;
+          segmento_tipo?: string;
+          segmento_valor?: string | null;
+          status?: string;
+          tipo_acao?: string | null;
+          titulo?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'push_agendados_criado_por_fkey';
+            columns: ['criado_por'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
       push_subscriptions: {
         Row: {
           created_at: string;
@@ -3232,6 +3349,53 @@ export type Database = {
           user_id?: string;
         };
         Relationships: [];
+      };
+      push_templates: {
+        Row: {
+          acao_valor: string | null;
+          atualizado_em: string;
+          canais: string[];
+          criado_em: string;
+          criado_por: string;
+          id: string;
+          mensagem: string;
+          nome: string;
+          tipo_acao: string | null;
+          titulo: string;
+        };
+        Insert: {
+          acao_valor?: string | null;
+          atualizado_em?: string;
+          canais?: string[];
+          criado_em?: string;
+          criado_por: string;
+          id?: string;
+          mensagem: string;
+          nome: string;
+          tipo_acao?: string | null;
+          titulo: string;
+        };
+        Update: {
+          acao_valor?: string | null;
+          atualizado_em?: string;
+          canais?: string[];
+          criado_em?: string;
+          criado_por?: string;
+          id?: string;
+          mensagem?: string;
+          nome?: string;
+          tipo_acao?: string | null;
+          titulo?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'push_templates_criado_por_fkey';
+            columns: ['criado_por'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
       };
       reembolsos: {
         Row: {
@@ -3426,6 +3590,44 @@ export type Database = {
             columns: ['lista_id'];
             isOneToOne: false;
             referencedRelation: 'listas_evento';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      relatorios_semanais: {
+        Row: {
+          comunidade_id: string;
+          criado_em: string | null;
+          dados: Json;
+          enviado_em: string | null;
+          id: string;
+          semana_fim: string;
+          semana_inicio: string;
+        };
+        Insert: {
+          comunidade_id: string;
+          criado_em?: string | null;
+          dados: Json;
+          enviado_em?: string | null;
+          id?: string;
+          semana_fim: string;
+          semana_inicio: string;
+        };
+        Update: {
+          comunidade_id?: string;
+          criado_em?: string | null;
+          dados?: Json;
+          enviado_em?: string | null;
+          id?: string;
+          semana_fim?: string;
+          semana_inicio?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'relatorios_semanais_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades';
             referencedColumns: ['id'];
           },
         ];
@@ -3962,6 +4164,74 @@ export type Database = {
           },
         ];
       };
+      splits_config: {
+        Row: {
+          beneficiario_id: string;
+          comunidade_id: string | null;
+          criado_em: string | null;
+          criado_por: string | null;
+          descricao: string | null;
+          evento_id: string | null;
+          fixo: number | null;
+          id: string;
+          percentual: number;
+          tipo: string;
+        };
+        Insert: {
+          beneficiario_id: string;
+          comunidade_id?: string | null;
+          criado_em?: string | null;
+          criado_por?: string | null;
+          descricao?: string | null;
+          evento_id?: string | null;
+          fixo?: number | null;
+          id?: string;
+          percentual: number;
+          tipo: string;
+        };
+        Update: {
+          beneficiario_id?: string;
+          comunidade_id?: string | null;
+          criado_em?: string | null;
+          criado_por?: string | null;
+          descricao?: string | null;
+          evento_id?: string | null;
+          fixo?: number | null;
+          id?: string;
+          percentual?: number;
+          tipo?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'splits_config_beneficiario_id_fkey';
+            columns: ['beneficiario_id'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'splits_config_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'splits_config_criado_por_fkey';
+            columns: ['criado_por'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'splits_config_evento_id_fkey';
+            columns: ['evento_id'];
+            isOneToOne: false;
+            referencedRelation: 'eventos_admin';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
       tickets_caixa: {
         Row: {
           comprovante_id: string | null;
@@ -3981,6 +4251,7 @@ export type Database = {
           status: string;
           usado_em: string | null;
           usado_por: string | null;
+          utm_source: string | null;
           valor: number;
           variacao_id: string | null;
           variacao_label: string | null;
@@ -4003,6 +4274,7 @@ export type Database = {
           status?: string;
           usado_em?: string | null;
           usado_por?: string | null;
+          utm_source?: string | null;
           valor?: number;
           variacao_id?: string | null;
           variacao_label?: string | null;
@@ -4025,6 +4297,7 @@ export type Database = {
           status?: string;
           usado_em?: string | null;
           usado_por?: string | null;
+          utm_source?: string | null;
           valor?: number;
           variacao_id?: string | null;
           variacao_label?: string | null;
@@ -4492,6 +4765,7 @@ export type Database = {
           cota_nomes_lista: number | null;
           created_at: string;
           created_by: string | null;
+          custos_fixos: number | null;
           data_fim: string | null;
           data_inicio: string;
           descricao: string;

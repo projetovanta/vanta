@@ -37,6 +37,10 @@ export interface SignUpResult {
   needsConfirmation?: boolean;
 }
 
+// ── Colunas usadas pelo profileToMembro (evita SELECT * em 45 colunas) ───
+const PROFILE_COLUMNS =
+  'id, nome, full_name, email, instagram, instagram_followers, data_nascimento, nascimento, birth_date, telefone_ddd, telefone_numero, estado, state, cidade, city, genero, biografia, foto_perfil, foto, avatar_url, cpf, interesses, album_urls, privacidade, role, destaque_curadoria';
+
 // ── Mapeador de row profiles → Membro ────────────────────────────────────
 
 export const profileToMembro = (row: ProfileRow | Record<string, unknown>): Membro => {
@@ -89,7 +93,11 @@ export const authService = {
       }
 
       // Busca profile completo com role real — evita delay de onAuthStateChange
-      const { data: profile } = await supabase.from('profiles').select('*').eq('id', data.user.id).maybeSingle();
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select(PROFILE_COLUMNS)
+        .eq('id', data.user.id)
+        .maybeSingle();
 
       const membro: Membro = profile
         ? profileToMembro(profile)
@@ -218,7 +226,7 @@ export const authService = {
       if (!session?.user) return null;
 
       // Timeout de 4s — evita trava em rede lenta
-      const profilePromise = supabase.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
+      const profilePromise = supabase.from('profiles').select(PROFILE_COLUMNS).eq('id', session.user.id).maybeSingle();
       const result = await Promise.race([
         profilePromise,
         new Promise<{ data: null }>(resolve => setTimeout(() => resolve({ data: null }), 4000)),
@@ -291,7 +299,11 @@ export const authService = {
       // Token refresh ou sign-in: buscar profile
       const isRefresh = event === 'TOKEN_REFRESHED';
       try {
-        const profilePromise = supabase.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
+        const profilePromise = supabase
+          .from('profiles')
+          .select(PROFILE_COLUMNS)
+          .eq('id', session.user.id)
+          .maybeSingle();
         const result = await Promise.race([
           profilePromise,
           new Promise<{ data: null }>(resolve => setTimeout(() => resolve({ data: null }), 4000)),

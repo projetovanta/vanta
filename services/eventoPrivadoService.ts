@@ -116,14 +116,17 @@ export const eventoPrivadoService = {
   async listarPorComunidade(comunidadeId: string): Promise<EventoPrivado[]> {
     const { data, error } = await supabase
       .from('eventos_privados')
-      .select('*, solicitante:profiles!solicitante_id(nome, foto)')
+      .select('*, solicitante:profiles!solicitante_id(nome, avatar_url)')
       .eq('comunidade_id', comunidadeId)
       .order('created_at', { ascending: false });
 
     if (error) throw error;
     return (data ?? []).map((r: Record<string, unknown>) => ({
       ...r,
-      solicitante: r.solicitante as { nome: string; foto: string } | undefined,
+      solicitante: (() => {
+        const s = r.solicitante as { nome: string; avatar_url: string } | undefined;
+        return s ? { nome: s.nome, foto: s.avatar_url } : undefined;
+      })(),
     })) as unknown as EventoPrivado[];
   },
 

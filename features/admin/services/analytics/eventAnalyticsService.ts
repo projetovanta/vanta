@@ -47,13 +47,13 @@ async function fetchProfileNames(ids: string[]): Promise<Map<string, { nome: str
   if (ids.length === 0) return map;
 
   const uniqueIds = [...new Set(ids)];
-  const { data } = await supabase.from('profiles').select('id, full_name, foto').in('id', uniqueIds).limit(2000);
+  const { data } = await supabase.from('profiles').select('id, nome, avatar_url').in('id', uniqueIds).limit(2000);
 
   if (data) {
     for (const row of data) {
       map.set(row.id, {
-        nome: row.full_name ?? 'Sem nome',
-        foto: row.foto ?? undefined,
+        nome: row.nome ?? 'Sem nome',
+        foto: row.avatar_url ?? undefined,
       });
     }
   }

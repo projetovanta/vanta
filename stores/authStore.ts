@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { Membro, Notificacao } from '../types';
 import { DEFAULT_AVATARS } from '../data/avatars';
-import { authService, enrichInstagramFollowers } from '../services/authService';
+import { authService, enrichInstagramFollowers, consumeSignInResolved } from '../services/authService';
 import { notificationsService } from '../features/admin/services/notificationsService';
 import { clearAllCache } from '../services/cache';
 import { realtimeManager } from '../services/realtimeManager';
@@ -87,11 +87,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         },
       );
     });
-    // Defer: comprovante e clube não são necessários no primeiro render
-    setTimeout(() => {
-      void comprovanteService.refresh(m.id);
-      useExtrasStore.getState().initClubeData();
-    }, 3000);
+    // Defer: comprovante e clube carregam escalonados pra não competir com queries essenciais
+    setTimeout(() => void comprovanteService.refresh(m.id), 3000);
+    setTimeout(() => useExtrasStore.getState().initClubeData(), 5000);
     if (m.role === 'vanta_member') {
       void rbacService.refresh().then(() => {
         const nodes = getAccessNodes(m.id);
@@ -190,11 +188,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
           );
         });
 
-        // Defer: comprovante e clube não são necessários no primeiro render
-        setTimeout(() => {
-          void comprovanteService.refresh(membro.id);
-          useExtrasStore.getState().initClubeData();
-        }, 3000);
+        // Defer: comprovante e clube carregam escalonados pra não competir com queries essenciais
+        setTimeout(() => void comprovanteService.refresh(membro.id), 3000);
+        setTimeout(() => useExtrasStore.getState().initClubeData(), 5000);
 
         // compute accessNodes via RBAC (member precisa; master também para permissões plataforma)
         const role = membro.role;
@@ -220,6 +216,11 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     };
 
     const unsubscribe = authService.onAuthStateChange(membro => {
+      // Se signIn já aplicou o membro via loginWithMembro, pular esta chamada
+      if (membro && consumeSignInResolved()) {
+        resolved = true;
+        return;
+      }
       resolved = true;
       applySession(membro);
     });

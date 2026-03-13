@@ -3395,12 +3395,9 @@ export type Database = {
           notas_admin: string | null;
           pix_chave: string | null;
           pix_tipo: string | null;
-          prestigio_id: string | null;
           privacidade: Json;
           role: string | null;
           state: string | null;
-          status: string | null;
-          telefone: string | null;
           telefone_ddd: string;
           telefone_numero: string;
           tos_accepted_at: string | null;
@@ -3442,12 +3439,9 @@ export type Database = {
           notas_admin?: string | null;
           pix_chave?: string | null;
           pix_tipo?: string | null;
-          prestigio_id?: string | null;
           privacidade?: Json;
           role?: string | null;
           state?: string | null;
-          status?: string | null;
-          telefone?: string | null;
           telefone_ddd?: string;
           telefone_numero?: string;
           tos_accepted_at?: string | null;
@@ -3489,12 +3483,9 @@ export type Database = {
           notas_admin?: string | null;
           pix_chave?: string | null;
           pix_tipo?: string | null;
-          prestigio_id?: string | null;
           privacidade?: Json;
           role?: string | null;
           state?: string | null;
-          status?: string | null;
-          telefone?: string | null;
           telefone_ddd?: string;
           telefone_numero?: string;
           tos_accepted_at?: string | null;
@@ -3503,15 +3494,7 @@ export type Database = {
           updated_at?: string | null;
           wallet_pin_hash?: string | null;
         };
-        Relationships: [
-          {
-            foreignKeyName: 'fk_profiles_prestigio';
-            columns: ['prestigio_id'];
-            isOneToOne: false;
-            referencedRelation: 'niveis_prestigio';
-            referencedColumns: ['id'];
-          },
-        ];
+        Relationships: [];
       };
       push_agendados: {
         Row: {
@@ -5349,6 +5332,10 @@ export type Database = {
         Returns: Json;
       };
       sign_ticket_token: { Args: { p_ticket_id: string }; Returns: string };
+      user_shares_tenant: {
+        Args: { p_tenant_id: string; p_tenant_type: string; p_user_id: string };
+        Returns: boolean;
+      };
       verificar_virada_lote: {
         Args: { p_evento_id: string };
         Returns: undefined;

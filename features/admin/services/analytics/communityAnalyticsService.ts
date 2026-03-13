@@ -389,12 +389,16 @@ async function aggregateTopPromoters(eventoIds: string[]): Promise<PromoterMetri
 
   // Fetch promoter profiles
   const promoterIds = Array.from(promoterAgg.keys());
-  const { data: profiles } = await supabase.from('profiles').select('id, nome, foto').in('id', promoterIds).limit(2000);
+  const { data: profiles } = await supabase
+    .from('profiles')
+    .select('id, nome, avatar_url')
+    .in('id', promoterIds)
+    .limit(2000);
 
   const profileMap = new Map<string, { nome: string; foto: string | null }>();
   for (const p of profiles ?? []) {
-    const prof = p as { id: string; nome: string; foto: string | null };
-    profileMap.set(prof.id, { nome: prof.nome, foto: prof.foto });
+    const prof = p as { id: string; nome: string; avatar_url: string | null };
+    profileMap.set(prof.id, { nome: prof.nome, foto: prof.avatar_url });
   }
 
   const result: PromoterMetrics[] = [];

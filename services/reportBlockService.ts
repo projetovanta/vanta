@@ -124,13 +124,13 @@ export async function listarBloqueadosComDetalhes(): Promise<BloqueadoInfo[]> {
   const ids = await listarBloqueados();
   if (!ids.length) return [];
 
-  const { data } = await supabase.from('profiles').select('id, nome, foto').in('id', ids);
+  const { data } = await supabase.from('profiles').select('id, nome, avatar_url').in('id', ids);
 
   if (!data?.length) return [];
 
   return data.map(p => ({
     id: p.id,
     nome: p.nome ?? 'Usuário',
-    foto: p.foto ?? '',
+    foto: p.avatar_url ?? '',
   }));
 }

@@ -18,12 +18,12 @@ const CARGO_CONFIG: { cargo: CargoUnificado; label: string; icon: React.FC<{ siz
 const loadProfiles = async (userIds: string[]): Promise<Map<string, ProfileInfo>> => {
   const map = new Map<string, ProfileInfo>();
   if (userIds.length === 0) return map;
-  const { data } = await supabase.from('profiles').select('id, full_name, avatar_url').in('id', userIds);
+  const { data } = await supabase.from('profiles').select('id, nome, avatar_url').in('id', userIds);
   if (data) {
     for (const r of data) {
       map.set(r.id as string, {
         id: r.id as string,
-        nome: (r.full_name as string) ?? 'Sem nome',
+        nome: (r.nome as string) ?? 'Sem nome',
         foto: (r.avatar_url as string) ?? '',
       });
     }

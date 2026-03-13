@@ -37,6 +37,16 @@ const _supabaseRaw = createClient<Database>(
 
 export const supabase = wrapSupabaseWithLogging(_supabaseRaw);
 
+// ── Keep-alive: ping leve a cada 4 min para manter o connection pool quente ──
+// Evita cold start de ~5s no Supabase após inatividade.
+// Em dev, não roda pra não poluir DevLog com queries de ping.
+if (!isMissing && import.meta.env.PROD) {
+  const KEEP_ALIVE_MS = 4 * 60 * 1000; // 4 minutos
+  setInterval(() => {
+    void _supabaseRaw.from('profiles').select('id', { count: 'exact', head: true }).limit(0);
+  }, KEEP_ALIVE_MS);
+}
+
 // supabaseAdmin REMOVIDO (2026-03-03)
 // Todas as tabelas possuem RLS policies de leitura para admin roles.
 // Service role key NUNCA deve entrar no bundle client.

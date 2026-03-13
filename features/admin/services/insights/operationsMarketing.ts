@@ -111,11 +111,11 @@ export async function getEventBuyers(eventoId: string): Promise<BuyerContact[]> 
       // Deduplicate owner_ids
       const uniqueIds = [...new Set(tickets.map(t => t.owner_id!))];
 
-      const { data: profiles } = await supabase.from('profiles').select('id, full_name').in('id', uniqueIds);
+      const { data: profiles } = await supabase.from('profiles').select('id, nome').in('id', uniqueIds);
 
       return (profiles ?? []).map(p => ({
         userId: p.id,
-        nome: p.full_name,
+        nome: p.nome,
       }));
     },
     60_000,
@@ -217,7 +217,7 @@ export async function getLoyaltyLeaderboard(comunidadeId: string, limit = 20): P
       const sorted = [...countMap.entries()].sort((a, b) => b[1] - a[1]).slice(0, limit);
 
       const userIds = sorted.map(([uid]) => uid);
-      const { data: profiles } = await supabase.from('profiles').select('id, full_name, foto').in('id', userIds);
+      const { data: profiles } = await supabase.from('profiles').select('id, nome, avatar_url').in('id', userIds);
 
       const profileMap = new Map(profiles?.map(p => [p.id, p]) ?? []);
 
@@ -225,8 +225,8 @@ export async function getLoyaltyLeaderboard(comunidadeId: string, limit = 20): P
         const p = profileMap.get(uid);
         return {
           userId: uid,
-          nome: p?.full_name ?? 'Desconhecido',
-          foto: p?.foto ?? null,
+          nome: p?.nome ?? 'Desconhecido',
+          foto: p?.avatar_url ?? null,
           pontos,
           tier: getTier(pontos),
         };

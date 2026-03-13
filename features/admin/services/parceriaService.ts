@@ -175,7 +175,7 @@ export const parceriaService = {
   async listarPendentes(): Promise<SolicitacaoParceria[]> {
     const { data, error } = await supabase
       .from('solicitacoes_parceria')
-      .select('*, profiles!solicitacoes_parceria_user_id_fkey(nome, foto, instagram)')
+      .select('*, profiles!solicitacoes_parceria_user_id_fkey(nome, avatar_url, instagram)')
       .eq('status', 'PENDENTE')
       .order('criado_em', { ascending: true });
 
@@ -184,7 +184,10 @@ export const parceriaService = {
       return [];
     }
     return (data ?? []).map((r: Record<string, unknown>) => {
-      const profile = r.profiles as { nome: string | null; foto: string | null; instagram: string | null } | null;
+      const profile = (() => {
+        const p = r.profiles as { nome: string | null; avatar_url: string | null; instagram: string | null } | null;
+        return p ? { nome: p.nome, foto: p.avatar_url, instagram: p.instagram } : null;
+      })();
       const row = r as unknown as SolicitacaoParceriaRow;
       return mapRow(row, profile ?? undefined);
     });
@@ -194,7 +197,7 @@ export const parceriaService = {
   async listarTodas(status?: string): Promise<SolicitacaoParceria[]> {
     let query = supabase
       .from('solicitacoes_parceria')
-      .select('*, profiles!solicitacoes_parceria_user_id_fkey(nome, foto, instagram)')
+      .select('*, profiles!solicitacoes_parceria_user_id_fkey(nome, avatar_url, instagram)')
       .order('criado_em', { ascending: false });
 
     if (status) query = query.eq('status', status);
@@ -205,7 +208,10 @@ export const parceriaService = {
       return [];
     }
     return (data ?? []).map((r: Record<string, unknown>) => {
-      const profile = r.profiles as { nome: string | null; foto: string | null; instagram: string | null } | null;
+      const profile = (() => {
+        const p = r.profiles as { nome: string | null; avatar_url: string | null; instagram: string | null } | null;
+        return p ? { nome: p.nome, foto: p.avatar_url, instagram: p.instagram } : null;
+      })();
       const row = r as unknown as SolicitacaoParceriaRow;
       return mapRow(row, profile ?? undefined);
     });

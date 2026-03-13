@@ -20,6 +20,19 @@ type ProfileRow = Database['public']['Tables']['profiles']['Row'];
 // Flag para distinguir logout intencional de sessão expirada
 let _intentionalLogout = false;
 
+// Flag: signIn já resolveu o profile — onAuthStateChange deve pular a próxima vez
+let _signInResolved = false;
+export const markSignInResolved = () => {
+  _signInResolved = true;
+};
+export const consumeSignInResolved = (): boolean => {
+  if (_signInResolved) {
+    _signInResolved = false;
+    return true;
+  }
+  return false;
+};
+
 // ── Avatares padrão por gênero ─────────────────────────────────────────────
 
 // ── Tipos ──────────────────────────────────────────────────────────────────
@@ -39,29 +52,27 @@ export interface SignUpResult {
 
 // ── Colunas usadas pelo profileToMembro (evita SELECT * em 45 colunas) ───
 const PROFILE_COLUMNS =
-  'id, nome, full_name, email, instagram, instagram_followers, data_nascimento, nascimento, birth_date, telefone_ddd, telefone_numero, estado, state, cidade, city, genero, biografia, foto_perfil, foto, avatar_url, cpf, interesses, album_urls, privacidade, role, destaque_curadoria';
+  'id, nome, email, instagram, instagram_followers, data_nascimento, telefone_ddd, telefone_numero, estado, cidade, genero, biografia, avatar_url, cpf, interesses, album_urls, privacidade, role, destaque_curadoria';
 
 // ── Mapeador de row profiles → Membro ────────────────────────────────────
 
 export const profileToMembro = (row: ProfileRow | Record<string, unknown>): Membro => {
   const r = row as ProfileRow;
   const genero = (r.genero as Membro['genero']) ?? undefined;
-  const fotoUrl =
-    r.avatar_url ?? r.foto_perfil ?? r.foto ?? (genero ? DEFAULT_AVATARS[genero] : DEFAULT_AVATARS.NEUTRO);
-  const dataNasc = r.data_nascimento ?? r.nascimento ?? r.birth_date ?? '';
+  const fotoUrl = r.avatar_url ?? (genero ? DEFAULT_AVATARS[genero] : DEFAULT_AVATARS.NEUTRO);
   return {
     id: r.id,
-    nome: r.full_name || r.nome || 'Usuário VANTA',
+    nome: r.nome || 'Usuário VANTA',
     email: r.email || '',
     instagram: r.instagram?.replace(/^@/, '') ?? '',
     seguidoresInstagram: r.instagram_followers ?? undefined,
-    dataNascimento: dataNasc,
+    dataNascimento: r.data_nascimento ?? '',
     telefone: {
       ddd: r.telefone_ddd ?? '11',
       numero: r.telefone_numero ?? '',
     },
-    estado: r.estado || r.state || '',
-    cidade: r.cidade || r.city || '',
+    estado: r.estado || '',
+    cidade: r.cidade || '',
     genero,
     biografia: r.biografia ?? '',
     foto: fotoUrl,
@@ -117,6 +128,7 @@ export const authService = {
             role: 'vanta_member' as ContaVantaLegacy,
           };
 
+      _signInResolved = true; // Sinaliza que onAuthStateChange pode pular
       return { ok: true, membro };
     } catch (e: unknown) {
       logger.error('[auth] login failed', e);
@@ -156,13 +168,11 @@ export const authService = {
         {
           id: userId,
           nome: params.nome,
-          full_name: params.nome,
           email: params.email,
           data_nascimento: params.dataNascimento,
           telefone_ddd: params.telefoneDdd,
           telefone_numero: params.telefoneNumero,
           avatar_url: avatarUrl,
-          foto: avatarUrl,
           biografia: '',
           interesses: [],
           role: 'vanta_guest',
@@ -332,16 +342,32 @@ export const authService = {
  * Enriquecimento background — busca seguidores do Instagram e salva no profile.
  * Roda 1x após login se o campo ainda está vazio. Não bloqueia nada.
  */
+/**
+ * Enriquecimento background — busca seguidores do Instagram e salva no profile.
+ * Roda no máximo 1x por mês (30 dias). Usa localStorage para controlar frequência.
+ */
 export const enrichInstagramFollowers = (userId: string, instagram: string | undefined): void => {
   if (!instagram) return;
-  // Checa se já tem o dado salvo (evita chamada desnecessária)
+
+  // Throttle: máximo 1x a cada 30 dias por usuário
+  const storageKey = `vanta_ig_enrich_${userId}`;
+  const lastRun = localStorage.getItem(storageKey);
+  if (lastRun) {
+    const elapsed = Date.now() - parseInt(lastRun, 10);
+    if (elapsed < 30 * 24 * 60 * 60 * 1000) return; // <30 dias — pular
+  }
+
   supabase
     .from('profiles')
     .select('instagram_followers')
     .eq('id', userId)
     .maybeSingle()
     .then(({ data }) => {
-      if (data?.instagram_followers != null) return; // já enriquecido
+      if (data?.instagram_followers != null) {
+        // Já tem dado — registrar timestamp e pular
+        localStorage.setItem(storageKey, String(Date.now()));
+        return;
+      }
       supabase.functions
         .invoke('instagram-followers', { body: { username: instagram } })
         .then(({ data: igData }) => {
@@ -352,7 +378,11 @@ export const enrichInstagramFollowers = (userId: string, instagram: string | und
               .eq('id', userId)
               .then(({ error: errIg }) => {
                 if (errIg) console.error('[authService] instagram_followers update:', errIg);
+                else localStorage.setItem(storageKey, String(Date.now()));
               });
+          } else {
+            // Edge function não retornou — registrar pra não tentar de novo logo
+            localStorage.setItem(storageKey, String(Date.now()));
           }
         })
         .catch(() => {

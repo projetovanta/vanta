@@ -104,7 +104,7 @@ export async function getClientScores(comunidadeId: string, limit = 50): Promise
       const userIds = top.map(s => s.userId);
       const { data: profiles } = await supabase
         .from('profiles')
-        .select('id, full_name, foto, instagram')
+        .select('id, nome, avatar_url, instagram')
         .in('id', userIds);
 
       const profileMap = new Map(profiles?.map(p => [p.id, p]) ?? []);
@@ -113,8 +113,8 @@ export async function getClientScores(comunidadeId: string, limit = 50): Promise
         const p = profileMap.get(s.userId);
         return {
           userId: s.userId,
-          nome: p?.full_name ?? 'Desconhecido',
-          foto: p?.foto ?? null,
+          nome: p?.nome ?? 'Desconhecido',
+          foto: p?.avatar_url ?? null,
           instagram: p?.instagram ?? null,
           gastoTotal: s.gasto,
           frequencia: s.freq,
@@ -215,10 +215,10 @@ export async function getNoShowAnalysis(eventoId: string): Promise<NoShowAnalysi
       // Buscar nomes promoters
       const promoterIds = [...promoterMap.keys()];
       const { data: promoterProfiles } = promoterIds.length
-        ? await supabase.from('profiles').select('id, full_name').in('id', promoterIds)
+        ? await supabase.from('profiles').select('id, nome').in('id', promoterIds)
         : { data: [] };
       const promoterNomes = new Map<string, string>(
-        promoterProfiles?.map(p => [p.id, p.full_name] as [string, string]) ?? [],
+        promoterProfiles?.map(p => [p.id, p.nome] as [string, string]) ?? [],
       );
 
       const porPromoter: NoShowByPromoter[] = [...promoterMap.entries()].map(([pid, v]) => ({
@@ -477,7 +477,7 @@ export async function getChurnRadar(comunidadeId: string): Promise<ChurnRadarRes
       const userIds = emRisco.map(([uid]) => uid);
       const { data: profiles } = await supabase
         .from('profiles')
-        .select('id, full_name, foto')
+        .select('id, nome, avatar_url')
         .in('id', userIds.slice(0, 50));
 
       const profileMap = new Map(profiles?.map(p => [p.id, p]) ?? []);
@@ -502,8 +502,8 @@ export async function getChurnRadar(comunidadeId: string): Promise<ChurnRadarRes
 
           return {
             userId: uid,
-            nome: p?.full_name ?? 'Desconhecido',
-            foto: p?.foto ?? null,
+            nome: p?.nome ?? 'Desconhecido',
+            foto: p?.avatar_url ?? null,
             ultimoEvento: ultimoEv?.nome ?? '',
             ultimaData,
             gastoTotal: v.gasto,

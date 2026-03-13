@@ -141,8 +141,8 @@ export function DevQuickLogin() {
       const [profilesRes, rbacRes] = await Promise.all([
         adminClient
           .from('profiles')
-          .select('id, email, nome, full_name, avatar_url, foto_perfil, role')
-          .order('full_name', { ascending: true })
+          .select('id, email, nome, avatar_url, role')
+          .order('nome', { ascending: true })
           .limit(200),
         adminClient.from('atribuicoes_rbac').select('user_id, cargo').eq('ativo', true),
       ]);
@@ -161,8 +161,8 @@ export function DevQuickLogin() {
         .map((p: Record<string, unknown>) => ({
           id: p.id as string,
           email: (p.email as string) ?? '',
-          nome: (p.full_name as string) || (p.nome as string) || (p.email as string)?.split('@')[0] || 'Sem nome',
-          foto: (p.avatar_url as string) || (p.foto_perfil as string) || null,
+          nome: (p.nome as string) || (p.email as string)?.split('@')[0] || 'Sem nome',
+          foto: (p.avatar_url as string) || null,
           role: (p.role as string) || 'vanta_guest',
           cargosRbac: [...(rbacMap.get(p.id as string) ?? [])],
         }));

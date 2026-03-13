@@ -69,6 +69,26 @@ export function initDevLogging(): () => void {
   window.addEventListener('unhandledrejection', rejectionHandler);
   cleanups.push(() => window.removeEventListener('unhandledrejection', rejectionHandler));
 
+  // ── Fetch failures (erros de rede silenciosos) ────────────
+  const _originalFetch = window.fetch;
+  window.fetch = async (...args: Parameters<typeof fetch>) => {
+    const url = typeof args[0] === 'string' ? args[0] : args[0] instanceof Request ? args[0].url : String(args[0]);
+    try {
+      const res = await _originalFetch(...args);
+      // Log fetch errors (4xx/5xx) exceto os já logados pelo supabaseProxy
+      if (!res.ok && !url.includes('supabase') && !url.includes('rest/v1')) {
+        devLogger.error(`fetch ${res.status}: ${url.slice(0, 120)}`, { status: res.status });
+      }
+      return res;
+    } catch (err) {
+      devLogger.error(`fetch failed: ${url.slice(0, 120)}`, err instanceof Error ? err.message : err);
+      throw err;
+    }
+  };
+  cleanups.push(() => {
+    window.fetch = _originalFetch;
+  });
+
   // ── CSP violations ─────────────────────────────────────────
   const cspHandler = (event: Event) => {
     const e = event as SecurityPolicyViolationEvent;

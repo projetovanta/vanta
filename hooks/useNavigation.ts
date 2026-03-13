@@ -146,7 +146,7 @@ export const useNavigation = () => {
       navigate(TAB_TO_PATH[tab]);
       requestAnimationFrame(() => resetScroll(mainScrollRef.current));
     },
-    [activeTab, navigate, saveScrollPosition],
+    [activeTab, navigate, saveScrollPosition, setProfileSubView],
   );
 
   // ── Deep link: sincroniza URL → estado na montagem ──────────────────────────

@@ -46,7 +46,6 @@ export async function solicitarNotificacao(
   // Contar notificações já solicitadas neste mês
   const now = new Date();
   const inicioMes = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data: existentes } = (await (supabase as any)
     .from('mv_solicitacoes_notificacao')
     .select('id')

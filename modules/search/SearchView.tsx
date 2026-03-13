@@ -208,7 +208,7 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
     return () => {
       cancelled = true;
     };
-  }, [debouncedQuery, activeTab]);
+  }, [debouncedQuery, activeTab, bloqueados]);
 
   // ── Spotlight de comunidade na busca de eventos (query direta Supabase) ───
   const [comunidadeSpotlight, setComunidadeSpotlight] = useState<{

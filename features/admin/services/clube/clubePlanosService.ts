@@ -178,14 +178,12 @@ export async function verificarLimiteEventos(
   const now = new Date();
   const inicioMes = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`;
   // Buscar IDs dos eventos do produtor
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data: evts } = (await (supabase as any).from('eventos_admin').select('id').eq('criado_por', produtorId)) as {
     data: { id: string }[] | null;
   };
   const evtIds = (evts ?? []).map(e => e.id);
   if (evtIds.length === 0) return { ok: true, plano };
   // Contar configs MV criadas neste mês para eventos do produtor
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data: configs } = (await (supabase as any)
     .from('mais_vanta_config_evento')
     .select('evento_id')

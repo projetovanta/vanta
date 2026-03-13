@@ -29,7 +29,6 @@ export interface FiltroMembros {
 export async function buscarMembrosPorFiltro(
   filtro: FiltroMembros,
 ): Promise<{ userId: string; nome: string; tier: string; cidade?: string }[]> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let q = (supabase as any)
     .from('membros_clube')
     .select(

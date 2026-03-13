@@ -215,7 +215,6 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
     return () => {
       cancelled = true;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUserId, svcVersion, isGGC]);
 
   const [saldo, setSaldo] = useState({ totalVendas: 0, saldoDisponivel: 0, aReceber: 0, saquesProcessados: 0 });
@@ -263,7 +262,6 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
     return () => {
       cancelled = true;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [meusEventos, svcVersion]);
 
   // ── Export ─────────────────────────────────────────────────────────────────

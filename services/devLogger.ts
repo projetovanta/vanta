@@ -89,14 +89,11 @@ function _addEntry(category: LogCategory, level: LogLevel, message: string, data
   const style = COLOR_MAP[level];
 
   if (level === 'error') {
-    // eslint-disable-next-line no-console
     console.error(`%c${tag} ${message}`, style, data ?? '');
   } else if (level === 'warn') {
-    // eslint-disable-next-line no-console
     console.warn(`%c${tag} ${message}`, style, data ?? '');
   } else {
-    // eslint-disable-next-line no-console
-    console.log(`%c${tag} ${message}`, style, data ?? '');
+    console.log(`%c${tag} ${message}`, style, data ?? ''); // eslint-disable-line no-console
   }
 
   // Deferrar notificação para evitar setState durante render de outro componente

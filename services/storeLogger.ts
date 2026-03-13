@@ -33,7 +33,6 @@ const IGNORED_KEYS = new Set(['init']);
  * Inscreve um observer em uma store Zustand.
  * Retorna cleanup function.
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function observeStore(
   storeName: string,
   store: { subscribe: (fn: (state: any, prev: any) => void) => () => void },

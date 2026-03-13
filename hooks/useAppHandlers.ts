@@ -150,8 +150,8 @@ export const useAppHandlers = (nav: Nav, pwa: PWA) => {
     };
     if (nav.activeTab !== 'MENSAGENS') {
       nav.navigateToTab('MENSAGENS');
-      // navigateToTab reseta selectedMember/profileSubView — setar no próximo frame
-      requestAnimationFrame(setChatView);
+      // navigateToTab reseta selectedMember/profileSubView — setar após render completar
+      setTimeout(setChatView, 50);
     } else {
       setChatView();
     }

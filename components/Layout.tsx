@@ -27,7 +27,10 @@ export const TabBar: React.FC<{
             onClick={() => setActiveTab(tab.id as TabState)}
             className="relative flex flex-col items-center justify-center flex-1 h-11 active:opacity-60 transition-all"
           >
-            <tab.icon size="1rem" className={`mb-0.5 ${activeTab === tab.id ? 'text-[#FFD300]' : 'text-zinc-400'}`} />
+            <div className="relative mb-0.5">
+              <tab.icon size="1rem" className={activeTab === tab.id ? 'text-[#FFD300]' : 'text-zinc-400'} />
+              {tab.badge && <span className="absolute -top-1 -right-1.5 w-2 h-2 bg-[#FFD300] rounded-full" />}
+            </div>
             <span
               className={`text-[0.5rem] font-black uppercase tracking-[0.2em] ${activeTab === tab.id ? 'text-white' : 'text-zinc-400'}`}
             >

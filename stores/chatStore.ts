@@ -302,11 +302,25 @@ async function flushNotification(partnerId: string, senderName: string) {
   msgAccum.delete(partnerId);
 
   const preview = accum.lastText.length > 50 ? accum.lastText.slice(0, 47) + '...' : accum.lastText;
+  const userId = useAuthStore.getState().currentAccount.id;
 
-  // Verificar se já existe notificação agrupada não lida do mesmo remetente
-  const existing = notificationsService
-    .getAll()
-    .find(n => n.tipo === 'MENSAGEM_NOVA' && n.link === partnerId && !n.lida);
+  // Buscar DIRETO do banco (não cache) se já existe notificação agrupada não lida
+  const { data: existing } = await supabase
+    .from('notifications')
+    .select('id, titulo')
+    .eq('user_id', userId)
+    .eq('tipo', 'MENSAGEM_NOVA')
+    .eq('link', partnerId)
+    .eq('lida', false)
+    .maybeSingle();
+
+  const refreshUI = () =>
+    notificationsService.refresh().then(() => {
+      useAuthStore.setState({
+        notifications: notificationsService.getAll(),
+        unreadNotifications: notificationsService.getUnreadCount(),
+      });
+    });
 
   if (existing) {
     // Incrementar contador
@@ -318,12 +332,7 @@ async function flushNotification(partnerId: string, senderName: string) {
       .from('notifications')
       .update({ titulo, mensagem: preview, created_at: tsBR() })
       .eq('id', existing.id);
-    void notificationsService.refresh().then(() => {
-      useAuthStore.setState({
-        notifications: notificationsService.getAll(),
-        unreadNotifications: notificationsService.getUnreadCount(),
-      });
-    });
+    void refreshUI();
   } else {
     const titulo =
       accum.count > 1 ? `Nova mensagem de ${senderName} (${accum.count})` : `Nova mensagem de ${senderName}`;
@@ -335,17 +344,13 @@ async function flushNotification(partnerId: string, senderName: string) {
       link: partnerId,
       timestamp: '',
     });
-    useAuthStore.setState({
-      notifications: notificationsService.getAll(),
-      unreadNotifications: notificationsService.getUnreadCount(),
-    });
+    void refreshUI();
 
     // Push FCM (fire-and-forget, sem email)
-    const currentUserId = useAuthStore.getState().currentAccount.id;
     supabase.functions
       .invoke('send-push', {
         body: {
-          userIds: [currentUserId],
+          userIds: [userId],
           title: titulo,
           body: preview,
           data: { link: partnerId, tipo: 'MENSAGEM_NOVA' },

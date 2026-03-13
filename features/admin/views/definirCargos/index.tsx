@@ -23,7 +23,12 @@ import { ImportarStaffPanel } from './ImportarStaffPanel';
 import { SuccessScreen } from './SuccessScreen';
 import { ConfirmacaoModal } from './ConfirmacaoModal';
 
-export const DefinirCargosView: React.FC<DefinirCargosProps> = ({ onBack, currentUserId, addNotification }) => {
+export const DefinirCargosView: React.FC<DefinirCargosProps> = ({
+  onBack,
+  currentUserId,
+  addNotification,
+  embedded,
+}) => {
   const [modo, setModo] = useState<'ADICIONAR' | 'IMPORTAR'>('ADICIONAR');
   const [importDone, setImportDone] = useState(0);
 
@@ -200,26 +205,36 @@ export const DefinirCargosView: React.FC<DefinirCargosProps> = ({ onBack, curren
   }
 
   return (
-    <div className="absolute inset-0 bg-[#0A0A0A] flex flex-col overflow-hidden">
+    <div
+      className={
+        embedded
+          ? 'flex flex-col flex-1 overflow-hidden bg-[#0A0A0A]'
+          : 'absolute inset-0 bg-[#0A0A0A] flex flex-col overflow-hidden'
+      }
+    >
       {/* Header */}
-      <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-6 pt-10 pb-4 shrink-0">
-        <div className="flex items-center gap-4 mb-4">
-          <button
-            aria-label="Voltar"
-            onClick={onBack}
-            className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
-          >
-            <ArrowLeft size="1.125rem" className="text-zinc-400" />
-          </button>
-          <div>
-            <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic leading-none text-white">
-              Definir Cargos
-            </h1>
-            <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest mt-1">
-              Permissões de acesso
-            </p>
+      <div
+        className={`bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-6 ${embedded ? 'pt-4' : 'pt-10'} pb-4 shrink-0`}
+      >
+        {!embedded && (
+          <div className="flex items-center gap-4 mb-4">
+            <button
+              aria-label="Voltar"
+              onClick={onBack}
+              className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
+            >
+              <ArrowLeft size="1.125rem" className="text-zinc-400" />
+            </button>
+            <div>
+              <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic leading-none text-white">
+                Definir Cargos
+              </h1>
+              <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest mt-1">
+                Permissões de acesso
+              </p>
+            </div>
           </div>
-        </div>
+        )}
         {/* Abas Adicionar / Importar */}
         <div className="flex gap-1 p-1 bg-zinc-900/50 rounded-xl border border-white/5">
           {(['ADICIONAR', 'IMPORTAR'] as const).map(m => (

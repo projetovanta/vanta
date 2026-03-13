@@ -109,6 +109,55 @@ export type Database = {
           },
         ];
       };
+      atribuicoes_plataforma: {
+        Row: {
+          ativo: boolean;
+          atribuido_em: string;
+          atribuido_por: string;
+          cargo_id: string;
+          id: string;
+          user_id: string;
+        };
+        Insert: {
+          ativo?: boolean;
+          atribuido_em?: string;
+          atribuido_por: string;
+          cargo_id: string;
+          id?: string;
+          user_id: string;
+        };
+        Update: {
+          ativo?: boolean;
+          atribuido_em?: string;
+          atribuido_por?: string;
+          cargo_id?: string;
+          id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'atribuicoes_plataforma_atribuido_por_fkey';
+            columns: ['atribuido_por'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'atribuicoes_plataforma_cargo_id_fkey';
+            columns: ['cargo_id'];
+            isOneToOne: false;
+            referencedRelation: 'cargos_plataforma';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'atribuicoes_plataforma_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
       atribuicoes_rbac: {
         Row: {
           ativo: boolean;
@@ -236,6 +285,47 @@ export type Database = {
             columns: ['comunidade_id'];
             isOneToOne: false;
             referencedRelation: 'comunidades';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      cargos_plataforma: {
+        Row: {
+          ativo: boolean;
+          criado_em: string;
+          criado_por: string;
+          descricao: string | null;
+          id: string;
+          nome: string;
+          permissoes: string[];
+          updated_at: string;
+        };
+        Insert: {
+          ativo?: boolean;
+          criado_em?: string;
+          criado_por: string;
+          descricao?: string | null;
+          id?: string;
+          nome: string;
+          permissoes?: string[];
+          updated_at?: string;
+        };
+        Update: {
+          ativo?: boolean;
+          criado_em?: string;
+          criado_por?: string;
+          descricao?: string | null;
+          id?: string;
+          nome?: string;
+          permissoes?: string[];
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'cargos_plataforma_criado_por_fkey';
+            columns: ['criado_por'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
             referencedColumns: ['id'];
           },
         ];
@@ -4839,7 +4929,19 @@ export type Database = {
           total_vendidos: number;
         }[];
       };
+      has_comunidade_access: {
+        Args: { p_comunidade_id: string };
+        Returns: boolean;
+      };
+      has_comunidade_write_access: {
+        Args: { p_tenant_id: string; p_tenant_type: string };
+        Returns: boolean;
+      };
       has_evento_access: { Args: { p_evento_id: string }; Returns: boolean };
+      has_plataforma_permission: {
+        Args: { p_permissao: string };
+        Returns: boolean;
+      };
       incrementar_usos_cupom: { Args: { cupom_id: string }; Returns: undefined };
       inserir_notificacao: {
         Args: {
@@ -4864,7 +4966,6 @@ export type Database = {
         Returns: boolean;
       };
       is_vanta_admin: { Args: never; Returns: boolean };
-      is_vanta_admin_or_gerente: { Args: never; Returns: boolean };
       notificar_lembrete_reserva_mv: { Args: never; Returns: undefined };
       processar_compra_checkout:
         | {

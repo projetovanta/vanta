@@ -196,11 +196,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
           useExtrasStore.getState().initClubeData();
         }, 3000);
 
-        // compute accessNodes — só vanta_member precisa (derivar portais via RBAC)
-        // Roles com portal direto (ROLES_COM_PORTAL_DIRETO) já acessam sem nodes.
+        // compute accessNodes via RBAC (member precisa; master também para permissões plataforma)
         const role = membro.role;
-        if (role === 'vanta_member') {
-          // Refresh RBAC antes de calcular accessNodes (garante que atribuições recentes apareçam)
+        if (role !== 'vanta_guest') {
           void rbacService.refresh().then(() => {
             const nodes = getAccessNodes(membro.id);
             set({ accessNodes: nodes });

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { LockKeyhole, Clock } from 'lucide-react';
-import { PermissaoVanta, ContaVanta } from '../../../types';
+import { PermissaoVanta, ContaVantaLegacy } from '../../../types';
 import { rbacService } from '../services/rbacService';
 import { eventosAdminService } from '../services/eventosAdminService';
 import { auditService } from '../services/auditService';
@@ -9,7 +9,7 @@ interface SovereigntyGuardProps {
   eventoId: string;
   userId: string;
   permissao: PermissaoVanta;
-  currentUserRole?: ContaVanta;
+  currentUserRole?: ContaVantaLegacy;
   children: React.ReactNode;
 }
 

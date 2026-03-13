@@ -20,7 +20,6 @@ import {
   LayoutDashboard,
   Compass,
   Tag,
-  Mail,
   Bell,
   Activity,
   BarChart3,
@@ -36,7 +35,7 @@ import {
   Lightbulb,
   type LucideIcon,
 } from 'lucide-react';
-import type { ContaVanta } from '../../../types';
+import type { ContaVantaLegacy } from '../../../types';
 
 export type AdminSubView =
   | 'DASHBOARD'
@@ -56,7 +55,6 @@ export type AdminSubView =
   | 'PENDENTES'
   | 'AUDIT_LOG'
   | 'CATEGORIAS'
-  | 'CONVITES_SOCIO'
   | 'PROMOTER_COTAS'
   | 'MAIS_VANTA_HUB'
   | 'MONITORAMENTO_MV'
@@ -89,7 +87,7 @@ export interface SidebarSectionItem {
   label: string;
   icon: LucideIcon;
   color?: string;
-  roles: ContaVanta[];
+  roles: ContaVantaLegacy[];
   badge?: number;
 }
 
@@ -143,7 +141,6 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
         color: COR.GERAL,
         roles: ['vanta_masteradm', 'vanta_socio', 'vanta_gerente'],
       },
-      { id: 'CONVITES_SOCIO', label: 'Convites', icon: Mail, color: COR.GERAL, roles: ['vanta_socio'] },
     ],
   },
   {
@@ -260,7 +257,7 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
 ];
 
 // Sidebar dedicado para contexto de comunidade (master na comunidade = gerente + extras)
-const ALL_COMMUNITY_ROLES: ContaVanta[] = [
+const ALL_COMMUNITY_ROLES: ContaVantaLegacy[] = [
   'vanta_masteradm',
   'vanta_socio',
   'vanta_gerente',
@@ -375,10 +372,9 @@ export const AdminSidebar: React.FC<{
   activeView: AdminSubView;
   onSelect: (id: AdminSubView) => void;
   onClose: () => void;
-  adminRole: ContaVanta;
+  adminRole: ContaVantaLegacy;
   visibleSections: SidebarSection[];
   pendentesCount?: number;
-  convitesCount?: number;
   pendenciasHubCount?: number;
   totalPendencias?: number;
   tenantNome?: string;
@@ -392,7 +388,6 @@ export const AdminSidebar: React.FC<{
   onClose,
   visibleSections,
   pendentesCount = 0,
-  convitesCount = 0,
   pendenciasHubCount = 0,
   totalPendencias = 0,
   tenantNome,
@@ -521,13 +516,7 @@ export const AdminSidebar: React.FC<{
                   const iconColor = item.color ?? (isActive ? '#FFD300' : undefined);
                   const isPendencias = item.id === 'PENDENCIAS_HUB';
                   const badgeCount =
-                    item.id === 'PENDENTES'
-                      ? pendentesCount
-                      : item.id === 'CONVITES_SOCIO'
-                        ? convitesCount
-                        : isPendencias
-                          ? pendenciasHubCount
-                          : (item.badge ?? 0);
+                    item.id === 'PENDENTES' ? pendentesCount : isPendencias ? pendenciasHubCount : (item.badge ?? 0);
                   return (
                     <button
                       key={item.id}

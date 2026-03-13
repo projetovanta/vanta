@@ -1,4 +1,4 @@
-import type { Cargo, ComunidadeLog, ContaVanta, Selo, PrivacidadeConfig } from './auth';
+import type { Cargo, ComunidadeLog, ContaVantaLegacy, Selo, PrivacidadeConfig } from './auth';
 import type { MembroClubeVanta, TierMaisVanta, LoteMaisVanta } from './clube';
 import type { CortesiaEvento } from './financeiro';
 import type { DefinicaoCargoCustom } from './rbac';
@@ -224,7 +224,7 @@ export interface Membro {
   genero?: 'MASCULINO' | 'FEMININO' | 'PREFIRO_NAO_DIZER'; // preenchido sob demanda (Nível 3)
   interesses: string[];
   privacidade?: PrivacidadeConfig;
-  role?: ContaVanta;
+  role?: ContaVantaLegacy;
   selos?: Selo[];
   notas?: string; // nota do admin — no backend: GET/PUT /members/:id/notes
   biometriaCaptured?: boolean; // true = foto oficial capturada via câmera no onboarding
@@ -285,7 +285,7 @@ export interface SocioEvento {
   socioId: string;
   splitPercentual: number;
   permissoes: string[];
-  status: 'PENDENTE' | 'NEGOCIANDO' | 'ACEITO' | 'RECUSADO' | 'CANCELADO' | 'EXPIRADO';
+  status: 'PENDENTE' | 'ACEITO' | 'RECUSADO' | 'CANCELADO';
   rodadaNegociacao: number;
   mensagemNegociacao?: string;
   motivoRejeicao?: string;
@@ -333,15 +333,7 @@ export interface EventoAdmin {
   criadorNome?: string; // nome do produtor/sócio criador (para exibição na fila de pendentes)
   // ── Fluxo Com Sócio / Festa da Casa ──
   tipoFluxo?: 'COM_SOCIO' | 'FESTA_DA_CASA';
-  statusEvento?:
-    | 'RASCUNHO'
-    | 'PENDENTE'
-    | 'NEGOCIANDO'
-    | 'EM_REVISAO'
-    | 'ATIVO'
-    | 'EM_ANDAMENTO'
-    | 'FINALIZADO'
-    | 'CANCELADO';
+  statusEvento?: 'RASCUNHO' | 'PENDENTE' | 'EM_REVISAO' | 'ATIVO' | 'EM_ANDAMENTO' | 'FINALIZADO' | 'CANCELADO';
   socioConvidadoId?: string; // DEPRECATED — usar socios[]
   splitProdutor?: number; // DEPRECATED — calculado: 100 - soma(socios.splitPercentual)
   splitSocio?: number; // DEPRECATED — usar socios[0].splitPercentual

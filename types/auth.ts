@@ -7,10 +7,14 @@ export type Categoria = string;
 /** Formato do evento (Supabase: tabela `formatos`). */
 export type Formato = string;
 
-export type ContaVanta =
-  | 'vanta_guest'
-  | 'vanta_member'
-  | 'vanta_masteradm'
+/** Role do perfil do usuário — apenas 3 valores possíveis.
+ *  Cargos contextuais (gerente, sócio, etc.) ficam em atribuicoes_rbac + AccessNode.
+ */
+export type ContaVanta = 'vanta_guest' | 'vanta_member' | 'vanta_masteradm';
+
+/** @deprecated Use ContaVanta (3 valores) + AccessNode.portalRole para cargos contextuais */
+export type ContaVantaLegacy =
+  | ContaVanta
   | 'vanta_gerente'
   | 'vanta_socio'
   | 'vanta_ger_portaria_lista'
@@ -20,23 +24,27 @@ export type ContaVanta =
   | 'vanta_caixa'
   | 'vanta_promoter';
 
-// Nó de acesso: instância concreta de cargo/papel em comunidade ou evento
+/** Cargo contextual — usado em AccessNode.portalRole e atribuicoes_rbac */
+export type PortalRole =
+  | 'vanta_gerente'
+  | 'vanta_socio'
+  | 'vanta_ger_portaria_lista'
+  | 'vanta_portaria_lista'
+  | 'vanta_ger_portaria_antecipado'
+  | 'vanta_portaria_antecipado'
+  | 'vanta_caixa'
+  | 'vanta_promoter';
+
+// Nó de acesso: instância concreta de cargo/papel em comunidade, evento ou plataforma
 export interface AccessNode {
-  id: string; // `com-${comunidadeId}` | `ev-${eventoId}`
-  tipo: 'COMUNIDADE' | 'EVENTO';
+  id: string; // `com-${comunidadeId}` | `ev-${eventoId}` | `plat-${cargoId}`
+  tipo: 'COMUNIDADE' | 'EVENTO' | 'PLATAFORMA';
   contextId: string;
   contextNome: string;
   contextFoto?: string;
-  portalRole:
-    | 'vanta_gerente'
-    | 'vanta_socio'
-    | 'vanta_ger_portaria_lista'
-    | 'vanta_portaria_lista'
-    | 'vanta_ger_portaria_antecipado'
-    | 'vanta_portaria_antecipado'
-    | 'vanta_caixa'
-    | 'vanta_promoter';
+  portalRole: PortalRole;
   cargoLabel: string; // 'Gerente', 'Host', 'Portaria Lista', etc.
+  permissoesPlataforma?: string[]; // Só para tipo PLATAFORMA
 }
 
 // ── Selos de importância (controle interno masteradm) ──────────────────────
@@ -117,6 +125,7 @@ export interface Notificacao {
     | 'FRIEND_REQUEST'
     | 'FRIEND_ACCEPTED'
     | 'CONVITE_SOCIO'
+    | 'SOCIO_ADICIONADO'
     | 'CORTESIA_PENDENTE'
     | 'REVIEW'
     | 'TRANSFERENCIA_PENDENTE'

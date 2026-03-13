@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowLeft, MapPin, Users, Calendar, Plus, Building2 } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../../constants';
-import { Comunidade, ContaVanta } from '../../../../types';
+import { Comunidade, ContaVantaLegacy } from '../../../../types';
 import { getAcessoComunidades } from '../../permissoes';
 import { rbacService } from '../../services/rbacService';
 import { CriarComunidadeView } from '../CriarComunidadeView';
@@ -10,11 +10,11 @@ import { ComunidadeDetalheView } from './ComunidadeDetalheView';
 export const ComunidadesView: React.FC<{
   onBack: () => void;
   memberId?: string;
-  adminRole?: ContaVanta;
+  adminRole?: ContaVantaLegacy;
   adminNome?: string;
   focusComunidadeId?: string;
 }> = ({ onBack, memberId, adminRole = 'vanta_masteradm', adminNome = 'Admin', focusComunidadeId }) => {
-  const comunidades = getAcessoComunidades(memberId ?? '', adminRole as ContaVanta);
+  const comunidades = getAcessoComunidades(memberId ?? '', adminRole as ContaVantaLegacy);
 
   // Auto-selecionar comunidade quando focusComunidadeId é fornecido
   const [selected, setSelected] = useState<Comunidade | null>(() => {

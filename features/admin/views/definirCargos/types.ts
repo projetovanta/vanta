@@ -5,6 +5,8 @@ export interface DefinirCargosProps {
   onBack: () => void;
   currentUserId: string;
   addNotification: (n: Omit<Notificacao, 'id'>) => void;
+  /** Quando true, esconde header próprio (usado dentro do CargosUnificadoView) */
+  embedded?: boolean;
 }
 
 // ── Estado do cargo customizado ──────────────────────────────────────────────

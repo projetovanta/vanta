@@ -2,7 +2,7 @@ import { supabase } from '../../../services/supabaseClient';
 import { eventosAdminService } from './eventosAdminService';
 import { getReembolsosPendentes } from './reembolsoService';
 import { parceriaService } from './parceriaService';
-import type { ContaVanta } from '../../../types';
+import type { ContaVantaLegacy } from '../../../types';
 
 export interface PendenciaItem {
   id: string;
@@ -22,14 +22,13 @@ export type PendenciaTipo =
   | 'SAQUE_PENDENTE'
   | 'PARCERIA_PENDENTE'
   | 'COMEMORACAO_PENDENTE'
-  | 'CONVITE_SOCIO'
   | 'PROPOSTA_VANTA'
   | 'EVENTO_PRIVADO';
 
 /** Busca todas as pendências para o cargo do usuário */
 export async function getPendencias(
   userId: string,
-  role: ContaVanta,
+  role: ContaVantaLegacy,
   comunidadeIds: string[],
   eventoIds: string[],
 ): Promise<PendenciaItem[]> {
@@ -142,23 +141,6 @@ export async function getPendencias(
 
   // ── SÓCIO ───────────────────────────────────────────────────────────────
   if (role === 'vanta_socio') {
-    // Convites de negociação
-    promises.push(
-      Promise.resolve().then(() => {
-        const convites = eventosAdminService.getConvitesPendentes(userId);
-        if (convites.length > 0) {
-          items.push({
-            id: 'convites-socio',
-            tipo: 'CONVITE_SOCIO',
-            titulo: 'Convites para evento',
-            descricao: `${convites.length} convite${convites.length > 1 ? 's' : ''} aguardando resposta`,
-            criadoEm: '',
-            destino: 'CONVITES_SOCIO',
-          });
-        }
-      }),
-    );
-
     // Propostas VANTA pendentes
     promises.push(
       Promise.resolve().then(() => {
@@ -170,7 +152,7 @@ export async function getPendencias(
             titulo: 'Propostas VANTA',
             descricao: `${propostas.length} proposta${propostas.length > 1 ? 's' : ''} aguardando resposta`,
             criadoEm: '',
-            destino: 'CONVITES_SOCIO',
+            destino: 'MEUS_EVENTOS',
           });
         }
       }),
@@ -263,7 +245,7 @@ export async function getPendencias(
 /** Conta total de pendências (para badge) */
 export async function countPendencias(
   userId: string,
-  role: ContaVanta,
+  role: ContaVantaLegacy,
   comunidadeIds: string[],
   eventoIds: string[],
 ): Promise<number> {

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { MapPin, Camera, AlertTriangle, X, Check, Lock, ArrowRightLeft, PartyPopper, Plus, Trash2 } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../../constants';
-import { Comunidade, ContaVanta, HorarioSemanal, HorarioOverride } from '../../../../types';
+import { Comunidade, ContaVantaLegacy, HorarioSemanal, HorarioOverride } from '../../../../types';
 import { ImageCropModal } from '../../../../components/ImageCropModal';
 import { UnsavedChangesModal } from '../../../../components/UnsavedChangesModal';
 import { HorarioFuncionamentoEditor, DEFAULT_HORARIOS } from '../../../../components/HorarioFuncionamentoEditor';
@@ -11,7 +11,7 @@ import { rbacService } from '../../services/rbacService';
 
 export const EditarModal: React.FC<{
   comunidade: Comunidade;
-  adminRole: ContaVanta;
+  adminRole: ContaVantaLegacy;
   onSave: (updates: Partial<Comunidade>) => void;
   onClose: () => void;
 }> = ({ comunidade, adminRole, onSave, onClose }) => {

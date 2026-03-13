@@ -418,7 +418,7 @@ export const CriarEventoView: React.FC<{
         criadorNome: currentUserNome,
         tipoFluxo: tipoFluxo ?? undefined,
         vendaVanta,
-        statusEvento: isFestaDaCasa ? 'PENDENTE' : 'NEGOCIANDO',
+        statusEvento: 'PENDENTE',
         socioConvidadoId: socio?.membroId,
         splitProdutor: tipoFluxo === 'COM_SOCIO' ? parseInt(split.percentProdutor) || 0 : undefined,
         splitSocio: tipoFluxo === 'COM_SOCIO' ? parseInt(split.percentSocio) || 0 : undefined,

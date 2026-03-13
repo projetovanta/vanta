@@ -206,9 +206,9 @@ export const criarEvento = async (
     for (const socioId of socioIds) {
       void notify({
         userId: socioId,
-        titulo: 'Novo convite de evento',
-        mensagem: `${data.criadorNome ?? 'Um produtor'} quer fazer "${data.nome}" na sua casa. Avalie a proposta.`,
-        tipo: 'CONVITE_SOCIO',
+        titulo: 'Novo evento com sua participação',
+        mensagem: `${data.criadorNome ?? 'Um produtor'} criou o evento "${data.nome}" com sua participação. Aguardando aprovação.`,
+        tipo: 'SOCIO_ADICIONADO',
         link: eventoId,
       });
     }

@@ -129,7 +129,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
   // ── Borda da foto por status ──
   const photoBorderClass = membroClubeInfo.isMembro
     ? 'bg-gradient-to-br from-[#FFD300] to-[#B8860B]' // dourada MAIS VANTA
-    : role === 'vanta_masteradm' || role === 'vanta_gerente' || role === 'vanta_socio'
+    : role === 'vanta_masteradm' || accessNodes.length > 0
       ? 'bg-gradient-to-br from-purple-500 to-purple-700' // roxa admin
       : 'bg-zinc-800'; // cinza padrão
 
@@ -443,22 +443,11 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                   <Building2 size="0.75rem" className="text-purple-400" />
                   {role === 'vanta_masteradm'
                     ? 'Painel Admin VANTA'
-                    : role === 'vanta_gerente'
-                      ? 'Portal do Gerente'
-                      : role === 'vanta_socio'
-                        ? 'Portal do Sócio'
-                        : role === 'vanta_ger_portaria_lista' ||
-                            role === 'vanta_portaria_lista' ||
-                            role === 'vanta_ger_portaria_antecipado' ||
-                            role === 'vanta_portaria_antecipado'
-                          ? 'Painel Portaria'
-                          : role === 'vanta_caixa'
-                            ? 'Painel Caixa'
-                            : accessNodes.length > 1
-                              ? `Painel Admin · ${accessNodes.length} acessos`
-                              : accessNodes[0]
-                                ? `Portal · ${accessNodes[0].cargoLabel}`
-                                : 'Painel Administrativo'}
+                    : accessNodes.length > 1
+                      ? `Painel Admin · ${accessNodes.length} acessos`
+                      : accessNodes[0]
+                        ? `Portal · ${accessNodes[0].cargoLabel}`
+                        : 'Painel Administrativo'}
                 </button>
                 {showAdminGuide && (
                   <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4 pointer-events-none">

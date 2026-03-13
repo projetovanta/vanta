@@ -78,6 +78,9 @@ let _refreshed = false;
 const _comunidadeCache = new Map<string, { nome: string; foto?: string }>();
 const _eventoCache = new Map<string, { nome: string; foto?: string; comunidadeId: string }>();
 
+// ── Cache de permissões de plataforma (RBAC V2) ─────────────────────────────
+let _permissoesPlataforma: string[] = [];
+
 /** Converte row do Supabase para AtribuicaoRBAC com ContextoTenant */
 type AtribuicaoRow = Database['public']['Tables']['atribuicoes_rbac']['Row'];
 
@@ -181,14 +184,62 @@ export const rbacService = {
    */
   async refresh(): Promise<void> {
     try {
-      // Todas as 5 queries são independentes — executar em paralelo
-      const [comRes, evRes, atribRes] = await Promise.all([
-        supabase.from('comunidades').select('id, nome, foto').eq('ativa', true).limit(1000),
-        supabase.from('eventos_admin').select('id, nome, foto, comunidade_id').limit(1000),
-        supabase.from('atribuicoes_rbac').select('*').eq('ativo', true).limit(2000),
-        refreshSoberania(),
-        refreshCargosCustom(),
-      ]);
+      const userId = (await supabase.auth.getUser()).data.user?.id;
+      if (!userId) return;
+
+      // Verificar se é masteradm (carrega tudo) ou usuário normal (filtra por tenant)
+      const { data: profileData } = await supabase.from('profiles').select('role').eq('id', userId).maybeSingle();
+      const isMaster = profileData?.role === 'vanta_masteradm';
+
+      // Carregar atribuições RBAC do usuário (ou todas se master)
+      const atribQuery = supabase.from('atribuicoes_rbac').select('*').eq('ativo', true);
+      if (!isMaster) atribQuery.eq('user_id', userId);
+
+      // Carregar permissões de plataforma (RBAC V2)
+      const platQuery = supabase
+        .from('atribuicoes_plataforma')
+        .select('cargo_id, cargos_plataforma(permissoes)')
+        .eq('user_id', userId)
+        .eq('ativo', true);
+
+      const [atribRes, platRes] = await Promise.all([atribQuery, platQuery, refreshSoberania(), refreshCargosCustom()]);
+
+      // Popula permissões de plataforma
+      _permissoesPlataforma = [];
+      if (platRes.data) {
+        for (const row of platRes.data) {
+          const cargo = row.cargos_plataforma as unknown as { permissoes: string[] } | null;
+          if (cargo?.permissoes) {
+            for (const p of cargo.permissoes) {
+              if (!_permissoesPlataforma.includes(p)) _permissoesPlataforma.push(p);
+            }
+          }
+        }
+      }
+
+      // Popula atribuições
+      if (atribRes.data) {
+        ATRIBUICOES = (atribRes.data ?? []).map(rowToAtribuicao);
+      }
+
+      // Extrair tenant IDs relevantes para carregar apenas comunidades/eventos necessários
+      const comunidadeIds = new Set<string>();
+      const eventoIds = new Set<string>();
+      for (const a of ATRIBUICOES) {
+        if (a.tenant.tipo === 'COMUNIDADE') comunidadeIds.add(a.tenant.id);
+        else eventoIds.add(a.tenant.id);
+      }
+
+      // Carregar comunidades e eventos filtrados (master = tudo, normal = só seus tenants)
+      const comQuery = supabase.from('comunidades').select('id, nome, foto').eq('ativa', true);
+      if (!isMaster && comunidadeIds.size > 0) comQuery.in('id', [...comunidadeIds]);
+      else if (!isMaster && comunidadeIds.size === 0) comQuery.limit(0);
+
+      const evQuery = supabase.from('eventos_admin').select('id, nome, foto, comunidade_id');
+      if (!isMaster && eventoIds.size > 0) evQuery.in('id', [...eventoIds]);
+      else if (!isMaster && eventoIds.size === 0) evQuery.limit(0);
+
+      const [comRes, evRes] = await Promise.all([comQuery, evQuery]);
 
       // Popula cache de comunidades
       _comunidadeCache.clear();
@@ -210,9 +261,26 @@ export const rbacService = {
         }
       }
 
-      // Popula atribuições
-      if (atribRes.data) {
-        ATRIBUICOES = (atribRes.data ?? []).map(rowToAtribuicao);
+      // Master: também carregar eventos das comunidades (cascata GERENTE → eventos da comunidade)
+      if (isMaster || comunidadeIds.size > 0) {
+        const comIds = isMaster ? [..._comunidadeCache.keys()] : [...comunidadeIds];
+        if (comIds.length > 0) {
+          const { data: evComData } = await supabase
+            .from('eventos_admin')
+            .select('id, nome, foto, comunidade_id')
+            .in('comunidade_id', comIds);
+          if (evComData) {
+            for (const e of evComData) {
+              if (!_eventoCache.has(e.id as string)) {
+                _eventoCache.set(e.id as string, {
+                  nome: e.nome as string,
+                  foto: e.foto as string | undefined,
+                  comunidadeId: e.comunidade_id as string,
+                });
+              }
+            }
+          }
+        }
       }
 
       _refreshed = true;
@@ -286,6 +354,18 @@ export const rbacService = {
       }
     }
     return false;
+  },
+
+  // ── Permissões de Plataforma (RBAC V2) ──────────────────────────────────────
+
+  /** Retorna permissões de plataforma do usuário logado (cache síncrono) */
+  getPermissoesPlataforma(): string[] {
+    return _permissoesPlataforma;
+  },
+
+  /** Verifica se o usuário logado tem uma permissão de plataforma específica */
+  temPermissaoPlataforma(permissao: string): boolean {
+    return _permissoesPlataforma.includes(permissao);
   },
 
   // ── Cargos Customizados ────────────────────────────────────────────────────

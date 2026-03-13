@@ -6,7 +6,7 @@ import { comunidadesService } from './services/comunidadesService';
 import { getReembolsosPendentes } from './services/reembolsoService';
 import { countPendencias } from './services/pendenciasService';
 import { TYPOGRAPHY } from '../../constants';
-import { ContaVanta, Notificacao, AccessNode } from '../../types';
+import { ContaVantaLegacy, Notificacao, AccessNode } from '../../types';
 import {
   AdminSidebar,
   SIDEBAR_SECTIONS,
@@ -25,8 +25,8 @@ import {
   canAccessMeusEventos,
   canAccessPortariaScanner,
   canAccessComunidades,
-  canAccessConvitesSocio,
 } from './permissoes';
+import { rbacService } from './services/rbacService';
 
 // ── Lazy-loaded views (carregam sob demanda) ──────────────────────────────────
 const ComunidadesView = lazy(() => import('./views/ComunidadesView').then(m => ({ default: m.ComunidadesView })));
@@ -40,7 +40,9 @@ const GerenteDashboardView = lazy(() =>
   import('./views/GerenteDashboardView').then(m => ({ default: m.GerenteDashboardView })),
 );
 const MeusEventosView = lazy(() => import('./views/MeusEventosView').then(m => ({ default: m.MeusEventosView })));
-const DefinirCargosView = lazy(() => import('./views/definirCargos').then(m => ({ default: m.DefinirCargosView })));
+const CargosUnificadoView = lazy(() =>
+  import('./views/cargosUnificado').then(m => ({ default: m.CargosUnificadoView })),
+);
 const MasterFinanceiroView = lazy(() =>
   import('./views/MasterFinanceiroView').then(m => ({ default: m.MasterFinanceiroView })),
 );
@@ -75,7 +77,6 @@ const SolicitacoesParceriaView = lazy(() =>
 const CategoriasAdminView = lazy(() =>
   import('./views/CategoriasAdminView').then(m => ({ default: m.CategoriasAdminView })),
 );
-const ConvitesSocioView = lazy(() => import('./views/ConvitesSocioView').then(m => ({ default: m.ConvitesSocioView })));
 const MaisVantaHubView = lazy(() => import('./views/MaisVantaHubView').then(m => ({ default: m.MaisVantaHubView })));
 const TabClubeCuradoria = lazy(() => import('./views/curadoria/tabClube').then(m => ({ default: m.TabClube })));
 const CidadesMaisVantaView = lazy(() =>
@@ -139,7 +140,7 @@ const MaisVantaDashboardView = lazy(() =>
 export const AdminDashboardView: React.FC<{
   onClose: () => void;
   adminNome: string;
-  adminRole?: ContaVanta;
+  adminRole?: ContaVantaLegacy;
   currentUserId?: string;
   addNotification: (n: Omit<Notificacao, 'id'>) => void;
   accessNodes?: AccessNode[];
@@ -149,7 +150,7 @@ export const AdminDashboardView: React.FC<{
 }> = ({
   onClose,
   adminNome,
-  adminRole = 'vanta_masteradm' as ContaVanta,
+  adminRole = 'vanta_masteradm' as ContaVantaLegacy,
   currentUserId = '',
   addNotification,
   accessNodes = [],
@@ -222,14 +223,29 @@ export const AdminDashboardView: React.FC<{
       FINANCEIRO: canAccessFinanceiro(currentUserId, adminRole, ctx),
       LISTAS: canAccessListas(currentUserId, adminRole, ctx),
       MEUS_EVENTOS: canAccessMeusEventos(currentUserId, adminRole, ctx),
-      CONVITES_SOCIO: canAccessConvitesSocio(currentUserId, adminRole, ctx),
     };
+    // Permissões de plataforma do usuário (RBAC V2)
+    const permPlat = rbacService.getPermissoesPlataforma();
+
+    // Mapa: seção da sidebar → permissão de plataforma que dá acesso
+    const sectionPermMap: Record<string, string> = {
+      'MAIS VANTA': 'GERIR_MAIS_VANTA',
+      FINANCEIRO: 'GERIR_FINANCEIRO_GLOBAL',
+      INTELIGÊNCIA: 'VER_ANALYTICS',
+    };
+
     return base
       .map(section => ({
         ...section,
         items: section.items.filter(item => {
-          // Primeiro: role precisa estar no array
-          if (!(item.roles as string[]).includes(adminRole as string)) return false;
+          const roles = item.roles as string[];
+          // Primeiro: role no array OU permissão de plataforma equivalente
+          const hasRole = roles.includes(adminRole as string);
+          const hasPlatPerm =
+            roles.includes('vanta_masteradm') &&
+            sectionPermMap[section.label] &&
+            permPlat.includes(sectionPermMap[section.label]);
+          if (!hasRole && !hasPlatPerm) return false;
           // Segundo: se tem guard específico, aplicar
           if (item.id in guardMap) return guardMap[item.id];
           return true;
@@ -243,14 +259,6 @@ export const AdminDashboardView: React.FC<{
     () => (adminRole === 'vanta_masteradm' ? eventosAdminService.getEventosPendentes().length : 0),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [adminRole, subView], // re-calcula quando muda de view (após aprovar/rejeitar)
-  );
-
-  // Contagem de convites pendentes para sócio
-  const convitesCount = useMemo(
-    () =>
-      adminRole === 'vanta_socio' && currentUserId ? eventosAdminService.getConvitesPendentes(currentUserId).length : 0,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [adminRole, currentUserId, subView],
   );
 
   // IDs de comunidades e eventos do usuário (para pendências)
@@ -498,7 +506,6 @@ export const AdminDashboardView: React.FC<{
             setSubView(v);
           }}
           comunidadeId={comunidadeId}
-          convitesCount={convitesCount}
         />
       );
     }
@@ -537,7 +544,7 @@ export const AdminDashboardView: React.FC<{
     }
     if (subView === 'CARGOS') {
       if (!isMasterOnly(currentUserId, adminRole)) return guardBlock(back);
-      return <DefinirCargosView onBack={back} currentUserId={currentUserId} addNotification={addNotification} />;
+      return <CargosUnificadoView onBack={back} currentUserId={currentUserId} addNotification={addNotification} />;
     }
     // ── Inteligência VANTA ──────────────────────────────────────────────────
     if (subView === 'INTELIGENCIA') {
@@ -673,11 +680,6 @@ export const AdminDashboardView: React.FC<{
     if (subView === 'CATEGORIAS') {
       if (!isMasterOnly(currentUserId, adminRole)) return guardBlock(back);
       return <CategoriasAdminView onBack={back} />;
-    }
-    if (subView === 'CONVITES_SOCIO') {
-      if (!canAccessConvitesSocio(currentUserId, adminRole, { communityId: comunidadeId, eventId: gatewayEventoId }))
-        return guardBlock(back);
-      return <ConvitesSocioView onBack={back} socioId={currentUserId} />;
     }
     if (subView === 'MAIS_VANTA_HUB') {
       if (adminRole !== 'vanta_masteradm') return guardBlock(back);
@@ -826,7 +828,6 @@ export const AdminDashboardView: React.FC<{
           adminRole={adminRole}
           visibleSections={visibleSections}
           pendentesCount={pendentesCount}
-          convitesCount={convitesCount}
           pendenciasHubCount={pendenciasHubCount}
           totalPendencias={(Object.values(dashPendencias) as number[]).reduce((a, b) => a + b, 0)}
           tenantNome={tenantNome}

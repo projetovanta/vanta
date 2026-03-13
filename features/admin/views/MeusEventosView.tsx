@@ -10,7 +10,7 @@ import {
   ChevronRight,
 } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
-import { ContaVanta, EventoAdmin } from '../../../types';
+import { ContaVantaLegacy, EventoAdmin } from '../../../types';
 import { getAcessoEventos } from '../permissoes';
 import { eventosAdminService } from '../services/eventosAdminService';
 import { EventoDashboard } from './eventoDashboard';
@@ -20,7 +20,7 @@ type AbaEventos = 'ativos' | 'passados' | 'em_revisao' | 'rejeitados';
 export const MeusEventosView: React.FC<{
   onBack: () => void;
   currentUserId: string;
-  currentUserRole: ContaVanta;
+  currentUserRole: ContaVantaLegacy;
   comunidadeId?: string;
 }> = ({ onBack, currentUserId, currentUserRole, comunidadeId }) => {
   const [eventoAberto, setEventoAberto] = useState<string | null>(null);
@@ -261,21 +261,10 @@ export const MeusEventosView: React.FC<{
                       rejeitado
                     </span>
                   )}
-                  {ev.socios?.some(s => s.status === 'PENDENTE' || s.status === 'NEGOCIANDO') && (
-                    <span className="text-[0.4375rem] font-black uppercase tracking-widest px-1.5 py-0.5 bg-cyan-500/15 text-cyan-400 rounded-full border border-cyan-500/30">
-                      {ev.socios.find(s => s.status === 'NEGOCIANDO') ? 'negociando' : 'aguardando sócio'}
-                    </span>
-                  )}
-                  {ev.socios?.some(
-                    s => s.status === 'RECUSADO' || s.status === 'CANCELADO' || s.status === 'EXPIRADO',
-                  ) &&
+                  {ev.socios?.some(s => s.status === 'RECUSADO' || s.status === 'CANCELADO') &&
                     !ev.socios.some(s => s.status === 'ACEITO') && (
                       <span className="text-[0.4375rem] font-black uppercase tracking-widest px-1.5 py-0.5 bg-orange-500/15 text-orange-400 rounded-full border border-orange-500/30">
-                        {ev.socios.find(s => s.status === 'EXPIRADO')
-                          ? 'expirado'
-                          : ev.socios.find(s => s.status === 'CANCELADO')
-                            ? 'cancelado'
-                            : 'recusado'}
+                        {ev.socios.find(s => s.status === 'CANCELADO') ? 'cancelado' : 'recusado'}
                       </span>
                     )}
                 </div>

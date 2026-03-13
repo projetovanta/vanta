@@ -43,7 +43,7 @@ E o segundo bloco fundamental — depende de comunidade, alimenta todo o resto.
 | created_at | TIMESTAMPTZ | auto | schema.sql | now() |
 | updated_at | TIMESTAMPTZ | auto | schema.sql | trigger set_updated_at() |
 | tipo_fluxo | TEXT | nao | migration | FESTA_DA_CASA ou COM_SOCIO |
-| status_evento | TEXT | nao | migration | RASCUNHO, PENDENTE, NEGOCIANDO, EM_REVISAO, ATIVO, EM_ANDAMENTO, FINALIZADO, CANCELADO |
+| status_evento | TEXT | nao | migration | RASCUNHO, PENDENTE, EM_REVISAO, ATIVO, EM_ANDAMENTO, FINALIZADO, CANCELADO |
 | socio_convidado_id | UUID FK auth.users | nao | migration | DEPRECATED — usar socios_evento |
 | split_produtor | INTEGER | nao | migration | DEPRECATED — usar socios_evento |
 | split_socio | INTEGER | nao | migration | DEPRECATED — usar socios_evento |
@@ -90,7 +90,7 @@ E o segundo bloco fundamental — depende de comunidade, alimenta todo o resto.
 | socio_id | UUID FK profiles | Socio convidado |
 | split_percentual | INTEGER (0-100) | % do socio neste evento |
 | permissoes | TEXT[] | Permissoes do socio |
-| status | TEXT | PENDENTE, NEGOCIANDO, ACEITO, RECUSADO, CANCELADO, EXPIRADO |
+| status | TEXT | PENDENTE, ACEITO, RECUSADO, CANCELADO |
 | rodada_negociacao | INTEGER | Contador (max 3) |
 | mensagem_negociacao | TEXT | Ultima mensagem |
 | motivo_rejeicao | TEXT | Motivo se recusou |
@@ -159,11 +159,7 @@ E o segundo bloco fundamental — depende de comunidade, alimenta todo o resto.
 - `getEventosPendentes()` — SELECT status_evento = PENDENTE
 - `aprovarEvento(id)` — UPDATE publicado=true, status=APROVADO
 - `rejeitarEvento(id, motivo)` — UPDATE status=REJEITADO, motivo_rejeicao
-- `getConvitesPendentes()` — convites socio pendentes
-- `aceitarConvite(id)` — socio aceita
-- `recusarConvite(id)` — socio recusa
-- `reenviarConvite(id)` — reenvia convite
-- `contraPropostaConvite(id, dados)` — contraproposta de split
+- Negociação sócio REMOVIDA (13/03/2026) — sócio é auto-aceito na aprovação. Ver sub_negociacao_socio.md
 
 **Financeiro:**
 - `getContractedFees(id)` — taxas contratadas
@@ -207,7 +203,7 @@ E o segundo bloco fundamental — depende de comunidade, alimenta todo o resto.
 - Step 5 FINANCEIRO: aceitar ToS (TosAcceptModal obrigatorio)
 
 **Reacao no sistema (7 inserts + 1 trigger)**:
-1. INSERT eventos_admin (status PENDENTE ou NEGOCIANDO)
+1. INSERT eventos_admin (status PENDENTE)
 2. INSERT lotes + variacoes_ingresso
 3. cortesiasService.initCortesia (se habilitado)
 4. clubeService.upsertLotesMaisVanta (se MV ativo)

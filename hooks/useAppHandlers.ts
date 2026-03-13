@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Evento, Ingresso, Membro, Notificacao, TabState, ContaVanta, ProfileSubView } from '../types';
+import { Evento, Ingresso, Membro, Notificacao, TabState, ContaVantaLegacy, ProfileSubView } from '../types';
 import { useAuthStore } from '../stores/authStore';
 import { useTicketsStore } from '../stores/ticketsStore';
 import { useExtrasStore } from '../stores/extrasStore';
@@ -19,17 +19,7 @@ export const adminDeepLink: { tenantId: string | null; tenantTipo: 'COMUNIDADE' 
   tenantTipo: null,
 };
 
-const ROLES_COM_PORTAL_DIRETO: ContaVanta[] = [
-  'vanta_masteradm',
-  'vanta_gerente',
-  'vanta_socio',
-  'vanta_ger_portaria_lista',
-  'vanta_portaria_lista',
-  'vanta_ger_portaria_antecipado',
-  'vanta_portaria_antecipado',
-  'vanta_caixa',
-  'vanta_promoter',
-];
+const ROLES_COM_PORTAL_DIRETO: ContaVantaLegacy[] = ['vanta_masteradm'];
 
 export const useAppHandlers = (nav: Nav, pwa: PWA) => {
   // ── Store selectors (atômicos) ───────────────────────────────────────────
@@ -70,8 +60,6 @@ export const useAppHandlers = (nav: Nav, pwa: PWA) => {
   const [showProfileSuccess, setShowProfileSuccess] = useState(false);
   const [reviewTarget, setReviewTarget] = useState<{ eventoId: string; eventoNome: string } | null>(null);
   const [profilePreviewStatus, setProfilePreviewStatus] = useState<'PUBLIC' | 'FRIENDS'>('PUBLIC');
-  const [conviteSocioEventoId, setConviteSocioEventoId] = useState<string | null>(null);
-  const [negociacaoPapel, setNegociacaoPapel] = useState<'socio' | 'produtor'>('socio');
 
   // ── Derivados ────────────────────────────────────────────────────────────
   const isGuest = currentAccount.role === 'vanta_guest';
@@ -264,20 +252,11 @@ export const useAppHandlers = (nav: Nav, pwa: PWA) => {
         }
         break;
       }
+      case 'SOCIO_ADICIONADO':
       case 'CONVITE_SOCIO': {
+        // Abre o dashboard do evento no painel admin
         if (n.link) {
-          // Link pode ser eventoId puro ou /admin/evento/{eventoId}
-          const evId = n.link.includes('/') ? n.link.split('/').pop()! : n.link;
-          setConviteSocioEventoId(evId);
-          // Determinar papel: se o user é o criador → produtor, senão → sócio
-          supabase
-            .from('eventos_admin')
-            .select('created_by')
-            .eq('id', evId)
-            .maybeSingle()
-            .then(({ data }) => {
-              setNegociacaoPapel(data?.created_by === currentAccount?.id ? 'produtor' : 'socio');
-            });
+          openEventByLink(n.link);
         }
         break;
       }
@@ -412,9 +391,6 @@ export const useAppHandlers = (nav: Nav, pwa: PWA) => {
     setReviewTarget,
     profilePreviewStatus,
     setProfilePreviewStatus,
-    conviteSocioEventoId,
-    setConviteSocioEventoId,
-    negociacaoPapel,
     // handlers
     showSuccess,
     handleBuyTicketComposite,

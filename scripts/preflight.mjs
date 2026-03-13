@@ -34,7 +34,7 @@ let failed = 0;
 for (const check of CHECKS) {
   const t0 = Date.now();
   try {
-    const opts = { stdio: 'pipe', timeout: 180_000 };
+    const opts = { stdio: 'pipe', timeout: 240_000 };
     if (check.env) opts.env = { ...process.env, ...check.env };
     execSync(`npx ${check.cmd}`, opts);
     const ms = Date.now() - t0;

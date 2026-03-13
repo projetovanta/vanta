@@ -149,9 +149,11 @@ Ja documentada em modulo_evento.md (CuponsSubView). Usado aqui via cuponsService
 4. Usuario paga no Stripe
 5. Stripe dispara webhook → `stripe-webhook` processa
 6. CheckoutSuccessPage faz polling em `pedidos_checkout` por status `pago`
-**COMPLETO**: `stripe-webhook` processa assinaturas MAIS VANTA e ingressos (`metadata.type === 'ingresso'` → busca pedido → RPC `processar_compra_checkout` → status='pago'). CheckoutSuccessPage tem rota `/checkout/sucesso` no App.tsx (lazy-loaded).
-**Edge Functions**: `create-ticket-checkout` (cria sessão), `stripe-webhook` (processa ingressos + assinaturas)
+**COMPLETO**: `stripe-webhook` processa assinaturas MAIS VANTA e ingressos (`metadata.type === 'ingresso'` → busca pedido → RPC `processar_compra_checkout` → status='pago'). Após confirmar, notifica comprador (in-app + push + email). CheckoutSuccessPage tem rota `/checkout/sucesso` no App.tsx (lazy-loaded).
+**Edge Functions**: `create-ticket-checkout` (cria sessão), `stripe-webhook` (processa ingressos + assinaturas + notifica comprador)
 **Tabela**: `pedidos_checkout` (migration `20260309200000_pedidos_checkout.sql`)
+**Cron**: `expirar-pedidos-checkout-30min` (a cada 5min, marca PENDENTE → EXPIRADO se created_at > 30min)
+**Cancelamento**: CheckoutPage lê `?cancelado=true` e exibe aviso visual (banner amber)
 
 ### MEIA-ENTRADA (comprovante)
 **Quem**: Usuario que selecionou variacao com requer_comprovante=true

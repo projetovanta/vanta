@@ -89,8 +89,8 @@ Admin abre ModalReembolsoManual -> seleciona ticket -> motivo
 - `recusarReembolso(id, motivo)` — recusa
 
 ### Notificacao
-- REEMBOLSO_APROVADO enviado ao comprador (eventosAdminFinanceiro.ts)
-- Email via Edge Function send-reembolso-email (Resend)
+- reembolsoService usa notifyService (in-app + push FCM + email Resend — 3 canais automáticos)
+- Tipos: REEMBOLSO_SOLICITADO (sócios/gerentes/masters), REEMBOLSO_APROVADO, REEMBOLSO_RECUSADO (solicitante)
 
 ### Limite mensal
 - Tabela reembolsos_contagem: (user_id, mes_ano, contagem)
@@ -118,7 +118,7 @@ Admin abre ModalReembolsoManual -> seleciona ticket -> motivo
 | 7 | Reembolso manual | OK | ModalReembolsoManual |
 | 8 | Hierarquia reembolso (socio → gerente → master) | OK | 3 etapas |
 | 9 | Limite mensal | OK | reembolsos_contagem |
-| 10 | Notif reembolso | OK | REEMBOLSO_APROVADO + email |
+| 10 | Notif reembolso (3 canais) | OK | REEMBOLSO_SOLICITADO/APROVADO/RECUSADO via notifyService (in-app + push + email) |
 | 11 | Chargeback | OK | registrarChargeback |
 | 12 | Comprovante de pagamento saque | NAO EXISTE | Sem upload de comprovante |
 | 13 | Extrato financeiro | NAO EXISTE | Sem extrato detalhado |

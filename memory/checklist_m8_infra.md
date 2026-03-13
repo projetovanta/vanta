@@ -103,7 +103,7 @@
 
 ### F8.18 — send-reembolso-email
 - O QUE: envia email confirmacao reembolso
-- STATUS: OK (deployed)
+- STATUS: LEGADO (reembolsoService agora usa notifyService — 3 canais automáticos)
 
 ## INFRA APP
 

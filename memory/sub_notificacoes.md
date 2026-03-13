@@ -56,7 +56,7 @@ Parametros: userId, tipo, titulo, mensagem, link
 | Funcao | Canal | Descricao |
 |---|---|---|
 | send-push | Push FCM | Envia push notification |
-| send-reembolso-email | Email Resend | Notifica reembolso |
+| send-reembolso-email | Email Resend | Notifica reembolso (legado — reembolsoService agora usa notifyService) |
 | notif-infraccao-registrada | In-app + Push | Infracao MV |
 | send-welcome-email | Email Resend | Boas-vindas |
 | send-buyer-notification | In-app + Push | Comunicação com compradores de evento (admin envia) |

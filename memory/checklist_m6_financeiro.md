@@ -35,7 +35,7 @@
 - QUEM: gerente/socio/master | ONDE: ModalReembolsoManual, ReembolsosSection
 - COMO: reembolsoService.iniciarReembolso()
 - TABELAS: reembolsos (INSERT), tickets_caixa (UPDATE status=REEMBOLSADO)
-- NOTIF: notify() ao comprador "Reembolso aprovado" + email (send-reembolso-email)
+- NOTIF: notifyService (3 canais: in-app + push + email) — REEMBOLSO_SOLICITADO/APROVADO/RECUSADO
 - FALTA: Stripe refund real
 - STATUS: PARCIAL — refund simulado
 

@@ -10,6 +10,7 @@ import { supabase } from '../../../../services/supabaseClient';
 import { useAuthStore } from '../../../../stores/authStore';
 import { TYPOGRAPHY } from '../../../../constants';
 import { tsBR } from '../../../../utils';
+import { VantaDropdown } from '../../../../components/VantaDropdown';
 import type { TierMaisVanta } from '../../../../types';
 
 interface EventoOption {
@@ -137,21 +138,12 @@ export const ConviteEspecialMVView: React.FC = () => {
       {/* Selecionar evento */}
       <div className="space-y-1.5">
         <label className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest">Evento</label>
-        <div className="relative">
-          <select
-            value={eventoId}
-            onChange={e => setEventoId(e.target.value)}
-            className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 text-white text-sm appearance-none"
-          >
-            {/* lint-layout-ok — select admin-only, não é user-facing */}
-            <option value="">Selecione um evento</option>
-            {eventos.map(ev => (
-              <option key={ev.id} value={ev.id}>
-                {ev.nome}
-              </option>
-            ))}
-          </select>
-        </div>
+        <VantaDropdown
+          value={eventoId}
+          options={eventos.map(ev => ({ value: ev.id, label: ev.nome }))}
+          onChange={setEventoId}
+          placeholder="Selecione um evento"
+        />
       </div>
 
       {/* Filtros */}

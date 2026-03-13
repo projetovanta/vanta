@@ -39,7 +39,8 @@ React Router v6 funciona nos dois. Ver `memory/plataformas.md` para regra comple
 - **Logger**: `services/logger.ts` — wrapper Sentry. `logger.error(msg, err)` → `Sentry.captureException()` + console.error. `logger.warn(msg, data)` → `Sentry.addBreadcrumb()` + console.warn
 - **Ativo em**: authService, authStore, CheckoutPage, transferenciaService, reembolsoService, eventosAdminFinanceiro
 - **Edge functions**: entry/result logging em stripe-webhook e send-push (console.log/warn)
-- **Edge Functions novas**: weekly-report (cron domingo 10h BRT), send-buyer-notification (push segmentado). stripe-webhook atualizado com handler para ingressos
+- **Edge Functions novas**: weekly-report (cron domingo 10h BRT), send-buyer-notification (push segmentado). stripe-webhook atualizado com handler para ingressos + notifica comprador (in-app + push + email)
+- **Cron jobs**: weekly-report-domingo-10h, expirar-pedidos-checkout-30min (cada 5min, PENDENTE→EXPIRADO após 30min)
 - **Sourcemaps**: `hidden` (não expostos ao browser, disponíveis para Sentry)
 
 ## Hardening Patterns

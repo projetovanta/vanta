@@ -11,6 +11,7 @@ import { supabase } from '../../../services/supabaseClient';
 import type { Reembolso, StatusReembolso } from './eventosAdminTypes';
 import { logger } from '../../../services/logger';
 import { tsBR } from '../../../utils';
+import { notify, notifyMany } from '../../../services/notifyService';
 
 // ── Mapeador: snake_case (Supabase) → camelCase (TS) ─────────────────────
 const mapReembolsoFromDB = (row: any): Reembolso => ({
@@ -150,15 +151,10 @@ async function notificarNivel(eventoId: string, status: StatusReembolso, valor: 
       .eq('ativo', true);
 
     if (socios?.length) {
-      for (const s of socios) {
-        await supabase.from('notifications').insert({
-          user_id: s.user_id,
-          tipo: 'REEMBOLSO_SOLICITADO',
-          titulo: 'Reembolso aguarda sua análise',
-          mensagem: msgBase,
-          link: eventoId,
-        });
-      }
+      void notifyMany(
+        socios.map(s => s.user_id as string),
+        { tipo: 'REEMBOLSO_SOLICITADO', titulo: 'Reembolso aguarda sua análise', mensagem: msgBase, link: eventoId },
+      );
     }
   } else if (status === 'AGUARDANDO_GERENTE') {
     const { data: gerentes } = await supabase
@@ -170,29 +166,29 @@ async function notificarNivel(eventoId: string, status: StatusReembolso, valor: 
       .eq('ativo', true);
 
     if (gerentes?.length) {
-      for (const g of gerentes) {
-        await supabase.from('notifications').insert({
-          user_id: g.user_id,
+      void notifyMany(
+        gerentes.map(g => g.user_id as string),
+        {
           tipo: 'REEMBOLSO_SOLICITADO',
           titulo: 'Reembolso aguarda sua autorização',
           mensagem: msgBase,
           link: eventoId,
-        });
-      }
+        },
+      );
     }
   } else if (status === 'AGUARDANDO_MASTER') {
     const { data: masters } = await supabase.from('profiles').select('id').eq('role', 'vanta_masteradm');
 
     if (masters?.length) {
-      for (const m of masters) {
-        await supabase.from('notifications').insert({
-          user_id: m.id,
+      void notifyMany(
+        masters.map(m => m.id as string),
+        {
           tipo: 'REEMBOLSO_SOLICITADO',
           titulo: 'Reembolso aguarda aprovação final',
           mensagem: msgBase,
           link: 'ADMIN_HUB',
-        });
-      }
+        },
+      );
     }
   }
 }
@@ -435,8 +431,8 @@ export async function aprovarReembolsoEtapa(
         .eq('id', reembolso.evento_id)
         .maybeSingle();
 
-      await supabase.from('notifications').insert({
-        user_id: reembolso.solicitado_por,
+      void notify({
+        userId: reembolso.solicitado_por as string,
         tipo: 'REEMBOLSO_APROVADO',
         titulo: 'Reembolso aprovado!',
         mensagem: `Seu reembolso de R$${Number(reembolso.valor).toFixed(2)}${evento?.nome ? ` (${evento.nome})` : ''} foi processado.`,
@@ -512,8 +508,8 @@ export async function rejeitarReembolsoManual(
         .eq('id', reembolso.evento_id)
         .maybeSingle();
 
-      await supabase.from('notifications').insert({
-        user_id: reembolso.solicitado_por,
+      void notify({
+        userId: reembolso.solicitado_por as string,
         tipo: 'REEMBOLSO_RECUSADO',
         titulo: 'Reembolso recusado',
         mensagem: `Seu pedido de reembolso${evento?.nome ? ` para ${evento.nome}` : ''} foi recusado. Motivo: ${motivo}`,

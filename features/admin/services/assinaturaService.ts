@@ -373,7 +373,7 @@ export const assinaturaService = {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ comunidadeId, planoId, returnUrl }),
+        body: JSON.stringify({ comunidadeId, plano: planoId, returnUrl }),
       });
 
       const json = await res.json();

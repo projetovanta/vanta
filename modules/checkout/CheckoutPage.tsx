@@ -92,6 +92,7 @@ export const CheckoutPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const refCode = searchParams.get('ref') ?? '';
   const cupomUrl = searchParams.get('cupom') ?? '';
+  const foiCancelado = searchParams.get('cancelado') === 'true';
   const [evento, setEvento] = useState<CheckoutEvento | null>(null);
   const [variacoes, setVariacoes] = useState<CheckoutVariacao[]>([]);
   const [loteAtivoId, setLoteAtivoId] = useState('');
@@ -564,6 +565,15 @@ export const CheckoutPage: React.FC = () => {
       </div>
 
       <div className="flex-1 overflow-y-auto px-5 -mt-4 space-y-6 pb-4">
+        {/* Aviso de pagamento cancelado */}
+        {foiCancelado && (
+          <div className="flex items-center gap-2 bg-amber-500/10 border border-amber-500/20 rounded-xl px-4 py-3">
+            <AlertTriangle size="1rem" className="text-amber-400 shrink-0" />
+            <p className="text-amber-300 text-xs">
+              Pagamento cancelado. Nenhum valor foi cobrado. Você pode tentar novamente.
+            </p>
+          </div>
+        )}
         {/* Info */}
         <div>
           <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1">{evento.formato}</p>

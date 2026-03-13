@@ -163,6 +163,56 @@ serve(async (req: Request) => {
             .eq('id', pedidoId);
 
           if (updErr) console.error('[stripe-webhook] ingresso: update pedido erro', updErr.message);
+
+          // Notificar comprador (in-app + push + email)
+          if (allOk && pedido.user_id) {
+            const totalQty = itens.reduce((s: number, i: { quantidade: number }) => s + i.quantidade, 0);
+            const { data: evt } = await supabase
+              .from('eventos_admin')
+              .select('nome')
+              .eq('id', pedido.evento_id)
+              .maybeSingle();
+            const eventoNome = (evt?.nome as string) ?? 'evento';
+
+            // In-app notification
+            await supabase.from('notifications').insert({
+              user_id: pedido.user_id,
+              tipo: 'COMPRA_CONFIRMADA',
+              titulo: 'Compra confirmada!',
+              mensagem: `${totalQty} ingresso(s) para ${eventoNome}. Confira na sua carteira.`,
+              link: 'WALLET',
+            });
+
+            // Push (fire-and-forget)
+            fetch(`${SUPABASE_URL}/functions/v1/send-push`, {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                user_id: pedido.user_id,
+                title: 'Compra confirmada!',
+                body: `${totalQty} ingresso(s) para ${eventoNome}. Confira na sua carteira.`,
+                data: { link: 'WALLET' },
+              }),
+            }).catch(e => console.warn('[stripe-webhook] push error', e));
+
+            // Email (fire-and-forget)
+            fetch(`${SUPABASE_URL}/functions/v1/send-notification-email`, {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                user_id: pedido.user_id,
+                subject: 'Compra confirmada!',
+                body: `Seus ${totalQty} ingresso(s) para "${eventoNome}" estão disponíveis na sua carteira VANTA.`,
+              }),
+            }).catch(e => console.warn('[stripe-webhook] email error', e));
+          }
+
           console.log('[stripe-webhook] ingresso processado', { pedidoId, itens: itens.length, allOk });
           break;
         }

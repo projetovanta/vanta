@@ -31,6 +31,7 @@ import { TYPOGRAPHY } from '../../../../constants';
 import { OptimizedImage } from '../../../../components/OptimizedImage';
 import { ContaVantaLegacy } from '../../../../types';
 import { eventosAdminService } from '../../services/eventosAdminService';
+import { supabase } from '../../../../services/supabaseClient';
 import { listasService } from '../../services/listasService';
 import { cortesiasService } from '../../services/cortesiasService';
 import {
@@ -292,19 +293,16 @@ export const EventoDashboard: React.FC<{
         // Enviar push ao dono do evento (gerente/sócio) via send-push Edge Function
         const donos = [evento.criadorId].filter(Boolean);
         if (donos.length > 0) {
-          fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-push`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-            },
-            body: JSON.stringify({
-              userIds: donos,
-              title: t >= 95 ? '🔴 Lotação crítica!' : '⚠️ Lotação alta',
-              body: `${evento.nome} está em ${kpis.ocupacao}% de ocupação.`,
-              data: { eventoId: evento.id, tipo: 'ALERTA_LOTACAO' },
-            }),
-          }).catch(() => {});
+          supabase.functions
+            .invoke('send-push', {
+              body: {
+                userIds: donos,
+                title: t >= 95 ? '🔴 Lotação crítica!' : '⚠️ Lotação alta',
+                body: `${evento.nome} está em ${kpis.ocupacao}% de ocupação.`,
+                data: { eventoId: evento.id, tipo: 'ALERTA_LOTACAO' },
+              },
+            })
+            .catch(() => {});
         }
       }
     }

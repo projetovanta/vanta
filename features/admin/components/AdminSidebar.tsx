@@ -33,6 +33,8 @@ import {
   Eye,
   Send,
   Lightbulb,
+  HelpCircle,
+  LinkIcon,
   type LucideIcon,
 } from 'lucide-react';
 import type { ContaVantaLegacy } from '../../../types';
@@ -80,7 +82,9 @@ export type AdminSubView =
   | 'MASTER_DASHBOARD'
   | 'COMUNIDADE_DASHBOARD'
   | 'MAIS_VANTA_DASHBOARD'
-  | 'INTELIGENCIA';
+  | 'INTELIGENCIA'
+  | 'FAQ'
+  | 'LINKS_UTEIS';
 
 export interface SidebarSectionItem {
   id: AdminSubView;
@@ -252,6 +256,8 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
         roles: ['vanta_masteradm'],
       },
       { id: 'DIAGNOSTICO', label: 'Diagnóstico', icon: Activity, color: COR.SISTEMA, roles: ['vanta_masteradm'] },
+      { id: 'FAQ', label: 'FAQ', icon: HelpCircle, color: COR.SISTEMA, roles: ['vanta_masteradm'] },
+      { id: 'LINKS_UTEIS', label: 'Links Úteis', icon: LinkIcon, color: COR.SISTEMA, roles: ['vanta_masteradm'] },
     ],
   },
 ];

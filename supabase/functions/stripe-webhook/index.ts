@@ -221,6 +221,52 @@ serve(async (req: Request) => {
         break;
       }
 
+      case 'charge.dispute.created': {
+        const dispute = event.data.object;
+        const paymentIntent = dispute.payment_intent as string | undefined;
+        const reason = (dispute.reason as string) ?? 'unknown';
+        const disputeId = dispute.id as string;
+
+        if (paymentIntent) {
+          // Buscar pedido pelo payment_intent
+          const { data: pedido } = await supabase
+            .from('pedidos_checkout')
+            .select('id, evento_id, user_id')
+            .eq('stripe_payment_intent_id', paymentIntent)
+            .maybeSingle();
+
+          if (pedido) {
+            // Buscar tickets do comprador nesse evento
+            const { data: tickets } = await supabase
+              .from('tickets_caixa')
+              .select('id, evento_id, valor')
+              .eq('evento_id', pedido.evento_id)
+              .eq('owner_id', pedido.user_id)
+              .in('status', ['DISPONIVEL', 'USADO']);
+
+            for (const ticket of tickets ?? []) {
+              await supabase.from('chargebacks').insert({
+                ticket_id: ticket.id,
+                evento_id: ticket.evento_id,
+                valor: ticket.valor ?? 0,
+                motivo: reason,
+                gateway_ref: disputeId,
+                status: 'ABERTO',
+              });
+
+              await supabase
+                .from('tickets_caixa')
+                .update({ status: 'CANCELADO' })
+                .eq('id', ticket.id);
+            }
+            console.log('[stripe-webhook] charge.dispute.created processed', { disputeId, pedidoId: pedido.id, tickets: (tickets ?? []).length });
+          } else {
+            console.warn('[stripe-webhook] charge.dispute: pedido não encontrado', { paymentIntent });
+          }
+        }
+        break;
+      }
+
       default:
         break;
     }

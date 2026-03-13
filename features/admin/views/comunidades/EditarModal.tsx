@@ -902,6 +902,7 @@ export const EditarModal: React.FC<{
             aspect={cropType === 'perfil' ? 1 : 3}
             minWidth={cropType === 'perfil' ? 400 : 1200}
             minHeight={cropType === 'perfil' ? 400 : 400}
+            maxPx={cropType === 'perfil' ? 400 : 1200}
             label={cropType === 'perfil' ? 'Foto de Perfil' : 'Foto de Capa'}
             onConfirm={dataUrl => {
               if (cropType === 'perfil') setFoto(dataUrl);

@@ -137,6 +137,8 @@ const ComunidadeDashboardView = lazy(() =>
 const MaisVantaDashboardView = lazy(() =>
   import('./views/maisVantaDashboard').then(m => ({ default: m.MaisVantaDashboard })),
 );
+const FaqView = lazy(() => import('./views/FaqView').then(m => ({ default: m.FaqView })));
+const LinksUteisView = lazy(() => import('./views/LinksUteisView').then(m => ({ default: m.LinksUteisView })));
 export const AdminDashboardView: React.FC<{
   onClose: () => void;
   adminNome: string;
@@ -676,6 +678,14 @@ export const AdminDashboardView: React.FC<{
     if (subView === 'DIAGNOSTICO') {
       if (!isMasterOnly(currentUserId, adminRole)) return guardBlock(back);
       return <DiagnosticoView onBack={back} />;
+    }
+    if (subView === 'FAQ') {
+      if (!isMasterOnly(currentUserId, adminRole)) return guardBlock(back);
+      return <FaqView onBack={back} />;
+    }
+    if (subView === 'LINKS_UTEIS') {
+      if (!isMasterOnly(currentUserId, adminRole)) return guardBlock(back);
+      return <LinksUteisView onBack={back} />;
     }
     if (subView === 'CATEGORIAS') {
       if (!isMasterOnly(currentUserId, adminRole)) return guardBlock(back);

@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState, useMemo } from 'react';
 import { X, Bell, Check, UserCheck, UserX, Gift, Star, UserCog, Crown, Building2, Wallet } from 'lucide-react';
 import { TYPOGRAPHY } from '../../constants';
+import { OptimizedImage } from '../OptimizedImage';
 import { Notificacao, Membro } from '../../types';
 import { supabase } from '../../services/supabaseClient';
 import { eventosAdminService } from '../../features/admin/services/eventosAdminService';
@@ -183,12 +184,7 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({
       if (cached?.foto) {
         return (
           <div className="w-8 h-8 rounded-full overflow-hidden border border-white/10">
-            <img
-              src={cached.foto}
-              alt={cached.nome}
-              className="w-full h-full object-cover"
-              referrerPolicy="no-referrer"
-            />
+            <OptimizedImage src={cached.foto} width={32} alt={cached.nome} className="w-full h-full object-cover" />
           </div>
         );
       }
@@ -211,12 +207,7 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({
       if (sysEventPhoto) {
         return (
           <div className="w-8 h-8 rounded-xl overflow-hidden border border-white/10">
-            <img
-              src={sysEventPhoto}
-              alt={notif.titulo}
-              className="w-full h-full object-cover"
-              referrerPolicy="no-referrer"
-            />
+            <OptimizedImage src={sysEventPhoto} width={32} alt={notif.titulo} className="w-full h-full object-cover" />
           </div>
         );
       }
@@ -229,12 +220,7 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({
       if (eventPhoto) {
         return (
           <div className="w-8 h-8 rounded-xl overflow-hidden border border-white/10">
-            <img
-              src={eventPhoto}
-              alt={notif.titulo}
-              className="w-full h-full object-cover"
-              referrerPolicy="no-referrer"
-            />
+            <OptimizedImage src={eventPhoto} width={32} alt={notif.titulo} className="w-full h-full object-cover" />
           </div>
         );
       }

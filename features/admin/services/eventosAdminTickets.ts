@@ -207,6 +207,24 @@ export const validarEQueimarIngresso = async (
       { status: 'DISPONIVEL' },
       { status: 'USADO' },
     );
+
+    // Acumular ponto de fidelidade (fire-and-forget)
+    supabase
+      .from('tickets_caixa')
+      .select('owner_id, eventos_admin!inner(comunidade_id)')
+      .eq('id', ticketId)
+      .maybeSingle()
+      .then(({ data: ticketData }) => {
+        if (!ticketData) return;
+        const ownerId = (ticketData as Record<string, unknown>).owner_id as string | null;
+        const ev = (ticketData as Record<string, unknown>).eventos_admin as Record<string, unknown> | null;
+        const comunidadeId = ev?.comunidade_id as string | null;
+        if (ownerId && comunidadeId) {
+          import('./fidelidadeService').then(({ fidelidadeService }) => {
+            fidelidadeService.acumularPonto(ownerId, comunidadeId, eventoId).catch(() => {});
+          });
+        }
+      });
   }
 
   return { resultado: resultado as ValidacaoIngresso };

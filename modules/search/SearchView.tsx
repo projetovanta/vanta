@@ -12,6 +12,7 @@ import { PriceFilterModal } from './components/PriceFilterModal';
 import { getMinPrice } from '../../utils';
 import { authService } from '../../services/authService';
 import { useBloqueados } from '../../hooks/useBloqueados';
+import { OptimizedImage } from '../../components/OptimizedImage';
 import { supabase } from '../../services/supabaseClient';
 import { useAuthStore } from '../../stores/authStore';
 import { useExtrasStore } from '../../stores/extrasStore';
@@ -337,7 +338,12 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
                           className="w-full flex items-center gap-3 bg-zinc-900/50 border border-white/5 rounded-xl p-3 text-left active:scale-[0.98] transition-all"
                         >
                           <div className="w-10 h-10 rounded-lg overflow-hidden shrink-0 bg-zinc-800">
-                            <img loading="lazy" src={e.imagem} className="w-full h-full object-cover" alt={e.titulo} />
+                            <OptimizedImage
+                              src={e.imagem}
+                              width={40}
+                              className="w-full h-full object-cover"
+                              alt={e.titulo}
+                            />
                           </div>
                           <div className="flex-1 min-w-0">
                             <p className="text-white text-sm font-bold truncate">{e.titulo}</p>

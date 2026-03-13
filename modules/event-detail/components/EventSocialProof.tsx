@@ -6,6 +6,7 @@ import { supabase } from '../../../services/supabaseClient';
 import { profileToMembro } from '../../../services/authService';
 import { useDebounce } from '../../../hooks/useDebounce';
 import { useAuthStore } from '../../../stores/authStore';
+import { OptimizedImage } from '../../../components/OptimizedImage';
 import { useSocialStore } from '../../../stores/socialStore';
 
 interface EventSocialProofProps {
@@ -139,12 +140,11 @@ export const EventSocialProof: React.FC<EventSocialProofProps> = ({ eventoId, to
               key={member.id}
               className={`relative inline-block h-6 w-6 rounded-full ${hasFriends ? 'ring-2 ring-[#FFD300]/40' : 'ring-2 ring-[#0a0a0a]'} z-${30 - i * 10}`}
             >
-              <img
-                loading="lazy"
-                className="h-full w-full rounded-full object-cover"
+              <OptimizedImage
                 src={member.foto}
+                width={24}
+                className="h-full w-full rounded-full object-cover"
                 alt={member.nome}
-                referrerPolicy="no-referrer"
               />
             </div>
           ))}
@@ -266,12 +266,11 @@ export const EventSocialProof: React.FC<EventSocialProofProps> = ({ eventoId, to
                             className="w-full flex items-center gap-4 p-3 rounded-2xl hover:bg-zinc-900/40 active:bg-zinc-900 transition-colors border border-transparent hover:border-[#FFD300]/10"
                           >
                             <div className="w-12 h-12 rounded-full border-2 border-[#FFD300]/30 overflow-hidden bg-black shrink-0">
-                              <img
-                                loading="lazy"
+                              <OptimizedImage
                                 src={member.foto}
+                                width={48}
                                 alt={member.nome}
                                 className="w-full h-full object-cover"
-                                referrerPolicy="no-referrer"
                               />
                             </div>
                             <div className="flex-1 text-left">
@@ -297,12 +296,11 @@ export const EventSocialProof: React.FC<EventSocialProofProps> = ({ eventoId, to
                             className="w-full flex items-center gap-4 p-3 rounded-2xl hover:bg-zinc-900/40 active:bg-zinc-900 transition-colors border border-transparent hover:border-white/5"
                           >
                             <div className="w-12 h-12 rounded-full border border-white/10 overflow-hidden bg-black shrink-0">
-                              <img
-                                loading="lazy"
+                              <OptimizedImage
                                 src={member.foto}
+                                width={48}
                                 alt={member.nome}
                                 className="w-full h-full object-cover"
-                                referrerPolicy="no-referrer"
                               />
                             </div>
                             <div className="flex-1 text-left">

@@ -22,6 +22,7 @@ import {
   Ban,
 } from 'lucide-react';
 import { TYPOGRAPHY } from '../../constants';
+import { OptimizedImage } from '../../components/OptimizedImage';
 import { ProfileSubView, Membro, Evento } from '../../types';
 import { EditProfileView } from './EditProfileView';
 import { PreferencesView } from './PreferencesView';
@@ -283,11 +284,11 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
           <div className="relative inline-block mb-4">
             <div className={`w-32 h-32 rounded-full p-[3px] ${photoBorderClass} shadow-2xl`}>
               <div className="w-full h-full rounded-full border-4 border-[#0a0a0a] overflow-hidden bg-black flex items-center justify-center">
-                <img
+                <OptimizedImage
                   src={profile.foto}
+                  width={128}
                   alt={profile.nome}
                   className="w-full h-full object-cover"
-                  referrerPolicy="no-referrer"
                 />
               </div>
             </div>

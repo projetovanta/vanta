@@ -1279,6 +1279,7 @@ const CardModal: React.FC<{
             aspect={3 / 2}
             minWidth={900}
             minHeight={600}
+            maxPx={1000}
             label="Imagem do Card"
             onConfirm={handleCropConfirm}
             onClose={() => setCropSrc(null)}

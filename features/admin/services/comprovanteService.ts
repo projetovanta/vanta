@@ -12,6 +12,7 @@ import type { ComprovanteMeia, ComprovanteFoto, StatusComprovante } from '../../
 type ComprovanteRow = Database['public']['Tables']['comprovantes_meia']['Row'];
 
 import { tsBR } from '../../../utils';
+import { compressImage } from '../../../modules/profile/utils/imageUtils';
 
 const BUCKET = 'comprovantes-meia';
 
@@ -138,7 +139,8 @@ export const comprovanteService = {
         .remove([path])
         .catch(() => {});
 
-      const blob = dataUrlToBlob(arq.dataUrl);
+      const finalDataUrl = ext === 'jpg' ? await compressImage(arq.dataUrl, 1200, 0.78) : arq.dataUrl;
+      const blob = dataUrlToBlob(finalDataUrl);
       const { error: uploadErr } = await supabase.storage
         .from(BUCKET)
         .upload(path, blob, { contentType, upsert: true });

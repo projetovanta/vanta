@@ -22,6 +22,7 @@ import { comprovanteService } from '../../features/admin/services/comprovanteSer
 import { notify } from '../../services/notifyService';
 import { comemoracaoService } from '../../services/comemoracaoService';
 import { logger } from '../../services/logger';
+import { OptimizedImage } from '../../components/OptimizedImage';
 import { SuccessScreen } from './SuccessScreen';
 import { WaitlistModal } from './WaitlistModal';
 import { CompletarPerfilCPF } from '../../components/CompletarPerfilCPF';
@@ -546,7 +547,12 @@ export const CheckoutPage: React.FC = () => {
     >
       {/* Hero */}
       <div className="relative aspect-[21/9] max-h-56 shrink-0 overflow-hidden">
-        <img loading="lazy" src={evento.imagem} alt={evento.titulo} className="w-full h-full object-cover opacity-60" />
+        <OptimizedImage
+          src={evento.imagem}
+          width={500}
+          alt={evento.titulo}
+          className="w-full h-full object-cover opacity-60"
+        />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#0A0A0A]" />
         <button
           onClick={() => window.close()}

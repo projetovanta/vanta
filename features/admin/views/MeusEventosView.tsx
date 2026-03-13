@@ -10,6 +10,7 @@ import {
   ChevronRight,
 } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
+import { OptimizedImage } from '../../../components/OptimizedImage';
 import { ContaVantaLegacy, EventoAdmin } from '../../../types';
 import { getAcessoEventos } from '../permissoes';
 import { eventosAdminService } from '../services/eventosAdminService';
@@ -228,7 +229,9 @@ export const MeusEventosView: React.FC<{
                 className="w-full bg-zinc-900/40 border border-white/5 rounded-2xl overflow-hidden flex items-center gap-4 p-4 active:border-[#FFD300]/20 active:bg-[#FFD300]/5 transition-all text-left"
               >
                 <div className="w-14 h-14 rounded-xl overflow-hidden shrink-0 bg-zinc-900">
-                  {ev.foto && <img loading="lazy" src={ev.foto} alt={ev.nome} className="w-full h-full object-cover" />}
+                  {ev.foto && (
+                    <OptimizedImage src={ev.foto} width={56} alt={ev.nome} className="w-full h-full object-cover" />
+                  )}
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-white font-bold text-sm leading-tight truncate mb-1">{ev.nome}</p>

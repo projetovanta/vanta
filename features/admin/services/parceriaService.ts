@@ -1,4 +1,5 @@
 import { supabase } from '../../../services/supabaseClient';
+import { compressFile } from '../../../modules/profile/utils/imageUtils';
 import { notify } from '../../../services/notifyService';
 import { Database } from '../../../types/supabase';
 
@@ -303,9 +304,10 @@ export const parceriaService = {
       const ext = file.name.split('.').pop() ?? 'jpg';
       const path = `${authData.user.id}/${Date.now()}_${i}.${ext}`;
 
+      const compressed = await compressFile(file, 1000, 0.78);
       const { error } = await supabase.storage
         .from('parceria-fotos')
-        .upload(path, file, { upsert: true, contentType: file.type });
+        .upload(path, compressed, { upsert: true, contentType: 'image/jpeg' });
 
       if (error) {
         console.error('[parceriaService] upload foto erro:', error);

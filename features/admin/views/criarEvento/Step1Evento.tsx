@@ -151,6 +151,7 @@ export const Step1Evento: React.FC<Props> = p => {
           aspect={4 / 5}
           minWidth={1080}
           minHeight={1350}
+          maxPx={1200}
           label="Foto do Evento"
           onConfirm={dataUrl => {
             p.setFoto(dataUrl);

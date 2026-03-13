@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import { BarChart, Bar, XAxis, ResponsiveContainer, Tooltip } from 'recharts';
 import { TYPOGRAPHY } from '../../../constants';
+import { OptimizedImage } from '../../../components/OptimizedImage';
 import { Notificacao, Comunidade, EventoAdmin, ContaVantaLegacy } from '../../../types';
 import { eventosAdminService } from '../services/eventosAdminService';
 import { getAcessoComunidades } from '../permissoes';
@@ -67,7 +68,7 @@ const EventoCard: React.FC<{
     >
       <div className="aspect-[16/6] max-h-[11.25rem] w-full">
         {ev.foto ? (
-          <img loading="lazy" src={ev.foto} alt={ev.nome} className="w-full h-full object-cover" />
+          <OptimizedImage src={ev.foto} width={500} alt={ev.nome} className="w-full h-full object-cover" />
         ) : (
           <div className="w-full h-full bg-zinc-900 flex items-center justify-center">
             <Calendar size="1.5rem" className="text-zinc-800" />
@@ -325,7 +326,12 @@ export const GerenteDashboardView: React.FC<{
         <div className="relative shrink-0">
           <div className="h-28 w-full">
             {comunidade?.foto ? (
-              <img loading="lazy" src={comunidade.foto} alt={comunidadeNome} className="w-full h-full object-cover" />
+              <OptimizedImage
+                src={comunidade.foto}
+                width={80}
+                alt={comunidadeNome}
+                className="w-full h-full object-cover"
+              />
             ) : (
               <div className="w-full h-full bg-zinc-900" />
             )}

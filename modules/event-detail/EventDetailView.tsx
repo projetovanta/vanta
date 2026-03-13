@@ -23,6 +23,7 @@ import ReviewModal from '../../components/ReviewModal';
 import { ComemoracaoFormView } from '../community/ComemoracaoFormView';
 import { trackEventOpen } from '../../services/analyticsService';
 import type { BeneficioMV } from '../../features/admin/services/clube/clubeLotesService';
+import { getConfig as getMvConfig } from '../../features/admin/services/clube/clubeConfigService';
 import { ReportModal } from '../../components/ReportModal';
 import { globalToast } from '../../components/Toast';
 
@@ -34,6 +35,7 @@ interface EventDetailViewProps {
   onMemberClick: (membro: Membro) => void;
   onComunidadeClick?: (id: string) => void;
   onSuccess?: (message: string) => void;
+  onNavigateToClube?: () => void;
 }
 
 export const EventDetailView: React.FC<EventDetailViewProps> = ({
@@ -44,6 +46,7 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
   onMemberClick,
   onComunidadeClick,
   onSuccess,
+  onNavigateToClube,
 }) => {
   const profile = useAuthStore(s => s.profile);
   const mutualFriends = useSocialStore(s => s.mutualFriends);
@@ -62,6 +65,7 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
   const [showComemoracao, setShowComemoracao] = useState(false);
   const [showReport, setShowReport] = useState(false);
   const [reviewStats, setReviewStats] = useState<{ media: number; count: number }>({ media: 0, count: 0 });
+  const [mvComunidadeAtivo, setMvComunidadeAtivo] = useState(false);
 
   const eventoAdmin = useMemo(() => eventosAdminService.getEvento(evento.id), [evento.id]);
   const variacoesDisponiveis = useMemo(() => {
@@ -90,10 +94,15 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
     clubeService.getBeneficiosEvento(evento.id).then(b => {
       if (!cancelled) setBeneficiosMV(b.filter(x => x.ativo));
     });
+    if (eventoComunidadeId) {
+      getMvConfig(eventoComunidadeId).then(cfg => {
+        if (!cancelled) setMvComunidadeAtivo(!!cfg);
+      });
+    }
     return () => {
       cancelled = true;
     };
-  }, [evento.id]);
+  }, [evento.id, eventoComunidadeId]);
 
   // Benefício elegível para o membro logado (match exato de tier — sem cascata)
   const membroClube = useMemo(
@@ -275,9 +284,15 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
               )}
 
               {!isMembro ? (
-                <p className="text-zinc-400 text-[0.625rem] italic">
-                  Você não faz parte do Clube MAIS VANTA. Solicite entrada pelo seu perfil.
-                </p>
+                <div className="space-y-2">
+                  <p className="text-zinc-300 text-xs">Membros ganham benefícios exclusivos neste evento</p>
+                  <button
+                    onClick={() => onNavigateToClube?.()}
+                    className="w-full py-2.5 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-[0.15em] rounded-xl active:scale-95 transition-all"
+                  >
+                    Quero meus benefícios
+                  </button>
+                </div>
               ) : estaBloqueado ? (
                 <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/20 rounded-xl p-3">
                   <Lock size="0.75rem" className="text-red-400 shrink-0" />
@@ -345,6 +360,19 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
                 </button>
               )}
             </div>
+          )}
+
+          {/* MAIS VANTA — banner sutil para eventos sem benefício MV mas comunidade com programa ativo */}
+          {!temBeneficiosMV && !isPast && mvComunidadeAtivo && !isMembro && (
+            <button
+              onClick={() => onNavigateToClube?.()}
+              className="w-full flex items-center gap-2.5 px-4 py-3 bg-[#FFD300]/5 border border-[#FFD300]/10 rounded-xl active:scale-[0.98] transition-all"
+            >
+              <Crown size="0.875rem" className="text-[#FFD300]/60 shrink-0" />
+              <span className="text-zinc-500 text-[0.625rem]">
+                Esta comunidade tem <span className="text-[#FFD300]/80 font-bold">MAIS VANTA</span> — saiba mais
+              </span>
+            </button>
           )}
 
           {/* Avaliações — só para eventos passados */}

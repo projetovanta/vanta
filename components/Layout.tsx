@@ -2,6 +2,7 @@ import React from 'react';
 import { Home, Map, Search, User, Shield, Bell, ChevronDown, MessageSquare } from 'lucide-react';
 import { TabState } from '../types';
 import { TYPOGRAPHY } from '../constants';
+import { OptimizedImage } from './OptimizedImage';
 import { useChatStore } from '../stores/chatStore';
 import { useAuthStore } from '../stores/authStore';
 
@@ -58,12 +59,7 @@ export const Header: React.FC<{
           onClick={onProfileClick}
           className="min-w-[2.75rem] min-h-[2.75rem] w-8 h-8 rounded-full border border-[#FFD300] p-0.5 overflow-hidden active:opacity-70 transition-opacity -ml-2"
         >
-          <img
-            loading="lazy"
-            src={userPhoto}
-            className="w-full h-full rounded-full object-cover"
-            referrerPolicy="no-referrer"
-          />
+          <OptimizedImage src={userPhoto} width={32} className="w-full h-full rounded-full object-cover" alt="Perfil" />
         </button>
         <button
           onClick={onCityClick}

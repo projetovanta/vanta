@@ -160,6 +160,7 @@ export const Step3Fotos: React.FC<{
           aspect={cropTarget === 'perfil' ? 1 : 3}
           minWidth={cropTarget === 'perfil' ? 400 : 1200}
           minHeight={cropTarget === 'perfil' ? 400 : 400}
+          maxPx={cropTarget === 'perfil' ? 400 : 1200}
           label={cropTarget === 'perfil' ? 'Foto de Perfil' : 'Foto de Capa'}
           onConfirm={handleCropConfirm}
           onClose={() => {

@@ -12,6 +12,7 @@ import { RelatorioComunidadeView } from '../relatorios';
 import { EventosPrivadosTab } from './EventosPrivadosTab';
 import { ComemoracoesTab } from './ComemoracoesTab';
 import { addLog, DetalheTab } from './types';
+import { OptimizedImage } from '../../../../components/OptimizedImage';
 
 export const ComunidadeDetalheView: React.FC<{
   comunidade: Comunidade;
@@ -64,7 +65,9 @@ export const ComunidadeDetalheView: React.FC<{
       <ToastContainer toasts={toasts} onDismiss={dismiss} />
       {/* Hero cover */}
       <div className="relative shrink-0 aspect-[16/7] max-h-[15rem]">
-        {fotoCapa && <img loading="lazy" src={fotoCapa} alt={comunidade.nome} className="w-full h-full object-cover" />}
+        {fotoCapa && (
+          <OptimizedImage src={fotoCapa} width={500} alt={comunidade.nome} className="w-full h-full object-cover" />
+        )}
         <div
           className="absolute inset-0"
           style={{ background: 'linear-gradient(to top, #0A0A0A 0%, rgba(10,10,10,0.2) 55%, transparent 100%)' }}

@@ -14,6 +14,7 @@ import {
   PartyPopper,
   Cake,
   Flag,
+  Crown,
 } from 'lucide-react';
 import { TYPOGRAPHY } from '../../constants';
 import { Evento, Membro, HorarioSemanal, HorarioOverride } from '../../types';
@@ -27,6 +28,9 @@ import { HorarioPublicDisplay } from '../../components/HorarioPublicDisplay';
 import { RestrictedModal } from '../../components/RestrictedModal';
 import { ReportModal } from '../../components/ReportModal';
 import { globalToast } from '../../components/Toast';
+import { OptimizedImage } from '../../components/OptimizedImage';
+import { clubeService } from '../../features/admin/services/clubeService';
+import { getConfig as getMvConfig } from '../../features/admin/services/clube/clubeConfigService';
 import { EventoPrivadoFormView } from './EventoPrivadoFormView';
 import { ComemoracaoFormView } from './ComemoracaoFormView';
 
@@ -52,6 +56,7 @@ interface ComunidadePublicViewProps {
   onMemberClick?: (membro: Membro) => void;
   onRequestLogin?: () => void;
   onRequestCadastro?: () => void;
+  onNavigateToClube?: () => void;
 }
 
 export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
@@ -61,6 +66,7 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
   onMemberClick,
   onRequestLogin,
   onRequestCadastro,
+  onNavigateToClube,
 }) => {
   const currentAccount = useAuthStore(s => s.currentAccount);
   const userId = currentAccount.role !== 'vanta_guest' ? currentAccount.id || undefined : undefined;
@@ -80,6 +86,8 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
   const [showEventoPrivado, setShowEventoPrivado] = useState(false);
   const [showComemoracao, setShowComemoracao] = useState(false);
   const [showReport, setShowReport] = useState(false);
+  const [mvAtivo, setMvAtivo] = useState(false);
+  const isMvMembro = useMemo(() => (userId ? clubeService.isMembro(userId) : false), [userId]);
 
   useEffect(() => {
     let cancelled = false;
@@ -117,6 +125,9 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
     }
     void reviewsService.getMediaComunidade(comunidadeId).then(r => {
       if (!cancelled) setRatingData(r);
+    });
+    void getMvConfig(comunidadeId).then(cfg => {
+      if (!cancelled) setMvAtivo(!!cfg);
     });
     // Preview: pegar 3 primeiros seguidores com profile
     (async () => {
@@ -227,7 +238,7 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
         {/* Cover banner 3:1 */}
         <div className="relative w-full aspect-[3/1] bg-zinc-900 shrink-0">
           {comunidade.foto_capa ? (
-            <img loading="lazy" src={comunidade.foto_capa} className="w-full h-full object-cover" alt="" />
+            <OptimizedImage src={comunidade.foto_capa} width={500} className="w-full h-full object-cover" alt="" />
           ) : (
             <div className="w-full h-full bg-gradient-to-b from-zinc-800 to-zinc-950" />
           )}
@@ -242,7 +253,12 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
           {/* Avatar sobrepondo o banner */}
           <div className="w-20 h-20 rounded-full border-4 border-[#050505] ring-1 ring-white/10 overflow-hidden bg-zinc-800 shadow-xl -mt-10 relative z-10">
             {comunidade.foto ? (
-              <img loading="lazy" src={comunidade.foto} className="w-full h-full object-cover" alt={comunidade.nome} />
+              <OptimizedImage
+                src={comunidade.foto}
+                width={80}
+                className="w-full h-full object-cover"
+                alt={comunidade.nome}
+              />
             ) : (
               <div className="w-full h-full bg-zinc-700" />
             )}
@@ -391,6 +407,23 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
             </button>
           )}
         </div>
+
+        {/* MAIS VANTA — banner para não-membros */}
+        {mvAtivo && !isMvMembro && userId && (
+          <div className="px-5 py-3 border-t border-white/5">
+            <button
+              onClick={() => onNavigateToClube?.()}
+              className="w-full flex items-center gap-3 p-3 bg-gradient-to-r from-[#FFD300]/10 to-[#FFD300]/5 border border-[#FFD300]/20 rounded-xl active:scale-[0.98] transition-all"
+            >
+              <Crown size="1.25rem" className="text-[#FFD300] shrink-0" />
+              <div className="text-left flex-1 min-w-0">
+                <p className="text-[#FFD300] text-xs font-bold">MAIS VANTA</p>
+                <p className="text-zinc-400 text-[0.625rem]">Benefícios exclusivos para membros</p>
+              </div>
+              <ChevronRight size="0.875rem" className="text-[#FFD300]/50 shrink-0" />
+            </button>
+          </div>
+        )}
 
         {/* Rating */}
         {ratingData.count > 0 && (

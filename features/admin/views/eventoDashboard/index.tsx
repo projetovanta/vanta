@@ -28,6 +28,7 @@ import {
 } from 'lucide-react';
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
 import { TYPOGRAPHY } from '../../../../constants';
+import { OptimizedImage } from '../../../../components/OptimizedImage';
 import { ContaVantaLegacy } from '../../../../types';
 import { eventosAdminService } from '../../services/eventosAdminService';
 import { listasService } from '../../services/listasService';
@@ -517,7 +518,7 @@ export const EventoDashboard: React.FC<{
       <div className="relative shrink-0">
         <div className="aspect-[16/7] max-h-[15rem] w-full">
           {evento.foto ? (
-            <img loading="lazy" src={evento.foto} alt={evento.nome} className="w-full h-full object-cover" />
+            <OptimizedImage src={evento.foto} width={500} alt={evento.nome} className="w-full h-full object-cover" />
           ) : (
             <div className="w-full h-full bg-zinc-900 flex items-center justify-center">
               <Calendar size="2rem" className="text-zinc-800" />

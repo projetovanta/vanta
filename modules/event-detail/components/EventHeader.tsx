@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowLeft, Share2, Heart, Flag } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
 import { Evento } from '../../../types';
+import { OptimizedImage } from '../../../components/OptimizedImage';
 import { ReportModal } from '../../../components/ReportModal';
 import { globalToast } from '../../../components/Toast';
 
@@ -49,12 +50,7 @@ export const EventHeader: React.FC<EventHeaderProps> = ({
   return (
     <div className="relative w-full aspect-[4/5] max-h-[70vh] shrink-0 sticky top-0">
       {evento.imagem && (
-        <img
-          src={evento.imagem}
-          className="w-full h-full object-cover"
-          alt={evento.titulo}
-          referrerPolicy="no-referrer"
-        />
+        <OptimizedImage src={evento.imagem} width={500} className="w-full h-full object-cover" alt={evento.titulo} />
       )}
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-[#0a0a0a]" />
 

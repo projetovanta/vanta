@@ -199,7 +199,7 @@ export const EditProfileView: React.FC<{
   };
 
   const handleCropConfirm = async (croppedImage: string) => {
-    const compressed = await compressImage(croppedImage, cropTarget === 'avatar' ? 600 : 1000, 0.78);
+    const compressed = await compressImage(croppedImage, cropTarget === 'avatar' ? 600 : 800, 0.78);
     if (cropTarget === 'avatar') {
       setFormData(prev => ({ ...prev, foto: compressed }));
     } else if (typeof cropTarget === 'number') {

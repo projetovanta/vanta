@@ -6,6 +6,7 @@ import { getAcessoComunidades } from '../../permissoes';
 import { rbacService } from '../../services/rbacService';
 import { CriarComunidadeView } from '../CriarComunidadeView';
 import { ComunidadeDetalheView } from './ComunidadeDetalheView';
+import { OptimizedImage } from '../../../../components/OptimizedImage';
 
 export const ComunidadesView: React.FC<{
   onBack: () => void;
@@ -91,7 +92,12 @@ export const ComunidadesView: React.FC<{
             className={`w-full text-left relative rounded-3xl overflow-hidden active:scale-[0.98] transition-all aspect-[16/9] max-h-[17.5rem] ${!c.ativa ? 'opacity-40' : ''}`}
           >
             {(c.fotoCapa || c.foto) && (
-              <img loading="lazy" src={c.fotoCapa || c.foto} alt={c.nome} className="w-full h-full object-cover" />
+              <OptimizedImage
+                src={c.fotoCapa || c.foto}
+                width={400}
+                alt={c.nome}
+                className="w-full h-full object-cover"
+              />
             )}
             <div
               className="absolute inset-0"

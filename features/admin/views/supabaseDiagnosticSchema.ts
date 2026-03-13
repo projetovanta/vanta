@@ -268,17 +268,6 @@ export const EXPECTED_TABLES: ExpectedTable[] = [
     createSQL: '',
   },
   {
-    name: 'soberania_acesso',
-    columns: [
-      { name: 'id', type: 'uuid' },
-      { name: 'evento_id', type: 'uuid' },
-      { name: 'solicitante_id', type: 'uuid' },
-      { name: 'status', type: 'text' },
-    ],
-    realtime: false,
-    createSQL: '',
-  },
-  {
     name: 'interesses',
     columns: [
       { name: 'id', type: 'uuid' },

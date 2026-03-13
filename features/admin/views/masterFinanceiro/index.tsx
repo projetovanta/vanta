@@ -74,7 +74,7 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification 
   const allEventos = eventosAdminService.getEventos();
 
   const totalReembolsadoAprovado = reembolsos
-    .filter(r => r.status === 'APROVADO' || r.status === 'AUTOMATICO')
+    .filter(r => r.status === 'APROVADO' || r.tipo === 'AUTOMATICO')
     .reduce((s, r) => s + r.valor, 0);
 
   const totalVendasGlobal =
@@ -108,7 +108,7 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification 
         const gmv = ev.lotes.flatMap(l => l.variacoes).reduce((s, v) => s + v.vendidos * v.valor, 0);
         const ingressos = ev.lotes.flatMap(l => l.variacoes).reduce((s, v) => s + v.vendidos, 0);
         const reembolsosEvento = reembolsos
-          .filter(r => r.eventoId === ev.id && (r.status === 'APROVADO' || r.status === 'AUTOMATICO'))
+          .filter(r => r.eventoId === ev.id && (r.status === 'APROVADO' || r.tipo === 'AUTOMATICO'))
           .reduce((s, r) => s + r.valor, 0);
         lucro += (gmv - reembolsosEvento) * fees.feePercent + fees.feeFixed * ingressos;
       }

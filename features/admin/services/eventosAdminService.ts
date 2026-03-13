@@ -77,7 +77,6 @@ import {
   estornarSaque,
   isReembolsoAutomaticoElegivel,
   processarReembolsoAutomatico,
-  aprovarReembolsoManual,
   getReembolsos,
   registrarChargeback,
   getChargebacks,
@@ -85,11 +84,6 @@ import {
   getGatewayCostGlobal,
   autorizarSaqueGerente,
   recusarSaque,
-  verificarLimiteReembolso,
-  solicitarReembolso,
-  aprovarReembolsoEtapa,
-  executarReembolsoFinal,
-  recusarReembolso,
 } from './eventosAdminFinanceiro';
 
 import {
@@ -152,7 +146,6 @@ export const eventosAdminService = {
   estornarSaque,
   isReembolsoAutomaticoElegivel,
   processarReembolsoAutomatico,
-  aprovarReembolsoManual,
   getReembolsos,
   registrarChargeback,
   getChargebacks,
@@ -160,11 +153,6 @@ export const eventosAdminService = {
   getGatewayCostGlobal,
   autorizarSaqueGerente,
   recusarSaque,
-  verificarLimiteReembolso,
-  solicitarReembolso,
-  aprovarReembolsoEtapa,
-  executarReembolsoFinal,
-  recusarReembolso,
 
   // Tickets / Vendas
   registrarVendaEfetiva,

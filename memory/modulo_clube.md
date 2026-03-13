@@ -207,7 +207,7 @@ Sem cascata: membro recebe APENAS benefício do SEU tier exato (`===`), não dos
 | codigo | TEXT UNIQUE | hex 8 bytes, auto |
 | usado_por | UUID FK profiles | Quem usou (nullable) |
 | usado_em | TIMESTAMPTZ | Quando foi usado |
-| status | TEXT | disponivel, usado, expirado |
+| status | TEXT | DISPONIVEL, USADO, EXPIRADO |
 | criado_em | TIMESTAMPTZ | auto |
 
 ### mv_solicitacoes_notificacao (V3 S5.6 — produtor pede notif para membros)

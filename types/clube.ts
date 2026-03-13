@@ -201,7 +201,7 @@ export interface ConviteClube {
   codigo: string;
   usadoPor?: string;
   usadoEm?: string;
-  status: 'disponivel' | 'usado' | 'expirado';
+  status: 'DISPONIVEL' | 'USADO' | 'EXPIRADO';
   criadoEm: string;
 }
 
@@ -230,7 +230,7 @@ export interface ProdutorPlano {
   planoId: string;
   inicio: string;
   fim?: string;
-  status: 'ativo' | 'cancelado' | 'expirado';
+  status: 'ATIVO' | 'CANCELADO' | 'EXPIRADO';
   criadoEm: string;
   // joins
   planoNome?: string;

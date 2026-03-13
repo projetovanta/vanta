@@ -1,12 +1,14 @@
 /**
- * reembolsoService — Reembolso de Ingressos com Auditoria Completa
- * CDC Art. 49: Automático até 7 dias + 48h antes do evento
- * Manual: Produtor solicita → PENDENTE_APROVACAO → Master aprova/rejeita
- * Auditoria: timestamps de notificação, aprovação, rejeição para comprovação legal
+ * reembolsoService — Reembolso de Ingressos com Cadeia Hierárquica
+ * CDC Art. 49: Automático até 7 dias + 48h antes do evento → APROVADO direto
+ * Manual: Solicitado → AGUARDANDO_SOCIO → AGUARDANDO_GERENTE → AGUARDANDO_MASTER → APROVADO
+ * Níveis vazios são pulados automaticamente.
+ * Qualquer nível pode REJEITAR (final).
+ * Anti-fraude: máximo 3 reembolsos manuais/mês por solicitante.
  */
 
 import { supabase } from '../../../services/supabaseClient';
-import type { Reembolso } from './eventosAdminTypes';
+import type { Reembolso, StatusReembolso } from './eventosAdminTypes';
 import { logger } from '../../../services/logger';
 import { tsBR } from '../../../utils';
 
@@ -18,20 +20,182 @@ const mapReembolsoFromDB = (row: any): Reembolso => ({
   tipo: row.tipo,
   status: row.status,
   motivo: row.motivo,
-  valor: row.valor,
+  valor: Number(row.valor ?? 0),
   solicitadoPor: row.solicitado_por,
   solicitadoEmail: row.solicitado_email,
   solicitadoNome: row.solicitado_nome,
   aprovadoPor: row.aprovado_por,
   solicitadoEm: row.solicitado_em,
   processadoEm: row.processado_em,
-  eventoNome: row.evento_nome,
+  eventoNome: row.evento_nome ?? (row.eventos_admin as any)?.nome,
   produtorNome: row.produtor_nome,
+  etapa: row.etapa,
+  rejeitadoPor: row.rejeitado_por,
+  rejeitadoEm: row.rejeitado_em,
+  rejeitadoMotivo: row.rejeitado_motivo,
+  socioDecisao: row.socio_decisao,
+  socioDecisaoEm: row.socio_decisao_em,
+  gerenteDecisao: row.gerente_decisao,
+  gerenteDecisaoEm: row.gerente_decisao_em,
+  compradorNome: row.comprador_nome,
 });
 
 // ── Constantes ───────────────────────────────────────────────────────────────────
 const DIAS_DIREITO_ARREPENDIMENTO = 7;
 const HORAS_ANTES_EVENTO = 48;
+const LIMITE_REEMBOLSOS_MES = 3;
+
+// ── Anti-fraude: verificar limite mensal ──────────────────────────────────────────
+export async function verificarLimiteReembolso(userId: string): Promise<{ permitido: boolean; contagem: number }> {
+  const now = new Date();
+  const inicioMesISO = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01T00:00:00-03:00`;
+
+  const { count } = await supabase
+    .from('reembolsos')
+    .select('id', { count: 'exact', head: true })
+    .eq('solicitado_por', userId)
+    .gte('solicitado_em', inicioMesISO);
+
+  const contagem = count ?? 0;
+  return { permitido: contagem < LIMITE_REEMBOLSOS_MES, contagem };
+}
+
+// ── Descobrir próximo nível na cadeia hierárquica ─────────────────────────────────
+async function detectarNivelInicial(eventoId: string): Promise<StatusReembolso> {
+  // Verificar se evento tem sócio
+  const { data: evento } = await supabase
+    .from('eventos_admin')
+    .select('comunidade_id')
+    .eq('id', eventoId)
+    .maybeSingle();
+
+  if (!evento?.comunidade_id) return 'AGUARDANDO_MASTER';
+
+  const comunidadeId = evento.comunidade_id as string;
+
+  // Tem sócio?
+  const { count: socioCount } = await supabase
+    .from('atribuicoes_rbac')
+    .select('id', { count: 'exact', head: true })
+    .eq('tenant_type', 'COMUNIDADE')
+    .eq('tenant_id', comunidadeId)
+    .eq('cargo', 'SOCIO')
+    .eq('ativo', true);
+
+  if (socioCount && socioCount > 0) return 'AGUARDANDO_SOCIO';
+
+  // Tem gerente?
+  const { count: gerenteCount } = await supabase
+    .from('atribuicoes_rbac')
+    .select('id', { count: 'exact', head: true })
+    .eq('tenant_type', 'COMUNIDADE')
+    .eq('tenant_id', comunidadeId)
+    .eq('cargo', 'GERENTE')
+    .eq('ativo', true);
+
+  if (gerenteCount && gerenteCount > 0) return 'AGUARDANDO_GERENTE';
+
+  return 'AGUARDANDO_MASTER';
+}
+
+async function detectarProximoNivel(eventoId: string, statusAtual: StatusReembolso): Promise<StatusReembolso> {
+  const { data: evento } = await supabase
+    .from('eventos_admin')
+    .select('comunidade_id')
+    .eq('id', eventoId)
+    .maybeSingle();
+
+  const comunidadeId = (evento?.comunidade_id as string) ?? '';
+
+  if (statusAtual === 'AGUARDANDO_SOCIO') {
+    // Próximo: gerente ou master?
+    const { count: gerenteCount } = await supabase
+      .from('atribuicoes_rbac')
+      .select('id', { count: 'exact', head: true })
+      .eq('tenant_type', 'COMUNIDADE')
+      .eq('tenant_id', comunidadeId)
+      .eq('cargo', 'GERENTE')
+      .eq('ativo', true);
+
+    return gerenteCount && gerenteCount > 0 ? 'AGUARDANDO_GERENTE' : 'AGUARDANDO_MASTER';
+  }
+
+  if (statusAtual === 'AGUARDANDO_GERENTE') {
+    return 'AGUARDANDO_MASTER';
+  }
+
+  // AGUARDANDO_MASTER → APROVADO
+  return 'APROVADO';
+}
+
+// ── Notificar nível atual ─────────────────────────────────────────────────────────
+async function notificarNivel(eventoId: string, status: StatusReembolso, valor: number, motivo: string) {
+  const { data: evento } = await supabase
+    .from('eventos_admin')
+    .select('nome, comunidade_id')
+    .eq('id', eventoId)
+    .maybeSingle();
+
+  const eventoNome = (evento?.nome as string) ?? 'Evento';
+  const comunidadeId = (evento?.comunidade_id as string) ?? '';
+  const msgBase = `Reembolso de R$${valor.toFixed(2)} em "${eventoNome}". Motivo: ${motivo}`;
+
+  if (status === 'AGUARDANDO_SOCIO') {
+    const { data: socios } = await supabase
+      .from('atribuicoes_rbac')
+      .select('user_id')
+      .eq('tenant_type', 'COMUNIDADE')
+      .eq('tenant_id', comunidadeId)
+      .eq('cargo', 'SOCIO')
+      .eq('ativo', true);
+
+    if (socios?.length) {
+      for (const s of socios) {
+        await supabase.from('notifications').insert({
+          user_id: s.user_id,
+          tipo: 'REEMBOLSO_SOLICITADO',
+          titulo: 'Reembolso aguarda sua análise',
+          mensagem: msgBase,
+          link: eventoId,
+        });
+      }
+    }
+  } else if (status === 'AGUARDANDO_GERENTE') {
+    const { data: gerentes } = await supabase
+      .from('atribuicoes_rbac')
+      .select('user_id')
+      .eq('tenant_type', 'COMUNIDADE')
+      .eq('tenant_id', comunidadeId)
+      .eq('cargo', 'GERENTE')
+      .eq('ativo', true);
+
+    if (gerentes?.length) {
+      for (const g of gerentes) {
+        await supabase.from('notifications').insert({
+          user_id: g.user_id,
+          tipo: 'REEMBOLSO_SOLICITADO',
+          titulo: 'Reembolso aguarda sua autorização',
+          mensagem: msgBase,
+          link: eventoId,
+        });
+      }
+    }
+  } else if (status === 'AGUARDANDO_MASTER') {
+    const { data: masters } = await supabase.from('profiles').select('id').eq('role', 'vanta_masteradm');
+
+    if (masters?.length) {
+      for (const m of masters) {
+        await supabase.from('notifications').insert({
+          user_id: m.id,
+          tipo: 'REEMBOLSO_SOLICITADO',
+          titulo: 'Reembolso aguarda aprovação final',
+          mensagem: msgBase,
+          link: 'ADMIN_HUB',
+        });
+      }
+    }
+  }
+}
 
 // ── Validar se ingresso pode ser reembolsado automaticamente ────────────────────
 export async function podeReembolsoAutomatico(
@@ -107,36 +271,41 @@ export async function solicitarReembolsoAutomatico(
       return { success: false, error: 'Erro ao buscar ticket' };
     }
 
-    const { data, error } = await supabase
-      .from('reembolsos')
-      .insert({
-        ticket_id: ticketId,
-        evento_id: eventoId,
-        tipo: 'AUTOMATICO',
-        status: 'APROVADO', // Automático vai direto pra APROVADO
-        motivo: 'Reembolso automático CDC Art. 49',
-        valor: ticket.valor,
-        solicitado_por: userId,
-        aprovado_por: userId, // Master (sistema) aprova automaticamente
-        solicitado_em: tsBR(),
-        processado_em: tsBR(),
-      })
-      .select('id')
-      .single();
+    // Automático: marcar ticket + inserir reembolso APROVADO de uma vez
+    const agora = tsBR();
+    const [ticketUpd, reembolsoIns] = await Promise.all([
+      supabase.from('tickets_caixa').update({ status: 'REEMBOLSADO' }).eq('id', ticketId),
+      supabase
+        .from('reembolsos')
+        .insert({
+          ticket_id: ticketId,
+          evento_id: eventoId,
+          tipo: 'AUTOMATICO',
+          status: 'APROVADO',
+          motivo: 'Reembolso automático CDC Art. 49',
+          valor: ticket.valor,
+          solicitado_por: userId,
+          aprovado_por: userId,
+          solicitado_em: agora,
+          processado_em: agora,
+          etapa: 'AUTOMATICO',
+        })
+        .select('id')
+        .single(),
+    ]);
 
-    if (error || !data) {
+    if (ticketUpd.error || reembolsoIns.error || !reembolsoIns.data) {
       return { success: false, error: 'Erro ao processar reembolso' };
     }
 
-    return { success: true, reembolsoId: data.id };
+    return { success: true, reembolsoId: reembolsoIns.data.id };
   } catch (err) {
     logger.error('[reembolso] solicitar automático failed', { ticketId, eventoId, userId, err });
     return { success: false, error: 'Erro interno' };
   }
 }
 
-// ── Solicitar reembolso manual (fora do prazo) → PENDENTE_APROVACAO ──────────────
-// Produtor solicita, fica em fila para master aprovar/rejeitar
+// ── Solicitar reembolso manual → cadeia hierárquica ──────────────────────────────
 export async function solicitarReembolsoManual(
   ticketId: string,
   eventoId: string,
@@ -144,6 +313,15 @@ export async function solicitarReembolsoManual(
   userId: string,
 ): Promise<{ success: boolean; error?: string; reembolsoId?: string }> {
   try {
+    // Anti-fraude
+    const { permitido, contagem } = await verificarLimiteReembolso(userId);
+    if (!permitido) {
+      return {
+        success: false,
+        error: `Limite de ${LIMITE_REEMBOLSOS_MES} reembolsos/mês atingido (${contagem} usados).`,
+      };
+    }
+
     const { data: ticket, error: ticketErr } = await supabase
       .from('tickets_caixa')
       .select('valor, status')
@@ -158,21 +336,23 @@ export async function solicitarReembolsoManual(
       return { success: false, error: `Ingresso com status ${ticket.status}` };
     }
 
-    // Inserir com status PENDENTE_APROVACAO
-    // Trigger dispara notificação para master + registra notificado_em timestamp
-    const agora = new Date().toLocaleString('sv-SE', { timeZone: 'America/Sao_Paulo' }).replace(' ', 'T') + '-03:00';
+    // Detectar nível inicial na cadeia
+    const statusInicial = await detectarNivelInicial(eventoId);
+    const agora = tsBR();
+
     const { data, error } = await supabase
       .from('reembolsos')
       .insert({
         ticket_id: ticketId,
         evento_id: eventoId,
         tipo: 'MANUAL',
-        status: 'PENDENTE_APROVACAO',
+        status: statusInicial,
         motivo: motivo || 'Reembolso manual solicitado',
         valor: ticket.valor,
         solicitado_por: userId,
         solicitado_em: agora,
         notificado_em: agora,
+        etapa: 'SOLICITADO',
       })
       .select('id')
       .single();
@@ -181,6 +361,9 @@ export async function solicitarReembolsoManual(
       return { success: false, error: 'Erro ao processar reembolso' };
     }
 
+    // Notificar o nível responsável
+    void notificarNivel(eventoId, statusInicial, Number(ticket.valor), motivo);
+
     return { success: true, reembolsoId: data.id };
   } catch (err) {
     logger.error('[reembolso] solicitar manual failed', { ticketId, eventoId, userId, err });
@@ -188,17 +371,15 @@ export async function solicitarReembolsoManual(
   }
 }
 
-// ── Aprovar reembolso manual (master only) ───────────────────────────────────────
-// Status: PENDENTE_APROVACAO → APROVADO
-// Auditoria: aprovado_por + processado_em timestamp (trigger)
-export async function aprovarReembolsoManual(
+// ── Aprovar reembolso na etapa atual → avança pro próximo nível ───────────────────
+export async function aprovarReembolsoEtapa(
   reembolsoId: string,
-  masterAdmId: string,
+  aprovadorId: string,
 ): Promise<{ success: boolean; error?: string }> {
   try {
     const { data: reembolso, error: reembolsoErr } = await supabase
       .from('reembolsos')
-      .select('id, ticket_id, tipo, status')
+      .select('id, ticket_id, evento_id, status, valor, motivo, solicitado_por')
       .eq('id', reembolsoId)
       .maybeSingle();
 
@@ -206,51 +387,88 @@ export async function aprovarReembolsoManual(
       return { success: false, error: 'Reembolso não encontrado' };
     }
 
-    if (reembolso.tipo !== 'MANUAL') {
-      return { success: false, error: 'Apenas reembolsos manuais podem ser aprovados' };
+    const statusAtual = reembolso.status as StatusReembolso;
+    const statusAguardando: StatusReembolso[] = ['AGUARDANDO_SOCIO', 'AGUARDANDO_GERENTE', 'AGUARDANDO_MASTER'];
+    if (!statusAguardando.includes(statusAtual)) {
+      return { success: false, error: `Reembolso com status ${statusAtual} não pode ser aprovado nesta etapa` };
     }
 
-    if (reembolso.status !== 'PENDENTE_APROVACAO') {
-      return { success: false, error: `Reembolso com status ${reembolso.status}` };
+    const agora = tsBR();
+    const proximoStatus = await detectarProximoNivel(reembolso.evento_id as string, statusAtual);
+
+    // Montar update com a decisão do nível atual
+    const updateData: Record<string, unknown> = {
+      status: proximoStatus,
+      updated_at: agora,
+    };
+
+    if (statusAtual === 'AGUARDANDO_SOCIO') {
+      updateData.socio_id = aprovadorId;
+      updateData.socio_decisao = 'APROVADO';
+      updateData.socio_decisao_em = agora;
+      updateData.etapa = 'SOCIO_ANALISOU';
+    } else if (statusAtual === 'AGUARDANDO_GERENTE') {
+      updateData.gerente_id = aprovadorId;
+      updateData.gerente_decisao = 'APROVADO';
+      updateData.gerente_decisao_em = agora;
+      updateData.etapa = 'GERENTE_AUTORIZADO';
+    } else if (statusAtual === 'AGUARDANDO_MASTER') {
+      updateData.aprovado_por = aprovadorId;
+      updateData.processado_em = agora;
+      updateData.etapa = 'MASTER_DECIDIU';
     }
 
-    // Trigger automático:
-    // 1. Atualiza ticket_caixa.status = REEMBOLSADO
-    // 2. Define processado_em = NOW()
-    const agoraAprov =
-      new Date().toLocaleString('sv-SE', { timeZone: 'America/Sao_Paulo' }).replace(' ', 'T') + '-03:00';
-    const { error: updateErr } = await supabase
-      .from('reembolsos')
-      .update({
-        status: 'APROVADO',
-        aprovado_por: masterAdmId,
-        processado_em: agoraAprov,
-      })
-      .eq('id', reembolsoId);
+    const { error: updateErr } = await supabase.from('reembolsos').update(updateData).eq('id', reembolsoId);
 
     if (updateErr) {
       return { success: false, error: 'Erro ao atualizar reembolso' };
     }
 
+    // Se master aprovou (próximo = APROVADO), marcar ticket como REEMBOLSADO
+    if (proximoStatus === 'APROVADO') {
+      await supabase.from('tickets_caixa').update({ status: 'REEMBOLSADO' }).eq('id', reembolso.ticket_id);
+
+      // Notificar solicitante
+      const { data: evento } = await supabase
+        .from('eventos_admin')
+        .select('nome')
+        .eq('id', reembolso.evento_id)
+        .maybeSingle();
+
+      await supabase.from('notifications').insert({
+        user_id: reembolso.solicitado_por,
+        tipo: 'REEMBOLSO_APROVADO',
+        titulo: 'Reembolso aprovado!',
+        mensagem: `Seu reembolso de R$${Number(reembolso.valor).toFixed(2)}${evento?.nome ? ` (${evento.nome})` : ''} foi processado.`,
+        link: 'WALLET',
+      });
+    } else {
+      // Notificar próximo nível
+      void notificarNivel(
+        reembolso.evento_id as string,
+        proximoStatus,
+        Number(reembolso.valor),
+        reembolso.motivo as string,
+      );
+    }
+
     return { success: true };
   } catch (err) {
-    logger.error('[reembolso] aprovar manual failed', { reembolsoId, masterAdmId, err });
+    logger.error('[reembolso] aprovar etapa failed', { reembolsoId, aprovadorId, err });
     return { success: false, error: 'Erro interno' };
   }
 }
 
-// ── Rejeitar reembolso manual (master only) ──────────────────────────────────────
-// Status: PENDENTE_APROVACAO → REJEITADO
-// Auditoria: rejeitado_por + rejeitado_em + rejeitado_motivo (para comprovação legal)
+// ── Rejeitar reembolso (qualquer nível) → REJEITADO (final) ──────────────────────
 export async function rejeitarReembolsoManual(
   reembolsoId: string,
-  masterAdmId: string,
+  rejeitadoPorId: string,
   motivo: string,
 ): Promise<{ success: boolean; error?: string }> {
   try {
     const { data: reembolso, error: reembolsoErr } = await supabase
       .from('reembolsos')
-      .select('id, tipo, status')
+      .select('id, tipo, status, solicitado_por, evento_id, valor')
       .eq('id', reembolsoId)
       .maybeSingle();
 
@@ -258,23 +476,27 @@ export async function rejeitarReembolsoManual(
       return { success: false, error: 'Reembolso não encontrado' };
     }
 
-    if (reembolso.tipo !== 'MANUAL') {
-      return { success: false, error: 'Apenas reembolsos manuais podem ser rejeitados' };
+    const statusAtual = reembolso.status as StatusReembolso;
+    const statusPermitidos: StatusReembolso[] = [
+      'PENDENTE_APROVACAO',
+      'AGUARDANDO_SOCIO',
+      'AGUARDANDO_GERENTE',
+      'AGUARDANDO_MASTER',
+    ];
+    if (!statusPermitidos.includes(statusAtual)) {
+      return { success: false, error: `Reembolso com status ${statusAtual} não pode ser rejeitado` };
     }
 
-    if (reembolso.status !== 'PENDENTE_APROVACAO') {
-      return { success: false, error: `Reembolso com status ${reembolso.status}` };
-    }
-
-    // Registrar auditoria completa: quem rejeitou, quando, por quê
-    const agoraRej = new Date().toLocaleString('sv-SE', { timeZone: 'America/Sao_Paulo' }).replace(' ', 'T') + '-03:00';
+    const agora = tsBR();
     const { error: updateErr } = await supabase
       .from('reembolsos')
       .update({
         status: 'REJEITADO',
-        rejeitado_por: masterAdmId,
-        rejeitado_em: agoraRej,
-        rejeitado_motivo: motivo || 'Rejeitado pelo master',
+        rejeitado_por: rejeitadoPorId,
+        rejeitado_em: agora,
+        rejeitado_motivo: motivo || 'Rejeitado',
+        etapa: 'RECUSADO',
+        updated_at: agora,
       })
       .eq('id', reembolsoId);
 
@@ -282,11 +504,36 @@ export async function rejeitarReembolsoManual(
       return { success: false, error: 'Erro ao rejeitar reembolso' };
     }
 
+    // Notificar solicitante
+    if (reembolso.solicitado_por) {
+      const { data: evento } = await supabase
+        .from('eventos_admin')
+        .select('nome')
+        .eq('id', reembolso.evento_id)
+        .maybeSingle();
+
+      await supabase.from('notifications').insert({
+        user_id: reembolso.solicitado_por,
+        tipo: 'REEMBOLSO_RECUSADO',
+        titulo: 'Reembolso recusado',
+        mensagem: `Seu pedido de reembolso${evento?.nome ? ` para ${evento.nome}` : ''} foi recusado. Motivo: ${motivo}`,
+        link: 'WALLET',
+      });
+    }
+
     return { success: true };
   } catch (err) {
-    logger.error('[reembolso] rejeitar manual failed', { reembolsoId, masterAdmId, motivo, err });
+    logger.error('[reembolso] rejeitar manual failed', { reembolsoId, rejeitadoPorId, motivo, err });
     return { success: false, error: 'Erro interno' };
   }
+}
+
+// ── Aprovar reembolso manual direto (master, retrocompat) ────────────────────────
+export async function aprovarReembolsoManual(
+  reembolsoId: string,
+  masterAdmId: string,
+): Promise<{ success: boolean; error?: string }> {
+  return aprovarReembolsoEtapa(reembolsoId, masterAdmId);
 }
 
 // ── Obter reembolsos de um evento ────────────────────────────────────────────────
@@ -294,25 +541,7 @@ export async function getReembolsosPorEvento(eventoId: string): Promise<Reembols
   try {
     const { data, error } = await supabase
       .from('reembolsos')
-      .select(
-        `
-        id,
-        ticket_id,
-        evento_id,
-        tipo,
-        status,
-        motivo,
-        valor,
-        solicitado_por,
-        aprovado_por,
-        rejeitado_por,
-        solicitado_em,
-        notificado_em,
-        processado_em,
-        rejeitado_em,
-        rejeitado_motivo
-      `,
-      )
+      .select('*')
       .eq('evento_id', eventoId)
       .order('solicitado_em', { ascending: false })
       .limit(1000);
@@ -329,30 +558,14 @@ export async function getReembolsosPorEvento(eventoId: string): Promise<Reembols
   }
 }
 
-// ── Obter reembolsos manuais pendentes de aprovação ──────────────────────────────
+// ── Obter reembolsos pendentes (qualquer nível aguardando) ───────────────────────
 export async function getReembolsosPendentes(): Promise<Reembolso[]> {
   try {
     const { data, error } = await supabase
       .from('reembolsos')
-      .select(
-        `
-        id,
-        ticket_id,
-        evento_id,
-        tipo,
-        status,
-        motivo,
-        valor,
-        solicitado_por,
-        rejeitado_por,
-        solicitado_em,
-        notificado_em,
-        profiles!solicitado_por (email),
-        eventos_admin!evento_id (nome)
-      `,
-      )
+      .select('*, eventos_admin!evento_id(nome)')
       .eq('tipo', 'MANUAL')
-      .eq('status', 'PENDENTE_APROVACAO')
+      .in('status', ['PENDENTE_APROVACAO', 'AGUARDANDO_SOCIO', 'AGUARDANDO_GERENTE', 'AGUARDANDO_MASTER'])
       .order('solicitado_em', { ascending: true })
       .limit(1000);
 
@@ -362,11 +575,9 @@ export async function getReembolsosPendentes(): Promise<Reembolso[]> {
     }
 
     return (data || []).map(row => {
-      const profiles = Array.isArray(row.profiles) ? row.profiles[0] : row.profiles;
       const evento = Array.isArray(row.eventos_admin) ? row.eventos_admin[0] : row.eventos_admin;
       return {
         ...mapReembolsoFromDB(row),
-        solicitadoEmail: profiles?.email,
         eventoNome: evento?.nome,
       };
     });
@@ -381,20 +592,7 @@ export async function getReembolsosAprovados(): Promise<Reembolso[]> {
   try {
     const { data, error } = await supabase
       .from('reembolsos')
-      .select(
-        `
-        id,
-        ticket_id,
-        evento_id,
-        tipo,
-        motivo,
-        valor,
-        solicitado_por,
-        aprovado_por,
-        solicitado_em,
-        processado_em
-      `,
-      )
+      .select('*')
       .eq('status', 'APROVADO')
       .order('processado_em', { ascending: false })
       .limit(2000);
@@ -416,21 +614,7 @@ export async function getReembolsosRejeitados(): Promise<Reembolso[]> {
   try {
     const { data, error } = await supabase
       .from('reembolsos')
-      .select(
-        `
-        id,
-        ticket_id,
-        evento_id,
-        tipo,
-        motivo,
-        valor,
-        solicitado_por,
-        rejeitado_por,
-        solicitado_em,
-        rejeitado_em,
-        rejeitado_motivo
-      `,
-      )
+      .select('*')
       .eq('status', 'REJEITADO')
       .order('rejeitado_em', { ascending: false })
       .limit(2000);

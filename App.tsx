@@ -77,7 +77,6 @@ if (!localStorage.getItem(_LS_CLEAN_KEY)) {
     'vanta_tickets_caixa',
     'vanta_saques',
     'vanta_guest_lists',
-    'vanta_soberania',
     'vanta_notifications',
     'vanta_audit_logs',
     'vanta_selected_city',

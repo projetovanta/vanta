@@ -19,6 +19,7 @@ import { Notificacao } from '../../../../types';
 import { eventosAdminService, ContractedFees, SolicitacaoSaque } from '../../services/eventosAdminService';
 import { getResumoFinanceiroComunidade, getResumoFinanceiroEvento } from '../../services/eventosAdminFinanceiro';
 import { rbacService } from '../../services/rbacService';
+import { useAuthStore } from '../../../../stores/authStore';
 import { supabase } from '../../../../services/supabaseClient';
 import { VantaPieChart } from '../../components/VantaPieChart';
 import { getReembolsosPorEvento, solicitarReembolsoManual } from '../../services/reembolsoService';
@@ -168,6 +169,14 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
     [currentUserId, svcVersion],
   );
 
+  const currentAccount = useAuthStore(s => s.currentAccount);
+  const reembolsoRole = useMemo(() => {
+    if (currentAccount?.role === 'vanta_masteradm') return 'MASTER';
+    if (isGGC) return 'GERENTE';
+    if (isGEE) return 'SOCIO';
+    return 'SOCIO';
+  }, [currentAccount, isGEE, isGGC]);
+
   // Saldo consolidado GG-C — usa getResumoFinanceiroComunidade para dados corretos
   const [saldoConsolidado, setSaldoConsolidado] = useState<{
     totalBruto: number;
@@ -194,8 +203,6 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
         const resumo = await getResumoFinanceiroComunidade(comId);
         const eventos = eventosAdminService.getEventos().filter(e => e.comunidadeId === comId);
         for (const ev of eventos) {
-          const temAcesso = rbacService.temAcessoSoberano(currentUserId, ev.id);
-          if (!temAcesso) continue;
           const evResumo = await getResumoFinanceiroEvento(ev.id);
           totalEventos++;
           detalhe.push({ nome: ev.nome, liquido: evResumo.receitaLiquida });
@@ -393,8 +400,8 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
     financialActionRef.current = true;
     setReembolsoLoadingId(reembolsoId);
     try {
-      const { aprovarReembolsoManual } = await import('../../services/reembolsoService');
-      const result = await aprovarReembolsoManual(reembolsoId, currentUserId);
+      const { aprovarReembolsoEtapa } = await import('../../services/reembolsoService');
+      const result = await aprovarReembolsoEtapa(reembolsoId, currentUserId);
       if (result.success) {
         addNotification({
           titulo: 'Reembolso Aprovado',
@@ -797,6 +804,7 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
             onAprovar={aprovarReembolsoHandler}
             onRejeitar={rejeitarReembolsoHandler}
             onSolicitarManual={() => setShowReembolsoModal(true)}
+            currentUserRole={reembolsoRole}
           />
         )}
       </div>

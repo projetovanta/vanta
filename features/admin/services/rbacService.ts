@@ -115,37 +115,6 @@ const rowToAtribuicao = (row: AtribuicaoRow): AtribuicaoRBAC => {
 };
 
 // ── Soberania — cache local ──────────────────────────────────────────────────
-interface SlotSoberania {
-  autorizado: Set<string>;
-  pendente: Set<string>;
-}
-const SOLICITACOES_ACESSO = new Map<string, SlotSoberania>();
-
-const getSovSlot = (eventoId: string): SlotSoberania => {
-  if (!SOLICITACOES_ACESSO.has(eventoId)) {
-    SOLICITACOES_ACESSO.set(eventoId, { autorizado: new Set(), pendente: new Set() });
-  }
-  return SOLICITACOES_ACESSO.get(eventoId)!;
-};
-
-/** Carrega soberania da tabela soberania_acesso */
-const refreshSoberania = async (): Promise<void> => {
-  try {
-    const { data } = await supabase.from('soberania_acesso').select('evento_id, solicitante_id, status').limit(2000);
-    if (!data) return;
-    SOLICITACOES_ACESSO.clear();
-    for (const row of data) {
-      const eventoId = row.evento_id as string;
-      const userId = row.solicitante_id as string;
-      const status = row.status as string;
-      const slot = getSovSlot(eventoId);
-      if (status === 'AUTORIZADO') slot.autorizado.add(userId);
-      else if (status === 'PENDENTE') slot.pendente.add(userId);
-    }
-  } catch {
-    // silencioso — cache mantém estado anterior
-  }
-};
 
 const tenantKey = (tipo: TipoTenant, tenantId: string) => `${tipo}_${tenantId}`;
 
@@ -202,7 +171,7 @@ export const rbacService = {
         .eq('user_id', userId)
         .eq('ativo', true);
 
-      const [atribRes, platRes] = await Promise.all([atribQuery, platQuery, refreshSoberania(), refreshCargosCustom()]);
+      const [atribRes, platRes] = await Promise.all([atribQuery, platQuery, refreshCargosCustom()]);
 
       // Popula permissões de plataforma
       _permissoesPlataforma = [];
@@ -506,61 +475,6 @@ export const rbacService = {
   /** Lista todas as atribuições ativas de um tenant (cache síncrono) */
   getAtribuicoesTenant(tipo: TipoTenant, tenantId: string): AtribuicaoRBAC[] {
     return ATRIBUICOES.filter(a => a.ativo && a.tenant.tipo === tipo && a.tenant.id === tenantId);
-  },
-
-  // ── Protocolo de Soberania ─────────────────────────────────────────────────
-
-  /**
-   * Verifica se o usuário tem acesso soberano ao evento.
-   */
-  temAcessoSoberano(userId: string, eventoId: string): boolean {
-    const comunidadeId = _eventoCache.get(eventoId)?.comunidadeId ?? '';
-    if (!comunidadeId) return true;
-    const isGGC = ATRIBUICOES.some(
-      a =>
-        a.ativo &&
-        a.userId === userId &&
-        a.tenant.tipo === 'COMUNIDADE' &&
-        a.tenant.id === comunidadeId &&
-        a.cargo === 'GERENTE',
-    );
-    if (!isGGC) return true;
-    return getSovSlot(eventoId).autorizado.has(userId);
-  },
-
-  /** GG-C solicita acesso ao evento — persiste no Supabase */
-  async solicitarAcesso(eventoId: string, userId: string): Promise<void> {
-    const slot = getSovSlot(eventoId);
-    if (slot.autorizado.has(userId)) return;
-    slot.pendente.add(userId);
-
-    const { error: errSov } = await supabase.from('soberania_acesso').upsert(
-      {
-        evento_id: eventoId,
-        solicitante_id: userId,
-        status: 'PENDENTE',
-      },
-      { onConflict: 'evento_id,solicitante_id' },
-    );
-    if (errSov) console.error('[rbacService] solicitarAcesso:', errSov);
-  },
-
-  /** GE-E autoriza o acesso de um GG-C específico — persiste no Supabase */
-  async autorizarAcesso(eventoId: string, requesterId: string): Promise<void> {
-    const slot = getSovSlot(eventoId);
-    slot.pendente.delete(requesterId);
-    slot.autorizado.add(requesterId);
-
-    await supabase
-      .from('soberania_acesso')
-      .update({ status: 'AUTORIZADO', decidido_em: tsBR() })
-      .eq('evento_id', eventoId)
-      .eq('solicitante_id', requesterId);
-  },
-
-  /** Retorna lista de userIds aguardando aprovação do GE-E naquele evento */
-  getSolicitacoesPendentes(eventoId: string): string[] {
-    return Array.from(SOLICITACOES_ACESSO.get(eventoId)?.pendente ?? []);
   },
 
   // ── Recrutamento (baseado em AtribuicaoRBAC) ──────────────────────────────

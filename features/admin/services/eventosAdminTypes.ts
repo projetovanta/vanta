@@ -58,12 +58,20 @@ export interface SolicitacaoSaque {
   motivoRecusa?: string;
 }
 
+export type StatusReembolso =
+  | 'PENDENTE_APROVACAO'
+  | 'AGUARDANDO_SOCIO'
+  | 'AGUARDANDO_GERENTE'
+  | 'AGUARDANDO_MASTER'
+  | 'APROVADO'
+  | 'REJEITADO';
+
 export interface Reembolso {
   id: string;
   ticketId: string;
   eventoId: string;
   tipo: 'AUTOMATICO' | 'MANUAL';
-  status?: 'APROVADO' | 'PENDENTE_APROVACAO' | 'REJEITADO';
+  status: StatusReembolso;
   motivo: string;
   valor: number;
   solicitadoPor: string;
@@ -74,8 +82,15 @@ export interface Reembolso {
   processadoEm?: string;
   eventoNome?: string;
   produtorNome?: string;
-  /** Etapa na hierarquia: SOLICITADO → SOCIO_ANALISOU → GERENTE_AUTORIZADO → MASTER_DECIDIU */
   etapa?: string;
+  rejeitadoPor?: string;
+  rejeitadoEm?: string;
+  rejeitadoMotivo?: string;
+  socioDecisao?: string;
+  socioDecisaoEm?: string;
+  gerenteDecisao?: string;
+  gerenteDecisaoEm?: string;
+  compradorNome?: string;
 }
 
 export interface Chargeback {

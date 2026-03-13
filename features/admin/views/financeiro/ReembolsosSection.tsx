@@ -1,6 +1,6 @@
 import React from 'react';
 import { RotateCcw, Check } from 'lucide-react';
-import type { Reembolso } from '../../services/eventosAdminTypes';
+import type { Reembolso, StatusReembolso } from '../../services/eventosAdminTypes';
 import { fmtBRL } from '../../../../utils';
 
 interface Props {
@@ -8,9 +8,36 @@ interface Props {
   onAprovar: (id: string) => void;
   onRejeitar: (id: string) => void;
   onSolicitarManual: () => void;
+  currentUserRole?: 'SOCIO' | 'GERENTE' | 'MASTER' | string;
 }
 
-export const ReembolsosSection: React.FC<Props> = ({ reembolsos, onAprovar, onRejeitar, onSolicitarManual }) => {
+const STATUS_LABELS: Record<StatusReembolso, string> = {
+  PENDENTE_APROVACAO: 'Pendente',
+  AGUARDANDO_SOCIO: 'Aguardando sócio',
+  AGUARDANDO_GERENTE: 'Aguardando gerente',
+  AGUARDANDO_MASTER: 'Aguardando master',
+  APROVADO: 'Aprovado',
+  REJEITADO: 'Rejeitado',
+};
+
+function podeAprovar(status: StatusReembolso, role?: string): boolean {
+  if (!role) return false;
+  const r = role.toUpperCase();
+  if (r === 'MASTER' || r === 'VANTA_MASTERADM') return true; // master pode em qualquer nível
+  if (status === 'AGUARDANDO_SOCIO' && r === 'SOCIO') return true;
+  if (status === 'AGUARDANDO_GERENTE' && r === 'GERENTE') return true;
+  // PENDENTE_APROVACAO = retrocompat (qualquer admin pode)
+  if (status === 'PENDENTE_APROVACAO') return true;
+  return false;
+}
+
+export const ReembolsosSection: React.FC<Props> = ({
+  reembolsos,
+  onAprovar,
+  onRejeitar,
+  onSolicitarManual,
+  currentUserRole,
+}) => {
   return (
     <div className="bg-zinc-900/40 border border-white/5 rounded-2xl p-5 space-y-4">
       <div className="flex items-center justify-between">
@@ -36,24 +63,25 @@ export const ReembolsosSection: React.FC<Props> = ({ reembolsos, onAprovar, onRe
               hour: '2-digit',
               minute: '2-digit',
             });
+            const status = r.status ?? 'PENDENTE_APROVACAO';
             const statusColor =
               r.tipo === 'AUTOMATICO'
                 ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20'
-                : r.status === 'PENDENTE_APROVACAO'
-                  ? 'text-amber-400 bg-amber-500/10 border-amber-500/20'
-                  : r.status === 'APROVADO'
-                    ? 'text-orange-400 bg-orange-500/10 border-orange-500/20'
-                    : 'text-red-400 bg-red-500/10 border-red-500/20';
-            const isPendente = r.status === 'PENDENTE_APROVACAO' && r.tipo === 'MANUAL';
+                : status === 'APROVADO'
+                  ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20'
+                  : status === 'REJEITADO'
+                    ? 'text-red-400 bg-red-500/10 border-red-500/20'
+                    : 'text-amber-400 bg-amber-500/10 border-amber-500/20';
+            const showButtons = r.tipo === 'MANUAL' && podeAprovar(status, currentUserRole);
             return (
               <div
                 key={r.id}
-                className={`border rounded-xl p-3 ${isPendente ? 'bg-amber-500/5 border-amber-500/15' : 'bg-orange-500/5 border-orange-500/15'}`}
+                className={`border rounded-xl p-3 ${showButtons ? 'bg-amber-500/5 border-amber-500/15' : 'bg-orange-500/5 border-orange-500/15'}`}
               >
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex-1 min-w-0">
                     <p className="text-orange-300 text-xs font-bold truncate">
-                      {r.tipo === 'AUTOMATICO' ? 'Reembolso Automático' : 'Reembolso Manual'} — {r.status}
+                      {r.tipo === 'AUTOMATICO' ? 'Reembolso Automático' : 'Reembolso Manual'}
                     </p>
                     <p className="text-zinc-400 text-[0.5625rem] mt-0.5 truncate">{data}</p>
                     <p className="text-zinc-400 text-[0.5625rem] mt-0.5 line-clamp-2">Motivo: {r.motivo}</p>
@@ -63,23 +91,23 @@ export const ReembolsosSection: React.FC<Props> = ({ reembolsos, onAprovar, onRe
                     <span
                       className={`text-[0.4375rem] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full border block mt-1 ${statusColor}`}
                     >
-                      {r.status === 'PENDENTE_APROVACAO' ? 'Pendente' : r.status}
+                      {STATUS_LABELS[status] ?? status}
                     </span>
                   </div>
                 </div>
-                {isPendente && (
+                {showButtons && (
                   <div className="flex gap-2 mt-3 pt-3 border-t border-amber-500/10">
                     <button
                       onClick={() => onAprovar(r.id)}
                       className="flex-1 py-2 bg-emerald-950/40 border border-emerald-500/20 text-emerald-400 rounded-lg text-[0.5rem] font-black uppercase tracking-wider active:scale-95 transition-all"
                     >
-                      ✓ Aprovar
+                      Aprovar
                     </button>
                     <button
                       onClick={() => onRejeitar(r.id)}
                       className="flex-1 py-2 bg-red-950/40 border border-red-500/20 text-red-400 rounded-lg text-[0.5rem] font-black uppercase tracking-wider active:scale-95 transition-all"
                     >
-                      ✕ Rejeitar
+                      Rejeitar
                     </button>
                   </div>
                 )}

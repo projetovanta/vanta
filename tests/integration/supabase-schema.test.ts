@@ -48,7 +48,6 @@ const TABELAS_OBRIGATORIAS = [
   'pagamentos_promoter',
   'vanta_indica',
   'niveis_prestigio',
-  'soberania_acesso',
   // MAIS VANTA
   'mais_vanta_config',
   'clube_config',

@@ -39,7 +39,7 @@ Registro financeiro de cada venda. Colunas: valor_bruto, valor_liquido, taxa_apl
 | ticket_id | UUID UNIQUE | migration | Ticket reembolsado |
 | evento_id | UUID | migration | Evento |
 | tipo | TEXT | migration | AUTOMATICO ou MANUAL |
-| status | TEXT | migration | SOLICITADO, SOCIO_APROVADO, GERENTE_APROVADO, MASTER_APROVADO, REJEITADO |
+| status | TEXT | migration | PENDENTE_APROVACAO, AGUARDANDO_SOCIO, AGUARDANDO_GERENTE, AGUARDANDO_MASTER, APROVADO, REJEITADO |
 | motivo | TEXT | migration | Motivo do reembolso |
 | valor | NUMERIC(10,2) | migration | Valor reembolsado |
 | solicitado_por | UUID | migration | Quem pediu |
@@ -92,20 +92,19 @@ Registro financeiro de cada venda. Colunas: valor_bruto, valor_liquido, taxa_apl
 - `processarReembolsoAutomatico(ticketId)` — processa automatico
 - `aprovarReembolsoManual(id)` — aprova manual
 - `verificarLimiteReembolso(userId)` — checa limite mensal
-- `solicitarReembolso(ticketId)` — inicia fluxo
-- `aprovarReembolsoEtapa(id)` — aprova etapa (hierarquia)
-- `executarReembolsoFinal(id)` — executa final
-- `recusarReembolso(id)` — recusa
 - `registrarChargeback(id)` — registra chargeback
+- `getReembolsos(eventoIds?)` — lista todos (masterFinanceiro)
 
-### reembolsoService (features/admin/services/reembolsoService.ts, 449L)
-- `podeReembolsoAutomatico(ticketId)` — elegibilidade
-- `solicitarReembolsoAutomatico(ticketId, eventoId, userId)` — auto
-- `solicitarReembolsoManual(ticketId, eventoId, motivo)` — manual
-- `aprovarReembolsoManual(id)` — aprova
-- `rejeitarReembolsoManual(id, motivo)` — rejeita
+### reembolsoService (features/admin/services/reembolsoService.ts) — UNIFICADO
+- `verificarLimiteReembolso(userId)` — anti-fraude 3/mês
+- `podeReembolsoAutomatico(ticketId, eventoId)` — elegibilidade CDC
+- `solicitarReembolsoAutomatico(ticketId, eventoId, userId)` — auto → APROVADO direto
+- `solicitarReembolsoManual(ticketId, eventoId, motivo, userId)` — manual → AGUARDANDO_SOCIO/GERENTE/MASTER (pula níveis vazios)
+- `aprovarReembolsoEtapa(reembolsoId, aprovadorId)` — avança na cadeia hierárquica
+- `aprovarReembolsoManual(reembolsoId, masterId)` — retrocompat, chama aprovarReembolsoEtapa
+- `rejeitarReembolsoManual(reembolsoId, rejeitadoPorId, motivo)` — qualquer nível pode rejeitar → REJEITADO (final)
 - `getReembolsosPorEvento(eventoId)` — lista por evento
-- `getReembolsosPendentes()` — pendentes (master)
+- `getReembolsosPendentes()` — pendentes (qualquer nível aguardando)
 - `getReembolsosAprovados()` — aprovados
 - `getReembolsosRejeitados()` — rejeitados
 
@@ -149,22 +148,25 @@ Registro financeiro de cada venda. Colunas: valor_bruto, valor_liquido, taxa_apl
 
 **Quem recebe**: Master ve em MasterFinanceiroView saques pendentes
 
-### REEMBOLSO AUTOMATICO (usuario)
-**Quem**: Comprador
+### REEMBOLSO AUTOMATICO (usuario — CDC Art. 49)
+**Quem**: Comprador (até 7 dias + 48h antes do evento)
 **Navegacao**: Carteira -> Ticket -> Solicitar Reembolso
 **O que acontece**:
-1. podeReembolsoAutomatico verifica: prazo OK, limite mensal OK, elegivel
-2. Se elegivel: INSERT reembolsos (tipo AUTOMATICO, status depende da hierarquia)
-3. Fluxo: SOLICITADO → socio (se COM_SOCIO) → gerente → master → APROVADO
-4. Ticket cancelado, transaction atualizada
+1. podeReembolsoAutomatico verifica: prazo 7 dias, 48h antes evento, status DISPONIVEL
+2. Se elegivel: INSERT reembolsos (tipo AUTOMATICO, status APROVADO) + ticket REEMBOLSADO
+3. Direto, sem cadeia hierárquica
 
-### REEMBOLSO MANUAL (admin)
-**Quem**: Gerente ou master
+### REEMBOLSO MANUAL (admin — cadeia hierárquica)
+**Quem**: Produtor/sócio/gerente
 **Navegacao**: FinanceiroView -> ReembolsosSection -> ModalReembolsoManual
 **O que acontece**:
-1. Admin seleciona ticket e define motivo
-2. INSERT reembolsos (tipo MANUAL)
-3. Aprovacao por hierarquia
+1. Anti-fraude: max 3 reembolsos/mês por solicitante
+2. INSERT reembolsos (tipo MANUAL, status = nível inicial detectado automaticamente)
+3. Cadeia: AGUARDANDO_SOCIO → AGUARDANDO_GERENTE → AGUARDANDO_MASTER → APROVADO
+4. Níveis vazios pulados (sem sócio → gerente, sem gerente → master)
+5. Qualquer nível pode REJEITAR (final)
+6. Master aprova → ticket REEMBOLSADO + notifica comprador
+7. Botões de aprovar/rejeitar só aparecem pro nível correto
 
 ### CHARGEBACK
 **Quem**: Sistema (stripe webhook) ou master manual

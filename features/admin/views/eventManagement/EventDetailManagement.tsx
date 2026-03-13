@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   ArrowLeft,
   Users,
@@ -8,7 +8,6 @@ import {
   TrendingUp,
   Gift,
   Settings2,
-  ShieldAlert,
   FileText,
   LayoutGrid,
 } from 'lucide-react';
@@ -18,7 +17,6 @@ import { listasService } from '../../services/listasService';
 import { cortesiasService } from '../../services/cortesiasService';
 import { eventosAdminService } from '../../services/eventosAdminService';
 import { rbacService } from '../../services/rbacService';
-import { SovereigntyGuard } from '../../components/SovereigntyGuard';
 import { useToast, ToastContainer } from '../../../../components/Toast';
 import { Tab } from './types';
 import { TabLotacao } from './TabLotacao';
@@ -56,8 +54,6 @@ export const EventDetailManagement: React.FC<{
   const [lista, setLista] = useState(() => (listaId ? listasService.getLista(listaId) : null));
   const [tab, setTab] = useState<Tab>(defaultTab);
   const [logTick, setLogTick] = useState(0);
-  const [showSovModal, setShowSovModal] = useState(false);
-  const [sovTick, setSovTick] = useState(0);
   const { toasts, dismiss, toast } = useToast();
   const refresh = () => {
     if (listaId) setLista({ ...listasService.getLista(listaId)! });
@@ -72,47 +68,6 @@ export const EventDetailManagement: React.FC<{
   const hasCortesias = !!cortesiasService.getCortesiaConfig(eventoAdminId ?? '');
   const eventoAdmin = eventoAdminId ? eventosAdminService.getEvento(eventoAdminId) : null;
   const [mesasAtivo, setMesasAtivo] = useState(() => eventoAdmin?.mesasAtivo ?? false);
-  // Indica se o usuário tem acesso soberano à lista (para mostrar cadeado na aba)
-  const temAcessoLista = !eventoAdminId || rbacService.temAcessoSoberano(currentUserId, eventoAdminId);
-
-  // Soberania: GE-E (isSocio) vê pendências de acesso do GG-C
-  const sovPendentes = isSocio && eventoAdminId ? rbacService.getSolicitacoesPendentes(eventoAdminId) : [];
-
-  // Resolver nomes dos sovPendentes via Supabase
-  const [sovMembros, setSovMembros] = useState<Record<string, { nome: string; foto: string }>>({});
-  useEffect(() => {
-    if (sovPendentes.length === 0) return;
-    import('../../../../services/supabaseClient')
-      .then(({ supabase }) => {
-        supabase
-          .from('profiles')
-          .select('id, nome, avatar_url')
-          .in('id', sovPendentes)
-          .then(
-            ({ data }) => {
-              const map: Record<string, { nome: string; foto: string }> = {};
-              (data ?? []).forEach((r: any) => {
-                map[r.id] = { nome: r.nome ?? r.id, foto: r.avatar_url ?? '' };
-              });
-              setSovMembros(map);
-            },
-            () => {
-              /* audit-ok */
-            },
-          );
-      })
-      .catch(() => {
-        /* audit-ok */
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sovPendentes.join()]);
-
-  const handleAutorizarSov = async (requesterId: string) => {
-    if (!eventoAdminId) return;
-    await rbacService.autorizarAcesso(eventoAdminId, requesterId);
-    setSovTick(t => t + 1);
-    if (rbacService.getSolicitacoesPendentes(eventoAdminId).length === 0) setShowSovModal(false);
-  };
 
   type TabDef = { id: Tab; label: string; icon: React.FC<any> };
   const TABS: TabDef[] = isSocio
@@ -177,7 +132,7 @@ export const EventDetailManagement: React.FC<{
         {/* Tabs — horizontal scroll para sócio (5 tabs) */}
         <div className="flex flex-wrap gap-1 p-1 bg-zinc-900/50 rounded-xl border border-white/5">
           {TABS.map(t => {
-            const isLocked = t.id === 'LISTA' && !temAcessoLista;
+            const isLocked = false;
             return (
               <button
                 key={t.id}
@@ -193,29 +148,6 @@ export const EventDetailManagement: React.FC<{
           })}
         </div>
       </div>
-
-      {/* Banner de Soberania — visível apenas para o GE-E quando há solicitações pendentes */}
-      {sovPendentes.length > 0 && (
-        <div
-          key={sovTick}
-          className="mx-4 mb-1 px-4 py-2.5 rounded-xl bg-zinc-900/60 border border-white/10 flex items-center justify-between gap-3 shrink-0"
-        >
-          <div className="flex items-center gap-2 min-w-0">
-            <ShieldAlert size="0.8125rem" className="text-amber-400 shrink-0" />
-            <p className="text-xs text-white/55 truncate">
-              {sovPendentes.length === 1
-                ? 'Há 1 solicitação de acesso da Comunidade.'
-                : `Há ${sovPendentes.length} solicitações de acesso da Comunidade.`}
-            </p>
-          </div>
-          <button
-            onClick={() => setShowSovModal(true)}
-            className="text-[0.625rem] font-bold text-amber-400/80 hover:text-amber-400 whitespace-nowrap shrink-0 active:scale-95 transition-all"
-          >
-            Revisar
-          </button>
-        </div>
-      )}
 
       <div className="flex-1 overflow-y-auto no-scrollbar p-6 max-w-3xl mx-auto w-full">
         {tab === 'LOTACAO' && lista && <TabLotacao lista={lista} />}
@@ -235,22 +167,7 @@ export const EventDetailManagement: React.FC<{
             )}
           </>
         )}
-        {tab === 'LISTA' && lista && eventoAdminId ? (
-          <SovereigntyGuard
-            eventoId={eventoAdminId}
-            userId={currentUserId}
-            permissao="GERIR_LISTAS"
-            currentUserRole={currentUserRole as ContaVantaLegacy}
-          >
-            <TabLista
-              lista={lista}
-              isSocio={isSocio}
-              currentUserId={currentUserId}
-              currentUserNome={currentUserNome}
-              refresh={refresh}
-            />
-          </SovereigntyGuard>
-        ) : tab === 'LISTA' && lista ? (
+        {tab === 'LISTA' && lista && (
           <TabLista
             lista={lista}
             isSocio={isSocio}
@@ -258,23 +175,12 @@ export const EventDetailManagement: React.FC<{
             currentUserNome={currentUserNome}
             refresh={refresh}
           />
-        ) : null}
+        )}
         {tab === 'CORTESIAS' && lista && listaId && (
           <TabCortesias listaId={listaId} lista={lista} adminNome={adminNome} key={logTick} />
         )}
         {tab === 'LOGS' && <TabLogs listaId={listaId ?? ''} eventoAdminId={eventoAdminId ?? undefined} key={logTick} />}
-        {tab === 'RESUMO' && lista && eventoAdminId ? (
-          <SovereigntyGuard
-            eventoId={eventoAdminId}
-            userId={currentUserId}
-            permissao="VER_FINANCEIRO"
-            currentUserRole={currentUserRole as ContaVantaLegacy}
-          >
-            <TabResumoCaixa lista={lista} toastFn={toast} />
-          </SovereigntyGuard>
-        ) : tab === 'RESUMO' && lista ? (
-          <TabResumoCaixa lista={lista} toastFn={toast} />
-        ) : null}
+        {tab === 'RESUMO' && lista && <TabResumoCaixa lista={lista} toastFn={toast} />}
         {tab === 'CARGOS_PERM' && <TabCargosPermissoes comunidadeId={comunidadeId} toastFn={toast} />}
         {tab === 'MESAS' && eventoAdminId && (
           <TabMesas
@@ -284,93 +190,8 @@ export const EventDetailManagement: React.FC<{
             onToggle={setMesasAtivo}
           />
         )}
-        {tab === 'RELATORIO' && eventoAdminId ? (
-          <SovereigntyGuard
-            eventoId={eventoAdminId}
-            userId={currentUserId}
-            permissao="VER_FINANCEIRO"
-            currentUserRole={currentUserRole as ContaVantaLegacy}
-          >
-            <TabRelatorio eventoAdminId={eventoAdminId} />
-          </SovereigntyGuard>
-        ) : null}
+        {tab === 'RELATORIO' && eventoAdminId && <TabRelatorio eventoAdminId={eventoAdminId} />}
       </div>
-
-      {/* Modal de Revisão de Soberania */}
-      {showSovModal && (
-        <div
-          className="absolute inset-0 z-[60] bg-black/70 flex items-end"
-          role="presentation"
-          onClick={() => setShowSovModal(false)}
-        >
-          <div
-            className="w-full bg-zinc-900 rounded-t-2xl border border-white/5 overflow-hidden"
-            onClick={e => e.stopPropagation()}
-          >
-            <div className="flex justify-center pt-3 pb-1">
-              <div className="w-10 h-1 rounded-full bg-zinc-700" />
-            </div>
-            <div className="px-6 pt-3 pb-4 border-b border-white/5 flex items-center gap-2">
-              <ShieldAlert size="0.875rem" className="text-amber-400 shrink-0" />
-              <h2 style={TYPOGRAPHY.screenTitle} className="text-base italic">
-                Solicitações de Acesso
-              </h2>
-            </div>
-            <div className="p-6 space-y-3 max-h-[50vh] overflow-y-auto no-scrollbar">
-              <p className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest mb-4">
-                Gerentes da Comunidade
-              </p>
-              {rbacService.getSolicitacoesPendentes(eventoAdminId!).map(uid => {
-                const membro = sovMembros[uid];
-                return (
-                  <div
-                    key={uid}
-                    className="flex items-center gap-3 p-4 bg-zinc-900/60 border border-white/5 rounded-xl"
-                  >
-                    <div className="w-9 h-9 rounded-full bg-zinc-800 border border-white/10 overflow-hidden shrink-0">
-                      {membro?.foto ? (
-                        <img
-                          loading="lazy"
-                          src={membro.foto}
-                          alt={membro.nome}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-zinc-400 text-xs font-bold">
-                          {membro?.nome?.[0] ?? '?'}
-                        </div>
-                      )}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-white text-sm font-semibold truncate">{membro?.nome ?? uid}</p>
-                      <p className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest">
-                        Produtor · Comunidade
-                      </p>
-                    </div>
-                    <button
-                      onClick={() => handleAutorizarSov(uid)}
-                      className="px-3 py-1.5 rounded-lg bg-[#FFD300]/10 border border-[#FFD300]/20 text-[#FFD300] text-[0.625rem] font-black uppercase tracking-wider hover:bg-[#FFD300]/20 active:scale-95 transition-all shrink-0"
-                    >
-                      Autorizar
-                    </button>
-                  </div>
-                );
-              })}
-            </div>
-            <div
-              className="p-4 border-t border-white/5"
-              style={{ paddingBottom: 'max(1rem, env(safe-area-inset-bottom, 1rem))' }}
-            >
-              <button
-                onClick={() => setShowSovModal(false)}
-                className="w-full py-3 rounded-xl bg-zinc-800 border border-white/5 text-zinc-400 text-sm font-bold active:scale-[0.97] transition-all"
-              >
-                Fechar
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

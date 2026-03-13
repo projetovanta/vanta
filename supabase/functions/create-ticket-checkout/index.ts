@@ -215,7 +215,7 @@ serve(async (req: Request) => {
         lote_id,
         dados_compra: dadosCompra,
         valor_total_centavos: totalCentavos,
-        status: 'pendente',
+        status: 'PENDENTE',
       })
       .select('id')
       .single();

@@ -115,7 +115,7 @@ serve(async (req: Request) => {
             .from('pedidos_checkout')
             .select('*')
             .eq('id', pedidoId)
-            .eq('status', 'pendente')
+            .eq('status', 'PENDENTE')
             .maybeSingle();
 
           if (pedidoErr || !pedido) {
@@ -154,7 +154,7 @@ serve(async (req: Request) => {
           const { error: updErr } = await supabase
             .from('pedidos_checkout')
             .update({
-              status: allOk ? 'pago' : 'pago',
+              status: allOk ? 'PAGO' : 'PAGO',
               paid_at: nowBRT,
               stripe_session_id: session.id,
               stripe_payment_intent_id: session.payment_intent,

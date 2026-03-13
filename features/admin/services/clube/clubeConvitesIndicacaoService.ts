@@ -9,7 +9,7 @@ function rowToConvite(r: Record<string, unknown>): ConviteClube {
     codigo: r.codigo as string,
     usadoPor: r.usado_por as string | undefined,
     usadoEm: r.usado_em as string | undefined,
-    status: (r.status as ConviteClube['status']) ?? 'disponivel',
+    status: (r.status as ConviteClube['status']) ?? 'DISPONIVEL',
     criadoEm: r.criado_em as string,
   };
 }
@@ -39,7 +39,7 @@ export async function buscarConvitePorCodigo(codigo: string): Promise<ConviteClu
     .from('convites_clube')
     .select('*')
     .eq('codigo', codigo)
-    .eq('status', 'disponivel')
+    .eq('status', 'DISPONIVEL')
     .maybeSingle();
   if (error) return null;
   if (!data) return null;
@@ -50,9 +50,9 @@ export async function usarConvite(codigo: string, usadoPor: string): Promise<voi
   const now = tsBR();
   const { error } = await supabase
     .from('convites_clube')
-    .update({ usado_por: usadoPor, usado_em: now, status: 'usado' })
+    .update({ usado_por: usadoPor, usado_em: now, status: 'USADO' })
     .eq('codigo', codigo)
-    .eq('status', 'disponivel');
+    .eq('status', 'DISPONIVEL');
   if (error) throw error;
 }
 

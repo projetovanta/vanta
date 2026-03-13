@@ -31,7 +31,7 @@ function rowToAtribuicao(r: Record<string, unknown>): ProdutorPlano {
     planoId: r.plano_id as string,
     inicio: r.inicio as string,
     fim: r.fim as string | undefined,
-    status: (r.status as ProdutorPlano['status']) ?? 'ativo',
+    status: (r.status as ProdutorPlano['status']) ?? 'ATIVO',
     criadoEm: r.criado_em as string,
     planoNome: plano?.nome as string | undefined,
     produtorNome: produtor?.nome as string | undefined,
@@ -100,7 +100,7 @@ export async function deletarPlano(planoId: string): Promise<{ ok: boolean; reas
     .from('produtor_plano')
     .select('id')
     .eq('plano_id', planoId)
-    .eq('status', 'ativo')
+    .eq('status', 'ATIVO')
     .limit(1);
   if (ativos && ativos.length > 0) {
     return { ok: false, reason: 'Existem produtores ativos neste plano. Desative-o primeiro.' };
@@ -128,14 +128,14 @@ export async function atribuirPlano(produtorId: string, planoId: string): Promis
   // Cancelar plano ativo anterior
   await supabase
     .from('produtor_plano')
-    .update({ status: 'cancelado', fim: tsBR() })
+    .update({ status: 'CANCELADO', fim: tsBR() })
     .eq('produtor_id', produtorId)
-    .eq('status', 'ativo');
+    .eq('status', 'ATIVO');
 
   const now = tsBR();
   const { data, error } = await supabase
     .from('produtor_plano')
-    .insert({ produtor_id: produtorId, plano_id: planoId, inicio: now, status: 'ativo', criado_em: now })
+    .insert({ produtor_id: produtorId, plano_id: planoId, inicio: now, status: 'ATIVO', criado_em: now })
     .select('*, planos_produtor(nome), profiles!produtor_plano_produtor_id_fkey(nome)')
     .single();
   if (error) throw error;
@@ -145,9 +145,9 @@ export async function atribuirPlano(produtorId: string, planoId: string): Promis
 export async function cancelarPlanoProdutor(produtorId: string): Promise<void> {
   await supabase
     .from('produtor_plano')
-    .update({ status: 'cancelado', fim: tsBR() })
+    .update({ status: 'CANCELADO', fim: tsBR() })
     .eq('produtor_id', produtorId)
-    .eq('status', 'ativo');
+    .eq('status', 'ATIVO');
 }
 
 export async function getPlanoAtivoProdutor(
@@ -157,7 +157,7 @@ export async function getPlanoAtivoProdutor(
     .from('produtor_plano')
     .select('*, planos_produtor(*)')
     .eq('produtor_id', produtorId)
-    .eq('status', 'ativo')
+    .eq('status', 'ATIVO')
     .maybeSingle();
   if (!data) return null;
   const r = data as Record<string, unknown>;

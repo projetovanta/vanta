@@ -10,6 +10,8 @@ const STATUS_STYLE: Record<TicketCaixa['status'], { label: string; cls: string }
   USADO: { label: 'Usado', cls: 'bg-zinc-700/40 text-zinc-400' },
   CANCELADO: { label: 'Cancelado', cls: 'bg-red-500/15 text-red-400' },
   REEMBOLSADO: { label: 'Reembolsado', cls: 'bg-orange-500/15 text-orange-400' },
+  TRANSFERIDO: { label: 'Transferido', cls: 'bg-blue-500/15 text-blue-400' },
+  EXPIRADO: { label: 'Expirado', cls: 'bg-zinc-700/40 text-zinc-500' },
 };
 
 export const ParticipantesView: React.FC<{

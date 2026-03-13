@@ -29,7 +29,7 @@ export function getBloqueioAte(userId: string): string | null {
 
 export function temDividaSocial(userId: string): boolean {
   return _reservas.some(
-    r => r.userId === userId && (r.status === 'PENDENTE_POST' || (r.status === 'RESERVADO' && !r.postVerificado)),
+    r => r.userId === userId && (r.status === 'PENDENTE_POST' || (r.status === 'RESGATADO' && !r.postVerificado)),
   );
 }
 

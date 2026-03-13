@@ -84,7 +84,7 @@ export const MembrosGlobaisMaisVantaView: React.FC<{
   const temDividaSocial = (userId: string): boolean => {
     // Verificar se tem reserva com post não verificado
     const reservasUser = clubeService.getReservasUsuario?.(userId) ?? [];
-    return reservasUser.some((r: any) => !r.postVerificado && r.status === 'RESERVADO');
+    return reservasUser.some((r: any) => !r.postVerificado && r.status === 'RESGATADO');
   };
 
   const getStatusMembro = (m: MembroClubeVanta): string => {

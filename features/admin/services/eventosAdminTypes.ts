@@ -25,14 +25,15 @@ export interface TicketCaixa {
   cpf: string;
   selfieBase64?: string;
   selfieUrl?: string;
-  status: 'DISPONIVEL' | 'USADO' | 'CANCELADO' | 'REEMBOLSADO';
+  status: 'DISPONIVEL' | 'USADO' | 'CANCELADO' | 'REEMBOLSADO' | 'TRANSFERIDO' | 'EXPIRADO';
   emitidoEm: string;
   usadoEm?: string;
 }
 
 export type ValidacaoIngresso = 'VALIDO' | 'JA_UTILIZADO' | 'EVENTO_INCORRETO' | 'INVALIDO';
 
-export type StatusSaque = 'PENDENTE' | 'GERENTE_AUTORIZADO' | 'CONCLUIDO' | 'ESTORNADO' | 'RECUSADO';
+export type StatusSaque = 'PENDENTE' | 'CONCLUIDO' | 'ESTORNADO' | 'RECUSADO';
+export type EtapaSaque = 'SOLICITADO' | 'GERENTE_AUTORIZADO' | 'RECUSADO';
 export type StatusChargeback = 'ABERTO' | 'DEDUZIDO' | 'REVERTIDO';
 
 export interface SolicitacaoSaque {
@@ -50,7 +51,7 @@ export interface SolicitacaoSaque {
   solicitadoEm: string;
   processadoEm?: string;
   /** Etapa atual na hierarquia tripla */
-  etapa?: string;
+  etapa?: EtapaSaque;
   /** Gerente que autorizou */
   gerenteAprovadoPor?: string;
   gerenteAprovadoEm?: string;

@@ -76,7 +76,7 @@ export const SubTabEventos: React.FC<Props> = ({
                 const membro = membros.find(m => m.userId === r.userId);
                 const compareceu = r.status === 'USADO' || r.status === 'PENDENTE_POST';
                 const postou = r.postVerificado;
-                const noShow = eventoPassado && r.status === 'RESERVADO';
+                const noShow = eventoPassado && r.status === 'RESGATADO';
 
                 let statusColor = 'border-zinc-700';
                 let statusBg = 'bg-zinc-900/60';

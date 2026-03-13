@@ -80,7 +80,7 @@ export const rowToMembro = (r: MembroRow): MembroClubeVanta => ({
   instagramVerificadoEm: r.instagram_verificado_em ?? undefined,
   tags: (r.tags as string[]) ?? undefined,
   notaInterna: r.nota_interna ?? undefined,
-  status: r.status ?? undefined,
+  status: (r.status as MembroClubeVanta['status']) ?? undefined,
   cidadePrincipal: (r as Record<string, unknown>).cidade_principal as string | undefined,
   cidadesAtivas: (r as Record<string, unknown>).cidades_ativas as string[] | undefined,
   convitesDisponiveis: (r as Record<string, unknown>).convites_disponiveis as number | undefined,
@@ -116,7 +116,7 @@ export const rowToReserva = (_r: Record<string, unknown>): ReservaMaisVanta => (
   eventoId: '',
   userId: '',
   reservadoEm: '',
-  status: 'RESERVADO',
+  status: 'RESGATADO',
   postVerificado: false,
 });
 

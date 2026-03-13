@@ -22,7 +22,7 @@ export const HistoricoSaques: React.FC<Props> = ({ historico }) => {
                 ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20'
                 : s.status === 'ESTORNADO' || s.status === 'RECUSADO'
                   ? 'text-red-400 bg-red-500/10 border-red-500/20'
-                  : s.status === 'GERENTE_AUTORIZADO'
+                  : s.etapa === 'GERENTE_AUTORIZADO'
                     ? 'text-blue-400 bg-blue-500/10 border-blue-500/20'
                     : 'text-amber-400 bg-amber-500/10 border-amber-500/20';
             const data = new Date(s.solicitadoEm).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });

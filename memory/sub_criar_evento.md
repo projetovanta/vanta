@@ -103,10 +103,10 @@ LoteMaisVantaForm: @deprecated (compat)
 ## handlePublicar — 8 reacoes atomicas
 ```
 1. eventosAdminService.criarEvento → INSERT eventos_admin
-   Status: PENDENTE (casa) ou NEGOCIANDO (socio)
+   Status: PENDENTE (sempre — negociação sócio removida)
    publicado: false
 1b. INSERT socios_evento (N socios, cada um com split_percentual)
-    Notifica cada socio com CONVITE_SOCIO
+    Notifica cada socio com SOCIO_ADICIONADO
 2. INSERT lotes (por lote: nome, ordem, data_validade)
 3. INSERT variacoes_ingresso (por variacao: area, genero, valor, limite)
 4. cortesiasService.initCortesia (se habilitado)

@@ -101,6 +101,20 @@ export type Database = {
             referencedColumns: ['id'];
           },
           {
+            foreignKeyName: 'assinaturas_mais_vanta_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: true;
+            referencedRelation: 'comunidades_admin';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'assinaturas_mais_vanta_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: true;
+            referencedRelation: 'comunidades_publico';
+            referencedColumns: ['id'];
+          },
+          {
             foreignKeyName: 'assinaturas_mais_vanta_plano_id_fkey';
             columns: ['plano_id'];
             isOneToOne: false;
@@ -285,6 +299,20 @@ export type Database = {
             columns: ['comunidade_id'];
             isOneToOne: false;
             referencedRelation: 'comunidades';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'cargos_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades_admin';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'cargos_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades_publico';
             referencedColumns: ['id'];
           },
         ];
@@ -532,6 +560,20 @@ export type Database = {
             referencedRelation: 'comunidades';
             referencedColumns: ['id'];
           },
+          {
+            foreignKeyName: 'clube_config_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: true;
+            referencedRelation: 'comunidades_admin';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'clube_config_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: true;
+            referencedRelation: 'comunidades_publico';
+            referencedColumns: ['id'];
+          },
         ];
       };
       comemoracoes: {
@@ -623,6 +665,20 @@ export type Database = {
             referencedColumns: ['id'];
           },
           {
+            foreignKeyName: 'comemoracoes_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades_admin';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'comemoracoes_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades_publico';
+            referencedColumns: ['id'];
+          },
+          {
             foreignKeyName: 'comemoracoes_evento_id_fkey';
             columns: ['evento_id'];
             isOneToOne: false;
@@ -678,6 +734,20 @@ export type Database = {
             columns: ['comunidade_id'];
             isOneToOne: false;
             referencedRelation: 'comunidades';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'comemoracoes_config_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades_admin';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'comemoracoes_config_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades_publico';
             referencedColumns: ['id'];
           },
           {
@@ -797,6 +867,20 @@ export type Database = {
             columns: ['comunidade_id'];
             isOneToOne: false;
             referencedRelation: 'comunidades';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'community_follows_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades_admin';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'community_follows_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades_publico';
             referencedColumns: ['id'];
           },
         ];
@@ -1400,6 +1484,20 @@ export type Database = {
             referencedColumns: ['id'];
           },
           {
+            foreignKeyName: 'cupons_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades_admin';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'cupons_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades_publico';
+            referencedColumns: ['id'];
+          },
+          {
             foreignKeyName: 'cupons_evento_id_fkey';
             columns: ['evento_id'];
             isOneToOne: false;
@@ -1855,6 +1953,20 @@ export type Database = {
             referencedColumns: ['id'];
           },
           {
+            foreignKeyName: 'eventos_admin_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades_admin';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'eventos_admin_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades_publico';
+            referencedColumns: ['id'];
+          },
+          {
             foreignKeyName: 'eventos_admin_evento_origem_id_fkey';
             columns: ['evento_origem_id'];
             isOneToOne: false;
@@ -1961,6 +2073,20 @@ export type Database = {
             referencedColumns: ['id'];
           },
           {
+            foreignKeyName: 'eventos_privados_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades_admin';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'eventos_privados_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades_publico';
+            referencedColumns: ['id'];
+          },
+          {
             foreignKeyName: 'eventos_privados_evento_id_fkey';
             columns: ['evento_id'];
             isOneToOne: false;
@@ -2034,6 +2160,20 @@ export type Database = {
             columns: ['comunidade_id'];
             isOneToOne: false;
             referencedRelation: 'comunidades';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'fidelidade_cliente_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades_admin';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'fidelidade_cliente_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades_publico';
             referencedColumns: ['id'];
           },
           {
@@ -2466,6 +2606,20 @@ export type Database = {
             columns: ['comunidade_origem'];
             isOneToOne: false;
             referencedRelation: 'comunidades';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'membros_clube_comunidade_origem_fkey';
+            columns: ['comunidade_origem'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades_admin';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'membros_clube_comunidade_origem_fkey';
+            columns: ['comunidade_origem'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades_publico';
             referencedColumns: ['id'];
           },
         ];
@@ -2953,6 +3107,20 @@ export type Database = {
             referencedRelation: 'comunidades';
             referencedColumns: ['id'];
           },
+          {
+            foreignKeyName: 'passport_aprovacoes_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades_admin';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'passport_aprovacoes_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades_publico';
+            referencedColumns: ['id'];
+          },
         ];
       };
       pedidos_checkout: {
@@ -3198,8 +3366,6 @@ export type Database = {
           album_urls: string[];
           avatar_url: string | null;
           biografia: string;
-          biometria_captured: boolean;
-          biometria_url: string | null;
           birth_date: string | null;
           cidade: string | null;
           city: string | null;
@@ -3247,8 +3413,6 @@ export type Database = {
           album_urls?: string[];
           avatar_url?: string | null;
           biografia?: string;
-          biometria_captured?: boolean;
-          biometria_url?: string | null;
           birth_date?: string | null;
           cidade?: string | null;
           city?: string | null;
@@ -3296,8 +3460,6 @@ export type Database = {
           album_urls?: string[];
           avatar_url?: string | null;
           biografia?: string;
-          biometria_captured?: boolean;
-          biometria_url?: string | null;
           birth_date?: string | null;
           cidade?: string | null;
           city?: string | null;
@@ -3720,6 +3882,20 @@ export type Database = {
             referencedRelation: 'comunidades';
             referencedColumns: ['id'];
           },
+          {
+            foreignKeyName: 'relatorios_semanais_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades_admin';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'relatorios_semanais_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades_publico';
+            referencedColumns: ['id'];
+          },
         ];
       };
       resgates_mais_vanta: {
@@ -3894,41 +4070,6 @@ export type Database = {
           },
         ];
       };
-      soberania_acesso: {
-        Row: {
-          decidido_em: string | null;
-          evento_id: string;
-          id: string;
-          solicitado_em: string;
-          solicitante_id: string;
-          status: string;
-        };
-        Insert: {
-          decidido_em?: string | null;
-          evento_id: string;
-          id?: string;
-          solicitado_em?: string;
-          solicitante_id: string;
-          status?: string;
-        };
-        Update: {
-          decidido_em?: string | null;
-          evento_id?: string;
-          id?: string;
-          solicitado_em?: string;
-          solicitante_id?: string;
-          status?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: 'soberania_acesso_evento_id_fkey';
-            columns: ['evento_id'];
-            isOneToOne: false;
-            referencedRelation: 'eventos_admin';
-            referencedColumns: ['id'];
-          },
-        ];
-      };
       socios_evento: {
         Row: {
           created_at: string | null;
@@ -3943,7 +4084,6 @@ export type Database = {
           socio_id: string;
           split_percentual: number;
           status: string;
-          ultimo_turno: string | null;
           updated_at: string | null;
         };
         Insert: {
@@ -3959,7 +4099,6 @@ export type Database = {
           socio_id: string;
           split_percentual?: number;
           status?: string;
-          ultimo_turno?: string | null;
           updated_at?: string | null;
         };
         Update: {
@@ -3975,7 +4114,6 @@ export type Database = {
           socio_id?: string;
           split_percentual?: number;
           status?: string;
-          ultimo_turno?: string | null;
           updated_at?: string | null;
         };
         Relationships: [
@@ -4168,6 +4306,20 @@ export type Database = {
             referencedColumns: ['id'];
           },
           {
+            foreignKeyName: 'solicitacoes_parceria_comunidade_criada_id_fkey';
+            columns: ['comunidade_criada_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades_admin';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'solicitacoes_parceria_comunidade_criada_id_fkey';
+            columns: ['comunidade_criada_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades_publico';
+            referencedColumns: ['id'];
+          },
+          {
             foreignKeyName: 'solicitacoes_parceria_user_id_fkey';
             columns: ['user_id'];
             isOneToOne: false;
@@ -4304,6 +4456,20 @@ export type Database = {
             columns: ['comunidade_id'];
             isOneToOne: false;
             referencedRelation: 'comunidades';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'splits_config_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades_admin';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'splits_config_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades_publico';
             referencedColumns: ['id'];
           },
           {
@@ -4766,16 +4932,226 @@ export type Database = {
       };
     };
     Views: {
-      [_ in never]: never;
+      comunidades_admin: {
+        Row: {
+          ativa: boolean | null;
+          capacidade_max: number | null;
+          cargos_customizados: Json | null;
+          cep: string | null;
+          cidade: string | null;
+          cnpj: string | null;
+          coords: Json | null;
+          cota_cortesias: number | null;
+          cota_nomes_lista: number | null;
+          created_at: string | null;
+          created_by: string | null;
+          descricao: string | null;
+          dono_id: string | null;
+          endereco: string | null;
+          estado: string | null;
+          evento_privado_ativo: boolean | null;
+          evento_privado_atracoes: Json | null;
+          evento_privado_faixas_capacidade: Json | null;
+          evento_privado_formatos: Json | null;
+          evento_privado_fotos: Json | null;
+          evento_privado_texto: string | null;
+          foto: string | null;
+          foto_capa: string | null;
+          gateway_fee_mode: string | null;
+          horario_funcionamento: Json | null;
+          horario_overrides: Json | null;
+          id: string | null;
+          nome: string | null;
+          razao_social: string | null;
+          slug: string | null;
+          taxa_cortesia_excedente_pct: number | null;
+          taxa_minima: number | null;
+          taxa_nome_excedente: number | null;
+          taxa_porta_percent: number | null;
+          taxa_processamento_percent: number | null;
+          telefone: string | null;
+          tier_minimo_mais_vanta: string | null;
+          tipo_comunidade: string | null;
+          updated_at: string | null;
+          vanta_fee_fixed: number | null;
+          vanta_fee_percent: number | null;
+          vanta_fee_repasse_percent: number | null;
+        };
+        Insert: {
+          ativa?: boolean | null;
+          capacidade_max?: number | null;
+          cargos_customizados?: Json | null;
+          cep?: string | null;
+          cidade?: string | null;
+          cnpj?: string | null;
+          coords?: Json | null;
+          cota_cortesias?: number | null;
+          cota_nomes_lista?: number | null;
+          created_at?: string | null;
+          created_by?: string | null;
+          descricao?: string | null;
+          dono_id?: string | null;
+          endereco?: string | null;
+          estado?: string | null;
+          evento_privado_ativo?: boolean | null;
+          evento_privado_atracoes?: Json | null;
+          evento_privado_faixas_capacidade?: Json | null;
+          evento_privado_formatos?: Json | null;
+          evento_privado_fotos?: Json | null;
+          evento_privado_texto?: string | null;
+          foto?: string | null;
+          foto_capa?: string | null;
+          gateway_fee_mode?: string | null;
+          horario_funcionamento?: Json | null;
+          horario_overrides?: Json | null;
+          id?: string | null;
+          nome?: string | null;
+          razao_social?: string | null;
+          slug?: string | null;
+          taxa_cortesia_excedente_pct?: number | null;
+          taxa_minima?: number | null;
+          taxa_nome_excedente?: number | null;
+          taxa_porta_percent?: number | null;
+          taxa_processamento_percent?: number | null;
+          telefone?: string | null;
+          tier_minimo_mais_vanta?: string | null;
+          tipo_comunidade?: string | null;
+          updated_at?: string | null;
+          vanta_fee_fixed?: number | null;
+          vanta_fee_percent?: number | null;
+          vanta_fee_repasse_percent?: number | null;
+        };
+        Update: {
+          ativa?: boolean | null;
+          capacidade_max?: number | null;
+          cargos_customizados?: Json | null;
+          cep?: string | null;
+          cidade?: string | null;
+          cnpj?: string | null;
+          coords?: Json | null;
+          cota_cortesias?: number | null;
+          cota_nomes_lista?: number | null;
+          created_at?: string | null;
+          created_by?: string | null;
+          descricao?: string | null;
+          dono_id?: string | null;
+          endereco?: string | null;
+          estado?: string | null;
+          evento_privado_ativo?: boolean | null;
+          evento_privado_atracoes?: Json | null;
+          evento_privado_faixas_capacidade?: Json | null;
+          evento_privado_formatos?: Json | null;
+          evento_privado_fotos?: Json | null;
+          evento_privado_texto?: string | null;
+          foto?: string | null;
+          foto_capa?: string | null;
+          gateway_fee_mode?: string | null;
+          horario_funcionamento?: Json | null;
+          horario_overrides?: Json | null;
+          id?: string | null;
+          nome?: string | null;
+          razao_social?: string | null;
+          slug?: string | null;
+          taxa_cortesia_excedente_pct?: number | null;
+          taxa_minima?: number | null;
+          taxa_nome_excedente?: number | null;
+          taxa_porta_percent?: number | null;
+          taxa_processamento_percent?: number | null;
+          telefone?: string | null;
+          tier_minimo_mais_vanta?: string | null;
+          tipo_comunidade?: string | null;
+          updated_at?: string | null;
+          vanta_fee_fixed?: number | null;
+          vanta_fee_percent?: number | null;
+          vanta_fee_repasse_percent?: number | null;
+        };
+        Relationships: [];
+      };
+      comunidades_publico: {
+        Row: {
+          ativa: boolean | null;
+          capacidade_max: number | null;
+          cidade: string | null;
+          coords: Json | null;
+          created_at: string | null;
+          descricao: string | null;
+          endereco: string | null;
+          estado: string | null;
+          evento_privado_ativo: boolean | null;
+          evento_privado_atracoes: Json | null;
+          evento_privado_faixas_capacidade: Json | null;
+          evento_privado_formatos: Json | null;
+          evento_privado_fotos: Json | null;
+          evento_privado_texto: string | null;
+          foto: string | null;
+          foto_capa: string | null;
+          horario_funcionamento: Json | null;
+          horario_overrides: Json | null;
+          id: string | null;
+          nome: string | null;
+          slug: string | null;
+          tier_minimo_mais_vanta: string | null;
+          tipo_comunidade: string | null;
+          updated_at: string | null;
+        };
+        Insert: {
+          ativa?: boolean | null;
+          capacidade_max?: number | null;
+          cidade?: string | null;
+          coords?: Json | null;
+          created_at?: string | null;
+          descricao?: string | null;
+          endereco?: string | null;
+          estado?: string | null;
+          evento_privado_ativo?: boolean | null;
+          evento_privado_atracoes?: Json | null;
+          evento_privado_faixas_capacidade?: Json | null;
+          evento_privado_formatos?: Json | null;
+          evento_privado_fotos?: Json | null;
+          evento_privado_texto?: string | null;
+          foto?: string | null;
+          foto_capa?: string | null;
+          horario_funcionamento?: Json | null;
+          horario_overrides?: Json | null;
+          id?: string | null;
+          nome?: string | null;
+          slug?: string | null;
+          tier_minimo_mais_vanta?: string | null;
+          tipo_comunidade?: string | null;
+          updated_at?: string | null;
+        };
+        Update: {
+          ativa?: boolean | null;
+          capacidade_max?: number | null;
+          cidade?: string | null;
+          coords?: Json | null;
+          created_at?: string | null;
+          descricao?: string | null;
+          endereco?: string | null;
+          estado?: string | null;
+          evento_privado_ativo?: boolean | null;
+          evento_privado_atracoes?: Json | null;
+          evento_privado_faixas_capacidade?: Json | null;
+          evento_privado_formatos?: Json | null;
+          evento_privado_fotos?: Json | null;
+          evento_privado_texto?: string | null;
+          foto?: string | null;
+          foto_capa?: string | null;
+          horario_funcionamento?: Json | null;
+          horario_overrides?: Json | null;
+          id?: string | null;
+          nome?: string | null;
+          slug?: string | null;
+          tier_minimo_mais_vanta?: string | null;
+          tipo_comunidade?: string | null;
+          updated_at?: string | null;
+        };
+        Relationships: [];
+      };
     };
     Functions: {
       aceitar_convite_mv: { Args: { p_token: string }; Returns: Json };
-      aceitar_convite_socio: { Args: { p_evento_id: string }; Returns: Json };
       aceitar_cortesia_rpc: { Args: { p_cortesia_id: string }; Returns: Json };
-      aceitar_proposta_produtor: {
-        Args: { p_evento_id: string; p_socio_id: string };
-        Returns: Json;
-      };
       anonimizar_conta: { Args: never; Returns: undefined };
       buscar_membros: {
         Args: { max_results?: number; search_query: string };
@@ -4790,52 +5166,25 @@ export type Database = {
           role: string;
         }[];
       };
-      cancelar_convite_produtor: {
-        Args: { p_evento_id: string; p_motivo?: string; p_socio_id: string };
-        Returns: Json;
-      };
       cancelar_serie_recorrente: {
         Args: { p_evento_origem_id: string };
         Returns: number;
       };
-      contraproposta_convite_socio: {
-        Args: {
-          p_evento_id: string;
-          p_mensagem?: string;
-          p_permissoes_produtor?: string[];
-          p_split_produtor: number;
-          p_split_socio: number;
-        };
-        Returns: Json;
-      };
-      contraproposta_produtor: {
-        Args: {
-          p_evento_id: string;
-          p_mensagem?: string;
-          p_socio_id: string;
-          p_split_socio: number;
-        };
-        Returns: Json;
-      };
-      expirar_negociacoes_vencidas: { Args: never; Returns: number };
       finalizar_eventos_expirados: { Args: never; Returns: undefined };
       gerar_cortesias_comemoracao: {
         Args: { p_comemoracao_id: string };
         Returns: undefined;
       };
-      gerar_ocorrencias_recorrente:
-        | { Args: { p_evento_id: string }; Returns: number }
-        | {
-            Args: {
-              p_copiar_equipe?: boolean;
-              p_copiar_listas?: boolean;
-              p_copiar_lotes?: boolean;
-              p_evento_id: string;
-            };
-            Returns: number;
-          };
+      gerar_ocorrencias_recorrente: {
+        Args: {
+          p_copiar_equipe?: boolean;
+          p_copiar_listas?: boolean;
+          p_copiar_lotes?: boolean;
+          p_evento_id: string;
+        };
+        Returns: number;
+      };
       get_admin_access: { Args: { p_user_id: string }; Returns: Json };
-      get_convite_socio: { Args: { p_evento_id: string }; Returns: Json };
       get_evento_from_lista: { Args: { p_lista_id: string }; Returns: string };
       get_evento_from_lote: { Args: { p_lote_id: string }; Returns: string };
       get_eventos_por_regiao: {
@@ -4965,36 +5314,21 @@ export type Database = {
         Args: { p_cargos: string[]; p_tenant_id: string; p_tenant_type: string };
         Returns: boolean;
       };
-      is_vanta_admin: { Args: never; Returns: boolean };
       notificar_lembrete_reserva_mv: { Args: never; Returns: undefined };
-      processar_compra_checkout:
-        | {
-            Args: {
-              p_comprador_id?: string;
-              p_email: string;
-              p_evento_id: string;
-              p_lote_id: string;
-              p_quantidade?: number;
-              p_taxa?: number;
-              p_valor_unit: number;
-              p_variacao_id: string;
-            };
-            Returns: Json;
-          }
-        | {
-            Args: {
-              p_comprador_id?: string;
-              p_email: string;
-              p_evento_id: string;
-              p_lote_id: string;
-              p_quantidade?: number;
-              p_ref_code?: string;
-              p_taxa?: number;
-              p_valor_unit: number;
-              p_variacao_id: string;
-            };
-            Returns: Json;
-          };
+      processar_compra_checkout: {
+        Args: {
+          p_comprador_id?: string;
+          p_email: string;
+          p_evento_id: string;
+          p_lote_id: string;
+          p_quantidade?: number;
+          p_ref_code?: string;
+          p_taxa?: number;
+          p_valor_unit: number;
+          p_variacao_id: string;
+        };
+        Returns: Json;
+      };
       processar_venda_caixa: {
         Args: {
           p_email: string;
@@ -5006,33 +5340,11 @@ export type Database = {
         };
         Returns: Json;
       };
-      queimar_ingresso:
-        | {
-            Args: {
-              p_event_id: string;
-              p_operador_id: string;
-              p_ticket_id: string;
-            };
-            Returns: Json;
-          }
-        | {
-            Args: {
-              p_event_id: string;
-              p_operador_id?: string;
-              p_ticket_id: string;
-            };
-            Returns: Json;
-          };
-      recusar_convite_socio: {
-        Args: { p_evento_id: string; p_motivo?: string };
-        Returns: Json;
-      };
-      reiniciar_negociacao: {
+      queimar_ingresso: {
         Args: {
-          p_evento_id: string;
-          p_mensagem?: string;
-          p_socio_id: string;
-          p_split_socio: number;
+          p_event_id: string;
+          p_operador_id?: string;
+          p_ticket_id: string;
         };
         Returns: Json;
       };

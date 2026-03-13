@@ -19,6 +19,7 @@ import {
   AlertTriangle,
   Loader2,
   ScrollText,
+  Ban,
 } from 'lucide-react';
 import { TYPOGRAPHY } from '../../constants';
 import { ProfileSubView, Membro, Evento } from '../../types';
@@ -32,6 +33,7 @@ import { comprovanteService } from '../../features/admin/services/comprovanteSer
 import { ComprovanteMeiaSection } from './ComprovanteMeiaSection';
 import { SolicitarParceriaView } from '../../features/admin/views/SolicitarParceriaView';
 import { MinhasSolicitacoesView } from './MinhasSolicitacoesView';
+import { BloqueadosView } from './BloqueadosView';
 import { useAuthStore } from '../../stores/authStore';
 import { useTicketsStore } from '../../stores/ticketsStore';
 import { useExtrasStore } from '../../stores/extrasStore';
@@ -174,6 +176,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
       />
     );
   if (subView === 'MINHAS_SOLICITACOES') return <MinhasSolicitacoesView onBack={() => setSubView('MAIN')} />;
+  if (subView === 'BLOQUEADOS') return <BloqueadosView onBack={() => setSubView('MAIN')} />;
   if (subView === 'PREVIEW_PUBLIC' || subView === 'PREVIEW_FRIENDS') {
     return (
       <PublicProfilePreviewView
@@ -202,6 +205,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
       onClick: () => setShowPinReset(true),
     },
     { icon: Lock, label: 'Alterar Senha', value: 'Senha da conta', onClick: () => setShowChangePassword(true) },
+    { icon: Ban, label: 'Bloqueados', value: 'Gerenciar bloqueios', onClick: () => setSubView('BLOQUEADOS') },
     {
       icon: HelpCircle,
       label: 'Ajuda e Suporte',

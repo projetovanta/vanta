@@ -107,9 +107,7 @@ export const SubTabEventos: React.FC<Props> = ({
                         onClick={() => onOpenPerfil(r.userId)}
                         className="w-9 h-9 rounded-lg overflow-hidden border border-white/10 bg-zinc-800 shrink-0 active:scale-90 transition-all"
                       >
-                        {p?.selfieSignedUrl ? (
-                          <img loading="lazy" src={p.selfieSignedUrl} alt="" className="w-full h-full object-cover" />
-                        ) : p?.foto ? (
+                        {p?.foto ? (
                           <img loading="lazy" src={p.foto} alt="" className="w-full h-full object-cover" />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center">

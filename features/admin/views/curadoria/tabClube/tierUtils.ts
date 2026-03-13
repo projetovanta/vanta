@@ -68,8 +68,6 @@ export interface PerfilEnriquecido {
   estado?: string;
   telefone?: string;
   foto?: string;
-  biometriaUrl?: string;
-  selfieSignedUrl?: string;
   cadastradoEm?: string;
   instagram?: string;
 }

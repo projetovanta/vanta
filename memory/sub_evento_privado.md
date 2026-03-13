@@ -79,7 +79,6 @@ evento_privado_ativo, evento_privado_texto, evento_privado_fotos, evento_privado
 |---|---|
 | services/eventoPrivadoService.ts | CRUD + status transitions |
 | modules/community/EventoPrivadoFormView.tsx | Formulario do membro |
-| modules/community/MinhasSolicitacoesPrivadoView.tsx | Timeline acompanhamento (standalone, legado) |
 | modules/profile/MinhasSolicitacoesView.tsx | Tela unificada no perfil (aba PRIVADOS + COMEMORACOES) |
 | features/admin/views/comunidades/EventosPrivadosTab.tsx | Painel gerente |
 | features/admin/views/comunidades/EditarModal.tsx | Config evento privado (toggle + texto + listas) |

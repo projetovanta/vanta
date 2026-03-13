@@ -46,7 +46,7 @@ const HORAS_ANTES_EVENTO = 48;
 const LIMITE_REEMBOLSOS_MES = 3;
 
 // ── Anti-fraude: verificar limite mensal ──────────────────────────────────────────
-export async function verificarLimiteReembolso(userId: string): Promise<{ permitido: boolean; contagem: number }> {
+async function verificarLimiteReembolso(userId: string): Promise<{ permitido: boolean; contagem: number }> {
   const now = new Date();
   const inicioMesISO = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01T00:00:00-03:00`;
 
@@ -528,14 +528,6 @@ export async function rejeitarReembolsoManual(
   }
 }
 
-// ── Aprovar reembolso manual direto (master, retrocompat) ────────────────────────
-export async function aprovarReembolsoManual(
-  reembolsoId: string,
-  masterAdmId: string,
-): Promise<{ success: boolean; error?: string }> {
-  return aprovarReembolsoEtapa(reembolsoId, masterAdmId);
-}
-
 // ── Obter reembolsos de um evento ────────────────────────────────────────────────
 export async function getReembolsosPorEvento(eventoId: string): Promise<Reembolso[]> {
   try {
@@ -583,50 +575,6 @@ export async function getReembolsosPendentes(): Promise<Reembolso[]> {
     });
   } catch (err) {
     logger.error('[reembolso] buscar pendentes exception', err);
-    return [];
-  }
-}
-
-// ── Obter reembolsos aprovados ───────────────────────────────────────────────────
-export async function getReembolsosAprovados(): Promise<Reembolso[]> {
-  try {
-    const { data, error } = await supabase
-      .from('reembolsos')
-      .select('*')
-      .eq('status', 'APROVADO')
-      .order('processado_em', { ascending: false })
-      .limit(2000);
-
-    if (error) {
-      logger.error('[reembolso] buscar aprovados failed', error);
-      return [];
-    }
-
-    return (data || []).map(mapReembolsoFromDB);
-  } catch (err) {
-    logger.error('[reembolso] buscar aprovados exception', err);
-    return [];
-  }
-}
-
-// ── Obter reembolsos rejeitados ──────────────────────────────────────────────────
-export async function getReembolsosRejeitados(): Promise<Reembolso[]> {
-  try {
-    const { data, error } = await supabase
-      .from('reembolsos')
-      .select('*')
-      .eq('status', 'REJEITADO')
-      .order('rejeitado_em', { ascending: false })
-      .limit(2000);
-
-    if (error) {
-      logger.error('[reembolso] buscar rejeitados failed', error);
-      return [];
-    }
-
-    return (data || []).map(mapReembolsoFromDB);
-  } catch (err) {
-    logger.error('[reembolso] buscar rejeitados exception', err);
     return [];
   }
 }

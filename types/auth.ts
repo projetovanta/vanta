@@ -194,4 +194,5 @@ export type ProfileSubView =
   | 'CLUBE'
   | 'MEIA_ENTRADA'
   | 'SOLICITAR_PARCERIA'
-  | 'MINHAS_SOLICITACOES';
+  | 'MINHAS_SOLICITACOES'
+  | 'BLOQUEADOS';

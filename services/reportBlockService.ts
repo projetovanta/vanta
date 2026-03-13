@@ -111,10 +111,26 @@ export async function listarBloqueados(): Promise<string[]> {
   return Array.from(cache);
 }
 
-export async function isUsuarioBloqueado(targetId: string): Promise<boolean> {
-  const userId = await getAuthUserId();
-  if (!userId) return false;
+export interface BloqueadoInfo {
+  id: string;
+  nome: string;
+  foto: string;
+}
 
-  const cache = await ensureCache(userId);
-  return cache.has(targetId);
+export async function listarBloqueadosComDetalhes(): Promise<BloqueadoInfo[]> {
+  const userId = await getAuthUserId();
+  if (!userId) return [];
+
+  const ids = await listarBloqueados();
+  if (!ids.length) return [];
+
+  const { data } = await supabase.from('profiles').select('id, nome, foto').in('id', ids);
+
+  if (!data?.length) return [];
+
+  return data.map(p => ({
+    id: p.id,
+    nome: p.nome ?? 'Usuário',
+    foto: p.foto ?? '',
+  }));
 }

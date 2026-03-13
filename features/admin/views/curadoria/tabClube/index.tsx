@@ -55,20 +55,13 @@ export const TabClube: React.FC<Props> = ({ adminId, toastFn, comunidadeId }) =>
     if (userIds.length === 0) return {};
     const { data } = await supabase
       .from('profiles')
-      .select(
-        'id, nome, email, cidade, estado, telefone_ddd, telefone_numero, avatar_url, biometria_url, instagram, created_at',
-      )
+      .select('id, nome, email, cidade, estado, telefone_ddd, telefone_numero, avatar_url, instagram, created_at')
       .in('id', userIds);
 
     const map: Record<string, PerfilEnriquecido> = {};
     if (!data) return map;
 
     for (const row of data) {
-      let selfieSignedUrl: string | undefined;
-      if (row.biometria_url) {
-        const { data: pubData } = supabase.storage.from('selfies').getPublicUrl(row.biometria_url as string);
-        if (pubData?.publicUrl) selfieSignedUrl = pubData.publicUrl;
-      }
       const tel = row.telefone_ddd && row.telefone_numero ? `(${row.telefone_ddd}) ${row.telefone_numero}` : undefined;
       map[row.id as string] = {
         nome: (row.nome as string) || 'Usuário',
@@ -77,8 +70,6 @@ export const TabClube: React.FC<Props> = ({ adminId, toastFn, comunidadeId }) =>
         estado: (row.estado as string) || undefined,
         telefone: tel,
         foto: (row.avatar_url as string) || undefined,
-        biometriaUrl: (row.biometria_url as string) || undefined,
-        selfieSignedUrl,
         cadastradoEm: (row.created_at as string) || undefined,
         instagram: (row.instagram as string) || undefined,
       };

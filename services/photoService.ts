@@ -77,7 +77,7 @@ export const deleteAvatar = async (userId: string): Promise<void> => {
  * Deleta qualquer arquivo anterior naquele slot antes de fazer upload.
  * Retorna a URL pública da foto.
  */
-export const uploadAlbumPhoto = async (userId: string, slotIndex: number, dataUrl: string): Promise<string> => {
+const uploadAlbumPhoto = async (userId: string, slotIndex: number, dataUrl: string): Promise<string> => {
   if (slotIndex < 0 || slotIndex >= MAX_ALBUM_SLOTS) {
     throw new Error(`[photoService] slotIndex inválido: ${slotIndex}`);
   }
@@ -103,7 +103,7 @@ export const uploadAlbumPhoto = async (userId: string, slotIndex: number, dataUr
 /**
  * Deleta uma foto de álbum por slot.
  */
-export const deleteAlbumPhoto = async (userId: string, slotIndex: number): Promise<void> => {
+const deleteAlbumPhoto = async (userId: string, slotIndex: number): Promise<void> => {
   const path = `${userId}/album_${slotIndex}.jpg`;
   await supabase.storage
     .from(ALBUMS_BUCKET)

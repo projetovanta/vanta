@@ -88,7 +88,7 @@ PeriodSelector, ProgressRing, SparklineCard, StatusBadge, TimeSeriesChart, index
 Path: `features/admin/views/insightsDashboard/`
 | Arquivo | Descricao |
 |---|---|
-| index.tsx | Orquestrador — seletor evento + 4 tabs |
+| index.tsx | Orquestrador — seletor evento + seletor período (Hoje/Semana/Mês/Ano) + 4 tabs |
 | InsightsTab.tsx | Cards A1-A5 |
 | FinanceiroTab.tsx | Cards B1-B3 (requer eventoId) |
 | OperacoesTab.tsx | Cards C1-C4 |

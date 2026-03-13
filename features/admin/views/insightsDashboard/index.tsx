@@ -1,12 +1,20 @@
 import React, { useState, useMemo } from 'react';
 import { ArrowLeft, Lightbulb, Brain, DollarSign, Settings2, Sparkles } from 'lucide-react';
 import { EVENTOS_ADMIN } from '../../services/eventosAdminCore';
+import type { Periodo } from '../../services/dashboardAnalyticsService';
 import InsightsTab from './InsightsTab';
 import FinanceiroTab from './FinanceiroTab';
 import OperacoesTab from './OperacoesTab';
 import ValorTab from './ValorTab';
 
 type TabId = 'insights' | 'financeiro' | 'operacoes' | 'valor';
+
+const PERIODOS: { id: Periodo; label: string }[] = [
+  { id: 'HOJE', label: 'Hoje' },
+  { id: 'SEMANA', label: 'Semana' },
+  { id: 'MES', label: 'Mês' },
+  { id: 'ANO', label: 'Ano' },
+];
 
 const TABS: { id: TabId; label: string; icon: React.FC<{ className?: string }> }[] = [
   { id: 'insights', label: 'Insights', icon: Brain },
@@ -24,6 +32,7 @@ interface Props {
 export const InsightsDashboardView: React.FC<Props> = ({ onBack, comunidadeId, onNavigate }) => {
   const [activeTab, setActiveTab] = useState<TabId>('insights');
   const [selectedEventoId, setSelectedEventoId] = useState<string>('');
+  const [periodo, setPeriodo] = useState<Periodo>('MES');
 
   const handleTipAction = (target: string) => {
     const targetMap: Record<string, string> = {
@@ -108,6 +117,26 @@ export const InsightsDashboardView: React.FC<Props> = ({ onBack, comunidadeId, o
           </div>
         )}
 
+        {/* Período */}
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-zinc-500 shrink-0">Período:</span>
+          <div className="flex gap-1.5">
+            {PERIODOS.map(p => (
+              <button
+                key={p.id}
+                onClick={() => setPeriodo(p.id)}
+                className={`shrink-0 px-3 py-1 rounded-full text-xs font-medium transition-colors ${
+                  periodo === p.id
+                    ? 'bg-white/15 text-white border border-white/20'
+                    : 'bg-zinc-800/60 text-zinc-500 border border-white/5'
+                }`}
+              >
+                {p.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
         {/* Tabs */}
         <div className="flex overflow-x-auto no-scrollbar gap-1">
           {TABS.map(tab => {
@@ -131,10 +160,12 @@ export const InsightsDashboardView: React.FC<Props> = ({ onBack, comunidadeId, o
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto no-scrollbar p-4">
-        {activeTab === 'insights' && <InsightsTab comunidadeId={comId} eventoId={evId} />}
+        {activeTab === 'insights' && <InsightsTab comunidadeId={comId} eventoId={evId} periodo={periodo} />}
         {activeTab === 'financeiro' && <FinanceiroTab eventoId={evId} />}
         {activeTab === 'operacoes' && <OperacoesTab comunidadeId={comId} eventoId={evId} />}
-        {activeTab === 'valor' && <ValorTab comunidadeId={comId} eventoId={evId} onAction={handleTipAction} />}
+        {activeTab === 'valor' && (
+          <ValorTab comunidadeId={comId} eventoId={evId} onAction={handleTipAction} periodo={periodo} />
+        )}
       </div>
     </div>
   );

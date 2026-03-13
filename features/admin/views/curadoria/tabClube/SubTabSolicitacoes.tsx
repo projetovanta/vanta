@@ -153,11 +153,9 @@ export const SubTabSolicitacoes: React.FC<Props> = ({
                 onClick={() => onOpenPerfil(sol.userId)}
                 className="w-full flex items-start gap-3 text-left active:scale-[0.98] transition-all"
               >
-                {/* Selfie ou avatar */}
+                {/* Avatar */}
                 <div className="w-14 h-14 rounded-xl overflow-hidden border border-white/10 bg-zinc-800 shrink-0">
-                  {p?.selfieSignedUrl ? (
-                    <img loading="lazy" src={p.selfieSignedUrl} alt="Selfie" className="w-full h-full object-cover" />
-                  ) : p?.foto ? (
+                  {p?.foto ? (
                     <img loading="lazy" src={p.foto} alt="Perfil" className="w-full h-full object-cover" />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">

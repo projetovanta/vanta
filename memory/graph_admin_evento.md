@@ -88,7 +88,7 @@ Step 5 FINANCEIRO: aceitar ToS (obrigatorio)
 
 AO FINALIZAR:
 1. eventosAdminService.criarEvento -> INSERT eventos_admin
-   Status: PENDENTE (casa) ou NEGOCIANDO (socio)
+   Status: PENDENTE (sempre — negociação sócio removida)
    publicado: false
 2. INSERT lotes + variacoes_ingresso
 3. cortesiasService.initCortesia (se habilitado)

@@ -572,11 +572,7 @@ function buildTipoListaDrill(
 
 // ─── Raiz: Público por Origem (2 fatias: Ingresso + Lista) ──────────────────
 
-export function buildPublicoTree(
-  evento: EventoAdmin,
-  lista?: ListaEvento,
-  cortesiasLog: CortesiaLogItem[] = [],
-): DrillLevel {
+function buildPublicoTree(evento: EventoAdmin, lista?: ListaEvento, cortesiasLog: CortesiaLogItem[] = []): DrillLevel {
   const regraMap = buildRegraMap(lista);
   const allVar = evento.lotes.flatMap(l => l.variacoes);
   const totalIngressos = allVar.reduce((a, v) => a + v.vendidos, 0);

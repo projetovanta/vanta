@@ -13,7 +13,6 @@ import {
   Instagram,
   MapPin,
   Image,
-  Fingerprint,
   Calendar,
   Phone,
   Clock,
@@ -50,7 +49,6 @@ type CheckId =
   | 'sem_instagram'
   | 'sem_cidade'
   | 'sem_foto'
-  | 'sem_biometria'
   | 'sem_data_nasc'
   | 'sem_telefone'
   | 'curadoria_antiga'
@@ -82,13 +80,6 @@ const CHECKS: CheckConfig[] = [
     color: '#f97316',
   },
   { id: 'sem_foto', label: 'Sem foto de perfil', sublabel: 'Perfis sem avatar ou foto', icon: Image, color: '#3b82f6' },
-  {
-    id: 'sem_biometria',
-    label: 'Selfie biométrica ausente',
-    sublabel: 'Biometria facial não capturada',
-    icon: Fingerprint,
-    color: '#10b981',
-  },
   {
     id: 'sem_data_nasc',
     label: 'Data de nascimento vazia',
@@ -136,9 +127,6 @@ async function runCheck(check: CheckConfig): Promise<HealthUser[]> {
         break;
       case 'sem_foto':
         q = q.is('avatar_url', null);
-        break;
-      case 'sem_biometria':
-        q = q.is('biometria_url', null);
         break;
       case 'sem_data_nasc':
         q = q.is('data_nascimento', null);

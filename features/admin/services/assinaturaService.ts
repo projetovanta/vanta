@@ -20,15 +20,11 @@ const bump = () => {
 };
 import { tsBR } from '../../../utils';
 
-// ── Compat: mapa legado para views que ainda usam PlanoMaisVanta union ──────
-const PLANO_LEGACY_MAP: Record<PlanoMaisVanta, { label: string; membros: string; valor: number }> = {
+const PLANO_LEGACY_MAP: Record<string, { label: string; membros: string; valor: number }> = {
   BASICO: { label: 'Básico', membros: 'Até 50', valor: 199 },
   PRO: { label: 'Pro', membros: 'Até 200', valor: 499 },
   ENTERPRISE: { label: 'Enterprise', membros: 'Ilimitado', valor: 999 },
 };
-
-/** @deprecated Use assinaturaService.getPlanos() para planos dinâmicos */
-export const PLANOS_MV = PLANO_LEGACY_MAP;
 
 // ── Mappers ────────────────────────────────────────────────────────────────────
 const rowToPlano = (r: PlanoRow): PlanoMaisVantaDef => ({

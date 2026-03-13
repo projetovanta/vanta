@@ -47,7 +47,7 @@ const getMembrosParaCuradoria = async (): Promise<Membro[]> => {
   const { data, error } = await supabase
     .from('profiles')
     .select(
-      'id, nome, email, avatar_url, biometria_url, instagram, instagram_followers, cidade, estado, genero, data_nascimento, created_at, curadoria_concluida, notas_admin, role, destaque_curadoria',
+      'id, nome, email, avatar_url, instagram, instagram_followers, cidade, estado, genero, data_nascimento, created_at, curadoria_concluida, notas_admin, role, destaque_curadoria',
     )
     .or('curadoria_concluida.is.null,curadoria_concluida.eq.false')
     .not('email', 'is', null)
@@ -86,7 +86,7 @@ const getMembrosClassificados = async (): Promise<Membro[]> => {
   const { data, error } = await supabase
     .from('profiles')
     .select(
-      'id, nome, email, avatar_url, biometria_url, instagram, instagram_followers, cidade, estado, genero, data_nascimento, created_at, curadoria_concluida, notas_admin, role, destaque_curadoria',
+      'id, nome, email, avatar_url, instagram, instagram_followers, cidade, estado, genero, data_nascimento, created_at, curadoria_concluida, notas_admin, role, destaque_curadoria',
     )
     .eq('curadoria_concluida', true)
     .not('email', 'is', null)

@@ -35,7 +35,6 @@ export const EXPECTED_TABLES: ExpectedTable[] = [
       { name: 'privacidade', type: 'jsonb' },
       { name: 'curadoria_concluida', type: 'boolean' },
       { name: 'notas_admin', type: 'text' },
-      { name: 'biometria_url', type: 'text' },
       { name: 'foto', type: 'text' },
       { name: 'status', type: 'text' },
     ],

@@ -227,8 +227,6 @@ export interface Membro {
   role?: ContaVantaLegacy;
   selos?: Selo[];
   notas?: string; // nota do admin — no backend: GET/PUT /members/:id/notes
-  biometriaCaptured?: boolean; // true = foto oficial capturada via câmera no onboarding
-  biometriaFoto?: string; // selfie capturada no onboarding — separada da foto de perfil
   tagsCuradoria?: string[]; // tags internas privadas, visíveis SOMENTE para master
   curadoriaConcluida?: boolean; // false = ainda na fila de curadoria; true = migrou para Membros
   destaque?: boolean; // true = marcado como destaque pelo master na curadoria
@@ -362,7 +360,7 @@ export interface EventoAdmin {
   plataformaExterna?: string; // Sympla, Ingresse, etc
   comissaoVanta?: number; // % de comissão do VANTA como afiliado
   codigoAfiliado?: string; // código/link de comissário
-  propostaStatus?: 'ENVIADA' | 'ACEITA' | 'RECUSADA' | 'NEGOCIANDO'; // status da Proposta VANTA
+  propostaStatus?: 'ENVIADA' | 'ACEITA' | 'RECUSADA'; // status da Proposta VANTA
   propostaRodada?: number; // rodada atual da negociação (máx 3)
   propostaMensagem?: string; // última mensagem da proposta
   // ── Recorrência ──

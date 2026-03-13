@@ -230,9 +230,7 @@ export const SubTabConfig: React.FC<Props> = ({
                   return (
                     <div key={m.userId} className="flex items-center gap-2.5 py-1.5">
                       <div className="w-7 h-7 rounded-lg overflow-hidden bg-zinc-800 shrink-0">
-                        {p?.selfieSignedUrl ? (
-                          <img loading="lazy" src={p.selfieSignedUrl} alt="" className="w-full h-full object-cover" />
-                        ) : p?.foto ? (
+                        {p?.foto ? (
                           <img loading="lazy" src={p.foto} alt="" className="w-full h-full object-cover" />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center">

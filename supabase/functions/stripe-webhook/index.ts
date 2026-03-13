@@ -136,6 +136,7 @@ serve(async (req: Request) => {
               p_valor_unit: item.valor_unit,
               p_quantidade: item.quantidade,
               p_comprador_id: pedido.user_id,
+              p_ref_code: dadosCompra?.ref_code ?? null,
             });
 
             if (rpcErr) {

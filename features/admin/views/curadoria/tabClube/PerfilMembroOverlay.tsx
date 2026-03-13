@@ -62,25 +62,16 @@ export const PerfilMembroOverlay: React.FC<Props> = ({
         <ArrowLeft size="1rem" /> Voltar
       </button>
 
-      {/* Selfie biométrica + foto perfil lado a lado */}
+      {/* Foto perfil */}
       <div className="flex gap-4 mb-5">
-        {perfil.selfieSignedUrl && (
-          <div className="shrink-0">
-            <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-wider mb-1.5">Selfie Cadastro</p>
-            <div className="w-24 h-24 rounded-2xl overflow-hidden border-2 border-[#FFD300]/30 bg-zinc-900">
-              <img loading="lazy" src={perfil.selfieSignedUrl} alt="Selfie" className="w-full h-full object-cover" />
-            </div>
-          </div>
-        )}
-        {perfil.foto && (
+        {perfil.foto ? (
           <div className="shrink-0">
             <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-wider mb-1.5">Foto Perfil</p>
             <div className="w-24 h-24 rounded-2xl overflow-hidden border border-white/10 bg-zinc-900">
               <img loading="lazy" src={perfil.foto} alt="Perfil" className="w-full h-full object-cover" />
             </div>
           </div>
-        )}
-        {!perfil.selfieSignedUrl && !perfil.foto && (
+        ) : (
           <div className="w-24 h-24 rounded-2xl bg-zinc-900 border border-white/10 flex items-center justify-center">
             <User size="2rem" className="text-zinc-700" />
           </div>

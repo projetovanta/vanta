@@ -77,9 +77,7 @@ export const SubTabMembros: React.FC<Props> = ({
                 onClick={() => onOpenPerfil(m.userId)}
                 className="w-10 h-10 rounded-xl overflow-hidden border border-white/10 bg-zinc-800 shrink-0 active:scale-90 transition-all"
               >
-                {p?.selfieSignedUrl ? (
-                  <img loading="lazy" src={p.selfieSignedUrl} alt="" className="w-full h-full object-cover" />
-                ) : p?.foto ? (
+                {p?.foto ? (
                   <img loading="lazy" src={p.foto} alt="" className="w-full h-full object-cover" />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center">

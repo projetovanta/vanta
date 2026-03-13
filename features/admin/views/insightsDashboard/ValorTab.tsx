@@ -17,9 +17,10 @@ interface Props {
   comunidadeId: string;
   eventoId?: string;
   onAction?: (target: string, eventoId?: string) => void;
+  periodo?: Periodo;
 }
 
-const ValorTab: React.FC<Props> = ({ comunidadeId, eventoId, onAction }) => {
+const ValorTab: React.FC<Props> = ({ comunidadeId, eventoId, onAction, periodo = 'MES' }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [empty, setEmpty] = useState(false);
 
@@ -38,7 +39,7 @@ const ValorTab: React.FC<Props> = ({ comunidadeId, eventoId, onAction }) => {
       <div ref={ref} className="space-y-6">
         <VantaValuePanel
           comunidadeId={comunidadeId}
-          periodo="MES"
+          periodo={periodo}
           getMetrics={(id, periodo) => getVantaValueMetrics(id, periodo as Periodo)}
         />
         <SmartTipsCard

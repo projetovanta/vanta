@@ -14,6 +14,7 @@ import { ContaVantaLegacy, EventoAdmin } from '../../../types';
 import { getAcessoEventos } from '../permissoes';
 import { eventosAdminService } from '../services/eventosAdminService';
 import { EventoDashboard } from './eventoDashboard';
+import { EditarEventoView } from './EditarEventoView';
 
 type AbaEventos = 'ativos' | 'passados' | 'em_revisao' | 'rejeitados';
 
@@ -84,6 +85,13 @@ export const MeusEventosView: React.FC<{
     aba === 'ativos' ? ativos : aba === 'passados' ? passados : aba === 'em_revisao' ? emRevisao : rejeitadosPaginados;
 
   if (eventoAberto) {
+    // Se o evento está EM_REVISAO, abrir direto no editor para correção
+    const evAberto = eventos.find(e => e.id === eventoAberto);
+    if (evAberto?.statusEvento === 'EM_REVISAO') {
+      return (
+        <EditarEventoView eventoId={eventoAberto} onBack={() => setEventoAberto(null)} currentUserId={currentUserId} />
+      );
+    }
     return (
       <EventoDashboard
         eventoId={eventoAberto}

@@ -61,8 +61,6 @@ export const profileToMembro = (row: ProfileRow | Record<string, unknown>): Memb
     genero,
     biografia: r.biografia ?? '',
     foto: fotoUrl,
-    biometriaFoto: r.biometria_url ?? undefined,
-    biometriaCaptured: r.biometria_url ? true : false,
     cpf: r.cpf ?? undefined,
     interesses: r.interesses ?? [],
     fotos: r.album_urls ?? [],

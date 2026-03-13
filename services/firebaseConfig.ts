@@ -20,7 +20,7 @@ let messaging: import('firebase/messaging').Messaging | null = null;
 const isConfigured = (): boolean =>
   firebaseConfig.apiKey !== 'PLACEHOLDER' && firebaseConfig.projectId !== 'PLACEHOLDER';
 
-export const getFirebaseApp = async (): Promise<import('firebase/app').FirebaseApp | null> => {
+const getFirebaseApp = async (): Promise<import('firebase/app').FirebaseApp | null> => {
   if (!isConfigured()) {
     console.warn('[Firebase] Credenciais não configuradas. Defina VITE_FIREBASE_* no .env'); // audit-ok: aviso de config
     return null;

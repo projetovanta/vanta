@@ -16,12 +16,7 @@ interface SkeletonProps {
  */
 export const Skeleton: React.FC<SkeletonProps> = ({ className = '', rounded }) => {
   const roundedClass = rounded ? `rounded-${rounded}` : '';
-  return (
-    <div
-      className={`animate-pulse bg-zinc-800/60 ${roundedClass} ${className}`}
-      aria-hidden="true"
-    />
-  );
+  return <div className={`animate-pulse bg-zinc-800/60 ${roundedClass} ${className}`} aria-hidden="true" />;
 };
 
 /** Skeleton de card de evento (usado em Home feed, search results) */
@@ -44,14 +39,5 @@ export const TicketCardSkeleton: React.FC = () => (
       <Skeleton className="w-2/3 h-4 rounded" />
       <Skeleton className="w-1/2 h-3 rounded" />
     </div>
-  </div>
-);
-
-/** Skeleton de perfil (avatar + linhas) */
-export const ProfileSkeleton: React.FC = () => (
-  <div className="flex flex-col items-center gap-3 py-6">
-    <Skeleton className="w-20 h-20" rounded="full" />
-    <Skeleton className="w-32 h-5 rounded" />
-    <Skeleton className="w-24 h-3 rounded" />
   </div>
 );

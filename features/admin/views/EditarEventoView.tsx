@@ -4,6 +4,7 @@ import { ArrowLeft, Check, Loader2 } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
 import type { Comunidade, LoteAdmin, MembroEquipeEvento } from '../../../types';
 import { eventosAdminService } from '../services/eventosAdminService';
+import { enviarCorrecao } from '../services/eventosAdminAprovacao';
 import { listasService } from '../services/listasService';
 import { cortesiasService } from '../services/cortesiasService';
 import { clubeService } from '../services/clubeService';
@@ -41,6 +42,9 @@ export const EditarEventoView: React.FC<{
   const [salvo, setSalvo] = useState(false);
   const [salvoMsg, setSalvoMsg] = useState('Evento atualizado com sucesso.');
   const [erro, setErro] = useState('');
+  const [emRevisao, setEmRevisao] = useState(false);
+  const [rejeicaoCampos, setRejeicaoCampos] = useState<Record<string, string> | null>(null);
+  const [motivoRejeicao, setMotivoRejeicao] = useState('');
   const [comunidade, setComunidade] = useState<Comunidade | null>(null);
   const [capacidadeAviso, setCapacidadeAviso] = useState<{
     total: number;
@@ -118,6 +122,11 @@ export const EditarEventoView: React.FC<{
 
     setTipoFluxo(ev.tipoFluxo === 'COM_SOCIO' ? 'COM_SOCIO' : 'FESTA_DA_CASA');
     setIsPublished(ev.publicado === true);
+    if (ev.statusEvento === 'EM_REVISAO') {
+      setEmRevisao(true);
+      setRejeicaoCampos(ev.rejeicaoCampos ?? null);
+      setMotivoRejeicao(ev.motivoRejeicao ?? '');
+    }
     setFoto(ev.foto || '');
     setNome(ev.nome);
     setDescricao(ev.descricao);
@@ -449,9 +458,25 @@ export const EditarEventoView: React.FC<{
         prazo_reembolso_dias: parseInt(prazoReembolsoDias) || 7,
       };
 
-      // 9p: submeter para aprovação se evento publicado, senão salva direto
-      const foiParaAprovacao = await eventosAdminService.submeterEdicao(eventoId, updates, currentUserId ?? '');
-      setSalvoMsg(foiParaAprovacao ? 'Edição enviada para aprovação.' : 'Evento atualizado com sucesso.');
+      // Se EM_REVISAO, enviar correção (apenas campos apontados) e voltar para PENDENTE
+      if (emRevisao && rejeicaoCampos) {
+        const correcoes: Record<string, unknown> = {};
+        for (const campo of Object.keys(rejeicaoCampos)) {
+          if (campo in updates) {
+            correcoes[campo] = (updates as Record<string, unknown>)[campo];
+          }
+        }
+        const ok = await enviarCorrecao(eventoId, currentUserId ?? '', correcoes);
+        if (!ok) {
+          setErro('Erro ao enviar correção. Verifique se alterou apenas os campos solicitados.');
+          return;
+        }
+        setSalvoMsg('Correção enviada! O evento voltou para aprovação.');
+      } else {
+        // 9p: submeter para aprovação se evento publicado, senão salva direto
+        const foiParaAprovacao = await eventosAdminService.submeterEdicao(eventoId, updates, currentUserId ?? '');
+        setSalvoMsg(foiParaAprovacao ? 'Edição enviada para aprovação.' : 'Evento atualizado com sucesso.');
+      }
 
       // Atualizar cortesias
       const limitesPorTipo: Record<string, number> = {};
@@ -633,7 +658,7 @@ export const EditarEventoView: React.FC<{
         <div className="flex justify-between items-start mb-5">
           <div className="flex-1 min-w-0 mr-3">
             <p style={TYPOGRAPHY.sectionKicker} className="mb-1">
-              Editar Evento · {comunidade.nome}
+              {emRevisao ? 'Corrigir Evento' : 'Editar Evento'} · {comunidade.nome}
               <span className="ml-2 text-zinc-700">
                 {tipoFluxo === 'COM_SOCIO' ? '(Com Sócio)' : '(Festa da Casa)'}
               </span>
@@ -685,6 +710,22 @@ export const EditarEventoView: React.FC<{
           ))}
         </div>
       </div>
+
+      {/* Banner EM_REVISAO */}
+      {emRevisao && rejeicaoCampos && (
+        <div className="mx-6 mt-3 mb-1 p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl shrink-0">
+          <p className="text-amber-400 text-xs font-bold uppercase tracking-wider mb-2">Correção Solicitada</p>
+          {motivoRejeicao && <p className="text-sm text-zinc-300 mb-3">{motivoRejeicao}</p>}
+          <div className="space-y-1">
+            {Object.entries(rejeicaoCampos).map(([campo, comentario]) => (
+              <div key={campo} className="flex gap-2 text-xs">
+                <span className="text-amber-300 font-medium shrink-0">{campo}:</span>
+                <span className="text-zinc-400">{comentario}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Conteúdo */}
       <div className="flex-1 overflow-y-auto no-scrollbar p-6 max-w-3xl mx-auto w-full">
@@ -833,7 +874,7 @@ export const EditarEventoView: React.FC<{
           onClick={avancar}
           className="flex-1 py-3.5 bg-[#FFD300] text-black rounded-xl text-[0.625rem] font-black uppercase tracking-widest active:scale-95 transition-all font-bold"
         >
-          {step === TOTAL_STEPS ? 'Salvar Alterações' : 'Próximo'}
+          {step === TOTAL_STEPS ? (emRevisao ? 'Enviar Correção' : 'Salvar Alterações') : 'Próximo'}
         </button>
       </div>
 

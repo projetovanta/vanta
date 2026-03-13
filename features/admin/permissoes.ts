@@ -140,26 +140,6 @@ export const canAccessCaixa = (
   return rbacService.temPermissaoCtx(userId, 'VENDER_PORTA', ctx);
 };
 
-/** Verifica se o usuário pode editar eventos no contexto */
-export const canEditEvento = (
-  userId: string,
-  role: ContaVantaLegacy,
-  ctx?: { communityId?: string; eventId?: string },
-): boolean => {
-  if (role === 'vanta_masteradm') return true;
-  return rbacService.temPermissaoCtx(userId, 'GERIR_EQUIPE', ctx);
-};
-
-/** Verifica se o usuário pode gerenciar equipe */
-export const canManageEquipe = (
-  userId: string,
-  role: ContaVantaLegacy,
-  ctx?: { communityId?: string; eventId?: string },
-): boolean => {
-  if (role === 'vanta_masteradm') return true;
-  return rbacService.temPermissaoCtx(userId, 'GERIR_EQUIPE', ctx);
-};
-
 // ── Guards master-only ───────────────────────────────────────────────────────
 
 /** Guard estrito: somente vanta_masteradm */

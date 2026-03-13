@@ -416,7 +416,6 @@ export const SocioDashboardView: React.FC<SocioDashProps> = ({ onBack, currentUs
                 { id: 'MEUS_EVENTOS', icon: BarChart3, label: 'Painel do Evento', color: 'text-purple-400' },
                 { id: 'FINANCEIRO', icon: DollarSign, label: 'Ver Financeiro', color: 'text-[#FFD300]' },
                 { id: 'LISTAS', icon: ClipboardList, label: 'Gerenciar Listas', color: 'text-orange-400' },
-                { id: 'CONVITES_SOCIO', icon: UserCheck, label: 'Ver Convites', color: 'text-cyan-400' },
               ].map(item => (
                 <button
                   key={item.id}

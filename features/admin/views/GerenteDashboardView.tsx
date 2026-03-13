@@ -7,7 +7,6 @@ import {
   Radio,
   RefreshCw,
   AlertCircle,
-  Send,
   Check,
   X,
   MessageSquare,
@@ -23,14 +22,13 @@ import {
 } from 'lucide-react';
 import { BarChart, Bar, XAxis, ResponsiveContainer, Tooltip } from 'recharts';
 import { TYPOGRAPHY } from '../../../constants';
-import { Notificacao, Comunidade, EventoAdmin, ContaVanta } from '../../../types';
+import { Notificacao, Comunidade, EventoAdmin, ContaVantaLegacy } from '../../../types';
 import { eventosAdminService } from '../services/eventosAdminService';
 import { getAcessoComunidades } from '../permissoes';
 import { comunidadesService } from '../services/comunidadesService';
 import { rbacService } from '../services/rbacService';
 import { reviewsService } from '../services/reviewsService';
 import { globalToast } from '../../../components/Toast';
-import { VantaSlider } from '../../../components/VantaSlider';
 import { fmtBRL, tsBR } from '../../../utils';
 import { CriarEventoView } from './CriarEventoView';
 import { EventoDashboard } from './eventoDashboard';
@@ -48,148 +46,9 @@ const fmtHora = (iso: string): string => {
 };
 
 // ── Permissões disponíveis ────────────────────────────────────────────────────
-const PERMISSOES_DISPONIVEIS = [
-  'VER_FINANCEIRO',
-  'GERIR_EQUIPE',
-  'GERIR_LISTAS',
-  'INSERIR_LISTA',
-  'CRIAR_REGRA_LISTA',
-  'VER_LISTA',
-] as const;
-
-// ── Modal de Reenvio ─────────────────────────────────────────────────────────
-const ModalReenvio: React.FC<{
-  evento: EventoAdmin;
-  onConfirmar: (proposta: {
-    splitProdutor?: number;
-    splitSocio?: number;
-    permissoesProdutor?: string[];
-    mensagem?: string;
-  }) => void;
-  onCancelar: () => void;
-  enviando: boolean;
-}> = ({ evento, onConfirmar, onCancelar, enviando }) => {
-  const [splitProdutor, setSplitProdutor] = useState(evento.splitProdutor ?? 30);
-  const [permissoes, setPermissoes] = useState<string[]>(evento.permissoesProdutor ?? []);
-  const [mensagem, setMensagem] = useState('');
-
-  const splitSocio = 100 - splitProdutor;
-
-  const togglePerm = (p: string) => {
-    setPermissoes(prev => (prev.includes(p) ? prev.filter(x => x !== p) : [...prev, p]));
-  };
-
-  return (
-    <div
-      className="absolute inset-0 z-[60] flex items-center justify-center p-6 bg-black/80 backdrop-blur-sm"
-      onClick={onCancelar}
-    >
-      <div
-        className="w-full max-w-sm bg-[#111111] border border-white/10 rounded-2xl overflow-hidden max-h-[85vh] flex flex-col"
-        onClick={e => e.stopPropagation()}
-      >
-        <div className="flex-1 overflow-y-auto no-scrollbar px-6 pt-6 pb-2 space-y-5">
-          <div>
-            <p className="text-white font-bold text-base mb-1">Reenviar Proposta</p>
-            <p className="text-zinc-400 text-sm">
-              Ajuste e reenvie para o sócio. Rodada {(evento.rodadaNegociacao ?? 1) + 1}/3.
-            </p>
-          </div>
-
-          {/* Mensagem anterior do sócio */}
-          {evento.mensagemNegociacao && (
-            <div className="bg-cyan-500/5 border border-cyan-500/10 rounded-xl px-4 py-3">
-              <div className="flex items-center gap-2 mb-1">
-                <MessageSquare size="0.6875rem" className="text-cyan-400" />
-                <p className="text-[0.5rem] text-cyan-400 font-black uppercase tracking-widest">Mensagem do Sócio</p>
-              </div>
-              <p className="text-zinc-300 text-xs leading-relaxed italic">"{evento.mensagemNegociacao}"</p>
-            </div>
-          )}
-
-          {/* Split */}
-          <div>
-            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2">Split da Receita</p>
-            <VantaSlider min={10} max={90} value={splitProdutor} onChange={setSplitProdutor} className="w-full" />
-            <div className="flex justify-between mt-1">
-              <span className="text-zinc-400 text-xs font-bold">Produtor: {splitProdutor}%</span>
-              <span className="text-emerald-400 text-xs font-bold">Sócio: {splitSocio}%</span>
-            </div>
-          </div>
-
-          {/* Permissões */}
-          <div>
-            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2">
-              Permissões Solicitadas
-            </p>
-            <div className="space-y-1.5">
-              {PERMISSOES_DISPONIVEIS.map(p => (
-                <button
-                  key={p}
-                  onClick={() => togglePerm(p)}
-                  className={`w-full flex items-center gap-2 px-3 py-2 rounded-xl border text-left transition-all ${
-                    permissoes.includes(p) ? 'bg-purple-500/10 border-purple-500/20' : 'bg-zinc-900/50 border-white/5'
-                  }`}
-                >
-                  <div
-                    className={`w-4 h-4 rounded border-2 flex items-center justify-center shrink-0 ${
-                      permissoes.includes(p) ? 'border-purple-400 bg-purple-400' : 'border-zinc-600'
-                    }`}
-                  >
-                    {permissoes.includes(p) && <Check size="0.5rem" className="text-black" strokeWidth={3} />}
-                  </div>
-                  <span className="text-zinc-300 text-xs">{p.replace(/_/g, ' ')}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Mensagem */}
-          <div>
-            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2">
-              Mensagem ao Sócio (opcional)
-            </p>
-            <textarea
-              value={mensagem}
-              onChange={e => setMensagem(e.target.value)}
-              placeholder="Explique os ajustes na proposta..."
-              rows={3}
-              className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-[#FFD300]/30 placeholder-zinc-700 resize-none"
-            />
-          </div>
-        </div>
-
-        <div className="px-6 pt-3 flex gap-3 shrink-0" style={{ paddingBottom: '1.5rem' }}>
-          <button
-            onClick={onCancelar}
-            disabled={enviando}
-            className="flex-1 py-4 bg-zinc-900 border border-white/10 text-zinc-400 font-black text-[0.625rem] uppercase tracking-widest rounded-xl active:scale-95 transition-all disabled:opacity-40"
-          >
-            Cancelar
-          </button>
-          <button
-            onClick={() =>
-              onConfirmar({
-                splitProdutor,
-                splitSocio,
-                permissoesProdutor: permissoes,
-                mensagem: mensagem.trim() || undefined,
-              })
-            }
-            disabled={enviando}
-            className="flex-1 py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-widest rounded-xl active:scale-95 transition-all disabled:opacity-60"
-          >
-            {enviando ? <RefreshCw size="0.875rem" className="animate-spin mx-auto" /> : 'Reenviar'}
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 const STATUS_BADGES: Record<string, { label: string; cls: string }> = {
-  NEGOCIANDO: { label: 'Aguardando Sócio', cls: 'bg-amber-500/20 text-amber-400' },
-  RASCUNHO: { label: 'Sócio Recusou', cls: 'bg-red-500/20 text-red-400' },
+  RASCUNHO: { label: 'Rascunho', cls: 'bg-zinc-500/20 text-zinc-400' },
   PENDENTE: { label: 'Aguardando Master', cls: 'bg-cyan-500/20 text-cyan-400' },
   CANCELADO: { label: 'Cancelado', cls: 'bg-zinc-700/60 text-zinc-400' },
 };
@@ -261,13 +120,11 @@ export const GerenteDashboardView: React.FC<{
   currentUserId?: string;
   addNotification?: (n: Omit<Notificacao, 'id'>) => void;
   comunidadeId?: string;
-  adminRole?: ContaVanta;
+  adminRole?: ContaVantaLegacy;
 }> = ({ onBack, currentUserId = '', addNotification, comunidadeId, adminRole = 'vanta_gerente' }) => {
   const [aba, setAba] = useState<Aba>('FUTUROS');
   const [criandoEvento, setCriandoEvento] = useState<Comunidade | null>(null);
   const [eventoAberto, setEventoAberto] = useState<EventoAdmin | null>(null);
-  const [reenviando, setReenviando] = useState<string | null>(null);
-  const [reenvioModal, setReenvioModal] = useState<EventoAdmin | null>(null);
   const [filtroEventoId, setFiltroEventoId] = useState<string | null>(null);
   const [showFiltroDropdown, setShowFiltroDropdown] = useState(false);
   const [respondendoProposta, setRespondendoProposta] = useState<string | null>(null);
@@ -414,10 +271,7 @@ export const GerenteDashboardView: React.FC<{
         continue;
       }
       // Eventos não-publicados com status de negociação
-      if (
-        !ev.publicado &&
-        (ev.statusEvento === 'NEGOCIANDO' || ev.statusEvento === 'RASCUNHO' || ev.statusEvento === 'PENDENTE')
-      ) {
+      if (!ev.publicado && (ev.statusEvento === 'RASCUNHO' || ev.statusEvento === 'PENDENTE')) {
         negociando.push(ev);
         continue;
       }
@@ -434,23 +288,6 @@ export const GerenteDashboardView: React.FC<{
     return { aoVivo: live, futuros: fut, passados: pas, emNegociacao: negociando, cancelados };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUserId, comunidadeId, svcVersion]);
-
-  const handleReenviar = async (proposta: {
-    splitProdutor?: number;
-    splitSocio?: number;
-    permissoesProdutor?: string[];
-    mensagem?: string;
-  }) => {
-    const ev = reenvioModal;
-    if (!ev) return;
-    setReenviando(ev.id);
-    const result = await eventosAdminService.reenviarConvite(ev.id, currentUserId, proposta);
-    setReenviando(null);
-    setReenvioModal(null);
-    if (!result.ok) {
-      globalToast('erro', result.erro ?? 'Erro ao reenviar convite');
-    }
-  };
 
   // Sub-views
   if (criandoEvento) {
@@ -750,7 +587,7 @@ export const GerenteDashboardView: React.FC<{
                   <div key={ev.id} className="rounded-2xl border border-white/5 bg-zinc-900/40 overflow-hidden">
                     <EventoCard ev={ev} onClick={() => setEventoAberto(ev)} />
                     {/* Mensagem do sócio (contra-proposta) */}
-                    {ev.mensagemNegociacao && ev.statusEvento === 'NEGOCIANDO' && (
+                    {ev.mensagemNegociacao && ev.statusEvento === 'PENDENTE' && (
                       <div className="px-4 py-3 border-t border-white/5">
                         <div className="flex items-center gap-2 mb-1">
                           <MessageSquare size="0.625rem" className="text-cyan-400" />
@@ -761,34 +598,6 @@ export const GerenteDashboardView: React.FC<{
                         <p className="text-zinc-400 text-[0.625rem] leading-relaxed italic">
                           "{ev.mensagemNegociacao}"
                         </p>
-                      </div>
-                    )}
-                    {ev.statusEvento === 'RASCUNHO' && (
-                      <div className="px-4 py-3 border-t border-white/5 space-y-2">
-                        {ev.motivoRejeicao && (
-                          <p className="text-red-400/80 text-[0.625rem] leading-relaxed">Motivo: {ev.motivoRejeicao}</p>
-                        )}
-                        <div className="flex items-center gap-2">
-                          <p className="text-zinc-400 text-[0.5625rem] flex-1">Rodada {ev.rodadaNegociacao ?? 1}/3</p>
-                          {(ev.rodadaNegociacao ?? 1) < 3 ? (
-                            <button
-                              onClick={() => setReenvioModal(ev)}
-                              disabled={reenviando === ev.id}
-                              className="flex items-center gap-1.5 px-3 py-2 bg-[#FFD300] text-black rounded-xl text-[0.5625rem] font-black uppercase tracking-wider active:scale-95 transition-all disabled:opacity-50"
-                            >
-                              {reenviando === ev.id ? (
-                                <RefreshCw size="0.6875rem" className="animate-spin" />
-                              ) : (
-                                <Send size="0.6875rem" />
-                              )}
-                              Reenviar Proposta
-                            </button>
-                          ) : (
-                            <span className="text-red-400 text-[0.5625rem] font-black uppercase tracking-wider">
-                              Limite atingido
-                            </span>
-                          )}
-                        </div>
                       </div>
                     )}
                   </div>
@@ -960,16 +769,6 @@ export const GerenteDashboardView: React.FC<{
           )}
         </div>
       </div>
-
-      {/* Modal Reenviar Proposta */}
-      {reenvioModal && (
-        <ModalReenvio
-          evento={reenvioModal}
-          onConfirmar={handleReenviar}
-          onCancelar={() => setReenvioModal(null)}
-          enviando={reenviando === reenvioModal.id}
-        />
-      )}
     </div>
   );
 };

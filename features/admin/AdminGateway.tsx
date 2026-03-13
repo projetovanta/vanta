@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Shield, Check, Globe, Building2, ChevronDown } from 'lucide-react';
 import { TYPOGRAPHY } from '../../constants';
-import { ContaVanta } from '../../types';
+import { ContaVantaLegacy } from '../../types';
 import { rbacService, CARGO_TO_PORTAL } from './services/rbacService';
 import { comunidadesService } from './services/comunidadesService';
 import { AdminDashboardView } from './AdminDashboardView';
@@ -91,7 +91,7 @@ export const AdminGateway: React.FC<Props> = ({ onBack }) => {
   }, [currentUserId, currentUserRole]);
 
   const isMaster = accessData?.role === 'vanta_masteradm' || currentUserRole === 'vanta_masteradm';
-  const role = (currentUserRole ?? 'vanta_member') as ContaVanta;
+  const role = (currentUserRole ?? 'vanta_member') as ContaVantaLegacy;
 
   // Comunidades acessíveis — direto da RPC, zero cache
   const destinos: GatewayDestino[] = (accessData?.comunidades ?? []).map(com => ({
@@ -127,7 +127,7 @@ export const AdminGateway: React.FC<Props> = ({ onBack }) => {
     const isMasterGlobal = destinoEfetivo.tipo === 'MASTER';
     // Resolver adminRole pelo cargo da RPC (zero dependência de cache)
     // IMPORTANTE: masteradm NUNCA é rebaixado — mantém acesso total mesmo entrando via comunidade
-    let resolvedRole: ContaVanta = isMaster ? 'vanta_masteradm' : role;
+    let resolvedRole: ContaVantaLegacy = isMaster ? 'vanta_masteradm' : role;
     if (!isMaster && !isMasterGlobal && destinoEfetivo.tenantId && accessData) {
       const comData = accessData.comunidades.find(c => c.id === destinoEfetivo.tenantId);
       if (comData?.cargo) {

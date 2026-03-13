@@ -28,7 +28,7 @@ export interface CampanhaPayload {
     | 'ANIVERSARIO'
     | 'FRIEND_REQUEST'
     | 'FRIEND_ACCEPTED'
-    | 'CONVITE_SOCIO'
+    | 'SOCIO_ADICIONADO'
     | 'CORTESIA_PENDENTE'
     | 'REVIEW'
     | 'TRANSFERENCIA_PENDENTE';

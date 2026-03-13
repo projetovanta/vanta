@@ -28,7 +28,7 @@ import {
 } from 'lucide-react';
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
 import { TYPOGRAPHY } from '../../../../constants';
-import { ContaVanta } from '../../../../types';
+import { ContaVantaLegacy } from '../../../../types';
 import { eventosAdminService } from '../../services/eventosAdminService';
 import { listasService } from '../../services/listasService';
 import { cortesiasService } from '../../services/cortesiasService';
@@ -92,7 +92,7 @@ export const EventoDashboard: React.FC<{
   eventoId: string;
   onBack: () => void;
   currentUserId: string;
-  currentUserRole: ContaVanta;
+  currentUserRole: ContaVantaLegacy;
   adminNome?: string;
   onNavigateEvento?: (eventoId: string) => void;
 }> = ({ eventoId, onBack, currentUserId, currentUserRole, adminNome = '', onNavigateEvento }) => {

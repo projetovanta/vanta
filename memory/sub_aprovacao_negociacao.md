@@ -82,56 +82,14 @@ Gerente edita evento ja aprovado
    -> Gerente recebe notificacao
 ```
 
-## Negociacao Socio (COM_SOCIO)
+## Negociacao Socio — REMOVIDO (13/03/2026)
 
-**Design completo**: ver `memory/sub_negociacao_socio.md`
+Negociação turn-based foi removida. Ver `memory/sub_negociacao_socio.md` para detalhes.
 
-### Fluxo completo
-```
-Gerente cria evento COM_SOCIO
--> INSERT socios_evento (N socios, cada um com split_percentual + permissoes)
--> status_evento = NEGOCIANDO
--> Cada socio recebe convite (CONVITE_SOCIO) + push FCM
-
-Negociacao turn-based (NegociacaoSocioView — tela cheia chat):
-1. ACEITAR (com confirmacao): RPC aceitar_convite_socio / aceitar_proposta_produtor
-   -> socios_evento.status = ACEITO
-   -> Auto-cria RBAC SOCIO no evento + comunidade (atribuicoes_rbac ON CONFLICT DO NOTHING)
-   -> Se TODOS aceitaram: eventos_admin.status_evento = PUBLICADO (automatico)
-
-2. RECUSAR: RPC recusar_convite_socio / cancelar_convite_produtor
-   -> socios_evento.status = RECUSADO/CANCELADO
-   -> evento volta pra RASCUNHO
-
-3. CONTRAPROPOSTA: RPC contraproposta_convite_socio / contraproposta_produtor
-   -> rodada_negociacao += 1, ultimo_turno alternado
-   -> prazo_resposta = +48h
-   -> Historico salvo em historico_propostas (JSONB)
-
-Max 3 rodadas. 48h por turno. Expirou = EXPIRADO (cron a cada hora).
-Pos-falha: produtor pode reiniciar_negociacao ou trocar socio.
-```
-
-### RPCs (9 total — SECURITY DEFINER)
-- `get_convite_socio` — dados do convite (socio only)
-- `aceitar_convite_socio` — socio aceita
-- `recusar_convite_socio` — socio recusa
-- `contraproposta_convite_socio` — socio contrapropoe
-- `contraproposta_produtor` — produtor contrapropoe
-- `aceitar_proposta_produtor` — produtor aceita proposta do socio
-- `cancelar_convite_produtor` — produtor cancela/desiste
-- `reiniciar_negociacao` — produtor reinicia com mesmo socio
-- `expirar_negociacoes_vencidas` — sistema expira turnos > 48h
-
-### Tabela socios_evento (multi-socio)
-- evento_id, socio_id, split_percentual, permissoes, status, rodada_negociacao, mensagem_negociacao, motivo_rejeicao, ultimo_turno, prazo_resposta, historico_propostas
-- Status: PENDENTE | NEGOCIANDO | ACEITO | RECUSADO | CANCELADO | EXPIRADO
-- Split do produtor = 100 - SUM(split_percentual dos socios)
-- Campos legados em eventos_admin (socio_convidado_id, split_produtor, split_socio) = DEPRECATED
-
-### View: NegociacaoSocioView.tsx
-- Tela cheia, chat com baloes, aceitar/contrapor/recusar
-- Funciona tanto pro socio quanto pro produtor (prop `papel`)
+### Novo fluxo
+- Produtor cria evento COM_SOCIO → status = PENDENTE (direto)
+- Master aprova → sócios auto-aceitos + RBAC criado + notificação SOCIO_ADICIONADO
+- Tabela socios_evento mantida (dados de split), status default = ACEITO
 - Push FCM em todos os handlers
 - Painel reiniciar pos-falha (produtor only)
 

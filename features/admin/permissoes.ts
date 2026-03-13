@@ -1,4 +1,4 @@
-import { ContaVanta, AccessNode } from '../../types';
+import { ContaVantaLegacy, AccessNode } from '../../types';
 import { comunidadesService } from './services/comunidadesService';
 import { eventosAdminService } from './services/eventosAdminService';
 import { rbacService, CARGO_TO_PORTAL, CARGO_LABELS } from './services/rbacService';
@@ -47,7 +47,7 @@ export const getAccessNodes = (userId: string): AccessNode[] => {
 
 // ── Acesso a comunidades ────────────────────────────────────────────────────
 // masteradm → todas. Demais → onde tem cargo direto OU cargo em evento filho.
-export const getAcessoComunidades = (userId: string, role: ContaVanta) => {
+export const getAcessoComunidades = (userId: string, role: ContaVantaLegacy) => {
   if (role === 'vanta_masteradm') return comunidadesService.getAll();
   const atribs = rbacService.getAtribuicoes(userId);
   const ids = new Set<string>();
@@ -66,7 +66,7 @@ export const getAcessoComunidades = (userId: string, role: ContaVanta) => {
 // ── Acesso a eventos ────────────────────────────────────────────────────────
 // Qualquer cargo no evento dá acesso.
 // Cargo na comunidade → todos os eventos da comunidade.
-export const getAcessoEventos = (userId: string, role: ContaVanta) => {
+export const getAcessoEventos = (userId: string, role: ContaVantaLegacy) => {
   if (role === 'vanta_masteradm') return eventosAdminService.getEventos();
 
   // Comunidades onde o user tem cargo → acesso a todos os eventos dessas comunidades
@@ -89,20 +89,20 @@ export const getAcessoEventos = (userId: string, role: ContaVanta) => {
 /** Verifica se o usuário pode acessar a rota financeira no contexto dado */
 export const canAccessFinanceiro = (
   userId: string,
-  role: ContaVanta,
+  role: ContaVantaLegacy,
   ctx?: { communityId?: string; eventId?: string },
 ): boolean => {
-  if (role === 'vanta_masteradm' || role === 'vanta_socio') return true;
+  if (role === 'vanta_masteradm') return true;
   return rbacService.temPermissaoCtx(userId, 'VER_FINANCEIRO', ctx);
 };
 
 /** Verifica se o usuário pode acessar o módulo de listas */
 export const canAccessListas = (
   userId: string,
-  role: ContaVanta,
+  role: ContaVantaLegacy,
   ctx?: { communityId?: string; eventId?: string },
 ): boolean => {
-  if (role === 'vanta_masteradm' || role === 'vanta_socio') return true;
+  if (role === 'vanta_masteradm') return true;
   return (
     rbacService.temPermissaoCtx(userId, 'GERIR_LISTAS', ctx) ||
     rbacService.temPermissaoCtx(userId, 'INSERIR_LISTA', ctx) ||
@@ -113,7 +113,7 @@ export const canAccessListas = (
 /** Verifica se o usuário pode acessar check-in por lista */
 export const canAccessCheckin = (
   userId: string,
-  role: ContaVanta,
+  role: ContaVantaLegacy,
   ctx?: { communityId?: string; eventId?: string },
 ): boolean => {
   if (role === 'vanta_masteradm') return true;
@@ -123,7 +123,7 @@ export const canAccessCheckin = (
 /** Verifica se o usuário pode acessar QR scanner */
 export const canAccessQR = (
   userId: string,
-  role: ContaVanta,
+  role: ContaVantaLegacy,
   ctx?: { communityId?: string; eventId?: string },
 ): boolean => {
   if (role === 'vanta_masteradm') return true;
@@ -133,7 +133,7 @@ export const canAccessQR = (
 /** Verifica se o usuário pode acessar caixa (venda na porta) */
 export const canAccessCaixa = (
   userId: string,
-  role: ContaVanta,
+  role: ContaVantaLegacy,
   ctx?: { communityId?: string; eventId?: string },
 ): boolean => {
   if (role === 'vanta_masteradm') return true;
@@ -143,7 +143,7 @@ export const canAccessCaixa = (
 /** Verifica se o usuário pode editar eventos no contexto */
 export const canEditEvento = (
   userId: string,
-  role: ContaVanta,
+  role: ContaVantaLegacy,
   ctx?: { communityId?: string; eventId?: string },
 ): boolean => {
   if (role === 'vanta_masteradm') return true;
@@ -153,7 +153,7 @@ export const canEditEvento = (
 /** Verifica se o usuário pode gerenciar equipe */
 export const canManageEquipe = (
   userId: string,
-  role: ContaVanta,
+  role: ContaVantaLegacy,
   ctx?: { communityId?: string; eventId?: string },
 ): boolean => {
   if (role === 'vanta_masteradm') return true;
@@ -163,26 +163,27 @@ export const canManageEquipe = (
 // ── Guards master-only ───────────────────────────────────────────────────────
 
 /** Guard estrito: somente vanta_masteradm */
-export const isMasterOnly = (_userId: string, role: ContaVanta): boolean => role === 'vanta_masteradm';
+export const isMasterOnly = (_userId: string, role: ContaVantaLegacy): boolean => role === 'vanta_masteradm';
 
 // ── Guards contextuais adicionais ────────────────────────────────────────────
 
 /** MEUS_EVENTOS: gerente_comunidade, socio_evento, dono_evento, master */
 export const canAccessMeusEventos = (
   userId: string,
-  role: ContaVanta,
+  role: ContaVantaLegacy,
   ctx?: { communityId?: string; eventId?: string },
 ): boolean => {
   if (role === 'vanta_masteradm') return true;
-  // Sócio sempre pode ver seus eventos (o gateway já validou que é sócio nesta comunidade)
-  if (role === 'vanta_socio') return true;
-  return rbacService.temPermissaoCtx(userId, 'GERIR_EQUIPE', ctx);
+  return (
+    rbacService.temPermissaoCtx(userId, 'GERIR_EQUIPE', ctx) ||
+    rbacService.temPermissaoCtx(userId, 'VER_FINANCEIRO', ctx)
+  );
 };
 
 /** PORTARIA_SCANNER: checkin lista ou QR, master */
 export const canAccessPortariaScanner = (
   userId: string,
-  role: ContaVanta,
+  role: ContaVantaLegacy,
   ctx?: { communityId?: string; eventId?: string },
 ): boolean => {
   if (role === 'vanta_masteradm') return true;
@@ -192,39 +193,19 @@ export const canAccessPortariaScanner = (
 };
 
 /** COMUNIDADES: gerente_comunidade, master */
-export const canAccessComunidades = (userId: string, role: ContaVanta, ctx?: { communityId?: string }): boolean => {
+export const canAccessComunidades = (
+  userId: string,
+  role: ContaVantaLegacy,
+  ctx?: { communityId?: string },
+): boolean => {
   if (role === 'vanta_masteradm') return true;
   return rbacService.temPermissaoCtx(userId, 'GERIR_EQUIPE', ctx ? { communityId: ctx.communityId } : undefined);
-};
-
-/** CONVITES_SOCIO: sócio do evento atual ou gerente da comunidade atual */
-export const canAccessConvitesSocio = (
-  userId: string,
-  role: ContaVanta,
-  ctx?: { communityId?: string; eventId?: string },
-): boolean => {
-  if (role === 'vanta_masteradm' || role === 'vanta_socio') return true;
-  if (!ctx) return false;
-  const atribs = rbacService.getAtribuicoes(userId);
-  return atribs.some(a => {
-    // SOCIO: somente do evento atual
-    if (a.cargo === 'SOCIO' && ctx.eventId && a.tenant.tipo === 'EVENTO' && a.tenant.id === ctx.eventId) return true;
-    // GERENTE: da comunidade atual (ou comunidade do evento atual)
-    if (a.cargo === 'GERENTE' && a.tenant.tipo === 'COMUNIDADE') {
-      if (ctx.communityId && a.tenant.id === ctx.communityId) return true;
-      if (ctx.eventId) {
-        const ev = eventosAdminService.getEvento(ctx.eventId);
-        if (ev && ev.comunidadeId === a.tenant.id) return true;
-      }
-    }
-    return false;
-  });
 };
 
 // ── Legado mantido para compat ──────────────────────────────────────────────
 
 // Verifica se o usuário tem acesso analítico (aba Caixa/Resumo) a um evento específico.
-export const isSocioEvento = (eventoAdminId: string, userId: string, role: ContaVanta): boolean => {
+export const isSocioEvento = (eventoAdminId: string, userId: string, role: ContaVantaLegacy): boolean => {
   if (role === 'vanta_masteradm') return true;
   // Checagem direta: SOCIO do evento ou GERENTE da comunidade do evento
   const atribs = rbacService.getAtribuicoes(userId);

@@ -10,12 +10,11 @@ import {
   Banknote,
   Handshake,
   PartyPopper,
-  Mail,
   Megaphone,
   Calendar,
 } from 'lucide-react';
 import { getPendencias, type PendenciaItem, type PendenciaTipo } from '../services/pendenciasService';
-import type { ContaVanta } from '../../../types';
+import type { ContaVantaLegacy } from '../../../types';
 import type { AdminSubView } from '../components/AdminSidebar';
 
 const TIPO_CONFIG: Record<PendenciaTipo, { icon: React.ElementType; color: string }> = {
@@ -26,14 +25,13 @@ const TIPO_CONFIG: Record<PendenciaTipo, { icon: React.ElementType; color: strin
   SAQUE_PENDENTE: { icon: Banknote, color: '#10b981' },
   PARCERIA_PENDENTE: { icon: Handshake, color: '#22d3ee' },
   COMEMORACAO_PENDENTE: { icon: PartyPopper, color: '#f97316' },
-  CONVITE_SOCIO: { icon: Mail, color: '#f59e0b' },
   PROPOSTA_VANTA: { icon: Megaphone, color: '#8b5cf6' },
   EVENTO_PRIVADO: { icon: Calendar, color: '#ec4899' },
 };
 
 interface Props {
   userId: string;
-  role: ContaVanta;
+  role: ContaVantaLegacy;
   comunidadeIds: string[];
   eventoIds: string[];
   onBack: () => void;

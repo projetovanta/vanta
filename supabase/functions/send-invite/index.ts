@@ -65,11 +65,28 @@ serve(async (req: Request) => {
       .eq('id', user.id)
       .maybeSingle();
 
-    const rolesPermitidos = ['vanta_masteradm', 'vanta_gerente', 'vanta_socio'];
-    if (!profile || !rolesPermitidos.includes(profile.role)) {
+    if (!profile) {
       return new Response(JSON.stringify({ error: 'Acesso restrito.' }), {
         status: 403, headers: { ...corsHeaders(req), 'Content-Type': 'application/json' },
       });
+    }
+
+    // Master tem acesso total; demais precisam de cargo RBAC
+    if (profile.role !== 'vanta_masteradm') {
+      const { data: atribuicao } = await supabase
+        .from('atribuicoes_rbac')
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('ativo', true)
+        .in('cargo', ['GERENTE', 'SOCIO'])
+        .limit(1)
+        .maybeSingle();
+
+      if (!atribuicao) {
+        return new Response(JSON.stringify({ error: 'Acesso restrito.' }), {
+          status: 403, headers: { ...corsHeaders(req), 'Content-Type': 'application/json' },
+        });
+      }
     }
 
     // ── 2. Parsear body ────────────────────────────────────────────────────────

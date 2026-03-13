@@ -55,12 +55,6 @@ const MyTicketsView = lazy(() =>
   import('./features/tickets/views/MyTicketsView').then(m => ({ default: m.MyTicketsView })),
 );
 const AuthModal = lazy(() => import('./components/AuthModal').then(m => ({ default: m.AuthModal })));
-const ConviteSocioModal = lazy(() =>
-  import('./components/ConviteSocioModal').then(m => ({ default: m.ConviteSocioModal })),
-);
-const NegociacaoSocioView = lazy(() =>
-  import('./features/admin/views/NegociacaoSocioView').then(m => ({ default: m.NegociacaoSocioView })),
-);
 const CheckoutPage = lazy(() => import('./modules/checkout/CheckoutPage').then(m => ({ default: m.CheckoutPage })));
 const CheckoutSuccessPage = lazy(() =>
   import('./modules/checkout/CheckoutSuccessPage').then(m => ({ default: m.CheckoutSuccessPage })),
@@ -560,18 +554,6 @@ export default function App() {
                 </div>
               </div>
             </div>
-          )}
-          {h.conviteSocioEventoId && (
-            <NegociacaoSocioView
-              eventoId={h.conviteSocioEventoId}
-              userId={h.currentAccount.id}
-              papel={h.negociacaoPapel}
-              onClose={() => h.setConviteSocioEventoId(null)}
-              onSuccess={msg => {
-                h.setConviteSocioEventoId(null);
-                h.showSuccess(msg);
-              }}
-            />
           )}
         </Suspense>
       </div>

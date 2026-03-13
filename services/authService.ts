@@ -10,7 +10,7 @@
  */
 
 import { supabase } from './supabaseClient';
-import { Membro, ContaVanta } from '../types';
+import { Membro, ContaVantaLegacy } from '../types';
 import type { Database } from '../types/supabase';
 import { DEFAULT_AVATARS } from '../data/avatars';
 import { logger } from './logger';
@@ -68,8 +68,8 @@ export const profileToMembro = (row: ProfileRow | Record<string, unknown>): Memb
     fotos: r.album_urls ?? [],
     privacidade: (r.privacidade as unknown as import('../types').PrivacidadeConfig | undefined) ?? undefined,
     role: (() => {
-      const role = (r.role as ContaVanta) ?? 'vanta_guest';
-      if (role === 'vanta_guest' && r.email) return 'vanta_member' as ContaVanta;
+      const role = (r.role as ContaVantaLegacy) ?? 'vanta_guest';
+      if (role === 'vanta_guest' && r.email) return 'vanta_member' as ContaVantaLegacy;
       return role;
     })(),
     destaque: r.destaque_curadoria ?? false,
@@ -108,7 +108,7 @@ export const authService = {
             biografia: '',
             foto: DEFAULT_AVATARS.MASCULINO,
             interesses: [],
-            role: 'vanta_member' as ContaVanta,
+            role: 'vanta_member' as ContaVantaLegacy,
           };
 
       return { ok: true, membro };

@@ -149,8 +149,8 @@ Ja documentada em modulo_evento.md (CuponsSubView). Usado aqui via cuponsService
 4. Usuario paga no Stripe
 5. Stripe dispara webhook → `stripe-webhook` processa
 6. CheckoutSuccessPage faz polling em `pedidos_checkout` por status `pago`
-**⚠️ INCOMPLETO**: `stripe-webhook` atual SÓ processa assinaturas MAIS VANTA. NÃO tem handler para `pedidos_checkout` (ingressos). Polling do CheckoutSuccessPage vai dar timeout. CheckoutSuccessPage NÃO tem rota registrada no App.tsx.
-**Edge Functions**: `create-ticket-checkout` (cria sessão), `stripe-webhook` (precisa de handler para ingressos)
+**COMPLETO**: `stripe-webhook` processa assinaturas MAIS VANTA e ingressos (`metadata.type === 'ingresso'` → busca pedido → RPC `processar_compra_checkout` → status='pago'). CheckoutSuccessPage tem rota `/checkout/sucesso` no App.tsx (lazy-loaded).
+**Edge Functions**: `create-ticket-checkout` (cria sessão), `stripe-webhook` (processa ingressos + assinaturas)
 **Tabela**: `pedidos_checkout` (migration `20260309200000_pedidos_checkout.sql`)
 
 ### MEIA-ENTRADA (comprovante)

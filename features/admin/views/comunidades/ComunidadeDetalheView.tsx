@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowLeft, MapPin, Edit3, ChevronRight } from 'lucide-react';
-import { Comunidade, ContaVanta } from '../../../../types';
+import { Comunidade, ContaVantaLegacy } from '../../../../types';
 import { comunidadesService } from '../../services/comunidadesService';
 import { useToast, ToastContainer } from '../../../../components/Toast';
 import { EditarModal } from './EditarModal';
@@ -15,7 +15,7 @@ import { addLog, DetalheTab } from './types';
 
 export const ComunidadeDetalheView: React.FC<{
   comunidade: Comunidade;
-  adminRole: ContaVanta;
+  adminRole: ContaVantaLegacy;
   adminNome: string;
   adminId?: string;
   onBack: () => void;

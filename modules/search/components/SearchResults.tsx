@@ -6,8 +6,8 @@ import { TYPOGRAPHY } from '../../../constants';
 import { getMinPrice } from '../../../utils';
 import { OptimizedImage } from '../../../components/OptimizedImage';
 
-// Escala com o font-size dinâmico: 5.75rem ≈ 92px@16px base
-const getItemHeight = () => parseFloat(getComputedStyle(document.documentElement).fontSize) * 5;
+/// Escala com o font-size dinâmico
+const getItemHeight = () => parseFloat(getComputedStyle(document.documentElement).fontSize) * 5.5;
 
 export const SearchResults: React.FC<{
   results: Evento[];
@@ -64,7 +64,7 @@ export const SearchResults: React.FC<{
                 >
                   <div
                     onClick={() => onEventClick(evento)}
-                    className="bg-zinc-900 border border-white/5 rounded-2xl p-2.5 flex gap-3 cursor-pointer active:scale-95 transition-all h-full"
+                    className="bg-zinc-900 border border-white/5 rounded-2xl p-3 flex items-center gap-3 cursor-pointer active:scale-95 transition-all h-full overflow-hidden"
                   >
                     <div className="w-16 h-16 shrink-0 rounded-xl overflow-hidden">
                       <OptimizedImage

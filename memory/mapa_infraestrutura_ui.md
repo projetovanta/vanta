@@ -39,7 +39,7 @@
 ## Contêiner Master (App.tsx)
 - Outer: `fixed inset-0 flex flex-col items-center overflow-hidden bg-[#050505]`
 - Inner: `w-full flex-1 overflow-hidden flex flex-col bg-[#0A0A0A]`
-- App normal: `max-w-md`. Admin: sem max-w (desktop), `max-w-4xl` (mobile)
+- App normal: `max-w-[500px]`. Admin: `max-w-4xl` sempre
 
 ## Services Raiz
 | Service | Linhas | Função |

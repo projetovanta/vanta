@@ -66,11 +66,13 @@ export const comunidadesService = {
 
   async refresh(): Promise<void> {
     try {
-      const { data, error } = await supabase
-        .from('comunidades')
+      // RBAC V2: usar view admin (banco filtra por acesso do usuário)
+      // View retorna mesmas colunas que comunidades, com filtro RLS embutido
+      const { data, error } = await (supabase
+        .from('comunidades_admin' as any)
         .select('*')
         .order('nome', { ascending: true })
-        .limit(1000);
+        .limit(1000) as unknown as Promise<{ data: ComunidadeRow[] | null; error: any }>);
 
       if (error) {
         console.error('[comunidadesService] refresh erro:', error);

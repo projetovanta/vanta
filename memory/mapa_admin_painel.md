@@ -25,7 +25,7 @@
 
 ## Sidebar — Seções Colapsáveis (chevron ▸/▾, estado localStorage)
 **Master global (SIDEBAR_SECTIONS):**
-- GERAL: Dashboard, Pendências (vermelho), Convites
+- GERAL: Dashboard, Painel Master (master), Inteligência (#FFD300, master/gerente/socio), Pendências (vermelho), Convites
 - GESTÃO: Comunidades, Eventos Pendentes, Categorias, Parcerias, Cargos
 - FINANCEIRO: Financeiro, Comprovantes, Relatórios
 - MAIS VANTA: Curadoria, Membros, Cidades, Parceiros, Deals, Assinaturas, Passaportes, Infrações, Monitoramento, Config MV

@@ -13,7 +13,7 @@ import {
   LayoutGrid,
 } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../../constants';
-import { ContaVanta, ListaEvento } from '../../../../types';
+import { ContaVantaLegacy, ListaEvento } from '../../../../types';
 import { listasService } from '../../services/listasService';
 import { cortesiasService } from '../../services/cortesiasService';
 import { eventosAdminService } from '../../services/eventosAdminService';
@@ -41,7 +41,7 @@ export const EventDetailManagement: React.FC<{
   adminNome: string;
   currentUserId: string;
   currentUserNome: string;
-  currentUserRole?: ContaVanta;
+  currentUserRole?: ContaVantaLegacy;
 }> = ({
   listaId,
   eventoId: eventoIdProp,
@@ -240,7 +240,7 @@ export const EventDetailManagement: React.FC<{
             eventoId={eventoAdminId}
             userId={currentUserId}
             permissao="GERIR_LISTAS"
-            currentUserRole={currentUserRole as ContaVanta}
+            currentUserRole={currentUserRole as ContaVantaLegacy}
           >
             <TabLista
               lista={lista}
@@ -268,7 +268,7 @@ export const EventDetailManagement: React.FC<{
             eventoId={eventoAdminId}
             userId={currentUserId}
             permissao="VER_FINANCEIRO"
-            currentUserRole={currentUserRole as ContaVanta}
+            currentUserRole={currentUserRole as ContaVantaLegacy}
           >
             <TabResumoCaixa lista={lista} toastFn={toast} />
           </SovereigntyGuard>
@@ -289,7 +289,7 @@ export const EventDetailManagement: React.FC<{
             eventoId={eventoAdminId}
             userId={currentUserId}
             permissao="VER_FINANCEIRO"
-            currentUserRole={currentUserRole as ContaVanta}
+            currentUserRole={currentUserRole as ContaVantaLegacy}
           >
             <TabRelatorio eventoAdminId={eventoAdminId} />
           </SovereigntyGuard>

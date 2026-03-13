@@ -78,7 +78,7 @@ export const setContractedFees = async (
     taxaCortesiaExcedentePct: number;
     prazoPagamentoDias: number | null;
   }>,
-  requestorRole: import('../../../types').ContaVanta,
+  requestorRole: import('../../../types').ContaVantaLegacy,
 ): Promise<{ ok: boolean; erro?: string }> => {
   const isMaster = requestorRole === 'vanta_masteradm';
 
@@ -301,13 +301,15 @@ export const solicitarSaque = async (
   return id;
 };
 
-export const getSolicitacoesSaque = async (): Promise<SolicitacaoSaque[]> => {
+export const getSolicitacoesSaque = async (eventoIds?: string[]): Promise<SolicitacaoSaque[]> => {
   // FK para profiles foi dropada (nuclear fix) — buscar nomes separadamente
-  const { data } = await supabase
+  const query = supabase
     .from('solicitacoes_saque')
     .select('*, eventos_admin!inner(nome)')
     .order('solicitado_em', { ascending: false })
     .limit(1000);
+  if (eventoIds && eventoIds.length > 0) query.in('evento_id', eventoIds);
+  const { data } = await query;
 
   if (!data || !data.length) return [];
 
@@ -852,13 +854,15 @@ export const aprovarReembolsoManual = async (
 /**
  * Lista todos os reembolsos (para o Financeiro Master).
  */
-export const getReembolsos = async (): Promise<Reembolso[]> => {
+export const getReembolsos = async (eventoIds?: string[]): Promise<Reembolso[]> => {
   // FK para profiles dropada — buscar nomes separadamente
-  const { data } = await supabase
+  const query = supabase
     .from('reembolsos')
     .select('*, eventos_admin!inner(nome)')
     .order('solicitado_em', { ascending: false })
     .limit(2000);
+  if (eventoIds && eventoIds.length > 0) query.in('evento_id', eventoIds);
+  const { data } = await query;
 
   if (!data || !data.length) return [];
 
@@ -952,12 +956,14 @@ export const registrarChargeback = async (ticketId: string, motivo: string, gate
 /**
  * Lista chargebacks (para KPI global no Financeiro Master).
  */
-export const getChargebacks = async (): Promise<Chargeback[]> => {
-  const { data } = await supabase
+export const getChargebacks = async (eventoIds?: string[]): Promise<Chargeback[]> => {
+  const query = supabase
     .from('chargebacks')
     .select('*, eventos_admin!inner(nome, comunidade_id)')
     .order('criado_em', { ascending: false })
     .limit(1000);
+  if (eventoIds && eventoIds.length > 0) query.in('evento_id', eventoIds);
+  const { data } = await query;
 
   if (!data) return [];
   const { comunidadesService: comSvc } = await import('./comunidadesService');
@@ -1017,12 +1023,16 @@ export const getGatewayCostByEvento = async (
  * Calcula custo de gateway global (todos os eventos).
  * Inclui tickets reembolsados pois o Stripe já cobrou a taxa.
  */
-export const getGatewayCostGlobal = async (): Promise<{ totalCusto: number; totalVendas: number }> => {
-  const { data } = await supabase
+export const getGatewayCostGlobal = async (
+  eventoIds?: string[],
+): Promise<{ totalCusto: number; totalVendas: number }> => {
+  const query = supabase
     .from('tickets_caixa')
     .select('valor, metodo_pagamento, origem')
     .in('status', ['DISPONIVEL', 'USADO', 'CANCELADO', 'REEMBOLSADO'])
     .limit(2000);
+  if (eventoIds && eventoIds.length > 0) query.in('evento_id', eventoIds);
+  const { data } = await query;
 
   if (!data) return { totalCusto: 0, totalVendas: 0 };
   let totalCusto = 0;

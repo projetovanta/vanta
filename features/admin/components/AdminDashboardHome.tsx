@@ -12,7 +12,6 @@ import {
   ClipboardList,
   Shield,
   Loader2,
-  Mail,
   Crown,
   Compass,
   Gift,
@@ -35,7 +34,7 @@ import {
   type DashboardMetrics,
   getPeriodoLabel,
 } from '../services/dashboardAnalyticsService';
-import type { ContaVanta } from '../../../types';
+import type { ContaVantaLegacy } from '../../../types';
 import { KpiCard, KpiPieCard, KpiDeltaCard, PERIODOS } from './KpiCards';
 import type { AdminSubView } from './AdminSidebar';
 
@@ -65,7 +64,7 @@ interface DashButton {
 
 export const AdminDashboardHome: React.FC<{
   adminNome: string;
-  adminRole: ContaVanta;
+  adminRole: ContaVantaLegacy;
   tenantNome: string | null;
   tenantArtigo: string | null;
   pendencias: {
@@ -79,8 +78,7 @@ export const AdminDashboardHome: React.FC<{
   };
   onNavigate: (v: AdminSubView) => void;
   comunidadeId?: string;
-  convitesCount?: number;
-}> = ({ adminNome, adminRole, tenantNome, tenantArtigo, pendencias, onNavigate, comunidadeId, convitesCount = 0 }) => {
+}> = ({ adminNome, adminRole, tenantNome, tenantArtigo, pendencias, onNavigate, comunidadeId }) => {
   const isMaster = adminRole === 'vanta_masteradm';
   const isSocio = adminRole === 'vanta_socio';
   const isGerente = adminRole === 'vanta_gerente';
@@ -257,19 +255,6 @@ export const AdminDashboardHome: React.FC<{
           color: '#22d3ee',
         });
       return list;
-    }
-    // Sócio: convites pendentes (visão global)
-    if (isSocio) {
-      if (convitesCount > 0)
-        list.push({
-          id: 'CONVITES_SOCIO',
-          label: 'Convites Pendentes',
-          sublabel: `${convitesCount} convite${convitesCount > 1 ? 's' : ''} aguardando resposta`,
-          icon: Mail,
-          color: '#f59e0b',
-          badge: convitesCount,
-          badgeColor: '#f59e0b',
-        });
     }
     // Visão global master
     if (isMaster) {

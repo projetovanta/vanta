@@ -56,7 +56,7 @@ serve(async (req: Request) => {
       });
     }
 
-    // Verificar se é admin (masteradm, gerente ou sócio)
+    // Verificar se é admin (masteradm ou tem cargo RBAC relevante)
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
     const { data: profile } = await supabase
       .from('profiles')
@@ -64,11 +64,28 @@ serve(async (req: Request) => {
       .eq('id', user.id)
       .maybeSingle();
 
-    const allowedRoles = ['vanta_masteradm', 'vanta_gerente', 'vanta_socio'];
-    if (!profile || !allowedRoles.includes(profile.role)) {
+    if (!profile) {
       return new Response(JSON.stringify({ error: 'Sem permissão.' }), {
         status: 403, headers: { ...corsHeaders(req), 'Content-Type': 'application/json' },
       });
+    }
+
+    // Master tem acesso total; demais precisam de cargo RBAC no contexto
+    if (profile.role !== 'vanta_masteradm') {
+      const { data: atribuicao } = await supabase
+        .from('atribuicoes_rbac')
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('ativo', true)
+        .in('cargo', ['GERENTE', 'SOCIO'])
+        .limit(1)
+        .maybeSingle();
+
+      if (!atribuicao) {
+        return new Response(JSON.stringify({ error: 'Sem permissão.' }), {
+          status: 403, headers: { ...corsHeaders(req), 'Content-Type': 'application/json' },
+        });
+      }
     }
 
     // Parsear body

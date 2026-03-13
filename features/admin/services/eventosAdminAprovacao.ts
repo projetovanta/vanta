@@ -76,6 +76,34 @@ export const aprovarEvento = async (
     });
   }
 
+  // Auto-aceitar sócios + criar RBAC + notificar
+  if (ev?.socios && ev.socios.length > 0) {
+    await supabase.from('socios_evento').update({ status: 'ACEITO' }).eq('evento_id', eventoId).neq('status', 'ACEITO');
+
+    try {
+      const { rbacService, CARGO_PERMISSOES } = await import('./rbacService');
+      for (const socio of ev.socios) {
+        await rbacService.atribuir({
+          userId: socio.socioId,
+          tenant: { tipo: 'EVENTO', id: eventoId, nome: ev.nome ?? '', foto: ev.foto },
+          cargo: 'SOCIO',
+          permissoes: CARGO_PERMISSOES.SOCIO,
+          atribuidoPor: masterUserId,
+          ativo: true,
+        });
+        void notify({
+          userId: socio.socioId,
+          titulo: 'Você foi adicionado a um evento',
+          mensagem: `Você foi adicionado ao evento "${ev.nome}" com ${socio.splitPercentual}% de participação.`,
+          tipo: 'SOCIO_ADICIONADO',
+          link: eventoId,
+        });
+      }
+    } catch {
+      /* silencioso — RBAC pode já existir */
+    }
+  }
+
   await refresh();
   bumpVersion();
   return true;
@@ -177,188 +205,6 @@ export const enviarCorrecao = async (
   return true;
 };
 
-// ── Convites ao Sócio ────────────────────────────────────────────────────────
-
-export const getConvitesPendentes = (socioId: string): EventoAdmin[] =>
-  EVENTOS_ADMIN.filter(
-    e =>
-      (e.socios?.some(s => s.socioId === socioId && s.status === 'NEGOCIANDO') || e.socioConvidadoId === socioId) &&
-      e.statusEvento === 'NEGOCIANDO',
-  );
-
-export const aceitarConvite = async (eventoId: string, socioId: string): Promise<boolean> => {
-  const { error } = await supabase.from('eventos_admin').update({ status_evento: 'PENDENTE' }).eq('id', eventoId);
-
-  if (error) {
-    console.error('[eventosAdminAprovacao] aceitarConvite erro:', error);
-    return false;
-  }
-
-  // Atribui RBAC SOCIO ao sócio no evento
-  try {
-    const { rbacService, CARGO_PERMISSOES } = await import('./rbacService');
-    const ev = EVENTOS_ADMIN.find(e => e.id === eventoId);
-    await rbacService.atribuir({
-      userId: socioId,
-      tenant: { tipo: 'EVENTO', id: eventoId, nome: ev?.nome ?? '', foto: ev?.foto },
-      cargo: 'SOCIO',
-      permissoes: CARGO_PERMISSOES.SOCIO,
-      atribuidoPor: socioId,
-      ativo: true,
-    });
-  } catch {
-    /* silencioso */
-  }
-
-  // Notifica produtor
-  try {
-    const ev2 = EVENTOS_ADMIN.find(e => e.id === eventoId);
-    const { notificationsService } = await import('./notificationsService');
-    if (ev2?.criadorId) {
-      void notificationsService.add(
-        {
-          tipo: 'SISTEMA',
-          titulo: 'Convite aceito!',
-          mensagem: `O sócio aceitou o convite para "${ev2.nome}". O evento está na fila de aprovação.`,
-          link: eventoId,
-          lida: false,
-          timestamp: ts(),
-        },
-        ev2.criadorId,
-      );
-    }
-  } catch {
-    /* silencioso */
-  }
-
-  await refresh();
-  bumpVersion();
-  return true;
-};
-
-/**
- * Recusa convite do sócio.
- * Se rodada < 3 → volta para RASCUNHO (produtor pode ajustar e reenviar, incrementando rodada).
- * Se rodada >= 3 → CANCELADO definitivo.
- */
-export const recusarConvite = async (
-  eventoId: string,
-  _socioId: string,
-  motivo?: string,
-): Promise<{ ok: boolean; definitivo: boolean }> => {
-  const ev = EVENTOS_ADMIN.find(e => e.id === eventoId);
-  const rodada = ev?.rodadaNegociacao ?? 1;
-  const definitivo = rodada >= 3;
-
-  const updates: Record<string, unknown> = definitivo
-    ? { status_evento: 'CANCELADO', motivo_rejeicao: motivo ?? 'Sócio recusou o convite (3 tentativas)' }
-    : { status_evento: 'RASCUNHO', motivo_rejeicao: motivo ?? 'Sócio recusou — aguardando nova proposta' };
-
-  const { error } = await supabase.from('eventos_admin').update(updates).eq('id', eventoId);
-
-  if (error) {
-    console.error('[eventosAdminAprovacao] recusarConvite erro:', error);
-    return { ok: false, definitivo };
-  }
-
-  // Notifica produtor
-  try {
-    const { notificationsService } = await import('./notificationsService');
-    if (ev?.criadorId) {
-      const msg = definitivo
-        ? `O sócio recusou definitivamente o convite para "${ev.nome}" (3 tentativas esgotadas).${motivo ? ` Motivo: ${motivo}` : ''}`
-        : `O sócio recusou o convite para "${ev.nome}" (rodada ${rodada}/3). Ajuste a proposta e reenvie.${motivo ? ` Motivo: ${motivo}` : ''}`;
-      void notificationsService.add(
-        {
-          tipo: 'SISTEMA',
-          titulo: definitivo ? 'Convite recusado definitivamente' : 'Convite recusado — ajuste a proposta',
-          mensagem: msg,
-          link: eventoId,
-          lida: false,
-          timestamp: ts(),
-        },
-        ev.criadorId,
-      );
-    }
-  } catch {
-    /* silencioso */
-  }
-
-  await refresh();
-  bumpVersion();
-  return { ok: true, definitivo };
-};
-
-/**
- * Sócio envia contra-proposta ao produtor.
- * Incrementa rodadaNegociacao, atualiza split/permissões/mensagem, mantém NEGOCIANDO.
- */
-export const contraPropostaConvite = async (
-  eventoId: string,
-  socioId: string,
-  proposta: { splitSocio: number; splitProdutor: number; permissoesProdutor?: string[]; mensagem?: string },
-): Promise<{ ok: boolean; erro?: string }> => {
-  const ev = EVENTOS_ADMIN.find(e => e.id === eventoId);
-  if (!ev) return { ok: false, erro: 'Evento não encontrado' };
-  if (ev.statusEvento !== 'NEGOCIANDO') return { ok: false, erro: 'Evento não está em negociação' };
-  const socioMatch = ev.socios?.find(s => s.socioId === socioId);
-  if (!socioMatch && ev.socioConvidadoId !== socioId) return { ok: false, erro: 'Você não é o sócio convidado' };
-
-  const rodadaAtual = socioMatch?.rodadaNegociacao ?? ev.rodadaNegociacao ?? 1;
-  if (rodadaAtual >= 3) return { ok: false, erro: 'Limite de 3 rodadas atingido' };
-
-  const novaRodada = rodadaAtual + 1;
-  const updates: Record<string, unknown> = {
-    status_evento: 'NEGOCIANDO',
-    rodada_negociacao: novaRodada,
-    split_produtor: proposta.splitProdutor,
-    split_socio: proposta.splitSocio,
-  };
-  if (proposta.permissoesProdutor !== undefined) updates.permissoes_produtor = proposta.permissoesProdutor;
-
-  const { error } = await supabase.from('eventos_admin').update(updates).eq('id', eventoId);
-
-  if (error) {
-    console.error('[eventosAdminAprovacao] contraPropostaConvite erro:', error);
-    return { ok: false, erro: error.message };
-  }
-
-  // mensagem_negociacao pertence a socios_evento
-  if (socioMatch) {
-    await supabase
-      .from('socios_evento')
-      .update({
-        mensagem_negociacao: proposta.mensagem ?? null,
-        rodada_negociacao: novaRodada,
-      })
-      .eq('id', socioMatch.id);
-  }
-
-  // Notifica produtor
-  try {
-    const { notificationsService } = await import('./notificationsService');
-    if (ev.criadorId) {
-      void notificationsService.add(
-        {
-          tipo: 'CONVITE_SOCIO',
-          titulo: 'Contra-proposta recebida',
-          mensagem: `O sócio enviou uma contra-proposta para "${ev.nome}" (rodada ${novaRodada}/3).${proposta.mensagem ? ` "${proposta.mensagem}"` : ''}`,
-          link: eventoId,
-          lida: false,
-          timestamp: ts(),
-        },
-        ev.criadorId,
-      );
-    }
-  } catch {
-    /* silencioso */
-  }
-
-  await refresh();
-  bumpVersion();
-  return { ok: true };
-};
-
 // ── Proposta VANTA (eventos SEM VENDA) ────────────────────────────────────────
 
 /**
@@ -378,7 +224,7 @@ export const enviarPropostaVanta = async (
       comissao_vanta: proposta.comissao,
       codigo_afiliado: proposta.codigoAfiliado,
       proposta_mensagem: proposta.mensagem ?? null,
-      status_evento: 'NEGOCIANDO',
+      status_evento: 'PENDENTE',
     })
     .eq('id', eventoId);
 
@@ -497,7 +343,7 @@ export const reenviarPropostaVanta = async (
       comissao_vanta: proposta.comissao,
       codigo_afiliado: proposta.codigoAfiliado,
       proposta_mensagem: proposta.mensagem ?? null,
-      status_evento: 'NEGOCIANDO',
+      status_evento: 'PENDENTE',
     })
     .eq('id', eventoId);
 
@@ -524,78 +370,3 @@ export const reenviarPropostaVanta = async (
 /** Retorna eventos SEM VENDA com proposta pendente para o dono responder */
 export const getPropostasPendentes = (donoId: string): EventoAdmin[] =>
   EVENTOS_ADMIN.filter(e => e.vendaVanta === false && e.propostaStatus === 'ENVIADA' && e.criadorId === donoId);
-
-/**
- * Produtor reenvia convite ao sócio após recusa (com proposta ajustada).
- * Incrementa rodadaNegociacao e volta statusEvento para NEGOCIANDO.
- * Máx 3 rodadas — se já estiver em 3 ou mais, bloqueia.
- */
-export const reenviarConvite = async (
-  eventoId: string,
-  produtorId: string,
-  proposta: { splitProdutor?: number; splitSocio?: number; permissoesProdutor?: string[]; mensagem?: string },
-): Promise<{ ok: boolean; erro?: string }> => {
-  const ev = EVENTOS_ADMIN.find(e => e.id === eventoId);
-  if (!ev) return { ok: false, erro: 'Evento não encontrado' };
-  if (ev.statusEvento !== 'RASCUNHO') return { ok: false, erro: 'Evento não está em estado de rascunho' };
-
-  const rodadaAtual = ev.rodadaNegociacao ?? 1;
-  if (rodadaAtual >= 3) return { ok: false, erro: 'Limite de 3 rodadas atingido' };
-
-  const novaRodada = rodadaAtual + 1;
-  const updates: Record<string, unknown> = {
-    status_evento: 'NEGOCIANDO',
-    rodada_negociacao: novaRodada,
-    motivo_rejeicao: null,
-  };
-  if (proposta.splitProdutor !== undefined) updates.split_produtor = proposta.splitProdutor;
-  if (proposta.splitSocio !== undefined) updates.split_socio = proposta.splitSocio;
-  if (proposta.permissoesProdutor !== undefined) updates.permissoes_produtor = proposta.permissoesProdutor;
-
-  const { error } = await supabase.from('eventos_admin').update(updates).eq('id', eventoId);
-
-  if (error) {
-    console.error('[eventosAdminAprovacao] reenviarConvite erro:', error);
-    return { ok: false, erro: error.message };
-  }
-
-  // mensagem_negociacao pertence a socios_evento
-  if (proposta.mensagem !== undefined) {
-    const socioId = ev.socioConvidadoId ?? ev.socios?.[0]?.socioId;
-    if (socioId) {
-      await supabase
-        .from('socios_evento')
-        .update({
-          mensagem_negociacao: proposta.mensagem,
-          rodada_negociacao: novaRodada,
-        })
-        .eq('evento_id', eventoId)
-        .eq('socio_id', socioId);
-    }
-  }
-
-  // Notifica sócio
-  try {
-    const { notificationsService } = await import('./notificationsService');
-    const socioIds = ev.socios?.map(s => s.socioId) ?? (ev.socioConvidadoId ? [ev.socioConvidadoId] : []);
-    for (const sid of socioIds) {
-      void notificationsService.add(
-        {
-          tipo: 'CONVITE_SOCIO',
-          titulo: 'Proposta atualizada',
-          mensagem: `O produtor ajustou a proposta para "${ev.nome}" (rodada ${novaRodada}/3). Avalie novamente.`,
-          link: eventoId,
-          lida: false,
-          timestamp: ts(),
-        },
-        sid,
-      );
-    }
-  } catch {
-    /* silencioso */
-  }
-
-  await refresh();
-  bumpVersion();
-  return { ok: true };
-};

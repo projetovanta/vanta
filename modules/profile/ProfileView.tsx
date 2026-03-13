@@ -129,7 +129,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
   // ── Borda da foto por status ──
   const photoBorderClass = membroClubeInfo.isMembro
     ? 'bg-gradient-to-br from-[#FFD300] to-[#B8860B]' // dourada MAIS VANTA
-    : role === 'vanta_masteradm' || role === 'vanta_gerente' || role === 'vanta_socio'
+    : role === 'vanta_masteradm' || accessNodes.length > 0
       ? 'bg-gradient-to-br from-purple-500 to-purple-700' // roxa admin
       : 'bg-zinc-800'; // cinza padrão
 
@@ -358,12 +358,12 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
             <div className="grid grid-cols-2 gap-2">
               <button
                 onClick={() => setSubView('WALLET')}
-                className="bg-zinc-900/80 backdrop-blur-sm border border-white/5 rounded-xl p-4 flex flex-col gap-3 shadow-xl active:scale-[0.98] transition-all"
+                className="bg-zinc-900/80 backdrop-blur-sm border border-white/5 rounded-xl p-4 flex flex-col items-center justify-center gap-3 shadow-xl active:scale-[0.98] transition-all"
               >
                 <div className="w-10 h-10 bg-zinc-800 rounded-lg flex items-center justify-center shadow-lg shrink-0">
                   <Wallet size="1.125rem" className="text-[#FFD300]" />
                 </div>
-                <div className="text-left min-w-0">
+                <div className="text-center min-w-0">
                   <span className="block text-xs font-bold text-white leading-none mb-0.5 truncate">
                     Minha Carteira
                   </span>
@@ -394,14 +394,14 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                   />
                 )}
                 <div
-                  className={`relative rounded-xl p-4 flex flex-col gap-3 shadow-xl h-full ${membroClubeInfo.isMembro ? 'bg-zinc-900/80 backdrop-blur-sm border border-[#FFD300]/20' : 'bg-[#0A0A0A]'}`}
+                  className={`relative rounded-xl p-4 flex flex-col items-center justify-center gap-3 shadow-xl h-full ${membroClubeInfo.isMembro ? 'bg-zinc-900/80 backdrop-blur-sm border border-[#FFD300]/20' : 'bg-[#0A0A0A]'}`}
                 >
                   <div
                     className={`w-10 h-10 rounded-lg flex items-center justify-center shadow-lg border shrink-0 ${membroClubeInfo.isMembro ? 'bg-[#FFD300]/10 border-[#FFD300]/20' : 'bg-[#FFD300]/15 border-[#FFD300]/30'}`}
                   >
                     <Crown size="1.125rem" className="text-[#FFD300]" />
                   </div>
-                  <div className="text-left min-w-0">
+                  <div className="text-center min-w-0">
                     <span
                       className={`block text-xs font-bold leading-none mb-0.5 truncate ${membroClubeInfo.isMembro ? 'text-white' : 'text-[#FFD300]'}`}
                     >
@@ -443,22 +443,11 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                   <Building2 size="0.75rem" className="text-purple-400" />
                   {role === 'vanta_masteradm'
                     ? 'Painel Admin VANTA'
-                    : role === 'vanta_gerente'
-                      ? 'Portal do Gerente'
-                      : role === 'vanta_socio'
-                        ? 'Portal do Sócio'
-                        : role === 'vanta_ger_portaria_lista' ||
-                            role === 'vanta_portaria_lista' ||
-                            role === 'vanta_ger_portaria_antecipado' ||
-                            role === 'vanta_portaria_antecipado'
-                          ? 'Painel Portaria'
-                          : role === 'vanta_caixa'
-                            ? 'Painel Caixa'
-                            : accessNodes.length > 1
-                              ? `Painel Admin · ${accessNodes.length} acessos`
-                              : accessNodes[0]
-                                ? `Portal · ${accessNodes[0].cargoLabel}`
-                                : 'Painel Administrativo'}
+                    : accessNodes.length > 1
+                      ? `Painel Admin · ${accessNodes.length} acessos`
+                      : accessNodes[0]
+                        ? `Portal · ${accessNodes[0].cargoLabel}`
+                        : 'Painel Administrativo'}
                 </button>
                 {showAdminGuide && (
                   <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4 pointer-events-none">

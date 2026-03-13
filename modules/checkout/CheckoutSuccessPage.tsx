@@ -39,7 +39,7 @@ export const CheckoutSuccessPage: React.FC = () => {
           return;
         }
 
-        if (pedido.status === 'pago') {
+        if (pedido.status === 'PAGO') {
           if (pollRef.current) clearInterval(pollRef.current);
 
           const dados = pedido.dados_compra as { itens?: { quantidade: number }[] };
@@ -68,7 +68,7 @@ export const CheckoutSuccessPage: React.FC = () => {
           return;
         }
 
-        if (pedido.status === 'cancelado' || pedido.status === 'expirado') {
+        if (pedido.status === 'CANCELADO' || pedido.status === 'EXPIRADO') {
           if (pollRef.current) clearInterval(pollRef.current);
           setStatus('failed');
           return;

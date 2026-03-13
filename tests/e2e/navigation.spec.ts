@@ -6,7 +6,8 @@ const TABS = ['Início', 'Radar', 'Buscar', 'Mensagens', 'Perfil'];
 test.describe('Navegação principal', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('load');
+    await page.waitForSelector('nav', { timeout: 15_000 });
   });
 
   test('tab bar renderiza todas as tabs', async ({ page }) => {

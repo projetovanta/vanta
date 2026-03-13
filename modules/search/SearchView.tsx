@@ -294,11 +294,11 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
                 >
                   <div className="w-14 h-14 rounded-xl overflow-hidden bg-zinc-800 shrink-0 border border-white/10">
                     {comunidadeSpotlight.comunidade.foto ? (
-                      <img
-                        loading="lazy"
+                      <OptimizedImage
                         src={comunidadeSpotlight.comunidade.foto}
-                        className="w-full h-full object-cover"
+                        width={56}
                         alt=""
+                        className="w-full h-full object-cover"
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">

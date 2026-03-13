@@ -373,12 +373,11 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
                     key={member.id}
                     className={`relative inline-block h-6 w-6 rounded-full ring-2 ring-[#050505] z-${30 - i * 10}`}
                   >
-                    <img
-                      loading="lazy"
-                      className="h-full w-full rounded-full object-cover"
+                    <OptimizedImage
                       src={member.foto}
+                      width={24}
                       alt={member.nome}
-                      referrerPolicy="no-referrer"
+                      className="h-full w-full rounded-full object-cover"
                     />
                   </div>
                 ))}
@@ -467,11 +466,11 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
                   className="w-full flex items-center gap-4 bg-zinc-900/50 border border-white/5 rounded-2xl p-4 text-left active:scale-[0.98] transition-all"
                 >
                   <div className="w-14 h-14 rounded-xl overflow-hidden shrink-0 bg-zinc-800">
-                    <img
-                      loading="lazy"
+                    <OptimizedImage
                       src={evento.imagem}
-                      className="w-full h-full object-cover"
+                      width={56}
                       alt={evento.titulo}
+                      className="w-full h-full object-cover"
                     />
                   </div>
                   <div className="flex-1 min-w-0">
@@ -543,12 +542,11 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
                   className="w-full flex items-center gap-4 p-3 rounded-2xl hover:bg-zinc-900/40 active:bg-zinc-900 transition-colors border border-transparent hover:border-white/5"
                 >
                   <div className="w-12 h-12 rounded-full border border-white/10 overflow-hidden bg-black shrink-0">
-                    <img
-                      loading="lazy"
+                    <OptimizedImage
                       src={member.foto}
+                      width={48}
                       alt={member.nome}
                       className="w-full h-full object-cover"
-                      referrerPolicy="no-referrer"
                     />
                   </div>
                   <div className="flex-1 text-left min-w-0">

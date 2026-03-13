@@ -6,7 +6,8 @@ test.describe('Erros Globais e Estabilidade', () => {
     page.on('pageerror', err => errors.push(err.message));
 
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('load');
+    await page.waitForSelector('nav', { timeout: 15_000 });
     await page.waitForTimeout(3_000);
 
     const critical = errors.filter(
@@ -29,7 +30,8 @@ test.describe('Erros Globais e Estabilidade', () => {
     });
 
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('load');
+    await page.waitForSelector('nav', { timeout: 15_000 });
     await page.waitForTimeout(2_000);
 
     expect(serverErrors).toHaveLength(0);
@@ -44,7 +46,8 @@ test.describe('Erros Globais e Estabilidade', () => {
     });
 
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('load');
+    await page.waitForSelector('nav', { timeout: 15_000 });
 
     const tabs = ['Buscar', 'Radar', 'Início'];
     for (const tab of tabs) {
@@ -57,7 +60,8 @@ test.describe('Erros Globais e Estabilidade', () => {
 
   test('sem memory leak obvio — navegar 10x entre tabs', async ({ page }) => {
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('load');
+    await page.waitForSelector('nav', { timeout: 15_000 });
 
     for (let i = 0; i < 10; i++) {
       await page.getByText('Buscar', { exact: true }).click();
@@ -78,7 +82,8 @@ test.describe('Erros Globais e Estabilidade', () => {
     page.on('pageerror', err => errors.push(err.message));
 
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('load');
+    await page.waitForSelector('nav', { timeout: 15_000 });
 
     const hasHScroll = await page.evaluate(
       () => document.documentElement.scrollWidth > document.documentElement.clientWidth,
@@ -96,7 +101,8 @@ test.describe('Erros Globais e Estabilidade', () => {
     const page = await context.newPage();
 
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('load');
+    await page.waitForSelector('nav', { timeout: 15_000 });
 
     const hasHScroll = await page.evaluate(
       () => document.documentElement.scrollWidth > document.documentElement.clientWidth,
@@ -111,7 +117,8 @@ test.describe('Erros Globais e Estabilidade', () => {
     const page = await context.newPage();
 
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('load');
+    await page.waitForSelector('nav', { timeout: 15_000 });
 
     // App deve estar centralizado com max-width
     const appWidth = await page.evaluate(() => {

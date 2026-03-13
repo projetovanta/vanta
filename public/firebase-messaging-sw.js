@@ -6,8 +6,8 @@
  * Para ativar: substituir PLACEHOLDER pelas credenciais reais do projeto Firebase.
  */
 
-importScripts('https://www.gstatic.com/firebasejs/10.14.0/firebase-app-compat.js');
-importScripts('https://www.gstatic.com/firebasejs/10.14.0/firebase-messaging-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/12.9.0/firebase-app-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/12.9.0/firebase-messaging-compat.js');
 
 firebase.initializeApp({
   apiKey: 'AIzaSyCb2DXFoGvF8z-Fl3uE3xjAIfM8rs59-5s',

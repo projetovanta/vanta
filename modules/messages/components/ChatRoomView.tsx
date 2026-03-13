@@ -257,15 +257,22 @@ export const ChatRoomView: React.FC<ChatRoomViewProps> = ({ chat, onBack }) => {
       )}
 
       {/* Messages */}
-      <div className="flex-1 min-h-0 overflow-y-auto p-6 space-y-6 no-scrollbar">
-        <div className="text-center py-8">
+      <div className="flex-1 min-h-0 overflow-y-auto p-4 space-y-1 no-scrollbar">
+        <div className="text-center py-6">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-900/50 rounded-full border border-white/5">
             <Shield size="0.625rem" className="text-[#FFD300]" />
             <span className="text-[0.5rem] font-black uppercase tracking-widest text-zinc-400">Conexão Segura</span>
           </div>
         </div>
-        {chat.messages.map(msg => {
+        {chat.messages.map((msg, i) => {
           const isMe = msg.senderId !== chat.participantId;
+          const prevMsg = i > 0 ? chat.messages[i - 1] : null;
+          const prevTime = prevMsg
+            ? new Date(prevMsg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            : '';
+          const curTime = new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          const sameSender = prevMsg?.senderId === msg.senderId;
+          const sameTime = prevTime === curTime && sameSender;
           return (
             <div key={msg.id} ref={el => setMessageRef(msg.id, el)}>
               <MessageBubble
@@ -275,6 +282,7 @@ export const ChatRoomView: React.FC<ChatRoomViewProps> = ({ chat, onBack }) => {
                 onReact={handleReact}
                 onDelete={handleDelete}
                 searchQuery={searchQuery || undefined}
+                showTimestamp={!sameTime}
               />
             </div>
           );

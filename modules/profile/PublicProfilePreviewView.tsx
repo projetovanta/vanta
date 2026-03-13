@@ -397,7 +397,7 @@ export const PublicProfilePreviewView: React.FC<{
 
               <Section title="Interesses" icon={Sparkles} visible={isVisible(privacy?.verInteresses)}>
                 <div className="flex flex-wrap gap-2">
-                  {profile.interesses.map(id => (
+                  {(profile.interesses ?? []).map(id => (
                     <span
                       key={id}
                       className="px-3 py-1.5 bg-zinc-900 border border-white/5 rounded-full text-[0.5625rem] font-bold uppercase tracking-wider text-zinc-400"

@@ -50,10 +50,11 @@ export const useNavigation = () => {
         WALLET: '/perfil/carteira',
         MY_TICKETS: '/perfil/ingressos',
         PREVIEW_PUBLIC: '/perfil/preview',
+        CHAT_ROOM: '/mensagens',
       };
-      const target = pathMap[v] ?? '/perfil';
-      // Só navega se não estamos já na URL correta (evita push desnecessário)
-      if (window.location.pathname !== target) {
+      const target = pathMap[v];
+      // CHAT_ROOM e MAIN não devem forçar navegação — só sub-views do perfil
+      if (target && window.location.pathname !== target) {
         navigate(target, { replace: true });
       }
     },

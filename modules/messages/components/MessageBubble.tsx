@@ -11,10 +11,11 @@ interface MessageBubbleProps {
   onReact: (messageId: string, emoji: string) => void;
   onDelete: (messageId: string) => void;
   searchQuery?: string;
+  showTimestamp?: boolean;
 }
 
 export const MessageBubble: React.FC<MessageBubbleProps> = React.memo(
-  ({ msg, isMe, currentUserId, onReact, onDelete, searchQuery }) => {
+  ({ msg, isMe, currentUserId, onReact, onDelete, searchQuery, showTimestamp = true }) => {
     const [showActions, setShowActions] = useState(false);
     const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -77,7 +78,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = React.memo(
           }}
         >
           <div
-            className={`p-4 text-[0.8125rem] rounded-3xl ${
+            className={`px-3 py-1.5 text-sm rounded-2xl ${
               isDeleted
                 ? 'bg-zinc-900/50 border border-white/5 text-zinc-400 italic'
                 : isMe
@@ -108,12 +109,14 @@ export const MessageBubble: React.FC<MessageBubbleProps> = React.memo(
             </div>
           )}
 
-          <div className="flex items-center mt-1.5">
-            <span className="text-[0.5rem] text-zinc-700 uppercase font-black">
-              {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-            </span>
-            {renderReceipt()}
-          </div>
+          {showTimestamp && (
+            <div className="flex items-center mt-1">
+              <span className="text-[0.5rem] text-zinc-700 uppercase font-black">
+                {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+              </span>
+              {renderReceipt()}
+            </div>
+          )}
         </div>
 
         {/* Actions overlay (long-press) */}

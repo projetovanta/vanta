@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { AlertTriangle, X, Flag, Ban, Shield } from 'lucide-react';
 import { criarDenuncia, bloquearUsuario } from '../services/reportBlockService';
 
@@ -88,7 +89,7 @@ export const ReportModal: React.FC<ReportModalProps> = ({
   const tipoLabel =
     tipo === 'USUARIO' ? 'usuário' : tipo === 'EVENTO' ? 'evento' : tipo === 'COMUNIDADE' ? 'comunidade' : 'conversa';
 
-  return (
+  return createPortal(
     <div className="absolute inset-0 z-[400] flex items-center justify-center p-6 animate-in fade-in duration-200">
       <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
       <div className="relative bg-zinc-900 border border-white/10 rounded-3xl p-5 w-full max-w-sm animate-in zoom-in-95 duration-300">
@@ -179,6 +180,7 @@ export const ReportModal: React.FC<ReportModalProps> = ({
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.getElementById('app-root') ?? document.body,
   );
 };

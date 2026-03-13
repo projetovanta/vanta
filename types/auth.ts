@@ -173,7 +173,8 @@ export interface Notificacao {
     | 'MV_PARCEIRO_BEM_VINDO'
     | 'MV_RESGATE_PARCEIRO'
     | 'MV_NOSHOW_REGISTRADO'
-    | 'MV_LEMBRETE_RESERVA';
+    | 'MV_LEMBRETE_RESERVA'
+    | 'MENSAGEM_NOVA';
   lida: boolean;
   link: string; // ID do evento, membro ou ação
   timestamp: string; // ISO 8601

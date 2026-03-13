@@ -16,7 +16,7 @@ interface NotificationPanelProps {
   onMemberClick?: (member: any) => void;
 }
 
-type NotificationFilter = 'TODAS' | 'AMIZADES' | 'EVENTOS' | 'INGRESSOS';
+type NotificationFilter = 'TODAS' | 'SOCIAL' | 'EVENTOS' | 'INGRESSOS';
 
 export const NotificationPanel: React.FC<NotificationPanelProps> = ({
   isOpen,
@@ -158,13 +158,42 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({
       return notificationDate > sevenDaysAgo;
     });
 
+    const SOCIAL_TYPES = new Set(['FRIEND_REQUEST', 'FRIEND_ACCEPTED', 'MENSAGEM_NOVA', 'AMIGO']);
+    const EVENTO_TYPES = new Set([
+      'EVENTO',
+      'ANIVERSARIO',
+      'REVIEW',
+      'PEDIR_REVIEW',
+      'EVENTO_APROVADO',
+      'EVENTO_RECUSADO',
+      'EVENTO_PENDENTE',
+      'EVENTO_CANCELADO',
+      'EVENTO_FINALIZADO',
+      'ALERTA_LOTACAO',
+      'EVENTO_PRIVADO_NOVA',
+      'EVENTO_PRIVADO_APROVADO',
+      'EVENTO_PRIVADO_RECUSADO',
+      'COMEMORACAO_NOVA',
+      'COMEMORACAO_APROVADA',
+      'COMEMORACAO_RECUSADA',
+      'COMEMORACAO_FAIXA_ATINGIDA',
+    ]);
+    const INGRESSO_TYPES = new Set([
+      'SISTEMA',
+      'CORTESIA_PENDENTE',
+      'TRANSFERENCIA_PENDENTE',
+      'COMPRA_CONFIRMADA',
+      'INGRESSO',
+      'COTA_RECEBIDA',
+    ]);
+
     switch (activeFilter) {
-      case 'AMIZADES':
-        return baseFilter.filter(n => n.tipo === 'FRIEND_REQUEST' || n.tipo === 'FRIEND_ACCEPTED');
+      case 'SOCIAL':
+        return baseFilter.filter(n => SOCIAL_TYPES.has(n.tipo));
       case 'EVENTOS':
-        return baseFilter.filter(n => n.tipo === 'EVENTO' || n.tipo === 'ANIVERSARIO' || n.tipo === 'REVIEW');
+        return baseFilter.filter(n => EVENTO_TYPES.has(n.tipo));
       case 'INGRESSOS':
-        return baseFilter.filter(n => n.tipo === 'SISTEMA' || n.tipo === 'CORTESIA_PENDENTE');
+        return baseFilter.filter(n => INGRESSO_TYPES.has(n.tipo));
       default:
         return baseFilter;
     }
@@ -272,7 +301,7 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({
                 {(
                   [
                     ['TODAS', 'Todas'],
-                    ['AMIZADES', 'Amizades'],
+                    ['SOCIAL', 'Social'],
                     ['EVENTOS', 'Eventos'],
                     ['INGRESSOS', 'Ingressos'],
                   ] as const

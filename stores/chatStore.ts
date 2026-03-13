@@ -6,6 +6,7 @@ import { tsBR } from '../utils';
 import { getCached } from '../services/cache';
 import { withCircuitBreaker } from '../services/circuitBreaker';
 import { useAuthStore, GUEST_PLACEHOLDER } from './authStore';
+import { notificationsService } from '../features/admin/services/notificationsService';
 
 interface ChatState {
   chats: Chat[];
@@ -219,12 +220,14 @@ export const useChatStore = create<ChatState>((set, get) => ({
     const unsubInbox = messagesService.subscribeToInbox(userId, msg => {
       const partnerId = msg.senderId;
       const { activeChatParticipantId } = get();
+      const isActive = activeChatParticipantId === partnerId;
+
       set(s => {
         const idx = s.chats.findIndex(c => c.participantId === partnerId);
         if (idx >= 0) {
           const updated = [...s.chats];
           const chat = { ...updated[idx] };
-          if (activeChatParticipantId !== partnerId) {
+          if (!isActive) {
             chat.unreadCount = chat.unreadCount + 1;
           }
           chat.lastMessage = msg.text;
@@ -238,12 +241,17 @@ export const useChatStore = create<ChatState>((set, get) => ({
           participantId: partnerId,
           lastMessage: msg.text,
           lastMessageTime: msg.timestamp,
-          unreadCount: activeChatParticipantId === partnerId ? 0 : 1,
+          unreadCount: isActive ? 0 : 1,
           messages: [],
         };
         const all = [newChat, ...s.chats];
         return { chats: all, totalUnreadMessages: computeUnread(all) };
       });
+
+      // Notificação agrupada (in-app + push) — só se chat não está aberto
+      if (!isActive) {
+        void createMessageNotification(partnerId, msg.text, get());
+      }
     });
     cleanups.push(unsubInbox);
 
@@ -263,3 +271,86 @@ export const useChatStore = create<ChatState>((set, get) => ({
     };
   },
 }));
+
+/**
+ * Debounce por remetente: acumula mensagens e cria/atualiza notificação após 2s de silêncio.
+ */
+const msgAccum = new Map<string, { count: number; lastText: string; timer: ReturnType<typeof setTimeout> }>();
+
+function createMessageNotification(partnerId: string, text: string, state: ChatState) {
+  const chat = state.chats.find(c => c.participantId === partnerId);
+  const senderName = chat?.participantNome ?? 'Alguém';
+
+  const prev = msgAccum.get(partnerId);
+  if (prev) {
+    clearTimeout(prev.timer);
+    prev.count += 1;
+    prev.lastText = text;
+    prev.timer = setTimeout(() => flushNotification(partnerId, senderName), 2000);
+  } else {
+    msgAccum.set(partnerId, {
+      count: 1,
+      lastText: text,
+      timer: setTimeout(() => flushNotification(partnerId, senderName), 2000),
+    });
+  }
+}
+
+async function flushNotification(partnerId: string, senderName: string) {
+  const accum = msgAccum.get(partnerId);
+  if (!accum) return;
+  msgAccum.delete(partnerId);
+
+  const preview = accum.lastText.length > 50 ? accum.lastText.slice(0, 47) + '...' : accum.lastText;
+
+  // Verificar se já existe notificação agrupada não lida do mesmo remetente
+  const existing = notificationsService
+    .getAll()
+    .find(n => n.tipo === 'MENSAGEM_NOVA' && n.link === partnerId && !n.lida);
+
+  if (existing) {
+    // Incrementar contador
+    const match = existing.titulo.match(/\((\d+)\)$/);
+    const prevCount = match ? parseInt(match[1]) : 1;
+    const total = prevCount + accum.count;
+    const titulo = `Nova mensagem de ${senderName} (${total})`;
+    await supabase
+      .from('notifications')
+      .update({ titulo, mensagem: preview, created_at: tsBR() })
+      .eq('id', existing.id);
+    void notificationsService.refresh().then(() => {
+      useAuthStore.setState({
+        notifications: notificationsService.getAll(),
+        unreadNotifications: notificationsService.getUnreadCount(),
+      });
+    });
+  } else {
+    const titulo =
+      accum.count > 1 ? `Nova mensagem de ${senderName} (${accum.count})` : `Nova mensagem de ${senderName}`;
+    await notificationsService.add({
+      titulo,
+      mensagem: preview,
+      tipo: 'MENSAGEM_NOVA',
+      lida: false,
+      link: partnerId,
+      timestamp: '',
+    });
+    useAuthStore.setState({
+      notifications: notificationsService.getAll(),
+      unreadNotifications: notificationsService.getUnreadCount(),
+    });
+
+    // Push FCM (fire-and-forget, sem email)
+    const currentUserId = useAuthStore.getState().currentAccount.id;
+    supabase.functions
+      .invoke('send-push', {
+        body: {
+          userIds: [currentUserId],
+          title: titulo,
+          body: preview,
+          data: { link: partnerId, tipo: 'MENSAGEM_NOVA' },
+        },
+      })
+      .catch(() => {});
+  }
+}

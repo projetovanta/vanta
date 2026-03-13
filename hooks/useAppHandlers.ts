@@ -144,9 +144,17 @@ export const useAppHandlers = (nav: Nav, pwa: PWA) => {
   const openChatRoom = (member: Membro) => {
     ensureChatExists(member.id, member);
     markChatAsRead(member.id);
-    nav.navigateToTab('MENSAGENS');
-    nav.openMemberProfile(member);
-    nav.setProfileSubView('CHAT_ROOM');
+    const setChatView = () => {
+      nav.openMemberProfile(member);
+      nav.setProfileSubView('CHAT_ROOM');
+    };
+    if (nav.activeTab !== 'MENSAGENS') {
+      nav.navigateToTab('MENSAGENS');
+      // navigateToTab reseta selectedMember/profileSubView — setar no próximo frame
+      requestAnimationFrame(setChatView);
+    } else {
+      setChatView();
+    }
   };
 
   const guestNavigateToTab = (tab: TabState) => {
@@ -272,6 +280,16 @@ export const useAppHandlers = (nav: Nav, pwa: PWA) => {
       case 'ANIVERSARIO': {
         const fakeMembro = { id: n.link, nome: n.titulo, foto: '' } as Membro;
         guardedOpenMemberProfile(fakeMembro);
+        break;
+      }
+      case 'MENSAGEM_NOVA': {
+        // link = partnerId — abre o chat
+        const chatMembro = {
+          id: n.link,
+          nome: n.titulo.replace(/^Nova mensagem de /, '').replace(/\s*\(\d+\)$/, ''),
+          foto: '',
+        } as Membro;
+        openChatRoom(chatMembro);
         break;
       }
       case 'TRANSFERENCIA_PENDENTE':

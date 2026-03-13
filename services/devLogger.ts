@@ -116,20 +116,7 @@ export const devLogger = {
     _addEntry('MODAL', 'info', message);
   },
 
-  // ── Interações ─────────────────────────────────────────────
-  click(message: string) {
-    _addEntry('CLICK', 'info', message);
-  },
-
-  form(message: string, data?: unknown) {
-    _addEntry('FORM', 'info', message, data);
-  },
-
   // ── API / Supabase ─────────────────────────────────────────
-  apiSuccess(message: string, data?: unknown) {
-    _addEntry('API', 'info', message, data);
-  },
-
   apiError(message: string, data?: unknown) {
     _addEntry('API', 'error', message, data);
   },
@@ -155,11 +142,6 @@ export const devLogger = {
 
   rtError(message: string, data?: unknown) {
     _addEntry('RT', 'error', message, data);
-  },
-
-  // ── Lifecycle ──────────────────────────────────────────────
-  lifecycle(message: string) {
-    _addEntry('LIFECYCLE', 'info', message);
   },
 
   // ── Acesso ao state ────────────────────────────────────────

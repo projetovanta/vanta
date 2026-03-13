@@ -52,31 +52,24 @@ interface AuthState {
   init: () => () => void;
 }
 
-export const useAuthStore = create<AuthState>((set, get) => ({
-  currentAccount: GUEST_PLACEHOLDER,
-  profile: GUEST_PLACEHOLDER,
-  authLoading: true,
-  selectedCity: localStorage.getItem('vanta_selected_city') || '',
-  notifications: [],
-  unreadNotifications: 0,
-  accessNodes: [],
-
-  loginWithMembro: m => {
-    set({ currentAccount: m, profile: m, authLoading: false });
-    // Disparar inicializações imediatamente (sem esperar onAuthStateChange)
-    enrichInstagramFollowers(m.id, m.instagram);
-    notificationsService.setUserId(m.id);
+export const useAuthStore = create<AuthState>((set, get) => {
+  // Helper compartilhado: configura membro logado (usado por loginWithMembro + applySession)
+  const _setupMembro = (membro: Membro) => {
+    set({ currentAccount: membro, profile: membro, authLoading: false });
+    enrichInstagramFollowers(membro.id, membro.instagram);
+    notificationsService.setUserId(membro.id);
     void notificationsService.refresh().then(() => {
       set({
         notifications: notificationsService.getAll(),
         unreadNotifications: notificationsService.getUnreadCount(),
       });
     });
-    realtimeManager.unsubscribe(`notif:${m.id}`);
-    realtimeManager.subscribe(`notif:${m.id}`, channel => {
+
+    realtimeManager.unsubscribe(`notif:${membro.id}`);
+    realtimeManager.subscribe(`notif:${membro.id}`, channel => {
       channel.on(
         'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'notifications', filter: `user_id=eq.${m.id}` },
+        { event: 'INSERT', schema: 'public', table: 'notifications', filter: `user_id=eq.${membro.id}` },
         () => {
           void notificationsService.refresh().then(() => {
             set({
@@ -87,180 +80,162 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         },
       );
     });
+
     // Defer: comprovante e clube carregam escalonados pra não competir com queries essenciais
-    setTimeout(() => void comprovanteService.refresh(m.id), 3000);
+    setTimeout(() => void comprovanteService.refresh(membro.id), 3000);
     setTimeout(() => useExtrasStore.getState().initClubeData(), 5000);
-    if (m.role === 'vanta_member') {
-      void rbacService.refresh().then(() => {
-        const nodes = getAccessNodes(m.id);
+
+    if (membro.role !== 'vanta_guest') {
+      void rbacService.refresh(membro.id, membro.role).then(() => {
+        const nodes = getAccessNodes(membro.id);
         set({ accessNodes: nodes });
       });
     } else {
       set({ accessNodes: [] });
     }
-  },
+  };
 
-  logout: async () => {
-    await authService.signOut();
-    clearAllCache();
-    realtimeManager.unsubscribeAll();
-    sessionStorage.removeItem('vanta_admin_destino');
-    sessionStorage.removeItem('vanta_admin_subview');
-    set({ currentAccount: GUEST_PLACEHOLDER, profile: GUEST_PLACEHOLDER });
-  },
+  return {
+    currentAccount: GUEST_PLACEHOLDER,
+    profile: GUEST_PLACEHOLDER,
+    authLoading: true,
+    selectedCity: localStorage.getItem('vanta_selected_city') || '',
+    notifications: [],
+    unreadNotifications: 0,
+    accessNodes: [],
 
-  updateProfile: data => {
-    set(s => ({ profile: { ...s.profile, ...data } }));
-    return true;
-  },
+    loginWithMembro: m => {
+      _setupMembro(m);
+    },
 
-  registerUser: m => {
-    set({ currentAccount: { ...m, role: 'vanta_member' }, profile: m });
-  },
+    logout: async () => {
+      await authService.signOut();
+      clearAllCache();
+      realtimeManager.unsubscribeAll();
+      sessionStorage.removeItem('vanta_admin_destino');
+      sessionStorage.removeItem('vanta_admin_subview');
+      set({ currentAccount: GUEST_PLACEHOLDER, profile: GUEST_PLACEHOLDER });
+    },
 
-  setSelectedCity: city => {
-    localStorage.setItem('vanta_selected_city', city);
-    set({ selectedCity: city });
-  },
+    updateProfile: data => {
+      set(s => ({ profile: { ...s.profile, ...data } }));
+      return true;
+    },
 
-  setNotifications: n => set({ notifications: n }),
-  setUnreadNotifications: n => set({ unreadNotifications: n }),
+    registerUser: m => {
+      set({ currentAccount: { ...m, role: 'vanta_member' }, profile: m });
+    },
 
-  addNotification: notif => {
-    void notificationsService.add(notif).then(() => {
-      set({
-        notifications: notificationsService.getAll(),
-        unreadNotifications: notificationsService.getUnreadCount(),
-      });
-    });
-  },
+    setSelectedCity: city => {
+      localStorage.setItem('vanta_selected_city', city);
+      set({ selectedCity: city });
+    },
 
-  markAllNotificationsAsRead: () => {
-    void notificationsService.markAllAsRead().then(() => {
-      set({ notifications: notificationsService.getAll(), unreadNotifications: 0 });
-    });
-  },
+    setNotifications: n => set({ notifications: n }),
+    setUnreadNotifications: n => set({ unreadNotifications: n }),
 
-  handleNotificationAction: (n: Notificacao) => {
-    if (n.id && !n.lida) {
-      void notificationsService.markAsRead(n.id);
-    }
-    set(s => ({
-      notifications: s.notifications.map(notif => (notif.id === n.id ? { ...notif, lida: true } : notif)),
-      unreadNotifications: Math.max(0, s.unreadNotifications - 1),
-    }));
-  },
-
-  init: () => {
-    // Singleton: se já inicializou, retorna cleanup noop (evita double-init do StrictMode)
-    if (_initUnsub) {
-      return () => {};
-    }
-
-    let resolved = false;
-
-    const applySession = (membro: Membro | null) => {
-      if (membro) {
-        set({ currentAccount: membro, profile: membro, authLoading: false });
-        enrichInstagramFollowers(membro.id, membro.instagram);
-        notificationsService.setUserId(membro.id);
-        void notificationsService.refresh().then(() => {
-          set({
-            notifications: notificationsService.getAll(),
-            unreadNotifications: notificationsService.getUnreadCount(),
-          });
-        });
-
-        // Realtime: escuta novas notificações (via RealtimeManager)
-        realtimeManager.unsubscribe(`notif:${membro.id}`);
-        realtimeManager.subscribe(`notif:${membro.id}`, channel => {
-          channel.on(
-            'postgres_changes',
-            { event: 'INSERT', schema: 'public', table: 'notifications', filter: `user_id=eq.${membro.id}` },
-            () => {
-              void notificationsService.refresh().then(() => {
-                set({
-                  notifications: notificationsService.getAll(),
-                  unreadNotifications: notificationsService.getUnreadCount(),
-                });
-              });
-            },
-          );
-        });
-
-        // Defer: comprovante e clube carregam escalonados pra não competir com queries essenciais
-        setTimeout(() => void comprovanteService.refresh(membro.id), 3000);
-        setTimeout(() => useExtrasStore.getState().initClubeData(), 5000);
-
-        // compute accessNodes via RBAC (member precisa; master também para permissões plataforma)
-        const role = membro.role;
-        if (role !== 'vanta_guest') {
-          void rbacService.refresh().then(() => {
-            const nodes = getAccessNodes(membro.id);
-            set({ accessNodes: nodes });
-          });
-        } else {
-          set({ accessNodes: [] });
-        }
-      } else {
+    addNotification: notif => {
+      void notificationsService.add(notif).then(() => {
         set({
-          currentAccount: GUEST_PLACEHOLDER,
-          profile: GUEST_PLACEHOLDER,
-          authLoading: false,
-          accessNodes: [],
+          notifications: notificationsService.getAll(),
+          unreadNotifications: notificationsService.getUnreadCount(),
         });
-        notificationsService.setUserId(null);
-        realtimeManager.unsubscribeAll();
-        set({ notifications: [], unreadNotifications: 0 });
-      }
-    };
+      });
+    },
 
-    const unsubscribe = authService.onAuthStateChange(membro => {
-      // Se signIn já aplicou o membro via loginWithMembro, pular esta chamada
-      if (membro && consumeSignInResolved()) {
-        resolved = true;
-        return;
-      }
-      resolved = true;
-      applySession(membro);
-    });
+    markAllNotificationsAsRead: () => {
+      void notificationsService.markAllAsRead().then(() => {
+        set({ notifications: notificationsService.getAll(), unreadNotifications: 0 });
+      });
+    },
 
-    // Fallback 1: tenta getSession após 2s se onAuthStateChange não disparou
-    const fallbackTimer = setTimeout(async () => {
-      if (!resolved) {
-        try {
-          const session = await authService.getSession();
+    handleNotificationAction: (n: Notificacao) => {
+      if (n.id && !n.lida) {
+        void notificationsService.markAsRead(n.id);
+      }
+      set(s => ({
+        notifications: s.notifications.map(notif => (notif.id === n.id ? { ...notif, lida: true } : notif)),
+        unreadNotifications: Math.max(0, s.unreadNotifications - 1),
+      }));
+    },
+
+    init: () => {
+      // Singleton: se já inicializou, retorna cleanup noop (evita double-init do StrictMode)
+      if (_initUnsub) {
+        return () => {};
+      }
+
+      let resolved = false;
+
+      const applySession = (membro: Membro | null) => {
+        if (membro) {
+          _setupMembro(membro);
+        } else {
+          set({
+            currentAccount: GUEST_PLACEHOLDER,
+            profile: GUEST_PLACEHOLDER,
+            authLoading: false,
+            accessNodes: [],
+          });
+          notificationsService.setUserId(null);
+          realtimeManager.unsubscribeAll();
+          set({ notifications: [], unreadNotifications: 0 });
+        }
+      };
+
+      let appliedUserId: string | null = null;
+
+      const unsubscribe = authService.onAuthStateChange(membro => {
+        // Se signIn já aplicou o membro via loginWithMembro, pular esta chamada
+        if (membro && consumeSignInResolved()) {
           resolved = true;
-          applySession(session);
-        } catch (err) {
-          logger.warn('[authStore] getSession fallback failed', err);
-          if (!resolved) {
+          appliedUserId = membro.id;
+          return;
+        }
+        // Evitar re-aplicar sessão do mesmo usuário (TOKEN_REFRESHED, etc.)
+        if (membro && resolved && appliedUserId === membro.id) return;
+        resolved = true;
+        appliedUserId = membro?.id ?? null;
+        applySession(membro);
+      });
+
+      // Fallback 1: tenta getSession após 2s se onAuthStateChange não disparou
+      const fallbackTimer = setTimeout(async () => {
+        if (!resolved) {
+          try {
+            const session = await authService.getSession();
             resolved = true;
-            applySession(null);
+            applySession(session);
+          } catch (err) {
+            logger.warn('[authStore] getSession fallback failed', err);
+            if (!resolved) {
+              resolved = true;
+              applySession(null);
+            }
           }
         }
-      }
-    }, 2000);
+      }, 2000);
 
-    // Fallback 2: timeout absoluto — se NADA resolveu em 6s, libera como guest
-    const absoluteTimer = setTimeout(() => {
-      if (!resolved) {
-        logger.error('[authStore] absolute timeout 6s — forced guest');
-        resolved = true;
-        applySession(null);
-      }
-    }, 6000);
+      // Fallback 2: timeout absoluto — se NADA resolveu em 6s, libera como guest
+      const absoluteTimer = setTimeout(() => {
+        if (!resolved) {
+          logger.error('[authStore] absolute timeout 6s — forced guest');
+          resolved = true;
+          applySession(null);
+        }
+      }, 6000);
 
-    _initUnsub = () => {
-      clearTimeout(fallbackTimer);
-      clearTimeout(absoluteTimer);
-      unsubscribe();
-      _initUnsub = null;
-    };
+      _initUnsub = () => {
+        clearTimeout(fallbackTimer);
+        clearTimeout(absoluteTimer);
+        unsubscribe();
+        _initUnsub = null;
+      };
 
-    return _initUnsub;
-  },
-}));
+      return _initUnsub;
+    },
+  };
+});
 
 // Singleton guard — evita double-init do StrictMode
 let _initUnsub: (() => void) | null = null;

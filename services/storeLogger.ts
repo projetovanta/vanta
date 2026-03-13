@@ -27,7 +27,25 @@ function summarize(val: unknown): string {
 }
 
 /** Keys que geram muito ruído e devem ser ignoradas */
-const IGNORED_KEYS = new Set(['init']);
+const IGNORED_KEYS = new Set(['init', 'authLoading', 'selectedCity']);
+
+/** Mudanças triviais: array vazio→vazio, 0→0, objeto vazio→vazio */
+function isTrivialChange(oldVal: unknown, newVal: unknown): boolean {
+  if (Array.isArray(oldVal) && Array.isArray(newVal) && oldVal.length === 0 && newVal.length === 0) return true;
+  if (oldVal === 0 && newVal === 0) return true;
+  if (
+    oldVal &&
+    newVal &&
+    typeof oldVal === 'object' &&
+    typeof newVal === 'object' &&
+    !Array.isArray(oldVal) &&
+    !Array.isArray(newVal) &&
+    Object.keys(oldVal as Record<string, unknown>).length === 0 &&
+    Object.keys(newVal as Record<string, unknown>).length === 0
+  )
+    return true;
+  return false;
+}
 
 /**
  * Inscreve um observer em uma store Zustand.
@@ -49,7 +67,7 @@ export function observeStore(
       const oldVal = prev[key];
 
       // Comparação por referência (Zustand imutável)
-      if (newVal !== oldVal) {
+      if (newVal !== oldVal && !isTrivialChange(oldVal, newVal)) {
         devLogger.store(`${storeName}.${key}: ${summarize(oldVal)} → ${summarize(newVal)}`);
       }
     }

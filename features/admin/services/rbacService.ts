@@ -151,14 +151,19 @@ export const rbacService = {
    * Carrega todas as atribuições do Supabase e popula o cache local.
    * Deve ser chamado no início do app e após mutações que afetam outros usuários.
    */
-  async refresh(): Promise<void> {
+  async refresh(knownUserId?: string, knownRole?: string): Promise<void> {
     try {
-      const userId = (await supabase.auth.getUser()).data.user?.id;
+      const userId = knownUserId || (await supabase.auth.getUser()).data.user?.id;
       if (!userId) return;
 
       // Verificar se é masteradm (carrega tudo) ou usuário normal (filtra por tenant)
-      const { data: profileData } = await supabase.from('profiles').select('role').eq('id', userId).maybeSingle();
-      const isMaster = profileData?.role === 'vanta_masteradm';
+      let isMaster: boolean;
+      if (knownRole) {
+        isMaster = knownRole === 'vanta_masteradm';
+      } else {
+        const { data: profileData } = await supabase.from('profiles').select('role').eq('id', userId).maybeSingle();
+        isMaster = profileData?.role === 'vanta_masteradm';
+      }
 
       // Carregar atribuições RBAC do usuário (ou todas se master)
       const atribQuery = supabase.from('atribuicoes_rbac').select('*').eq('ativo', true);

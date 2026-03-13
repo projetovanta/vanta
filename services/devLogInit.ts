@@ -40,8 +40,17 @@ export function initDevLogging(): () => void {
   const _originalWarn = console.warn;
   console.warn = (...args: unknown[]) => {
     const msg = args.map(a => (typeof a === 'string' ? a : String(a))).join(' ');
-    // Evitar loop: não logar warns gerados pelo próprio devLogger
-    if (!msg.includes('[API]') && !msg.includes('[RT]')) {
+    // Evitar loop e filtrar ruído de libs externas
+    const isNoise =
+      msg.includes('[API]') ||
+      msg.includes('[RT]') ||
+      msg.includes('deprecated') ||
+      msg.includes('Supabase') ||
+      msg.includes('PostgREST') ||
+      msg.includes('Realtime') ||
+      msg.includes('WebSocket') ||
+      msg.includes('[VANTA]');
+    if (!isNoise) {
       devLogger.error(`console.warn: ${msg.slice(0, 300)}`, args.length > 1 ? args : undefined);
     }
     _originalWarn.apply(console, args);

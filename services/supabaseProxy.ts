@@ -32,10 +32,8 @@ function logResult(label: string, startTime: number, data: unknown, error: unkno
   } else if (elapsed > SLOW_THRESHOLD_MS) {
     const rowCount = Array.isArray(data) ? data.length : data ? 1 : 0;
     devLogger.apiSlow(`${label} → 200 (${elapsed}ms, ${rowCount} rows) ⚠️ LENTO`);
-  } else {
-    const rowCount = Array.isArray(data) ? data.length : data ? 1 : 0;
-    devLogger.apiSuccess(`${label} → 200 (${elapsed}ms, ${rowCount} rows)`);
   }
+  // Sucesso rápido: silencioso (reduz ruído no boot)
 }
 
 /**

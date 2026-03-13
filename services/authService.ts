@@ -22,9 +22,6 @@ let _intentionalLogout = false;
 
 // Flag: signIn já resolveu o profile — onAuthStateChange deve pular a próxima vez
 let _signInResolved = false;
-export const markSignInResolved = () => {
-  _signInResolved = true;
-};
 export const consumeSignInResolved = (): boolean => {
   if (_signInResolved) {
     _signInResolved = false;
@@ -289,25 +286,44 @@ export const authService = {
    * Retorna unsubscribe para usar no useEffect cleanup.
    */
   onAuthStateChange: (callback: (membro: Membro | null) => void): (() => void) => {
+    let _appliedUserId: string | null = null;
+    let _initialSessionDone = false;
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (import.meta.env.DEV)
+        console.debug(`[AUTH] onAuthStateChange: ${event}, user=${session?.user?.id?.slice(0, 8) ?? 'null'}`);
+
       // PASSWORD_RECOVERY: Supabase redireciona com tokens na URL após reset
       if (event === 'PASSWORD_RECOVERY') {
         window.dispatchEvent(new CustomEvent('vanta:password-recovery'));
       }
+
       if (!session?.user) {
         // Sessão expirada (não intencional) → notificar UI
         if (!_intentionalLogout && event === 'SIGNED_OUT') {
           window.dispatchEvent(new CustomEvent('vanta:session-expired'));
         }
         _intentionalLogout = false;
+        _appliedUserId = null;
+        _initialSessionDone = false;
         callback(null);
         return;
       }
 
-      // Token refresh ou sign-in: buscar profile
-      const isRefresh = event === 'TOKEN_REFRESHED';
+      // Supabase dispara INITIAL_SESSION + SIGNED_IN em sequência no boot.
+      // Ambos carregam a mesma sessão — a segunda chamada é redundante.
+      if (event === 'SIGNED_IN' && _initialSessionDone && _appliedUserId === session.user.id) {
+        if (import.meta.env.DEV) console.debug('[AUTH] SKIP: SIGNED_IN redundante após INITIAL_SESSION');
+        return;
+      }
+
+      // Token refresh: não buscar profile de novo (mantém sessão existente)
+      if (event === 'TOKEN_REFRESHED' && _appliedUserId === session.user.id) {
+        if (import.meta.env.DEV) console.debug('[AUTH] SKIP: TOKEN_REFRESHED para mesmo user');
+        return;
+      }
+
       try {
         const profilePromise = supabase
           .from('profiles')
@@ -321,15 +337,17 @@ export const authService = {
         const profile = result.data;
 
         if (profile) {
+          _appliedUserId = session.user.id;
+          if (event === 'INITIAL_SESSION') _initialSessionDone = true;
           callback(profileToMembro(profile as any));
-        } else if (!isRefresh) {
+        } else if (event !== 'TOKEN_REFRESHED') {
           // Só faz logout se NÃO for token refresh — evita kickar usuário por rede lenta
           callback(null);
         }
-        // Se isRefresh e profile=null: ignora silenciosamente, mantém sessão anterior
+        // Se TOKEN_REFRESHED e profile=null: ignora silenciosamente, mantém sessão anterior
       } catch {
         // Erro de rede/timeout: só faz logout se não for refresh
-        if (!isRefresh) {
+        if (event !== 'TOKEN_REFRESHED') {
           callback(null);
         }
       }

@@ -34,13 +34,13 @@ export const consumeSignInResolved = (): boolean => {
 
 // ── Tipos ──────────────────────────────────────────────────────────────────
 
-export interface SignInResult {
+interface SignInResult {
   ok: boolean;
   membro?: Membro;
   erro?: string;
 }
 
-export interface SignUpResult {
+interface SignUpResult {
   ok: boolean;
   membro?: Membro;
   erro?: string;

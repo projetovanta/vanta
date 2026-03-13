@@ -199,5 +199,3 @@ export const MasterDashboard: React.FC<Props> = ({ onSelectComunidade, onSelectE
     </div>
   );
 };
-
-export default MasterDashboard;

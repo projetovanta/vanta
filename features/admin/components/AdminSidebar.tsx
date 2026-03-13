@@ -86,7 +86,7 @@ export type AdminSubView =
   | 'FAQ'
   | 'LINKS_UTEIS';
 
-export interface SidebarSectionItem {
+interface SidebarSectionItem {
   id: AdminSubView;
   label: string;
   icon: LucideIcon;
@@ -95,7 +95,7 @@ export interface SidebarSectionItem {
   badge?: number;
 }
 
-export interface SidebarSection {
+interface SidebarSection {
   label: string;
   items: SidebarSectionItem[];
 }

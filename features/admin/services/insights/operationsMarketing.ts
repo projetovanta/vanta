@@ -161,7 +161,7 @@ function getNextThreshold(tier: LoyaltyTier): number {
   }
 }
 
-export async function getClientLoyalty(userId: string, comunidadeId: string): Promise<LoyaltyStatus> {
+async function getClientLoyalty(userId: string, comunidadeId: string): Promise<LoyaltyStatus> {
   return getCached(
     `loyalty-${userId}-${comunidadeId}`,
     async () => {

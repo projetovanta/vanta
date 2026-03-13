@@ -157,5 +157,3 @@ export const PreEventoView: React.FC<Props> = ({ evento: _evento, analytics, loa
     </div>
   );
 };
-
-export default PreEventoView;

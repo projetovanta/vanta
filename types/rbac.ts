@@ -70,7 +70,7 @@ export interface AtribuicaoRBAC {
   temAcessoFinanceiro?: boolean; // flag de permissão financeira (substitui vanta_financeiro como cargo)
 }
 
-export type RoleLista = 'vanta_gerente' | 'socio' | 'promoter' | 'portaria_lista' | 'portaria_antecipado';
+type RoleLista = 'vanta_gerente' | 'socio' | 'promoter' | 'portaria_lista' | 'portaria_antecipado';
 
 export interface RegraLista {
   id: string;

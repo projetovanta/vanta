@@ -17,7 +17,7 @@ const SIZE_CLASSES: Record<'sm' | 'md', string> = {
   md: 'text-xs px-3 py-1',
 };
 
-export default function StatusBadge({ mode, size = 'sm' }: Props) {
+function StatusBadge({ mode, size = 'sm' }: Props) {
   const config = MODE_CONFIG[mode];
 
   return (

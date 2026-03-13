@@ -131,7 +131,7 @@ function unregisterModal(id: string) {
 
 // ── Hooks React ──────────────────────────────────────────────────────────────
 
-export function useModalStack() {
+function useModalStack() {
   return { register: registerModal, unregister: unregisterModal };
 }
 

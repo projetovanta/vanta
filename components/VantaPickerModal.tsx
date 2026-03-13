@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { X, Search, Check } from 'lucide-react';
 import { useModalBack } from '../hooks/useModalStack';
 
-export interface PickerItem {
+interface PickerItem {
   value: string;
   label: string;
 }

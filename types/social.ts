@@ -24,7 +24,7 @@ export interface Chat {
 }
 
 // Tipo de Online User
-export interface OnlineUser {
+interface OnlineUser {
   id: string;
   nome: string;
   foto: string;

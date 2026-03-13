@@ -171,5 +171,3 @@ export const ComunidadesTab: React.FC<Props> = ({ analytics, onSelectComunidade 
     </div>
   );
 };
-
-export default ComunidadesTab;

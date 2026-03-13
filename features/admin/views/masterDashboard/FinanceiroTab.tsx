@@ -140,5 +140,3 @@ export const FinanceiroTab: React.FC<Props> = ({ analytics }) => {
     </div>
   );
 };
-
-export default FinanceiroTab;

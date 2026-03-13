@@ -236,5 +236,3 @@ export const ProjecaoTab: React.FC<Props> = ({ analytics }) => {
     </div>
   );
 };
-
-export default ProjecaoTab;

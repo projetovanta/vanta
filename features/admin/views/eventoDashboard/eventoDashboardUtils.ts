@@ -34,11 +34,11 @@ export const faixaEtaria = (idade: number): string => {
 import type { VendaLog } from '../../services/eventosAdminTypes';
 import type { PieSlice } from '../../components/VantaPieChart';
 
-export interface VendaDia {
+interface VendaDia {
   dia: string;
   vendas: number;
 }
-export interface VendaVariacaoBar {
+interface VendaVariacaoBar {
   label: string;
   qtd: number;
   receita: number;
@@ -95,7 +95,7 @@ export const agruparPorVariacao = (logs: VendaLog[]): VendaVariacaoBar[] => {
 };
 
 // ── Vendas acumuladas (linha temporal) ──────────────────────────────────────
-export interface VendaAcumulada {
+interface VendaAcumulada {
   dia: string;
   acumulado: number;
 }
@@ -110,7 +110,7 @@ export const agruparAcumulado = (logs: VendaLog[]): VendaAcumulada[] => {
 };
 
 // ── Pico de vendas (horário com mais vendas) ────────────────────────────────
-export interface PicoVendas {
+interface PicoVendas {
   hora: string;
   quantidade: number;
 }
@@ -127,7 +127,7 @@ export const calcPicoVendas = (logs: VendaLog[]): PicoVendas | null => {
 };
 
 // ── Vendas por canal (breakdown) ────────────────────────────────────────────
-export interface VendasPorCanal {
+interface VendasPorCanal {
   antecipado: number;
   porta: number;
   cortesia: number;

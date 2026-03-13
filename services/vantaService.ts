@@ -26,17 +26,3 @@ import {
 // ── Singleton ─────────────────────────────────────────────────────────────────
 
 export const vantaService: IVantaService = new SupabaseVantaService();
-export type {
-  IVantaService,
-  RegistrarVendaInput,
-  RegistrarVendaResult,
-  ValidarIngressoInput,
-  ValidarIngressoResult,
-  SolicitarSaqueInput,
-  SolicitarSaqueResult,
-  AdicionarNomesResult,
-  SolicitacaoSaque,
-  SaldoFinanceiro,
-  VendaLog,
-  TicketCaixa,
-};

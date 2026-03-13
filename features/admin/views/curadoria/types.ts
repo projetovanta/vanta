@@ -1,4 +1,4 @@
-export const formatFollowers = (n: number): string => {
+const formatFollowers = (n: number): string => {
   if (n >= 1_000_000) {
     const m = n / 1_000_000;
     return m % 1 === 0 ? `${m}M` : `${m.toFixed(1)}M`;
@@ -23,7 +23,7 @@ export const formatDate = (iso?: string): string => {
   }
 };
 
-export const formatDateM = (iso: string) => {
+const formatDateM = (iso: string) => {
   try {
     return new Date(iso).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
   } catch {

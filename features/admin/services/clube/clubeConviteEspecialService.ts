@@ -7,7 +7,7 @@ import { tsBR } from '../../../../utils';
 import { notificationsService } from '../notificationsService';
 import type { TierMaisVanta } from '../../../../types';
 
-export interface ConviteEspecialMV {
+interface ConviteEspecialMV {
   id: string;
   eventoId: string;
   userId: string;

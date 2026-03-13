@@ -4,7 +4,7 @@
  * Formato da URL: https://viacep.com.br/ws/{cep}/json/
  */
 
-export interface CepResult {
+interface CepResult {
   logradouro: string; // Ex: "Avenida Paulista"
   bairro: string; // Ex: "Bela Vista"
   cidade: string; // Ex: "São Paulo"

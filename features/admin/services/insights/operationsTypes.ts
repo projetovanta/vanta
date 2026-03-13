@@ -1,8 +1,6 @@
 import type { TimeSeriesPoint } from '../analytics/types';
 import type { Periodo } from '../dashboardAnalyticsService';
 
-export type { TimeSeriesPoint, Periodo };
-
 // ── C1: Atribuição de Canal ──
 export type ChannelSource = 'INSTAGRAM' | 'FLYER_QR' | 'PROMOTER' | 'ORGANICO' | 'WHATSAPP' | 'LINK_DIRETO';
 

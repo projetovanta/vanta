@@ -29,7 +29,7 @@ export interface MaisVantaEventoForm {
 }
 
 /** @deprecated manter para compat com imports legados */
-export interface TierEventoMV {
+interface TierEventoMV {
   tierId: string;
   ativo: boolean;
   quantidade: string;
@@ -38,7 +38,7 @@ export interface TierEventoMV {
 }
 
 /** @deprecated manter para compat com imports legados */
-export interface LoteMaisVantaForm {
+interface LoteMaisVantaForm {
   enabled: boolean;
   tierMinimo: TierMaisVanta;
   quantidade: string;

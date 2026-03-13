@@ -51,9 +51,9 @@ export interface CachedLoteVariacao {
   vendidosLocal: number;
 }
 
-export type SyncType = 'CHECKIN_TICKET' | 'CHECKIN_LISTA' | 'VENDA_CAIXA' | 'CORTESIA';
+type SyncType = 'CHECKIN_TICKET' | 'CHECKIN_LISTA' | 'VENDA_CAIXA' | 'CORTESIA';
 
-export interface SyncQueueItem {
+interface SyncQueueItem {
   id?: number;
   type: SyncType;
   eventoId: string;

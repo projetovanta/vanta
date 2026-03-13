@@ -41,7 +41,7 @@ const getCroppedImg = (imageSrc: string, pixelCrop: Area, maxPx = 1600, quality 
 
 // ── Componente ─────────────────────────────────────────────────────────────────
 
-export interface ImageCropModalProps {
+interface ImageCropModalProps {
   src: string;
   aspect?: number;
   minWidth?: number;

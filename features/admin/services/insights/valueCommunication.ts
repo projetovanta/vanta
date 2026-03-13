@@ -248,7 +248,7 @@ export async function getSmartTips(comunidadeId: string, eventoId?: string): Pro
 // D4: Benchmark
 // ════════════════════════════════════════════════════
 
-export async function getPlatformBenchmarks(): Promise<PlatformBenchmarks> {
+async function getPlatformBenchmarks(): Promise<PlatformBenchmarks> {
   return getCached(
     'platform-benchmarks',
     async () => {

@@ -156,10 +156,10 @@ export const rejeitarEvento = async (
 
 export const getEventosPendentes = (): EventoAdmin[] => EVENTOS_ADMIN.filter(e => e.statusEvento === 'PENDENTE');
 
-export const getEventosEmRevisao = (criadorId: string): EventoAdmin[] =>
+const getEventosEmRevisao = (criadorId: string): EventoAdmin[] =>
   EVENTOS_ADMIN.filter(e => e.statusEvento === 'EM_REVISAO' && e.criadorId === criadorId);
 
-export const getEventosRejeitados = (criadorId: string): EventoAdmin[] =>
+const getEventosRejeitados = (criadorId: string): EventoAdmin[] =>
   EVENTOS_ADMIN.filter(e => e.statusEvento === 'CANCELADO' && e.criadorId === criadorId);
 
 /** Gerente envia correções após rejeição. Só pode editar os campos apontados em rejeicao_campos. */

@@ -2,7 +2,7 @@
  * Detecta se o app está rodando como app instalado (PWA standalone ou Capacitor).
  * Usado para redirecionar compras ao browser externo (evitar taxa Apple/Google 30%).
  */
-export const isInstalledApp = (): boolean => {
+const isInstalledApp = (): boolean => {
   // PWA standalone (iOS / Android)
   if (window.matchMedia?.('(display-mode: standalone)').matches) return true;
 

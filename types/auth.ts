@@ -5,7 +5,7 @@
 export type Categoria = string;
 
 /** Formato do evento (Supabase: tabela `formatos`). */
-export type Formato = string;
+type Formato = string;
 
 /** Role do perfil do usuário — apenas 3 valores possíveis.
  *  Cargos contextuais (gerente, sócio, etc.) ficam em atribuicoes_rbac + AccessNode.
@@ -103,7 +103,7 @@ export interface PrivacidadeConfig {
 }
 
 // ── Notificação Administrativa ─────────────────────────────────────────────
-export interface NotificacaoAdmin {
+interface NotificacaoAdmin {
   id: string;
   titulo: string;
   mensagem: string;

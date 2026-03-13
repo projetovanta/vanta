@@ -12,7 +12,7 @@ import { supabase } from './supabaseClient';
 import { notificationsService } from '../features/admin/services/notificationsService';
 import type { Notificacao } from '../types';
 
-export interface NotifyPayload {
+interface NotifyPayload {
   /** userId do destinatário */
   userId: string;
   /** Título da notificação */
@@ -99,4 +99,4 @@ export async function notifyMany(userIds: string[], payload: Omit<NotifyPayload,
   await Promise.allSettled(userIds.map(uid => notify({ ...payload, userId: uid })));
 }
 
-export const notifyService = { notify, notifyMany };
+const notifyService = { notify, notifyMany };

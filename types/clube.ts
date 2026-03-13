@@ -59,7 +59,7 @@ export interface ReservaMaisVanta {
   infractionRegisteredEm?: string; // ISO 8601 -03:00 — quando infração foi registrada
 }
 
-export interface NotificacaoClubePayload {
+interface NotificacaoClubePayload {
   userId: string;
   tipo: 'CONFIRMACAO_PRESENCA' | 'EVENTO_INICIOU' | 'EVENTO_TERMINOU' | 'AVISO_FINAL_12H' | 'INFRACACAO_REGISTRADA';
   eventoId: string;
@@ -250,8 +250,8 @@ export interface InfracaoMaisVanta {
 
 // ── MAIS VANTA v2 — Deals Marketplace ─────────────────────────────────────
 
-export type CategoriaMembro = 'LIFESTYLE' | 'INFLUENCER' | 'CREATOR' | 'VIP';
-export type AlcanceMembro = 'NANO' | 'MICRO' | 'MACRO' | 'MEGA';
+type CategoriaMembro = 'LIFESTYLE' | 'INFLUENCER' | 'CREATOR' | 'VIP';
+type AlcanceMembro = 'NANO' | 'MICRO' | 'MACRO' | 'MEGA';
 export type GeneroMembro = 'M' | 'F' | 'NB';
 export type TipoParceiro = 'RESTAURANTE' | 'BAR' | 'CLUB' | 'GYM' | 'SALAO' | 'HOTEL' | 'LOJA' | 'OUTRO';
 export type PlanoParceiro = 'STARTER' | 'PRO' | 'ELITE';

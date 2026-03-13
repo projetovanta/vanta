@@ -19,11 +19,11 @@ const TIER_COLORS_LEGACY: Record<string, string> = {
   black: '#1a1a1a',
 };
 
-export const getTierLabel = (id: string): string => {
+const getTierLabel = (id: string): string => {
   const def = clubeService.getTierDef(id);
   return def?.nome ?? TIER_LABELS_LEGACY[id] ?? id;
 };
-export const getTierColor = (id: string): string => {
+const getTierColor = (id: string): string => {
   const def = clubeService.getTierDef(id);
   return def?.cor ?? TIER_COLORS_LEGACY[id] ?? '#666';
 };

@@ -224,5 +224,3 @@ export const PosEventoView: React.FC<Props> = ({ evento, analytics, loading }) =
     </div>
   );
 };
-
-export default PosEventoView;

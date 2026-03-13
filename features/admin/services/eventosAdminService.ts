@@ -8,18 +8,14 @@
 // ── Re-export de tipos e constantes ─────────────────────────────────────────
 
 export type {
-  OrigemIngresso,
   VendaLog,
   TicketCaixa,
   ValidacaoIngresso,
-  StatusSaque,
-  StatusChargeback,
   SolicitacaoSaque,
   Reembolso,
   Chargeback,
   SaldoFinanceiro,
   ContractedFees,
-  MetodoPagamento,
 } from './eventosAdminTypes';
 
 export type { CheckinsPorOrigem } from './eventosAdminTickets';

@@ -127,5 +127,3 @@ export const OperacoesTab: React.FC<Props> = ({ analytics, onSelectEvento }) => 
     </div>
   );
 };
-
-export default OperacoesTab;

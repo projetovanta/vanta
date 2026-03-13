@@ -100,7 +100,7 @@ const buildListas = (
 
 // ── Tipos de resultado do check-in ───────────────────────────────────────────
 
-export interface CheckInResult {
+interface CheckInResult {
   ok: boolean;
   checkedInEm?: string;
   abobora?: boolean; // true se migrou para regra pagante (após confirmação)

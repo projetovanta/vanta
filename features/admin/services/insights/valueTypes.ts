@@ -2,7 +2,7 @@ import type { Periodo } from '../dashboardAnalyticsService';
 import type { TrendAlert } from './insightsTypes';
 import type { TimeSeriesPoint } from '../analytics/types';
 
-export type { Periodo, TimeSeriesPoint };
+export type { Periodo };
 
 // ── D1: Relatório Semanal ──
 export interface WeeklyReport {

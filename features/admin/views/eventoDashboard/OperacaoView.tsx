@@ -158,5 +158,3 @@ export const OperacaoView: React.FC<Props> = ({ evento: _evento, analytics, load
     </div>
   );
 };
-
-export default OperacaoView;

@@ -2,7 +2,7 @@ import { useEffect, useCallback } from 'react';
 import { useMap, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 
-export interface MapControllerProps {
+interface MapControllerProps {
   zoomAction: 'in' | 'out' | null;
   activeEventCoords: { lat: number; lng: number } | null;
   userLocation: { lat: number; lng: number } | null;

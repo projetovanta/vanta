@@ -13,7 +13,7 @@
 
 import { useState, useCallback } from 'react';
 
-export type PermissionState = 'idle' | 'checking' | 'granted' | 'denied' | 'unavailable';
+type PermissionState = 'idle' | 'checking' | 'granted' | 'denied' | 'unavailable';
 
 // ── Câmera ────────────────────────────────────────────────────────────────────
 

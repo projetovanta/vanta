@@ -10,7 +10,7 @@ import type { PricingSuggestion, BreakEvenResult } from './financialTypes';
 
 // ── Context ──
 
-export interface TipContext {
+interface TipContext {
   noShow?: NoShowAnalysis;
   pricing?: PricingSuggestion | null;
   breakEven?: BreakEvenResult | null;

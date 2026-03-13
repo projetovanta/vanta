@@ -3,7 +3,7 @@ import { Check, X, AlertTriangle, Info } from 'lucide-react';
 
 type ToastType = 'sucesso' | 'erro' | 'aviso' | 'info';
 
-export interface ToastData {
+interface ToastData {
   id: number;
   tipo: ToastType;
   msg: string;
@@ -96,7 +96,7 @@ type GlobalListener = (t: ToastData) => void;
 let _globalListener: GlobalListener | null = null;
 
 /** Registra o listener do componente GlobalToastContainer. Chamado 1x no App. */
-export function _registerGlobalToast(fn: GlobalListener) {
+function _registerGlobalToast(fn: GlobalListener) {
   _globalListener = fn;
 }
 

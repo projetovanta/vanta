@@ -16,7 +16,7 @@ export type SegmentoAlvo =
   | { tipo: 'EVENTO'; eventoId: string }
   | { tipo: 'CIDADE'; cidade: string };
 
-export interface CampanhaPayload {
+interface CampanhaPayload {
   titulo: string;
   mensagem: string;
   canais: CanalCampanha[];

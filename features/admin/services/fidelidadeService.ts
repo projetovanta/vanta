@@ -14,7 +14,7 @@ function calcTier(pontos: number): Tier {
   return 'NENHUM';
 }
 
-export interface FidelidadeCliente {
+interface FidelidadeCliente {
   id: string;
   userId: string;
   comunidadeId: string;

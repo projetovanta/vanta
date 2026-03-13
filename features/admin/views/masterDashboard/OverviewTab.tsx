@@ -134,5 +134,3 @@ export const OverviewTab: React.FC<Props> = ({ analytics, onSelectComunidade, on
     </div>
   );
 };
-
-export default OverviewTab;

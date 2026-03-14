@@ -28,7 +28,7 @@ import { Mensagem } from '../types';
 const channelKey = (a: string, b: string) => `messages:${[a, b].sort().join('-')}`;
 
 import { tsBR } from '../utils';
-import { notify } from './notifyService';
+// notify removido — notificações de mensagem são criadas pelo chatStore (agrupadas por remetente)
 
 // ── Tipos internos ─────────────────────────────────────────────────────────
 
@@ -86,15 +86,7 @@ export const messagesService = {
         return null;
       }
 
-      // Push para destinatário offline (fire-and-forget — só push, sem in-app)
-      void notify({
-        userId: recipientId,
-        titulo: 'Nova mensagem',
-        mensagem: text.length > 80 ? text.slice(0, 80) + '...' : text,
-        tipo: 'SISTEMA',
-        link: senderId,
-      });
-
+      // Notificação criada pelo chatStore via subscribeToInbox (agrupada por remetente)
       return dbToMensagem(data as DbMessage);
     } catch {
       return null;

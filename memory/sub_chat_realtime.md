@@ -14,7 +14,9 @@
 | modules/messages/components/ChatRoomView.tsx | 346 | Sala de chat (historico + envio) |
 | modules/messages/components/MessageBubble.tsx | 160 | Bolha de mensagem (reactions, delete) |
 | modules/messages/components/NewChatModal.tsx | 78 | Modal nova conversa (busca amigos) |
-| modules/messages/components/ChatListItem.tsx | 55 | Item de conversa na lista |
+| modules/messages/components/ChatListItem.tsx | ~140 | Item de conversa com swipe (arquivar/silenciar) |
+| modules/messages/components/ArchiveModal.tsx | ~80 | Modal confirmação arquivar (checkbox keepArchived) |
+| services/chatSettingsService.ts | ~80 | CRUD chat_settings (archive/unarchive/mute/unmute) |
 | types/social.ts | 32 | Tipos: Mensagem, Chat, OnlineUser |
 
 ## Types (social.ts)
@@ -52,6 +54,7 @@
 | onlineUsers | Set<string> | new Set() |
 | activeChatParticipantId | string/null | null |
 | totalUnreadMessages | number | 0 |
+| chatSettings | Map<string, ChatSetting> | new Map() |
 
 ### Actions
 | Metodo | Descricao |
@@ -61,18 +64,51 @@
 | markChatAsRead(participantId) | Zera unreadCount local + messagesService.markAsRead |
 | deleteMessage(messageId, participantId) | messagesService.deleteMessage + remove do state |
 | toggleReaction(messageId, emoji, participantId) | messagesService.toggleReaction + update state |
-| init(userId) | Carrega inbox + subscribe chat + presence. Retorna cleanup fn |
+| archiveChat(partnerId, keepArchived) | chatSettingsService.archive + update state |
+| unarchiveChat(partnerId) | chatSettingsService.unarchive + remove do state |
+| muteChat(partnerId) | chatSettingsService.mute + update state |
+| unmuteChat(partnerId) | chatSettingsService.unmute + update state |
+| init(userId) | Carrega inbox + settings + subscribe chat + presence. Retorna cleanup fn |
 
 ### init() — Fluxo de inicializacao
 ```
-1. Reset state (chats=[], onlineUsers=Set())
-2. messagesService.getInbox(userId) → carrega conversas existentes
-3. messagesService.subscribeToInbox(userId, onMessage) → escuta novos msgs
+1. Reset state (chats=[], onlineUsers=Set(), chatSettings=Map())
+2. chatSettingsService.getAll(userId) → carrega archived/muted
+3. messagesService.getInbox(userId) → carrega conversas existentes
+4. messagesService.subscribeToInbox(userId, onMessage) → escuta novos msgs
    - Se msg de chat ativo → marca como lida automaticamente
    - Se msg de chat novo → cria Chat com unreadCount=1
-4. messagesService.subscribeToPresence(userId, onChange) → escuta online/offline
-5. Retorna () => { unsubInbox(); unsubPresence() }
+   - Se archived && !keepArchived → desarquiva automaticamente
+   - Se !muted && !ativo → cria notificação MENSAGEM_NOVA agrupada
+5. messagesService.subscribeToPresence(userId, onChange) → escuta online/offline
+6. Retorna () => { unsubInbox(); unsubPresence() }
 ```
+
+## Tabela chat_settings (migration 20260313120000)
+| Coluna | Tipo | Descricao |
+|---|---|---|
+| user_id | UUID FK | Dono da configuracao |
+| partner_id | UUID FK | Parceiro de chat |
+| archived | BOOLEAN | Conversa arquivada |
+| muted | BOOLEAN | Notificacoes silenciadas |
+| keep_archived | BOOLEAN | Manter arquivada mesmo com novas msgs |
+| archived_at | TIMESTAMPTZ | Quando foi arquivada |
+- UNIQUE(user_id, partner_id), RLS: user_id = auth.uid()
+
+## MessagesView — Abas
+- CONVERSAS: chats nao arquivados
+- ARQUIVADAS (N): chats arquivados, com contador
+
+## ChatListItem — Swipe
+- Touch handlers: detecta swipe >60px pra esquerda
+- Revela 2 botoes: Silenciar (cinza) + Arquivar (amarelo)
+- Arquivar abre ArchiveModal com checkbox keepArchived
+- Silenciar é toggle direto com toast
+
+## MessageBubble — Agrupamento
+- Timestamps agrupados: mesmo sender + mesmo minuto = sem repeticao
+- Padding compacto: px-3 py-1.5, rounded-2xl
+- space-y-1 entre mensagens (era space-y-6)
 
 ### Consumers (6 telas)
 | Arquivo | Consome |

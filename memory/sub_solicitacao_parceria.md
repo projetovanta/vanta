@@ -169,4 +169,4 @@ tipo_comunidade TEXT DEFAULT 'ESPACO_FIXO' -- 'ESPACO_FIXO' | 'PRODUTORA'
 | 12 | Upload fotos no wizard | OK — bucket parceria-fotos, ate 5 fotos, preview + remocao |
 | 13 | Step1Evento: local editavel se PRODUTORA | A FAZER |
 | 14 | Onboarding pos-aprovacao | A FAZER |
-| 15 | Aprovar -> criar comunidade pre-preenchida | A FAZER (botao com TODO) |
+| 15 | Aprovar -> criar comunidade com taxas | OK — painel de taxas VANTA (10 campos), cria comunidade + define taxas + aprova + notifica. Foto fullscreen com zoom 2x |

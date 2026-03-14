@@ -65,11 +65,25 @@ Parametros: userId, tipo, titulo, mensagem, link
 ## Handler: useAppHandlers.ts
 Recebe notificacoes e navega para a tela correta baseado no `tipo` e `link`:
 - CONVITE_SOCIO → NegociacaoSocioView (detecta papel socio/produtor via created_by)
+- MENSAGEM_NOVA → openChatRoom (link = partnerId, extrai nome do titulo)
 - WALLET → carteira
 - FINANCEIRO → financeiro
 - /admin/evento/{id} → painel admin (deep link)
 - /admin/comunidade/{id} → painel admin (deep link)
 - EVENT:{id} → detalhe do evento
+
+## Painel de Notificacoes (NotificationPanel.tsx)
+4 abas: TODAS | SOCIAL | EVENTOS | INGRESSOS
+- **SOCIAL**: FRIEND_REQUEST, FRIEND_ACCEPTED, MENSAGEM_NOVA, AMIGO
+- **EVENTOS**: EVENTO, ANIVERSARIO, REVIEW, PEDIR_REVIEW, EVENTO_APROVADO/RECUSADO/PENDENTE/CANCELADO/FINALIZADO, ALERTA_LOTACAO, EVENTO_PRIVADO_*, COMEMORACAO_*
+- **INGRESSOS**: SISTEMA, CORTESIA_PENDENTE, TRANSFERENCIA_PENDENTE, COMPRA_CONFIRMADA, INGRESSO, COTA_RECEBIDA
+
+## Notificacao MENSAGEM_NOVA
+- Criada no chatStore via `createMessageNotification` (debounce 2s por remetente)
+- Agrupada: busca no banco por notif nao lida do mesmo remetente antes de criar
+- Se existe: UPDATE titulo para "Nova mensagem de Fulano (N)"
+- Se nao: INSERT nova + push FCM (sem email para evitar spam)
+- Se conversa silenciada (muted): skip notificacao
 
 ## Checklist
 | # | Item | Status | Detalhe |
@@ -77,7 +91,7 @@ Recebe notificacoes e navega para a tela correta baseado no `tipo` e `link`:
 | 1 | In-app sync | OK | notificationsService |
 | 2 | Push FCM | OK | pushNotificationService + Edge Function |
 | 3 | Email Resend | OK | Edge Functions send-*-email |
-| 4 | 45 tipos | OK | types/auth.ts (+COMUNICACAO_EVENTO, +RELATORIO_SEMANAL) |
+| 4 | 46 tipos | OK | types/auth.ts (+MENSAGEM_NOVA) |
 | 5 | Handler navegacao | OK | useAppHandlers.ts |
 | 6 | Campanhas em massa | OK | campanhasService.ts 297L (IN_APP + PUSH + EMAIL, segmentos: TODOS/CIDADE/COMUNIDADE/EVENTO/MV) |
 | 7 | Tabelas Supabase | OK | notifications (19 rows), push_subscriptions (2 rows), notificacoes_posevento |

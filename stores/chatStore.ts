@@ -7,12 +7,14 @@ import { getCached } from '../services/cache';
 import { withCircuitBreaker } from '../services/circuitBreaker';
 import { useAuthStore, GUEST_PLACEHOLDER } from './authStore';
 import { notificationsService } from '../features/admin/services/notificationsService';
+import { chatSettingsService, ChatSetting } from '../services/chatSettingsService';
 
 interface ChatState {
   chats: Chat[];
   onlineUsers: Set<string>;
   activeChatParticipantId: string | null;
   totalUnreadMessages: number;
+  chatSettings: Map<string, ChatSetting>;
 
   // ações
   ensureChatExists: (participantId: string, participantMembro?: Membro) => void;
@@ -20,6 +22,10 @@ interface ChatState {
   markChatAsRead: (participantId: string) => void;
   deleteMessage: (messageId: string, participantId: string) => Promise<boolean>;
   toggleReaction: (messageId: string, emoji: string, participantId: string) => Promise<void>;
+  archiveChat: (partnerId: string, keepArchived: boolean) => Promise<void>;
+  unarchiveChat: (partnerId: string) => Promise<void>;
+  muteChat: (partnerId: string) => Promise<void>;
+  unmuteChat: (partnerId: string) => Promise<void>;
 
   // init
   init: (userId: string) => () => void;
@@ -32,6 +38,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
   onlineUsers: new Set(),
   activeChatParticipantId: null,
   totalUnreadMessages: 0,
+  chatSettings: new Map(),
 
   ensureChatExists: (participantId, participantMembro) => {
     set({ activeChatParticipantId: participantId });
@@ -166,13 +173,65 @@ export const useChatStore = create<ChatState>((set, get) => ({
     }
   },
 
+  archiveChat: async (partnerId, keepArchived) => {
+    await chatSettingsService.archive(partnerId, keepArchived);
+    set(s => {
+      const next = new Map(s.chatSettings);
+      next.set(partnerId, { partnerId, archived: true, muted: true, keepArchived });
+      return { chatSettings: next };
+    });
+  },
+
+  unarchiveChat: async partnerId => {
+    await chatSettingsService.unarchive(partnerId);
+    set(s => {
+      const next = new Map(s.chatSettings);
+      next.delete(partnerId);
+      return { chatSettings: next };
+    });
+  },
+
+  muteChat: async partnerId => {
+    await chatSettingsService.mute(partnerId);
+    set(s => {
+      const next = new Map(s.chatSettings);
+      const prev = next.get(partnerId);
+      next.set(partnerId, {
+        partnerId,
+        archived: prev?.archived ?? false,
+        muted: true,
+        keepArchived: prev?.keepArchived ?? false,
+      });
+      return { chatSettings: next };
+    });
+  },
+
+  unmuteChat: async partnerId => {
+    await chatSettingsService.unmute(partnerId);
+    set(s => {
+      const next = new Map(s.chatSettings);
+      const prev = next.get(partnerId);
+      if (prev) next.set(partnerId, { ...prev, muted: false });
+      return { chatSettings: next };
+    });
+  },
+
   init: userId => {
     if (!userId || userId === GUEST_PLACEHOLDER.id) {
-      set({ chats: [], onlineUsers: new Set(), activeChatParticipantId: null, totalUnreadMessages: 0 });
+      set({
+        chats: [],
+        onlineUsers: new Set(),
+        activeChatParticipantId: null,
+        totalUnreadMessages: 0,
+        chatSettings: new Map(),
+      });
       return () => {};
     }
 
     const cleanups: (() => void)[] = [];
+
+    // Carrega chat settings (archived/muted)
+    void chatSettingsService.getAll(userId).then(settings => set({ chatSettings: settings }));
 
     // Carrega inbox (com cache 30s + circuit breaker)
     void withCircuitBreaker(
@@ -248,8 +307,20 @@ export const useChatStore = create<ChatState>((set, get) => ({
         return { chats: all, totalUnreadMessages: computeUnread(all) };
       });
 
-      // Notificação agrupada (in-app + push) — só se chat não está aberto
-      if (!isActive) {
+      // Checar settings de archive/mute
+      const settings = get().chatSettings.get(partnerId);
+      if (settings?.archived && !settings.keepArchived) {
+        // Desarquivar automaticamente
+        void chatSettingsService.unarchive(partnerId);
+        set(s => {
+          const next = new Map(s.chatSettings);
+          next.delete(partnerId);
+          return { chatSettings: next };
+        });
+      }
+
+      // Notificação agrupada (in-app + push) — só se chat não está aberto E não silenciado
+      if (!isActive && !settings?.muted) {
         void createMessageNotification(partnerId, msg.text, get());
       }
     });

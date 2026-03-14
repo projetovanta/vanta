@@ -196,4 +196,5 @@ export type ProfileSubView =
   | 'MEIA_ENTRADA'
   | 'SOLICITAR_PARCERIA'
   | 'MINHAS_SOLICITACOES'
+  | 'PENDENCIAS'
   | 'BLOQUEADOS';

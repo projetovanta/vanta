@@ -20,6 +20,7 @@ import {
   Loader2,
   ScrollText,
   Ban,
+  ClipboardList,
 } from 'lucide-react';
 import { TYPOGRAPHY } from '../../constants';
 import { OptimizedImage } from '../../components/OptimizedImage';
@@ -28,6 +29,7 @@ import { EditProfileView } from './EditProfileView';
 import { PreferencesView } from './PreferencesView';
 import { PublicProfilePreviewView } from './PublicProfilePreviewView';
 import { HistoricoView } from './HistoricoView';
+import { MinhasPendenciasView } from './MinhasPendenciasView';
 import { ClubeOptInView } from './ClubeOptInView';
 import { clubeService } from '../../features/admin/services/clubeService';
 import { comprovanteService } from '../../features/admin/services/comprovanteService';
@@ -177,6 +179,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
       />
     );
   if (subView === 'MINHAS_SOLICITACOES') return <MinhasSolicitacoesView onBack={() => setSubView('MAIN')} />;
+  if (subView === 'PENDENCIAS') return <MinhasPendenciasView onBack={() => setSubView('MAIN')} />;
   if (subView === 'BLOQUEADOS') return <BloqueadosView onBack={() => setSubView('MAIN')} />;
   if (subView === 'PREVIEW_PUBLIC' || subView === 'PREVIEW_FRIENDS') {
     return (
@@ -435,6 +438,13 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
             >
               <ScrollText size="0.75rem" className="text-purple-400" />
               Minhas Solicitações
+            </button>
+            <button
+              onClick={() => setSubView('PENDENCIAS')}
+              className="w-full bg-black/40 border border-white/5 rounded-xl py-3 flex items-center justify-center gap-2 text-[0.625rem] font-black uppercase tracking-[0.25em] text-zinc-400 hover:text-white transition-all active:scale-95 shadow-inner"
+            >
+              <ClipboardList size="0.75rem" className="text-amber-400" />
+              Minhas Pendências
             </button>
             {onAdminClick && (
               <div className="relative">

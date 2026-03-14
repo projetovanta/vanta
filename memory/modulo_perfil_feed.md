@@ -47,6 +47,7 @@ Radar = mapa de eventos por geolocalizacao.
 |---|---|---|
 | ProfileView.tsx | ~750 | Tela principal do perfil |
 | MinhasSolicitacoesView.tsx | ~390 | Minhas solicitacoes (Privados + Comemoracoes) |
+| MinhasPendenciasView.tsx | ~340 | Minhas Pendencias (Parcerias + Amizades pendentes) |
 | EditProfileView.tsx | 666 | Editar perfil (nome, bio, foto, cidade, interesses) |
 | PublicProfilePreviewView.tsx | 747 | Perfil publico (outro usuario) |
 | HistoricoView.tsx | 259 | Historico de eventos + conquistas |

@@ -78,9 +78,9 @@ Mapa completo do projeto VANTA gerado por leitura direta do codigo-fonte em 2026
 
 ### 1.9 Perfil
 - **Arquivo**: `modules/profile/ProfileView.tsx`
-- **O que o usuario ve**: Foto + nome + bio + selos + interesses + mood. Menu com opcoes: Editar Perfil, Minha Carteira, Meus Ingressos, Historico, MAIS VANTA, Previews publico/amigos, Preferencias, Solicitar Parceria, Minhas Solicitacoes, Logout. Badge de admin (se tem cargo).
-- **Acoes disponiveis**: Editar perfil, ver carteira, ver ingressos, ver historico de frequencia, entrar no MAIS VANTA, pre-visualizar perfil publico, configurar preferencias, solicitar parceria, ver solicitacoes, logout.
-- **Subviews**: EditProfileView, PreferencesView, PublicProfilePreviewView, HistoricoView, ClubeOptInView, ComprovanteMeiaSection, SolicitarParceriaView, MinhasSolicitacoesView, DealsMembroSection.
+- **O que o usuario ve**: Foto + nome + bio + selos + interesses + mood. Menu com opcoes: Editar Perfil, Minha Carteira, Meus Ingressos, Historico, MAIS VANTA, Previews publico/amigos, Preferencias, Solicitar Parceria, Minhas Solicitacoes, Minhas Pendencias, Logout. Badge de admin (se tem cargo).
+- **Acoes disponiveis**: Editar perfil, ver carteira, ver ingressos, ver historico de frequencia, entrar no MAIS VANTA, pre-visualizar perfil publico, configurar preferencias, solicitar parceria, ver solicitacoes, ver pendencias (parcerias + amizades), logout.
+- **Subviews**: EditProfileView, PreferencesView, PublicProfilePreviewView, HistoricoView, ClubeOptInView, ComprovanteMeiaSection, SolicitarParceriaView, MinhasSolicitacoesView, MinhasPendenciasView, DealsMembroSection.
 - **Dados**: `useAuthStore.profile`, `useTicketsStore`, `useExtrasStore`, `clubeService`, `comprovanteService`, `moodService`.
 - **Status**: [x] Completo
 
@@ -153,7 +153,13 @@ Mapa completo do projeto VANTA gerado por leitura direta do codigo-fonte em 2026
 - **Dados**: `eventoPrivadoService`, `comemoracaoService`.
 - **Status**: [x] Completo
 
-### 1.21 Landing Page do Evento
+### 1.21 Minhas Pendencias
+- **Arquivo**: `modules/profile/MinhasPendenciasView.tsx`
+- **O que o usuario ve**: 2 abas — Solicitacoes (parcerias enviadas com status/timeline) e Amizades (pedidos pendentes enviados/recebidos com foto/nome).
+- **Dados**: queries diretas em `solicitacoes_parceria` e `friendships` + `profiles`.
+- **Status**: [x] Completo
+
+### 1.22 Landing Page do Evento
 - **Arquivo**: `modules/landing/EventLandingPage.tsx`
 - **Rota**: `/evento/:slug`
 - **O que o usuario ve**: Pagina publica (sem login) com info do evento, imagem, data, local, preco. Botao "Comprar Ingresso" redireciona para checkout.

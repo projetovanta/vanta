@@ -9,12 +9,13 @@
 - `modules/profile/ClubeOptInView.tsx` (~670L) — opt-in MAIS VANTA (centralizado verticalmente via margin auto)
 - `modules/profile/HistoricoView.tsx` (259L) — histórico de eventos
 - `modules/profile/PreferencesView.tsx` (83L) — preferências do app
+- `modules/profile/MinhasPendenciasView.tsx` (345L) — pendências (parcerias + amizades pendentes)
 - `modules/profile/components/InterestSelector.tsx` (280L) — seletor de interesses
 - `modules/profile/components/ImageCropperModal.tsx` (148L) — crop de imagem
 - `modules/profile/utils/imageUtils.ts` (44L) — compress/crop
 
 ## SubViews
-`ProfileSubView` type → EditProfile, Preferences, PublicPreview, Historico, ClubeOptIn, etc
+`ProfileSubView` type → EditProfile, Preferences, PublicPreview, Historico, ClubeOptIn, MeiaEntrada, SolicitarParceria, MinhasSolicitacoes, Pendencias, Bloqueados
 
 ## Funcionalidades
 - Editar: nome, bio, foto, álbum, interesses, cidade, Instagram
@@ -22,5 +23,6 @@
 - Histórico: ingressos + presenças passadas + achievements
 - Comprovante meia-entrada: upload fotos
 - Clube MAIS VANTA opt-in
+- Minhas Pendências: parcerias enviadas (status timeline) + amizades pendentes (enviados/recebidos)
 - Botão admin (se tem cargo)
 - Logout

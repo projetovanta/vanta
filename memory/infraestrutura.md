@@ -43,6 +43,15 @@ React Router v6 funciona nos dois. Ver `memory/plataformas.md` para regra comple
 - **Cron jobs**: weekly-report-domingo-10h, expirar-pedidos-checkout-30min (cada 5min, PENDENTE→EXPIRADO após 30min)
 - **Sourcemaps**: `hidden` (não expostos ao browser, disponíveis para Sentry)
 
+## Imagens (OptimizedImage)
+- **Componente**: `components/OptimizedImage.tsx` — usado em 22 locais, todos passam `width`
+- **Supabase Storage transforms**: resize (`width=N`) + `quality=75` automáticos
+- **srcSet @2x**: gerado automaticamente para telas retina
+- **maxPx**: cap de resolução (default 1200px). @2x não ultrapassa maxPx. srcSet omitido se ambos sizes = cap
+- **Lazy loading**: nativo (`loading="lazy"`, override com `loading="eager"`)
+- **Fade-in**: transition opacity 300ms ao carregar
+- **Fallback**: placeholder zinc-900 ou React node customizado
+
 ## Hardening Patterns
 - **`.maybeSingle()`**: padrão para SELECTs por chave (52 queries convertidas). Evita PGRST116 em 0 rows
 - **Cancelled flag**: `let cancelled = false` em useEffects async (7 locais). Cleanup: `return () => { cancelled = true; }`

@@ -123,6 +123,18 @@ VANTA Indica (Highlights) — decisões:
 - Visual: escuro, atmosférico, dourado mínimo, fotos de alta qualidade (Unsplash/Pexels até ter fotos reais), Playfair nos títulos
 - Botão principal vitrine: "Criar Conta" (não "Fazer Parte" — muito compromisso pra quem não conhece)
 - Botão secundário: "Já tem conta? Entrar"
+- NÃO ter tela Vitrine bloqueante — guest navega livremente (Home, Busca, Radar). Modal aparece só quando tenta interagir (comprar, curtir, mensagem, perfil)
+
+### Guest Modal (Dan aprovou)
+- Trocar de "Área Restrita" + escudo → "Crie sua conta" + ✨ Sparkles dourado
+- Texto CONTEXTUAL — adapta ao que o guest tentou fazer:
+  - Tentou curtir: "Crie sua conta pra salvar eventos que você curte"
+  - Tentou comprar: "Crie sua conta pra garantir seu ingresso"
+  - Tentou mensagem: "Crie sua conta pra conversar com amigos"
+  - Tentou perfil: "Crie sua conta pra ter seu perfil"
+  - Genérico: "Crie sua conta pra aproveitar tudo que a noite tem de melhor"
+- Botões: "Já tenho conta" (dourado principal) / "Criar Conta" (borda) / "Agora não" (texto)
+- Ícone: Sparkles dourado (não Shield cinza)
 
 ### Tom geral do app
 - Mistura de todas as sensações: insider + exclusividade + ponto de partida

@@ -1,6 +1,6 @@
 import React, { lazy } from 'react';
 import { TYPOGRAPHY } from '../constants';
-import { Check, X, Shield } from 'lucide-react';
+import { Check, X, Sparkles } from 'lucide-react';
 import { PushPermissionBanner } from './PushPermissionBanner';
 import { useModalBack } from '../hooks/useModalStack';
 import type { usePWA } from '../hooks/usePWA';
@@ -10,51 +10,62 @@ const ReviewModal = lazy(() => import('./ReviewModal'));
 const OnboardingView = lazy(() => import('./OnboardingView').then(m => ({ default: m.OnboardingView })));
 
 // ── Inline modals ──────────────────────────────────────────────────────────
+const GUEST_MODAL_TEXTS: Record<string, string> = {
+  curtir: 'Crie sua conta pra salvar eventos que você curte',
+  comprar: 'Crie sua conta pra garantir seu ingresso',
+  mensagem: 'Crie sua conta pra conversar com amigos',
+  perfil: 'Crie sua conta pra ter seu perfil',
+  notificacao: 'Crie sua conta pra receber avisos dos eventos',
+  generico: 'Crie sua conta pra aproveitar tudo que a noite tem de melhor',
+};
+
 const GuestAreaModal = ({
-  onCadastrar,
+  contexto,
   onLogin,
+  onCadastrar,
   onCancel,
 }: {
-  onCadastrar: () => void;
+  contexto: string;
   onLogin: () => void;
+  onCadastrar: () => void;
   onCancel: () => void;
 }) => (
   <div className="absolute inset-0 z-[300] flex items-center justify-center p-6 animate-in fade-in duration-300">
-    <div className="absolute inset-0 bg-black/80 backdrop-blur-xl" role="presentation" onClick={onCancel} />
-    <div className="relative w-full max-w-[85%] bg-[#0A0A0A] border border-white/10 rounded-[2.5rem] p-8 text-center shadow-[0_0_50px_rgba(0,0,0,0.5)] animate-in zoom-in-95 duration-300">
+    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" role="presentation" onClick={onCancel} />
+    <div className="relative w-full max-w-[85%] bg-[#0A0A0A]/80 backdrop-blur-2xl border border-[#FFD300]/20 rounded-[2.5rem] p-8 text-center shadow-[0_0_50px_rgba(255,211,0,0.05)] animate-in zoom-in-95 duration-300">
       <button
         onClick={onCancel}
-        className="absolute top-6 right-6 p-2 text-zinc-400 hover:text-white transition-colors"
+        className="absolute top-5 right-5 p-3 text-zinc-400 hover:text-white transition-colors"
       >
         <X size="1.125rem" />
       </button>
-      <div className="w-20 h-20 bg-zinc-900 rounded-full flex items-center justify-center mx-auto mb-6 border border-white/10 shadow-xl">
-        <Shield size="1.75rem" className="text-zinc-400" />
+      <div className="w-20 h-20 bg-zinc-900/60 rounded-full flex items-center justify-center mx-auto mb-6 border border-[#FFD300]/20 shadow-xl">
+        <Sparkles size="1.75rem" className="text-[#FFD300]" />
       </div>
       <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-3 italic">
-        Área Restrita
+        Crie sua conta
       </h2>
-      <p className="text-zinc-400 text-xs leading-relaxed mb-8 px-2">
-        Essa área é exclusiva para membros VANTA. Faça login ou solicite seu cadastro.
+      <p className="text-zinc-400 text-sm leading-relaxed mb-8 px-2">
+        {GUEST_MODAL_TEXTS[contexto] ?? GUEST_MODAL_TEXTS.generico}
       </p>
       <div className="space-y-3">
         <button
           onClick={onLogin}
           className="w-full py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all"
         >
-          Já sou cadastrado — Entrar
+          Já tenho conta
         </button>
         <button
           onClick={onCadastrar}
-          className="w-full py-3.5 border border-white/15 text-white font-bold text-[0.625rem] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all"
+          className="w-full py-3.5 border border-[#FFD300]/15 text-white font-bold text-[0.625rem] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all"
         >
-          Quero me cadastrar
+          Criar Conta
         </button>
         <button
           onClick={onCancel}
-          className="w-full py-3 text-zinc-400 font-bold text-[0.625rem] uppercase tracking-wide active:opacity-60 transition-all"
+          className="w-full py-3.5 text-zinc-400 font-bold text-[0.625rem] uppercase tracking-wide active:opacity-60 transition-all"
         >
-          Não, continuar navegando
+          Agora não
         </button>
       </div>
     </div>
@@ -94,8 +105,8 @@ interface AppModalsProps {
   setShowAuthModal: (v: boolean) => void;
   showLoginView: boolean;
   setShowLoginView: (v: boolean) => void;
-  showGuestModal: boolean;
-  setShowGuestModal: (v: boolean) => void;
+  guestModalContext: string | null;
+  setGuestModalContext: (v: string | null) => void;
   showSuccessModal: boolean;
   setShowSuccessModal: (v: boolean) => void;
   successMessage: string;
@@ -120,8 +131,8 @@ export const AppModals: React.FC<AppModalsProps> = ({
   setShowAuthModal,
   showLoginView,
   setShowLoginView,
-  showGuestModal,
-  setShowGuestModal,
+  guestModalContext,
+  setGuestModalContext,
   showSuccessModal,
   setShowSuccessModal,
   successMessage,
@@ -136,7 +147,7 @@ export const AppModals: React.FC<AppModalsProps> = ({
   onRegisterFcm,
 }) => {
   useModalBack(showLoginView, () => setShowLoginView(false), 'login-view');
-  useModalBack(showGuestModal, () => setShowGuestModal(false), 'guest-modal');
+  useModalBack(!!guestModalContext, () => setGuestModalContext(null), 'guest-modal');
   useModalBack(showSuccessModal, () => setShowSuccessModal(false), 'success-modal');
   useModalBack(showProfileSuccess, () => setShowProfileSuccess(false), 'profile-success-modal');
   useModalBack(showOnboarding, handleOnboardingComplete, 'onboarding');
@@ -156,17 +167,18 @@ export const AppModals: React.FC<AppModalsProps> = ({
           />
         </div>
       )}
-      {showGuestModal && (
+      {guestModalContext && (
         <GuestAreaModal
+          contexto={guestModalContext}
           onLogin={() => {
-            setShowGuestModal(false);
+            setGuestModalContext(null);
             setShowLoginView(true);
           }}
           onCadastrar={() => {
-            setShowGuestModal(false);
+            setGuestModalContext(null);
             setShowAuthModal(true);
           }}
-          onCancel={() => setShowGuestModal(false)}
+          onCancel={() => setGuestModalContext(null)}
         />
       )}
       {showSuccessModal && <SuccessFeedbackModal message={successMessage} onClose={() => setShowSuccessModal(false)} />}

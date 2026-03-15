@@ -54,7 +54,7 @@ export const useAppHandlers = (nav: Nav, pwa: PWA) => {
   const [successMessage, setSuccessMessage] = useState('');
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showLoginView, setShowLoginView] = useState(false);
-  const [showGuestModal, setShowGuestModal] = useState(false);
+  const [guestModalContext, setGuestModalContext] = useState<string | null>(null);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showAdminGuide, setShowAdminGuide] = useState(false);
   const [showProfileSuccess, setShowProfileSuccess] = useState(false);
@@ -67,10 +67,10 @@ export const useAppHandlers = (nav: Nav, pwa: PWA) => {
 
   // ── Helpers ──────────────────────────────────────────────────────────────
   const requireAuth =
-    <T extends unknown[]>(fn: (...args: T) => void) =>
+    <T extends unknown[]>(fn: (...args: T) => void, contexto = 'generico') =>
     (...args: T) => {
       if (isGuest) {
-        setShowGuestModal(true);
+        setGuestModalContext(contexto);
         return;
       }
       fn(...args);
@@ -100,7 +100,7 @@ export const useAppHandlers = (nav: Nav, pwa: PWA) => {
 
   const handlePresencaComposite = (e: Evento): boolean | void => {
     if (isGuest) {
-      setShowGuestModal(true);
+      setGuestModalContext('comprar');
       return false;
     }
     confirmarPresenca(e);
@@ -160,7 +160,8 @@ export const useAppHandlers = (nav: Nav, pwa: PWA) => {
   const guestNavigateToTab = (tab: TabState) => {
     const BLOCKED: TabState[] = ['MENSAGENS', 'PERFIL', 'ADMIN_HUB'];
     if (isGuest && BLOCKED.includes(tab)) {
-      setShowGuestModal(true);
+      const ctxMap: Record<string, string> = { MENSAGENS: 'mensagem', PERFIL: 'perfil', ADMIN_HUB: 'generico' };
+      setGuestModalContext(ctxMap[tab] ?? 'generico');
       return;
     }
     nav.navigateToTab(tab);
@@ -398,8 +399,8 @@ export const useAppHandlers = (nav: Nav, pwa: PWA) => {
     setShowAuthModal,
     showLoginView,
     setShowLoginView,
-    showGuestModal,
-    setShowGuestModal,
+    guestModalContext,
+    setGuestModalContext,
     showOnboarding,
     showAdminGuide,
     setShowAdminGuide,

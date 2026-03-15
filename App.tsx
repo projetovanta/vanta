@@ -291,14 +291,14 @@ export default function App() {
               onNavigateToSearch={() => nav.navigateToTab('BUSCAR')}
               onNavigateToProfile={sub => {
                 if (h.isGuest) {
-                  h.setShowGuestModal(true);
+                  h.setGuestModalContext('perfil');
                   return;
                 }
                 nav.navigateToProfileFrom(sub as ProfileSubView);
               }}
               onOpenNotifications={() => {
                 if (h.isGuest) {
-                  h.setShowGuestModal(true);
+                  h.setGuestModalContext('notificacao');
                   return;
                 }
                 nav.setIsNotificationModalOpen(true);
@@ -310,7 +310,7 @@ export default function App() {
               onComunidadeClick={nav.openComunidade}
               onComemorarClick={comId => {
                 if (h.isGuest) {
-                  h.setShowGuestModal(true);
+                  h.setGuestModalContext('generico');
                   return;
                 }
                 setComemorarComunidadeId(comId || null);
@@ -475,8 +475,8 @@ export default function App() {
             setShowAuthModal={h.setShowAuthModal}
             showLoginView={h.showLoginView}
             setShowLoginView={h.setShowLoginView}
-            showGuestModal={h.showGuestModal}
-            setShowGuestModal={h.setShowGuestModal}
+            guestModalContext={h.guestModalContext}
+            setGuestModalContext={h.setGuestModalContext}
             showSuccessModal={h.showSuccessModal}
             setShowSuccessModal={h.setShowSuccessModal}
             successMessage={h.successMessage}
@@ -610,7 +610,7 @@ function AppShell({
                 onProfileClick={() => h.guestNavigateToTab('PERFIL')}
                 onCityClick={() => nav.setIsCityModalOpen(true)}
                 onNotificationClick={() =>
-                  h.isGuest ? h.setShowGuestModal(true) : nav.setIsNotificationModalOpen(true)
+                  h.isGuest ? h.setGuestModalContext('notificacao') : nav.setIsNotificationModalOpen(true)
                 }
                 showAdmin={h.hasAdminAccess}
                 onAdminClick={() => nav.navigateToTab('ADMIN_HUB')}

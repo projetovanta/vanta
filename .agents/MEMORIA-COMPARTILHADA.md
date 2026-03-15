@@ -63,6 +63,11 @@
 [2026-03-15] POSICIONAMENTO DEFINIDO — VANTA = descoberta + curadoria + benefícios (NÃO ticketeria). Membro não paga, empresário paga. NUNCA usar "grátis". Ver memory/projeto_posicionamento.md → afeta TODOS os agentes, copy, design, produto
 [2026-03-15] REDESIGN APP — Decisões consolidadas: 3 camadas acesso, tiers invisíveis, convites como motor, NUNCA "deals", tudo português, perfil simplifica, carteira→"Minha Experiência", onboarding emocional. Ver memory/projeto_redesign_app.md → afeta TODOS
 [2026-03-15] IDENTIDADE VISUAL — 3 palavras: Confiança•Curadoria•Estilo. VANTA = amigo conectado (não clube frio). Preto+dourado+branco, Playfair+Inter, fotos com pessoas, tom conversacional. Ver memory/projeto_identidade_visual.md → afeta TODOS
+[2026-03-15] BRIEFING.md criado — ponto de entrada único pra todos os agentes (posicionamento, identidade, redesign, regras, comunicação) → afeta TODOS os agentes
+[2026-03-15] Protocolo de ativação de agentes reordenado — BRIEFING.md agora é passo 1 (antes de ler o agente) → afeta CLAUDE.md, ativação de agentes
+[2026-03-15] MEMORY.md recriado — índice nunca havia sido commitado no git, se perdeu entre sessões. Recriado com 132 linhas, 86 memórias → afeta navegação de memórias
+[2026-03-15] Guest Modal contextual IMPLEMENTADO — Shield→Sparkles, "Área Restrita"→"Crie sua conta", texto adapta ao que guest tentou (curtir/comprar/mensagem/perfil/notificação) → afeta AppModals, useAppHandlers, App.tsx, RestrictedModal
+[2026-03-15] Onboarding 3 telas IMPLEMENTADO — Cidade→Interesses(opcional)→Boas-vindas. 19 chips musicais, salva em profiles.interesses → afeta onboarding, perfil, curadoria
 
 ---
 

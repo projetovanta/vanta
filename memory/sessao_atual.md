@@ -85,6 +85,16 @@
 - CLAUDE.md — Dev Squad atualizado (Lia, Iris, Théo, Brunei + atalhos por nome)
 - Hook pre-commit-memoria.md — novo (Lia checa memórias antes de todo commit)
 
+### 13. Importação Tier 1 — 30 agentes de negócio/marketing
+- C-Level (4): CMO, CTO, COO, Vision Chief
+- Advisory Board (7): Peter Thiel, Reid Hoffman, Naval Ravikant, Charlie Munger, Ray Dalio, Patrick Lencioni, Brené Brown
+- Copy Squad (6): Russell Brunson, Dan Kennedy, Gary Halbert, David Deutsch, Stefan Georgi, Joe Sugarman
+- Brand Squad (3): Marty Neumeier, Donald Miller, Brand Chief
+- Traffic Masters (3): Traffic Chief, Ad Midas, Kasim Aslam
+- Data Squad (3): Avinash Kaushik, Sean Ellis, Data Chief
+- Hormozi Squad (4): Offers, Closer, Leads, Chief
+- Total agentes no projeto: 55
+
 ## Pendencias futuras
 
 ### Alta prioridade (pré-lançamento)

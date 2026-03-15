@@ -59,6 +59,7 @@
 [2026-03-15] Alex Chatão — checagem automática de memórias vs últimos 3 commits toda vez que é chamado → afeta fluxo do Alex
 [2026-03-15] Hook pre-commit-memoria — Lia checa memórias antes de todo commit → afeta fluxo de commit
 [2026-03-15] CLAUDE.md — Dev Squad atualizado com Lia, Iris, Théo, Brunei + atalhos → afeta ativação de agentes
+[2026-03-15] Tier 1 importado — 30 agentes de negócio/marketing (C-Level, Advisory, Copy, Brand, Traffic, Data, Hormozi) → total 55 agentes
 
 ---
 

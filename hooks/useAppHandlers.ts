@@ -110,7 +110,7 @@ export const useAppHandlers = (nav: Nav, pwa: PWA) => {
     registerUser(novaMembro);
     setShowAuthModal(false);
     setShowLoginView(false);
-    showSuccess('Bem-vindo à VANTA! Seu cadastro foi realizado com sucesso.');
+    showSuccess('Bem-vindo à VANTA. A noite agora é sua.');
   };
 
   const handleLoginSuccess = (membro: Membro) => {

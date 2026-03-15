@@ -367,8 +367,10 @@ export const WalletView: React.FC<WalletViewProps> = ({
               <Calendar size="1.5rem" className="text-zinc-400" />
             )}
           </div>
-          <p className="text-zinc-400 text-[0.625rem] uppercase font-bold tracking-widest">
-            {activeTab === 'UPCOMING' ? 'Nenhum evento futuro' : 'Nenhum histórico encontrado'}
+          <p className="text-zinc-400 text-[0.625rem] font-bold tracking-widest text-center max-w-[15rem]">
+            {activeTab === 'UPCOMING'
+              ? 'A noite te espera. Quando garantir seu ingresso, ele aparece aqui.'
+              : 'Nenhum histórico encontrado'}
           </p>
         </div>
       ) : (

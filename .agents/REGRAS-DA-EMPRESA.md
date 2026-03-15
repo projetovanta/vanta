@@ -171,6 +171,25 @@ Nunca entregar sem que pelo menos 1 outro especialista tenha revisado.
 
 ---
 
+## Regra Crítica — Memória Antes de Commit/Deploy
+
+**NENHUM commit ou deploy acontece sem aprovação da Lia (Guardiã de Memória).**
+
+Fluxo obrigatório:
+1. Tarefa concluída → Alex convoca Lia
+2. Lia verifica se TODAS as memórias foram atualizadas
+3. Se falta algo → Lia reporta ao Alex → Alex manda o responsável arrumar
+4. Só após Lia aprovar com ✅ → commit/deploy liberado
+
+Memórias que Lia verifica:
+- `.agents/MEMORIA-COMPARTILHADA.md` — quadro de avisos
+- `memory/MEMORY.md` — memória principal
+- `memory/modulo_*.md` e `memory/sub_*.md` — memória por módulo
+- `MAPA_PROJETO.md` — mapa de telas e fluxos
+- `memory/EDGES.md` — conexões entre módulos
+
+---
+
 ## Scripts Obrigatórios
 
 | Momento | Scripts |

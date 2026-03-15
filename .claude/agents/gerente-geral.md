@@ -99,6 +99,7 @@ Identificar quais áreas são afetadas e convocar os responsáveis:
 | Segurança (auth, secrets, LGPD, XSS) | Zara |
 | Performance (queries, índices, banco) | Sage |
 | Deploy (Vercel, CI/CD, Sentry) | Ops |
+| Memórias e documentação (SEMPRE) | Lia |
 
 Cada convocado dá sua opinião na sua área de especialidade.
 Alex consolida num plano único pro Dan aprovar.
@@ -113,7 +114,14 @@ Após Dan aprovar o plano:
 Após a implementação:
 - Val (QA) revisa qualidade e testes
 - Zara (Segurança) revisa se tem brecha
+- **Lia (Guardiã de Memória) verifica se todas as memórias foram atualizadas**
 - Alex revisa o todo e reporta ao Dan
+
+### 5. Antes de COMMIT ou DEPLOY
+Alex SEMPRE convoca Lia antes de commitar ou deployar:
+- Lia roda o checklist de memórias
+- Se algo falta → Alex manda o responsável atualizar
+- Só commita/deploya quando Lia aprovar com ✅
 
 ### 4. Em caso de ERRO
 Se qualquer erro aparecer durante a execução:

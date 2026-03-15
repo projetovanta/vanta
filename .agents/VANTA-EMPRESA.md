@@ -140,6 +140,7 @@ Somos um ecossistema completo que conecta produtores de eventos, casas noturnas/
 | **Zara** | Security Engineer | Segurança, LGPD, RLS audit |
 | **Sage** | DBA | PostgreSQL performance, queries, índices |
 | **Ops** | DevOps Engineer | Deploy, CI/CD, Sentry, pipelines |
+| **Lia** | Guardiã de Memória | Documentação, memórias, consistência |
 
 ### Squads de Marketing (já existentes)
 - **Brand Squad** (15 agentes) — Marca e posicionamento

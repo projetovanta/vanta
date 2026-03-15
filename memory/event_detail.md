@@ -5,7 +5,7 @@
 - `modules/event-detail/EventDetailView.tsx` (415L) — view principal
 - `modules/event-detail/components/EventHeader.tsx` (100L) — header com imagem + share + favorito
 - `modules/event-detail/components/EventInfo.tsx` (122L) — info evento (data, local, descrição)
-- `modules/event-detail/components/EventFooter.tsx` (64L) — botão comprar/confirmar presença
+- `modules/event-detail/components/EventFooter.tsx` (64L) — botão comprar (dourado com sombra) + confirmar presença
 - `modules/event-detail/components/EventSocialProof.tsx` (175L) — confirmados, amigos indo
 
 ## Props EventDetailView

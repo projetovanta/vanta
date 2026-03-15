@@ -32,7 +32,7 @@
 | `NotificationPanel.tsx` | 432 | Painel de notificações |
 | `DevQuickLogin.tsx` | 356 | Login rápido (dev) — filtra auth.users, RBAC roles |
 | `AppModals.tsx` | 227 | Container de modais do app |
-| `EventCard.tsx` | 135 | Card de evento |
+| `EventCard.tsx` | ~165 | Card de evento (tags coloridas por estilo) |
 | `ReviewModal.tsx` | — | Modal de review |
 | `VantaPickerModal.tsx` | — | Picker modal customizado |
 

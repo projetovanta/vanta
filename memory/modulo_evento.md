@@ -302,7 +302,7 @@ E o segundo bloco fundamental — depende de comunidade, alimenta todo o resto.
 | Tela | Arquivo | O que usa |
 |---|---|---|
 | Feed Home | modules/home/HomeView.tsx | Lista de eventos publicados |
-| EventCard | components/EventCard.tsx | nome, foto, data, local, comunidade |
+| EventCard | components/EventCard.tsx | nome, foto, data, local, comunidade, tag colorida por estilo musical |
 | EventDetail | modules/event-detail/EventDetailView.tsx | Evento completo + lotes + variacoes |
 | EventInfo | modules/event-detail/components/EventInfo.tsx | Info do evento |
 | Busca | modules/search/SearchView.tsx | Resultados de busca |

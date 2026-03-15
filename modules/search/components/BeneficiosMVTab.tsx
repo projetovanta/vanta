@@ -278,10 +278,8 @@ export const BeneficiosMVTab: React.FC<Props> = ({ userId, filteredEvents, onEve
         </div>
         <div className="text-center py-12">
           <Sparkles size="2rem" className="text-zinc-700 mx-auto mb-3" />
-          <p className="text-zinc-500 text-sm">Nenhum benefício disponível</p>
-          <p className="text-zinc-600 text-[0.625rem] mt-1">
-            Novos benefícios aparecem conforme eventos são publicados
-          </p>
+          <p className="text-zinc-500 text-sm">Novos benefícios chegando. Fique de olho.</p>
+          <p className="text-zinc-600 text-[0.625rem] mt-1">Benefícios aparecem conforme eventos são publicados</p>
         </div>
       </div>
     );

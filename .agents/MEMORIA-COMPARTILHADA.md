@@ -50,6 +50,8 @@
 [2026-03-15] Telefone pedido no 1º checkout se não tem → afeta checkout
 [2026-03-15] Onboarding: busca de cidades via API IBGE (5571 cidades) → afeta onboarding
 [2026-03-15] Avatares hospedados no Supabase Storage (saíram do imgur) → afeta perfil, auth
+[2026-03-15] Formulário MV: novos campos gênero, telefone, frequência, interesses → afeta clube, perfil, curadoria
+[2026-03-15] Migration: coluna frequencia em solicitacoes_clube → afeta banco
 
 ---
 

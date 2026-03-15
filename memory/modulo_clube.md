@@ -318,6 +318,7 @@ Sem cascata: membro recebe APENAS benefício do SEU tier exato (`===`), não dos
 | 28 | Termos MV | OK | Modal inline em ClubeOptInView e MaisVantaBeneficioModal. Contrapartidas CONAR antes do resgate |
 | 29 | Campo como conheceu | OK | Dropdown no formulário de solicitação (Redes sociais/Amigo/Evento/Outro) → como_conheceu |
 | 34 | Campo cidade obrigatório | OK | Input texto no formulário ClubeOptInView → solicitacoes_clube.cidade |
+| 59 | Campos curadoria MV | OK | Formulário pede: Instagram, gênero, telefone, frequência, interesses, cidade, profissão, como conheceu. Campos condicionais (só pede o que falta no perfil) |
 | 35 | Baldes automáticos curadoria | OK | calcularBalde() por seguidores (200K+=creator, 5K+=presenca, else sem_fit). Filtro chips em SubTabSolicitacoes |
 | 36 | Badge balde + cidade na curadoria | OK | SubTabSolicitacoes mostra badge colorido do balde + cidade da solicitação |
 | 37 | Convites de indicação membro→membro | OK | convites_clube + clubeConvitesIndicacaoService (gerar, listar, usar, buscar por código). Link: /mais-vanta?convite=CODIGO |

@@ -29,6 +29,7 @@ import type { ResgateMV } from '../../features/admin/services/clube/clubeReserva
 import { clubeService } from '../../features/admin/services/clubeService';
 import { maisVantaConfigService } from '../../features/admin/services/maisVantaConfigService';
 import { tsBR, todayBR } from '../../utils';
+import { supabase } from '../../services/supabaseClient';
 
 // ── Termos de uso LGPD (fallback se config.termosCustomizados for null) ────────
 const TERMOS_PADRAO = `TERMOS DE USO — CLUBE MAIS VANTA
@@ -81,8 +82,13 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
   const [profissao, setProfissao] = useState('');
   const [comoConheceu, setComoConheceu] = useState('');
   const [indicadoPor, setIndicadoPor] = useState('');
-  const [cidade, setCidade] = useState('');
+  const [cidade, setCidade] = useState(profile.cidade ?? '');
   const [comoConheceuAberto, setComoConheceuAberto] = useState(false);
+  const [genero, setGenero] = useState(profile.genero ?? '');
+  const [frequencia, setFrequencia] = useState('');
+  const [telDdd, setTelDdd] = useState(profile.telefone?.ddd ?? '');
+  const [telNumero, setTelNumero] = useState(profile.telefone?.numero ?? '');
+  const [interessesSel, setInteressesSel] = useState<string[]>(profile.interesses ?? []);
 
   // ── Instagram verificação ──────────────────────────────────────────────────
   type IgStep = 'INPUT' | 'CHECKING' | 'BIO_CHECK' | 'VERIFIED' | 'SKIPPED';
@@ -196,6 +202,18 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
     if (!instagramHandle.trim()) return;
     setSubmitting(true);
     try {
+      // Salvar dados de perfil (gênero, telefone, interesses) que foram preenchidos aqui
+      const profileUpdates: Record<string, unknown> = {};
+      if (genero) profileUpdates.genero = genero;
+      if (telDdd && telNumero) {
+        profileUpdates.telefone_ddd = telDdd;
+        profileUpdates.telefone_numero = telNumero;
+      }
+      if (interessesSel.length > 0) profileUpdates.interesses = interessesSel;
+      if (Object.keys(profileUpdates).length > 0) {
+        await supabase.from('profiles').update(profileUpdates).eq('id', profile.id);
+      }
+
       const handle = instagramHandle.replace('@', '').trim();
       await clubeService.solicitarEntrada(profile.id, handle, igFollowers ?? undefined, {
         verificado: igVerified,
@@ -206,6 +224,7 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
         indicadoPor: indicadoPor.trim() || undefined,
         cidade: cidade.trim() || undefined,
         conviteCodigo: conviteId || undefined,
+        frequencia: frequencia || undefined,
       });
       setSolicitacaoStatus('PENDENTE');
       onSuccess?.('Solicitação enviada! Aguarde aprovação.');
@@ -1002,6 +1021,123 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
             className="w-full px-4 py-3 bg-zinc-900/80 border border-zinc-800 rounded-xl text-white text-sm placeholder-zinc-500 focus:outline-none focus:border-[#FFD300]/20"
           />
         </div>
+
+        {/* Gênero */}
+        {!profile.genero && (
+          <div className="mb-4">
+            <label className="text-[0.5625rem] font-black uppercase tracking-widest text-zinc-400 mb-2 block">
+              Gênero *
+            </label>
+            <div className="flex gap-2">
+              {['MASCULINO', 'FEMININO', 'PREFIRO_NAO_DIZER'].map(g => (
+                <button
+                  key={g}
+                  onClick={() => setGenero(g)}
+                  className={`flex-1 py-2.5 rounded-xl text-[0.625rem] font-bold uppercase tracking-wider transition-all ${
+                    genero === g
+                      ? 'bg-[#FFD300]/15 border border-[#FFD300]/40 text-white'
+                      : 'bg-zinc-900/80 border border-zinc-800 text-zinc-400'
+                  }`}
+                >
+                  {g === 'MASCULINO' ? 'Masculino' : g === 'FEMININO' ? 'Feminino' : 'Outro'}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Telefone (se não tem) */}
+        {!profile.telefone?.ddd && (
+          <div className="mb-4">
+            <label className="text-[0.5625rem] font-black uppercase tracking-widest text-zinc-400 mb-2 block">
+              Telefone *
+            </label>
+            <div className="flex gap-2">
+              <input
+                value={telDdd}
+                onChange={e => setTelDdd(e.target.value.replace(/\D/g, '').slice(0, 2))}
+                placeholder="DDD"
+                className="w-20 px-3 py-3 bg-zinc-900/80 border border-zinc-800 rounded-xl text-white text-sm text-center placeholder-zinc-500 focus:outline-none focus:border-[#FFD300]/20"
+                inputMode="numeric"
+              />
+              <input
+                value={telNumero}
+                onChange={e => setTelNumero(e.target.value.replace(/\D/g, '').slice(0, 9))}
+                placeholder="99999-9999"
+                className="flex-1 min-w-0 px-4 py-3 bg-zinc-900/80 border border-zinc-800 rounded-xl text-white text-sm placeholder-zinc-500 focus:outline-none focus:border-[#FFD300]/20"
+                inputMode="numeric"
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Frequência que sai */}
+        <div className="mb-4">
+          <label className="text-[0.5625rem] font-black uppercase tracking-widest text-zinc-400 mb-2 block">
+            Com que frequência você sai?
+          </label>
+          <div className="grid grid-cols-2 gap-2">
+            {[
+              { key: 'raramente', label: '1-2x por mês' },
+              { key: 'frequentemente', label: '3-4x por mês' },
+              { key: 'toda_semana', label: 'Toda semana' },
+              { key: 'quase_toda_noite', label: 'Quase toda noite' },
+            ].map(opt => (
+              <button
+                key={opt.key}
+                onClick={() => setFrequencia(frequencia === opt.key ? '' : opt.key)}
+                className={`py-2.5 rounded-xl text-[0.625rem] font-bold uppercase tracking-wider transition-all ${
+                  frequencia === opt.key
+                    ? 'bg-[#FFD300]/15 border border-[#FFD300]/40 text-white'
+                    : 'bg-zinc-900/80 border border-zinc-800 text-zinc-400'
+                }`}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Interesses (se não tem no perfil) */}
+        {(profile.interesses ?? []).length === 0 && (
+          <div className="mb-4">
+            <label className="text-[0.5625rem] font-black uppercase tracking-widest text-zinc-400 mb-2 block">
+              O que você curte?
+            </label>
+            <div className="flex flex-wrap gap-2">
+              {[
+                'Eletrônica',
+                'Funk',
+                'Sertanejo',
+                'Pagode',
+                'Rock',
+                'Hip Hop',
+                'Pop',
+                'Reggae',
+                'MPB',
+                'Forró',
+                'Jazz',
+                'Open Bar',
+                'Rooftop',
+                'Pool Party',
+                'Festival',
+                'After Party',
+              ].map(item => (
+                <button
+                  key={item}
+                  onClick={() => setInteressesSel(s => (s.includes(item) ? s.filter(x => x !== item) : [...s, item]))}
+                  className={`px-3 py-1.5 rounded-full text-[0.5625rem] font-bold transition-all ${
+                    interessesSel.includes(item)
+                      ? 'bg-[#FFD300]/15 border border-[#FFD300]/40 text-white'
+                      : 'bg-zinc-900/60 border border-white/5 text-zinc-400'
+                  }`}
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Quem te indicou */}
         <div className="mb-4">

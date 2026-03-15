@@ -43,6 +43,7 @@ export async function solicitarEntrada(
     indicadoPor?: string;
     cidade?: string;
     conviteCodigo?: string;
+    frequencia?: string;
   },
 ): Promise<SolicitacaoClube> {
   // Se veio por convite de indicação, buscar dados do convite
@@ -91,6 +92,7 @@ export async function solicitarEntrada(
     indicado_por: indicadoPorId,
     convite_id: conviteId,
     cidade: verificacao?.cidade ?? null,
+    frequencia: verificacao?.frequencia ?? null,
     balde_sugerido: balde,
     status: 'PENDENTE',
     criado_em: tsBR(),

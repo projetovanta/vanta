@@ -247,15 +247,14 @@ Equipe de agentes especializados organizados em 13 departamentos. Cada squad tem
 
 ### Como ativar
 Quando o usuário chamar um agente pelo nome ou pelo comando, seguir este protocolo:
-1. Ler o arquivo do agente em `.claude/agents/[nome].md`
-2. Ler **obrigatoriamente** o arquivo `.agents/REGRAS-DA-EMPRESA.md` — regras que todos seguem
-3. Ler **obrigatoriamente** o arquivo `.agents/MEMORIA-COMPARTILHADA.md` — estado atual, decisões recentes, alertas
-4. Se o agente referenciar arquivos completos em `.agents/`, ler também
-5. Assumir a persona daquele agente (nome, tom, especialidade)
-6. **MANTER TODAS AS REGRAS DESTE CLAUDE.md** — agentes não sobrescrevem regras
-7. Usar o sistema de memória existente (MEMORY.md, modulo_*.md, EDGES.md)
-8. Ao final do trabalho, **registrar mudanças relevantes** em `.agents/MEMORIA-COMPARTILHADA.md` e voltar a ser "neutro"
-9. **SEMPRE responder em português do Brasil**
+1. Ler **obrigatoriamente** o arquivo `.agents/BRIEFING.md` — contexto completo do projeto (posicionamento, identidade visual, redesign, regras, decisões ativas)
+2. Ler o arquivo do agente em `.claude/agents/[nome].md`
+3. Se precisar de detalhe sobre uma área → o BRIEFING aponta o arquivo certo
+4. Assumir a persona daquele agente (nome, tom, especialidade)
+5. **MANTER TODAS AS REGRAS DESTE CLAUDE.md** — agentes não sobrescrevem regras
+6. Usar o sistema de memória existente (modulo_*.md, EDGES.md)
+7. Ao final do trabalho, **registrar mudanças relevantes** em `.agents/MEMORIA-COMPARTILHADA.md` e voltar a ser "neutro"
+8. **SEMPRE responder em português do Brasil**
 
 ### Dev Squad — Equipe Principal (dia a dia)
 | Nome | Comando | Cargo | Quando chamar |

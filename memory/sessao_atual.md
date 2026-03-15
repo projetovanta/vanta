@@ -29,7 +29,19 @@
 - RestrictedModal (ComunidadePublicView) também atualizado pro novo visual
 - Arquivos: AppModals.tsx, useAppHandlers.ts, App.tsx, RestrictedModal.tsx
 
-### 4. Onboarding 3 Telas
+### 4. VANTA Indica expandido
+- TipoIndicaCard: 5 novos tipos + 2 legados
+- Badges coloridos por tipo no Highlights (Evento=verde, Parceiro=âmbar, MV=dourado, Experiência=roxo, Informativo=cinza)
+- TIPO_CONFIG no admin VantaIndicaView com todos os 7 tipos
+- Admin funciona com preenchimento manual (auto-preenchimento avançado = fase futura)
+
+### 5. Home Redesign
+- Seções removidas: SavedEventsSection, NewOnPlatformSection, MaisVantaBanner
+- Ordem nova: Saudação→Indica→Ao Vivo→Amigos Vão→Perto→Semana→Pra Você→Feed
+- Saudação guest: "Descubra o que tá rolando" (sem nome)
+- Teste E2E atualizado
+
+### 5. Onboarding 3 Telas
 - Step 1: Cidade (IBGE, já existia — copy ajustado "Onde você curte a noite?")
 - Step 2: Interesses (19 chips musicais, opcional, salva em profiles.interesses)
 - Step 3: Boas-vindas ("Pronto, [Nome]. Sua noite começa aqui." + Sparkles + glow)

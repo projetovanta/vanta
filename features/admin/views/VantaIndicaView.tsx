@@ -11,26 +11,54 @@ import { useToast, ToastContainer } from '../../../components/Toast';
 import { VantaSlider } from '../../../components/VantaSlider';
 
 const TIPO_CONFIG: Record<TipoIndicaCard, { label: string; dot: string; bg: string; text: string; border: string }> = {
+  EVENTO: {
+    label: 'Evento',
+    dot: '#10b981',
+    bg: 'bg-emerald-500/10',
+    text: 'text-emerald-400',
+    border: 'border-emerald-500/20',
+  },
   DESTAQUE_EVENTO: {
-    label: 'Destacar Evento',
+    label: 'Destacar Evento (legado)',
+    dot: '#FFD300',
+    bg: 'bg-[#FFD300]/10',
+    text: 'text-[#FFD300]',
+    border: 'border-[#FFD300]/20',
+  },
+  PARCEIRO: {
+    label: 'Parceiro',
+    dot: '#f59e0b',
+    bg: 'bg-amber-500/10',
+    text: 'text-amber-400',
+    border: 'border-amber-500/20',
+  },
+  MAIS_VANTA: {
+    label: 'MAIS VANTA',
     dot: '#FFD300',
     bg: 'bg-[#FFD300]/10',
     text: 'text-[#FFD300]',
     border: 'border-[#FFD300]/20',
   },
   PUBLICIDADE: {
-    label: 'Publicidade',
+    label: 'Publicidade (legado)',
     dot: '#71717A',
     bg: 'bg-zinc-900',
     text: 'text-zinc-400',
     border: 'border-white/10',
   },
+  EXPERIENCIA: {
+    label: 'Experiência',
+    dot: '#a855f7',
+    bg: 'bg-purple-500/10',
+    text: 'text-purple-400',
+    border: 'border-purple-500/20',
+  },
   INFORMATIVO: {
     label: 'Informativo',
-    dot: '#22d3ee',
-    bg: 'bg-cyan-500/10',
-    text: 'text-cyan-400',
-    border: 'border-cyan-500/20',
+    dot: '#71717A',
+    bg: 'bg-zinc-800',
+    text: 'text-zinc-400',
+    border: 'border-white/10',
   },
 };
 

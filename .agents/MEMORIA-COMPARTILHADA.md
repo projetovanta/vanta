@@ -73,6 +73,8 @@
 [2026-03-15] Fix notificationsService — INSERT agora SEMPRE via RPC inserir_notificacao (SECURITY DEFINER). Corrige erro 403 no cadastro → afeta notificações, auth
 [2026-03-15] Selfie biométrica REMOVIDA dos Termos de Uso e Política de Privacidade (não é coletada no app) → afeta legal, App Store labels, Google Play Data Safety
 [2026-03-15] "Deals" trocado por "Benefícios Exclusivos de Parceiros" nos Termos de Uso (seção 7.6) → afeta legal, comunicação
+[2026-03-15] Home REORGANIZADA — removidos: SavedEventsSection, NewOnPlatformSection, MaisVantaBanner. Ordem nova: Saudação→Indica→Ao Vivo→Amigos Vão→Perto→Semana→Pra Você→Feed. Saudação guest: "Descubra o que tá rolando" → afeta home, navegação
+[2026-03-15] VANTA Indica expandido — 5+2 tipos: EVENTO(verde), PARCEIRO(âmbar), MAIS_VANTA(dourado), EXPERIENCIA(roxo), INFORMATIVO(cinza) + legados DESTAQUE_EVENTO/PUBLICIDADE. Badges coloridos no Highlights. Admin suporta todos os tipos → afeta home, admin, curadoria
 
 ---
 

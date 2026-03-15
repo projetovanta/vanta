@@ -10,6 +10,16 @@ interface HighlightsProps {
   onComemorarClick?: (comunidadeId?: string) => void;
 }
 
+const BADGE_COLORS: Record<string, string> = {
+  EVENTO: 'bg-emerald-500 text-white',
+  DESTAQUE_EVENTO: 'bg-emerald-500 text-white',
+  PARCEIRO: 'bg-amber-500 text-black',
+  MAIS_VANTA: 'bg-[#FFD300] text-black',
+  PUBLICIDADE: 'bg-[#FFD300] text-black',
+  EXPERIENCIA: 'bg-purple-500 text-white',
+  INFORMATIVO: 'bg-zinc-700 text-white',
+};
+
 export const Highlights: React.FC<HighlightsProps> = React.memo(({ currentCity, onEventoClick, onComemorarClick }) => {
   const [allCards, setAllCards] = useState<VantaIndicaCard[]>([]);
 
@@ -144,7 +154,7 @@ export const Highlights: React.FC<HighlightsProps> = React.memo(({ currentCity, 
                   >
                     <span
                       style={{ fontSize: '2.1cqw', lineHeight: 1 }}
-                      className="bg-[#FFD300] text-black font-black px-2.5 py-1 rounded-full uppercase tracking-widest shadow-[0_0_15px_rgba(255,211,0,0.4)]"
+                      className={`${BADGE_COLORS[item.tipo] ?? 'bg-[#FFD300] text-black'} font-black px-2.5 py-1 rounded-full uppercase tracking-widest shadow-lg`}
                     >
                       {item.badge}
                     </span>

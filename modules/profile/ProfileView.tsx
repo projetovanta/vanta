@@ -60,6 +60,7 @@ interface ProfileViewProps {
   onSuccess?: (msg: string) => void;
   clubeConviteId?: string | null;
   onClearConviteId?: () => void;
+  onReturnFromSubView?: () => void;
 }
 
 export const ProfileView: React.FC<ProfileViewProps> = ({
@@ -74,6 +75,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
   onSuccess,
   clubeConviteId,
   onClearConviteId,
+  onReturnFromSubView,
 }) => {
   const profile = useAuthStore(s => s.profile);
   const role = useAuthStore(s => s.currentAccount.role);
@@ -138,10 +140,15 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
       ? 'bg-gradient-to-br from-purple-500 to-purple-700' // roxa admin
       : 'bg-zinc-800'; // cinza padrão
 
+  // ── Voltar inteligente: volta pra tab de origem se veio de fora do Perfil ──
+  const goBack = () => {
+    if (onReturnFromSubView) onReturnFromSubView();
+    else setSubView('MAIN');
+  };
+
   // ── Subviews ──
-  if (subView === 'EDIT_PROFILE')
-    return <EditProfileView profile={profile} onBack={() => setSubView('MAIN')} onSave={onUpdateProfile} />;
-  if (subView === 'PREFERENCES') return <PreferencesView onBack={() => setSubView('MAIN')} onSave={onUpdateProfile} />;
+  if (subView === 'EDIT_PROFILE') return <EditProfileView profile={profile} onBack={goBack} onSave={onUpdateProfile} />;
+  if (subView === 'PREFERENCES') return <PreferencesView onBack={goBack} onSave={onUpdateProfile} />;
   if (subView === 'HISTORICO')
     return (
       <HistoricoView
@@ -149,7 +156,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
         myPresencas={myPresencas}
         allEvents={allEvents}
         userId={profile.id}
-        onBack={() => setSubView('MAIN')}
+        onBack={goBack}
         onEventClick={onEventClick ?? (() => {})}
       />
     );
@@ -158,8 +165,8 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
       <ClubeOptInView
         profile={profile}
         onBack={() => {
-          setSubView('MAIN');
           onClearConviteId?.();
+          goBack();
         }}
         onSuccess={onSuccess}
         allEvents={allEvents}
@@ -167,25 +174,25 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
       />
     );
   if (subView === 'MEIA_ENTRADA')
-    return <ComprovanteMeiaSection userId={profile.id} onSuccess={onSuccess} onBack={() => setSubView('MAIN')} />;
+    return <ComprovanteMeiaSection userId={profile.id} onSuccess={onSuccess} onBack={goBack} />;
   if (subView === 'SOLICITAR_PARCERIA')
     return (
       <SolicitarParceriaView
-        onBack={() => setSubView('MAIN')}
+        onBack={goBack}
         onSucesso={() => {
           onSuccess?.('Solicitação enviada com sucesso!');
-          setSubView('MAIN');
+          goBack();
         }}
       />
     );
-  if (subView === 'MINHAS_SOLICITACOES') return <MinhasSolicitacoesView onBack={() => setSubView('MAIN')} />;
-  if (subView === 'PENDENCIAS') return <MinhasPendenciasView onBack={() => setSubView('MAIN')} />;
-  if (subView === 'BLOQUEADOS') return <BloqueadosView onBack={() => setSubView('MAIN')} />;
+  if (subView === 'MINHAS_SOLICITACOES') return <MinhasSolicitacoesView onBack={goBack} />;
+  if (subView === 'PENDENCIAS') return <MinhasPendenciasView onBack={goBack} />;
+  if (subView === 'BLOQUEADOS') return <BloqueadosView onBack={goBack} />;
   if (subView === 'PREVIEW_PUBLIC' || subView === 'PREVIEW_FRIENDS') {
     return (
       <PublicProfilePreviewView
         profile={profile}
-        onBack={() => setSubView('MAIN')}
+        onBack={goBack}
         friendshipStatus="NONE"
         onRequestFriend={() => {}}
         onCancelRequest={() => {}}

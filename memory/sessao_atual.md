@@ -68,8 +68,8 @@
 - Testar swipe no mobile (touch events)
 - Testar agrupamento notificacoes pos-fix
 
-### Código morto (Knip)
-- MinhasSolicitacoesPrivadoView.tsx — substituída pela aba em MinhasPendenciasView (candidata a remoção)
-- DealsMembroSection.tsx — substituída pelo BeneficiosMVTab com resgate (candidata a remoção)
-- MaisVantaReservaModal.tsx — não conectada (avaliar se ainda necessária)
-- api/robots.ts e api/sitemap.xml.ts — ATIVADOS (não são mais código morto)
+### Código morto — LIMPO
+- MinhasSolicitacoesPrivadoView.tsx — REMOVIDO (substituída pela aba em MinhasPendenciasView)
+- DealsMembroSection.tsx — REMOVIDO (substituída pelo BeneficiosMVTab)
+- MaisVantaReservaModal.tsx — REMOVIDO (não era usada)
+- api/robots.ts e api/sitemap.xml.ts — ATIVADOS (não são código morto)

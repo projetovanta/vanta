@@ -305,7 +305,7 @@ Sem cascata: membro recebe APENAS benefício do SEU tier exato (`===`), não dos
 | AnalyticsMaisVantaView | Analytics completo MV |
 | AceitarConviteMVPage | Standalone /convite-mv/:token |
 | ParceiroDashboardPage | Standalone /parceiro (deals, resgates, QR scan) |
-| DealsMembroSection | Feed deals + QR VIP dourado modal |
+| BeneficiosMVTab | Aba Buscar — resgate deals + QR VIP (substituiu DealsMembroSection) |
 
 ## Checklist de status
 | # | Item | Status | Detalhe |
@@ -368,11 +368,11 @@ Sem cascata: membro recebe APENAS benefício do SEU tier exato (`===`), não dos
 | 24 | Trigger 1 deal ativo | OK | check_deal_ativo_unico (banco) |
 | 25 | Trigger vagas deal | OK | update_vagas_deal (banco) |
 | 26 | Trigger resgates parceiro | OK | update_resgates_parceiro (banco) |
-| 27 | Feed deals membro | OK | BeneficiosMVTab na aba Buscar (resgate + QR + status) + DealsMembroSection (standalone, não conectado) |
+| 27 | Feed deals membro | OK | BeneficiosMVTab na aba Buscar (resgate + QR + status). DealsMembroSection removido |
 | 28 | Convite via link | OK | convites_mais_vanta + RPC aceitar_convite_mv + ConvitesMaisVantaView + AceitarConviteMVPage |
 | 29 | Painel do parceiro | OK | /parceiro + ParceiroDashboardPage + parceiroService + RLS parceiro_own/deals/resgates |
 | 30 | Sugerir deal (parceiro) | OK | INSERT status=RASCUNHO + trigger notifica master (MV_DEAL_SUGERIDO) |
 | 31 | Analytics MV | OK | AnalyticsMaisVantaView (membros, resgates, parceiros, receita, engajamento) |
 | 32 | Notificacoes MV v2 | OK | 13 tipos novos (MV_APROVADO ate MV_RESGATE_PARCEIRO) |
 | 33 | Gerente por cidade | OK | Sidebar + guards expandidos para vanta_gerente |
-| 34 | QR VIP dourado | OK | DealsMembroSection modal QR + ParceiroDashboardPage tab QR Scan + checkin com joins |
+| 34 | QR VIP dourado | OK | BeneficiosMVTab modal QR + ParceiroDashboardPage tab QR Scan + checkin com joins |

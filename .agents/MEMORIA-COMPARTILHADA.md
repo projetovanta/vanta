@@ -41,6 +41,10 @@
 [2026-03-15] EventFeed + SearchResults — estados vazios com textos personalizados → afeta home e busca
 [2026-03-15] QuickActions REMOVIDO da Home — substituído por MaisVantaBanner (3 estados) → afeta home, navegação
 [2026-03-15] Textos vazios simplificados — tom sóbrio, sem forçar → afeta home e busca
+[2026-03-15] MaisVantaBanner redesenhado (estrela, visual premium) → afeta home
+[2026-03-15] Navegação "voltar" corrigida — goBack inteligente em TODAS sub-views do Perfil → afeta perfil, navegação
+[2026-03-15] 3 arquivos mortos removidos: DealsMembroSection, MaisVantaReservaModal, MinhasSolicitacoesPrivadoView → afeta clube, evento, perfil
+[2026-03-15] Rotas dedicadas por sub-view → ANOTADO como próxima prioridade (não feito ainda)
 
 ---
 

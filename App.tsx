@@ -294,8 +294,7 @@ export default function App() {
                   h.setShowGuestModal(true);
                   return;
                 }
-                nav.navigateToTab('PERFIL');
-                nav.setProfileSubView(sub as ProfileSubView);
+                nav.navigateToProfileFrom(sub as ProfileSubView);
               }}
               onOpenNotifications={() => {
                 if (h.isGuest) {
@@ -354,6 +353,7 @@ export default function App() {
               onSuccess={h.showSuccess}
               clubeConviteId={nav.clubeConviteId}
               onClearConviteId={() => nav.setClubeConviteId(null)}
+              onReturnFromSubView={nav.returnFromSubView}
             />
           </ModuleErrorBoundary>
         );
@@ -598,10 +598,7 @@ function AppShell({
                 onMemberClick={h.guardedOpenMemberProfile}
                 onComunidadeClick={nav.openComunidade}
                 onSuccess={h.showSuccess}
-                onNavigateToClube={() => {
-                  nav.navigateToTab('PERFIL');
-                  nav.setProfileSubView('CLUBE');
-                }}
+                onNavigateToClube={() => nav.navigateToProfileFrom('CLUBE')}
               />
             </ModuleErrorBoundary>
           </div>
@@ -661,10 +658,7 @@ function AppShell({
             onMemberClick={h.guardedOpenMemberProfile}
             onRequestLogin={() => h.setShowLoginView(true)}
             onRequestCadastro={() => h.setShowAuthModal(true)}
-            onNavigateToClube={() => {
-              nav.navigateToTab('PERFIL');
-              nav.setProfileSubView('CLUBE');
-            }}
+            onNavigateToClube={() => nav.navigateToProfileFrom('CLUBE')}
           />
           {nav.selectedEvent && (
             <div className="absolute inset-0 animate-in slide-in-from-right duration-300 overflow-y-auto no-scrollbar">
@@ -677,10 +671,7 @@ function AppShell({
                   onMemberClick={h.guardedOpenMemberProfile}
                   onComunidadeClick={nav.openComunidade}
                   onSuccess={h.showSuccess}
-                  onNavigateToClube={() => {
-                    nav.navigateToTab('PERFIL');
-                    nav.setProfileSubView('CLUBE');
-                  }}
+                  onNavigateToClube={() => nav.navigateToProfileFrom('CLUBE')}
                 />
               </ModuleErrorBoundary>
             </div>

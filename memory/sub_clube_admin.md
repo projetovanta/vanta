@@ -108,6 +108,6 @@ Admin configura beneficios por tier
 | 22 | Convites MV | OK | ConvitesMaisVantaView (criar, listar, cancelar, copiar link) + AceitarConviteMVPage (/convite-mv/:token) |
 | 23 | Analytics MV | OK | AnalyticsMaisVantaView (membros, resgates, parceiros, receita, engajamento) |
 | 24 | Painel parceiro | OK | ParceiroDashboardPage (/parceiro) — deals, resgates, QR scan, sugerir deal |
-| 25 | QR VIP dourado | OK | DealsMembroSection modal QR + ParceiroDashboardPage tab QR Scan + checkin com joins |
+| 25 | QR VIP dourado | OK | BeneficiosMVTab modal QR + ParceiroDashboardPage tab QR Scan + checkin com joins |
 | 26 | Notificações MV v2 | OK | 13 tipos (MV_APROVADO até MV_RESGATE_PARCEIRO) + trigger trg_deal_sugerido |
 | 27 | Gerente por cidade | OK | Sidebar roles expandidas (vanta_gerente vê MEMBROS/PARCEIROS/DEALS/CONVITES_MV) |

@@ -67,6 +67,7 @@ export const useNavigation = () => {
   const [selectedComunidadeId, setSelectedComunidadeId] = useState<string | null>(null);
   const [clubeConviteId, setClubeConviteId] = useState<string | null>(null);
   const eventBeforeComunidadeRef = useRef<Evento | null>(null);
+  const returnTabRef = useRef<TabState | null>(null);
 
   // Tab ativa derivada do pathname
   const activeTab = resolveTab(location.pathname);
@@ -160,6 +161,31 @@ export const useNavigation = () => {
     else if (path === '/perfil/preview') setProfileSubView('PREVIEW_PUBLIC');
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  /** Navega pro Perfil com sub-view, guardando a tab de origem pra o "voltar" */
+  const navigateToProfileFrom = useCallback(
+    (subView: ProfileSubView) => {
+      returnTabRef.current = activeTab === 'PERFIL' ? null : activeTab;
+      navigateToTab('PERFIL');
+      setProfileSubView(subView);
+    },
+    [activeTab, navigateToTab, setProfileSubView],
+  );
+
+  /** Volta da sub-view — pra tab de origem se veio de fora, ou pra MAIN se veio do Perfil */
+  const returnFromSubView = useCallback(() => {
+    const returnTo = returnTabRef.current;
+    returnTabRef.current = null;
+    if (returnTo) {
+      // Navega direto pra tab de origem sem renderizar o ProfileView MAIN
+      saveScrollPosition('PERFIL');
+      _setProfileSubView('MAIN');
+      navigate(TAB_TO_PATH[returnTo]);
+      requestAnimationFrame(() => resetScroll(mainScrollRef.current));
+    } else {
+      setProfileSubView('MAIN');
+    }
+  }, [navigate, saveScrollPosition, setProfileSubView, mainScrollRef]);
+
   return {
     activeTab,
     selectedEvent,
@@ -178,6 +204,8 @@ export const useNavigation = () => {
     openComunidade,
     closeComunidade,
     navigateToTab,
+    navigateToProfileFrom,
+    returnFromSubView,
     clubeConviteId,
     setClubeConviteId,
     mainScrollRef,

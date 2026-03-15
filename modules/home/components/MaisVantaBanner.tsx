@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
-import { Crown, ChevronRight } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
+import { TYPOGRAPHY } from '../../../constants';
 import { clubeService } from '../../../features/admin/services/clubeService';
 import { useAuthStore } from '../../../stores/authStore';
 
@@ -19,24 +20,33 @@ export const MaisVantaBanner: React.FC<Props> = React.memo(({ onNavigateToClube 
   }, [userId, membro]);
 
   return (
-    <button
-      onClick={onNavigateToClube}
-      className="mx-5 mb-2 bg-gradient-to-r from-[#FFD300]/10 to-[#FFD300]/5 border border-[#FFD300]/20 rounded-2xl px-4 py-3.5 flex items-center gap-3 active:scale-[0.98] transition-all"
-    >
-      <div className="w-10 h-10 rounded-full bg-[#FFD300]/15 border border-[#FFD300]/30 flex items-center justify-center shrink-0">
-        <Crown size="1.125rem" className="text-[#FFD300]" />
+    <button onClick={onNavigateToClube} className="w-full px-5 pb-3 active:scale-[0.98] transition-all">
+      <div className="relative overflow-hidden rounded-2xl border border-[#FFD300]/30 bg-gradient-to-br from-[#1a1500] via-[#0f0f0f] to-[#0a0800] shadow-[0_0_30px_rgba(255,211,0,0.08)]">
+        {/* Brilho decorativo */}
+        <div className="absolute -top-8 -right-8 w-32 h-32 bg-[#FFD300]/5 rounded-full blur-2xl" />
+        <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-[#FFD300]/3 rounded-full blur-xl" />
+
+        <div className="relative px-5 py-5 flex items-center gap-4">
+          {/* Ícone */}
+          <div className="w-12 h-12 rounded-full bg-[#FFD300]/10 border border-[#FFD300]/30 flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(255,211,0,0.15)]">
+            <Sparkles size="1.25rem" className="text-[#FFD300]" />
+          </div>
+
+          {/* Texto */}
+          <div className="flex-1 min-w-0 text-left">
+            <h3 style={TYPOGRAPHY.cardTitle} className="text-[0.9375rem] text-[#FFD300] mb-0.5 italic">
+              Mais Vanta
+            </h3>
+            <p className="text-zinc-400 text-xs leading-snug">
+              {membro
+                ? 'Acesse seus benefícios exclusivos.'
+                : solicitacaoPendente
+                  ? 'Sua solicitação está em análise.'
+                  : 'Benefícios exclusivos em eventos e parceiros.'}
+            </p>
+          </div>
+        </div>
       </div>
-      <div className="flex-1 min-w-0 text-left">
-        <p className="text-[0.625rem] font-black uppercase tracking-widest text-[#FFD300]">MAIS VANTA</p>
-        <p className="text-zinc-400 text-[0.6875rem] truncate">
-          {membro
-            ? 'Acesse seus benefícios exclusivos.'
-            : solicitacaoPendente
-              ? 'Sua solicitação está em análise.'
-              : 'Benefícios exclusivos em eventos e parceiros.'}
-        </p>
-      </div>
-      <ChevronRight size="1rem" className="text-[#FFD300]/60 shrink-0" />
     </button>
   );
 });

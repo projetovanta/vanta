@@ -37,6 +37,8 @@ import {
 import type { ContaVantaLegacy } from '../../../types';
 import { KpiCard, KpiPieCard, KpiDeltaCard, PERIODOS } from './KpiCards';
 import type { AdminSubView } from './AdminSidebar';
+import { OnboardingChecklist } from './OnboardingChecklist';
+import { OnboardingWelcome } from './OnboardingWelcome';
 
 // ── Lookup nome do tenant (usando imports já carregados no topo) ──────────────
 export const getTenantLabel = (tenantTipo?: 'COMUNIDADE' | 'EVENTO', tenantId?: string): string | null => {
@@ -83,6 +85,12 @@ export const AdminDashboardHome: React.FC<{
   const isSocio = adminRole === 'vanta_socio';
   const isGerente = adminRole === 'vanta_gerente';
   const isInCommunity = Boolean(comunidadeId);
+
+  // Onboarding pós-aprovação
+  const comunidade = comunidadeId ? comunidadesService.get(comunidadeId) : undefined;
+  const needsOnboarding = comunidade && comunidade.onboarding_completo === false && isGerente;
+  const welcomeKey = comunidadeId ? `onboarding_visto_${comunidadeId}` : '';
+  const [showWelcome, setShowWelcome] = useState(() => needsOnboarding && !localStorage.getItem(welcomeKey));
 
   // Resumo financeiro (global para master, por comunidade se dentro de uma)
   const [resumoFin, setResumoFin] = useState<ResumoFinanceiro | null>(null);
@@ -339,7 +347,25 @@ export const AdminDashboardHome: React.FC<{
         )}
       </div>
 
+      {showWelcome && comunidade && (
+        <OnboardingWelcome
+          comunidadeNome={comunidade.nome}
+          onClose={() => {
+            localStorage.setItem(welcomeKey, '1');
+            setShowWelcome(false);
+          }}
+        />
+      )}
+
       <div className="flex-1 overflow-y-auto no-scrollbar p-5 space-y-5 max-w-3xl mx-auto w-full">
+        {needsOnboarding && comunidade && (
+          <OnboardingChecklist
+            comunidade={comunidade}
+            onNavigate={onNavigate}
+            onEditarComunidade={() => onNavigate('COMUNIDADE_DASHBOARD' as AdminSubView)}
+          />
+        )}
+
         {/* KPIs — contexto de comunidade (só para gestão: master, gerente, sócio) */}
         {isInCommunity && communityKpis && (isMaster || isGerente || isSocio) && (
           <div>

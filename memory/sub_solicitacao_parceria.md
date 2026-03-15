@@ -151,6 +151,14 @@ tipo_comunidade TEXT DEFAULT 'ESPACO_FIXO' -- 'ESPACO_FIXO' | 'PRODUTORA'
 | modules/profile/ProfileView.tsx | CTA "Quero ser parceiro" + subView handler |
 | types/auth.ts | ProfileSubView SOLICITAR_PARCERIA + 3 tipos notificacao |
 | types/supabase.ts | Regenerado com novas tabelas/colunas |
+| supabase/migrations/20260314100000_onboarding_comunidade.sql | Coluna onboarding_completo em comunidades |
+| features/admin/components/OnboardingWelcome.tsx | Tela boas-vindas pos-aprovacao (1x) |
+| features/admin/components/OnboardingChecklist.tsx | Checklist completude comunidade no painel |
+| features/admin/components/AdminDashboardHome.tsx | Integra welcome + checklist |
+| features/admin/views/criarEvento/Step1Evento.tsx | Campos local editaveis se PRODUTORA |
+| features/admin/views/CriarEventoView.tsx | States localNome/localEndereco/localCidade |
+| features/admin/views/EditarEventoView.tsx | Mesma logica local editavel |
+| types/eventos.ts | tipo_comunidade + onboarding_completo no type Comunidade |
 
 ## Checklist
 | # | Item | Status |
@@ -167,6 +175,6 @@ tipo_comunidade TEXT DEFAULT 'ESPACO_FIXO' -- 'ESPACO_FIXO' | 'PRODUTORA'
 | 10 | Termos inline no Step 4 | OK |
 | 11 | Notificacoes (3 canais) | OK — nova→master, aprovada/rejeitada→solicitante |
 | 12 | Upload fotos no wizard | OK — bucket parceria-fotos, ate 5 fotos, preview + remocao |
-| 13 | Step1Evento: local editavel se PRODUTORA | A FAZER |
-| 14 | Onboarding pos-aprovacao | A FAZER |
+| 13 | Step1Evento: local editavel se PRODUTORA | OK — campos Local/Endereco/Cidade editaveis quando tipo_comunidade=PRODUTORA, em CriarEventoView e EditarEventoView |
+| 14 | Onboarding pos-aprovacao | OK — tela boas-vindas (1x, localStorage) + checklist no painel (foto, capa, endereco, horarios, 1o evento). Auto-marca onboarding_completo=true |
 | 15 | Aprovar -> criar comunidade com taxas | OK — painel de taxas VANTA (10 campos), cria comunidade + define taxas + aprova + notifica. Foto fullscreen com zoom 2x |

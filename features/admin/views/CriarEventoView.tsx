@@ -78,6 +78,11 @@ export const CriarEventoView: React.FC<{
   const [experiencias, setExperiencias] = useState<string[]>([]);
   const [recorrencia, setRecorrencia] = useState('UNICO');
   const [recorrenciaAte, setRecorrenciaAte] = useState('');
+  const [localNome, setLocalNome] = useState(comunidade.nome);
+  const [localEndereco, setLocalEndereco] = useState(
+    comunidade.endereco ? `${comunidade.endereco}, ${comunidade.cidade}` : comunidade.cidade,
+  );
+  const [localCidade, setLocalCidade] = useState(comunidade.cidade);
 
   // ── Step 2 ──
   const [lotes, setLotes] = useState<LoteForm[]>([novoLote()]);
@@ -405,10 +410,11 @@ export const CriarEventoView: React.FC<{
         descricao: descricao.trim(),
         dataInicio: iso(dataInicio, horaInicio),
         dataFim: iso(dataFim, horaFim),
-        local: comunidade.nome,
-        endereco: `${comunidade.endereco}, ${comunidade.cidade}`,
-        cidade: comunidade.cidade,
-        coords: comunidade.coords,
+        local: comunidade.tipo_comunidade === 'PRODUTORA' ? localNome : comunidade.nome,
+        endereco:
+          comunidade.tipo_comunidade === 'PRODUTORA' ? localEndereco : `${comunidade.endereco}, ${comunidade.cidade}`,
+        cidade: comunidade.tipo_comunidade === 'PRODUTORA' ? localCidade : comunidade.cidade,
+        coords: comunidade.tipo_comunidade === 'PRODUTORA' ? undefined : comunidade.coords,
         lotes: lotesAdmin,
         equipe: equipeAdmin,
         comunidade: { id: comunidade.id, nome: comunidade.nome, foto: comunidade.foto },
@@ -496,7 +502,7 @@ export const CriarEventoView: React.FC<{
             eventoNome: nome.trim(),
             eventoData: dataInicio,
             eventoDataFim: dataFim,
-            eventoLocal: comunidade.nome,
+            eventoLocal: comunidade.tipo_comunidade === 'PRODUTORA' ? localNome : comunidade.nome,
             tetoGlobalTotal: totalLimite || null,
             regras: regrasValidas.map(v => ({
               label: buildLabel(v),
@@ -689,7 +695,7 @@ export const CriarEventoView: React.FC<{
                     email: socio.email,
                     masterNome: currentUserNome ?? 'Produtor',
                     assunto: `Convite VANTA — ${nome}`,
-                    mensagem: `Você foi convidado(a) para ser sócio(a) do evento "${nome}".\n\nData: ${dataInicio} às ${horaInicio}\nLocal: ${comunidade.nome}\nSplit: ${split.percentSocio}% Sócio / ${split.percentProdutor}% Produtor\n\nAbra o app VANTA para aceitar ou recusar o convite.`,
+                    mensagem: `Você foi convidado(a) para ser sócio(a) do evento "${nome}".\n\nData: ${dataInicio} às ${horaInicio}\nLocal: ${comunidade.tipo_comunidade === 'PRODUTORA' ? localNome : comunidade.nome}\nSplit: ${split.percentSocio}% Sócio / ${split.percentProdutor}% Produtor\n\nAbra o app VANTA para aceitar ou recusar o convite.`,
                     tipo: 'broadcast',
                   },
                   headers: token ? { Authorization: `Bearer ${token}` } : {},
@@ -818,6 +824,12 @@ export const CriarEventoView: React.FC<{
             recorrenciaAte={recorrenciaAte}
             setRecorrenciaAte={setRecorrenciaAte}
             comunidade={comunidade}
+            localNome={localNome}
+            setLocalNome={setLocalNome}
+            localEndereco={localEndereco}
+            setLocalEndereco={setLocalEndereco}
+            localCidade={localCidade}
+            setLocalCidade={setLocalCidade}
             onCopiar={() => setCopiarOpen(true)}
             temEventosAnteriores={temEventosAnteriores}
           />

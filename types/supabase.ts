@@ -975,6 +975,7 @@ export type Database = {
           horario_overrides: Json;
           id: string;
           nome: string;
+          onboarding_completo: boolean;
           razao_social: string | null;
           slug: string | null;
           taxa_cortesia_excedente_pct: number | null;
@@ -1019,6 +1020,7 @@ export type Database = {
           horario_overrides?: Json;
           id?: string;
           nome: string;
+          onboarding_completo?: boolean;
           razao_social?: string | null;
           slug?: string | null;
           taxa_cortesia_excedente_pct?: number | null;
@@ -1063,6 +1065,7 @@ export type Database = {
           horario_overrides?: Json;
           id?: string;
           nome?: string;
+          onboarding_completo?: boolean;
           razao_social?: string | null;
           slug?: string | null;
           taxa_cortesia_excedente_pct?: number | null;
@@ -4945,6 +4948,7 @@ export type Database = {
           horario_overrides: Json | null;
           id: string | null;
           nome: string | null;
+          onboarding_completo: boolean | null;
           razao_social: string | null;
           slug: string | null;
           taxa_cortesia_excedente_pct: number | null;
@@ -4989,6 +4993,7 @@ export type Database = {
           horario_overrides?: Json | null;
           id?: string | null;
           nome?: string | null;
+          onboarding_completo?: boolean | null;
           razao_social?: string | null;
           slug?: string | null;
           taxa_cortesia_excedente_pct?: number | null;
@@ -5033,6 +5038,7 @@ export type Database = {
           horario_overrides?: Json | null;
           id?: string | null;
           nome?: string | null;
+          onboarding_completo?: boolean | null;
           razao_social?: string | null;
           slug?: string | null;
           taxa_cortesia_excedente_pct?: number | null;

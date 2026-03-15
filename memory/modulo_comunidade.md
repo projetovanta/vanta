@@ -53,6 +53,7 @@ E o bloco fundamental do app — tudo depende dela.
 | evento_privado_formatos | JSONB | nao | Opcoes formato (string[]) |
 | evento_privado_atracoes | JSONB | nao | Opcoes atracoes (string[]) |
 | evento_privado_faixas_capacidade | JSONB | nao | Faixas capacidade (string[]) |
+| onboarding_completo | BOOLEAN | nao | Default false — true quando gerente completou dados pos-aprovacao |
 
 ### community_follows (seguidores)
 | Coluna | Tipo | Descricao |

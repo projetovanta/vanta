@@ -65,6 +65,8 @@ export interface Comunidade {
   evento_privado_formatos?: string[];
   evento_privado_atracoes?: string[];
   evento_privado_faixas_capacidade?: string[];
+  tipo_comunidade?: 'ESPACO_FIXO' | 'PRODUTORA' | null;
+  onboarding_completo?: boolean;
 }
 
 // ── VANTA Indica ───────────────────────────────────────────────────────────

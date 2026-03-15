@@ -57,6 +57,8 @@ const rowToComunidade = (r: ComunidadeRow): Comunidade => ({
   evento_privado_formatos: (r.evento_privado_formatos as unknown as string[]) ?? [],
   evento_privado_atracoes: (r.evento_privado_atracoes as unknown as string[]) ?? [],
   evento_privado_faixas_capacidade: (r.evento_privado_faixas_capacidade as unknown as string[]) ?? [],
+  tipo_comunidade: (r.tipo_comunidade as 'ESPACO_FIXO' | 'PRODUTORA') ?? null,
+  onboarding_completo: r.onboarding_completo ?? false,
 });
 
 export const comunidadesService = {
@@ -183,6 +185,7 @@ export const comunidadesService = {
       evento_privado_formatos: string[];
       evento_privado_atracoes: string[];
       evento_privado_faixas_capacidade: string[];
+      onboarding_completo: boolean;
     }>,
   ): Promise<boolean> {
     const dbUpdates: Record<string, unknown> = {};
@@ -227,6 +230,7 @@ export const comunidadesService = {
       dbUpdates.evento_privado_atracoes = updates.evento_privado_atracoes;
     if (updates.evento_privado_faixas_capacidade !== undefined)
       dbUpdates.evento_privado_faixas_capacidade = updates.evento_privado_faixas_capacidade;
+    if (updates.onboarding_completo !== undefined) dbUpdates.onboarding_completo = updates.onboarding_completo;
 
     const { error } = await supabase.from('comunidades').update(dbUpdates).eq('id', id);
     if (error) {

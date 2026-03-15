@@ -72,6 +72,9 @@ export const EditarEventoView: React.FC<{
   const [formato, setFormato] = useState('');
   const [estilos, setEstilos] = useState<string[]>([]);
   const [experiencias, setExperiencias] = useState<string[]>([]);
+  const [localNome, setLocalNome] = useState('');
+  const [localEndereco, setLocalEndereco] = useState('');
+  const [localCidade, setLocalCidade] = useState('');
   const [slug, setSlug] = useState('');
   const [politicaReembolso, setPoliticaReembolso] = useState('');
   const [prazoReembolsoDias, setPrazoReembolsoDias] = useState('7');
@@ -133,6 +136,9 @@ export const EditarEventoView: React.FC<{
     setFormato(ev.formato || ev.categoria || '');
     setEstilos(ev.estilos || []);
     setExperiencias(ev.experiencias || []);
+    setLocalNome(ev.local || com?.nome || '');
+    setLocalEndereco(ev.endereco || '');
+    setLocalCidade(ev.cidade || com?.cidade || '');
     const evAny = ev as unknown as Record<string, unknown>;
     setSlug((evAny.slug as string) ?? '');
     setPoliticaReembolso((evAny.politica_reembolso as string) ?? '');
@@ -439,12 +445,16 @@ export const EditarEventoView: React.FC<{
         });
       }
 
+      const isProdutora = comunidade.tipo_comunidade === 'PRODUTORA';
       const updates = {
         foto,
         nome: nome.trim(),
         descricao: descricao.trim(),
         dataInicio: iso(dataInicio, horaInicio),
         dataFim: iso(dataFim, horaFim),
+        local: isProdutora ? localNome : comunidade.nome,
+        endereco: isProdutora ? localEndereco : `${comunidade.endereco}, ${comunidade.cidade}`,
+        cidade: isProdutora ? localCidade : comunidade.cidade,
         lotes: lotesAdmin,
         equipe: equipeAdmin,
         formato: formato || undefined,
@@ -516,7 +526,7 @@ export const EditarEventoView: React.FC<{
               eventoNome: nome.trim(),
               eventoData: dataInicio,
               eventoDataFim: dataFim,
-              eventoLocal: comunidade?.nome ?? '',
+              eventoLocal: comunidade?.tipo_comunidade === 'PRODUTORA' ? localNome : (comunidade?.nome ?? ''),
               tetoGlobalTotal: regrasValidas.reduce((s, v) => s + parseInt(v.limite), 0),
               regras: regrasPayload,
             });
@@ -751,6 +761,12 @@ export const EditarEventoView: React.FC<{
               experiencias={experiencias}
               setExperiencias={setExperiencias}
               comunidade={comunidade}
+              localNome={localNome}
+              setLocalNome={setLocalNome}
+              localEndereco={localEndereco}
+              setLocalEndereco={setLocalEndereco}
+              localCidade={localCidade}
+              setLocalCidade={setLocalCidade}
               onCopiar={() => {}}
               temEventosAnteriores={false}
             />

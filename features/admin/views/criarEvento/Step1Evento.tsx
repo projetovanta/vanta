@@ -43,6 +43,12 @@ interface Props {
   recorrenciaAte: string;
   setRecorrenciaAte(v: string): void;
   comunidade: Comunidade;
+  localNome: string;
+  setLocalNome(v: string): void;
+  localEndereco: string;
+  setLocalEndereco(v: string): void;
+  localCidade: string;
+  setLocalCidade(v: string): void;
   onCopiar: () => void;
   temEventosAnteriores: boolean;
 }
@@ -493,26 +499,60 @@ export const Step1Evento: React.FC<Props> = p => {
       </div>
 
       <div className="space-y-3">
-        <div>
-          <label className={labelCls}>Local · vinculado à comunidade</label>
-          <input
-            value={p.comunidade.nome}
-            readOnly
-            aria-label="Local vinculado à comunidade"
-            className={inputCls + ' opacity-40 cursor-not-allowed'}
-          />
-        </div>
-        <div>
-          <label className={labelCls}>Endereço</label>
-          <input
-            value={`${p.comunidade.endereco}, ${p.comunidade.cidade}`}
-            readOnly
-            className={inputCls + ' opacity-40 cursor-not-allowed'}
-          />
-        </div>
-        <p className="text-[0.5rem] text-zinc-700 font-black uppercase tracking-widest">
-          Somente o VANTA masteradm pode alterar local e endereço.
-        </p>
+        {p.comunidade.tipo_comunidade === 'PRODUTORA' ? (
+          <>
+            <div>
+              <label className={labelCls}>Local do evento</label>
+              <input
+                value={p.localNome}
+                onChange={e => p.setLocalNome(e.target.value)}
+                placeholder="Nome do local (ex: Casa de Shows XYZ)"
+                className={inputCls}
+              />
+            </div>
+            <div>
+              <label className={labelCls}>Endereço</label>
+              <input
+                value={p.localEndereco}
+                onChange={e => p.setLocalEndereco(e.target.value)}
+                placeholder="Endereço completo"
+                className={inputCls}
+              />
+            </div>
+            <div>
+              <label className={labelCls}>Cidade</label>
+              <input
+                value={p.localCidade}
+                onChange={e => p.setLocalCidade(e.target.value)}
+                placeholder="Cidade"
+                className={inputCls}
+              />
+            </div>
+          </>
+        ) : (
+          <>
+            <div>
+              <label className={labelCls}>Local · vinculado à comunidade</label>
+              <input
+                value={p.comunidade.nome}
+                readOnly
+                aria-label="Local vinculado à comunidade"
+                className={inputCls + ' opacity-40 cursor-not-allowed'}
+              />
+            </div>
+            <div>
+              <label className={labelCls}>Endereço</label>
+              <input
+                value={`${p.comunidade.endereco}, ${p.comunidade.cidade}`}
+                readOnly
+                className={inputCls + ' opacity-40 cursor-not-allowed'}
+              />
+            </div>
+            <p className="text-[0.5rem] text-zinc-700 font-black uppercase tracking-widest">
+              Somente o VANTA masteradm pode alterar local e endereço.
+            </p>
+          </>
+        )}
       </div>
     </div>
   );

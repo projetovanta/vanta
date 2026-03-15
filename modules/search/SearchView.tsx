@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { Evento, Membro } from '../../types';
-import { Building2, MapPin, ChevronRight } from 'lucide-react';
+import { Building2, MapPin, ChevronRight, Lock } from 'lucide-react';
 import { sortEvents, isEventExpired } from '../../utils';
 import { SearchHeader } from './components/SearchHeader';
 import { SearchResults } from './components/SearchResults';
@@ -275,12 +275,30 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
       />
       <div ref={contentRef} onScroll={handleScroll} className="flex-1 overflow-y-auto no-scrollbar px-6 pt-6 pb-4">
         {activeTab === 'BENEFICIOS' ? (
-          <BeneficiosMVTab
-            userId={currentUserId}
-            filteredEvents={visibleEvents}
-            query={debouncedQuery}
-            onEventClick={onEventClick}
-          />
+          isMembroMV ? (
+            <BeneficiosMVTab
+              userId={currentUserId}
+              filteredEvents={visibleEvents}
+              query={debouncedQuery}
+              onEventClick={onEventClick}
+            />
+          ) : (
+            <div className="flex flex-col items-center justify-center py-16 text-center px-4">
+              <div className="w-16 h-16 rounded-full bg-[#FFD300]/10 border border-[#FFD300]/20 flex items-center justify-center mb-5">
+                <Lock size="1.5rem" className="text-[#FFD300]" />
+              </div>
+              <h3 className="font-serif italic text-xl text-white mb-2">Lugares pra você</h3>
+              <p className="text-zinc-400 text-sm mb-6 max-w-[16rem]">
+                Benefícios exclusivos em bares, restaurantes e eventos. Só pra membros.
+              </p>
+              <button
+                onClick={() => onMemberClick?.({ id: currentUserId } as Membro)}
+                className="px-6 py-3 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all"
+              >
+                Saiba mais
+              </button>
+            </div>
+          )
         ) : activeTab === 'EVENTS' ? (
           <>
             {comunidadeSpotlight && (

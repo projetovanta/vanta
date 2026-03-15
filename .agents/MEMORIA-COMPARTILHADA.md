@@ -78,6 +78,7 @@
 [2026-03-15] Detalhe do Evento REDESIGN — Footer adaptativo: gratuito="Eu vou!" dourado, pago="Eu vou!"+Garantir, já comprou=ambos visíveis, lotando=Últimas vagas vermelho. Texto MV sutil: "Este evento tem vantagens pra membros" → afeta event-detail
 [2026-03-15] Perfil SIMPLIFICADO — "Minha Carteira"→"Minha Experiência". Tela reorganizada: foto+badge→[Editar][Config]→Card Experiência+Card MV→Lista ações (perfil público, pendências, meia-entrada, bloqueados)→Configurações (dados, preferências, PIN, senha, ajuda)→Parceria→Sair → afeta perfil, navegação
 [2026-03-15] Checkout REDESIGN — SuccessScreen: confete+Sparkles+"Presença garantida!"+"Ver meu ingresso" (dourado). "Tem um código?" (ex-cupom). Botão "Garantir X ingressos" dourado. "Garantindo..." no loading → afeta checkout
+[2026-03-15] Busca REDESIGN — "Benefícios"→"Pra Você", tab visível pra todos (era só membros MV). Não-membros veem tela com lock+CTA "Saiba mais". Placeholder "Buscar lugares pra você..." → afeta busca
 
 ---
 

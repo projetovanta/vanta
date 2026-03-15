@@ -40,7 +40,13 @@
 - "Últimas vagas" vermelho quando >80% (capacityPct prop, opcional)
 - Texto MV sutil: "Este evento tem vantagens pra membros — saiba mais"
 
-### 6. Checkout Redesign
+### 6. Busca Redesign
+- "Benefícios" → "Pra Você" (tab sempre visível)
+- Não-membros: tela lock com CTA "Saiba mais" (FOMO)
+- Placeholder: "Buscar lugares pra você..."
+- Grid 3 colunas fixo (era condicional)
+
+### 7. Checkout Redesign
 - SuccessScreen: confete + Sparkles + "Presença garantida!" + "Ver meu ingresso" (dourado)
 - "Tem um código?" (era "Tem um cupom?")
 - Botão "Garantir X ingressos" dourado (era roxo/rosa "Confirmar")

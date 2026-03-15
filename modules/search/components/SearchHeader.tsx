@@ -64,16 +64,14 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
       <h1 style={TYPOGRAPHY.screenTitle} className="text-3xl text-[#FFD300] mb-6">
         Explorar
       </h1>
-      <div
-        className={`grid ${isMembroMV ? 'grid-cols-3' : 'grid-cols-2'} gap-2 mb-6 p-1 bg-zinc-900/50 rounded-2xl border border-white/5`}
-      >
-        {(['EVENTS', 'PEOPLE', ...(isMembroMV ? ['BENEFICIOS'] : [])] as const).map(t => (
+      <div className="grid grid-cols-3 gap-2 mb-6 p-1 bg-zinc-900/50 rounded-2xl border border-white/5">
+        {(['EVENTS', 'PEOPLE', 'BENEFICIOS'] as const).map(t => (
           <button
             key={t}
             onClick={() => onTabChange(t as 'EVENTS' | 'PEOPLE' | 'BENEFICIOS')}
             className={`py-3.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${activeTab === t ? 'bg-[#FFD300] text-black' : 'text-zinc-400'}`}
           >
-            {t === 'EVENTS' ? 'Eventos' : t === 'PEOPLE' ? 'Pessoas' : 'Benefícios'}
+            {t === 'EVENTS' ? 'Eventos' : t === 'PEOPLE' ? 'Pessoas' : 'Pra Você'}
           </button>
         ))}
       </div>
@@ -85,7 +83,7 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
           className="w-full pl-11 pr-11 py-4 bg-zinc-900/80 border border-zinc-800 rounded-2xl text-white text-sm"
           placeholder={
             activeTab === 'BENEFICIOS'
-              ? 'Buscar benefícios...'
+              ? 'Buscar lugares pra você...'
               : activeTab === 'PEOPLE'
                 ? 'Nome ou e-mail...'
                 : 'O que busca hoje?'

@@ -308,6 +308,9 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
                 Mais Vanta
               </h1>
               <p className="text-[0.625rem] font-black uppercase tracking-widest text-[#FFD300]">Membro MAIS VANTA</p>
+              <p className="text-zinc-400 text-xs mt-2 max-w-[16rem] mx-auto">
+                Acesso a benefícios exclusivos em eventos e parceiros da sua cidade.
+              </p>
             </div>
 
             {/* ══ SEÇÃO: Alertas & Avisos ══ */}
@@ -413,7 +416,9 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
 
               {listaExibida.length === 0 ? (
                 <p className="text-zinc-400 text-xs text-center py-8">
-                  {activeTab === 'ATIVOS' ? 'Nenhum benefício ativo' : 'Nenhum benefício passado'}
+                  {activeTab === 'ATIVOS'
+                    ? 'Confira os próximos eventos — seus benefícios aparecem automaticamente.'
+                    : 'Nenhum benefício passado'}
                 </p>
               ) : (
                 <div className="space-y-3">

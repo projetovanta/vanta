@@ -202,10 +202,22 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
     );
   }
 
-  // ── Menu items ──
-  const menuItems = [
-    { icon: User, label: 'Dados Pessoais', value: 'Editar perfil', onClick: () => setSubView('EDIT_PROFILE') },
+  // ── Lista de ações (redesign: abaixo dos cards) ──
+  const actionItems = [
+    { icon: Eye, label: 'Perfil Público', value: 'Como outros te veem', onClick: () => setSubView('PREVIEW_PUBLIC') },
+    {
+      icon: ClipboardList,
+      label: 'Minhas Pendências',
+      value: 'Solicitações e convites',
+      onClick: () => setSubView('PENDENCIAS'),
+    },
     { icon: FileCheck, label: 'Meia-Entrada', value: meiaValue, onClick: () => setSubView('MEIA_ENTRADA') },
+    { icon: Ban, label: 'Bloqueados', value: 'Gerenciar bloqueios', onClick: () => setSubView('BLOQUEADOS') },
+  ];
+
+  // ── Menu configurações ──
+  const configItems = [
+    { icon: User, label: 'Dados Pessoais', value: 'Editar perfil', onClick: () => setSubView('EDIT_PROFILE') },
     { icon: Settings, label: 'Preferências', value: 'Notificações, Idioma', onClick: () => setSubView('PREFERENCES') },
     {
       icon: KeyRound,
@@ -214,7 +226,6 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
       onClick: () => setShowPinReset(true),
     },
     { icon: Lock, label: 'Alterar Senha', value: 'Senha da conta', onClick: () => setShowChangePassword(true) },
-    { icon: Ban, label: 'Bloqueados', value: 'Gerenciar bloqueios', onClick: () => setSubView('BLOQUEADOS') },
     {
       icon: HelpCircle,
       label: 'Ajuda e Suporte',
@@ -357,14 +368,22 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
             </p>
           )}
 
-          {/* Botão "Ver perfil público" */}
-          <button
-            onClick={() => setSubView('PREVIEW_PUBLIC')}
-            className="absolute top-6 right-5 px-3 py-1.5 bg-[#FFD300]/10 border border-[#FFD300]/20 rounded-full flex items-center gap-1.5 active:scale-95 transition-all z-10"
-          >
-            <Eye size="0.6875rem" className="text-[#FFD300]" />
-            <span className="text-[0.5rem] font-black uppercase tracking-wider text-[#FFD300]">Perfil público</span>
-          </button>
+          {/* Botões Editar + Config (redesign) */}
+          <div className="absolute top-6 right-5 flex gap-2 z-10">
+            <button
+              onClick={() => setSubView('EDIT_PROFILE')}
+              className="px-3 py-1.5 bg-white/5 border border-white/10 rounded-full flex items-center gap-1.5 active:scale-95 transition-all"
+            >
+              <User size="0.6875rem" className="text-zinc-400" />
+              <span className="text-[0.5rem] font-black uppercase tracking-wider text-zinc-400">Editar</span>
+            </button>
+            <button
+              onClick={() => setSubView('PREFERENCES')}
+              className="p-2 bg-white/5 border border-white/10 rounded-full active:scale-95 transition-all"
+            >
+              <Settings size="0.75rem" className="text-zinc-400" />
+            </button>
+          </div>
 
           {/* Action cards */}
           <div className="px-4 space-y-2 mb-2">
@@ -430,14 +449,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                 </div>
               </button>
             </div>
-            {/* Histórico absorvido por "Minha Experiência". Solicitações absorvido por "Pendências". */}
-            <button
-              onClick={() => setSubView('PENDENCIAS')}
-              className="w-full bg-black/40 border border-white/5 rounded-xl py-3 flex items-center justify-center gap-2 text-[0.625rem] font-black uppercase tracking-[0.25em] text-zinc-400 hover:text-white transition-all active:scale-95 shadow-inner"
-            >
-              <ClipboardList size="0.75rem" className="text-amber-400" />
-              Minhas Pendências
-            </button>
+            {/* Ações rápidas movidas pra lista abaixo */}
             {onAdminClick && (
               <div className="relative">
                 <button
@@ -470,13 +482,10 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
         </div>
       </div>
 
-      {/* Menu de configurações */}
+      {/* Lista de ações */}
       <div className="px-6">
-        <h2 style={TYPOGRAPHY.uiLabel} className="mb-3 pl-2 opacity-60">
-          Configurações
-        </h2>
         <div className="bg-zinc-900/40 rounded-2xl border border-white/5 divide-y divide-white/5 overflow-hidden">
-          {menuItems.map((item, idx) => (
+          {actionItems.map((item, idx) => (
             <button
               key={idx}
               onClick={item.onClick}
@@ -484,6 +493,31 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
             >
               <div className="flex items-center gap-3 min-w-0">
                 <item.icon size="1rem" className="text-[#FFD300] shrink-0" />
+                <span className="text-sm text-white/90 truncate">{item.label}</span>
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                {item.value && (
+                  <span className="text-[0.625rem] text-zinc-400 max-w-[7.5rem] truncate">{item.value}</span>
+                )}
+                <ChevronRight size="0.875rem" className="text-zinc-700" />
+              </div>
+            </button>
+          ))}
+        </div>
+
+        {/* Configurações */}
+        <h2 style={TYPOGRAPHY.uiLabel} className="mt-6 mb-3 pl-2 opacity-60">
+          Configurações
+        </h2>
+        <div className="bg-zinc-900/40 rounded-2xl border border-white/5 divide-y divide-white/5 overflow-hidden">
+          {configItems.map((item, idx) => (
+            <button
+              key={idx}
+              onClick={item.onClick}
+              className="w-full px-4 py-3.5 flex items-center justify-between active:bg-white/5 transition-colors"
+            >
+              <div className="flex items-center gap-3 min-w-0">
+                <item.icon size="1rem" className="text-zinc-400 shrink-0" />
                 <span className="text-sm text-white/90 truncate">{item.label}</span>
               </div>
               <div className="flex items-center gap-2 shrink-0">

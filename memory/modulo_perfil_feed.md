@@ -99,32 +99,28 @@ Radar = mapa de eventos por geolocalizacao.
 **Navegacao**: Busca -> Radar
 **O que acontece**: RPC get_eventos_por_regiao retorna eventos com coords, renderiza no mapa
 
-### VER PERFIL PROPRIO
+### VER PERFIL PROPRIO (redesign)
 **Quem**: Usuario logado
 **Navegacao**: Bottom nav "Perfil" -> ProfileView
-**O que acontece**: exibe foto, nome, bio, cidade, conquistas, badges, comunidades seguidas, MAIS VANTA status
+**Tela principal**: foto+nome+badge MV → [Editar][Config] no header → Card "Minha Experiencia" + Card "MAIS VANTA" (separados) → Lista acoes (perfil publico, pendencias, meia-entrada, bloqueados) → Configuracoes (dados, preferencias, PIN, senha, ajuda) → Parceria → Sair
+**Sub-views**: MAIN, EDIT_PROFILE, PREFERENCES, MINHA_EXPERIENCIA (absorveu WALLET+HISTORICO), CLUBE, MEIA_ENTRADA, PENDENCIAS, BLOQUEADOS, SOLICITAR_PARCERIA
+**Removidos da tela**: botoes "Meu Historico" e "Minhas Solicitacoes" (absorvidos)
 
 ### EDITAR PERFIL
 **Quem**: Usuario logado
-**Navegacao**: ProfileView -> EditProfileView
+**Navegacao**: ProfileView → botao [Editar] no header OU lista Configuracoes → "Dados Pessoais"
 **O que acontece**: editar nome, bio, foto (crop), cidade, interesses
 **Reacao**: UPDATE profiles
 
 ### VER PERFIL PUBLICO
 **Quem**: Qualquer usuario
 **Navegacao**: Busca -> clica pessoa / EventDetail -> clica participante / Chat -> clica usuario
-**O que acontece**: PublicProfilePreviewView mostra dados publicos + status amizade + conquistas
-**Se clicar no proprio perfil**: guardedOpenMemberProfile redireciona para tab PERFIL. Se chegar ao preview por outro caminho, isOwner=true mostra botao "Editar Perfil" em vez de "Adicionar Amigo"
-
-### HISTORICO
-**Quem**: Usuario logado
-**Navegacao**: ProfileView -> Historico
-**O que acontece**: lista eventos passados com presenca confirmada + conquistas desbloqueadas
+**O que acontece**: PublicProfilePreviewView mostra dados publicos + status amizade + Crown MV ao lado do nome (se membro)
 
 ### PREFERENCIAS
 **Quem**: Usuario logado
-**Navegacao**: ProfileView -> Preferencias
-**O que acontece**: PreferencesView (83L) — configuracoes basicas
+**Navegacao**: ProfileView → botao [Config] no header OU lista Configuracoes → "Preferencias"
+**O que acontece**: PreferencesView — configuracoes basicas
 
 ## Onde este modulo aparece (propagacao)
 

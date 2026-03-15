@@ -9,8 +9,8 @@ export interface ChatSetting {
 }
 
 // Tabela chat_settings ainda não está no types gerado — usar cast
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const db = () => (supabase as any).from('chat_settings');
+const db = () =>
+  (supabase as unknown as { from: (t: string) => ReturnType<typeof supabase.from> }).from('chat_settings');
 
 export const chatSettingsService = {
   async getAll(userId: string): Promise<Map<string, ChatSetting>> {

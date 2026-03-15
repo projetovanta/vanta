@@ -346,6 +346,7 @@ export default function App() {
               onClearAdminGuide={() => h.setShowAdminGuide(false)}
               onLogout={() => {
                 h.logout();
+                nav.resetNavigation();
                 nav.navigateToTab('INICIO');
                 h.setShowLoginView(true);
               }}

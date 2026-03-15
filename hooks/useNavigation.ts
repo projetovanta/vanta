@@ -206,6 +206,13 @@ export const useNavigation = () => {
     navigateToTab,
     navigateToProfileFrom,
     returnFromSubView,
+    /** Limpa estado de scroll e sub-views — usar no logout */
+    resetNavigation: useCallback(() => {
+      scrollPositions.current.clear();
+      returnTabRef.current = null;
+      _setProfileSubView('MAIN');
+      if (mainScrollRef.current) mainScrollRef.current.scrollTop = 0;
+    }, []),
     clubeConviteId,
     setClubeConviteId,
     mainScrollRef,

@@ -45,6 +45,7 @@
 [2026-03-15] Navegação "voltar" corrigida — goBack inteligente em TODAS sub-views do Perfil → afeta perfil, navegação
 [2026-03-15] 3 arquivos mortos removidos: DealsMembroSection, MaisVantaReservaModal, MinhasSolicitacoesPrivadoView → afeta clube, evento, perfil
 [2026-03-15] Rotas dedicadas por sub-view → ANOTADO como próxima prioridade (não feito ainda)
+[2026-03-15] Fix: logout agora limpa scroll positions → evita scroll preso ao trocar de conta
 
 ---
 

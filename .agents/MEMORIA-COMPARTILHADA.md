@@ -36,6 +36,9 @@
 [2026-03-15] MinhasPendenciasView — nova aba Eventos Privados → afeta perfil
 [2026-03-15] StatusBadge.tsx removido — era duplicado → afeta admin/dashboard
 [2026-03-15] vite.config.ts — recharts/leaflet fora do manualChunks → afeta bundle/performance
+[2026-03-15] EventCard — tags coloridas por estilo musical (16 cores mapeadas) → afeta todos os cards de evento
+[2026-03-15] EventFooter — botão de compra dourado com sombra (era gradiente roxo) → afeta detalhe do evento
+[2026-03-15] EventFeed + SearchResults — estados vazios com textos personalizados → afeta home e busca
 
 ---
 

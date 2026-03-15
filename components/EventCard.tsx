@@ -5,6 +5,34 @@ import { TYPOGRAPHY } from '../constants';
 import { getMinPrice, isEventHappeningNow, isEventStartingSoon, isEventEndingSoon } from '../utils';
 import { OptimizedImage } from './OptimizedImage';
 
+const ESTILO_CORES: Record<string, { bg: string; text: string }> = {
+  eletrônica: { bg: 'bg-purple-500/15', text: 'text-purple-400' },
+  house: { bg: 'bg-purple-500/15', text: 'text-purple-400' },
+  techno: { bg: 'bg-purple-500/15', text: 'text-purple-400' },
+  trance: { bg: 'bg-purple-500/15', text: 'text-purple-400' },
+  funk: { bg: 'bg-pink-500/15', text: 'text-pink-400' },
+  sertanejo: { bg: 'bg-pink-500/15', text: 'text-pink-400' },
+  pagode: { bg: 'bg-amber-500/15', text: 'text-amber-400' },
+  samba: { bg: 'bg-amber-500/15', text: 'text-amber-400' },
+  rock: { bg: 'bg-red-500/15', text: 'text-red-400' },
+  pop: { bg: 'bg-blue-500/15', text: 'text-blue-400' },
+  rap: { bg: 'bg-orange-500/15', text: 'text-orange-400' },
+  'hip hop': { bg: 'bg-orange-500/15', text: 'text-orange-400' },
+  reggae: { bg: 'bg-emerald-500/15', text: 'text-emerald-400' },
+  jazz: { bg: 'bg-cyan-500/15', text: 'text-cyan-400' },
+  mpb: { bg: 'bg-teal-500/15', text: 'text-teal-400' },
+  forró: { bg: 'bg-yellow-500/15', text: 'text-yellow-400' },
+};
+
+function getEstiloCor(estilos?: string[]): { bg: string; text: string } | null {
+  if (!estilos?.length) return null;
+  const key = estilos[0].toLowerCase();
+  for (const [k, v] of Object.entries(ESTILO_CORES)) {
+    if (key.includes(k)) return v;
+  }
+  return null;
+}
+
 interface EventCardProps {
   evento: Evento;
   onClick: (event: Evento) => void;
@@ -83,11 +111,20 @@ export const EventCard: React.FC<EventCardProps> = React.memo(
           </div>
           <div className="absolute inset-0 p-3 flex flex-col justify-end bg-gradient-to-t from-black/90 via-black/20 to-transparent">
             <div className="flex items-center gap-1.5 mb-1.5">
-              <span className="px-2 py-0.5 rounded-md bg-[#FFD300] text-black text-[0.5rem] font-black uppercase tracking-wider truncate max-w-[60%]">
-                {' '}
-                {/* lint-layout-ok */}
-                {evento.formato || evento.categoria}
-              </span>
+              {(() => {
+                const estiloCor = getEstiloCor(evento.estilos);
+                return (
+                  <span
+                    className={`px-2 py-0.5 rounded-md text-[0.5rem] font-black uppercase tracking-wider truncate max-w-[60%] ${
+                      estiloCor
+                        ? `${estiloCor.bg} ${estiloCor.text} border border-current/20`
+                        : 'bg-[#FFD300] text-black'
+                    }`}
+                  >
+                    {evento.estilos?.[0] || evento.formato || evento.categoria}
+                  </span>
+                );
+              })()}
               {evento.temBeneficioMaisVanta && (
                 <span className="flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-gradient-to-r from-[#FFD300]/20 to-[#FFD300]/5 border border-[#FFD300]/30 text-[#FFD300] text-[0.5rem] font-black uppercase tracking-wider shrink-0">
                   {' '}

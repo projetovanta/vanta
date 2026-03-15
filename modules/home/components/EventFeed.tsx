@@ -1,5 +1,5 @@
 import React, { useMemo, useRef, useEffect, useState } from 'react';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, Ticket } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
 import { Evento } from '../../../types';
 import { EventCard } from '../../../components/EventCard';
@@ -110,7 +110,18 @@ export const EventFeed: React.FC<{
     );
   }
 
-  if (categorized.length === 0) return null;
+  if (categorized.length === 0) {
+    return (
+      <div className="py-16 flex flex-col items-center justify-center gap-3 px-8">
+        <div className="w-16 h-16 rounded-full bg-zinc-900 border border-white/5 flex items-center justify-center">
+          <Ticket size="1.5rem" className="text-zinc-700" />
+        </div>
+        <p className="text-zinc-400 text-sm text-center leading-relaxed max-w-[15rem]">
+          Sua cidade ainda tá no aquecimento. Mas quando a noite começar, você vai ser o primeiro a saber.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="py-4 w-full space-y-8">

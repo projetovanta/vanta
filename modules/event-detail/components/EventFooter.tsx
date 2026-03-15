@@ -52,7 +52,7 @@ export const EventFooter: React.FC<EventFooterProps> = ({
           </button>
           <button
             onClick={onBuy}
-            className="px-5 py-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl font-bold text-[0.625rem] uppercase tracking-widest text-white shadow-[0_0_20px_rgba(168,85,247,0.4)] active:scale-95 transition-transform"
+            className="px-5 py-3 bg-[#FFD300] rounded-xl font-bold text-[0.625rem] uppercase tracking-widest text-black shadow-[0_0_20px_rgba(255,211,0,0.3)] active:scale-95 transition-transform"
           >
             {evento.urlIngressos ? 'Comprar Fora' : 'Ver Ingressos'}
           </button>

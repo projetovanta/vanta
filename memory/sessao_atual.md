@@ -1,8 +1,8 @@
 # Sessao Atual — Estado para Continuidade
 
 ## Branch: main
-## Ultimo commit: `8d681fe` — perf: otimiza bundle
-## Mudancas locais: SIM — onboarding usuário novo — não commitado
+## Ultimo commit: `234f132` — feat: onboarding completo
+## Mudancas locais: SIM — melhorias visuais (tags, botão, estados vazios) — não commitado
 
 ## Repositorio e Deploy
 - **GitHub**: `projetovanta/vanta` (conta: projetovanta)
@@ -46,6 +46,12 @@
 
 ### Limpeza
 - `StatusBadge.tsx` removido (duplicado — função inline já existia em DealsMaisVantaView)
+
+### Melhorias Visuais (Equipe de Design + Marca + Narrativa)
+- `EventCard.tsx`: tags coloridas por estilo musical (16 mapeamentos de cor)
+- `EventFooter.tsx`: botão de compra dourado com sombra (substituiu gradiente roxo/rosa)
+- `EventFeed.tsx`: estado vazio com texto "Sua cidade ainda tá no aquecimento..."
+- `SearchResults.tsx`: estado vazio com texto "Nada encontrado por aqui..."
 
 ## Pendencias
 - **Commit + push** — aguardando OK do Dan

@@ -40,7 +40,14 @@
 - "Últimas vagas" vermelho quando >80% (capacityPct prop, opcional)
 - Texto MV sutil: "Este evento tem vantagens pra membros — saiba mais"
 
-### 6. Camada MV
+### 6. Radar com Parceiros
+- Migration: coluna coords JSONB em parceiros_mais_vanta (aplicada no banco)
+- Pins âmbar no mapa pra parceiros MV ativos com coords
+- createPartnerIcon com borda âmbar
+- types/supabase.ts regenerado
+- Todos veem pins, só membros veem benefício (fase futura: tooltip diferente)
+
+### 7. Camada MV
 - Home: saudação com Crown dourada + seção "Seus Benefícios" (link pro CLUBE)
 - EventCard: ícone dourado mínimo sem texto (era Crown+MV)
 - Perfil público: Crown ao lado do nome de membros MV

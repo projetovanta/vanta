@@ -441,6 +441,36 @@ export type Database = {
           },
         ];
       };
+      chat_settings: {
+        Row: {
+          archived: boolean;
+          archived_at: string | null;
+          id: string;
+          keep_archived: boolean;
+          muted: boolean;
+          partner_id: string;
+          user_id: string;
+        };
+        Insert: {
+          archived?: boolean;
+          archived_at?: string | null;
+          id?: string;
+          keep_archived?: boolean;
+          muted?: boolean;
+          partner_id: string;
+          user_id: string;
+        };
+        Update: {
+          archived?: boolean;
+          archived_at?: string | null;
+          id?: string;
+          keep_archived?: boolean;
+          muted?: boolean;
+          partner_id?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
       cidades_mais_vanta: {
         Row: {
           ativo: boolean;
@@ -975,7 +1005,7 @@ export type Database = {
           horario_overrides: Json;
           id: string;
           nome: string;
-          onboarding_completo: boolean;
+          onboarding_completo: boolean | null;
           razao_social: string | null;
           slug: string | null;
           taxa_cortesia_excedente_pct: number | null;
@@ -1020,7 +1050,7 @@ export type Database = {
           horario_overrides?: Json;
           id?: string;
           nome: string;
-          onboarding_completo?: boolean;
+          onboarding_completo?: boolean | null;
           razao_social?: string | null;
           slug?: string | null;
           taxa_cortesia_excedente_pct?: number | null;
@@ -1065,7 +1095,7 @@ export type Database = {
           horario_overrides?: Json;
           id?: string;
           nome?: string;
-          onboarding_completo?: boolean;
+          onboarding_completo?: boolean | null;
           razao_social?: string | null;
           slug?: string | null;
           taxa_cortesia_excedente_pct?: number | null;
@@ -2991,6 +3021,7 @@ export type Database = {
           contato_email: string | null;
           contato_nome: string | null;
           contato_telefone: string | null;
+          coords: Json | null;
           criado_em: string;
           criado_por: string;
           descricao: string | null;
@@ -3014,6 +3045,7 @@ export type Database = {
           contato_email?: string | null;
           contato_nome?: string | null;
           contato_telefone?: string | null;
+          coords?: Json | null;
           criado_em?: string;
           criado_por: string;
           descricao?: string | null;
@@ -3037,6 +3069,7 @@ export type Database = {
           contato_email?: string | null;
           contato_nome?: string | null;
           contato_telefone?: string | null;
+          coords?: Json | null;
           criado_em?: string;
           criado_por?: string;
           descricao?: string | null;
@@ -4128,6 +4161,7 @@ export type Database = {
           convidado_por: string | null;
           convite_id: string | null;
           criado_em: string;
+          frequencia: string | null;
           id: string;
           indicado_por: string | null;
           instagram_handle: string;
@@ -4150,6 +4184,7 @@ export type Database = {
           convidado_por?: string | null;
           convite_id?: string | null;
           criado_em?: string;
+          frequencia?: string | null;
           id?: string;
           indicado_por?: string | null;
           instagram_handle: string;
@@ -4172,6 +4207,7 @@ export type Database = {
           convidado_por?: string | null;
           convite_id?: string | null;
           criado_em?: string;
+          frequencia?: string | null;
           id?: string;
           indicado_por?: string | null;
           instagram_handle?: string;
@@ -4948,7 +4984,6 @@ export type Database = {
           horario_overrides: Json | null;
           id: string | null;
           nome: string | null;
-          onboarding_completo: boolean | null;
           razao_social: string | null;
           slug: string | null;
           taxa_cortesia_excedente_pct: number | null;
@@ -4993,7 +5028,6 @@ export type Database = {
           horario_overrides?: Json | null;
           id?: string | null;
           nome?: string | null;
-          onboarding_completo?: boolean | null;
           razao_social?: string | null;
           slug?: string | null;
           taxa_cortesia_excedente_pct?: number | null;
@@ -5038,7 +5072,6 @@ export type Database = {
           horario_overrides?: Json | null;
           id?: string | null;
           nome?: string | null;
-          onboarding_completo?: boolean | null;
           razao_social?: string | null;
           slug?: string | null;
           taxa_cortesia_excedente_pct?: number | null;
@@ -5159,6 +5192,7 @@ export type Database = {
         Args: { p_evento_origem_id: string };
         Returns: number;
       };
+      expirar_pedidos_checkout_pendentes: { Args: never; Returns: undefined };
       finalizar_eventos_expirados: { Args: never; Returns: undefined };
       gerar_cortesias_comemoracao: {
         Args: { p_comemoracao_id: string };
@@ -5381,7 +5415,7 @@ type DatabaseWithoutInternals = Omit<Database, '__InternalSupabase'>;
 
 type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, 'public'>];
 
-type Tables<
+export type Tables<
   DefaultSchemaTableNameOrOptions extends
     | keyof (DefaultSchema['Tables'] & DefaultSchema['Views'])
     | { schema: keyof DatabaseWithoutInternals },
@@ -5408,7 +5442,7 @@ type Tables<
       : never
     : never;
 
-type TablesInsert<
+export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends keyof DefaultSchema['Tables'] | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals;
@@ -5431,7 +5465,7 @@ type TablesInsert<
       : never
     : never;
 
-type TablesUpdate<
+export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends keyof DefaultSchema['Tables'] | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals;
@@ -5454,7 +5488,7 @@ type TablesUpdate<
       : never
     : never;
 
-type Enums<
+export type Enums<
   DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema['Enums'] | { schema: keyof DatabaseWithoutInternals },
   EnumName extends DefaultSchemaEnumNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals;
@@ -5469,7 +5503,7 @@ type Enums<
     ? DefaultSchema['Enums'][DefaultSchemaEnumNameOrOptions]
     : never;
 
-type CompositeTypes<
+export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
     | keyof DefaultSchema['CompositeTypes']
     | { schema: keyof DatabaseWithoutInternals },
@@ -5486,7 +5520,7 @@ type CompositeTypes<
     ? DefaultSchema['CompositeTypes'][PublicCompositeTypeNameOrOptions]
     : never;
 
-const Constants = {
+export const Constants = {
   public: {
     Enums: {
       area_ingresso: ['VIP', 'PISTA', 'CAMAROTE', 'BACKSTAGE', 'OUTRO'],

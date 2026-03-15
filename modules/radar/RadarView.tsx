@@ -16,7 +16,7 @@ import { Evento, TabState } from '../../types';
 import { TYPOGRAPHY } from '../../constants';
 import { MapController } from './components/MapController';
 import { PremiumCalendar } from './components/PremiumCalendar';
-import { createEventIcon, createUserIcon } from './utils/mapIcons';
+import { createEventIcon, createUserIcon, createPartnerIcon } from './utils/mapIcons';
 import { useRadarLogic } from './hooks/useRadarLogic';
 import { useAuthStore } from '../../stores/authStore';
 import { useGeolocationPermission } from '../../hooks/usePermission';
@@ -94,6 +94,15 @@ export const RadarView: React.FC<RadarViewProps> = ({ onEventSelect }) => {
               />
             );
           })}
+          {/* Pins de parceiros MAIS VANTA */}
+          {radar.parceiros.map(p => (
+            <Marker
+              key={`parceiro-${p.id}`}
+              position={[p.coords.lat, p.coords.lng]}
+              icon={createPartnerIcon(p.foto_url)}
+              zIndexOffset={400}
+            />
+          ))}
         </MapContainer>
       </div>
 

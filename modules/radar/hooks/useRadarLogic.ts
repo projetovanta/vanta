@@ -4,6 +4,15 @@ import { Evento } from '../../../types';
 import { isEventExpired, todayBR } from '../../../utils';
 import { vantaService } from '../../../services/vantaService';
 import { useGeolocationPermission } from '../../../hooks/usePermission';
+import { supabase } from '../../../services/supabaseClient';
+
+export interface ParceiroPin {
+  id: string;
+  nome: string;
+  foto_url: string | null;
+  tipo: string;
+  coords: { lat: number; lng: number };
+}
 
 export const useRadarLogic = () => {
   const [activeEventId, setActiveEventId] = useState<string | null>(null);
@@ -16,6 +25,7 @@ export const useRadarLogic = () => {
     return d;
   });
   const [events, setEvents] = useState<Evento[]>([]);
+  const [parceiros, setParceiros] = useState<ParceiroPin[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedRadius, setSelectedRadius] = useState<number | null>(null); // km
   const [showLiveOnly, setShowLiveOnly] = useState(false);
@@ -43,6 +53,25 @@ export const useRadarLogic = () => {
       .finally(() => setLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userLocation]);
+
+  // Carregar parceiros MV ativos com coords (1x)
+  useEffect(() => {
+    supabase
+      .from('parceiros_mais_vanta')
+      .select('id, nome, foto_url, tipo, coords')
+      .eq('ativo', true)
+      .not('coords', 'is', null)
+      .then(({ data }) => {
+        if (!data) return;
+        const pins: ParceiroPin[] = data
+          .filter(r => r.coords && typeof r.coords === 'object' && 'lat' in (r.coords as Record<string, unknown>))
+          .map(r => {
+            const c = r.coords as { lat: number; lng: number };
+            return { id: r.id, nome: r.nome, foto_url: r.foto_url, tipo: r.tipo, coords: c };
+          });
+        setParceiros(pins);
+      });
+  }, []);
 
   const activeEvent = activeEventId ? events.find(e => e.id === activeEventId) : null;
 
@@ -209,6 +238,7 @@ export const useRadarLogic = () => {
     setShowLiveOnly,
     isEventLive,
     closestEventId,
+    parceiros,
     selectedDate,
     eventDatesSet: useMemo(() => {
       const set = new Set<string>();

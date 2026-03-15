@@ -23,6 +23,19 @@ export const createEventIcon = (imageUrl: string, opts: EventIconOptions = {}) =
     iconAnchor: [size / 2, size / 2],
   });
 };
+export const createPartnerIcon = (photoUrl?: string | null) => {
+  const size = 40;
+  const inner = photoUrl
+    ? `<img src="${photoUrl}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" referrerpolicy="no-referrer" />`
+    : `<div style="width: 100%; height: 100%; background: #f59e0b; border-radius: 50%; display: flex; align-items: center; justify-content: center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M3 21h18M5 21V7l8-4 8 4v14"/></svg></div>`;
+  return L.divIcon({
+    className: 'partner-pin',
+    html: `<div style="position: relative; width: ${size}px; height: ${size}px;"><div style="position: relative; width: ${size}px; height: ${size}px; border: 2px solid #f59e0b; border-radius: 50%; overflow: hidden; box-shadow: 0 0 10px rgba(245, 158, 11, 0.4); background: #000;">${inner}</div></div>`,
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size / 2],
+  });
+};
+
 export const createUserIcon = (photoUrl?: string) => {
   const size = 36;
   const inner = photoUrl

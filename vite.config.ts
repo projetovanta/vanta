@@ -112,10 +112,8 @@ export default defineConfig(({ mode }) => {
         output: {
           manualChunks: {
             'vendor-supabase': ['@supabase/supabase-js'],
-            'vendor-leaflet': ['leaflet', 'react-leaflet'],
-            'vendor-recharts': ['recharts'],
-            'vendor-qr': ['qrcode.react'],
             'vendor-sentry': ['@sentry/react'],
+            'vendor-qr': ['qrcode.react'],
           },
         },
       },

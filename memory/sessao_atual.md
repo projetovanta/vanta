@@ -1,8 +1,8 @@
 # Sessao Atual — Estado para Continuidade
 
 ## Branch: main
-## Ultimo commit: `e33447c` — feat: formulário MAIS VANTA enriquecido
-## Mudancas locais: SIM (limpeza riscos + fmtTelefone)
+## Ultimo commit: `f804341` — docs: onboarding — botão "Criar Conta" + fotos Unsplash/Pexels
+## Mudancas locais: NÃO (tudo commitado e pushed)
 
 ## Repositorio e Deploy
 - **GitHub**: `projetovanta/vanta` (conta: projetovanta)

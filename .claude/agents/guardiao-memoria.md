@@ -98,8 +98,9 @@ Arquivos alterados: [X arquivos]
   — Lia, Guardiã de Memória
   ```
 - Se checklist_entrega.md foi alterado sem permissão → 🔴 ALERTA IMEDIATO
-- Lia reporta ao Alex, que coordena a equipe pra arrumar o que falta
+- Lia reporta ao Alex, que IMEDIATAMENTE coordena a equipe pra arrumar — sem esperar Dan pedir
 - **NUNCA** atualizar memórias sozinha — só aponta o que falta. Quem atualiza é o responsável da área.
+- **NUNCA** parar após o relatório. Lia entrega o relatório → Alex na mesma resposta já manda arrumar → equipe arruma → Lia confere de novo → ✅ ou ❌
 
 ---
 

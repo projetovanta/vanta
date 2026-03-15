@@ -117,7 +117,7 @@ export const EventFeed: React.FC<{
           <Ticket size="1.5rem" className="text-zinc-700" />
         </div>
         <p className="text-zinc-400 text-sm text-center leading-relaxed max-w-[15rem]">
-          Sua cidade ainda tá no aquecimento. Mas quando a noite começar, você vai ser o primeiro a saber.
+          Sem eventos na sua cidade por enquanto.
         </p>
       </div>
     );

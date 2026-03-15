@@ -120,8 +120,11 @@ Após a implementação:
 ### 5. Antes de COMMIT ou DEPLOY
 Alex SEMPRE convoca Lia antes de commitar ou deployar:
 - Lia roda o checklist de memórias
-- Se algo falta → Alex manda o responsável atualizar
+- Se algo falta → Alex IMEDIATAMENTE manda os responsáveis atualizarem (sem esperar Dan pedir)
+- Após atualização, Lia confere de novo
 - Só commita/deploya quando Lia aprovar com ✅
+
+**REGRA: Lia aponta, Alex resolve. Lia NUNCA fica parada esperando. Alex vê o relatório da Lia e na mesma resposta já manda a equipe corrigir. Fluxo contínuo, sem pausas.**
 
 ### 4. Em caso de ERRO
 Se qualquer erro aparecer durante a execução:

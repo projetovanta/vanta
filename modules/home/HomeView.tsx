@@ -8,7 +8,7 @@ import { LiveNowSection } from './components/LiveNowSection';
 import { NearYouSection } from './components/NearYouSection';
 import { ThisWeekSection } from './components/ThisWeekSection';
 import { NewOnPlatformSection } from './components/NewOnPlatformSection';
-import { QuickActions } from './components/QuickActions';
+import { MaisVantaBanner } from './components/MaisVantaBanner';
 import { ForYouSection } from './components/ForYouSection';
 import { FriendsGoingSection } from './components/FriendsGoingSection';
 import { LazySection } from './components/LazySection';
@@ -174,13 +174,8 @@ export const HomeView: React.FC<HomeViewProps> = ({
         )}
       </div>
 
-      {/* Quick Actions */}
-      <QuickActions
-        onNavigateToProfile={onNavigateToProfile}
-        onNavigateToSearch={onNavigateToSearch}
-        ticketCount={tickets.filter(t => t.status === 'DISPONIVEL').length}
-        savedCount={savedEventos.length}
-      />
+      {/* MAIS VANTA Banner */}
+      <MaisVantaBanner onNavigateToClube={() => onNavigateToProfile('CLUBE')} />
 
       {/* Notificação inline */}
 

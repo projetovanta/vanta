@@ -14,7 +14,7 @@
 - Cada seção usa px-5 individual (documentado com comentário) — carrossel com edge-bleed, NÃO usar px global
 - Saudação: `text-sm text-zinc-500`
 - Empty state: ícone `w-12 h-12`, texto `max-w-[240px]`
-- QuickActions pills: `h-10 px-4 gap-2 rounded-full`
+- MaisVantaBanner: `rounded-2xl px-4 py-3.5 border-[#FFD300]/20 bg-gradient-to-r from-[#FFD300]/10`
 - Carousel dots: ativo `w-6 h-2 bg-[#FFD300]`, inativo `w-2 h-2 bg-zinc-600`
 - Tab bar: h-11 (44px) com bg-[#050505], safe-area-inset-bottom fica transparente (mostra #0A0A0A do container pai)
 - Tab bar ícones/labels inativos: `text-zinc-400` (mais visíveis)

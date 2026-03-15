@@ -100,7 +100,7 @@ export const SearchResults: React.FC<{
             <Search size="1.25rem" className="text-zinc-700" />
           </div>
           <p className="text-zinc-400 text-sm text-center leading-relaxed max-w-[15rem]">
-            Nada encontrado por aqui. Tenta outro filtro ou muda a cidade.
+            Sem resultados. Tente outro filtro.
           </p>
         </div>
       )}

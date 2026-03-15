@@ -28,7 +28,7 @@ Radar = mapa de eventos por geolocalizacao.
 | components/ForYouSection.tsx | 69 | Eventos pra voce (personalizado) |
 | components/NewOnPlatformSection.tsx | 37 | Novos na plataforma |
 | components/SavedEventsSection.tsx | 35 | Eventos salvos |
-| components/QuickActions.tsx | 60 | Acoes rapidas |
+| components/MaisVantaBanner.tsx | ~45 | Banner MAIS VANTA (3 estados: nao-membro, pendente, membro) |
 
 ### Busca (modules/search/, 1355L total)
 | Arquivo | Linhas | Funcao |
@@ -87,7 +87,7 @@ Radar = mapa de eventos por geolocalizacao.
 
 ### BUSCA
 **Quem**: Usuario
-**Navegacao**: Bottom nav "Busca" ou HomeView -> QuickActions -> Busca
+**Navegacao**: Bottom nav "Busca"
 **O que acontece**:
 1. Tabs: EVENTS (default) ou PEOPLE
 2. Filtros: cidade, estilo/categoria (VibeFilterModal), horario, preco max, beneficios MV

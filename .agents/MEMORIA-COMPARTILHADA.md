@@ -39,6 +39,8 @@
 [2026-03-15] EventCard — tags coloridas por estilo musical (16 cores mapeadas) → afeta todos os cards de evento
 [2026-03-15] EventFooter — botão de compra dourado com sombra (era gradiente roxo) → afeta detalhe do evento
 [2026-03-15] EventFeed + SearchResults — estados vazios com textos personalizados → afeta home e busca
+[2026-03-15] QuickActions REMOVIDO da Home — substituído por MaisVantaBanner (3 estados) → afeta home, navegação
+[2026-03-15] Textos vazios simplificados — tom sóbrio, sem forçar → afeta home e busca
 
 ---
 

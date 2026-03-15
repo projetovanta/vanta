@@ -1,9 +1,9 @@
 import type { KnipConfig } from 'knip';
 
 const config: KnipConfig = {
-  entry: ['index.tsx', 'App.tsx'],
+  entry: ['App.tsx'],
   project: ['**/*.{ts,tsx}'],
-  ignore: ['PREVANTABACKUP/**', 'supabase/**', 'dist/**', 'node_modules/**'],
+  ignore: ['supabase/**'],
 };
 
 export default config;

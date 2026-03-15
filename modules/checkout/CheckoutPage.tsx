@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
+import { fmtTelefone } from '@/components/auth/authHelpers';
 import { useParams, useSearchParams } from 'react-router-dom';
 import {
   X,
@@ -1022,7 +1023,7 @@ export const CheckoutPage: React.FC = () => {
                 inputMode="numeric"
               />
               <input
-                value={telNumero}
+                value={fmtTelefone(telNumero)}
                 onChange={e => setTelNumero(e.target.value.replace(/\D/g, '').slice(0, 9))}
                 placeholder="99999-9999"
                 className="flex-1 bg-zinc-800 border border-white/10 rounded-xl px-3 py-3 text-white text-sm placeholder:text-zinc-600 outline-none focus:border-[#FFD300]/30 min-w-0"

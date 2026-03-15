@@ -1,8 +1,8 @@
 # Sessao Atual — Estado para Continuidade
 
 ## Branch: main
-## Ultimo commit: `780608d` — feat: melhorias visuais
-## Mudancas locais: NÃO (tudo commitado e pushed)
+## Ultimo commit: `e33447c` — feat: formulário MAIS VANTA enriquecido
+## Mudancas locais: SIM (limpeza riscos + fmtTelefone)
 
 ## Repositorio e Deploy
 - **GitHub**: `projetovanta/vanta` (conta: projetovanta)
@@ -10,66 +10,93 @@
 
 ## Preflight: 8/8
 
-## O que foi feito nesta sessao
+## O que foi feito nesta sessao (11 commits)
 
-### Auditoria Completa (Alex — Gerente Geral)
+### 1. Auditoria Completa
 - Preflight 8/8, security scan, bundle audit, bridge audit, privacy audit
-- npm audit: 11 vulnerabilidades em ferramentas de dev (não afetam usuários) — decisão: manter
-- Info.plist não encontrado — não urgente, anotado como pendência pré-build iOS
+- npm audit: 11 vulnerabilidades em ferramentas de dev — decisão: manter
+- Info.plist não encontrado — pendência pré-build iOS
 
-### SEO — robots.txt + sitemap.xml ativados
-- `vercel.json`: adicionadas rotas `/robots.txt` → `/api/robots` e `/sitemap.xml` → `/api/sitemap.xml`
-- Sitemap puxa eventos publicados do Supabase dinamicamente
-- Robots bloqueia /admin, /checkout, /parceiro
+### 2. SEO
+- vercel.json: robots.txt + sitemap.xml ativados
 
-### Eventos Privados — aba no perfil
-- `MinhasPendenciasView.tsx`: nova aba "Eventos Privados" (3ª aba)
-- Timeline visual (Enviada → Visualizada → Em análise → Aprovada/Recusada)
-- Mensagens do gerente e motivo de recusa visíveis
+### 3. Eventos Privados
+- MinhasPendenciasView: nova aba "Eventos Privados" com timeline visual
 
-### Resgate de Deals — ativado na aba Buscar
-- `BeneficiosMVTab.tsx`: membros MAIS VANTA podem resgatar deals direto na busca
-- Botão "Quero resgatar", seção "Deal Ativo", QR code, cancelar, enviar post
-- Imports: clubeResgatesService, QRCodeSVG, ResgateMaisVanta
+### 4. Resgate de Deals
+- BeneficiosMVTab: membros MAIS VANTA resgatam deals na busca (QR, status, cancelar)
 
-### Onboarding Usuário Novo
-- `OnboardingView.tsx` reescrito: 4 slides + cidade + interesses + transição "Tudo pronto!"
-- Cidade obrigatória, interesses opcional
-- Salva estado/cidade/interesses no banco (profiles) + store
-- Flag localStorage `vanta_onboarding_done` (já existia no useAppHandlers)
-- Pré-carrega interesses em background durante slides
-- Preflight 8/8
+### 5. Bundle -34%
+- recharts e leaflet removidos do manualChunks (lazy via AdminGateway/RadarView)
+- Core ~4MB (era ~6MB)
 
-### Bundle — Otimização 34%
-- `vite.config.ts`: removido recharts e leaflet do manualChunks
-- Carregamento inicial ~6MB → ~4MB (libs pesadas só carregam no admin/radar)
+### 6. Onboarding Usuário Novo
+- Simplificado: 1 tela só — busca de cidades via API IBGE (5571 municípios)
+- Sem slides, sem interesses. Só cidade.
 
-### Limpeza
-- `StatusBadge.tsx` removido (duplicado — função inline já existia em DealsMaisVantaView)
+### 7. Melhorias Visuais
+- EventCard: tags coloridas por estilo musical (16 cores)
+- EventFooter: botão dourado com sombra
+- Estados vazios com textos sóbrios
 
-### Melhorias Visuais (Equipe de Design + Marca + Narrativa)
-- `EventCard.tsx`: tags coloridas por estilo musical (16 mapeamentos de cor)
-- `EventFooter.tsx`: botão de compra dourado com sombra (substituiu gradiente roxo/rosa)
-- `EventFeed.tsx`: estado vazio com texto "Sua cidade ainda tá no aquecimento..."
-- `SearchResults.tsx`: estado vazio com texto "Nada encontrado por aqui..."
+### 8. Copy Premium
+- Cadastro: "Bem-vindo à VANTA. A noite agora é sua."
+- Carteira: "A noite te espera..."
+- CTA: "Garantir Ingresso"
 
-## Pendencias
-- Nenhuma pendência de commit
+### 9. Banner MAIS VANTA na Home
+- Substituiu QuickActions (Carteira/Favoritos/MaisVanta)
+- Visual premium com gradiente dourado e estrela
+- 3 estados: não-membro, pendente, membro
+
+### 10. Navegação Inteligente
+- goBack em TODAS sub-views do Perfil volta pra tab de origem
+- returnTabRef guarda de onde veio (sem flash)
+- resetNavigation no logout (limpa scroll positions)
+
+### 11. Cadastro Simplificado + Formulário MV
+- Cadastro: removido telefone (fica email+senha+nome+nascimento+termos)
+- Checkout: modal de telefone no 1º checkout se não tem
+- Avatares: migrados do imgur pro Supabase Storage (quadrados)
+- Formulário MAIS VANTA enriquecido: gênero, telefone, frequência, interesses (condicionais)
+- Migration: coluna frequencia em solicitacoes_clube
+- 19 interesses cadastrados no banco (Eletrônica, Funk, Sertanejo, etc)
+
+### 12. Limpeza de Riscos (Knip + Bundle)
+- QuickActions.tsx REMOVIDO (ninguém importava, substituído por MaisVantaBanner)
+- fmtTelefone aplicado nos 3 campos: CheckoutPage, EditProfileView, ClubeOptInView
+- knip.config.ts limpo (patterns redundantes removidos)
+
+### Limpeza (-865 linhas)
+- DealsMembroSection.tsx REMOVIDO
+- MaisVantaReservaModal.tsx REMOVIDO
+- MinhasSolicitacoesPrivadoView.tsx REMOVIDO
+- StatusBadge.tsx REMOVIDO
+- QuickActions.tsx REMOVIDO
+
+### Agentes adicionados/atualizados
+- Lia (guardiao-memoria.md) — nova
+- Iris (especialista-visual.md) — nova
+- Brunei (brunei.md) — atualizado
+- Alex (gerente-geral.md) — atualizado com convocação automática + Lia obrigatória antes de commit
+- REGRAS-DA-EMPRESA.md — atualizado (assinatura + revisão cruzada + Lia)
+- VANTA-EMPRESA.md — novo (briefing da empresa)
 
 ## Pendencias futuras
-### Parceria (etapas restantes)
-- Etapa 3: aprovacao master (edicoes do dono precisam OK, exceto equipe)
-- Etapa 4: onboarding tutorial novos donos
 
-### iOS — Antes do primeiro build
-- Criar Info.plist com permissões (câmera, localização, push, etc)
+### Alta prioridade (pré-lançamento)
+- Login social (Google/Apple) — 30-50% mais cadastros
+- Rotas dedicadas por sub-view — cada tela com URL própria
+- Configurar Stripe secrets no Supabase — pra cobrar produtores
+- Testar app no celular real
 
-### Arquivar mensagens
-- Testar swipe no mobile (touch events)
-- Testar agrupamento notificacoes pos-fix
+### Média prioridade
+- Configurar Meta API token — verificação Instagram
+- Classificação etária dos eventos (ECA Digital — lei em vigor)
+- PIX no checkout
 
-### Código morto — LIMPO
-- MinhasSolicitacoesPrivadoView.tsx — REMOVIDO (substituída pela aba em MinhasPendenciasView)
-- DealsMembroSection.tsx — REMOVIDO (substituída pelo BeneficiosMVTab)
-- MaisVantaReservaModal.tsx — REMOVIDO (não era usada)
-- api/robots.ts e api/sitemap.xml.ts — ATIVADOS (não são código morto)
+### Baixa prioridade
+- Parceria etapa 3 (aprovação master)
+- Parceria etapa 4 (onboarding tutorial novos donos)
+- iOS: Info.plist + build nativo
+- Internacionalização (app em inglês pra turistas)

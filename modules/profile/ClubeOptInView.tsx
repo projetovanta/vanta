@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { fmtTelefone } from '@/components/auth/authHelpers';
 import {
   ArrowLeft,
   Crown,
@@ -1061,7 +1062,7 @@ export const ClubeOptInView: React.FC<Props> = ({ profile, onBack, onSuccess, al
                 inputMode="numeric"
               />
               <input
-                value={telNumero}
+                value={fmtTelefone(telNumero)}
                 onChange={e => setTelNumero(e.target.value.replace(/\D/g, '').slice(0, 9))}
                 placeholder="99999-9999"
                 className="flex-1 min-w-0 px-4 py-3 bg-zinc-900/80 border border-zinc-800 rounded-xl text-white text-sm placeholder-zinc-500 focus:outline-none focus:border-[#FFD300]/20"

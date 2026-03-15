@@ -1,4 +1,5 @@
 import React, { useState, useRef, useMemo, useCallback } from 'react';
+import { fmtTelefone } from '@/components/auth/authHelpers';
 import {
   ArrowLeft,
   Camera,
@@ -515,7 +516,7 @@ export const EditProfileView: React.FC<{
                 </div>
                 <input
                   type="tel"
-                  value={formData.telefone.numero}
+                  value={fmtTelefone(formData.telefone.numero)}
                   onChange={e =>
                     setFormData(p => ({
                       ...p,

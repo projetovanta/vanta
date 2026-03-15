@@ -77,10 +77,13 @@
 ### Agentes adicionados/atualizados
 - Lia (guardiao-memoria.md) — nova
 - Iris (especialista-visual.md) — nova
+- Dr. Théo (consultor-legal.md) — novo (LGPD, CDC, compliance)
 - Brunei (brunei.md) — atualizado
-- Alex (gerente-geral.md) — atualizado com convocação automática + Lia obrigatória antes de commit
+- Alex (gerente-geral.md) — atualizado com convocação automática + Lia obrigatória + seção "Alex Chatão" (checa memórias vs últimos 3 commits)
 - REGRAS-DA-EMPRESA.md — atualizado (assinatura + revisão cruzada + Lia)
-- VANTA-EMPRESA.md — novo (briefing da empresa)
+- VANTA-EMPRESA.md — atualizado (Iris e Théo adicionados na equipe)
+- CLAUDE.md — Dev Squad atualizado (Lia, Iris, Théo, Brunei + atalhos por nome)
+- Hook pre-commit-memoria.md — novo (Lia checa memórias antes de todo commit)
 
 ## Pendencias futuras
 

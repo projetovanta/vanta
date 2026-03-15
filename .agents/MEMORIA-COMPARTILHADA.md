@@ -55,6 +55,10 @@
 [2026-03-15] QuickActions.tsx DELETADO — era órfão, ninguém importava → afeta home
 [2026-03-15] fmtTelefone aplicado em CheckoutPage, EditProfileView, ClubeOptInView — telefone formata em tempo real → afeta checkout, perfil, clube
 [2026-03-15] knip.config.ts limpo — removidos patterns redundantes → afeta tooling
+[2026-03-15] Dr. Théo (consultor-legal.md) importado — agente de direito digital, LGPD, CDC → afeta todos que precisam de compliance
+[2026-03-15] Alex Chatão — checagem automática de memórias vs últimos 3 commits toda vez que é chamado → afeta fluxo do Alex
+[2026-03-15] Hook pre-commit-memoria — Lia checa memórias antes de todo commit → afeta fluxo de commit
+[2026-03-15] CLAUDE.md — Dev Squad atualizado com Lia, Iris, Théo, Brunei + atalhos → afeta ativação de agentes
 
 ---
 

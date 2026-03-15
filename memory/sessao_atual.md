@@ -35,7 +35,12 @@
 - TIPO_CONFIG no admin VantaIndicaView com todos os 7 tipos
 - Admin funciona com preenchimento manual (auto-preenchimento avançado = fase futura)
 
-### 5. Home Redesign
+### 5. Detalhe do Evento Redesign
+- Footer adaptativo: gratuito→"Eu vou!" dourado, pago→"Eu vou!"+Garantir, já comprou→ambos visíveis
+- "Últimas vagas" vermelho quando >80% (capacityPct prop, opcional)
+- Texto MV sutil: "Este evento tem vantagens pra membros — saiba mais"
+
+### 6. Home Redesign
 - Seções removidas: SavedEventsSection, NewOnPlatformSection, MaisVantaBanner
 - Ordem nova: Saudação→Indica→Ao Vivo→Amigos Vão→Perto→Semana→Pra Você→Feed
 - Saudação guest: "Descubra o que tá rolando" (sem nome)

@@ -75,6 +75,7 @@
 [2026-03-15] "Deals" trocado por "Benefícios Exclusivos de Parceiros" nos Termos de Uso (seção 7.6) → afeta legal, comunicação
 [2026-03-15] Home REORGANIZADA — removidos: SavedEventsSection, NewOnPlatformSection, MaisVantaBanner. Ordem nova: Saudação→Indica→Ao Vivo→Amigos Vão→Perto→Semana→Pra Você→Feed. Saudação guest: "Descubra o que tá rolando" → afeta home, navegação
 [2026-03-15] VANTA Indica expandido — 5+2 tipos: EVENTO(verde), PARCEIRO(âmbar), MAIS_VANTA(dourado), EXPERIENCIA(roxo), INFORMATIVO(cinza) + legados DESTAQUE_EVENTO/PUBLICIDADE. Badges coloridos no Highlights. Admin suporta todos os tipos → afeta home, admin, curadoria
+[2026-03-15] Detalhe do Evento REDESIGN — Footer adaptativo: gratuito="Eu vou!" dourado, pago="Eu vou!"+Garantir, já comprou=ambos visíveis, lotando=Últimas vagas vermelho. Texto MV sutil: "Este evento tem vantagens pra membros" → afeta event-detail
 
 ---
 

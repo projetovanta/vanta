@@ -370,7 +370,7 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
             >
               <Crown size="0.875rem" className="text-[#FFD300]/60 shrink-0" />
               <span className="text-zinc-500 text-[0.625rem]">
-                Esta comunidade tem <span className="text-[#FFD300]/80 font-bold">MAIS VANTA</span> — saiba mais
+                Este evento tem <span className="text-[#FFD300]/80 font-bold">vantagens pra membros</span> — saiba mais
               </span>
             </button>
           )}

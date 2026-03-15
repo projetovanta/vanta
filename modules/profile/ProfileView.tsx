@@ -9,7 +9,6 @@ import {
   Eye,
   Building2,
   Sparkles,
-  Clock,
   Crown,
   X,
   FileCheck,
@@ -18,7 +17,6 @@ import {
   Trash2,
   AlertTriangle,
   Loader2,
-  ScrollText,
   Ban,
   ClipboardList,
 } from 'lucide-react';
@@ -372,7 +370,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
           <div className="px-4 space-y-2 mb-2">
             <div className="grid grid-cols-2 gap-2">
               <button
-                onClick={() => setSubView('WALLET')}
+                onClick={() => setSubView('MINHA_EXPERIENCIA')}
                 className="bg-zinc-900/80 backdrop-blur-sm border border-white/5 rounded-xl p-4 flex flex-col items-center justify-center gap-3 shadow-xl active:scale-[0.98] transition-all"
               >
                 <div className="w-10 h-10 bg-zinc-800 rounded-lg flex items-center justify-center shadow-lg shrink-0">
@@ -380,7 +378,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                 </div>
                 <div className="text-center min-w-0">
                   <span className="block text-xs font-bold text-white leading-none mb-0.5 truncate">
-                    Minha Carteira
+                    Minha Experiência
                   </span>
                   <span className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest opacity-80">
                     {totalAccess === 0 ? 'Nenhum item' : `${totalAccess} Acessos`}
@@ -432,20 +430,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                 </div>
               </button>
             </div>
-            <button
-              onClick={() => setSubView('HISTORICO')}
-              className="w-full bg-black/40 border border-white/5 rounded-xl py-3 flex items-center justify-center gap-2 text-[0.625rem] font-black uppercase tracking-[0.25em] text-zinc-400 hover:text-white transition-all active:scale-95 shadow-inner"
-            >
-              <Clock size="0.75rem" className="text-[#FFD300]" />
-              Meu Histórico
-            </button>
-            <button
-              onClick={() => setSubView('MINHAS_SOLICITACOES')}
-              className="w-full bg-black/40 border border-white/5 rounded-xl py-3 flex items-center justify-center gap-2 text-[0.625rem] font-black uppercase tracking-[0.25em] text-zinc-400 hover:text-white transition-all active:scale-95 shadow-inner"
-            >
-              <ScrollText size="0.75rem" className="text-purple-400" />
-              Minhas Solicitações
-            </button>
+            {/* Histórico absorvido por "Minha Experiência". Solicitações absorvido por "Pendências". */}
             <button
               onClick={() => setSubView('PENDENCIAS')}
               className="w-full bg-black/40 border border-white/5 rounded-xl py-3 flex items-center justify-center gap-2 text-[0.625rem] font-black uppercase tracking-[0.25em] text-zinc-400 hover:text-white transition-all active:scale-95 shadow-inner"

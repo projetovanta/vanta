@@ -40,7 +40,13 @@
 - "Últimas vagas" vermelho quando >80% (capacityPct prop, opcional)
 - Texto MV sutil: "Este evento tem vantagens pra membros — saiba mais"
 
-### 6. Home Redesign
+### 6. Perfil Simplificado
+- "Minha Carteira" → "Minha Experiência" (MINHA_EXPERIENCIA)
+- Removidos botões: "Meu Histórico", "Minhas Solicitações"
+- MAIS VANTA card mantido separado
+- Subviews legadas mantidas pra deep links
+
+### 7. Home Redesign
 - Seções removidas: SavedEventsSection, NewOnPlatformSection, MaisVantaBanner
 - Ordem nova: Saudação→Indica→Ao Vivo→Amigos Vão→Perto→Semana→Pra Você→Feed
 - Saudação guest: "Descubra o que tá rolando" (sem nome)

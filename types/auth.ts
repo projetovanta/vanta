@@ -185,7 +185,8 @@ export type ProfileSubView =
   | 'MAIN'
   | 'EDIT_PROFILE'
   | 'PREFERENCES'
-  | 'WALLET'
+  | 'MINHA_EXPERIENCIA'
+  | 'WALLET' // legado — redireciona pra MINHA_EXPERIENCIA
   | 'MY_TICKETS'
   | 'PUBLIC_PREVIEW'
   | 'CHAT_ROOM'

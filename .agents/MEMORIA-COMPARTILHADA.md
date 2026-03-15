@@ -76,6 +76,7 @@
 [2026-03-15] Home REORGANIZADA — removidos: SavedEventsSection, NewOnPlatformSection, MaisVantaBanner. Ordem nova: Saudação→Indica→Ao Vivo→Amigos Vão→Perto→Semana→Pra Você→Feed. Saudação guest: "Descubra o que tá rolando" → afeta home, navegação
 [2026-03-15] VANTA Indica expandido — 5+2 tipos: EVENTO(verde), PARCEIRO(âmbar), MAIS_VANTA(dourado), EXPERIENCIA(roxo), INFORMATIVO(cinza) + legados DESTAQUE_EVENTO/PUBLICIDADE. Badges coloridos no Highlights. Admin suporta todos os tipos → afeta home, admin, curadoria
 [2026-03-15] Detalhe do Evento REDESIGN — Footer adaptativo: gratuito="Eu vou!" dourado, pago="Eu vou!"+Garantir, já comprou=ambos visíveis, lotando=Últimas vagas vermelho. Texto MV sutil: "Este evento tem vantagens pra membros" → afeta event-detail
+[2026-03-15] Perfil SIMPLIFICADO — "Minha Carteira"→"Minha Experiência" (MINHA_EXPERIENCIA). Removidos da tela: "Meu Histórico" (absorvido), "Minhas Solicitações" (absorvido por Pendências). Card MAIS VANTA mantido separado → afeta perfil, navegação
 
 ---
 

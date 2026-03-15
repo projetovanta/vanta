@@ -264,7 +264,7 @@ export default function App() {
       );
     }
 
-    if (nav.profileSubView === 'WALLET' && nav.activeTab === 'PERFIL') {
+    if ((nav.profileSubView === 'WALLET' || nav.profileSubView === 'MINHA_EXPERIENCIA') && nav.activeTab === 'PERFIL') {
       return (
         <ModuleErrorBoundary moduleName="Wallet">
           <WalletView

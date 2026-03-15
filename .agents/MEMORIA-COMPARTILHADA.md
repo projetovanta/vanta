@@ -68,6 +68,11 @@
 [2026-03-15] MEMORY.md recriado — índice nunca havia sido commitado no git, se perdeu entre sessões. Recriado com 132 linhas, 86 memórias → afeta navegação de memórias
 [2026-03-15] Guest Modal contextual IMPLEMENTADO — Shield→Sparkles, "Área Restrita"→"Crie sua conta", texto adapta ao que guest tentou (curtir/comprar/mensagem/perfil/notificação) → afeta AppModals, useAppHandlers, App.tsx, RestrictedModal
 [2026-03-15] Onboarding 3 telas IMPLEMENTADO — Cidade→Interesses(opcional)→Boas-vindas. 19 chips musicais, salva em profiles.interesses → afeta onboarding, perfil, curadoria
+[2026-03-15] AuthModal REDESIGN — glass morphism, Sparkles, labels 10px, ordem nome→email→senha→nasc, botão "Cadastrar", glow dourado → afeta cadastro, auth
+[2026-03-15] Validação de nome — isValidNome() exige 2 palavras, bloqueia padrões fake (sem vogais, repetições, números) → afeta cadastro, authHelpers
+[2026-03-15] Fix notificationsService — INSERT agora SEMPRE via RPC inserir_notificacao (SECURITY DEFINER). Corrige erro 403 no cadastro → afeta notificações, auth
+[2026-03-15] Selfie biométrica REMOVIDA dos Termos de Uso e Política de Privacidade (não é coletada no app) → afeta legal, App Store labels, Google Play Data Safety
+[2026-03-15] "Deals" trocado por "Benefícios Exclusivos de Parceiros" nos Termos de Uso (seção 7.6) → afeta legal, comunicação
 
 ---
 

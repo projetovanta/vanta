@@ -2,13 +2,10 @@ import React, { useMemo, useCallback, useState } from 'react';
 import { Evento } from '../../types';
 import { EventFeed } from './components/EventFeed';
 import { Highlights } from './components/Highlights';
-import { SavedEventsSection } from './components/SavedEventsSection';
 import { EventCardSkeleton } from '../../components/Skeleton';
 import { LiveNowSection } from './components/LiveNowSection';
 import { NearYouSection } from './components/NearYouSection';
 import { ThisWeekSection } from './components/ThisWeekSection';
-import { NewOnPlatformSection } from './components/NewOnPlatformSection';
-import { MaisVantaBanner } from './components/MaisVantaBanner';
 import { ForYouSection } from './components/ForYouSection';
 import { FriendsGoingSection } from './components/FriendsGoingSection';
 import { LazySection } from './components/LazySection';
@@ -48,10 +45,10 @@ export const HomeView: React.FC<HomeViewProps> = ({
 }) => {
   const selectedCity = useAuthStore(s => s.selectedCity);
   const userName = useAuthStore(s => s.currentAccount.nome);
+  const isGuest = useAuthStore(s => s.currentAccount.role) === 'vanta_guest';
   const tickets = useTicketsStore(s => s.myTickets);
   const presencaIds = useTicketsStore(s => s.myPresencas);
   const eventos = useExtrasStore(s => s.allEvents);
-  const savedEventIds = useExtrasStore(s => s.savedEvents);
   const onRefresh = useExtrasStore(s => s.refreshEvents);
   const loadMoreEvents = useExtrasStore(s => s.loadMoreEvents);
   const hasMoreEvents = useExtrasStore(s => s.hasMoreEvents);
@@ -59,11 +56,6 @@ export const HomeView: React.FC<HomeViewProps> = ({
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [pullDistance, setPullDistance] = useState(0);
   const [touchStartY, setTouchStartY] = useState(0);
-
-  const savedEventos = useMemo(
-    () => (savedEventIds ?? []).map(id => eventos.find(e => e.id === id)).filter(Boolean) as Evento[],
-    [savedEventIds, eventos],
-  );
 
   const liveEventos = useMemo(
     () => eventos.filter(e => isEventHappeningNow(e) && (!selectedCity || e.cidade === selectedCity)),
@@ -86,18 +78,6 @@ export const HomeView: React.FC<HomeViewProps> = ({
       cityEventos.filter(e => e.dataReal >= todayISO && e.dataReal <= weekEndISO && !liveIds.has(e.id)),
     ).slice(0, 15);
   }, [cityEventos, liveEventos]);
-
-  // Novos na plataforma: comunidades com poucos eventos (1–2) = novos produtores
-  const newOnPlatform = useMemo(() => {
-    const comunidadeCount = new Map<string, number>();
-    eventos.forEach(e => {
-      if (e.comunidade?.id) comunidadeCount.set(e.comunidade.id, (comunidadeCount.get(e.comunidade.id) ?? 0) + 1);
-    });
-    const todayNow = new Date().toLocaleDateString('sv-SE', { timeZone: 'America/Sao_Paulo' });
-    return cityEventos
-      .filter(e => e.comunidade?.id && (comunidadeCount.get(e.comunidade.id) ?? 0) <= 2 && e.dataReal >= todayNow)
-      .slice(0, 10);
-  }, [cityEventos, eventos]);
 
   // Pull-to-refresh
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
@@ -140,7 +120,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
   );
 
   const hasAnyContent = cityEventos.length > 0;
-  const firstName = userName?.split(' ')[0];
+  const firstName = isGuest ? undefined : userName?.split(' ')[0];
 
   return (
     <div
@@ -161,54 +141,41 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </div>
       )}
 
-      {/* Saudação personalizada — px-5 individual, carrossel com edge-bleed */}
+      {/* Saudação — personalizada se logado, genérica se guest */}
       <div className="px-5 pt-6 pb-2">
         <p className="text-sm text-zinc-400">
           {getGreeting()}
           {firstName ? ',' : ''}
         </p>
-        {firstName && (
+        {firstName ? (
           <h1 style={TYPOGRAPHY.screenTitle} className="text-2xl text-white">
             {firstName}
           </h1>
+        ) : (
+          <p className="text-zinc-500 text-xs mt-1">Descubra o que tá rolando</p>
         )}
       </div>
 
-      {/* MAIS VANTA Banner */}
-      <MaisVantaBanner onNavigateToClube={() => onNavigateToProfile('CLUBE')} />
-
-      {/* Notificação inline */}
-
-      {/* Bloco de Destaques Horizontal */}
+      {/* VANTA Indica (Highlights) */}
       <Highlights currentCity={selectedCity} onEventoClick={onEventoIndicaClick} onComemorarClick={onComemorarClick} />
 
       {/* Acontecendo Agora */}
       <LiveNowSection eventos={liveEventos} onEventClick={onEventClick} />
 
-      {/* Amigos vão — só aparece se tem amigos com ingresso */}
+      {/* Amigos vão — só aparece se logado e tem amigos com ingresso */}
       <FriendsGoingSection eventos={eventos} onEventClick={onEventClick} onComunidadeClick={onComunidadeClick} />
 
-      {/* Seções below-the-fold — renderizam quando o scroll se aproxima */}
+      {/* Perto de você */}
       <LazySection>
         <NearYouSection eventos={cityEventos} onEventClick={onEventClick} onComunidadeClick={onComunidadeClick} />
       </LazySection>
 
+      {/* Esta semana */}
       <LazySection>
         <ThisWeekSection eventos={thisWeekEventos} onEventClick={onEventClick} onComunidadeClick={onComunidadeClick} />
       </LazySection>
 
-      <LazySection>
-        <SavedEventsSection eventos={savedEventos} onEventClick={onEventClick} onComunidadeClick={onComunidadeClick} />
-      </LazySection>
-
-      <LazySection>
-        <NewOnPlatformSection
-          eventos={newOnPlatform}
-          onEventClick={onEventClick}
-          onComunidadeClick={onComunidadeClick}
-        />
-      </LazySection>
-
+      {/* Pra Você */}
       <LazySection>
         <ForYouSection
           eventos={eventos}
@@ -219,6 +186,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
         />
       </LazySection>
 
+      {/* Feed principal */}
       <LazySection>
         <EventFeed
           currentCity={selectedCity}

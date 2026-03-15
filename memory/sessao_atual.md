@@ -40,7 +40,12 @@
 - "Últimas vagas" vermelho quando >80% (capacityPct prop, opcional)
 - Texto MV sutil: "Este evento tem vantagens pra membros — saiba mais"
 
-### 6. Busca Redesign
+### 6. Camada MV
+- Home: saudação com Crown dourada + seção "Seus Benefícios" (link pro CLUBE)
+- EventCard: ícone dourado mínimo sem texto (era Crown+MV)
+- Perfil público: Crown ao lado do nome de membros MV
+
+### 7. Busca Redesign
 - "Benefícios" → "Pra Você" (tab sempre visível)
 - Não-membros: tela lock com CTA "Saiba mais" (FOMO)
 - Placeholder: "Buscar lugares pra você..."

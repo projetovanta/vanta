@@ -126,10 +126,8 @@ export const EventCard: React.FC<EventCardProps> = React.memo(
                 );
               })()}
               {evento.temBeneficioMaisVanta && (
-                <span className="flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-gradient-to-r from-[#FFD300]/20 to-[#FFD300]/5 border border-[#FFD300]/30 text-[#FFD300] text-[0.5rem] font-black uppercase tracking-wider shrink-0">
-                  {' '}
-                  {/* lint-layout-ok */}
-                  <Crown size="0.5rem" /> MV
+                <span className="flex items-center px-1 py-0.5 rounded-md bg-[#FFD300]/10 border border-[#FFD300]/20 shrink-0">
+                  <Crown size="0.625rem" className="text-[#FFD300]" />
                 </span>
               )}
             </div>

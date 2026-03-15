@@ -27,8 +27,10 @@ import {
   ChevronRight,
   Pencil,
   Flag,
+  Crown,
 } from 'lucide-react';
 import { Membro, PrivacidadeOpcao } from '../../types';
+import { clubeService } from '../../features/admin/services/clubeService';
 import { TYPOGRAPHY } from '../../constants';
 import { achievementsService, Achievement, Badge, NIVEL_CONFIG } from '../../services/achievementsService';
 import { useSocialStore } from '../../stores/socialStore';
@@ -246,9 +248,12 @@ export const PublicProfilePreviewView: React.FC<{
             </button>
           </div>
 
-          <h2 style={TYPOGRAPHY.screenTitle} className="text-3xl mb-1 italic text-center">
-            {profile.nome}
-          </h2>
+          <div className="flex items-center justify-center gap-2 mb-1">
+            <h2 style={TYPOGRAPHY.screenTitle} className="text-3xl italic">
+              {profile.nome}
+            </h2>
+            {clubeService.isMembro(profile.id) && <Crown size="1.125rem" className="text-[#FFD300]" />}
+          </div>
           <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-[0.3em] mb-3 opacity-60 text-center">
             Membro Confirmado
           </p>

@@ -11,10 +11,11 @@ import { FriendsGoingSection } from './components/FriendsGoingSection';
 import { LazySection } from './components/LazySection';
 import { isEventHappeningNow, sortEvents } from '../../utils';
 import { TYPOGRAPHY } from '../../constants';
-import { MapPin, Search } from 'lucide-react';
+import { MapPin, Search, Crown } from 'lucide-react';
 import { useAuthStore } from '../../stores/authStore';
 import { useTicketsStore } from '../../stores/ticketsStore';
 import { useExtrasStore } from '../../stores/extrasStore';
+import { clubeService } from '../../features/admin/services/clubeService';
 
 interface HomeViewProps {
   onEventClick: (e: Evento) => void;
@@ -46,6 +47,8 @@ export const HomeView: React.FC<HomeViewProps> = ({
   const selectedCity = useAuthStore(s => s.selectedCity);
   const userName = useAuthStore(s => s.currentAccount.nome);
   const isGuest = useAuthStore(s => s.currentAccount.role) === 'vanta_guest';
+  const userId = useAuthStore(s => s.currentAccount.id);
+  const isMembroMV = useMemo(() => (!isGuest && userId ? clubeService.isMembro(userId) : false), [isGuest, userId]);
   const tickets = useTicketsStore(s => s.myTickets);
   const presencaIds = useTicketsStore(s => s.myPresencas);
   const eventos = useExtrasStore(s => s.allEvents);
@@ -141,20 +144,37 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </div>
       )}
 
-      {/* Saudação — personalizada se logado, genérica se guest */}
+      {/* Saudação — personalizada se logado, genérica se guest, coroa se MV */}
       <div className="px-5 pt-6 pb-2">
         <p className="text-sm text-zinc-400">
           {getGreeting()}
           {firstName ? ',' : ''}
         </p>
         {firstName ? (
-          <h1 style={TYPOGRAPHY.screenTitle} className="text-2xl text-white">
-            {firstName}
-          </h1>
+          <div className="flex items-center gap-2">
+            <h1 style={TYPOGRAPHY.screenTitle} className="text-2xl text-white">
+              {firstName}
+            </h1>
+            {isMembroMV && <Crown size="1rem" className="text-[#FFD300]" />}
+          </div>
         ) : (
           <p className="text-zinc-500 text-xs mt-1">Descubra o que tá rolando</p>
         )}
       </div>
+
+      {/* Seus Benefícios — só membros MV */}
+      {isMembroMV && (
+        <div className="px-5 pb-2">
+          <button
+            onClick={() => onNavigateToProfile?.('CLUBE')}
+            className="w-full flex items-center gap-3 px-4 py-3 bg-[#FFD300]/5 border border-[#FFD300]/15 rounded-xl active:scale-[0.98] transition-all"
+          >
+            <Crown size="1rem" className="text-[#FFD300] shrink-0" />
+            <span className="text-sm text-zinc-300">Seus benefícios disponíveis</span>
+            <span className="ml-auto text-[#FFD300] text-xs font-bold">Ver</span>
+          </button>
+        </div>
+      )}
 
       {/* VANTA Indica (Highlights) */}
       <Highlights currentCity={selectedCity} onEventoClick={onEventoIndicaClick} onComemorarClick={onComemorarClick} />

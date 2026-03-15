@@ -1,8 +1,8 @@
 # Sessao Atual — Estado para Continuidade
 
 ## Branch: main
-## Ultimo commit: `a897632` — fix(ci): remover eslint-disable desnecessário
-## Mudancas locais: SIM — auditoria completa + ativações — não commitado
+## Ultimo commit: `8d681fe` — perf: otimiza bundle
+## Mudancas locais: SIM — onboarding usuário novo — não commitado
 
 ## Repositorio e Deploy
 - **GitHub**: `projetovanta/vanta` (conta: projetovanta)
@@ -32,12 +32,23 @@
 - Botão "Quero resgatar", seção "Deal Ativo", QR code, cancelar, enviar post
 - Imports: clubeResgatesService, QRCodeSVG, ResgateMaisVanta
 
+### Onboarding Usuário Novo
+- `OnboardingView.tsx` reescrito: 4 slides + cidade + interesses + transição "Tudo pronto!"
+- Cidade obrigatória, interesses opcional
+- Salva estado/cidade/interesses no banco (profiles) + store
+- Flag localStorage `vanta_onboarding_done` (já existia no useAppHandlers)
+- Pré-carrega interesses em background durante slides
+- Preflight 8/8
+
+### Bundle — Otimização 34%
+- `vite.config.ts`: removido recharts e leaflet do manualChunks
+- Carregamento inicial ~6MB → ~4MB (libs pesadas só carregam no admin/radar)
+
 ### Limpeza
 - `StatusBadge.tsx` removido (duplicado — função inline já existia em DealsMaisVantaView)
 
 ## Pendencias
 - **Commit + push** — aguardando OK do Dan
-- **Preflight final** — rodando agora
 
 ## Pendencias futuras
 ### Parceria (etapas restantes)

@@ -158,6 +158,17 @@ Toda mudança segue este fluxo obrigatório:
 - Qualquer erro encontrado → consultar estas regras → perguntar ao Dan
 - Sem exceção
 
+## Regra Crítica — Revisão Cruzada
+
+Nenhuma tarefa é entregue sem revisão:
+- Código frontend → Val (QA) testa + Zara (Segurança) revisa
+- Mudança no banco → Kai confirma schema + Sage revisa performance
+- Mudança em pagamento → Nix valida fluxo + Zara revisa segurança
+- Deploy → Ops checa pipeline + Val confirma testes passando
+
+Se alguém encontrar problema na área de outro → convoca o responsável automaticamente.
+Nunca entregar sem que pelo menos 1 outro especialista tenha revisado.
+
 ---
 
 ## Scripts Obrigatórios

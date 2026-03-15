@@ -154,7 +154,7 @@ Radar = mapa de eventos por geolocalizacao.
 | 14 | Interesses | OK | InterestSelector 305L |
 | 15 | Clube opt-in | OK | ClubeOptInView 785L |
 | 16 | PreferencesView | OK | 83L (basico) |
-| 17 | Onboarding | OK | OnboardingView.tsx 119L (welcome flow pos-signup) |
+| 17 | Onboarding | OK | OnboardingView.tsx ~290L (slides + cidade + interesses + transição. Salva no banco) |
 | 18 | Selfie de verificacao | REMOVIDO | Removido do signup (Perfil Progressivo). Portaria exibe selfie para conferencia visual |
 | 19 | Favoritos | OK | evento_favoritos + favoritosService |
 | 20 | Product Analytics | OK | analytics_events + analyticsService (batch tracking) |

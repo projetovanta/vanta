@@ -8,8 +8,8 @@
 
 ## Estado Atual do Projeto
 
-**Última atualização:** 2026-03-14
-**Atualizado por:** Dan (configuração inicial)
+**Última atualização:** 2026-03-15
+**Atualizado por:** Alex (Gerente Geral)
 **Fase:** Produção e testes finais
 
 ---
@@ -19,7 +19,9 @@
 <!-- Formato: [DATA] DECISÃO — impacto — decidido por Dan -->
 <!-- Exemplo: [2026-03-14] Escolhemos Stripe Connect ao invés de split manual — afeta todo fluxo de pagamento — Dan decidiu -->
 
-_Nenhuma decisão registrada ainda. Agentes devem registrar aqui toda decisão do Dan que afete o projeto._
+[2026-03-15] Vulnerabilidades npm (11, 4 altas) — manter como está, são em ferramentas de dev — Dan decidiu
+[2026-03-15] Bundle: recharts e leaflet removidos do manualChunks — carregam lazy agora — Dan aprovou
+[2026-03-15] Onboarding: slides + cidade + interesses — cidade obrigatória, interesses opcional — Dan aprovou
 
 ---
 
@@ -28,7 +30,12 @@ _Nenhuma decisão registrada ainda. Agentes devem registrar aqui toda decisão d
 <!-- Quando alguém muda algo que outros agentes precisam saber, registra aqui -->
 <!-- Formato: [DATA] O QUE MUDOU → QUEM É AFETADO → O QUE PRECISA SABER -->
 
-_Nenhuma mudança registrada ainda._
+[2026-03-15] SEO ativado — robots.txt + sitemap.xml no vercel.json → afeta SEO/indexação
+[2026-03-15] OnboardingView reescrito — agora coleta cidade + interesses → afeta auth, perfil, home (personalização)
+[2026-03-15] BeneficiosMVTab com resgate — membros podem resgatar deals na busca → afeta MAIS VANTA, busca
+[2026-03-15] MinhasPendenciasView — nova aba Eventos Privados → afeta perfil
+[2026-03-15] StatusBadge.tsx removido — era duplicado → afeta admin/dashboard
+[2026-03-15] vite.config.ts — recharts/leaflet fora do manualChunks → afeta bundle/performance
 
 ---
 

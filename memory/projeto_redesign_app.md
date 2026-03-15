@@ -120,7 +120,9 @@ VANTA Indica (Highlights) — decisões:
 4. **Interesses** (opcional): chips de estilos musicais. Pode pular. Copy: "Quanto mais a gente sabe, melhor fica"
 5. **Boas-vindas**: "Pronto, [Nome]. Sua noite começa aqui." + animação dourada + botão "Explorar"
 - Regras: máximo 5 telas, pular sempre possível (exceto cadastro), sem menção ao MAIS VANTA no onboarding
-- Visual: escuro, atmosférico, dourado mínimo, fotos de alta qualidade, Playfair nos títulos
+- Visual: escuro, atmosférico, dourado mínimo, fotos de alta qualidade (Unsplash/Pexels até ter fotos reais), Playfair nos títulos
+- Botão principal vitrine: "Criar Conta" (não "Fazer Parte" — muito compromisso pra quem não conhece)
+- Botão secundário: "Já tem conta? Entrar"
 
 ### Tom geral do app
 - Mistura de todas as sensações: insider + exclusividade + ponto de partida

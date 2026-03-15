@@ -269,6 +269,10 @@ Quando o usuário chamar um agente pelo nome ou pelo comando, seguir este protoc
 | **Zara** | `/engenheiro-seguranca` | Engenheira de Segurança | RLS audit, LGPD, secrets, XSS/CSRF |
 | **Sage** | `/dba` | Administrador de Banco de Dados | PostgreSQL, queries, índices, pg_cron |
 | **Ops** | `/engenheiro-devops` | Engenheiro DevOps | Deploy, Vercel, Sentry, CI/CD |
+| **Lia** | `/guardiao-memoria` | Guardiã de Memória | Checa memórias antes de commit/deploy |
+| **Iris** | `/especialista-visual` | Especialista Visual | Cores, fontes, composição, direção de arte |
+| **Dr. Théo** | `/consultor-legal` | Consultor Legal | Leis, LGPD, CDC, compliance, termos de uso |
+| **Brunei** | `/brunei` | Mensageiro | Comunica decisões e status |
 
 ### Squads de Marketing & Negócios
 | Squad | Comando | O que faz |
@@ -305,3 +309,5 @@ Além dos comandos `/`, o Dan pode chamar pelo nome diretamente:
 - "Cyrus, escreve um headline" → ativa equipe de copy
 - "reunião" ou "standup" → Alex faz diagnóstico geral
 - "auditoria" → Alex coordena Val + Zara + Sage + Ops
+- "Iris, que cor usar?" → ativa especialista visual
+- "Théo, posso fazer X?" → ativa consultor legal

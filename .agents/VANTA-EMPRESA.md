@@ -141,6 +141,8 @@ Somos um ecossistema completo que conecta produtores de eventos, casas noturnas/
 | **Sage** | DBA | PostgreSQL performance, queries, índices |
 | **Ops** | DevOps Engineer | Deploy, CI/CD, Sentry, pipelines |
 | **Lia** | Guardiã de Memória | Documentação, memórias, consistência |
+| **Iris** | Especialista Visual | Psicologia das cores, tipografia, direção de arte |
+| **Dr. Théo** | Consultor Legal | Direito digital, LGPD, CDC, compliance |
 
 ### Squads de Marketing (já existentes)
 - **Brand Squad** (15 agentes) — Marca e posicionamento

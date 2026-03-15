@@ -35,7 +35,6 @@ A VANTA atua como intermediária tecnológica na venda de ingressos. A responsab
 ### 4.1 Requisitos
 - Idade mínima de 16 (dezesseis) anos. Usuários entre 16 e 18 anos declaram possuir autorização de responsável legal
 - Informações pessoais verdadeiras, completas e atualizadas
-- Captura de foto biométrica facial (selfie) no ato do cadastro, utilizada exclusivamente para verificação de identidade e prevenção de fraudes (conforme detalhado na Política de Privacidade)
 
 ### 4.2 Responsabilidade da Conta
 Você é o único responsável por manter a confidencialidade da sua senha e por todas as atividades realizadas com sua conta. Notifique-nos imediatamente pelo e-mail suporte@vanta.app em caso de uso não autorizado ou suspeita de violação de segurança.
@@ -148,10 +147,10 @@ Toda transação (compra, reembolso, transferência, cancelamento) é registrada
 - Membros podem solicitar acesso a cidades adicionais onde o programa opera
 - A ativação de cidades é individual e sujeita a disponibilidade
 
-### 7.6 Deals e Parceiros
-- Membros podem ter acesso a ofertas exclusivas de parceiros comerciais da VANTA
-- Deals possuem prazo de validade e condições específicas informadas no momento do resgate
-- O não cumprimento de obrigações associadas a deals configura infração
+### 7.6 Benefícios Exclusivos de Parceiros
+- Membros podem ter acesso a benefícios exclusivos de parceiros comerciais da VANTA
+- Benefícios possuem prazo de validade e condições específicas informadas no momento do resgate
+- O não cumprimento de obrigações associadas a benefícios configura infração
 
 ### 7.7 Sistema de Infrações
 - 1ª infração: advertência com bloqueio temporário (30 dias)
@@ -226,7 +225,6 @@ O Encarregado é o ponto de contato entre a VANTA, os titulares de dados e a Aut
 - **Redes sociais**: Instagram (handle e contagem de seguidores — opcional, obrigatório para participantes do MAIS VANTA)
 - **Dados profissionais**: profissão (opcional, coletado na solicitação ao MAIS VANTA)
 - **Pesquisa**: como conheceu a plataforma (opcional, coletado na solicitação ao MAIS VANTA)
-- **Dados biométricos**: foto facial (selfie) capturada no cadastro para verificação de identidade
 - **Preferências**: interesses, biografia e fotos de perfil/álbum
 - **Credenciais**: senha de acesso (armazenada em hash irreversível — nunca em texto claro)
 
@@ -236,18 +234,17 @@ O Encarregado é o ponto de contato entre a VANTA, os titulares de dados e a Aut
 - **Dados de geolocalização**: coordenadas aproximadas (somente quando você autoriza, para a funcionalidade Radar de eventos)
 
 ### 3.3 Dados sensíveis
-A foto facial (selfie biométrica) é considerada dado pessoal sensível nos termos do art. 5º, II da LGPD. Sua coleta ocorre com base no consentimento específico (art. 11, I) e é utilizada exclusivamente para verificação de identidade e prevenção de fraudes. Você pode solicitar sua exclusão a qualquer momento.
+A VANTA não coleta dados pessoais sensíveis nos termos do art. 5º, II da LGPD (dados de origem racial, convicção religiosa, dados biométricos, etc.). Caso futuramente seja necessária a coleta de qualquer dado sensível, será solicitado consentimento específico e destacado (art. 11, I).
 
 ## 4. Finalidades e Bases Legais (LGPD, art. 7º e 11)
 
 Cada tratamento de dados pessoais possui uma finalidade específica e uma base legal correspondente:
 
 - **Cadastro e autenticação** — Execução de contrato (art. 7º, V). Dados: nome, e-mail, senha, nascimento.
-- **Verificação de identidade** — Consentimento específico (art. 11, I). Dados: selfie biométrica.
 - **Verificação de idade (16+)** — Cumprimento de obrigação legal (art. 7º, II). Dados: data de nascimento.
 - **Personalização de eventos** — Legítimo interesse (art. 7º, IX). Dados: localização, interesses.
 - **Comunicação e notificações** — Execução de contrato (art. 7º, V). Dados: e-mail, telefone.
-- **Prevenção de fraudes** — Legítimo interesse (art. 7º, IX). Dados: selfie, dados de dispositivo.
+- **Prevenção de fraudes** — Legítimo interesse (art. 7º, IX). Dados: dados de dispositivo, padrões de uso.
 - **Processamento de compras** — Execução de contrato (art. 7º, V). Dados: identificação, transação.
 - **MAIS VANTA** — Consentimento (art. 7º, I). Dados: Instagram (handle, seguidores, bio), cidade, profissão, como conheceu, histórico de resgates e benefícios, infrações, cidades ativas (passport). Dados de categorização interna (tags de perfil) são atribuídos pela curadoria e não são visíveis ao membro.
 - **Geolocalização (Radar)** — Consentimento (art. 7º, I). Dados: coordenadas GPS.
@@ -307,7 +304,6 @@ Em caso de incidente de segurança que possa acarretar risco ou dano relevante, 
 
 - **Dados de conta ativa**: mantidos enquanto a conta estiver ativa
 - **Dados de transações financeiras**: mantidos por 5 (cinco) anos após a transação, em cumprimento a obrigações fiscais e tributárias (Código Tributário Nacional)
-- **Selfie biométrica**: mantida enquanto a conta estiver ativa. Eliminada em até 30 dias após a exclusão da conta
 - **Logs de auditoria**: mantidos por 2 (dois) anos para fins de compliance e segurança
 - **Após exclusão da conta**: dados pessoais anonimizados ou eliminados em até 30 (trinta) dias, exceto os que devam ser retidos por obrigação legal
 
@@ -360,7 +356,6 @@ Os seguintes tipos de dados são coletados pela VANTA, organizados conforme as c
 - **Dados de contato**: nome, e-mail, telefone — usados para funcionalidade do app
 - **Conteúdo do usuário**: fotos de perfil, álbum e biografia — usados para funcionalidade do app
 - **Dados de identificação**: ID de usuário — usado para funcionalidade do app
-- **Dados biométricos**: foto facial (selfie) — usada exclusivamente para verificação de identidade
 - **Localização aproximada**: usada para funcionalidade do app (Radar de eventos), mediante consentimento explícito
 - **Compras**: histórico de ingressos adquiridos — usado para funcionalidade do app
 - **Outros dados**: profissão, Instagram (handle e seguidores), cidade de residência — usados para funcionalidade do app (programa MAIS VANTA), mediante consentimento
@@ -382,7 +377,7 @@ Os seguintes tipos de dados são coletados pela VANTA, organizados conforme as c
 **Dados coletados:**
 - Dados pessoais: nome, e-mail, telefone, data de nascimento, gênero, profissão
 - Perfil de redes sociais: Instagram (handle e contagem de seguidores) — mediante consentimento (MAIS VANTA)
-- Fotos e vídeos: fotos de perfil, álbum e selfie biométrica
+- Fotos e vídeos: fotos de perfil e álbum
 - Localização aproximada: coordenadas GPS (mediante consentimento)
 - Informações financeiras: histórico de compras de ingressos
 - Identificadores do dispositivo: token FCM para notificações push

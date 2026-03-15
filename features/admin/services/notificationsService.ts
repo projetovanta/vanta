@@ -68,37 +68,25 @@ export const notificationsService = {
       link: notif.link ?? '',
     };
 
-    // Se inserindo para outro user, NÃO usar .select() (RLS SELECT bloqueia)
-    if (isOwnUser) {
-      const { data, error } = await supabase.from('notifications').insert(row).select('*').single();
+    // Sempre usar RPC SECURITY DEFINER — RLS INSERT restringe a masteradm
+    const { data: rpcId, error } = await supabase.rpc('inserir_notificacao', {
+      p_user_id: uid,
+      p_tipo: row.tipo,
+      p_titulo: row.titulo,
+      p_mensagem: row.mensagem,
+      p_link: row.link,
+    });
 
-      if (error || !data) {
-        console.error('[notificationsService] add:', error);
-        const local: Notificacao = { ...notif, id: `notif-${Date.now()}` };
-        _notifs = [local, ..._notifs];
-        return local;
-      }
-
-      const full = rowToNotif(data);
-      _notifs = [full, ..._notifs];
-      return full;
-    } else {
-      // Cross-user: usar RPC SECURITY DEFINER para bypass RLS
-      const { data: rpcId, error } = await supabase.rpc('inserir_notificacao', {
-        p_user_id: uid,
-        p_tipo: row.tipo,
-        p_titulo: row.titulo,
-        p_mensagem: row.mensagem,
-        p_link: row.link,
-      });
-
-      if (error) {
-        console.error('[notificationsService] add (cross-user):', error);
-        throw error;
-      }
-
-      return { ...notif, id: (rpcId as string) ?? `notif-${Date.now()}` };
+    if (error) {
+      console.error('[notificationsService] add:', error);
+      const local: Notificacao = { ...notif, id: `notif-${Date.now()}` };
+      if (isOwnUser) _notifs = [local, ..._notifs];
+      return local;
     }
+
+    const result: Notificacao = { ...notif, id: (rpcId as string) ?? `notif-${Date.now()}` };
+    if (isOwnUser) _notifs = [result, ..._notifs];
+    return result;
   },
 
   /** Marca uma notificação como lida */

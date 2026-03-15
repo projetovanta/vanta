@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ArrowLeft, Check, Eye, EyeOff, Lock } from 'lucide-react';
+import { ArrowLeft, Check, Eye, EyeOff, Lock, Sparkles, ChevronRight } from 'lucide-react';
 import { TYPOGRAPHY } from '../constants';
 import { Membro } from '../types';
 import { authService } from '../services/authService';
 import { LegalView, useLegalView } from './LegalView';
 import { useModalBack } from '../hooks/useModalStack';
-import { inputCls, isValidDate, isAdult, isValidEmail, fmtDataNasc } from './auth/authHelpers';
+import { inputCls, isValidDate, isAdult, isValidEmail, isValidNome, fmtDataNasc } from './auth/authHelpers';
 import { FieldError } from './auth/FieldError';
 
 const BG_IMAGE = 'https://i.imgur.com/E1DUrFy.jpeg';
@@ -70,7 +70,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
     const e: Record<string, string> = {};
     if (!isValidEmail(email)) e.email = 'E-mail inválido';
     if (senha.length < 6) e.senha = 'Mínimo 6 caracteres';
-    if (!nome.trim() || nome.trim().length < 3) e.nome = 'Nome completo (mínimo 3 caracteres)';
+    const nomeCheck = isValidNome(nome);
+    if (!nomeCheck.ok) e.nome = nomeCheck.erro ?? 'Nome inválido';
     if (!isValidDate(dataNasc)) e.dataNasc = 'Data inválida. Use DD/MM/AAAA';
     else if (!isAdult(dataNasc)) e.dataNasc = 'Você precisa ter 16 anos ou mais';
     if (!consentimento) e.consentimento = 'Aceite os termos para continuar';
@@ -128,34 +129,54 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
           animation: 'kenBurns 22s ease-in-out infinite alternate',
         }}
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-black/50" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/70 to-black/40" />
+
+      {/* ── Glow dourado de fundo ── */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div className="w-72 h-72 rounded-full bg-[#FFD300]/3 blur-3xl" />
+      </div>
 
       {/* ── Header ── */}
-      <div className="relative shrink-0 px-6 pb-4 flex items-start justify-between" style={{ paddingTop: '1.5rem' }}>
-        <div>
-          <div className="flex items-center gap-2 mb-2">
-            <div className="w-1.5 h-1.5 rounded-full bg-[#FFD300]" />
-            <p className="text-[#FFD300]/60 text-[0.5625rem] font-black uppercase tracking-[0.25em]">Criar conta</p>
-          </div>
-          <h1 style={TYPOGRAPHY.screenTitle} className="text-2xl italic text-white">
-            Cadastro
-          </h1>
-        </div>
+      <div className="relative shrink-0 px-6 flex items-start justify-between pt-[calc(env(safe-area-inset-top)+16px)] pb-4">
         <button
           aria-label="Voltar"
           onClick={onClose}
-          className="w-10 h-10 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
+          className="w-10 h-10 bg-black/40 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
         >
           <ArrowLeft size="1.125rem" className="text-zinc-400" />
         </button>
       </div>
 
-      {/* ── Form (scroll) ── */}
-      <div className="relative flex-1 min-h-0 px-6 pt-4 pb-4 overflow-y-auto no-scrollbar">
-        <div className="space-y-4">
+      {/* ── Título ── */}
+      <div className="relative shrink-0 px-6 pb-6 text-center">
+        <div className="w-14 h-14 rounded-full bg-[#FFD300]/10 border border-[#FFD300]/20 flex items-center justify-center mx-auto mb-4">
+          <Sparkles size="1.5rem" className="text-[#FFD300]" />
+        </div>
+        <h1 style={TYPOGRAPHY.screenTitle} className="text-2xl italic text-white mb-2">
+          Criar Conta
+        </h1>
+        <p className="text-zinc-400 text-sm">A noite da sua cidade num só lugar</p>
+      </div>
+
+      {/* ── Form card glass (scroll) ── */}
+      <div className="relative flex-1 min-h-0 px-5 pb-4 overflow-y-auto no-scrollbar">
+        <div className="bg-[#0A0A0A]/80 backdrop-blur-2xl border border-[#FFD300]/10 rounded-2xl p-5 space-y-4">
+          {/* Nome */}
+          <div>
+            <p className="text-[0.625rem] text-zinc-400 font-bold uppercase tracking-widest mb-1.5">Nome</p>
+            <input
+              value={nome}
+              onChange={e => setNome(e.target.value)}
+              placeholder="Seu nome completo"
+              className={`${inputCls} ${errors.nome ? 'border-red-500/40' : ''}`}
+              autoComplete="name"
+            />
+            <FieldError msg={errors.nome} />
+          </div>
+
           {/* Email */}
           <div>
-            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5">E-mail</p>
+            <p className="text-[0.625rem] text-zinc-400 font-bold uppercase tracking-widest mb-1.5">E-mail</p>
             <input
               type="email"
               value={email}
@@ -170,7 +191,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
 
           {/* Senha */}
           <div>
-            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5">Senha</p>
+            <p className="text-[0.625rem] text-zinc-400 font-bold uppercase tracking-widest mb-1.5">Senha</p>
             <div className="relative">
               <input
                 type={showSenha ? 'text' : 'password'}
@@ -183,7 +204,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
               <button
                 type="button"
                 onClick={() => setShowSenha(p => !p)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 p-1"
               >
                 {showSenha ? <EyeOff size="1rem" /> : <Eye size="1rem" />}
               </button>
@@ -191,22 +212,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
             <FieldError msg={errors.senha} />
           </div>
 
-          {/* Nome */}
-          <div>
-            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5">Nome Completo</p>
-            <input
-              value={nome}
-              onChange={e => setNome(e.target.value)}
-              placeholder="Seu nome completo"
-              className={`${inputCls} ${errors.nome ? 'border-red-500/40' : ''}`}
-              autoComplete="name"
-            />
-            <FieldError msg={errors.nome} />
-          </div>
-
           {/* Data de Nascimento */}
           <div>
-            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5">
+            <p className="text-[0.625rem] text-zinc-400 font-bold uppercase tracking-widest mb-1.5">
               Data de Nascimento
             </p>
             <input
@@ -221,58 +229,55 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
           </div>
 
           {/* Consentimento */}
-          <div>
-            <button
-              type="button"
-              onClick={() => setConsentimento(p => !p)}
-              className={`w-full flex items-start gap-3 p-4 rounded-xl border transition-all text-left ${
-                consentimento
-                  ? 'bg-[#FFD300]/5 border-[#FFD300]/30'
-                  : errors.consentimento
-                    ? 'bg-red-500/5 border-red-500/30'
-                    : 'bg-black/40 border-white/5 active:border-white/20'
+          <button
+            type="button"
+            onClick={() => setConsentimento(p => !p)}
+            className={`w-full flex items-start gap-3 p-3.5 rounded-xl border transition-all text-left ${
+              consentimento
+                ? 'bg-[#FFD300]/5 border-[#FFD300]/20'
+                : errors.consentimento
+                  ? 'bg-red-500/5 border-red-500/30'
+                  : 'bg-white/3 border-white/5 active:border-white/15'
+            }`}
+          >
+            <div
+              className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 mt-0.5 transition-all ${
+                consentimento ? 'bg-[#FFD300] border-[#FFD300]' : 'border-zinc-600'
               }`}
             >
-              <div
-                className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 mt-0.5 transition-all ${
-                  consentimento ? 'bg-[#FFD300] border-[#FFD300]' : 'border-zinc-600'
-                }`}
+              {consentimento && <Check size="0.75rem" className="text-black" />}
+            </div>
+            <p className="text-zinc-400 text-xs leading-relaxed">
+              Li e aceito os{' '}
+              <span
+                className="text-[#FFD300] underline"
+                onClick={e => {
+                  e.stopPropagation();
+                  openTermos();
+                }}
               >
-                {consentimento && <Check size="0.75rem" className="text-black" />}
-              </div>
-              <p className="text-zinc-400 text-[0.6875rem] leading-relaxed">
-                Li e aceito os{' '}
-                <span
-                  className="text-[#FFD300] underline"
-                  onClick={e => {
-                    e.stopPropagation();
-                    openTermos();
-                  }}
-                >
-                  Termos de Uso
-                </span>{' '}
-                e a{' '}
-                <span
-                  className="text-[#FFD300] underline"
-                  onClick={e => {
-                    e.stopPropagation();
-                    openPrivacidade();
-                  }}
-                >
-                  Política de Privacidade
-                </span>{' '}
-                da VANTA.
-              </p>
-            </button>
-            <FieldError msg={errors.consentimento} />
-          </div>
+                Termos de Uso
+              </span>{' '}
+              e a{' '}
+              <span
+                className="text-[#FFD300] underline"
+                onClick={e => {
+                  e.stopPropagation();
+                  openPrivacidade();
+                }}
+              >
+                Política de Privacidade
+              </span>
+            </p>
+          </button>
+          <FieldError msg={errors.consentimento} />
         </div>
       </div>
 
       {/* ── Footer ── */}
       <div
-        className="relative shrink-0 px-6 pt-3 border-t border-white/5"
-        style={{ paddingBottom: 'calc(1.5rem + env(safe-area-inset-bottom, 0px))' }}
+        className="relative shrink-0 px-5 pt-3"
+        style={{ paddingBottom: 'calc(1.25rem + env(safe-area-inset-bottom, 0px))' }}
       >
         {isSignupLocked && signupLockCountdown > 0 && (
           <div className="flex items-center gap-2 justify-center bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3 mb-3">
@@ -283,18 +288,18 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
           </div>
         )}
 
-        {globalError && <p className="text-red-400 text-[0.6875rem] text-center mb-3">{globalError}</p>}
+        {globalError && <p className="text-red-400 text-xs text-center mb-3">{globalError}</p>}
 
         <button
           onClick={handleSubmit}
           disabled={loading || isSignupLocked}
-          className="w-full py-4 bg-[#FFD300] text-black font-bold text-xs uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="w-full py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
           {loading ? (
             <span className="animate-pulse">Criando conta…</span>
           ) : (
             <>
-              <Check size="0.875rem" /> Criar Conta
+              Cadastrar <ChevronRight size="0.875rem" />
             </>
           )}
         </button>

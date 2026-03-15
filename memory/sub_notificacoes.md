@@ -6,7 +6,7 @@
 
 ## 3 Canais
 1. **In-app** (sync): notificationsService.add → useAuthStore.notifications
-   - Cross-user: via RPC `inserir_notificacao` SECURITY DEFINER (bypassa RLS)
+   - SEMPRE via RPC `inserir_notificacao` SECURITY DEFINER (RLS INSERT restringe a masteradm)
 2. **Push** (FCM): pushNotificationService → Edge Function send-push
 3. **Email** (Resend): Edge Functions send-*-email
 
@@ -14,9 +14,10 @@
 Funcao `notify()` dispara nos 3 canais simultaneamente.
 Parametros: userId, tipo, titulo, mensagem, link
 
-## Cross-user notifications
-- notificationsService.add detecta se targetUserId != userId logado
-- Se cross-user: usa RPC `inserir_notificacao` (SECURITY DEFINER) em vez de INSERT direto
+## INSERT de notificacoes
+- notificationsService.add usa SEMPRE a RPC `inserir_notificacao` (SECURITY DEFINER)
+- Tanto own-user quanto cross-user usam o mesmo caminho (RPC)
+- Se isOwnUser: atualiza cache local apos inserir
 - Migration: `20260307120000_notif_insert_rpc.sql`
 
 ## 30 tipos de notificacao (confirmados em types/auth.ts)

@@ -115,7 +115,7 @@ VANTA Indica (Highlights) — decisões:
 
 ### Onboarding — 5 telas
 1. **Vitrine**: foto atmosférica carrossel + logo + "A noite da sua cidade num só lugar" + botão "Fazer Parte" + "Já tem conta? Entrar"
-2. **Cadastro**: nome, email, senha, nascimento, termos. Botão "Continuar" (não "Cadastrar")
+2. **Cadastro**: nome, email, senha, nascimento, termos. Botão "Cadastrar"
 3. **Cidade**: "Onde você curte a noite?" + busca IBGE + usar localização. Copy: "Pra mostrar o que tá rolando perto de você"
 4. **Interesses** (opcional): chips de estilos musicais. Pode pular. Copy: "Quanto mais a gente sabe, melhor fica"
 5. **Boas-vindas**: "Pronto, [Nome]. Sua noite começa aqui." + animação dourada + botão "Explorar"

@@ -43,6 +43,8 @@
 - Rotas dedicadas por sub-view — cada tela com URL própria
 - Configurar Stripe secrets no Supabase — pra cobrar produtores
 - Testar app no celular real
+- CNPJ da VANTA — substituir "[a definir]" nos Termos de Uso e Política de Privacidade (LegalView.tsx)
+- Configurar emails suporte@vanta.app, dpo@vanta.app, privacidade@vanta.app
 
 ### Média prioridade
 - Configurar Meta API token — verificação Instagram

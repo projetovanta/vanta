@@ -61,6 +61,7 @@
 [2026-03-15] CLAUDE.md — Dev Squad atualizado com Lia, Iris, Théo, Brunei + atalhos → afeta ativação de agentes
 [2026-03-15] Tier 1 importado — 30 agentes de negócio/marketing (C-Level, Advisory, Copy, Brand, Traffic, Data, Hormozi) → total 55 agentes
 [2026-03-15] POSICIONAMENTO DEFINIDO — VANTA = descoberta + curadoria + benefícios (NÃO ticketeria). Membro não paga, empresário paga. NUNCA usar "grátis". Ver memory/projeto_posicionamento.md → afeta TODOS os agentes, copy, design, produto
+[2026-03-15] REDESIGN APP — Decisões consolidadas: 3 camadas acesso, tiers invisíveis, convites como motor, NUNCA "deals", tudo português, perfil simplifica, carteira→"Minha Experiência", onboarding emocional. Ver memory/projeto_redesign_app.md → afeta TODOS
 
 ---
 

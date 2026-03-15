@@ -105,6 +105,12 @@
 - Slogan: "A noite é sua. Se você faz parte."
 - Memória criada: memory/projeto_posicionamento.md
 
+### 15. Redesign do App — Perguntas e Decisões
+- 7 blocos de perguntas respondidos pelo Dan
+- Consolidação completa em memory/projeto_redesign_app.md
+- Equipe envolvida: Thiel, Miller, Hormozi, Sugarman, Iris, Théo, Zara
+- Decisões-chave: 3 camadas de acesso, tiers invisíveis, convites como motor, tab bar mantém 5, perfil simplifica, carteira vira "Minha Experiência", onboarding emocional
+
 ## Pendencias futuras
 
 ### Alta prioridade (pré-lançamento)

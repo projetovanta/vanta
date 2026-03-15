@@ -95,6 +95,16 @@
 - Hormozi Squad (4): Offers, Closer, Leads, Chief
 - Total agentes no projeto: 55
 
+### 14. Reunião Estratégica — Posicionamento VANTA
+- Participantes: Peter Thiel, Donald Miller, Hormozi Offers, Alex
+- VANTA não é ticketeria — é plataforma de descoberta + curadoria + benefícios
+- Membro NÃO paga pelo clube — quem paga é o empresário (lado B)
+- BrandScript completo (SB7)
+- Oferta Grand Slam definida
+- Regra: NUNCA usar "grátis" — tom é exclusividade e curadoria
+- Slogan: "A noite é sua. Se você faz parte."
+- Memória criada: memory/projeto_posicionamento.md
+
 ## Pendencias futuras
 
 ### Alta prioridade (pré-lançamento)

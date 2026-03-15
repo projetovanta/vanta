@@ -60,6 +60,7 @@
 [2026-03-15] Hook pre-commit-memoria — Lia checa memórias antes de todo commit → afeta fluxo de commit
 [2026-03-15] CLAUDE.md — Dev Squad atualizado com Lia, Iris, Théo, Brunei + atalhos → afeta ativação de agentes
 [2026-03-15] Tier 1 importado — 30 agentes de negócio/marketing (C-Level, Advisory, Copy, Brand, Traffic, Data, Hormozi) → total 55 agentes
+[2026-03-15] POSICIONAMENTO DEFINIDO — VANTA = descoberta + curadoria + benefícios (NÃO ticketeria). Membro não paga, empresário paga. NUNCA usar "grátis". Ver memory/projeto_posicionamento.md → afeta TODOS os agentes, copy, design, produto
 
 ---
 

@@ -35,7 +35,8 @@ ENVIADA -> VISUALIZADA (gerente abriu) -> EM_ANALISE -> APROVADA / RECUSADA
 - Auto-marca "Visualizada" ao expandir card novo
 
 ### 5. Acompanhamento (membro)
-- MinhasSolicitacoesPrivadoView: timeline visual com bolinhas coloridas + timestamps
+- MinhasSolicitacoesPrivadoView: timeline visual com bolinhas coloridas + timestamps (arquivo standalone, não conectado)
+- MinhasPendenciasView: aba "Eventos Privados" integrada com mesma timeline (ATIVO, conectado ao perfil)
 - Mostra mensagem do gerente e motivo de recusa
 
 ## Tabela: eventos_privados

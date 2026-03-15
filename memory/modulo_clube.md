@@ -368,7 +368,7 @@ Sem cascata: membro recebe APENAS benefício do SEU tier exato (`===`), não dos
 | 24 | Trigger 1 deal ativo | OK | check_deal_ativo_unico (banco) |
 | 25 | Trigger vagas deal | OK | update_vagas_deal (banco) |
 | 26 | Trigger resgates parceiro | OK | update_resgates_parceiro (banco) |
-| 27 | Feed deals membro | OK | DealsMembroSection no ClubeOptInView |
+| 27 | Feed deals membro | OK | BeneficiosMVTab na aba Buscar (resgate + QR + status) + DealsMembroSection (standalone, não conectado) |
 | 28 | Convite via link | OK | convites_mais_vanta + RPC aceitar_convite_mv + ConvitesMaisVantaView + AceitarConviteMVPage |
 | 29 | Painel do parceiro | OK | /parceiro + ParceiroDashboardPage + parceiroService + RLS parceiro_own/deals/resgates |
 | 30 | Sugerir deal (parceiro) | OK | INSERT status=RASCUNHO + trigger notifica master (MV_DEAL_SUGERIDO) |

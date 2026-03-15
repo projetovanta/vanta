@@ -82,7 +82,7 @@ Path: `features/admin/components/insights/`
 Path: `features/admin/components/dashboard/`
 BarChartCard, BreakdownCard, ComparisonCard, DashboardSkeleton, DrillBreadcrumb,
 ExportButton, FunnelChart, HeatmapCard, LeaderboardCard, LivePulse, MetricGrid,
-PeriodSelector, ProgressRing, SparklineCard, StatusBadge, TimeSeriesChart, index.ts
+PeriodSelector, ProgressRing, SparklineCard, TimeSeriesChart, index.ts
 
 ## Views
 Path: `features/admin/views/insightsDashboard/`

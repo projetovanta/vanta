@@ -125,9 +125,12 @@
 - firebase-messaging-sw.js: service worker
 - STATUS: OK
 
-### F8.22 — SEO (OG TAGS)
-- COMO: api/og.ts (Vercel serverless)
-- ROTA: /api/og?id=eventoId → HTML com OG meta tags
+### F8.22 — SEO (OG TAGS + ROBOTS + SITEMAP)
+- COMO: api/og.ts, api/robots.ts, api/sitemap.xml.ts (Vercel serverless)
+- ROTAS: /api/og?slug=X (OG meta), /robots.txt, /sitemap.xml
+- vercel.json: rewrites para /robots.txt → /api/robots, /sitemap.xml → /api/sitemap.xml
+- Sitemap puxa eventos publicados do Supabase dinamicamente
+- Robots bloqueia /admin, /checkout, /parceiro
 - EventLandingPage: renderiza evento completo
 - STATUS: OK
 

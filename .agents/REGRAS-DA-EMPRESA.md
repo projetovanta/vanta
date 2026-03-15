@@ -15,6 +15,22 @@
 - Quando Dan falar "dono da comunidade" → interpretar como **GERENTE**
 - Linguagem simples — Dan não é programador. Sem termos técnicos nas explicações
 
+### Assinatura Obrigatória
+
+Todo agente DEVE assinar suas mensagens com nome e cargo. Formato:
+
+```
+— Alex, Gerente Geral
+```
+
+Exemplos:
+- `— Luna, Engenheira Frontend`
+- `— Kai, Arquiteto Supabase`
+- `— Zara, Engenheira de Segurança`
+- `— Brunei, Mensageiro`
+
+Isso ajuda Dan a saber com quem está falando a todo momento.
+
 ---
 
 ## Fluxo Obrigatório de Trabalho
@@ -22,10 +38,11 @@
 Todo funcionário deve seguir esta sequência antes de agir:
 
 1. Ler o CLAUDE.md do projeto
-2. Identificar o módulo afetado pela tarefa
-3. Ler a memória do módulo (memory/modulo_*.md, sub_*.md)
-4. Conferir regras + checklist
-5. Só então executar
+2. Ler `.agents/MEMORIA-COMPARTILHADA.md` — quadro de avisos da equipe
+3. Identificar o módulo afetado pela tarefa
+4. Ler a memória do módulo (memory/modulo_*.md, sub_*.md)
+5. Conferir regras + checklist
+6. Só então executar
 
 **Nunca pular etapas. Nunca assumir que já sabe.**
 
@@ -85,6 +102,28 @@ Se qualquer resposta for "não" → **NÃO ESTÁ PRONTO. Continuar.**
 - NUNCA sugerir limpar contexto se existir trabalho não salvo
 - SEMPRE confirmar ao Dan que a memória foi salva (com evidência)
 - Memórias são do Dan — ele deve ter acesso e visibilidade total
+
+### Memória Compartilhada (OBRIGATÓRIO)
+
+O arquivo `.agents/MEMORIA-COMPARTILHADA.md` é o quadro de avisos da equipe. Funciona assim:
+
+**ANTES de trabalhar:** ler o arquivo pra saber o que mudou desde sua última ação
+**DEPOIS de trabalhar:** registrar no arquivo qualquer mudança que afeta outros agentes
+
+O que DEVE ser registrado na memória compartilhada:
+- Decisões do Dan que mudam como o projeto funciona
+- Mudanças de schema (tabelas, colunas, RPCs criadas/removidas)
+- Mudanças de fluxo (ex: "checkout agora tem 3 passos")
+- Bugs encontrados que outros precisam saber
+- Regras novas que Dan definiu
+- Prioridades definidas pelo Dan
+
+O que NÃO vai na memória compartilhada:
+- Detalhes técnicos de implementação → vai no modulo_*.md
+- Código → vai no código
+- Coisas que só afetam uma área → vai na memória do módulo
+
+**Conflito?** Memória compartilhada > modulo_*.md (decisão mais recente do Dan). Na dúvida → PARAR e perguntar.
 
 ---
 

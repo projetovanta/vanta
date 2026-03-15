@@ -31,6 +31,13 @@
 | Preco | PriceFilterModal (113L) | Slider preco maximo |
 | Beneficios MV | Toggle no header | Apenas eventos com lotes MAIS VANTA |
 
+### BeneficiosMVTab — Resgate de Deals
+- Membro vê deals de parceiros + eventos com benefício
+- Pode resgatar deals direto na busca (botão "Quero resgatar")
+- Seção "Deal Ativo" no topo com status + ações (cancelar, enviar post, ver QR)
+- 1 deal ativo por vez (enforced por trigger no banco)
+- QR code modal com absolute inset-0
+
 ### Busca server-side
 - Eventos: searchEventos() com filtros combinados
 - Pessoas: query em profiles por nome (debounced)

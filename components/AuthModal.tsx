@@ -3,11 +3,9 @@ import { ArrowLeft, Check, Eye, EyeOff, Lock } from 'lucide-react';
 import { TYPOGRAPHY } from '../constants';
 import { Membro } from '../types';
 import { authService } from '../services/authService';
-import { DDDS } from '../data/brData';
-import { VantaPickerModal } from './VantaPickerModal';
 import { LegalView, useLegalView } from './LegalView';
 import { useModalBack } from '../hooks/useModalStack';
-import { inputCls, isValidDate, isAdult, isValidEmail, fmtDataNasc, fmtTelefone } from './auth/authHelpers';
+import { inputCls, isValidDate, isAdult, isValidEmail, fmtDataNasc } from './auth/authHelpers';
 import { FieldError } from './auth/FieldError';
 
 const BG_IMAGE = 'https://i.imgur.com/E1DUrFy.jpeg';
@@ -29,8 +27,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
   const [senha, setSenha] = useState('');
   const [showSenha, setShowSenha] = useState(false);
   const [nome, setNome] = useState('');
-  const [ddd, setDdd] = useState('11');
-  const [telefone, setTelefone] = useState('');
   const [dataNasc, setDataNasc] = useState('');
   const [consentimento, setConsentimento] = useState(false);
 
@@ -75,9 +71,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
     if (!isValidEmail(email)) e.email = 'E-mail inválido';
     if (senha.length < 6) e.senha = 'Mínimo 6 caracteres';
     if (!nome.trim() || nome.trim().length < 3) e.nome = 'Nome completo (mínimo 3 caracteres)';
-    if (!ddd) e.ddd = 'Selecione o DDD';
-    const digTel = telefone.replace(/\D/g, '');
-    if (digTel.length < 8 || digTel.length > 9) e.telefone = 'Número inválido (8 ou 9 dígitos)';
     if (!isValidDate(dataNasc)) e.dataNasc = 'Data inválida. Use DD/MM/AAAA';
     else if (!isAdult(dataNasc)) e.dataNasc = 'Você precisa ter 16 anos ou mais';
     if (!consentimento) e.consentimento = 'Aceite os termos para continuar';
@@ -103,8 +96,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
       senha,
       nome: nome.trim(),
       dataNascimento: iso,
-      telefoneDdd: ddd,
-      telefoneNumero: telefone.replace(/\D/g, ''),
     });
 
     if (!result.ok || !result.membro) {
@@ -211,34 +202,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
               autoComplete="name"
             />
             <FieldError msg={errors.nome} />
-          </div>
-
-          {/* Telefone */}
-          <div>
-            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5">Telefone</p>
-            <div className="flex gap-2">
-              <div className="w-24 shrink-0">
-                <VantaPickerModal
-                  items={DDDS.map(d => ({ value: d, label: `(${d})` }))}
-                  value={ddd}
-                  onChange={setDdd}
-                  label="DDD"
-                  placeholder="DDD"
-                  searchable
-                  error={!!errors.ddd}
-                />
-              </div>
-              <input
-                value={telefone}
-                onChange={e => setTelefone(fmtTelefone(e.target.value))}
-                placeholder="99999-9999"
-                className={`${inputCls} flex-1 min-w-0 ${errors.telefone ? 'border-red-500/40' : ''}`}
-                inputMode="numeric"
-                maxLength={10}
-                autoComplete="off"
-              />
-            </div>
-            <FieldError msg={errors.ddd || errors.telefone} />
           </div>
 
           {/* Data de Nascimento */}

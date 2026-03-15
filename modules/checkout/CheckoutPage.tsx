@@ -211,6 +211,9 @@ export const CheckoutPage: React.FC = () => {
   const submittingRef = useRef(false);
   const [erro, setErro] = useState('');
   const [showCpfModal, setShowCpfModal] = useState(false);
+  const [showTelefoneModal, setShowTelefoneModal] = useState(false);
+  const [telDdd, setTelDdd] = useState('');
+  const [telNumero, setTelNumero] = useState('');
   const pendingCompradorRef = useRef<string | null>(null);
   const [tickets, setTickets] = useState<Ingresso[]>([]);
 
@@ -393,14 +396,26 @@ export const CheckoutPage: React.FC = () => {
     }
     const compradorId = authData.user.id;
 
-    // Guard CPF — Nível 2 do Perfil Progressivo
-    const { data: profile } = await supabase.from('profiles').select('cpf').eq('id', compradorId).maybeSingle();
+    // Guard CPF + Telefone — Perfil Progressivo
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('cpf, telefone_ddd, telefone_numero')
+      .eq('id', compradorId)
+      .maybeSingle();
 
     if (!profile?.cpf) {
       pendingCompradorRef.current = compradorId;
       setLoading(false);
       submittingRef.current = false;
       setShowCpfModal(true);
+      return;
+    }
+
+    if (!profile?.telefone_ddd || !profile?.telefone_numero) {
+      pendingCompradorRef.current = compradorId;
+      setLoading(false);
+      submittingRef.current = false;
+      setShowTelefoneModal(true);
       return;
     }
 
@@ -989,6 +1004,70 @@ export const CheckoutPage: React.FC = () => {
           }
         }}
       />
+
+      {/* Modal Telefone — pede no primeiro checkout se não tem */}
+      {showTelefoneModal && (
+        <div className="absolute inset-0 z-[300] bg-black/90 flex items-center justify-center p-6">
+          <div className="bg-zinc-900 rounded-2xl p-6 w-full max-w-sm border border-white/10 space-y-4">
+            <h3 className="text-white text-base font-bold text-center">Informe seu telefone</h3>
+            <p className="text-zinc-400 text-xs text-center">
+              Precisamos do seu telefone pra entrar em contato sobre o ingresso.
+            </p>
+            <div className="flex gap-2">
+              <input
+                value={telDdd}
+                onChange={e => setTelDdd(e.target.value.replace(/\D/g, '').slice(0, 2))}
+                placeholder="DDD"
+                className="w-20 bg-zinc-800 border border-white/10 rounded-xl px-3 py-3 text-white text-sm text-center placeholder:text-zinc-600 outline-none focus:border-[#FFD300]/30"
+                inputMode="numeric"
+              />
+              <input
+                value={telNumero}
+                onChange={e => setTelNumero(e.target.value.replace(/\D/g, '').slice(0, 9))}
+                placeholder="99999-9999"
+                className="flex-1 bg-zinc-800 border border-white/10 rounded-xl px-3 py-3 text-white text-sm placeholder:text-zinc-600 outline-none focus:border-[#FFD300]/30 min-w-0"
+                inputMode="numeric"
+              />
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => {
+                  setShowTelefoneModal(false);
+                  pendingCompradorRef.current = null;
+                }}
+                className="flex-1 py-3 bg-zinc-800 text-zinc-400 rounded-xl text-xs font-bold uppercase tracking-wider"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={async () => {
+                  if (telDdd.length < 2 || telNumero.length < 8) return;
+                  const uid = pendingCompradorRef.current;
+                  if (uid) {
+                    await supabase
+                      .from('profiles')
+                      .update({ telefone_ddd: telDdd, telefone_numero: telNumero })
+                      .eq('id', uid);
+                  }
+                  setShowTelefoneModal(false);
+                  if (uid) {
+                    void processarCompra(uid);
+                    pendingCompradorRef.current = null;
+                  }
+                }}
+                disabled={telDdd.length < 2 || telNumero.length < 8}
+                className={`flex-1 py-3 rounded-xl text-xs font-bold uppercase tracking-wider ${
+                  telDdd.length >= 2 && telNumero.length >= 8
+                    ? 'bg-[#FFD300] text-black'
+                    : 'bg-zinc-800 text-zinc-600 cursor-not-allowed'
+                }`}
+              >
+                Confirmar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

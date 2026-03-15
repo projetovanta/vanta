@@ -64,8 +64,9 @@
 
 ### 1. SIGNUP (cadeia completa)
 ```
-Usuario: AuthModal step1(dados pessoais) -> step2(contato+senha) -> step3(selfie com analise)
--> authService.signUp -> supabase.auth.signUp -> profiles.upsert (17 campos)
+Usuario: AuthModal (email + senha + nome + nascimento + consentimento)
+-> authService.signUp -> supabase.auth.signUp -> profiles.upsert (telefone opcional)
+-> Telefone coletado no primeiro checkout se não informado
 -> enrichInstagramFollowers (background, se tem instagram)
 -> notificationsService.add(tipo:SISTEMA, "Novo membro para curadoria")
 -> Login automatico -> authStore.set -> Feed

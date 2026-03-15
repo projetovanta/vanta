@@ -46,6 +46,10 @@
 [2026-03-15] 3 arquivos mortos removidos: DealsMembroSection, MaisVantaReservaModal, MinhasSolicitacoesPrivadoView → afeta clube, evento, perfil
 [2026-03-15] Rotas dedicadas por sub-view → ANOTADO como próxima prioridade (não feito ainda)
 [2026-03-15] Fix: logout agora limpa scroll positions → evita scroll preso ao trocar de conta
+[2026-03-15] Cadastro simplificado — telefone removido (email+senha+nome+nascimento+termos) → afeta auth, perfil
+[2026-03-15] Telefone pedido no 1º checkout se não tem → afeta checkout
+[2026-03-15] Onboarding: busca de cidades via API IBGE (5571 cidades) → afeta onboarding
+[2026-03-15] Avatares hospedados no Supabase Storage (saíram do imgur) → afeta perfil, auth
 
 ---
 

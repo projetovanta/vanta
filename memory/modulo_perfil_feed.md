@@ -67,8 +67,8 @@ Radar = mapa de eventos por geolocalizacao.
 | CompletarPerfilCPF.tsx | Modal CPF (Nivel 2) — exibido no checkout se profile nao tem CPF. Valida CPF, salva no Supabase |
 
 ### Perfil Progressivo (3 niveis)
-- **Nivel 1 (signup)**: email, senha, nome, telefone, data nascimento, termos — campos obrigatorios
-- **Nivel 2 (primeira compra)**: CPF — coletado via CompletarPerfilCPF no checkout
+- **Nivel 1 (signup)**: email, senha, nome, data nascimento, termos — campos obrigatorios (telefone removido)
+- **Nivel 2 (primeira compra)**: CPF (CompletarPerfilCPF) + Telefone (modal inline no checkout)
 - **Nivel 3 (sob demanda)**: genero, instagram, foto, cidade, estado — editaveis em EditProfileView
 - Avatar padrao: NEUTRO (silhueta) ate usuario enviar foto ou definir genero
 - Genero: MASCULINO, FEMININO, PREFIRO_NAO_DIZER (opcional, Nivel 3)

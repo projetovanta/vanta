@@ -142,8 +142,8 @@ export const authService = {
     senha: string;
     nome: string;
     dataNascimento: string; // ISO YYYY-MM-DD
-    telefoneDdd: string;
-    telefoneNumero: string;
+    telefoneDdd?: string;
+    telefoneNumero?: string;
   }): Promise<SignUpResult> => {
     try {
       const { data, error } = await supabase.auth.signUp({
@@ -167,8 +167,8 @@ export const authService = {
           nome: params.nome,
           email: params.email,
           data_nascimento: params.dataNascimento,
-          telefone_ddd: params.telefoneDdd,
-          telefone_numero: params.telefoneNumero,
+          ...(params.telefoneDdd ? { telefone_ddd: params.telefoneDdd } : {}),
+          ...(params.telefoneNumero ? { telefone_numero: params.telefoneNumero } : {}),
           avatar_url: avatarUrl,
           biografia: '',
           interesses: [],
@@ -191,7 +191,7 @@ export const authService = {
         nome: params.nome,
         email: params.email,
         dataNascimento: params.dataNascimento,
-        telefone: { ddd: params.telefoneDdd, numero: params.telefoneNumero },
+        telefone: params.telefoneDdd ? { ddd: params.telefoneDdd, numero: params.telefoneNumero ?? '' } : undefined,
         biografia: '',
         foto: avatarUrl,
         interesses: [],

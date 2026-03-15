@@ -1,6 +1,8 @@
+const STORAGE_BASE = 'https://daldttuibmxwkpbqtebm.supabase.co/storage/v1/object/public/avatars/defaults';
+
 export const DEFAULT_AVATARS: Record<string, string> = {
-  MASCULINO: 'https://i.imgur.com/kXFU8vy.jpeg',
-  FEMININO: 'https://i.imgur.com/XY8rZZf.jpeg',
-  NEUTRO: 'https://i.imgur.com/yepSwhn.png',
-  PREFIRO_NAO_DIZER: 'https://i.imgur.com/yepSwhn.png',
+  MASCULINO: `${STORAGE_BASE}/avatar_male.jpg`,
+  FEMININO: `${STORAGE_BASE}/avatar_female.jpg`,
+  NEUTRO: `${STORAGE_BASE}/avatar_neutral.jpg`,
+  PREFIRO_NAO_DIZER: `${STORAGE_BASE}/avatar_neutral.jpg`,
 };

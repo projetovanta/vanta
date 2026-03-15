@@ -39,29 +39,45 @@ Posicionamento definido: VANTA = descoberta + curadoria + benefícios. Não é t
 ### Por aba
 
 **Início (Home)**
-- Continua focada em eventos como principal
 - Serve todos os perfis: quem quer comprar rápido E quem quer explorar
 - MAIS VANTA presente mas elegante — "quem é bom não precisa se auto afirmar"
-- Banner MV deve ser imponente mas não forçado
+
+Home por camada:
+- **Sem conta**: vitrine atmosférica (logo + frase + fotos carrossel + preview de eventos com blur parcial + "Entrar" / "Explorar primeiro")
+- **Com conta (sem MV)**: Saudação → VANTA Indica (com card MV) → Ao Vivo → Amigos Vão → Perto → Semana → Pra Você → Feed. 7 seções (removidos: Novos na Plataforma, Salvos→mover pro Perfil)
+- **Membro MV**: Saudação + coroa dourada → seção "Seus Benefícios" no topo → VANTA Indica (sem card MV, mostra benefício) → restante igual Camada 2. Cards com benefício MV têm ícone dourado no canto
+
+VANTA Indica (Highlights) — decisões:
+- Expande de 3 pra 5 tipos: Evento, Parceiro, MAIS_VANTA, Experiência, Informativo
+- **Banner MV separado MORRE** — MAIS VANTA vira card dentro do Indica (só pra não-membros)
+- Pra membros: espaço do card MV mostra benefício disponível
+- Curadoria editorial manual (diferencial — impossível copiar por IA)
+- Cada tipo com badge visual diferente: Evento (verde), Parceiro (âmbar), MAIS VANTA (dourado), Experiência (roxo), Informativo (sem foto, minimalista)
+- Primeiro card do Indica nunca é o mesmo tipo duas vezes seguidas (gera curiosidade)
+- Automatização parcial futura (por enquanto manual)
 
 **Radar**
 - Manter como mapa de eventos (futuros + ao vivo)
 - Não limitar a "o que tá rolando agora"
-- Sugestão equipe: adicionar parceiros MV como pins dourados no mapa (membros veem)
+- Adicionar parceiros MAIS VANTA como pins no mapa — todos veem os parceiros, mas só membros veem que tem benefício
 
 **Buscar**
-- Manter: eventos + pessoas + benefícios em parceiros
-- Benefícios ficam na Busca (momento de "o que fazer?")
-- Renomear aba "Benefícios MV" pra algo em português sem "deals"
+- 3 sub-abas: Eventos, Pessoas, "Pra Você" (renomeado de Benefícios)
+- "Pra Você" visível pra todos, mas com blur/lock pra não-membros (cria FOMO)
+- Busca de Pessoas: manter como sub-aba, sem mudança
 
 **Mensagens**
 - Essencial — combinar de sair faz parte da experiência
-- Manter chat em tempo real
+- Manter chat 1-a-1 como está pro lançamento
+- Pós-lançamento (v2): notificação contextual ("3 amigos vão na festa X"), status/mood ("Saindo hoje"), grupos por evento
 
 **Perfil**
-- SIMPLIFICAR — tem coisa demais (muitas sub-telas)
-- Carteira vira "Minha Experiência" (ingressos + benefícios resgatados + presenças + conquistas)
-- Badge MV discreta (coroa dourada) no perfil de membros
+- SIMPLIFICADO de 13 sub-views pra 8: MAIN, EDIT_PROFILE, PREFERENCES, MINHA_EXPERIENCIA, CLUBE, MEIA_ENTRADA, PENDENCIAS, BLOQUEADOS
+- Tela principal: foto+nome+badge → [Editar][Config] → Card "Minha Experiência" → Card "MAIS VANTA" (premium, separado) → lista (perfil público, pendências, meia-entrada, bloqueados, parceria)
+- "Minha Experiência" = ingressos + presenças + benefícios usados + conquistas (absorve WALLET, MY_TICKETS, HISTORICO)
+- MAIS VANTA = card premium separado (não mistura com Minha Experiência). Membros: card dourado com status/convites/benefícios. Não-membros: card com convite sutil
+- Badge MV discreta (coroa dourada) ao lado do nome
+- Removidos: CHAT_ROOM (já na aba Mensagens), MINHAS_SOLICITACOES (absorvido por Pendências), PREVIEW duplicados
 
 ### Painel Admin (Lado B)
 - Dar autonomia/controle/execução aos donos de estabelecimentos

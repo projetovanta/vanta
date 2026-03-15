@@ -79,17 +79,48 @@ VANTA Indica (Highlights) — decisões:
 - Badge MV discreta (coroa dourada) ao lado do nome
 - Removidos: CHAT_ROOM (já na aba Mensagens), MINHAS_SOLICITACOES (absorvido por Pendências), PREVIEW duplicados
 
-### Painel Admin (Lado B)
-- Dar autonomia/controle/execução aos donos de estabelecimentos
-- Pensar junto como facilitar a vida do empresário
-- Painel do parceiro precisa mostrar valor: quantas pessoas vieram via VANTA, economia vs marketing tradicional
+**Detalhe do Evento**
+- Estrutura: Header (foto hero) → Social Proof → Info → Descrição → [Comemorar] → [Seção MV] → Footer
+- Seção MV pra não-membro: tom sutil — "Este evento tem vantagens pra membros" + link "Saiba mais" (sem botão grande)
+- Seção MV pra membro: manter como está (benefício + botão resgatar)
+- Botão "Eu vou!": presente em TODO evento (pago e gratuito). É declaração social, não compra. Alimenta "Amigos Vão" na Home
+  - Pago: "Eu vou!" (secundário) + "Garantir Ingresso" (principal dourado)
+  - Gratuito: "Eu vou!" como botão principal
+  - Já comprou: "Garantido ✓" (verde)
+  - Lotando: "Eu vou!" + "Últimas vagas" (vermelho)
+- Social Proof: amigos primeiro (foto + nome), depois amigos de amigos, depois total geral
+- Config privacidade: "Mostrar minha presença em eventos" — ligado por padrão, desligável
+- Quando tem amigos: "João, Maria e Pedro vão + 23 pessoas"
+- Quando não tem amigos: "47 pessoas confirmadas"
 
-### Onboarding / Primeira Impressão
-- Especialistas recomendam: experiência emocional, não formulário
-- Visual: escuro, atmosférico, dourado mínimo, fotos de alta qualidade
-- Fluxo: curiosidade primeiro (mostrar o que vai ganhar) → cadastro → personalização (cidade + interesses)
-- Botão de cadastro: "Entrar" ou "Fazer parte" (não "Cadastrar")
-- Copy onboarding: "Pra saber o que combina com você"
+### Painel Admin (Lado B) — Dan aprovou
+- NÃO simplificar tirando coisas — o painel já tem TUDO (vendas, equipe, cortesias, financeiro, portaria, relatórios, listas, MV)
+- O valor é: tudo num lugar só. O empresário centraliza operação inteira no VANTA
+- **Dashboard inicial impactante**: quando o empresário abre, vê tudo de cara — vendas, público, financeiro, equipe, MV — resumo visual que nenhum concorrente dá
+- **Onboarding do produtor**: primeira vez no painel = tour guiado mostrando cada área e o que ele ganha
+- SEM comparativo com concorrentes — "quem é bom não precisa comparar"
+- Painel master (Dan/VANTA): continua igual, sem mudança
+
+### Painel do Parceiro — Dan aprovou
+- Card "Impacto VANTA" no topo: X clientes via VANTA + estimativa de economia vs ads
+- Card "Seu Público": perfil AGREGADO (idade, gostos, frequência) — nunca individual (LGPD)
+- Benefícios ativos + timeline de resgates + QR Scanner
+- Visual com narrativa: números contam história, não só dados frios
+
+### Checkout (Dan aprovou)
+- Fluxo atual funciona: escolhe variação → CPF se falta → telefone se falta → Stripe se pago
+- Tela de sucesso: **confirmação limpa** — confete + "Presença garantida!" + "Ver meu ingresso". SEM menção ao MV, SEM social proof, SEM "seus amigos vão saber"
+- Renomear "Cupom" → "Tem um código?" ✅
+- Linguagem: "Garantir" em vez de "Processar"
+
+### Onboarding — 5 telas
+1. **Vitrine**: foto atmosférica carrossel + logo + "A noite da sua cidade num só lugar" + botão "Fazer Parte" + "Já tem conta? Entrar"
+2. **Cadastro**: nome, email, senha, nascimento, termos. Botão "Continuar" (não "Cadastrar")
+3. **Cidade**: "Onde você curte a noite?" + busca IBGE + usar localização. Copy: "Pra mostrar o que tá rolando perto de você"
+4. **Interesses** (opcional): chips de estilos musicais. Pode pular. Copy: "Quanto mais a gente sabe, melhor fica"
+5. **Boas-vindas**: "Pronto, [Nome]. Sua noite começa aqui." + animação dourada + botão "Explorar"
+- Regras: máximo 5 telas, pular sempre possível (exceto cadastro), sem menção ao MAIS VANTA no onboarding
+- Visual: escuro, atmosférico, dourado mínimo, fotos de alta qualidade, Playfair nos títulos
 
 ### Tom geral do app
 - Mistura de todas as sensações: insider + exclusividade + ponto de partida
@@ -143,13 +174,17 @@ VANTA Indica (Highlights) — decisões:
 - Lógica sensível no servidor (Edge Functions + RPCs)
 - Moat real = dados, não código
 
-## Próximas ações
+## Status do redesign
 
-1. Aprofundar cada área (Home, Radar, Busca, Mensagens, Perfil, Painel)
+Todas as áreas aprofundadas e aprovadas pelo Dan:
+- ✅ Home (3 camadas), VANTA Indica (5 tipos), Radar, Busca, Mensagens, Perfil
+- ✅ Detalhe do Evento, Checkout, Onboarding (5 telas)
+- ✅ Painel Admin (dashboard impactante + onboarding produtor), Painel Parceiro
+
+## Próximas ações — Implementação
+
+1. **Implementar tela a tela** — começar pelo onboarding/login (mais simples)
 2. Definir mecânica exata de convites (implementação)
-3. Redesenhar onboarding (copy + visual)
-4. Simplificar Perfil (decidir o que sai/fica)
-5. Melhorar painel do parceiro (mostrar valor)
-6. Registrar marcas INPI
-7. Definir modelo de cobrança do empresário
-8. Escolher micro-mercado inicial
+3. Registrar marcas INPI
+4. Definir modelo de cobrança do empresário
+5. Escolher micro-mercado inicial

@@ -828,14 +828,14 @@ export const CheckoutPage: React.FC = () => {
               >
                 <Tag size="0.75rem" />
                 <span className="text-[0.5625rem] font-bold uppercase tracking-widest">
-                  {cupomOpen ? 'Fechar' : 'Tem um cupom?'}
+                  {cupomOpen ? 'Fechar' : 'Tem um código?'}
                 </span>
               </button>
               {cupomOpen && (
                 <div className="flex items-center gap-2">
                   <input
                     type="text"
-                    placeholder="Código do cupom"
+                    placeholder="Insira seu código"
                     value={cupomCode}
                     onChange={e => {
                       setCupomCode(e.target.value.toUpperCase());
@@ -982,9 +982,9 @@ export const CheckoutPage: React.FC = () => {
             <button
               onClick={handleLogin}
               disabled={loading}
-              className="w-full py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl font-bold text-[0.625rem] uppercase tracking-[0.2em] text-white active:scale-95 transition-all disabled:opacity-50"
+              className="w-full py-4 bg-[#FFD300] rounded-xl font-bold text-[0.625rem] uppercase tracking-[0.2em] text-black active:scale-95 transition-all disabled:opacity-50"
             >
-              {loading ? 'Processando...' : `Confirmar ${totalItems} ingresso${totalItems !== 1 ? 's' : ''}`}
+              {loading ? 'Garantindo...' : `Garantir ${totalItems} ingresso${totalItems !== 1 ? 's' : ''}`}
             </button>
           </div>
         </div>

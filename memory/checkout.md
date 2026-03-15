@@ -1,18 +1,29 @@
-# Criado: 2026-03-04 13:17 | Ultima edicao: 2026-03-04 13:17
+# Criado: 2026-03-04 13:17 | Ultima edicao: 2026-03-15
 # Memória — Checkout
 
 ## Arquivos
-- `modules/checkout/CheckoutPage.tsx` (786L) — fluxo completo de compra
-- `modules/checkout/SuccessScreen.tsx` (102L) — tela pós-compra
+- `modules/checkout/CheckoutPage.tsx` (~1075L) — fluxo completo de compra
+- `modules/checkout/SuccessScreen.tsx` (~160L) — tela pós-compra (confete + "Presença garantida!")
 - `modules/checkout/WaitlistModal.tsx` (55L) — modal lista de espera
 
 ## Fluxo
 1. User seleciona variação + quantidade
-2. Aplica cupom (opcional) via `cuponsService`
-3. Upload comprovante meia-entrada (se aplicável) via `comprovanteService`
-4. Pagamento (simulado — falta integração Stripe/PIX)
+2. "Tem um código?" (ex-cupom) via `cuponsService`
+3. Upload comprovante meia-entrada (se aplicável)
+4. Botão "Garantir X ingressos" (dourado)
 5. Ticket criado → SuccessScreen
-6. Se `?ref=CODIGO` na URL: RPC incrementa vendas_count na comemoração + gera cortesias automáticas
+
+## SuccessScreen (redesign)
+- Confete animado (40 peças, 4s)
+- Sparkles dourado + "Presença garantida!" em Playfair
+- Cards com QR code de cada ingresso
+- Botão "Ver meu ingresso" (dourado)
+- SEM menção ao MV, SEM social proof
+
+## Copy (redesign)
+- "Tem um código?" (não "cupom")
+- "Garantir" (não "Confirmar" ou "Processar")
+- "Garantindo..." durante loading
 
 ## Status atual
 - Gateway de pagamento: SIMULADO (pendente integração Stripe)

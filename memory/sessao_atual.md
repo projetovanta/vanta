@@ -40,7 +40,13 @@
 - "Últimas vagas" vermelho quando >80% (capacityPct prop, opcional)
 - Texto MV sutil: "Este evento tem vantagens pra membros — saiba mais"
 
-### 6. Perfil Simplificado
+### 6. Checkout Redesign
+- SuccessScreen: confete + Sparkles + "Presença garantida!" + "Ver meu ingresso" (dourado)
+- "Tem um código?" (era "Tem um cupom?")
+- Botão "Garantir X ingressos" dourado (era roxo/rosa "Confirmar")
+- "Garantindo..." no loading
+
+### 7. Perfil Simplificado
 - "Minha Carteira" → "Minha Experiência" (MINHA_EXPERIENCIA)
 - Removidos botões: "Meu Histórico", "Minhas Solicitações"
 - MAIS VANTA card mantido separado

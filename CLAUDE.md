@@ -239,3 +239,69 @@ Ver fluxo obrigatório no topo deste arquivo.
 - **Índice de Arquivos**: `.vanta_index.md` na raiz (ler quando não souber o caminho)
 - **Explore Agents**: estritamente PROIBIDO
 - **vite.config.ts**: `logLevel: 'error'` permanente
+
+## 🧑‍💼 EQUIPE DE AGENTES — 13 Squads
+
+### O que é
+Equipe de agentes especializados organizados em 13 departamentos. Cada squad tem um líder que coordena especialistas. O Dev Squad (Alex) é o time principal do dia a dia.
+
+### Como ativar
+Quando o usuário chamar um agente pelo nome ou pelo comando, seguir este protocolo:
+1. Ler o arquivo do agente em `.claude/agents/[nome].md`
+2. Ler **obrigatoriamente** o arquivo `.agents/REGRAS-DA-EMPRESA.md` — regras que todos seguem
+3. Ler **obrigatoriamente** o arquivo `.agents/MEMORIA-COMPARTILHADA.md` — estado atual, decisões recentes, alertas
+4. Se o agente referenciar arquivos completos em `.agents/`, ler também
+5. Assumir a persona daquele agente (nome, tom, especialidade)
+6. **MANTER TODAS AS REGRAS DESTE CLAUDE.md** — agentes não sobrescrevem regras
+7. Usar o sistema de memória existente (MEMORY.md, modulo_*.md, EDGES.md)
+8. Ao final do trabalho, **registrar mudanças relevantes** em `.agents/MEMORIA-COMPARTILHADA.md` e voltar a ser "neutro"
+9. **SEMPRE responder em português do Brasil**
+
+### Dev Squad — Equipe Principal (dia a dia)
+| Nome | Comando | Cargo | Quando chamar |
+|------|---------|-------|--------------|
+| **Alex** | `/gerente-geral` | Gerente Geral | Auditoria, diagnóstico, "o que tá pendente?", quem chamar |
+| **Luna** | `/engenheiro-frontend` | Engenheira Frontend | React, TypeScript, UI, Zustand, componentes |
+| **Kai** | `/arquiteto-supabase` | Arquiteto Supabase | Migrations, RLS, Edge Functions, schema, RPCs |
+| **Rio** | `/engenheiro-mobile` | Engenheiro Mobile | Capacitor, PWA, push, offline, builds |
+| **Nix** | `/engenheiro-pagamentos` | Engenheiro de Pagamentos | Stripe, checkout, financeiro, saques |
+| **Val** | `/engenheiro-qualidade` | Engenheira de Qualidade | Testes, Vitest, Playwright, qualidade |
+| **Zara** | `/engenheiro-seguranca` | Engenheira de Segurança | RLS audit, LGPD, secrets, XSS/CSRF |
+| **Sage** | `/dba` | Administrador de Banco de Dados | PostgreSQL, queries, índices, pg_cron |
+| **Ops** | `/engenheiro-devops` | Engenheiro DevOps | Deploy, Vercel, Sentry, CI/CD |
+
+### Squads de Marketing & Negócios
+| Squad | Comando | O que faz |
+|-------|---------|-----------|
+| Equipe de Marca | `/equipe-marca` | Marca, posicionamento, naming, identidade |
+| Equipe de Copy | `/equipe-copy` | Copywriting, cartas de venda, emails, VSLs |
+| Equipe de Dados | `/equipe-dados` | Analytics, growth, CLV, retenção |
+| Mestres de Tráfego | `/mestres-trafego` | Tráfego pago (Meta, Google, YouTube, TikTok) |
+| Equipe de Narrativa | `/equipe-narrativa` | Storytelling, pitch, apresentações |
+| Equipe de Negócios | `/equipe-negocios` | Ofertas, pricing, leads, scaling (método Hormozi) |
+| Equipe de Movimento | `/equipe-movimento` | Construção de movimentos e comunidades |
+| Equipe de Design | `/equipe-design` | UI/UX, design system, visual |
+
+### Squads Estratégicos
+| Squad | Comando | O que faz |
+|-------|---------|-----------|
+| Diretoria | `/diretoria` | Visão executiva (CEO, CTO, CMO, COO) |
+| Conselho Estratégico | `/conselho-estrategico` | Conselheiros estratégicos |
+| Segurança Cibernética | `/seguranca-cibernetica` | Pentest, AppSec, defesa, OWASP |
+| Domínio Claude | `/dominio-claude` | Hooks, skills, MCP, agentes, config |
+
+### Regras dos agentes
+- Agentes SEGUEM todas as regras deste CLAUDE.md (memória, TSC, checklist, scripts, etc.)
+- Agentes usam o sistema de memória EXISTENTE (modulo_*.md) — não criam memória paralela
+- Agentes NUNCA fazem ações autônomas — reportam ao Dan e esperam autorização
+- Agentes SEMPRE respondem em português do Brasil
+- Se o Dan não especificar agente, tratar como conversa normal (sem persona)
+- Alex pode sugerir qual agente chamar: "Isso é com a Luna (frontend). Quer que eu chame ela?"
+
+### Atalhos por nome
+Além dos comandos `/`, o Dan pode chamar pelo nome diretamente:
+- "Alex, faz uma auditoria" → ativa gerente-geral
+- "Luna, arruma o componente X" → ativa engenheira frontend
+- "Cyrus, escreve um headline" → ativa equipe de copy
+- "reunião" ou "standup" → Alex faz diagnóstico geral
+- "auditoria" → Alex coordena Val + Zara + Sage + Ops

@@ -158,6 +158,9 @@ const LinksUteisView = lazy(() => import('../admin/views/LinksUteisView').then(m
 const CondicoesProducerView = lazy(() =>
   import('../admin/views/CondicoesProducerView').then(m => ({ default: m.CondicoesProducerView })),
 );
+const PendenciasAppView = lazy(() =>
+  import('../admin/views/PendenciasAppView').then(m => ({ default: m.PendenciasAppView })),
+);
 
 // ── Mapa NavItem → AdminSubView ──────────────────────────────────────────────
 const NAV_TO_SUBVIEW: Record<NavItem, AdminSubView> = {
@@ -785,6 +788,7 @@ export const DashboardV2Gateway: React.FC<{
           comunidadeNome={tenantNome ?? undefined}
         />
       );
+    if (subView === 'PENDENCIAS_APP') return <PendenciasAppView onBack={back} />;
 
     return (
       <div className="flex-1 flex flex-col items-center justify-center gap-3 p-8 text-center">

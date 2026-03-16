@@ -4,10 +4,10 @@ import { TYPOGRAPHY } from '../../../constants';
 import { AdminViewHeader } from '../components/AdminViewHeader';
 import { useToast, ToastContainer } from '../../../components/Toast';
 import { clubeService } from '../services/clubeService';
+import { getResgatesPendentePost, type ResgateMV } from '../services/clube/clubeReservasService';
 import { comunidadesService } from '../services/comunidadesService';
 import { maisVantaConfigService } from '../services/maisVantaConfigService';
 import { supabase } from '../../../services/supabaseClient';
-import type { ReservaMaisVanta } from '../../../types';
 
 type Filtro = 'PENDENTES' | 'VENCIDAS' | 'TODAS';
 
@@ -23,13 +23,17 @@ export const DividaSocialMaisVantaView: React.FC<{
 
   const comunidades = useMemo(() => comunidadesService.getAll(), []);
 
-  const getReservasPendentes = (): (ReservaMaisVanta & { nomeMembro?: string; nomeEvento?: string })[] => {
-    // Buscar todas as reservas com post não verificado
-    const todas = clubeService.getReservasPendentePost?.() ?? [];
-    return todas as any;
-  };
+  const [reservasPendentes, setReservasPendentes] = useState<ResgateMV[]>([]);
 
-  const reservasPendentes = useMemo(() => getReservasPendentes(), []);
+  useEffect(() => {
+    let cancelled = false;
+    getResgatesPendentePost().then(data => {
+      if (!cancelled) setReservasPendentes(data);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [tick]);
 
   // Enriquecer com perfis e eventos
   useEffect(() => {

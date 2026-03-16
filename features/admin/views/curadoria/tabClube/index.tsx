@@ -9,6 +9,7 @@ import type {
   ClubeConfig,
 } from '../../../../../types';
 import { clubeService } from '../../../services/clubeService';
+import { getResgatesPendentePost } from '../../../services/clube/clubeReservasService';
 import { assinaturaService } from '../../../services/assinaturaService';
 import { supabase } from '../../../../../services/supabaseClient';
 import { eventosAdminService } from '../../../services/eventosAdminService';
@@ -33,7 +34,9 @@ export const TabClube: React.FC<Props> = ({ adminId, toastFn, comunidadeId }) =>
   const [subTab, setSubTab] = useState<SubTab>('SOLICITACOES');
   const [solicitacoes, setSolicitacoes] = useState<SolicitacaoClube[]>([]);
   const [membros, setMembros] = useState<MembroClubeVanta[]>([]);
-  const [pendentePosts, setPendentePosts] = useState<ReservaMaisVanta[]>([]);
+  const [pendentePosts, setPendentePosts] = useState<
+    (ReservaMaisVanta | { id: string; userId: string; postVerificado: boolean; postUrl?: string; status: string })[]
+  >([]);
   const [passportsPendentes, setPassportsPendentes] = useState<PassportAprovacao[]>([]);
   const [perfis, setPerfis] = useState<Record<string, PerfilEnriquecido>>({});
   const [perfilDetalhe, setPerfilDetalhe] = useState<string | null>(null);
@@ -82,13 +85,13 @@ export const TabClube: React.FC<Props> = ({ adminId, toastFn, comunidadeId }) =>
     await assinaturaService.refresh();
     setSolicitacoes(clubeService.getSolicitacoesPendentes());
     setMembros(clubeService.getAllMembros());
-    setPendentePosts(clubeService.getReservasPendentePost());
+    setPendentePosts(await getResgatesPendentePost());
     setPassportsPendentes(clubeService.getPassportsPendentes());
 
     const allUserIds = new Set<string>();
     clubeService.getSolicitacoesPendentes().forEach(s => allUserIds.add(s.userId));
     clubeService.getAllMembros().forEach(m => allUserIds.add(m.userId));
-    clubeService.getReservasPendentePost().forEach(r => allUserIds.add(r.userId));
+    (await getResgatesPendentePost()).forEach(r => allUserIds.add(r.userId));
     clubeService.getPassportsPendentes().forEach(p => allUserIds.add(p.userId));
 
     const perfisMap = await loadPerfis(Array.from(allUserIds));

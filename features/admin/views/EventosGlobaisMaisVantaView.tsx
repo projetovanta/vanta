@@ -1,8 +1,9 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { ArrowLeft, Calendar, Users, Zap, RefreshCw } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
 import { AdminViewHeader } from '../components/AdminViewHeader';
 import { clubeService } from '../services/clubeService';
+import { getResgatesEvento, type ResgateMV } from '../services/clube/clubeReservasService';
 import { eventosAdminService } from '../services/eventosAdminService';
 import { comunidadesService } from '../services/comunidadesService';
 
@@ -44,7 +45,7 @@ export const EventosGlobaisMaisVantaView: React.FC<{
   const comunidades = useMemo(() => comunidadesService.getAll(), []);
 
   const getLotesEvento = (eventoId: string) => clubeService.getLotesEvento(eventoId);
-  const getReservasEvento = (eventoId: string) => clubeService.getReservasEvento?.(eventoId) ?? [];
+  const [reservasCache, setReservasCache] = useState<Record<string, ResgateMV[]>>({});
 
   const getComunidadeNome = (eventoId: string) => {
     const evento = eventos.find(e => e.id === eventoId);
@@ -67,7 +68,19 @@ export const EventosGlobaisMaisVantaView: React.FC<{
 
   const selectedEvento = selectedEventId ? eventos.find(e => e.id === selectedEventId) : null;
   const selectedLotes = selectedEventId ? getLotesEvento(selectedEventId) : [];
-  const selectedReservas = selectedEventId ? getReservasEvento(selectedEventId) : [];
+  const selectedReservas = selectedEventId ? (reservasCache[selectedEventId] ?? []) : [];
+
+  // Carregar resgates quando selecionar evento
+  useEffect(() => {
+    if (!selectedEventId || reservasCache[selectedEventId]) return;
+    let cancelled = false;
+    getResgatesEvento(selectedEventId).then(data => {
+      if (!cancelled) setReservasCache(prev => ({ ...prev, [selectedEventId]: data }));
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [selectedEventId]);
 
   const totais = useMemo(() => {
     const ativos = eventosComMV.filter(e => isEventoFuturo(e.dataInicio)).length;
@@ -222,7 +235,7 @@ export const EventosGlobaisMaisVantaView: React.FC<{
 
         {filtrados.map(e => {
           const eventLotes = getLotesEvento(e.id);
-          const eventReservas = getReservasEvento(e.id);
+          const eventReservas = reservasCache[e.id] ?? [];
           const totalReservado = eventReservas.length;
           const totalVagas = eventLotes.reduce((s, l) => s + l.quantidade, 0);
           const ocupacao = totalVagas > 0 ? (totalReservado / totalVagas) * 100 : 0;

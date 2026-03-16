@@ -5,6 +5,7 @@ import { useToast, ToastContainer } from '../../../components/Toast';
 import { TYPOGRAPHY } from '../../../constants';
 import { tsBR } from '../../../utils';
 import { clubeService } from '../services/clubeService';
+import { getResgatesPendentePost } from '../services/clube/clubeReservasService';
 import { comunidadesService } from '../services/comunidadesService';
 import { supabase } from '../../../services/supabaseClient';
 import type { MembroClubeVanta } from '../../../types';
@@ -84,11 +85,19 @@ export const MembrosGlobaisMaisVantaView: React.FC<{
     }
   };
 
-  const temDividaSocial = (userId: string): boolean => {
-    // Verificar se tem reserva com post não verificado
-    const reservasUser = clubeService.getReservasUsuario?.(userId) ?? [];
-    return reservasUser.some((r: any) => !r.postVerificado && r.status === 'RESGATADO');
-  };
+  const [usersComDivida, setUsersComDivida] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    let cancelled = false;
+    getResgatesPendentePost().then(pendentes => {
+      if (!cancelled) setUsersComDivida(new Set(pendentes.map(r => r.userId)));
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [tick]);
+
+  const temDividaSocial = (userId: string): boolean => usersComDivida.has(userId);
 
   const getStatusMembro = (m: MembroClubeVanta): string => {
     if (m.banidoPermanente) return 'BANIDO';

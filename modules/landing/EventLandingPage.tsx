@@ -273,7 +273,9 @@ export const EventLandingPage: React.FC = () => {
                             )}
                           </div>
                           <div className="flex items-center gap-3 shrink-0">
-                            <p className="text-[#FFD300] font-bold">{v.preco > 0 ? fmtBRL(v.preco) : 'Grátis'}</p>
+                            <p className="text-[#FFD300] font-bold">
+                              {v.preco > 0 ? fmtBRL(v.preco) : 'Entrada livre'}
+                            </p>
                             <button
                               onClick={() => handleComprar(v.id)}
                               disabled={esgotado}

@@ -198,8 +198,8 @@ export const AceitarConviteMVPage: React.FC = () => {
 
             <p className="text-zinc-400 text-sm mb-6">
               {resultTipo === 'MEMBRO'
-                ? 'Você agora é membro do MAIS VANTA. Explore os deals exclusivos!'
-                : 'Você agora é parceiro MAIS VANTA. Gerencie seus deals!'}
+                ? 'Você agora é membro do MAIS VANTA. Explore seus benefícios exclusivos!'
+                : 'Você agora é parceiro MAIS VANTA. Gerencie seus benefícios!'}
             </p>
 
             <button

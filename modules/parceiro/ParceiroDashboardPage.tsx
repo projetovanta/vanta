@@ -304,15 +304,15 @@ export const ParceiroDashboardPage: React.FC = () => {
                 : 'bg-zinc-900 border-white/5 text-zinc-400'
             }`}
           >
-            {t === 'DEALS' ? 'Meus Deals' : t === 'RESGATES' ? 'Resgates' : 'QR Scan'}
+            {t === 'DEALS' ? 'Meus Benefícios' : t === 'RESGATES' ? 'Resgates' : 'QR Scan'}
           </button>
         ))}
         <button
           onClick={() => setShowForm(true)}
           className="ml-auto px-3 py-2 bg-purple-500/15 border border-purple-500/30 rounded-xl text-purple-400 text-[0.625rem] font-black uppercase tracking-wider flex items-center gap-1 active:scale-95 transition-all"
-          aria-label="Sugerir novo deal"
+          aria-label="Sugerir novo benefício"
         >
-          <Plus size="0.625rem" /> Sugerir Deal
+          <Plus size="0.625rem" /> Sugerir Benefício
         </button>
       </div>
 
@@ -322,7 +322,7 @@ export const ParceiroDashboardPage: React.FC = () => {
           (deals.length === 0 ? (
             <div className="text-center py-16">
               <Crown size="1.5rem" className="mx-auto text-zinc-700 mb-2" />
-              <p className="text-zinc-400 text-xs">Nenhum deal ainda</p>
+              <p className="text-zinc-400 text-xs">Nenhum benefício ainda</p>
             </div>
           ) : (
             deals.map(d => (
@@ -358,7 +358,7 @@ export const ParceiroDashboardPage: React.FC = () => {
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="text-white text-xs font-bold truncate">{r.user_nome ?? 'Membro'}</p>
-                  <p className="text-zinc-400 text-[0.5625rem] truncate">{r.deal_titulo ?? 'Deal'}</p>
+                  <p className="text-zinc-400 text-[0.5625rem] truncate">{r.deal_titulo ?? 'Benefício'}</p>
                 </div>
                 <div className="text-right shrink-0">
                   <p className="text-zinc-400 text-[0.5625rem]">
@@ -410,7 +410,7 @@ export const ParceiroDashboardPage: React.FC = () => {
                       <>
                         <p className="text-green-400 font-bold text-sm">Check-in confirmado!</p>
                         <p className="text-zinc-400 text-[0.625rem] truncate">
-                          {scanResult.nome} — {scanResult.deal}
+                          {scanResult.nome} — {scanResult.deal ?? 'Benefício'}
                         </p>
                       </>
                     ) : (
@@ -465,7 +465,7 @@ export const ParceiroDashboardPage: React.FC = () => {
             </div>
             <div className="px-6 pt-4" style={{ paddingBottom: 'max(2rem, env(safe-area-inset-bottom, 2rem))' }}>
               <div className="flex items-center justify-between mb-5">
-                <p className="text-white font-bold text-base">Sugerir Deal</p>
+                <p className="text-white font-bold text-base">Sugerir Benefício</p>
                 <button onClick={() => setShowForm(false)} className="p-1.5 text-zinc-400" aria-label="Fechar">
                   <X size="0.875rem" />
                 </button>
@@ -490,7 +490,9 @@ export const ParceiroDashboardPage: React.FC = () => {
               </div>
 
               {/* Título */}
-              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2">Título do Deal</p>
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2">
+                Título do Benefício
+              </p>
               <input
                 type="text"
                 value={formTitulo}
@@ -541,7 +543,7 @@ export const ParceiroDashboardPage: React.FC = () => {
               />
 
               <p className="text-zinc-400 text-[0.625rem] leading-relaxed mb-5">
-                O deal será enviado pro master pra aprovação. Você será notificado quando for aprovado.
+                O benefício será enviado pra aprovação. Você será notificado quando for aprovado.
               </p>
 
               <div className="flex gap-3">

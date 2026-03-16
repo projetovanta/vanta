@@ -36,7 +36,7 @@ import { supabase } from '../../services/supabaseClient';
 const TERMOS_PADRAO = `TERMOS DE USO — CLUBE MAIS VANTA
 
 1. NATUREZA DO PROGRAMA
-O Clube MAIS VANTA é um programa de permutas entre criadores de conteúdo e estabelecimentos parceiros. A participação é um benefício, NÃO um direito. A aprovação da solicitação está sujeita à análise interna e discricionária da equipe de curadoria, sem garantia de aceitação.
+O Clube MAIS VANTA é um programa de permutas entre criadores de conteúdo e lugares parceiros. A participação é um benefício, NÃO um direito. A aprovação da solicitação está sujeita à análise interna e discricionária da equipe de curadoria, sem garantia de aceitação.
 
 2. OBRIGAÇÕES DO MEMBRO
 Ao ser aprovado, o membro se compromete a:
@@ -49,13 +49,13 @@ O descumprimento gerará débito de crédito social, bloqueando novas reservas a
 Em conformidade com a Lei Geral de Proteção de Dados Pessoais:
 • Finalidade: seus dados pessoais (nome, e-mail, Instagram, número de seguidores) serão utilizados exclusivamente para gestão do programa, curadoria e comunicação relacionada.
 • Base legal: consentimento explícito do titular (Art. 7º, I).
-• Compartilhamento: seus dados poderão ser compartilhados com os estabelecimentos parceiros onde você realizar reservas, limitado ao necessário para execução do benefício.
+• Compartilhamento: seus dados poderão ser compartilhados com os lugares parceiros onde você realizar reservas, limitado ao necessário para execução do benefício.
 • Direitos do titular: você pode, a qualquer momento, acessar, corrigir, anonimizar, bloquear, excluir ou solicitar a portabilidade dos seus dados pessoais.
 • Revogação: o consentimento pode ser revogado a qualquer momento, o que poderá resultar no desligamento do programa.
 • Armazenamento: seus dados são armazenados de forma segura em servidores protegidos, pelo tempo necessário ao cumprimento das finalidades descritas.
 
 4. LIMITAÇÃO DE RESPONSABILIDADE
-A plataforma não garante um número mínimo de eventos, reservas ou benefícios. A disponibilidade depende dos estabelecimentos parceiros.
+A plataforma não garante um número mínimo de eventos, reservas ou benefícios. A disponibilidade depende dos lugares parceiros.
 
 5. ALTERAÇÕES
 Estes termos podem ser atualizados a qualquer momento. O uso continuado após alterações constitui aceite dos novos termos.`;

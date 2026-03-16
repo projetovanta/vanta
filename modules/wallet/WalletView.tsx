@@ -43,6 +43,7 @@ export const WalletView: React.FC<WalletViewProps> = ({
   onSuccess,
 }) => {
   const userId = useAuthStore(s => s.currentAccount.id);
+  const isMembro = useMemo(() => (userId ? clubeService.isMembro(userId) : false), [userId]);
   const tickets = useTicketsStore(s => s.myTickets);
   const presencaIds = useTicketsStore(s => s.myPresencas);
   const cortesiasPendentes = useTicketsStore(s => s.cortesiasPendentes);
@@ -197,9 +198,24 @@ export const WalletView: React.FC<WalletViewProps> = ({
       </div>
 
       <h1 style={TYPOGRAPHY.screenTitle} className="text-3xl mb-2 text-[#FFD300]">
-        Carteira
+        Minha Experiência
       </h1>
-      <p className="text-zinc-400 text-xs uppercase tracking-widest mb-8 italic">Seus acessos e confirmações</p>
+      <p className="text-zinc-400 text-xs uppercase tracking-widest mb-6 italic">Ingressos, presenças e benefícios</p>
+
+      {/* Benefícios disponíveis — só membros MV */}
+      {isMembro && (
+        <button
+          onClick={onGoToHome}
+          className="w-full flex items-center gap-3 px-4 py-3.5 bg-[#FFD300]/5 border border-[#FFD300]/15 rounded-xl mb-8 active:scale-[0.98] transition-all"
+        >
+          <Crown size="1.125rem" className="text-[#FFD300] shrink-0" />
+          <div className="flex-1 text-left min-w-0">
+            <p className="text-sm text-white font-bold">Seus benefícios</p>
+            <p className="text-[0.625rem] text-zinc-400">Explore lugares e vantagens exclusivas</p>
+          </div>
+          <ChevronRight size="0.875rem" className="text-zinc-600 shrink-0" />
+        </button>
+      )}
 
       {/* Abas */}
       <div className="flex p-1 bg-zinc-900/50 rounded-2xl border border-white/5 mb-8">

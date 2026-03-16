@@ -1,9 +1,11 @@
-# Criado: 2026-03-06 01:34 | Ultima edicao: 2026-03-06 01:34
+# Criado: 2026-03-06 01:34 | Ultima edicao: 2026-03-16
 
-# Modulo: Carteira (Wallet)
+# Modulo: Minha Experiência (ex-Carteira/Wallet)
 
 ## O que e
-Carteira = onde o usuario ve seus ingressos, QR codes, transferencias e cortesias.
+Minha Experiencia = onde o usuario ve ingressos, QR codes, transferencias, cortesias e beneficios MV.
+Titulo: "Minha Experiência". Subtitulo: "Ingressos, presenças e benefícios".
+Membros MV veem seção "Seus benefícios" no topo com link pra explorar.
 Apos a compra, ingresso aparece aqui. Daqui sai transferencia, cortesia, QR check-in.
 Sem carteira nao existe check-in, transferencia, cortesia, presenca.
 

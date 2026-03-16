@@ -81,6 +81,7 @@
 [2026-03-15] Busca REDESIGN — "Benefícios"→"Pra Você", tab visível pra todos (era só membros MV). Não-membros veem tela com lock+CTA "Saiba mais". Placeholder "Buscar lugares pra você..." → afeta busca
 [2026-03-15] Camada MV IMPLEMENTADA — Home: saudação com Crown dourada + seção "Seus Benefícios" pra membros. EventCard: ícone dourado sem texto (era Crown+MV). Perfil público: Crown ao lado do nome de membros MV → afeta home, cards, perfil público
 [2026-03-15] Radar com PARCEIROS — migration parceiros_coords (JSONB), pins âmbar no mapa pra parceiros MV com coords. Todos veem pins, só membros veem benefício. types/supabase.ts regenerado → afeta radar, banco, types
+[2026-03-16] Minha Experiência COMPLETA — "Carteira"→"Minha Experiência", seção "Seus benefícios" pra membros MV no topo, subtítulo "Ingressos, presenças e benefícios" → afeta wallet/perfil
 
 ---
 

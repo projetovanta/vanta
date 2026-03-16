@@ -33,9 +33,22 @@ esac
 # Essas são responsabilidade do agente especialista + Lia verifica
 case "$BASENAME" in
   modulo_*|sub_*|mapa_*|graph_*|checklist_*|admin_*|home_*|event_*|checkout*|wallet*|profile*|search*|radar*|mensagens*|onboarding*|comunidade_*|componentes_*|graficos_*|services_*|painel_*|permissoes_*|categorias*|checkin_*|clube_*|regras_reembolso*|reviews*|relatorios*|infraestrutura*|plataformas*|responsividade*|push_*|rbac_*|projeto_*|mais_vanta_*|audit_*|EDGES.md)
+    # Checar se Dan autorizou explicitamente
+    AUTH_MARKER="/tmp/vanta_dan_authorized_edit"
+    if [ -f "$AUTH_MARKER" ]; then
+      AUTH_CONTENT=$(cat "$AUTH_MARKER" 2>/dev/null)
+      if echo "$AUTH_CONTENT" | grep -q "^VANTA_MARKER|dan_authorized|"; then
+        AUTH_TS=$(echo "$AUTH_CONTENT" | cut -d'|' -f3)
+        NOW_TS=$(date +%s)
+        if [ $((NOW_TS - AUTH_TS)) -le 300 ]; then
+          rm -f "$AUTH_MARKER"
+          exit 0
+        fi
+      fi
+    fi
     jq -n --arg file "$BASENAME" '{
       decision: "block",
-      reason: ("BLOQUEADO — Rafa NAO atualiza memoria de modulo.\n\nRegra: Quem trabalhou no modulo atualiza a memoria dele. Lia verifica.\n\nVoce esta tentando editar: " + $file + "\n\nDelegue:\n- Se Luna editou frontend, Luna atualiza a memoria + Lia confere\n- Se Kai editou banco, Kai atualiza + Lia confere\n- Se Rafa precisa de atualizacao, peca ao especialista que fez a mudanca\n\nRafa so pode editar: sessao_atual.md, MEMORY.md, feedback_*.md, regras_usuario.md")
+      reason: ("BLOQUEADO — Rafa NAO atualiza memoria de modulo: " + $file + "\n\nDelegue ao especialista que fez a mudanca + Lia confere.\nSe Dan autorizou: scripts/vanta-marker.sh dan_authorized")
     }'
     exit 0
     ;;

@@ -46,6 +46,7 @@ export const CriarEventoView: React.FC<{
   const [tipoFluxo, setTipoFluxo] = useState<TipoFluxoEvento | null>(null);
   const [step, setStep] = useState(1);
   const [publicado, setPublicado] = useState(false);
+  const [isPublicando, setIsPublicando] = useState(false);
   const [erro, setErro] = useState('');
   const [copiarOpen, setCopiarOpen] = useState(false);
   const [conviteEnviado, setConviteEnviado] = useState(false);
@@ -346,6 +347,8 @@ export const CriarEventoView: React.FC<{
 
   // ── Publicar ──
   const handlePublicar = async () => {
+    if (isPublicando) return;
+    setIsPublicando(true);
     setErro('');
     try {
       const iso = (date: string, hora: string) => `${date}T${hora}:00-03:00`;
@@ -540,6 +543,8 @@ export const CriarEventoView: React.FC<{
       setPublicado(true);
     } catch (e) {
       setErro('Erro ao publicar evento. Tente novamente.');
+    } finally {
+      setIsPublicando(false);
     }
   };
 
@@ -900,9 +905,16 @@ export const CriarEventoView: React.FC<{
         )}
         <button
           onClick={avancar}
-          className="flex-1 py-3.5 bg-[#FFD300] text-black rounded-xl text-[0.625rem] font-black uppercase tracking-widest active:scale-95 transition-all font-bold"
+          disabled={isPublicando}
+          className={`flex-1 py-3.5 ${isPublicando ? 'bg-zinc-700 text-zinc-400' : 'bg-[#FFD300] text-black'} rounded-xl text-[0.625rem] font-black uppercase tracking-widest active:scale-95 transition-all font-bold`}
         >
-          {step === TOTAL_STEPS ? (tipoFluxo === 'COM_SOCIO' ? 'Enviar Convite' : 'Enviar para Aprovação') : 'Próximo'}
+          {isPublicando
+            ? 'Publicando...'
+            : step === TOTAL_STEPS
+              ? tipoFluxo === 'COM_SOCIO'
+                ? 'Enviar Convite'
+                : 'Enviar para Aprovação'
+              : 'Próximo'}
         </button>
       </div>
 

@@ -193,6 +193,8 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification 
   // ── Raio-X do Evento ──────────────────────────────────────────────────────
   const [selectedComId, setSelectedComId] = useState<string | null>(null);
   const [selectedEventoId, setSelectedEventoId] = useState<string | null>(null);
+  const [saqueConfirmId, setSaqueConfirmId] = useState<string | null>(null);
+  const [saqueEstornoId, setSaqueEstornoId] = useState<string | null>(null);
   const selectedEvento = selectedEventoId ? allEventos.find(e => e.id === selectedEventoId) : null;
 
   // ── Handlers ───────────────────────────────────────────────────────────────
@@ -441,13 +443,13 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification 
                     </div>
                     <div className="flex gap-2">
                       <button
-                        onClick={() => estornar(s.id)}
+                        onClick={() => setSaqueEstornoId(s.id)}
                         className="flex-1 py-2.5 bg-red-950/40 border border-red-500/20 text-red-400 rounded-xl text-[0.5625rem] font-black uppercase tracking-wider active:scale-95 transition-all flex items-center justify-center gap-1.5"
                       >
                         <X size="0.625rem" /> Estornar
                       </button>
                       <button
-                        onClick={() => confirmar(s.id)}
+                        onClick={() => setSaqueConfirmId(s.id)}
                         className="flex-1 py-2.5 bg-emerald-950/40 border border-emerald-500/20 text-emerald-400 rounded-xl text-[0.5625rem] font-black uppercase tracking-wider active:scale-95 transition-all flex items-center justify-center gap-1.5"
                       >
                         <Check size="0.625rem" /> Confirmar
@@ -679,6 +681,66 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification 
         {/* ── Condições Comerciais — Resumo ──────────────────────────────── */}
         <CondicoesResumoCard />
       </div>
+
+      {/* Modal confirmação saque */}
+      {saqueConfirmId && (
+        <div
+          className="absolute inset-0 z-50 flex items-end justify-center bg-black/85"
+          onClick={() => setSaqueConfirmId(null)}
+        >
+          <div className="w-full max-w-md bg-zinc-900 rounded-t-3xl p-6 space-y-4" onClick={e => e.stopPropagation()}>
+            <p className="text-white font-bold text-sm text-center">Confirmar pagamento deste saque?</p>
+            <p className="text-zinc-400 text-xs text-center">Esta ação não pode ser desfeita.</p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setSaqueConfirmId(null)}
+                className="flex-1 py-3 bg-zinc-800 text-zinc-300 rounded-xl text-xs font-bold"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={() => {
+                  confirmar(saqueConfirmId);
+                  setSaqueConfirmId(null);
+                }}
+                className="flex-1 py-3 bg-[#34D399] text-black rounded-xl text-xs font-bold"
+              >
+                Confirmar Pagamento
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal confirmação estorno */}
+      {saqueEstornoId && (
+        <div
+          className="absolute inset-0 z-50 flex items-end justify-center bg-black/85"
+          onClick={() => setSaqueEstornoId(null)}
+        >
+          <div className="w-full max-w-md bg-zinc-900 rounded-t-3xl p-6 space-y-4" onClick={e => e.stopPropagation()}>
+            <p className="text-white font-bold text-sm text-center">Estornar este saque?</p>
+            <p className="text-zinc-400 text-xs text-center">O valor será devolvido ao saldo do produtor.</p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setSaqueEstornoId(null)}
+                className="flex-1 py-3 bg-zinc-800 text-zinc-300 rounded-xl text-xs font-bold"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={() => {
+                  estornar(saqueEstornoId);
+                  setSaqueEstornoId(null);
+                }}
+                className="flex-1 py-3 bg-red-500 text-white rounded-xl text-xs font-bold"
+              >
+                Estornar Saque
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

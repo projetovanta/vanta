@@ -7,6 +7,7 @@
 
 import { ListaEvento, RegraLista, CotaPromoter, ConvidadoLista } from '../../../types';
 import { supabase } from '../../../services/supabaseClient';
+import { tsBR } from '../../../utils';
 import type { Database } from '../../../types/supabase';
 
 type ListaRow = Database['public']['Tables']['listas_evento']['Row'];
@@ -518,7 +519,7 @@ export const listasService = {
     const c = lista.convidados.find(c => c.id === convidadoId);
     if (!c || c.checkedIn) return { ok: false };
 
-    const checkedInEm = new Date(Date.now() - 3 * 3600000).toISOString().replace('Z', '-03:00');
+    const checkedInEm = tsBR();
     const corte = verificarHoraCorte(lista, c.regraId, checkedInEm);
 
     if (corte.tipo === 'bloqueado') {
@@ -582,7 +583,7 @@ export const listasService = {
     const c = lista.convidados.find(c => c.id === convidadoId);
     if (!c || c.checkedIn) return { ok: false };
 
-    const checkedInEm = new Date(Date.now() - 3 * 3600000).toISOString().replace('Z', '-03:00');
+    const checkedInEm = tsBR();
 
     c.checkedIn = true;
     c.checkedInEm = checkedInEm;
@@ -618,7 +619,7 @@ export const listasService = {
     const c = lista.convidados.find(c => c.id === convidadoId);
     if (!c || c.checkedIn) return { ok: false };
 
-    const checkedInEm = new Date(Date.now() - 3 * 3600000).toISOString().replace('Z', '-03:00');
+    const checkedInEm = tsBR();
     const corte = verificarHoraCorte(lista, c.regraId, checkedInEm);
     const novaRegraId = corte.tipo === 'abobora' ? corte.novaRegraId : undefined;
 
@@ -653,7 +654,7 @@ export const listasService = {
       const c = lista.convidados.find(cv => cv.id === convidadoId);
       if (c) {
         if (c.checkedIn) return { ok: false };
-        const checkedInEm = new Date(Date.now() - 3 * 3600000).toISOString().replace('Z', '-03:00');
+        const checkedInEm = tsBR();
         const corte = verificarHoraCorte(lista, c.regraId, checkedInEm);
 
         if (corte.tipo === 'bloqueado') {

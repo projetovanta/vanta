@@ -135,6 +135,7 @@
 - [feedback_rafa_convoca_equipe.md](feedback_rafa_convoca_equipe.md) — Rafa NUNCA age sozinho — convoca especialistas, cada um assina, Rafa consolida e reporta ao Dan
 - [feedback_ler_memorias_obrigatorio.md](feedback_ler_memorias_obrigatorio.md) — OBRIGATÓRIO ler memórias de feedback antes de qualquer ação
 - [feedback_sem_bypass_hooks.md](feedback_sem_bypass_hooks.md) — NUNCA contornar hooks via Bash/node/python/sed — pedir autorização ao Dan via AskUserQuestion
+- [feedback_nunca_burlar_marker.md](feedback_nunca_burlar_marker.md) — NUNCA rodar vanta-marker.sh sem ter feito o trabalho real — última chance
 
 ## Meta
 

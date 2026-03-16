@@ -185,7 +185,10 @@ const EventoCaixaView: React.FC<{
       email.trim().toLowerCase(),
       { nomeTitular: nome, cpf: cpf.replace(/\D/g, '') },
     );
-    if (!ok) return;
+    if (!ok) {
+      setEmailErro('Erro ao registrar venda. Tente novamente.');
+      return;
+    }
 
     const finalId = newId ?? `offline_${Date.now()}`;
     setTicketId(finalId);

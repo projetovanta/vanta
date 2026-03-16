@@ -19,7 +19,7 @@ export const ListaEventoView: React.FC<{
   onBack: () => void;
 }> = ({ lista, role, userId, userNome, onBack }) => {
   const tabsDisponiveis = useMemo((): TabEvento[] => {
-    if (role === 'portaria') return ['CHECKIN'];
+    if (role === 'portaria_lista' || role === 'portaria_antecipado') return ['CHECKIN'];
     if (role === 'promoter') return ['NOMES'];
     return ['NOMES', 'EQUIPE', 'LOTACAO'];
   }, [role]);

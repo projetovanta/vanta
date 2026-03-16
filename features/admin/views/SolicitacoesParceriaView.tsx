@@ -16,6 +16,8 @@ import { TYPOGRAPHY } from '../../../constants';
 import { AdminViewHeader } from '../components/AdminViewHeader';
 import { parceriaService, SolicitacaoParceria } from '../services/parceriaService';
 import { comunidadesService } from '../services/comunidadesService';
+import { rbacService, CARGO_PERMISSOES } from '../services/rbacService';
+import { useAuthStore } from '../../../stores/authStore';
 import { globalToast } from '../../../components/Toast';
 
 type AbaStatus = 'PENDENTE' | 'APROVADA' | 'REJEITADA';
@@ -23,6 +25,7 @@ type AbaStatus = 'PENDENTE' | 'APROVADA' | 'REJEITADA';
 export const SolicitacoesParceriaView: React.FC<{
   onBack: () => void;
 }> = ({ onBack }) => {
+  const masterUserId = useAuthStore(s => s.profile?.id ?? '');
   const [aba, setAba] = useState<AbaStatus>('PENDENTE');
   const [solicitacoes, setSolicitacoes] = useState<SolicitacaoParceria[]>([]);
   const [loading, setLoading] = useState(true);
@@ -84,6 +87,7 @@ export const SolicitacoesParceriaView: React.FC<{
         donoId: detalhe.userId,
         createdBy: detalhe.userId,
         telefone: detalhe.telefone,
+        tipo_comunidade: detalhe.tipo,
       });
 
       if (!comunidadeId) {
@@ -107,7 +111,17 @@ export const SolicitacoesParceriaView: React.FC<{
         vanta_fee_repasse_percent: taxas.quemPaga === 'COMPRADOR_PAGA' ? taxas.taxaServico / 100 : 0,
       });
 
-      // 3. Aprovar solicitação (marca APROVADA + notifica solicitante)
+      // 3. Atribuir RBAC de GERENTE ao dono da comunidade
+      await rbacService.atribuir({
+        userId: detalhe.userId,
+        tenant: { tipo: 'COMUNIDADE', id: comunidadeId, nome: detalhe.nome, foto: detalhe.fotos?.[0] },
+        cargo: 'GERENTE',
+        permissoes: CARGO_PERMISSOES.GERENTE,
+        atribuidoPor: masterUserId,
+        ativo: true,
+      });
+
+      // 4. Aprovar solicitação (marca APROVADA + notifica solicitante)
       const ok = await parceriaService.aprovar(detalhe.id, comunidadeId);
       if (ok) {
         globalToast('sucesso', `Comunidade "${detalhe.nome}" criada com taxa de ${taxas.taxaServico}%!`);

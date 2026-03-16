@@ -112,6 +112,7 @@ export const comunidadesService = {
     cnpj?: string;
     razaoSocial?: string;
     telefone?: string;
+    tipo_comunidade?: 'ESPACO_FIXO' | 'PRODUTORA';
   }): Promise<string> {
     const { data: inserted, error } = await supabase
       .from('comunidades')
@@ -133,6 +134,7 @@ export const comunidadesService = {
         cnpj: data.cnpj ?? null,
         razao_social: data.razaoSocial ?? null,
         telefone: data.telefone ?? null,
+        tipo_comunidade: data.tipo_comunidade ?? null,
       })
       .select('*')
       .single();
@@ -186,6 +188,7 @@ export const comunidadesService = {
       evento_privado_atracoes: string[];
       evento_privado_faixas_capacidade: string[];
       onboarding_completo: boolean;
+      tipo_comunidade: 'ESPACO_FIXO' | 'PRODUTORA';
     }>,
   ): Promise<boolean> {
     const dbUpdates: Record<string, unknown> = {};
@@ -231,6 +234,7 @@ export const comunidadesService = {
     if (updates.evento_privado_faixas_capacidade !== undefined)
       dbUpdates.evento_privado_faixas_capacidade = updates.evento_privado_faixas_capacidade;
     if (updates.onboarding_completo !== undefined) dbUpdates.onboarding_completo = updates.onboarding_completo;
+    if (updates.tipo_comunidade !== undefined) dbUpdates.tipo_comunidade = updates.tipo_comunidade;
 
     const { error } = await supabase.from('comunidades').update(dbUpdates).eq('id', id);
     if (error) {

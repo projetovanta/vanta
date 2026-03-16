@@ -12,6 +12,7 @@ import { RelatorioComunidadeView } from '../relatorios';
 import { EventosPrivadosTab } from './EventosPrivadosTab';
 import { ComemoracoesTab } from './ComemoracoesTab';
 import { ComercialTab } from './ComercialTab';
+import { CuponsComunidadeTab } from './CuponsComunidadeTab';
 import { addLog, DetalheTab } from './types';
 import { OptimizedImage } from '../../../../components/OptimizedImage';
 
@@ -60,6 +61,7 @@ export const ComunidadeDetalheView: React.FC<{
     { id: 'PRIVADOS', label: 'Privados' },
     { id: 'COMEMORACOES', label: 'Aniversários' },
     { id: 'COMERCIAL', label: 'Comercial' },
+    { id: 'CUPONS', label: 'Cupons' },
   ];
 
   return (
@@ -171,6 +173,8 @@ export const ComunidadeDetalheView: React.FC<{
           {tab === 'COMEMORACOES' && <ComemoracoesTab comunidadeId={comunidade.id} />}
 
           {tab === 'COMERCIAL' && <ComercialTab comunidade={comunidade} onToast={msg => toast('info', msg)} />}
+
+          {tab === 'CUPONS' && <CuponsComunidadeTab comunidadeId={comunidade.id} currentUserId={adminId ?? ''} />}
         </div>
       </div>
 

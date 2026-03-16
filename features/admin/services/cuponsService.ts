@@ -115,6 +115,19 @@ export const cuponsService = {
     return (data ?? []).map(rowToCupom);
   },
 
+  /** Cupons de uma comunidade (vale pra todos os eventos dela) */
+  async getCuponsByComunidade(comunidadeId: string): Promise<Cupom[]> {
+    const { data } = await supabase
+      .from('cupons')
+      .select(
+        'id, codigo, tipo, valor, limite_usos, usos, evento_id, comunidade_id, valido_ate, ativo, criado_por, criado_em',
+      )
+      .eq('comunidade_id', comunidadeId)
+      .is('evento_id', null)
+      .order('criado_em', { ascending: false });
+    return (data ?? []).map(rowToCupom);
+  },
+
   /** Ativa/desativa cupom */
   async toggleCupom(cupomId: string, ativo: boolean): Promise<void> {
     const { error } = await supabase.from('cupons').update({ ativo }).eq('id', cupomId);

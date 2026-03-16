@@ -34,7 +34,8 @@ export type DetalheTab =
   | 'RELATORIO'
   | 'PRIVADOS'
   | 'COMEMORACOES'
-  | 'COMERCIAL';
+  | 'COMERCIAL'
+  | 'CUPONS';
 export type EventoTab = 'CRIAR' | 'PROXIMOS' | 'ENCERRADOS';
 
 export const CAIXA_TITLE: Record<CaixaTipo, string> = {

@@ -1006,9 +1006,11 @@ export type Database = {
           horario_funcionamento: Json;
           horario_overrides: Json;
           id: string;
+          instagram: string | null;
           nome: string;
           onboarding_completo: boolean | null;
           razao_social: string | null;
+          site: string | null;
           slug: string | null;
           taxa_cortesia_excedente_pct: number | null;
           taxa_minima: number | null;
@@ -1017,11 +1019,13 @@ export type Database = {
           taxa_processamento_percent: number | null;
           telefone: string | null;
           tier_minimo_mais_vanta: string | null;
+          tiktok: string | null;
           tipo_comunidade: string | null;
           updated_at: string;
           vanta_fee_fixed: number;
           vanta_fee_percent: number | null;
           vanta_fee_repasse_percent: number | null;
+          whatsapp: string | null;
         };
         Insert: {
           ativa?: boolean;
@@ -1053,9 +1057,11 @@ export type Database = {
           horario_funcionamento?: Json;
           horario_overrides?: Json;
           id?: string;
+          instagram?: string | null;
           nome: string;
           onboarding_completo?: boolean | null;
           razao_social?: string | null;
+          site?: string | null;
           slug?: string | null;
           taxa_cortesia_excedente_pct?: number | null;
           taxa_minima?: number | null;
@@ -1064,11 +1070,13 @@ export type Database = {
           taxa_processamento_percent?: number | null;
           telefone?: string | null;
           tier_minimo_mais_vanta?: string | null;
+          tiktok?: string | null;
           tipo_comunidade?: string | null;
           updated_at?: string;
           vanta_fee_fixed?: number;
           vanta_fee_percent?: number | null;
           vanta_fee_repasse_percent?: number | null;
+          whatsapp?: string | null;
         };
         Update: {
           ativa?: boolean;
@@ -1100,9 +1108,11 @@ export type Database = {
           horario_funcionamento?: Json;
           horario_overrides?: Json;
           id?: string;
+          instagram?: string | null;
           nome?: string;
           onboarding_completo?: boolean | null;
           razao_social?: string | null;
+          site?: string | null;
           slug?: string | null;
           taxa_cortesia_excedente_pct?: number | null;
           taxa_minima?: number | null;
@@ -1111,11 +1121,13 @@ export type Database = {
           taxa_processamento_percent?: number | null;
           telefone?: string | null;
           tier_minimo_mais_vanta?: string | null;
+          tiktok?: string | null;
           tipo_comunidade?: string | null;
           updated_at?: string;
           vanta_fee_fixed?: number;
           vanta_fee_percent?: number | null;
           vanta_fee_repasse_percent?: number | null;
+          whatsapp?: string | null;
         };
         Relationships: [];
       };

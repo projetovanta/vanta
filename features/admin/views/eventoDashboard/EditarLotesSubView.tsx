@@ -16,6 +16,7 @@ import { eventosAdminService } from '../../services/eventosAdminService';
 import { cortesiasService } from '../../services/cortesiasService';
 import { clubeService } from '../../services/clubeService';
 import type { LoteAdmin } from '../../../../types';
+import { useToast, ToastContainer } from '../../../../components/Toast';
 
 interface Props {
   eventoId: string;
@@ -24,6 +25,7 @@ interface Props {
 }
 
 export const EditarLotesSubView: React.FC<Props> = ({ eventoId, onBack, currentUserId }) => {
+  const { toasts, dismiss, toast } = useToast();
   const [lotes, setLotes] = useState<LoteForm[]>([novoLote()]);
   const [cortesiaEnabled, setCortesiaEnabled] = useState(false);
   const [cortesiaLimites, setCortesiaLimites] = useState<Record<string, string>>({});
@@ -236,6 +238,7 @@ export const EditarLotesSubView: React.FC<Props> = ({ eventoId, onBack, currentU
           Salvar Lotes
         </button>
       </div>
+      <ToastContainer toasts={toasts} onDismiss={dismiss} />
     </div>
   );
 };

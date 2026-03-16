@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
 import { AdminViewHeader } from '../components/AdminViewHeader';
+import { useToast, ToastContainer } from '../../../components/Toast';
 import { supabase } from '../../../services/supabaseClient';
 import {
   campanhasService,
@@ -51,6 +52,7 @@ type ActiveTab = 'ENVIAR' | 'TEMPLATES' | 'AGENDADOS';
 
 export const NotificacoesAdminView: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   const userId = useAuthStore(s => s.currentAccount?.id);
+  const { toasts, dismiss, toast } = useToast();
   const [activeTab, setActiveTab] = useState<ActiveTab>('ENVIAR');
   const [titulo, setTitulo] = useState('');
   const [mensagem, setMensagem] = useState('');
@@ -951,6 +953,7 @@ export const NotificacoesAdminView: React.FC<{ onBack: () => void }> = ({ onBack
           </button>
         </div>
       )}
+      <ToastContainer toasts={toasts} onDismiss={dismiss} />
     </div>
   );
 };

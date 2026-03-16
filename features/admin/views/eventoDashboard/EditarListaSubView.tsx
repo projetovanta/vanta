@@ -12,6 +12,7 @@ import { Step3Listas } from '../criarEvento/Step3Listas';
 import { novaVarLista, buildLabel } from '../criarEvento/utils';
 import { eventosAdminService } from '../../services/eventosAdminService';
 import { listasService } from '../../services/listasService';
+import { useToast, ToastContainer } from '../../../../components/Toast';
 
 interface Props {
   eventoId: string;
@@ -19,6 +20,7 @@ interface Props {
 }
 
 export const EditarListaSubView: React.FC<Props> = ({ eventoId, onBack }) => {
+  const { toasts, dismiss, toast } = useToast();
   const [listasEnabled, setListasEnabled] = useState(false);
   const [varsLista, setVarsLista] = useState<VarListaForm[]>([novaVarLista(0)]);
   const [saving, setSaving] = useState(false);
@@ -163,6 +165,7 @@ export const EditarListaSubView: React.FC<Props> = ({ eventoId, onBack }) => {
           {listasEnabled ? 'Salvar Lista' : 'Desativar Lista'}
         </button>
       </div>
+      <ToastContainer toasts={toasts} onDismiss={dismiss} />
     </div>
   );
 };

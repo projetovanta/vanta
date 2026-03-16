@@ -19,6 +19,8 @@ const STRIPE_WEBHOOK_SECRET = Deno.env.get('STRIPE_WEBHOOK_SECRET') ?? '';
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL') ?? '';
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
 
+const tsBR = () => new Date().toLocaleString('sv-SE', { timeZone: 'America/Sao_Paulo' }).replace(' ', 'T') + '-03:00';
+
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers':
@@ -151,7 +153,7 @@ serve(async (req: Request) => {
           }
 
           // Atualizar pedido
-          const nowBRT = new Date(Date.now() - 3 * 3600000).toISOString().replace('Z', '-03:00');
+          const nowBRT = tsBR();
           const { error: updErr } = await supabase
             .from('pedidos_checkout')
             .update({
@@ -221,7 +223,7 @@ serve(async (req: Request) => {
         const comunidadeId = session.metadata?.comunidade_id;
         const plano = session.metadata?.plano;
         if (comunidadeId) {
-          const now = new Date(Date.now() - 3 * 3600000).toISOString().replace('Z', '-03:00');
+          const now = tsBR();
           const { error: errUpsert } = await supabase.from('assinaturas_mais_vanta').upsert(
             {
               comunidade_id: comunidadeId,
@@ -262,7 +264,7 @@ serve(async (req: Request) => {
             .from('assinaturas_mais_vanta')
             .update({
               status: 'CANCELADA',
-              fim: new Date(Date.now() - 3 * 3600000).toISOString().replace('Z', '-03:00'),
+              fim: tsBR(),
             })
             .eq('comunidade_id', comunidadeId);
           if (errCancel) console.error('[stripe-webhook] subscription.deleted update:', errCancel.message);

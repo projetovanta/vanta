@@ -32,6 +32,7 @@ import { supabase } from '../../../services/supabaseClient';
 import { notificationsService } from '../services/notificationsService';
 import { TYPOGRAPHY } from '../../../constants';
 import { tsBR } from '../../../utils';
+import { useToast, ToastContainer } from '../../../components/Toast';
 
 // ── Tipos ──────────────────────────────────────────────────────────────────
 
@@ -203,6 +204,7 @@ interface Props {
 }
 
 export const DatabaseHealthView: React.FC<Props> = ({ onBack }) => {
+  const { toasts, dismiss, toast } = useToast();
   const [activeCheckId, setActiveCheckId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<HealthUser[]>([]);
@@ -577,6 +579,7 @@ export const DatabaseHealthView: React.FC<Props> = ({ onBack }) => {
         {/* Espaço inferior */}
         <div className="h-6" />
       </div>
+      <ToastContainer toasts={toasts} onDismiss={dismiss} />
     </div>
   );
 };

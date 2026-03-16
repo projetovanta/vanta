@@ -98,7 +98,7 @@ function txComplete(tx: IDBTransaction): Promise<void> {
 }
 
 function tsBR(): string {
-  return new Date(Date.now() - 3 * 3600000).toISOString().replace('Z', '-03:00');
+  return new Date().toLocaleString('sv-SE', { timeZone: 'America/Sao_Paulo' }).replace(' ', 'T') + '-03:00';
 }
 
 // ── Helper genérico: cache por eventoId ──────────────────────────────────────

@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { ArrowLeft, Users, Shield, Ban, AlertCircle, RefreshCw, LogOut, Gift } from 'lucide-react';
 import { AdminViewHeader } from '../components/AdminViewHeader';
+import { useToast, ToastContainer } from '../../../components/Toast';
 import { TYPOGRAPHY } from '../../../constants';
 import { tsBR } from '../../../utils';
 import { clubeService } from '../services/clubeService';
@@ -20,6 +21,7 @@ const STATUS_CONFIG: Record<string, { label: string; color: string; icon: React.
 export const MembrosGlobaisMaisVantaView: React.FC<{
   onBack: () => void;
 }> = ({ onBack }) => {
+  const { toasts, dismiss, toast } = useToast();
   const [filtro, setFiltro] = useState<Filtro>('ATIVOS');
   const [tick, setTick] = useState(0);
   const [loading, setLoading] = useState<string | null>(null);
@@ -549,6 +551,7 @@ export const MembrosGlobaisMaisVantaView: React.FC<{
           </div>
         </div>
       )}
+      <ToastContainer toasts={toasts} onDismiss={dismiss} />
     </div>
   );
 };

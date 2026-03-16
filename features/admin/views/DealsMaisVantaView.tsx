@@ -6,6 +6,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { Ticket, Plus, MapPin, Users, Eye, ArrowRight, Clock, CheckCircle2, XCircle } from 'lucide-react';
 import { clubeDealsService } from '../services/clube/clubeDealsService';
 import { AdminViewHeader } from '../components/AdminViewHeader';
+import { useToast, ToastContainer } from '../../../components/Toast';
 import { clubeResgatesService } from '../services/clube/clubeResgatesService';
 import { clubeParceirosService } from '../services/clube/clubeParceirosService';
 import { clubeCidadesService } from '../services/clube/clubeCidadesService';
@@ -15,6 +16,7 @@ import type { DealMaisVanta, ResgateMaisVanta, ParceiroMaisVanta, CidadeMaisVant
 type Tab = 'DEALS' | 'RESGATES';
 
 export const DealsMaisVantaView: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
+  const { toasts, dismiss, toast } = useToast();
   const [tab, setTab] = useState<Tab>('DEALS');
   const [deals, setDeals] = useState<DealMaisVanta[]>([]);
   const [parceiros, setParceiros] = useState<ParceiroMaisVanta[]>([]);
@@ -456,6 +458,7 @@ export const DealsMaisVantaView: React.FC<{ onBack?: () => void }> = ({ onBack }
           </div>
         )}
       </div>
+      <ToastContainer toasts={toasts} onDismiss={dismiss} />
     </div>
   );
 };

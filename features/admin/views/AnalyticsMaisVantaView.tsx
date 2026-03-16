@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '../../../services/supabaseClient';
 import { AdminViewHeader } from '../components/AdminViewHeader';
+import { useToast, ToastContainer } from '../../../components/Toast';
 
 interface MembrosStats {
   total: number;
@@ -46,6 +47,7 @@ interface EngajamentoStats {
 export const AnalyticsMaisVantaView: React.FC<{
   onBack: () => void;
 }> = ({ onBack }) => {
+  const { toasts, dismiss, toast } = useToast();
   const [loading, setLoading] = useState(true);
   const [membros, setMembros] = useState<MembrosStats | null>(null);
   const [resgates, setResgates] = useState<ResgatesStats | null>(null);
@@ -312,6 +314,7 @@ export const AnalyticsMaisVantaView: React.FC<{
           </>
         )}
       </div>
+      <ToastContainer toasts={toasts} onDismiss={dismiss} />
     </div>
   );
 };

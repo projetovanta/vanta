@@ -390,7 +390,7 @@ export const rbacService = {
    * Atribui cargo — persiste no Supabase via upsert + atualiza cache local.
    */
   async atribuir(args: Omit<AtribuicaoRBAC, 'id' | 'atribuidoEm'>): Promise<AtribuicaoRBAC> {
-    const atribuidoEm = new Date(Date.now() - 3 * 3600000).toISOString().replace('Z', '-03:00');
+    const atribuidoEm = tsBR();
 
     // Upsert no Supabase (constraint: user_id, tenant_type, tenant_id, cargo)
     const { data, error } = await supabase

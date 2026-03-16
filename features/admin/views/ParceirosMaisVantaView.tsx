@@ -6,6 +6,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { Store, Plus, MapPin, Instagram, Phone, Mail, Edit3, ToggleLeft, ToggleRight } from 'lucide-react';
 import { clubeParceirosService } from '../services/clube/clubeParceirosService';
 import { AdminViewHeader } from '../components/AdminViewHeader';
+import { useToast, ToastContainer } from '../../../components/Toast';
 import { clubeCidadesService } from '../services/clube/clubeCidadesService';
 import { useAuthStore } from '../../../stores/authStore';
 import type { ParceiroMaisVanta, CidadeMaisVanta, TipoParceiro, PlanoParceiro } from '../../../types';
@@ -28,6 +29,7 @@ const PLANOS_PARCEIRO: { value: PlanoParceiro; label: string; cor: string; resga
 ];
 
 export const ParceirosMaisVantaView: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
+  const { toasts, dismiss, toast } = useToast();
   const [parceiros, setParceiros] = useState<ParceiroMaisVanta[]>([]);
   const [cidades, setCidades] = useState<CidadeMaisVanta[]>([]);
   const [loading, setLoading] = useState(true);
@@ -364,6 +366,7 @@ export const ParceirosMaisVantaView: React.FC<{ onBack?: () => void }> = ({ onBa
           </div>
         )}
       </div>
+      <ToastContainer toasts={toasts} onDismiss={dismiss} />
     </div>
   );
 };

@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { ArrowLeft, AlertCircle, Trash2, RefreshCw, User } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
 import { AdminViewHeader } from '../components/AdminViewHeader';
+import { useToast, ToastContainer } from '../../../components/Toast';
 import { supabase } from '../../../services/supabaseClient';
 import { clubeService } from '../services/clubeService';
 import { maisVantaConfigService } from '../services/maisVantaConfigService';
@@ -27,6 +28,7 @@ interface InfracaoRow {
 export const InfracoesGlobaisMaisVantaView: React.FC<{
   onBack: () => void;
 }> = ({ onBack }) => {
+  const { toasts, dismiss, toast } = useToast();
   const [filtro, setFiltro] = useState<Filtro>('TODAS');
   const [infracoes, setInfracoes] = useState<InfracaoRow[]>([]);
   const [tick, setTick] = useState(0);
@@ -263,6 +265,7 @@ export const InfracoesGlobaisMaisVantaView: React.FC<{
           </div>
         </div>
       )}
+      <ToastContainer toasts={toasts} onDismiss={dismiss} />
     </div>
   );
 };

@@ -6,11 +6,13 @@ import { clubeService } from '../services/clubeService';
 import { comunidadesService } from '../services/comunidadesService';
 import { supabase } from '../../../services/supabaseClient';
 import { tsBR } from '../../../utils';
+import { useToast, ToastContainer } from '../../../components/Toast';
 
 export const PassaportesMaisVantaView: React.FC<{
   onBack: () => void;
   masterId: string;
 }> = ({ onBack, masterId }) => {
+  const { toasts, dismiss, toast } = useToast();
   const [filtro, setFiltro] = useState<'PENDENTE' | 'APROVADO' | 'REJEITADO' | 'TODOS'>('PENDENTE');
   const [tick, setTick] = useState(0);
   const [loading, setLoading] = useState<string | null>(null);
@@ -65,14 +67,24 @@ export const PassaportesMaisVantaView: React.FC<{
 
   const handleAprovar = async (id: string) => {
     setLoading(id);
-    await clubeService.aprovarPassport(id, masterId);
+    try {
+      await clubeService.aprovarPassport(id, masterId);
+      toast('sucesso', 'Passaporte aprovado');
+    } catch {
+      toast('erro', 'Erro ao aprovar passaporte');
+    }
     setLoading(null);
     setTick(t => t + 1);
   };
 
   const handleRejeitar = async (id: string) => {
     setLoading(id);
-    await clubeService.rejeitarPassport(id, masterId);
+    try {
+      await clubeService.rejeitarPassport(id, masterId);
+      toast('sucesso', 'Passaporte rejeitado');
+    } catch {
+      toast('erro', 'Erro ao rejeitar passaporte');
+    }
     setLoading(null);
     setTick(t => t + 1);
   };
@@ -253,6 +265,7 @@ export const PassaportesMaisVantaView: React.FC<{
           </div>
         </div>
       )}
+      <ToastContainer toasts={toasts} onDismiss={dismiss} />
     </div>
   );
 };

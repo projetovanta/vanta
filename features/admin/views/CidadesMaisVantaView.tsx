@@ -6,10 +6,12 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { MapPin, Plus, UserCheck, Edit3, ToggleLeft, ToggleRight } from 'lucide-react';
 import { clubeCidadesService } from '../services/clube/clubeCidadesService';
 import { AdminViewHeader } from '../components/AdminViewHeader';
+import { useToast, ToastContainer } from '../../../components/Toast';
 import { useAuthStore } from '../../../stores/authStore';
 import type { CidadeMaisVanta } from '../../../types';
 
 export const CidadesMaisVantaView: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
+  const { toasts, dismiss, toast } = useToast();
   const [cidades, setCidades] = useState<CidadeMaisVanta[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -186,6 +188,7 @@ export const CidadesMaisVantaView: React.FC<{ onBack?: () => void }> = ({ onBack
           </div>
         )}
       </div>
+      <ToastContainer toasts={toasts} onDismiss={dismiss} />
     </div>
   );
 };

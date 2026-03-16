@@ -325,7 +325,7 @@ class OfflineEventService {
       type: 'VENDA_CAIXA',
       eventoId,
       payload: { loteId, variacaoId, email, nomeTitular: titular?.nomeTitular ?? '', cpf: titular?.cpf ?? '' },
-      timestamp: new Date(Date.now() - 3 * 3600000).toISOString().replace('Z', '-03:00'),
+      timestamp: new Date().toLocaleString('sv-SE', { timeZone: 'America/Sao_Paulo' }).replace(' ', 'T') + '-03:00',
       retries: 0,
     });
     return { ok: true };
@@ -362,7 +362,7 @@ class OfflineEventService {
       type: 'CORTESIA',
       eventoId: (params.eventoAdminId as string) ?? '',
       payload: params,
-      timestamp: new Date(Date.now() - 3 * 3600000).toISOString().replace('Z', '-03:00'),
+      timestamp: new Date().toLocaleString('sv-SE', { timeZone: 'America/Sao_Paulo' }).replace(' ', 'T') + '-03:00',
       retries: 0,
     });
     return { ok: true };

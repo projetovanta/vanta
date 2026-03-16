@@ -5,6 +5,7 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, CheckCircle, XCircle, Clock, FileCheck, ChevronDown, X, Search, Eye } from 'lucide-react';
 import { AdminViewHeader } from '../components/AdminViewHeader';
+import { useToast, ToastContainer } from '../../../components/Toast';
 import { comprovanteService } from '../services/comprovanteService';
 import { TIPOS_COMPROVANTE_MEIA } from '../../../types';
 import type { ComprovanteMeia } from '../../../types';
@@ -31,6 +32,7 @@ const VALIDADE_OPTIONS = [
 ];
 
 export const GestaoComprovantesView: React.FC<Props> = ({ onBack, masterId }) => {
+  const { toasts, dismiss, toast } = useToast();
   const [tab, setTab] = useState<Tab>('PENDENTES');
   const [comprovantes, setComprovantes] = useState<CompWithUser[]>([]);
   const [loading, setLoading] = useState(true);
@@ -85,8 +87,10 @@ export const GestaoComprovantesView: React.FC<Props> = ({ onBack, masterId }) =>
       await comprovanteService.aprovarComprovante(aprovarModal.id, validadeSelecionada, masterId);
       setAprovarModal(null);
       await fetchData();
+      toast('sucesso', 'Comprovante aprovado');
     } catch (err) {
       console.error('Erro ao aprovar:', err);
+      toast('erro', 'Erro ao aprovar comprovante');
     } finally {
       setActionLoading(false);
     }
@@ -100,8 +104,10 @@ export const GestaoComprovantesView: React.FC<Props> = ({ onBack, masterId }) =>
       setRejeitarModal(null);
       setMotivoRejeicao('');
       await fetchData();
+      toast('sucesso', 'Comprovante rejeitado');
     } catch (err) {
       console.error('Erro ao rejeitar:', err);
+      toast('erro', 'Erro ao rejeitar comprovante');
     } finally {
       setActionLoading(false);
     }
@@ -393,6 +399,7 @@ export const GestaoComprovantesView: React.FC<Props> = ({ onBack, masterId }) =>
           </div>
         </div>
       )}
+      <ToastContainer toasts={toasts} onDismiss={dismiss} />
     </div>
   );
 };

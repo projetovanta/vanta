@@ -30,12 +30,14 @@ import { Step4EquipeSocio } from './criarEvento/Step4EquipeSocio';
 import { Step4EquipeCasa } from './criarEvento/Step4EquipeCasa';
 import { Step5Financeiro } from './criarEvento/Step5Financeiro';
 import { CapacidadeModal } from './criarEvento/CapacidadeModal';
+import { useToast, ToastContainer } from '../../../components/Toast';
 
 export const EditarEventoView: React.FC<{
   eventoId: string;
   onBack: () => void;
   currentUserId?: string;
 }> = ({ eventoId, onBack, currentUserId }) => {
+  const { toasts, dismiss, toast } = useToast();
   const [loading, setLoading] = useState(true);
   const [tipoFluxo, setTipoFluxo] = useState<TipoFluxoEvento>('FESTA_DA_CASA');
   const [step, setStep] = useState(1);
@@ -904,6 +906,7 @@ export const EditarEventoView: React.FC<{
         />
       )}
       {showExitConfirm && <UnsavedChangesModal onStay={() => setShowExitConfirm(false)} onLeave={onBack} />}
+      <ToastContainer toasts={toasts} onDismiss={dismiss} />
     </div>
   );
 };

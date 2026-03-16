@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { ArrowLeft, Gift, Clock, RefreshCw, User, AlertCircle } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
 import { AdminViewHeader } from '../components/AdminViewHeader';
+import { useToast, ToastContainer } from '../../../components/Toast';
 import { clubeService } from '../services/clubeService';
 import { comunidadesService } from '../services/comunidadesService';
 import { maisVantaConfigService } from '../services/maisVantaConfigService';
@@ -13,6 +14,7 @@ type Filtro = 'PENDENTES' | 'VENCIDAS' | 'TODAS';
 export const DividaSocialMaisVantaView: React.FC<{
   onBack: () => void;
 }> = ({ onBack }) => {
+  const { toasts, dismiss, toast } = useToast();
   const [filtro, setFiltro] = useState<Filtro>('PENDENTES');
   const [tick, setTick] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -285,6 +287,7 @@ export const DividaSocialMaisVantaView: React.FC<{
           </div>
         </div>
       )}
+      <ToastContainer toasts={toasts} onDismiss={dismiss} />
     </div>
   );
 };

@@ -21,6 +21,8 @@ const META_ACCESS_TOKEN = Deno.env.get('META_ACCESS_TOKEN') ?? '';
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL') ?? '';
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
 
+const tsBR = () => new Date().toLocaleString('sv-SE', { timeZone: 'America/Sao_Paulo' }).replace(' ', 'T') + '-03:00';
+
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
@@ -75,7 +77,7 @@ serve(async (req: Request) => {
       });
     }
 
-    const now = new Date(Date.now() - 3 * 3600000).toISOString().replace('Z', '-03:00');
+    const now = tsBR();
     let updated = 0;
     let method: 'graph_api' | 'scraping' = 'scraping';
 

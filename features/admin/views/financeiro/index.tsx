@@ -33,6 +33,7 @@ import { useModalBack } from '../../../../hooks/useModalStack';
 import { ModalSaque } from './ModalSaque';
 import { ReembolsosSection } from './ReembolsosSection';
 import { HistoricoSaques } from './HistoricoSaques';
+import { useToast, ToastContainer } from '../../../../components/Toast';
 
 type PixTipo = 'CPF/CNPJ' | 'Email' | 'Celular' | 'Aleatória';
 const PIX_TIPOS: PixTipo[] = ['CPF/CNPJ', 'Email', 'Celular', 'Aleatória'];
@@ -46,6 +47,7 @@ interface Props {
 
 export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNotification, comunidadeId }) => {
   // Polling de versão para re-calcular após mudanças externas (master aprova saque)
+  const { toasts, dismiss, toast } = useToast();
   const [svcVersion, setSvcVersion] = useState(() => eventosAdminService.getVersion());
   useEffect(() => {
     const id = setInterval(() => setSvcVersion(eventosAdminService.getVersion()), 2_000);
@@ -824,6 +826,7 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
           onConfirmar={confirmarSaque}
         />
       )}
+      <ToastContainer toasts={toasts} onDismiss={dismiss} />
     </div>
   );
 };

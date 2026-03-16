@@ -8,8 +8,8 @@
 
 ## Estado Atual do Projeto
 
-**Última atualização:** 2026-03-15
-**Atualizado por:** Alex (Gerente Geral)
+**Última atualização:** 2026-03-16
+**Atualizado por:** Rafa (Gerente Geral — substitui Alex, demitido)
 **Fase:** Produção e testes finais
 
 ---
@@ -22,6 +22,11 @@
 [2026-03-15] Vulnerabilidades npm (11, 4 altas) — manter como está, são em ferramentas de dev — Dan decidiu
 [2026-03-15] Bundle: recharts e leaflet removidos do manualChunks — carregam lazy agora — Dan aprovou
 [2026-03-15] Onboarding: slides + cidade + interesses — cidade obrigatória, interesses opcional — Dan aprovou
+[2026-03-16] Alex demitido — Rafa assume como gerente-geral — motivo: ignorou memórias, substituiu admin sem autorização, 3h perdidas — Dan decidiu
+[2026-03-16] Negociação Comercial completa — tabela condicoes_comerciais, ComercialTab, CondicoesProducerView, Edge Function expirar-condicoes — migration aplicada, tipos gerados
+[2026-03-16] Painel admin: sidebar completa permanece. V2/V3 são protótipos de referência, NÃO substituem — Dan decidiu
+[2026-03-16] REGRA: ZERO workarounds `as any` — migration primeiro, tipos depois, código por último — Dan definiu
+[2026-03-16] REGRA: SEMPRE consultar referências visuais do Dan (pastas Downloads) antes de redesenhar qualquer coisa
 
 ---
 

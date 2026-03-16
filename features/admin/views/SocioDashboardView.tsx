@@ -12,6 +12,7 @@ import {
   Calendar,
   BarChart3,
   Sparkles,
+  Handshake,
 } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
 import { useAuthStore } from '../../../stores/authStore';
@@ -416,6 +417,12 @@ export const SocioDashboardView: React.FC<SocioDashProps> = ({ onBack, currentUs
                 { id: 'MEUS_EVENTOS', icon: BarChart3, label: 'Painel do Evento', color: 'text-purple-400' },
                 { id: 'FINANCEIRO', icon: DollarSign, label: 'Ver Financeiro', color: 'text-[#FFD300]' },
                 { id: 'LISTAS', icon: ClipboardList, label: 'Gerenciar Listas', color: 'text-orange-400' },
+                {
+                  id: 'CONDICOES_COMERCIAIS',
+                  icon: Handshake,
+                  label: 'Condições Comerciais',
+                  color: 'text-emerald-400',
+                },
               ].map(item => (
                 <button
                   key={item.id}

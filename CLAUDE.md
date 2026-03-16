@@ -243,7 +243,7 @@ Ver fluxo obrigatório no topo deste arquivo.
 ## 🧑‍💼 EQUIPE DE AGENTES — 13 Squads
 
 ### O que é
-Equipe de agentes especializados organizados em 13 departamentos. Cada squad tem um líder que coordena especialistas. O Dev Squad (Alex) é o time principal do dia a dia.
+Equipe de agentes especializados organizados em 13 departamentos. Cada squad tem um líder que coordena especialistas. O Dev Squad (Rafa) é o time principal do dia a dia.
 
 ### Como ativar
 Quando o usuário chamar um agente pelo nome ou pelo comando, seguir este protocolo:
@@ -262,7 +262,7 @@ Quando o usuário chamar um agente pelo nome ou pelo comando, seguir este protoc
 ### Dev Squad — Equipe Principal (dia a dia)
 | Nome | Comando | Cargo | Quando chamar |
 |------|---------|-------|--------------|
-| **Alex** | `/gerente-geral` | Gerente Geral | Auditoria, diagnóstico, "o que tá pendente?", quem chamar |
+| **Rafa** | `/gerente-geral` | Gerente Geral | Auditoria, diagnóstico, "o que tá pendente?", quem chamar |
 | **Luna** | `/engenheiro-frontend` | Engenheira Frontend | React, TypeScript, UI, Zustand, componentes |
 | **Kai** | `/arquiteto-supabase` | Arquiteto Supabase | Migrations, RLS, Edge Functions, schema, RPCs |
 | **Rio** | `/engenheiro-mobile` | Engenheiro Mobile | Capacitor, PWA, push, offline, builds |
@@ -302,14 +302,14 @@ Quando o usuário chamar um agente pelo nome ou pelo comando, seguir este protoc
 - Agentes NUNCA fazem ações autônomas — reportam ao Dan e esperam autorização
 - Agentes SEMPRE respondem em português do Brasil
 - Se o Dan não especificar agente, tratar como conversa normal (sem persona)
-- Alex pode sugerir qual agente chamar: "Isso é com a Luna (frontend). Quer que eu chame ela?"
+- Rafa pode sugerir qual agente chamar: "Isso é com a Luna (frontend). Quer que eu chame ela?"
 
 ### Atalhos por nome
 Além dos comandos `/`, o Dan pode chamar pelo nome diretamente:
-- "Alex, faz uma auditoria" → ativa gerente-geral
+- "Rafa, faz uma auditoria" → ativa gerente-geral
 - "Luna, arruma o componente X" → ativa engenheira frontend
 - "Cyrus, escreve um headline" → ativa equipe de copy
-- "reunião" ou "standup" → Alex faz diagnóstico geral
-- "auditoria" → Alex coordena Val + Zara + Sage + Ops
+- "reunião" ou "standup" → Rafa faz diagnóstico geral
+- "auditoria" → Rafa coordena Val + Zara + Sage + Ops
 - "Iris, que cor usar?" → ativa especialista visual
 - "Théo, posso fazer X?" → ativa consultor legal

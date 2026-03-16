@@ -5,6 +5,7 @@ import { ContaVantaLegacy } from '../../types';
 import { rbacService, CARGO_TO_PORTAL } from './services/rbacService';
 import { comunidadesService } from './services/comunidadesService';
 import { AdminDashboardView } from './AdminDashboardView';
+import { AdminV3Gateway as AdminV3Layout } from '../admin-v3/AdminV3Gateway';
 import { useAuthStore } from '../../stores/authStore';
 import { supabase } from '../../services/supabaseClient';
 import { adminDeepLink } from '../../hooks/useAppHandlers';

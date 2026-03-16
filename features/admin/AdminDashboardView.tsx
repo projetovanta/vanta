@@ -139,6 +139,9 @@ const MaisVantaDashboardView = lazy(() =>
 );
 const FaqView = lazy(() => import('./views/FaqView').then(m => ({ default: m.FaqView })));
 const LinksUteisView = lazy(() => import('./views/LinksUteisView').then(m => ({ default: m.LinksUteisView })));
+const CondicoesProducerView = lazy(() =>
+  import('./views/CondicoesProducerView').then(m => ({ default: m.CondicoesProducerView })),
+);
 export const AdminDashboardView: React.FC<{
   onClose: () => void;
   adminNome: string;
@@ -805,6 +808,15 @@ export const AdminDashboardView: React.FC<{
             setPromoterCotasListaId(listaId);
           }}
           onNavigateGuestlist={() => setSubView('LISTAS')}
+        />
+      );
+    }
+    if (subView === 'CONDICOES_COMERCIAIS') {
+      return (
+        <CondicoesProducerView
+          onBack={back}
+          comunidadeId={comunidadeId ?? ''}
+          comunidadeNome={tenantNome ?? undefined}
         />
       );
     }

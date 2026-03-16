@@ -285,6 +285,14 @@ allEvents, savedEvents
 
 ## REGRA DE USO
 
+### condicoes_comerciais (4 consumers)
+| Arquivo | Dominio |
+|---|---|
+| condicoesService.ts | FI |
+| ComercialTab.tsx | CM |
+| CondicoesProducerView.tsx | FI |
+| masterFinanceiro/index.tsx (CondicoesResumoCard) | FI |
+
 Antes de mudar qualquer tabela, store ou RPC:
 1. Encontrar a entrada neste arquivo
 2. Verificar TODOS os consumers listados

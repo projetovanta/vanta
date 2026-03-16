@@ -49,6 +49,8 @@ export interface Comunidade {
   taxa_nome_excedente?: number; // R$/nome excedente (default R$0,50)
   cota_cortesias?: number; // cortesias grátis (default 50)
   taxa_cortesia_excedente_pct?: number; // % valor face cortesia excedente (default 5%)
+  condicoes_status?: 'SEM_CONDICOES' | 'PENDENTE' | 'ACEITO' | 'EXPIRADO' | 'PAUSADO';
+  condicoes_aceitas_em?: string;
   donoId?: string; // ID do proprietário da comunidade (para transferência de titularidade)
   tierMinimoMaisVanta?: TierMaisVanta; // Tier mínimo do MAIS VANTA para acesso nesta comunidade
   horarioFuncionamento?: HorarioSemanal[];
@@ -402,4 +404,32 @@ export interface Cupom {
   ativo: boolean;
   criadoPor: string;
   criadoEm: string; // ISO 8601 -03:00
+}
+
+// ── Condições Comerciais ────────────────────────────────────────────────────
+
+export type CondicaoStatus = 'PENDENTE' | 'ACEITO' | 'RECUSADO' | 'EXPIRADO';
+
+export interface CondicaoComercial {
+  id: string;
+  comunidadeId: string;
+  taxaServicoPercent: number | null;
+  taxaProcessamentoPercent: number | null;
+  taxaPortaPercent: number | null;
+  taxaMinima: number | null;
+  taxaFixaEvento: number | null;
+  quemPagaServico: 'PRODUTOR_ABSORVE' | 'COMPRADOR_PAGA' | 'PRODUTOR_ESCOLHE';
+  cotaNomesLista: number | null;
+  taxaNomeExcedente: number | null;
+  cotaCortesias: number | null;
+  taxaCortesiaExcedentePct: number | null;
+  prazoPagamentoDias: number | null;
+  definidoPor: string;
+  definidoEm: string;
+  status: CondicaoStatus;
+  aceitoPor: string | null;
+  aceitoEm: string | null;
+  expiraEm: string;
+  motivoRecusa: string | null;
+  observacoes: string | null;
 }

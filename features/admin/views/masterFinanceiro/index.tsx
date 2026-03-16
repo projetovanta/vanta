@@ -30,8 +30,62 @@ import { fmtBRL, tsBR } from '../../../../utils';
 import { SimuladorGateway } from './SimuladorGateway';
 import { RaioXEvento } from './RaioXEvento';
 import { LucroPorComunidade } from './LucroPorComunidade';
+import { condicoesService } from '../../services/condicoesService';
+import { Handshake, Clock } from 'lucide-react';
 
 const PIE_COLORS = ['#FFD300', '#10b981', '#3b82f6', '#a78bfa', '#f472b6', '#f59e0b', '#ef4444', '#6366f1'];
+
+// ── Card Resumo Condições Comerciais ────────────────────────────────────────
+const CondicoesResumoCard: React.FC = () => {
+  const [resumo, setResumo] = useState<
+    { comunidadeId: string; comunidadeNome: string; status: string; ultimaAtualizacao: string | null }[]
+  >([]);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    condicoesService.getResumoGlobal().then(r => {
+      setResumo(r);
+      setLoaded(true);
+    });
+  }, []);
+
+  if (!loaded) return null;
+
+  const pendentes = resumo.filter(r => r.status === 'PENDENTE').length;
+  const aceitos = resumo.filter(r => r.status === 'ACEITO').length;
+  const expirados = resumo.filter(r => r.status === 'EXPIRADO' || r.status === 'PAUSADO').length;
+  const semCondicoes = resumo.filter(r => r.status === 'SEM_CONDICOES').length;
+
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center gap-2">
+        <Handshake size="0.875rem" className="text-[#FFD300]" />
+        <p className="text-xs font-black uppercase tracking-wider text-zinc-400">Condições Comerciais</p>
+      </div>
+      <div className="grid grid-cols-4 gap-2">
+        {[
+          { label: 'Aceitas', value: aceitos, color: 'text-emerald-400 bg-emerald-500/10' },
+          { label: 'Pendentes', value: pendentes, color: 'text-amber-400 bg-amber-500/10' },
+          { label: 'Expiradas', value: expirados, color: 'text-red-400 bg-red-500/10' },
+          { label: 'Sem def.', value: semCondicoes, color: 'text-zinc-500 bg-zinc-800' },
+        ].map(b => (
+          <div key={b.label} className={`p-3 rounded-xl text-center ${b.color}`}>
+            <p className="text-xl font-black">{b.value}</p>
+            <p className="text-[0.5rem] font-bold uppercase tracking-wider">{b.label}</p>
+          </div>
+        ))}
+      </div>
+      {pendentes > 0 && (
+        <div className="flex items-center gap-2 p-3 bg-amber-500/5 border border-amber-500/20 rounded-xl">
+          <Clock size="0.875rem" className="text-amber-400 shrink-0" />
+          <p className="text-amber-400 text-xs">
+            {pendentes} comunidade{pendentes > 1 ? 's' : ''} aguardando aceite
+          </p>
+        </div>
+      )}
+    </div>
+  );
+};
 
 interface Props {
   onBack: () => void;
@@ -649,6 +703,9 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification 
             </div>
           </div>
         )}
+
+        {/* ── Condições Comerciais — Resumo ──────────────────────────────── */}
+        <CondicoesResumoCard />
       </div>
     </div>
   );

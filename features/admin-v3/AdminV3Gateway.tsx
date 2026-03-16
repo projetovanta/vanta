@@ -1,195 +1,220 @@
 /**
- * AdminV3Gateway — V2 Melhorado com 16 itens (mesclados de 26)
- * Rota: /admin-v3
- * 4 seções: INÍCIO, NÚMEROS, OPERAR, SISTEMA
- * Sidebar completa + glass + command palette
+ * AdminV3Gateway — Layout V3 com views reais
+ * Casca visual: SidebarV2 + CommandPalette + glass header
+ * Conteúdo: mesmas views do AdminDashboardView, plugadas via renderContent()
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
-import {
-  Search,
-  Star,
-  Users,
-  Crown,
-  Banknote,
-  Calendar,
-  BarChart3,
-  Shield,
-  Bell,
-  Compass,
-  AlertCircle,
-  Settings,
-  FileCheck,
-  Handshake,
-  ShoppingCart,
-  ListChecks,
-  FileText,
-  Building2,
-  Tag,
-  ShieldPlus,
-  Activity,
-  HelpCircle,
-  LinkIcon,
-  ClipboardList,
-  Send,
-  Sparkles,
-  Eye,
-  MapPin,
-  Store,
-  Ticket,
-} from 'lucide-react';
+import React, { useState, useEffect, useCallback, useMemo, Suspense, lazy } from 'react';
+import { Search, Loader2 } from 'lucide-react';
 import { SidebarV2, type NavItem } from './components/SidebarV2';
 import { CommandPalette } from './components/CommandPalette';
-import { HomeV2 } from './pages/HomeV2';
 
-// ── Tab page component ──
-const TabPage: React.FC<{
-  title: string;
-  subtitle: string;
-  tabs: { id: string; label: string; icon: typeof Star }[];
-  color?: string;
-}> = ({ title, subtitle, tabs, color = '#FFD300' }) => {
-  const [activeTab, setActiveTab] = useState(tabs[0]?.id ?? '');
-  return (
-    <div className="flex-1 overflow-y-auto no-scrollbar p-6 space-y-6">
-      <div>
-        <h1 className="text-2xl font-serif italic text-white">{title}</h1>
-        <p className="text-zinc-400 text-sm mt-1">{subtitle}</p>
-      </div>
-      <div className="flex gap-1.5 flex-wrap">
-        {tabs.map(t => {
-          const Icon = t.icon;
-          const isActive = activeTab === t.id;
-          return (
-            <button
-              key={t.id}
-              onClick={() => setActiveTab(t.id)}
-              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-[0.5625rem] font-bold uppercase tracking-wider border transition-all ${
-                isActive
-                  ? 'text-black border-transparent'
-                  : 'bg-zinc-900/60 border-white/5 text-zinc-400 active:bg-white/5'
-              }`}
-              style={isActive ? { backgroundColor: color } : undefined}
-            >
-              <Icon size="0.75rem" /> {t.label}
-            </button>
-          );
-        })}
-      </div>
-      <div
-        className="rounded-2xl p-8 flex flex-col items-center justify-center min-h-[250px]"
-        style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}
-      >
-        <p className="text-zinc-500 text-sm">
-          Aqui carrega <span className="text-white font-bold">{tabs.find(t => t.id === activeTab)?.label}</span> real
-        </p>
-        <p className="text-zinc-600 text-xs mt-2">Conectando com services existentes na próxima fase</p>
-      </div>
-    </div>
-  );
+import { eventosAdminService, SolicitacaoSaque } from '../admin/services/eventosAdminService';
+import { clubeService } from '../admin/services/clubeService';
+import { comunidadesService } from '../admin/services/comunidadesService';
+import { getReembolsosPendentes } from '../admin/services/reembolsoService';
+import { countPendencias } from '../admin/services/pendenciasService';
+import { ContaVantaLegacy, Notificacao } from '../../types';
+import { AdminDashboardHome, getTenantLabel } from '../admin/components/AdminDashboardHome';
+import type { RoleListaNova } from '../admin/views/listas';
+import {
+  canAccessFinanceiro,
+  canAccessListas,
+  canAccessCheckin,
+  canAccessQR,
+  canAccessCaixa,
+  isMasterOnly,
+  canAccessMeusEventos,
+  canAccessPortariaScanner,
+  canAccessComunidades,
+} from '../admin/permissoes';
+import { rbacService } from '../admin/services/rbacService';
+import { SIDEBAR_SECTIONS, COMMUNITY_SIDEBAR_SECTIONS, type AdminSubView } from '../admin/components/AdminSidebar';
+
+// ── Lazy-loaded views ──────────────────────────────────────────────────────────
+const ComunidadesView = lazy(() =>
+  import('../admin/views/ComunidadesView').then(m => ({ default: m.ComunidadesView })),
+);
+const VantaIndicaView = lazy(() =>
+  import('../admin/views/VantaIndicaView').then(m => ({ default: m.VantaIndicaView })),
+);
+const NotificacoesAdminView = lazy(() =>
+  import('../admin/views/NotificacoesAdminView').then(m => ({ default: m.NotificacoesAdminView })),
+);
+const CheckInView = lazy(() => import('../admin/views/checkin').then(m => ({ default: m.CheckInView })));
+const CaixaView = lazy(() => import('../admin/views/CaixaView').then(m => ({ default: m.CaixaView })));
+const GerenteDashboardView = lazy(() =>
+  import('../admin/views/GerenteDashboardView').then(m => ({ default: m.GerenteDashboardView })),
+);
+const MeusEventosView = lazy(() =>
+  import('../admin/views/MeusEventosView').then(m => ({ default: m.MeusEventosView })),
+);
+const CargosUnificadoView = lazy(() =>
+  import('../admin/views/cargosUnificado').then(m => ({ default: m.CargosUnificadoView })),
+);
+const MasterFinanceiroView = lazy(() =>
+  import('../admin/views/MasterFinanceiroView').then(m => ({ default: m.MasterFinanceiroView })),
+);
+const FinanceiroView = lazy(() => import('../admin/views/financeiro').then(m => ({ default: m.FinanceiroView })));
+const PortariaScannerView = lazy(() =>
+  import('../admin/views/PortariaScannerView').then(m => ({ default: m.PortariaScannerView })),
+);
+const PromoterDashView = lazy(() =>
+  import('../admin/views/PromoterDashboardView').then(m => ({ default: m.PromoterDashboardView })),
+);
+const PromoterCotasView = lazy(() =>
+  import('../admin/views/PromoterCotasView').then(m => ({ default: m.PromoterCotasView })),
+);
+const ListasView = lazy(() => import('../admin/views/listas').then(m => ({ default: m.ListasView })));
+const EventosPendentesView = lazy(() =>
+  import('../admin/views/EventosPendentesView').then(m => ({ default: m.EventosPendentesView })),
+);
+const AuditLogView = lazy(() => import('../admin/views/AuditLogView').then(m => ({ default: m.AuditLogView })));
+const SolicitacoesParceriaView = lazy(() =>
+  import('../admin/views/SolicitacoesParceriaView').then(m => ({ default: m.SolicitacoesParceriaView })),
+);
+const CategoriasAdminView = lazy(() =>
+  import('../admin/views/CategoriasAdminView').then(m => ({ default: m.CategoriasAdminView })),
+);
+const MaisVantaHubView = lazy(() =>
+  import('../admin/views/MaisVantaHubView').then(m => ({ default: m.MaisVantaHubView })),
+);
+const TabClubeCuradoria = lazy(() => import('../admin/views/curadoria/tabClube').then(m => ({ default: m.TabClube })));
+const CidadesMaisVantaView = lazy(() =>
+  import('../admin/views/CidadesMaisVantaView').then(m => ({ default: m.CidadesMaisVantaView })),
+);
+const ParceirosMaisVantaView = lazy(() =>
+  import('../admin/views/ParceirosMaisVantaView').then(m => ({ default: m.ParceirosMaisVantaView })),
+);
+const DealsMaisVantaView = lazy(() =>
+  import('../admin/views/DealsMaisVantaView').then(m => ({ default: m.DealsMaisVantaView })),
+);
+const MonitoramentoMaisVantaView = lazy(() =>
+  import('../admin/views/MonitoramentoMaisVantaView').then(m => ({ default: m.MonitoramentoMaisVantaView })),
+);
+const ConvitesMaisVantaView = lazy(() =>
+  import('../admin/views/ConvitesMaisVantaView').then(m => ({ default: m.ConvitesMaisVantaView })),
+);
+const AnalyticsMaisVantaView = lazy(() =>
+  import('../admin/views/AnalyticsMaisVantaView').then(m => ({ default: m.AnalyticsMaisVantaView })),
+);
+const DiagnosticoView = lazy(() =>
+  import('../admin/views/DiagnosticoView').then(m => ({ default: m.DiagnosticoView })),
+);
+const AssinaturasMaisVantaView = lazy(() =>
+  import('../admin/views/AssinaturasMaisVantaView').then(m => ({ default: m.AssinaturasMaisVantaView })),
+);
+const PassaportesMaisVantaView = lazy(() =>
+  import('../admin/views/PassaportesMaisVantaView').then(m => ({ default: m.PassaportesMaisVantaView })),
+);
+const DividaSocialMaisVantaView = lazy(() =>
+  import('../admin/views/DividaSocialMaisVantaView').then(m => ({ default: m.DividaSocialMaisVantaView })),
+);
+const MembrosGlobaisMaisVantaView = lazy(() =>
+  import('../admin/views/MembrosGlobaisMaisVantaView').then(m => ({ default: m.MembrosGlobaisMaisVantaView })),
+);
+const EventosGlobaisMaisVantaView = lazy(() =>
+  import('../admin/views/EventosGlobaisMaisVantaView').then(m => ({ default: m.EventosGlobaisMaisVantaView })),
+);
+const InfracoesGlobaisMaisVantaView = lazy(() =>
+  import('../admin/views/InfracoesGlobaisMaisVantaView').then(m => ({ default: m.InfracoesGlobaisMaisVantaView })),
+);
+const RelatorioMasterView = lazy(() =>
+  import('../admin/views/relatorios').then(m => ({ default: m.RelatorioMasterView })),
+);
+const RelatorioComunidadeView = lazy(() =>
+  import('../admin/views/relatorios').then(m => ({ default: m.RelatorioComunidadeView })),
+);
+const GestaoComprovantesView = lazy(() =>
+  import('../admin/views/GestaoComprovantesView').then(m => ({ default: m.GestaoComprovantesView })),
+);
+const ProductAnalyticsView = lazy(() =>
+  import('../admin/views/ProductAnalyticsView').then(m => ({ default: m.ProductAnalyticsView })),
+);
+const PendenciasHubView = lazy(() =>
+  import('../admin/views/PendenciasHubView').then(m => ({ default: m.PendenciasHubView })),
+);
+const MasterDashboardView = lazy(() =>
+  import('../admin/views/masterDashboard').then(m => ({ default: m.MasterDashboard })),
+);
+const InsightsDashboardView = lazy(() =>
+  import('../admin/views/insightsDashboard').then(m => ({ default: m.InsightsDashboardView })),
+);
+const ComunidadeDashboardView = lazy(() =>
+  import('../admin/views/comunidadeDashboard').then(m => ({ default: m.ComunidadeDashboard })),
+);
+const MaisVantaDashboardView = lazy(() =>
+  import('../admin/views/maisVantaDashboard').then(m => ({ default: m.MaisVantaDashboard })),
+);
+const FaqView = lazy(() => import('../admin/views/FaqView').then(m => ({ default: m.FaqView })));
+const LinksUteisView = lazy(() => import('../admin/views/LinksUteisView').then(m => ({ default: m.LinksUteisView })));
+// ConfigMaisVantaView é aba interna do MaisVantaHubView — não precisa de lazy separado
+const CondicoesProducerView = lazy(() =>
+  import('../admin/views/CondicoesProducerView').then(m => ({ default: m.CondicoesProducerView })),
+);
+
+// ── Mapa NavItem V3 → AdminSubView ────────────────────────────────────────────
+const NAV_TO_SUBVIEW: Record<NavItem, AdminSubView> = {
+  DASHBOARD: 'DASHBOARD',
+  PENDENCIAS: 'PENDENCIAS_HUB',
+  MAIS_VANTA: 'MAIS_VANTA_HUB',
+  FINANCEIRO: 'FINANCEIRO_MASTER',
+  ANALYTICS: 'PRODUCT_ANALYTICS',
+  RELATORIOS: 'RELATORIO_MASTER',
+  COMUNIDADES: 'COMUNIDADES',
+  EVENTOS: 'MEUS_EVENTOS',
+  PORTARIA: 'PORTARIA_QR',
+  CAIXA: 'CAIXA',
+  LISTAS: 'LISTAS',
+  NOTIFICACOES: 'NOTIFICACOES',
+  INDICA: 'INDICA',
+  COMPROVANTES: 'GESTAO_COMPROVANTES',
+  PARCERIAS: 'SOLICITACOES_PARCERIA',
+  SISTEMA: 'CATEGORIAS',
 };
 
-// ── Pages config ──
-const PAGES: Record<
-  NavItem,
-  { title: string; subtitle: string; tabs: { id: string; label: string; icon: typeof Star }[]; color?: string }
-> = {
-  DASHBOARD: { title: '', subtitle: '', tabs: [] },
-  PENDENCIAS: {
-    title: 'Pendências',
-    subtitle: 'Tudo que precisa de atenção',
-    tabs: [
-      { id: 'TODAS', label: 'Todas', icon: AlertCircle },
-      { id: 'EVENTOS', label: 'Eventos Pendentes', icon: ClipboardList },
-      { id: 'CORTESIAS', label: 'Cortesias', icon: Star },
-      { id: 'REEMBOLSOS', label: 'Reembolsos', icon: Banknote },
-    ],
-  },
-  MAIS_VANTA: {
-    title: 'MAIS VANTA',
-    subtitle: 'Tudo do programa num lugar só',
-    tabs: [
-      { id: 'CURADORIA', label: 'Curadoria', icon: Star },
-      { id: 'MEMBROS', label: 'Membros', icon: Users },
-      { id: 'CONVITES', label: 'Convites', icon: Send },
-      { id: 'INFRACOES', label: 'Infrações', icon: AlertCircle },
-      { id: 'PARCEIROS', label: 'Parceiros', icon: Store },
-      { id: 'BENEFICIOS', label: 'Benefícios', icon: Ticket },
-      { id: 'CIDADES', label: 'Cidades', icon: MapPin },
-      { id: 'PASSAPORTES', label: 'Passaportes', icon: Compass },
-      { id: 'MONITOR', label: 'Monitor', icon: Eye },
-      { id: 'PAINEL', label: 'Painel', icon: Sparkles },
-      { id: 'CONFIG', label: 'Config', icon: Settings },
-    ],
-    color: '#FFD300',
-  },
-  FINANCEIRO: {
-    title: 'Financeiro',
-    subtitle: 'Receita, saques e dinheiro',
-    tabs: [
-      { id: 'GLOBAL', label: 'Visão Global', icon: Banknote },
-      { id: 'COMUNIDADE', label: 'Por Comunidade', icon: Building2 },
-    ],
-    color: '#34D399',
-  },
-  ANALYTICS: {
-    title: 'Analytics',
-    subtitle: 'Dados, métricas e inteligência',
-    tabs: [
-      { id: 'PRODUTO', label: 'Produto', icon: BarChart3 },
-      { id: 'MV', label: 'MAIS VANTA', icon: Crown },
-      { id: 'INTELIGENCIA', label: 'Inteligência', icon: Sparkles },
-      { id: 'MASTER', label: 'Painel Master', icon: Crown },
-    ],
-    color: '#34D399',
-  },
-  RELATORIOS: {
-    title: 'Relatórios',
-    subtitle: 'Exportar dados',
-    tabs: [
-      { id: 'GLOBAL', label: 'Global', icon: FileText },
-      { id: 'COMUNIDADE', label: 'Por Comunidade', icon: Building2 },
-    ],
-    color: '#34D399',
-  },
-  COMUNIDADES: { title: 'Comunidades', subtitle: 'Casas, bares e espaços', tabs: [] },
-  EVENTOS: { title: 'Eventos', subtitle: 'Criar, editar e gerenciar', tabs: [] },
-  PORTARIA: {
-    title: 'Portaria',
-    subtitle: 'Check-in do dia',
-    tabs: [
-      { id: 'QR', label: 'Scanner QR', icon: Shield },
-      { id: 'LISTA', label: 'Check-in Lista', icon: ListChecks },
-    ],
-    color: '#A78BFA',
-  },
-  CAIXA: { title: 'Caixa', subtitle: 'Venda presencial', tabs: [] },
-  LISTAS: { title: 'Listas', subtitle: 'Convidados e promoters', tabs: [] },
-  NOTIFICACOES: { title: 'Notificações', subtitle: 'Push segmentado', tabs: [] },
-  INDICA: { title: 'Vanta Indica', subtitle: 'Curadoria editorial', tabs: [] },
-  COMPROVANTES: { title: 'Comprovantes', subtitle: 'Meia-entrada', tabs: [] },
-  PARCERIAS: { title: 'Parcerias', subtitle: 'Solicitações de parceria', tabs: [] },
-  SISTEMA: {
-    title: 'Sistema',
-    subtitle: 'Configurações e ferramentas',
-    tabs: [
-      { id: 'CATEGORIAS', label: 'Categorias', icon: Tag },
-      { id: 'CARGOS', label: 'Cargos', icon: ShieldPlus },
-      { id: 'DIAGNOSTICO', label: 'Diagnóstico', icon: Activity },
-      { id: 'FAQ', label: 'FAQ', icon: HelpCircle },
-      { id: 'LINKS', label: 'Links Úteis', icon: LinkIcon },
-      { id: 'AUDIT', label: 'Audit Log', icon: ClipboardList },
-    ],
-    color: '#525252',
-  },
-};
+// ── Componente Principal ───────────────────────────────────────────────────────
 
-export const AdminV3Gateway: React.FC = () => {
+export const AdminV3Gateway: React.FC<{
+  onClose: () => void;
+  adminNome: string;
+  adminRole?: ContaVantaLegacy;
+  currentUserId?: string;
+  addNotification: (n: Omit<Notificacao, 'id'>) => void;
+  initialTenantId?: string;
+  initialTenantTipo?: 'COMUNIDADE' | 'EVENTO';
+}> = ({
+  onClose,
+  adminNome,
+  adminRole = 'vanta_masteradm' as ContaVantaLegacy,
+  currentUserId = '',
+  addNotification,
+  initialTenantId,
+  initialTenantTipo,
+}) => {
+  // ── Navegação V3 ──────────────────────────────────────────────────────────
   const [activeNav, setActiveNav] = useState<NavItem>('DASHBOARD');
+  const [subView, _setSubView] = useState<AdminSubView>(() => {
+    const saved = sessionStorage.getItem('vanta_admin_subview');
+    return (saved as AdminSubView) || 'DASHBOARD';
+  });
+  const setSubView = (v: AdminSubView) => {
+    sessionStorage.setItem('vanta_admin_subview', v);
+    _setSubView(v);
+  };
+
   const [showPalette, setShowPalette] = useState(false);
   const [isDesktop, setIsDesktop] = useState(() => window.matchMedia('(min-width: 768px)').matches);
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [promoterCotasListaId, setPromoterCotasListaId] = useState<string>('');
+  const [caixaEventoId, setCaixaEventoId] = useState<string | undefined>(undefined);
+  const [toastMsg, setToastMsg] = useState('');
+  const toast = (msg: string) => {
+    setToastMsg(msg);
+    setTimeout(() => setToastMsg(''), 3000);
+  };
 
+  // ── Desktop detection ─────────────────────────────────────────────────────
   useEffect(() => {
     const mq = window.matchMedia('(min-width: 768px)');
     const h = (e: MediaQueryListEvent) => {
@@ -200,6 +225,7 @@ export const AdminV3Gateway: React.FC = () => {
     return () => mq.removeEventListener('change', h);
   }, []);
 
+  // ── Command palette shortcut ──────────────────────────────────────────────
   useEffect(() => {
     const h = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
@@ -211,28 +237,485 @@ export const AdminV3Gateway: React.FC = () => {
     return () => window.removeEventListener('keydown', h);
   }, []);
 
-  const handleNavigate = useCallback((view: string) => {
-    const valid = Object.keys(PAGES);
-    if (valid.includes(view)) setActiveNav(view as NavItem);
+  // ── Lazy service init ─────────────────────────────────────────────────────
+  useEffect(() => {
+    void eventosAdminService.refresh();
+    const timer = setTimeout(() => {
+      void import('../admin/services/listasService').then(m => m.listasService.refresh());
+      void import('../admin/services/cortesiasService').then(m => m.cortesiasService.refresh());
+      void import('../admin/services/clubeService').then(m => m.clubeService.refresh());
+      void import('../admin/services/assinaturaService').then(m => m.assinaturaService.refresh());
+      void import('../admin/services/maisVantaConfigService').then(m => m.maisVantaConfigService.refresh());
+    }, 2000);
+    return () => clearTimeout(timer);
   }, []);
 
-  const page = PAGES[activeNav];
+  // ── Contexto do tenant ────────────────────────────────────────────────────
+  const isInCommunity = Boolean(initialTenantId && initialTenantTipo === 'COMUNIDADE');
+  const comunidadeId = isInCommunity ? initialTenantId : undefined;
+  const gatewayEventoId = initialTenantTipo === 'EVENTO' ? initialTenantId : undefined;
 
+  const tenantNome = useMemo(
+    () => getTenantLabel(initialTenantTipo, initialTenantId),
+    [initialTenantTipo, initialTenantId],
+  );
+  const tenantFoto = useMemo(
+    () => (comunidadeId ? comunidadesService.get(comunidadeId)?.foto : undefined),
+    [comunidadeId],
+  );
+  const tenantArtigo =
+    initialTenantTipo === 'EVENTO' ? 'do evento' : initialTenantTipo === 'COMUNIDADE' ? 'da comunidade' : null;
+
+  // ── Pendências ────────────────────────────────────────────────────────────
+  const pendentesCount = useMemo(
+    () => (adminRole === 'vanta_masteradm' ? eventosAdminService.getEventosPendentes().length : 0),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [adminRole, subView],
+  );
+
+  const comunidadeIds = useMemo<string[]>(() => [], []);
+  const eventoIds = useMemo<string[]>(() => [], []);
+
+  const [pendenciasHubCount, setPendenciasHubCount] = useState(0);
+  useEffect(() => {
+    if (!currentUserId || !adminRole) return;
+    let cancelled = false;
+    countPendencias(currentUserId, adminRole, comunidadeIds, eventoIds).then(count => {
+      if (!cancelled) setPendenciasHubCount(count);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [currentUserId, adminRole, comunidadeIds, eventoIds, subView]);
+
+  const [saquesCount, setSaquesCount] = useState(0);
+  const [reembolsosCount, setReembolsosCount] = useState(0);
+  useEffect(() => {
+    if (adminRole === 'vanta_masteradm') {
+      eventosAdminService
+        .getSolicitacoesSaque()
+        .then(list => setSaquesCount(list.filter((s: SolicitacaoSaque) => s.status === 'PENDENTE').length))
+        .catch(() => setSaquesCount(0));
+      getReembolsosPendentes()
+        .then(list => setReembolsosCount(list.length))
+        .catch(() => setReembolsosCount(0));
+    }
+  }, [adminRole, subView]);
+
+  const dashPendencias = useMemo(() => {
+    if (adminRole === 'vanta_masteradm') {
+      const solicitacoesMV = clubeService.getSolicitacoesPendentes().length;
+      return {
+        curadoria: solicitacoesMV,
+        pendentes: eventosAdminService.getEventosPendentes().length,
+        saques: saquesCount,
+        passaportesMV: clubeService.getPassportsPendentes().length,
+        solicitacoesMV,
+        dividaSocial: new Set(clubeService.getReservasPendentePost().map(r => r.userId)).size,
+        reembolsos: reembolsosCount,
+      };
+    }
+    return {
+      curadoria: 0,
+      pendentes: 0,
+      saques: 0,
+      passaportesMV: 0,
+      solicitacoesMV: 0,
+      dividaSocial: 0,
+      reembolsos: 0,
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [adminRole, subView, saquesCount, reembolsosCount]);
+
+  const totalPendencias = (Object.values(dashPendencias) as number[]).reduce((a, b) => a + b, 0);
+
+  // ── Navegação: NavItem → SubView ──────────────────────────────────────────
+  const handleNavSelect = useCallback(
+    (id: NavItem) => {
+      setActiveNav(id);
+      // Financeiro: master vs sócio
+      if (id === 'FINANCEIRO') {
+        setSubView(adminRole === 'vanta_masteradm' ? 'FINANCEIRO_MASTER' : 'FINANCEIRO');
+      } else {
+        setSubView(NAV_TO_SUBVIEW[id]);
+      }
+      if (!isDesktop) setSidebarOpen(false);
+    },
+    [adminRole, isDesktop],
+  );
+
+  const handleNavigate = useCallback(
+    (view: string) => {
+      // CommandPalette ou navegação interna
+      const navKeys = Object.keys(NAV_TO_SUBVIEW) as NavItem[];
+      const navMatch = navKeys.find(k => k === view);
+      if (navMatch) {
+        handleNavSelect(navMatch);
+        return;
+      }
+      // Navegação direta pra subview
+      setSubView(view as AdminSubView);
+    },
+    [handleNavSelect],
+  );
+
+  const back = () => {
+    setSubView('DASHBOARD');
+    setActiveNav('DASHBOARD');
+  };
+
+  // ── Guards ────────────────────────────────────────────────────────────────
+  const guardBlock = (goBack: () => void) => (
+    <div className="flex-1 flex flex-col items-center justify-center gap-3 p-8 text-center">
+      <div className="w-2 h-2 rounded-full bg-red-500/40" />
+      <p className="text-zinc-400 text-xs font-medium">Acesso negado</p>
+      <p className="text-zinc-700 text-[0.625rem]">Você não tem permissão para acessar este módulo.</p>
+      <button
+        onClick={goBack}
+        className="mt-4 px-4 py-2 bg-zinc-900 border border-white/10 rounded-lg text-zinc-400 text-xs active:scale-95 transition-all"
+      >
+        Voltar
+      </button>
+    </div>
+  );
+
+  const getRoleLista = (role: string): RoleListaNova => {
+    if (role === 'vanta_masteradm' || role === 'vanta_socio' || role === 'vanta_gerente') return 'gerente';
+    if (role === 'vanta_promoter') return 'promoter';
+    if (role === 'vanta_ger_portaria_lista' || role === 'vanta_portaria_lista') return 'portaria_lista';
+    if (role === 'vanta_ger_portaria_antecipado' || role === 'vanta_portaria_antecipado') return 'portaria_antecipado';
+    return 'promoter';
+  };
+
+  // ── Render Content (mesma lógica do AdminDashboardView) ───────────────────
+  const renderContent = () => {
+    if (subView === 'DASHBOARD') {
+      return (
+        <AdminDashboardHome
+          adminNome={adminNome}
+          adminRole={adminRole}
+          tenantNome={tenantNome}
+          tenantArtigo={tenantArtigo}
+          pendencias={dashPendencias}
+          onNavigate={v => {
+            if (v === 'MAIS_VANTA') {
+              setSubView('MAIS_VANTA_HUB');
+              setActiveNav('MAIS_VANTA');
+              return;
+            }
+            setSubView(v);
+          }}
+          comunidadeId={comunidadeId}
+        />
+      );
+    }
+    if (subView === 'MEUS_EVENTOS') {
+      if (!canAccessMeusEventos(currentUserId, adminRole, { communityId: comunidadeId, eventId: gatewayEventoId }))
+        return guardBlock(back);
+      return adminRole === 'vanta_gerente' ? (
+        <GerenteDashboardView
+          onBack={back}
+          currentUserId={currentUserId}
+          addNotification={addNotification}
+          comunidadeId={comunidadeId}
+        />
+      ) : (
+        <MeusEventosView
+          onBack={back}
+          currentUserId={currentUserId}
+          currentUserRole={adminRole}
+          comunidadeId={comunidadeId}
+        />
+      );
+    }
+    if (subView === 'CAIXA') {
+      if (!canAccessCaixa(currentUserId, adminRole, { communityId: comunidadeId, eventId: gatewayEventoId }))
+        return guardBlock(back);
+      return (
+        <CaixaView
+          onBack={() => {
+            setCaixaEventoId(undefined);
+            back();
+          }}
+          comunidadeId={comunidadeId}
+          eventoId={caixaEventoId}
+        />
+      );
+    }
+    if (subView === 'CARGOS') {
+      if (!isMasterOnly(currentUserId, adminRole)) return guardBlock(back);
+      return <CargosUnificadoView onBack={back} currentUserId={currentUserId} addNotification={addNotification} />;
+    }
+    if (subView === 'INTELIGENCIA') {
+      return <InsightsDashboardView onBack={back} comunidadeId={comunidadeId} onNavigate={setSubView} />;
+    }
+    if (subView === 'MASTER_DASHBOARD') {
+      if (adminRole !== 'vanta_masteradm') return guardBlock(back);
+      return (
+        <MasterDashboardView
+          onSelectComunidade={() => setSubView('COMUNIDADES')}
+          onSelectEvento={() => setSubView('MEUS_EVENTOS')}
+        />
+      );
+    }
+    if (subView === 'COMUNIDADE_DASHBOARD') {
+      if (!comunidadeId) return guardBlock(back);
+      const comNome = comunidadesService.get(comunidadeId)?.nome ?? 'Comunidade';
+      return (
+        <ComunidadeDashboardView
+          comunidadeId={comunidadeId}
+          comunidadeNome={comNome}
+          onBack={back}
+          onSelectEvento={() => setSubView('MEUS_EVENTOS')}
+        />
+      );
+    }
+    if (subView === 'MAIS_VANTA_DASHBOARD') {
+      if (adminRole !== 'vanta_masteradm') return guardBlock(back);
+      return <MaisVantaDashboardView onBack={back} />;
+    }
+    if (subView === 'FINANCEIRO_MASTER') {
+      if (adminRole !== 'vanta_masteradm') return guardBlock(back);
+      return <MasterFinanceiroView onBack={back} addNotification={addNotification} />;
+    }
+    if (subView === 'FINANCEIRO') {
+      if (!canAccessFinanceiro(currentUserId, adminRole, { communityId: comunidadeId, eventId: gatewayEventoId }))
+        return guardBlock(back);
+      return (
+        <FinanceiroView
+          onBack={back}
+          currentUserId={currentUserId}
+          addNotification={addNotification}
+          comunidadeId={comunidadeId}
+        />
+      );
+    }
+    if (subView === 'PORTARIA_SCANNER') {
+      if (!canAccessPortariaScanner(currentUserId, adminRole, { communityId: comunidadeId, eventId: gatewayEventoId }))
+        return guardBlock(back);
+      return <PortariaScannerView onBack={back} eventoId={gatewayEventoId} />;
+    }
+    if (subView === 'COMUNIDADES') {
+      if (!canAccessComunidades(currentUserId, adminRole, { communityId: comunidadeId })) return guardBlock(back);
+      return (
+        <ComunidadesView
+          onBack={back}
+          adminRole={adminRole}
+          adminNome={adminNome}
+          memberId={currentUserId}
+          focusComunidadeId={comunidadeId}
+        />
+      );
+    }
+    if (subView === 'INDICA') {
+      if (!isMasterOnly(currentUserId, adminRole)) return guardBlock(back);
+      return <VantaIndicaView onBack={back} userId={currentUserId} />;
+    }
+    if (subView === 'LISTAS') {
+      if (!canAccessListas(currentUserId, adminRole, { communityId: comunidadeId, eventId: gatewayEventoId }))
+        return guardBlock(back);
+      return (
+        <ListasView
+          onBack={back}
+          role={getRoleLista(adminRole)}
+          userId={currentUserId}
+          userNome={adminNome}
+          comunidadeId={comunidadeId}
+        />
+      );
+    }
+    if (subView === 'PORTARIA_QR') {
+      if (!canAccessQR(currentUserId, adminRole, { communityId: comunidadeId, eventId: gatewayEventoId }))
+        return guardBlock(back);
+      return <CheckInView onBack={back} comunidadeId={comunidadeId} modoFixo="QR" />;
+    }
+    if (subView === 'PORTARIA_LISTA') {
+      if (!canAccessCheckin(currentUserId, adminRole, { communityId: comunidadeId, eventId: gatewayEventoId }))
+        return guardBlock(back);
+      return <CheckInView onBack={back} comunidadeId={comunidadeId} modoFixo="LISTA" />;
+    }
+    if (subView === 'NOTIFICACOES') {
+      if (!isMasterOnly(currentUserId, adminRole)) return guardBlock(back);
+      return <NotificacoesAdminView onBack={back} />;
+    }
+    if (subView === 'PENDENCIAS_HUB') {
+      return (
+        <PendenciasHubView
+          userId={currentUserId}
+          role={adminRole}
+          comunidadeIds={comunidadeIds}
+          eventoIds={eventoIds}
+          onBack={back}
+          onNavigate={setSubView}
+        />
+      );
+    }
+    if (subView === 'PENDENTES') {
+      if (!isMasterOnly(currentUserId, adminRole)) return guardBlock(back);
+      return <EventosPendentesView onBack={back} masterUserId={currentUserId} />;
+    }
+    if (subView === 'SOLICITACOES_PARCERIA') {
+      if (!isMasterOnly(currentUserId, adminRole)) return guardBlock(back);
+      return <SolicitacoesParceriaView onBack={back} />;
+    }
+    if (subView === 'AUDIT_LOG') {
+      if (!isMasterOnly(currentUserId, adminRole)) return guardBlock(back);
+      return <AuditLogView onBack={back} />;
+    }
+    if (subView === 'DIAGNOSTICO') {
+      if (!isMasterOnly(currentUserId, adminRole)) return guardBlock(back);
+      return <DiagnosticoView onBack={back} />;
+    }
+    if (subView === 'FAQ') {
+      if (!isMasterOnly(currentUserId, adminRole)) return guardBlock(back);
+      return <FaqView onBack={back} />;
+    }
+    if (subView === 'LINKS_UTEIS') {
+      if (!isMasterOnly(currentUserId, adminRole)) return guardBlock(back);
+      return <LinksUteisView onBack={back} />;
+    }
+    if (subView === 'CATEGORIAS') {
+      if (!isMasterOnly(currentUserId, adminRole)) return guardBlock(back);
+      return <CategoriasAdminView onBack={back} />;
+    }
+    if (subView === 'MAIS_VANTA_HUB') {
+      if (adminRole !== 'vanta_masteradm') return guardBlock(back);
+      return <MaisVantaHubView onBack={back} masterId={currentUserId} />;
+    }
+    if (subView === 'MONITORAMENTO_MV') {
+      if (adminRole !== 'vanta_masteradm') return guardBlock(back);
+      return <MonitoramentoMaisVantaView onBack={back} />;
+    }
+    if (subView === 'ASSINATURAS_MV') {
+      if (adminRole !== 'vanta_masteradm') return guardBlock(back);
+      return <AssinaturasMaisVantaView onBack={back} />;
+    }
+    if (subView === 'PASSAPORTES_MV') {
+      if (adminRole !== 'vanta_masteradm') return guardBlock(back);
+      return <PassaportesMaisVantaView onBack={back} masterId={currentUserId} />;
+    }
+    if (subView === 'DIVIDA_SOCIAL_MV') {
+      if (adminRole !== 'vanta_masteradm') return guardBlock(back);
+      return <DividaSocialMaisVantaView onBack={back} />;
+    }
+    if (subView === 'MEMBROS_GLOBAIS_MV') {
+      if (adminRole !== 'vanta_masteradm' && adminRole !== 'vanta_gerente') return guardBlock(back);
+      return <MembrosGlobaisMaisVantaView onBack={back} />;
+    }
+    if (subView === 'EVENTOS_GLOBAIS_MV') {
+      if (adminRole !== 'vanta_masteradm') return guardBlock(back);
+      return <EventosGlobaisMaisVantaView onBack={back} />;
+    }
+    if (subView === 'INFRACOES_GLOBAIS_MV') {
+      if (adminRole !== 'vanta_masteradm') return guardBlock(back);
+      return <InfracoesGlobaisMaisVantaView onBack={back} />;
+    }
+    if (subView === 'CIDADES_MV') {
+      if (adminRole !== 'vanta_masteradm') return guardBlock(back);
+      return <CidadesMaisVantaView />;
+    }
+    if (subView === 'PARCEIROS_MV') {
+      if (adminRole !== 'vanta_masteradm' && adminRole !== 'vanta_gerente') return guardBlock(back);
+      return <ParceirosMaisVantaView />;
+    }
+    if (subView === 'DEALS_MV') {
+      if (adminRole !== 'vanta_masteradm' && adminRole !== 'vanta_gerente') return guardBlock(back);
+      return <DealsMaisVantaView />;
+    }
+    if (subView === 'CURADORIA_MV') {
+      if (adminRole !== 'vanta_masteradm') return guardBlock(back);
+      return (
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <TabClubeCuradoria
+            adminId={currentUserId}
+            toastFn={(_tipo: string, msg: string) => toast(msg)}
+            comunidadeId={comunidadeId}
+          />
+        </div>
+      );
+    }
+    if (subView === 'CONVITES_MV') {
+      if (adminRole !== 'vanta_masteradm' && adminRole !== 'vanta_gerente') return guardBlock(back);
+      return <ConvitesMaisVantaView onBack={back} toastFn={toast} />;
+    }
+    if (subView === 'ANALYTICS_MV') {
+      if (adminRole !== 'vanta_masteradm') return guardBlock(back);
+      return <AnalyticsMaisVantaView onBack={back} />;
+    }
+    if (subView === 'RELATORIO_MASTER') {
+      if (adminRole === 'vanta_gerente' && comunidadeId) {
+        const comNome = comunidadesService.get(comunidadeId)?.nome ?? 'Comunidade';
+        return <RelatorioComunidadeView comunidadeId={comunidadeId} comunidadeNome={comNome} onBack={back} />;
+      }
+      if (adminRole !== 'vanta_masteradm') return guardBlock(back);
+      return <RelatorioMasterView onBack={back} />;
+    }
+    if (subView === 'GESTAO_COMPROVANTES') {
+      if (adminRole !== 'vanta_masteradm') return guardBlock(back);
+      return <GestaoComprovantesView onBack={back} masterId={currentUserId} />;
+    }
+    if (subView === 'PRODUCT_ANALYTICS') {
+      if (!isMasterOnly(currentUserId, adminRole)) return guardBlock(back);
+      return <ProductAnalyticsView onBack={back} />;
+    }
+    if (subView === 'PROMOTER_COTAS') {
+      if (promoterCotasListaId) {
+        return (
+          <PromoterCotasView
+            listaId={promoterCotasListaId}
+            onBack={() => {
+              setPromoterCotasListaId('');
+              setSubView('PROMOTER_COTAS');
+            }}
+            currentUserId={currentUserId}
+          />
+        );
+      }
+      return (
+        <PromoterDashView
+          onBack={back}
+          currentUserId={currentUserId}
+          onNavigateCotas={listaId => setPromoterCotasListaId(listaId)}
+          onNavigateGuestlist={() => setSubView('LISTAS')}
+        />
+      );
+    }
+    if (subView === 'CONDICOES_COMERCIAIS') {
+      return (
+        <CondicoesProducerView
+          onBack={back}
+          comunidadeId={comunidadeId ?? ''}
+          comunidadeNome={tenantNome ?? undefined}
+        />
+      );
+    }
+    return (
+      <div className="flex-1 flex flex-col items-center justify-center gap-3 p-8 text-center">
+        <div className="w-1.5 h-1.5 rounded-full bg-[#FFD300]/40" />
+        <p className="text-zinc-700 text-[0.625rem] font-black uppercase tracking-[0.2em]">Selecione um módulo</p>
+      </div>
+    );
+  };
+
+  // ── Layout V3 ─────────────────────────────────────────────────────────────
   return (
     <div className="absolute inset-0 flex bg-[#050505] text-white overflow-hidden">
       {sidebarOpen && (
         <SidebarV2
           active={activeNav}
-          onSelect={id => {
-            setActiveNav(id);
-            if (!isDesktop) setSidebarOpen(false);
-          }}
+          onSelect={handleNavSelect}
           onClose={() => setSidebarOpen(false)}
           isDesktop={isDesktop}
+          adminRole={adminRole}
+          pendenciasCount={pendenciasHubCount}
+          totalPendencias={totalPendencias}
+          tenantNome={tenantNome ?? undefined}
+          tenantFoto={tenantFoto ?? undefined}
         />
       )}
 
       <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Header glass com busca */}
         <div
           className="shrink-0 flex items-center gap-3 px-5 h-14 border-b border-white/5"
           style={{ background: 'rgba(10,10,10,0.8)', backdropFilter: 'blur(15px)' }}
@@ -252,39 +735,37 @@ export const AdminV3Gateway: React.FC = () => {
               ⌘K
             </kbd>
           </button>
-          <div className="w-8 h-8 rounded-full bg-[#FFD300] flex items-center justify-center shrink-0">
-            <span className="text-black text-xs font-black">D</span>
-          </div>
-        </div>
-
-        <div className="flex-1 overflow-hidden flex flex-col bg-[#0A0A0A]">
-          {activeNav === 'DASHBOARD' ? (
-            <HomeV2 onNavigate={handleNavigate} />
-          ) : page.tabs.length > 0 ? (
-            <TabPage title={page.title} subtitle={page.subtitle} tabs={page.tabs} color={page.color} />
+          {tenantFoto ? (
+            <img src={tenantFoto} alt="" className="w-8 h-8 rounded-full object-cover shrink-0" />
           ) : (
-            <div className="flex-1 overflow-y-auto no-scrollbar p-6 space-y-6">
-              <h1 className="text-2xl font-serif italic text-white">{page.title}</h1>
-              <p className="text-zinc-400 text-sm">{page.subtitle}</p>
-              <div
-                className="rounded-2xl p-8 flex flex-col items-center justify-center min-h-[250px]"
-                style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}
-              >
-                <p className="text-zinc-500 text-sm">
-                  Aqui carrega <span className="text-white font-bold">{page.title}</span> real
-                </p>
-                <p className="text-zinc-600 text-xs mt-2">View existente será plugada na próxima fase</p>
-              </div>
+            <div className="w-8 h-8 rounded-full bg-[#FFD300] flex items-center justify-center shrink-0">
+              <span className="text-black text-xs font-black">{adminNome?.charAt(0)?.toUpperCase() || 'V'}</span>
             </div>
           )}
+        </div>
+
+        {/* Conteúdo principal */}
+        <div className="flex-1 overflow-hidden flex flex-col bg-[#0A0A0A]">
+          <Suspense
+            fallback={
+              <div className="flex-1 flex items-center justify-center">
+                <Loader2 size="1.5rem" className="text-[#FFD300] animate-spin" />
+              </div>
+            }
+          >
+            {renderContent()}
+          </Suspense>
         </div>
       </div>
 
       <CommandPalette isOpen={showPalette} onClose={() => setShowPalette(false)} onSelect={handleNavigate} />
 
-      <div className="absolute bottom-4 right-4 px-3 py-1.5 bg-emerald-500/20 border border-emerald-500/30 rounded-full text-emerald-400 text-[0.5rem] font-black uppercase tracking-wider pointer-events-none z-[600]">
-        V3 — 16 itens mesclados
-      </div>
+      {/* Toast */}
+      {toastMsg && (
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 px-4 py-2 bg-zinc-800 border border-white/10 rounded-xl text-white text-xs font-medium z-[200] shadow-lg">
+          {toastMsg}
+        </div>
+      )}
     </div>
   );
 };

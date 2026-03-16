@@ -84,7 +84,8 @@ export type AdminSubView =
   | 'MAIS_VANTA_DASHBOARD'
   | 'INTELIGENCIA'
   | 'FAQ'
-  | 'LINKS_UTEIS';
+  | 'LINKS_UTEIS'
+  | 'CONDICOES_COMERCIAIS';
 
 interface SidebarSectionItem {
   id: AdminSubView;

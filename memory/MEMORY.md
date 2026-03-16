@@ -126,6 +126,13 @@
 
 - [audit_mapeamento_progress.md](audit_mapeamento_progress.md) — Progresso mapeamento (132 fluxos)
 
+## Feedback
+
+- [feedback_aplicar_migration_imediato.md](feedback_aplicar_migration_imediato.md) — NUNCA deixar migration pendente — aplicar + gerar tipos + deploy = obrigatório
+- [feedback_zero_workarounds_any.md](feedback_zero_workarounds_any.md) — ZERO workarounds com `as any` no Supabase — migration primeiro, tipos depois, código por último
+- [feedback_plano_antes_execucao.md](feedback_plano_antes_execucao.md) — NUNCA executar sem plano aprovado
+- [feedback_alex_demitido.md](feedback_alex_demitido.md) — Alex demitido: NUNCA substituir admin sem teste, SEMPRE usar referências do Dan
+
 ## Meta
 
 - [regras_usuario.md](regras_usuario.md) — Regras do usuário (comunicação, preferências)

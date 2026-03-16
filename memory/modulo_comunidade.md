@@ -106,7 +106,7 @@ Step 3 (Step3Fotos 273L): foto perfil (crop), foto capa (crop), produtores (min 
 4. Para cada produtor: INSERT atribuicoes_rbac (cargo GERENTE, permissoes completas)
 
 **Quem recebe**:
-- Produtores (GERENTE): veem no AdminDashboardView -> ComunidadesView -> ComunidadeDetalheView (tabs: EVENTOS, EQUIPE, LOGS, CAIXA, RELATORIO)
+- Produtores (GERENTE): veem no AdminDashboardView -> ComunidadesView -> ComunidadeDetalheView (tabs: EVENTOS, EQUIPE, LOGS, CAIXA, RELATORIO, PRIVADOS, COMEMORACOES, COMERCIAL)
 - Usuarios: veem em ComunidadePublicView (via EventDetailView -> clica comunidade)
 - Master: ve em ComunidadesView (todas as comunidades)
 
@@ -138,6 +138,25 @@ Step 3 (Step3Fotos 273L): foto perfil (crop), foto capa (crop), produtores (min 
 **Navegacao**: ComunidadePublicView -> botao "Seguindo" (toggle)
 **Reacao**: DELETE community_follows
 **Consequencia**: inverso do seguir
+
+### CONDIÇÕES COMERCIAIS (master)
+**Quem**: Master admin
+**Navegacao**: ComunidadesView -> clica comunidade -> ComunidadeDetalheView -> aba "Comercial" -> ComercialTab
+**Arquivo**: features/admin/views/comunidades/ComercialTab.tsx
+**Reacao**: INSERT condicoes_comerciais (snapshot de taxas + prazo 7 dias)
+**Consequencia**: comunidades.condicoes_status = PENDENTE, notifica dono, aceite em 7 dias ou pausa
+
+### VER/ACEITAR CONDIÇÕES (sócio/produtor)
+**Quem**: Sócio, gerente, dono da comunidade
+**Navegacao**: SocioDashboardView -> "Condições Comerciais" -> CondicoesProducerView
+**Arquivo**: features/admin/views/CondicoesProducerView.tsx
+**Reacao**: UPDATE condicoes_comerciais.status = ACEITO/RECUSADO
+**Consequencia**: Se aceito, taxas aplicadas na comunidade. Se recusado, notifica master.
+
+### EXPIRAÇÃO AUTOMÁTICA (cron)
+**Como**: Edge Function expirar-condicoes (1x/dia)
+**Reacao**: Condições PENDENTE com expira_em < now() → EXPIRADO, comunidade PAUSADO
+**Consequencia**: Notifica master + dono
 
 ## Onde este modulo aparece (propagacao)
 
@@ -196,6 +215,9 @@ Step 3 (Step3Fotos 273L): foto perfil (crop), foto capa (crop), produtores (min 
 | Horarios funcionamento | OK | HorarioFuncionamentoEditor |
 | Taxa VANTA | OK | vanta_fee_percent |
 | Gateway fee mode | OK | ABSORVER/REPASSAR |
+| Aba Comercial | OK | ComercialTab — master define condições, vê histórico de aceite |
+| Condições Comerciais | OK | Tabela condicoes_comerciais, aceite 7 dias, pausa automática |
+| Campos condicoes | OK | condicoes_status + condicoes_aceitas_em na tabela comunidades |
 | RLS | OK | Migration 20260305900000 |
 | Notificacao ao criar | NAO EXISTE | Nenhum push/email quando comunidade e criada |
 | Validacao CNPJ | NAO EXISTE | Aceita qualquer texto |

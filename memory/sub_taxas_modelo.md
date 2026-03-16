@@ -62,6 +62,14 @@ Master aprova, rejeita ou contrapropoe
 - setContractedFees: update + cache sync (eventosAdminFinanceiro.ts)
 - aprovarEvento: 11 campos de taxas (eventosAdminAprovacao.ts)
 
+## Fluxo de aceite formal (condições comerciais)
+- Migration: `20260316100000_condicoes_comerciais.sql` (tabela condicoes_comerciais + campos comunidades)
+- Tipos TS: `CondicaoComercial`, `CondicaoStatus` (tipos/eventos.ts)
+- Service: condicoesService.ts (definir/aceitar/recusar/histórico/resumoGlobal)
+- Edge Function: `expirar-condicoes` (cron 1x/dia, expira pendentes > 7 dias, pausa comunidade)
+- RLS: master tudo, sócio/gerente lê e aceita/recusa (via atribuicoes_rbac + dono_id)
+- Master define → sócio tem 7 dias → aceita ou recusa → se ignora, comunidade pausada
+
 ## Telas
 | Tela | Arquivo | Status |
 |---|---|---|
@@ -69,4 +77,7 @@ Master aprova, rejeita ou contrapropoe
 | Editar comunidade (defaults) | comunidades/EditarModal.tsx | OK |
 | Aprovacao evento (acordo financeiro) | EventosPendentesView.tsx | OK |
 | Resumo evento (calculo) | comunidades/ResumoEventoModal.tsx (ResumoEventoView) | OK |
+| Condições comerciais (master) | comunidades/ComercialTab.tsx | OK |
+| Condições comerciais (sócio) | CondicoesProducerView.tsx | OK |
+| Resumo condições (financeiro master) | masterFinanceiro/index.tsx (CondicoesResumoCard) | OK |
 | Financeiro (fallback) | financeiro/index.tsx | OK |

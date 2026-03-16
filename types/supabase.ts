@@ -983,6 +983,8 @@ export type Database = {
           cep: string | null;
           cidade: string;
           cnpj: string | null;
+          condicoes_aceitas_em: string | null;
+          condicoes_status: string | null;
           coords: Json | null;
           cota_cortesias: number | null;
           cota_nomes_lista: number | null;
@@ -1028,6 +1030,8 @@ export type Database = {
           cep?: string | null;
           cidade?: string;
           cnpj?: string | null;
+          condicoes_aceitas_em?: string | null;
+          condicoes_status?: string | null;
           coords?: Json | null;
           cota_cortesias?: number | null;
           cota_nomes_lista?: number | null;
@@ -1073,6 +1077,8 @@ export type Database = {
           cep?: string | null;
           cidade?: string;
           cnpj?: string | null;
+          condicoes_aceitas_em?: string | null;
+          condicoes_status?: string | null;
           coords?: Json | null;
           cota_cortesias?: number | null;
           cota_nomes_lista?: number | null;
@@ -1112,6 +1118,103 @@ export type Database = {
           vanta_fee_repasse_percent?: number | null;
         };
         Relationships: [];
+      };
+      condicoes_comerciais: {
+        Row: {
+          aceito_em: string | null;
+          aceito_por: string | null;
+          comunidade_id: string;
+          cota_cortesias: number | null;
+          cota_nomes_lista: number | null;
+          created_at: string;
+          definido_em: string;
+          definido_por: string;
+          expira_em: string;
+          id: string;
+          motivo_recusa: string | null;
+          observacoes: string | null;
+          prazo_pagamento_dias: number | null;
+          quem_paga_servico: string | null;
+          status: string;
+          taxa_cortesia_excedente_pct: number | null;
+          taxa_fixa_evento: number | null;
+          taxa_minima: number | null;
+          taxa_nome_excedente: number | null;
+          taxa_porta_percent: number | null;
+          taxa_processamento_percent: number | null;
+          taxa_servico_percent: number | null;
+        };
+        Insert: {
+          aceito_em?: string | null;
+          aceito_por?: string | null;
+          comunidade_id: string;
+          cota_cortesias?: number | null;
+          cota_nomes_lista?: number | null;
+          created_at?: string;
+          definido_em?: string;
+          definido_por: string;
+          expira_em?: string;
+          id?: string;
+          motivo_recusa?: string | null;
+          observacoes?: string | null;
+          prazo_pagamento_dias?: number | null;
+          quem_paga_servico?: string | null;
+          status?: string;
+          taxa_cortesia_excedente_pct?: number | null;
+          taxa_fixa_evento?: number | null;
+          taxa_minima?: number | null;
+          taxa_nome_excedente?: number | null;
+          taxa_porta_percent?: number | null;
+          taxa_processamento_percent?: number | null;
+          taxa_servico_percent?: number | null;
+        };
+        Update: {
+          aceito_em?: string | null;
+          aceito_por?: string | null;
+          comunidade_id?: string;
+          cota_cortesias?: number | null;
+          cota_nomes_lista?: number | null;
+          created_at?: string;
+          definido_em?: string;
+          definido_por?: string;
+          expira_em?: string;
+          id?: string;
+          motivo_recusa?: string | null;
+          observacoes?: string | null;
+          prazo_pagamento_dias?: number | null;
+          quem_paga_servico?: string | null;
+          status?: string;
+          taxa_cortesia_excedente_pct?: number | null;
+          taxa_fixa_evento?: number | null;
+          taxa_minima?: number | null;
+          taxa_nome_excedente?: number | null;
+          taxa_porta_percent?: number | null;
+          taxa_processamento_percent?: number | null;
+          taxa_servico_percent?: number | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'condicoes_comerciais_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'condicoes_comerciais_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades_admin';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'condicoes_comerciais_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades_publico';
+            referencedColumns: ['id'];
+          },
+        ];
       };
       convidados_lista: {
         Row: {

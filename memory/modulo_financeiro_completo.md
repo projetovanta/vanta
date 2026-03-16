@@ -122,6 +122,9 @@ Registro financeiro de cada venda. Colunas: valor_bruto, valor_liquido, taxa_apl
 | features/admin/views/masterFinanceiro/RaioXEvento.tsx | 84 | Raio-X financeiro por evento |
 | features/admin/views/masterFinanceiro/LucroPorComunidade.tsx | 101 | Lucro por comunidade |
 | features/admin/services/reembolsoService.ts | 449 | Service de reembolsos |
+| features/admin/services/condicoesService.ts | ~300 | CRUD condições comerciais (definir/aceitar/recusar/histórico) |
+| features/admin/views/comunidades/ComercialTab.tsx | ~270 | Aba Comercial na comunidade (master define taxas) |
+| features/admin/views/CondicoesProducerView.tsx | ~270 | Tela sócio aceitar/recusar condições |
 
 ## Fluxos
 

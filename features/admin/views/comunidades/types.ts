@@ -26,7 +26,15 @@ export const addLog = (comunidadeId: string, atorNome: string, acao: string): Co
 
 // ── Tipos locais ──────────────────────────────────────────────────────────────
 export type CaixaTipo = 'INGRESSOS' | 'LISTA' | 'FREQUENCIA' | 'LOTES';
-export type DetalheTab = 'EVENTOS' | 'EQUIPE' | 'LOGS' | 'CAIXA' | 'RELATORIO' | 'PRIVADOS' | 'COMEMORACOES';
+export type DetalheTab =
+  | 'EVENTOS'
+  | 'EQUIPE'
+  | 'LOGS'
+  | 'CAIXA'
+  | 'RELATORIO'
+  | 'PRIVADOS'
+  | 'COMEMORACOES'
+  | 'COMERCIAL';
 export type EventoTab = 'CRIAR' | 'PROXIMOS' | 'ENCERRADOS';
 
 export const CAIXA_TITLE: Record<CaixaTipo, string> = {

@@ -427,93 +427,127 @@ export const CheckoutPage: React.FC = () => {
     setLoading(true);
     setErro('');
 
-    // Processar compra via RPC para cada variação
-    const gerados: Ingresso[] = [];
-    let ticketIdx = 0;
+    // Montar itens pra Edge Function
+    const itens = variacoes
+      .filter(v => (qtd[v.id] ?? 0) > 0)
+      .map(v => ({ variacao_id: v.id, quantidade: qtd[v.id] ?? 0 }));
 
-    for (const v of variacoes) {
-      const n = qtd[v.id] ?? 0;
-      if (n === 0) continue;
+    if (itens.length === 0) {
+      setErro('Selecione pelo menos 1 ingresso.');
+      setLoading(false);
+      submittingRef.current = false;
+      return;
+    }
 
-      const { data: rpcResult, error: rpcError } = await supabase.rpc('processar_compra_checkout', {
-        p_evento_id: eventoId,
-        p_lote_id: loteAtivoId,
-        p_variacao_id: v.id,
-        p_email: email.trim(),
-        p_valor_unit: v.valor,
-        p_quantidade: n,
-        p_comprador_id: compradorId,
-        p_ref_code: refCode || null,
-      });
+    // Se total é zero (evento gratuito com cupom 100%), usar fluxo RPC direto
+    const totalAtual = Object.entries(qtd).reduce((s, [vid, n]) => {
+      const v = variacoes.find(x => x.id === vid);
+      return s + (v?.valor ?? 0) * Number(n);
+    }, 0);
+    const descontoAtual = cupomAplicado ? cuponsService.calcDesconto(cupomAplicado, totalAtual) : 0;
 
-      if (rpcError) {
-        logger.error('[checkout] compra RPC failed', { eventoId, variacaoId: v.id, error: rpcError });
-        setErro(`Erro ao processar compra: ${rpcError.message}`);
-        setLoading(false);
-        submittingRef.current = false;
-        return;
-      }
-
-      const result = rpcResult as { ok: boolean; erro?: string; tickets?: { ticketId: string }[] };
-      if (!result?.ok) {
-        logger.warn('[checkout] compra RPC result not ok', { eventoId, variacaoId: v.id, erro: result?.erro });
-        setErro(result?.erro ?? 'Erro ao processar compra.');
-        setLoading(false);
-        submittingRef.current = false;
-        return;
-      }
-
-      const area = v.area === 'OUTRO' ? (v.areaCustom ?? 'Outro') : v.area;
-      const genero = v.genero === 'MASCULINO' ? 'Masc.' : v.genero === 'FEMININO' ? 'Fem.' : 'Unisex';
-      const vlabel = `${area} · ${genero}`;
-
-      (result.tickets ?? []).forEach(t => {
-        const acompNome = acompanhantes[ticketIdx];
-        gerados.push({
-          id: t.ticketId,
-          eventoId,
-          tituloEvento: evento?.titulo ?? '',
-          dataEvento: evento?.dataReal ?? '',
-          status: 'DISPONIVEL',
-          codigoQR: `VNT-${t.ticketId.slice(0, 8).toUpperCase()}`,
-          variacaoLabel: vlabel,
-          nomeTitular: acompNome ?? '',
-          cpf: '',
-          eventoLocal: evento?.local,
-          eventoImagem: evento?.imagem,
-          isAcompanhante: !!acompNome,
-          isMeiaEntrada: v.requerComprovante === true,
+    if (totalAtual - descontoAtual <= 0) {
+      // Fluxo gratuito — RPC direto (sem Stripe)
+      const gerados: Ingresso[] = [];
+      let ticketIdx = 0;
+      for (const v of variacoes) {
+        const n = qtd[v.id] ?? 0;
+        if (n === 0) continue;
+        const { data: rpcResult, error: rpcError } = await supabase.rpc('processar_compra_checkout', {
+          p_evento_id: eventoId,
+          p_lote_id: loteAtivoId,
+          p_variacao_id: v.id,
+          p_email: email.trim(),
+          p_valor_unit: v.valor,
+          p_quantidade: n,
+          p_comprador_id: compradorId,
+          p_ref_code: refCode || null,
         });
-        ticketIdx++;
-      });
+        const rpc = rpcResult as { ok: boolean; erro?: string; tickets?: { ticketId: string }[] } | null;
+        if (rpcError || !rpc?.ok) {
+          setErro(rpcError?.message ?? rpc?.erro ?? 'Erro ao processar.');
+          setLoading(false);
+          submittingRef.current = false;
+          return;
+        }
+        const area = v.area === 'OUTRO' ? (v.areaCustom ?? 'Outro') : v.area;
+        const genero = v.genero === 'MASCULINO' ? 'Masc.' : v.genero === 'FEMININO' ? 'Fem.' : 'Unisex';
+        const vlabel = `${area} · ${genero}`;
+        (rpc.tickets ?? []).forEach((t: { ticketId: string }) => {
+          gerados.push({
+            id: t.ticketId,
+            eventoId,
+            tituloEvento: evento?.titulo ?? '',
+            dataEvento: evento?.dataReal ?? '',
+            status: 'DISPONIVEL',
+            codigoQR: `VNT-${t.ticketId.slice(0, 8).toUpperCase()}`,
+            variacaoLabel: vlabel,
+            nomeTitular: acompanhantes[ticketIdx] ?? '',
+            cpf: '',
+            eventoLocal: evento?.local,
+            eventoImagem: evento?.imagem,
+            isAcompanhante: !!acompanhantes[ticketIdx],
+            isMeiaEntrada: v.requerComprovante === true,
+          });
+          ticketIdx++;
+        });
+      }
+      if (cupomAplicado) void cuponsService.usarCupom(cupomAplicado.id);
+      setTickets(gerados);
+      setStep('success');
+      setLoading(false);
+      submittingRef.current = false;
+      return;
     }
 
-    // Registrar uso do cupom
-    if (cupomAplicado) {
-      void cuponsService.usarCupom(cupomAplicado.id);
-    }
-
-    // Notificar app principal via BroadcastChannel
+    // Fluxo pago — Stripe Checkout via Edge Function
     try {
-      const bc = new BroadcastChannel('vanta_tickets');
-      bc.postMessage({ type: 'VANTA_TICKET_PURCHASED', tickets: gerados });
-      bc.close();
-    } catch {
-      /* BroadcastChannel not supported */
-    }
-    setTickets(gerados);
-    setLoading(false);
-    submittingRef.current = false;
-    setStep('success');
+      const { data: sessionData, error: fnError } = await supabase.functions.invoke('create-ticket-checkout', {
+        body: {
+          evento_id: eventoId,
+          lote_id: loteAtivoId,
+          itens,
+          cupom_codigo: cupomAplicado?.codigo ?? undefined,
+          acompanhantes: Object.keys(acompanhantes).length > 0 ? acompanhantes : undefined,
+          ref_code: refCode || undefined,
+        },
+      });
 
-    // Notificar comprador (3 canais: in-app + push + email)
-    void notify({
-      userId: compradorId,
-      tipo: 'COMPRA_CONFIRMADA',
-      titulo: 'Compra confirmada!',
-      mensagem: `${gerados.length} ingresso(s) para ${evento?.titulo ?? 'evento'}. Confira na sua carteira.`,
-      link: 'WALLET',
-    });
+      if (fnError) {
+        logger.error('[checkout] Edge Function error', { error: fnError });
+        setErro('Erro ao iniciar pagamento. Tente novamente.');
+        setLoading(false);
+        submittingRef.current = false;
+        return;
+      }
+
+      const result = sessionData as { url?: string; pedido_id?: string; error?: string };
+
+      if (result.error) {
+        setErro(result.error);
+        setLoading(false);
+        submittingRef.current = false;
+        return;
+      }
+
+      if (result.url) {
+        // Redirecionar pro Stripe Checkout
+        window.location.href = result.url;
+        return;
+      }
+
+      setErro('Não foi possível iniciar o pagamento.');
+      setLoading(false);
+      submittingRef.current = false;
+    } catch (err) {
+      logger.error('[checkout] unexpected error', { err });
+      setErro('Erro inesperado. Tente novamente.');
+      setLoading(false);
+      submittingRef.current = false;
+    }
+
+    // (fluxo gratuito tratado acima — fluxo pago redireciona pro Stripe)
+    return;
 
     // Notificar solicitante da comemoração sobre nova venda (fire-and-forget)
     if (refCode) {

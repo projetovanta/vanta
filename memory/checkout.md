@@ -6,12 +6,29 @@
 - `modules/checkout/SuccessScreen.tsx` (~160L) — tela pós-compra (confete + "Presença garantida!")
 - `modules/checkout/WaitlistModal.tsx` (55L) — modal lista de espera
 
-## Fluxo
+## Fluxo (2 caminhos)
+
+### Fluxo PAGO (Stripe):
 1. User seleciona variação + quantidade
 2. "Tem um código?" (ex-cupom) via `cuponsService`
-3. Upload comprovante meia-entrada (se aplicável)
-4. Botão "Garantir X ingressos" (dourado)
-5. Ticket criado → SuccessScreen
+3. Botão "Garantir X ingressos" (dourado)
+4. Front chama Edge Function `create-ticket-checkout`
+5. Edge Function cria pedido pendente + Stripe Checkout Session
+6. Front redireciona pro Stripe (`window.location.href = url`)
+7. User paga no Stripe (cartão/Apple Pay/Google Pay/PIX)
+8. Stripe envia webhook → `stripe-webhook` processa → cria tickets via RPC
+9. Stripe redireciona → `/checkout/sucesso?pedido_id=X`
+
+### Fluxo GRATUITO (RPC direto):
+1. User seleciona ingresso gratuito (ou cupom 100%)
+2. Total = R$ 0 → usa RPC `processar_compra_checkout` direto
+3. Ticket criado → SuccessScreen imediato
+
+## Regras
+- Pagamento SEMPRE no site (nunca in-app — Apple cobra 30%)
+- Stripe modo teste até Dan criar conta real (chaves pk_test_/sk_test_)
+- Edge Functions necessárias: create-ticket-checkout, stripe-webhook
+- Secrets Supabase: STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET
 
 ## SuccessScreen (redesign)
 - Confete animado (40 peças, 4s)

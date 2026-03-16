@@ -1,7 +1,14 @@
 #!/bin/bash
 # Hook: PostToolUse → Edit, Write
-# WORKFLOW DO RAFA: verifica se o fluxo correto está sendo seguido.
-# Emite alertas contextuais baseados no que está sendo editado.
+# WORKFLOW DO RAFA — Hook consolidado de avisos pos-edit.
+# Absorve checagens unicas de: enforce-rafa-obligations, diff-check-reminder, enforce-rafa-workflow
+#
+# O que checa:
+# 1. Agente certo pro contexto (Luna, Kai, Nix, Rio, Zara, Iris)
+# 2. Layout (header fixo em Home, max-w em admin, fixed inset-0 em nao-standalone)
+# 3. Supabase (as any, migration, schema)
+# 4. Contador de edits unificado (diff-check a cada 5, preflight a cada 10)
+# 5. Ata do dia
 
 INPUT=$(cat /dev/stdin)
 TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name // empty')
@@ -13,43 +20,56 @@ esac
 
 FILE_PATH=$(echo "$INPUT" | jq -r '.tool_input.file_path // empty')
 
-# Ignorar memórias, hooks, configs
+# Ignorar memorias, hooks, configs
 case "$FILE_PATH" in
   */memory/*|*/.claude/*|*/.agents/*|*/scripts/*|*.json|*.sh|*.md)
     exit 0
     ;;
 esac
 
-# Só .ts/.tsx
+# So .ts/.tsx e .css/.html
 case "$FILE_PATH" in
-  *.ts|*.tsx) ;;
+  *.ts|*.tsx|*.css|*.html) ;;
   *) exit 0 ;;
 esac
 
 ALERTAS=""
 
-# ═══ REGRA 1: Agente certo pro contexto ═══
+# Helper: valida marker de agente (conteudo verificavel)
+agent_valid() {
+  local name="$1"
+  local marker="/tmp/vanta_agent_${name}"
+  if [ -f "$marker" ]; then
+    local content
+    content=$(cat "$marker" 2>/dev/null)
+    if echo "$content" | grep -q "^VANTA_MARKER|agent|"; then
+      return 0
+    fi
+  fi
+  return 1
+}
 
-# Frontend (componentes, views, pages)
+# ═══ 1. Agente certo pro contexto ═══
+
+# Frontend
 case "$FILE_PATH" in
   */components/*|*/views/*|*/modules/*|*/homes/*|*View*|*Home*|*Page*|*Modal*|*Card*)
-    if [ ! -f "/tmp/vanta_agent_luna" ]; then
-      ALERTAS="${ALERTAS}\n👩‍💻 LUNA (Frontend): Você está editando código frontend. Luna deveria ter sido consultada sobre arquitetura de componentes, performance e acessibilidade."
+    if ! agent_valid "luna"; then
+      ALERTAS="${ALERTAS}\nLUNA - Frontend: Editando componente. Luna deveria validar. Marcar: scripts/vanta-marker.sh agent:luna"
     fi
-    # Visual check
-    if [ ! -f "/tmp/vanta_agent_iris" ]; then
+    if ! agent_valid "iris"; then
       if echo "$FILE_PATH" | grep -qi "home\|dashboard\|card\|banner\|hero\|header"; then
-        ALERTAS="${ALERTAS}\n🎨 IRIS (Visual): Editando componente visual. Iris deveria validar cores, hierarquia e identidade VANTA."
+        ALERTAS="${ALERTAS}\nIRIS - Visual: Componente visual. Marcar: scripts/vanta-marker.sh agent:iris"
       fi
     fi
     ;;
 esac
 
-# Supabase/banco (services, migrations, RPCs)
+# Supabase/banco
 case "$FILE_PATH" in
   */services/*Service*|*/services/*service*|*supabase*|*migration*)
-    if [ ! -f "/tmp/vanta_agent_kai" ]; then
-      ALERTAS="${ALERTAS}\n🗄️ KAI (Supabase): Editando service/banco. Kai deveria validar schema, queries e RLS."
+    if ! agent_valid "kai"; then
+      ALERTAS="${ALERTAS}\nKAI - Supabase: Editando service/banco. Marcar: scripts/vanta-marker.sh agent:kai"
     fi
     ;;
 esac
@@ -57,72 +77,86 @@ esac
 # Financeiro
 case "$FILE_PATH" in
   *financeiro*|*Financeiro*|*saque*|*reembolso*|*checkout*|*stripe*|*payment*)
-    if [ ! -f "/tmp/vanta_agent_nix" ]; then
-      ALERTAS="${ALERTAS}\n💰 NIX (Pagamentos): Editando código financeiro. Nix deveria validar fluxos de pagamento e segurança."
+    if ! agent_valid "nix"; then
+      ALERTAS="${ALERTAS}\nNIX - Pagamentos: Codigo financeiro. Marcar: scripts/vanta-marker.sh agent:nix"
     fi
     ;;
 esac
 
-# Mobile/Capacitor
+# Mobile
 case "$FILE_PATH" in
   *capacitor*|*native*|*push*|*offline*|*PWA*|*pwa*)
-    if [ ! -f "/tmp/vanta_agent_rio" ]; then
-      ALERTAS="${ALERTAS}\n📱 RIO (Mobile): Editando código mobile. Rio deveria validar compatibilidade e performance."
+    if ! agent_valid "rio"; then
+      ALERTAS="${ALERTAS}\nRIO - Mobile: Codigo mobile. Marcar: scripts/vanta-marker.sh agent:rio"
     fi
     ;;
 esac
 
-# Segurança
+# Seguranca
 case "$FILE_PATH" in
   *auth*|*Auth*|*rls*|*RLS*|*security*|*permiss*|*rbac*)
-    if [ ! -f "/tmp/vanta_agent_zara" ]; then
-      ALERTAS="${ALERTAS}\n🔒 ZARA (Segurança): Editando código de auth/segurança. Zara deveria revisar."
+    if ! agent_valid "zara"; then
+      ALERTAS="${ALERTAS}\nZARA - Seguranca: Codigo auth/seguranca. Marcar: scripts/vanta-marker.sh agent:zara"
     fi
     ;;
 esac
 
-# ═══ REGRA 2: Padrão de layout em componentes visuais ═══
+# ═══ 2. Layout ═══
 if [ -f "$FILE_PATH" ]; then
-  # Checar se tem header fixo dentro de componente home (deveria ser inline)
+  # Header fixo em Home
   if echo "$FILE_PATH" | grep -qi "Home\|home"; then
     if grep -q "backdrop-blur.*border-b.*shrink-0" "$FILE_PATH" 2>/dev/null; then
-      ALERTAS="${ALERTAS}\n🔴 LAYOUT: Header fixo (backdrop-blur + border-b + shrink-0) detectado em Home. Regra: homes usam saudação inline no conteúdo, SEM header fixo próprio."
+      ALERTAS="${ALERTAS}\nLAYOUT: Header fixo detectado em Home. Regra: homes usam saudacao inline, SEM header fixo."
     fi
   fi
 
-  # Checar max-w no admin
+  # max-w no admin
   if echo "$FILE_PATH" | grep -qi "dashboard\|admin\|Gateway"; then
     if grep -q "max-w-\[500px\]" "$FILE_PATH" 2>/dev/null; then
-      ALERTAS="${ALERTAS}\n🔴 LAYOUT: max-w-[500px] detectado em painel admin. Regra: Painel Admin = max-w-4xl SEMPRE."
+      ALERTAS="${ALERTAS}\nLAYOUT: max-w-500px detectado em painel admin. Regra: Painel Admin = max-w-4xl SEMPRE."
+    fi
+  fi
+
+  # fixed inset-0 em componente nao-standalone (absorvido de enforce-rafa-obligations)
+  if grep -q "fixed inset-0" "$FILE_PATH" 2>/dev/null; then
+    BASENAME_FILE=$(basename "$FILE_PATH" .tsx)
+    IS_STANDALONE=$(grep -l "$BASENAME_FILE" "$CLAUDE_PROJECT_DIR/App.tsx" 2>/dev/null | head -1)
+    if [ -z "$IS_STANDALONE" ]; then
+      ALERTAS="${ALERTAS}\nLAYOUT: 'fixed inset-0' em componente nao-standalone. Usar 'absolute inset-0'."
     fi
   fi
 fi
 
-# ═══ REGRA 3: Supabase — migration antes de código ═══
+# ═══ 3. Supabase ═══
 if [ -f "$FILE_PATH" ]; then
-  # Detectar referência a tabela que pode não existir
-  # Se o arquivo usa supabase.from('xxx') e é um service NOVO, avisar
-  if grep -q "as any" "$FILE_PATH" 2>/dev/null; then
-    ALERTAS="${ALERTAS}\n🔴 WORKAROUND 'as any' DETECTADO em $FILE_PATH — PROIBIDO. Regra: migration primeiro → gerar tipos → depois codar. Nunca contornar tipos inexistentes."
-  fi
+  # as any — checar no conteudo que foi editado, nao no arquivo inteiro
+  # (pre-edit GATE 4 ja bloqueia as any no new_string; aqui so lembrete se escapou)
+  # Nao alertar sobre as any pre-existente pra evitar falso positivo repetido
 
-  # Se editando migration, lembrar de aplicar
+  # Migration editada
   case "$FILE_PATH" in
     *migration*|*supabase/migrations*)
-      ALERTAS="${ALERTAS}\n🔴 MIGRATION EDITADA — Aplicar IMEDIATAMENTE no Supabase (apply_migration via MCP) + gerar tipos (generate_typescript_types). NUNCA deixar pendente."
+      ALERTAS="${ALERTAS}\nMIGRATION EDITADA — Aplicar IMEDIATAMENTE no Supabase + gerar tipos. NUNCA deixar pendente."
       ;;
   esac
 
-  # Se criando/editando service que usa supabase.from, verificar se consultou schema
+  # Schema verificado
   if grep -q "supabase\.\(from\|rpc\)" "$FILE_PATH" 2>/dev/null; then
-    if [ ! -f "/tmp/vanta_schema_checked" ]; then
-      ALERTAS="${ALERTAS}\n🟡 SUPABASE: Código usa supabase.from/rpc. Verificou se as tabelas/RPCs existem no schema real? Consultar via MCP (list_tables, execute_sql) ANTES de codar. Depois: touch /tmp/vanta_schema_checked"
+    SCHEMA_OK=false
+    if [ -f "/tmp/vanta_schema_checked" ]; then
+      SC_CONTENT=$(cat /tmp/vanta_schema_checked 2>/dev/null)
+      if echo "$SC_CONTENT" | grep -q "^VANTA_MARKER|schema_checked|"; then
+        SCHEMA_OK=true
+      fi
+    fi
+    if [ "$SCHEMA_OK" = false ]; then
+      ALERTAS="${ALERTAS}\nSUPABASE: Codigo usa supabase.from/rpc. Verificou schema real? Marcar: scripts/vanta-marker.sh schema_checked"
     fi
   fi
 fi
 
-# ═══ REGRA 5: Lembrete de preflight ═══
-EDIT_COUNT_FILE="/tmp/vanta_edit_count_total"
+# ═══ 4. Contador de edits unificado (absorve diff-check-reminder + enforce-rafa-obligations) ═══
+EDIT_COUNT_FILE="/tmp/vanta_edit_count_unified"
 if [ -f "$EDIT_COUNT_FILE" ]; then
   COUNT=$(cat "$EDIT_COUNT_FILE")
   COUNT=$((COUNT + 1))
@@ -131,21 +165,36 @@ else
 fi
 echo "$COUNT" > "$EDIT_COUNT_FILE"
 
-# A cada 10 edições, lembrar do preflight
-if [ $((COUNT % 10)) -eq 0 ]; then
-  ALERTAS="${ALERTAS}\n⚡ PREFLIGHT: ${COUNT} edições nesta sessão. Lembre-se: 'npm run preflight' é OBRIGATÓRIO antes de declarar qualquer entrega ao Dan."
+# Reset se diff-check rodou recentemente
+DIFF_RAN="/tmp/vanta_diffcheck_ran"
+if [ -f "$DIFF_RAN" ]; then
+  NOW_TS=$(date +%s)
+  RAN_TS=$(stat -f "%m" "$DIFF_RAN" 2>/dev/null || echo 0)
+  if [ $((NOW_TS - RAN_TS)) -le 60 ]; then
+    echo "0" > "$EDIT_COUNT_FILE"
+    COUNT=0
+  fi
 fi
 
-# ═══ REGRA 4: Ata do dia ═══
+# A cada 5 edits, lembrar diff-check
+if [ "$COUNT" -gt 0 ] && [ $((COUNT % 5)) -eq 0 ]; then
+  ALERTAS="${ALERTAS}\nDIFF-CHECK: ${COUNT} edits sem diff-check. Rodar 'npm run diff-check' agora."
+fi
+
+# A cada 10 edits, lembrar preflight
+if [ "$COUNT" -gt 0 ] && [ $((COUNT % 10)) -eq 0 ]; then
+  ALERTAS="${ALERTAS}\nPREFLIGHT: ${COUNT} edits. Lembre-se: 'npm run preflight' antes de entregar."
+fi
+
+# ═══ 5. Ata do dia ═══
 TODAY=$(date +%Y-%m-%d)
 ATA_FILE="$CLAUDE_PROJECT_DIR/memory/atas/${TODAY}.md"
 if [ -f "$ATA_FILE" ]; then
   ATA_MOD=$(stat -f "%m" "$ATA_FILE" 2>/dev/null || echo 0)
   NOW_TS=$(date +%s)
   ATA_DIFF=$((NOW_TS - ATA_MOD))
-  # Se ata não atualizada há mais de 20min
   if [ "$ATA_DIFF" -gt 1200 ]; then
-    ALERTAS="${ALERTAS}\n📋 MEMO: Ata do dia não atualizada há $(($ATA_DIFF / 60))min. Registrar ações e decisões."
+    ALERTAS="${ALERTAS}\nMEMO: Ata do dia nao atualizada ha $(($ATA_DIFF / 60))min. Pedir ao Memo."
   fi
 fi
 
@@ -155,7 +204,7 @@ if [ -n "$ALERTAS" ]; then
   jq -n --arg alertas "$ALERTAS" '{
     hookSpecificOutput: {
       hookEventName: "PostToolUse",
-      additionalContext: ("⚠️ WORKFLOW RAFA — LEMBRETES:\n" + $alertas + "\n\nMarcar agente como consultado: touch /tmp/vanta_agent_[nome]")
+      additionalContext: ("WORKFLOW RAFA — LEMBRETES:\n" + $alertas + "\n\nMarcar agente: touch /tmp/vanta_agent_[nome]")
     }
   }'
 fi

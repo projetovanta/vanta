@@ -27,9 +27,12 @@ case "$COMMAND" in
       }'
     else
       rm -f /tmp/vanta_diffcheck_failed 2>/dev/null
-      touch /tmp/vanta_diffcheck_last
-      # Reset edit counter
+      NOW_TS=$(date +%s)
+      echo "VANTA_MARKER|diffcheck_ran|${NOW_TS}|passed" > /tmp/vanta_diffcheck_ran
+      echo "VANTA_MARKER|diffcheck_last|${NOW_TS}|passed" > /tmp/vanta_diffcheck_last
+      # Reset edit counters
       rm -f /tmp/vanta_edit_count 2>/dev/null
+      rm -f /tmp/vanta_edit_count_unified 2>/dev/null
     fi
     ;;
 esac

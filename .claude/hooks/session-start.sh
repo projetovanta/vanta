@@ -3,7 +3,16 @@
 # Carrega estado atual do projeto e injeta como contexto para o Claude.
 # Lê: MEMORY.md (estado jabuticaba), sessao_atual.md (continuidade), pendências.
 
-MEMORY_DIR="$HOME/.claude/projects/-Users-vanta-Documents-prevanta/memory"
+# Usar CLAUDE_PROJECT_DIR (definido pelo Claude Code) com fallback
+PROJECT_DIR="${CLAUDE_PROJECT_DIR:-/Users/vanta/prevanta}"
+MEMORY_DIR="$PROJECT_DIR/memory"
+# Fallback: tentar path auto-discovery se nao existir
+if [ ! -d "$MEMORY_DIR" ]; then
+  MEMORY_DIR="$HOME/.claude/projects/-Users-vanta-prevanta/memory"
+fi
+if [ ! -d "$MEMORY_DIR" ]; then
+  MEMORY_DIR="$HOME/.claude/projects/-Users-vanta-Documents-prevanta/memory"
+fi
 SESSAO="$MEMORY_DIR/sessao_atual.md"
 MEMORY="$MEMORY_DIR/MEMORY.md"
 

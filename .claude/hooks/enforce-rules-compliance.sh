@@ -26,54 +26,81 @@ if [ "$TOOL_NAME" = "Edit" ] || [ "$TOOL_NAME" = "Write" ]; then
   esac
 fi
 
-# ═══ GATE 1: Feedbacks lidos? ═══
+# ═══ GATE 1: Feedbacks lidos? (marker com hash verificavel) ═══
 FEEDBACK_MARKER="/tmp/vanta_feedbacks_read"
-if [ ! -f "$FEEDBACK_MARKER" ]; then
+FEEDBACK_VALID=false
+if [ -f "$FEEDBACK_MARKER" ]; then
+  # Validar formato: VANTA_MARKER|feedbacks_read|timestamp|hash
+  MARKER_CONTENT=$(cat "$FEEDBACK_MARKER" 2>/dev/null)
+  if echo "$MARKER_CONTENT" | grep -q "^VANTA_MARKER|feedbacks_read|"; then
+    # Extrair hash do marker e comparar com hash real
+    MARKER_HASH=$(echo "$MARKER_CONTENT" | cut -d'|' -f4)
+    REAL_FILES=$(ls "$CLAUDE_PROJECT_DIR"/memory/feedback_*.md 2>/dev/null | sort)
+    REAL_HASH=$(echo "$REAL_FILES" | md5 -q 2>/dev/null || echo "$REAL_FILES" | md5sum | cut -d' ' -f1)
+    if [ "$MARKER_HASH" = "$REAL_HASH" ] && [ -n "$MARKER_HASH" ]; then
+      # Checar TTL 4h
+      MARKER_TS=$(echo "$MARKER_CONTENT" | cut -d'|' -f3)
+      NOW_TS=$(date +%s)
+      if [ $((NOW_TS - MARKER_TS)) -le 14400 ]; then
+        FEEDBACK_VALID=true
+      fi
+    fi
+  fi
+fi
+if [ "$FEEDBACK_VALID" = false ]; then
   FEEDBACK_COUNT=$(ls "$CLAUDE_PROJECT_DIR"/memory/feedback_*.md 2>/dev/null | wc -l | tr -d ' ')
   if [ "$FEEDBACK_COUNT" -gt 0 ]; then
     jq -n --arg count "$FEEDBACK_COUNT" '{
       hookSpecificOutput: {
         hookEventName: "PreToolUse",
         permissionDecision: "deny",
-        permissionDecisionReason: ("BLOQUEADO — OBRIGAÇÃO NÃO CUMPRIDA\n\n🔴 Feedbacks não lidos (" + $count + " arquivos)\n\nO QUE FAZER:\n1. Glob: memory/feedback_*.md\n2. Ler cada um (Grep ou Read com offset)\n3. Depois: touch /tmp/vanta_feedbacks_read\n\nSem isso, NENHUMA ação é permitida.")
+        permissionDecisionReason: ("BLOQUEADO — OBRIGACAO NAO CUMPRIDA\n\nFeedbacks nao lidos ou marker invalido (" + $count + " arquivos)\n\nO QUE FAZER:\n1. Ler TODOS os feedback_*.md\n2. Rodar: scripts/vanta-marker.sh feedbacks_read\n\ntouch sem conteudo = REJEITADO.")
       }
     }'
     exit 0
   fi
 fi
 
-# ═══ GATE 2: Memo ativado? ═══
+# ═══ GATE 2: Memo ativado? (marker com hash da ata verificavel) ═══
 MEMO_MARKER="/tmp/vanta_memo_ativado"
-if [ ! -f "$MEMO_MARKER" ]; then
+MEMO_VALID=false
+if [ -f "$MEMO_MARKER" ]; then
+  MARKER_CONTENT=$(cat "$MEMO_MARKER" 2>/dev/null)
+  if echo "$MARKER_CONTENT" | grep -q "^VANTA_MARKER|memo_ativado|"; then
+    MARKER_TS=$(echo "$MARKER_CONTENT" | cut -d'|' -f3)
+    ATA_PATH=$(echo "$MARKER_CONTENT" | cut -d'|' -f5)
+    NOW_TS=$(date +%s)
+    # TTL 4h
+    if [ $((NOW_TS - MARKER_TS)) -le 14400 ]; then
+      # Validar que a ata existe
+      if [ -f "$ATA_PATH" ]; then
+        MEMO_VALID=true
+      fi
+    fi
+  fi
+fi
+if [ "$MEMO_VALID" = false ]; then
   jq -n '{
     hookSpecificOutput: {
       hookEventName: "PreToolUse",
       permissionDecision: "deny",
-      permissionDecisionReason: "BLOQUEADO — OBRIGAÇÃO NÃO CUMPRIDA\n\n🔴 Memo (Secretário Executivo) não foi ativado\n\nO QUE FAZER:\n1. Ler .claude/agents/memo.md\n2. Criar/atualizar ata do dia em memory/atas/YYYY-MM-DD.md\n3. Depois: touch /tmp/vanta_memo_ativado\n\nSem Memo ativo, NENHUMA ação é permitida."
+      permissionDecisionReason: "BLOQUEADO — Memo nao ativado ou marker invalido\n\nO QUE FAZER:\n1. Ler .claude/agents/memo.md\n2. Criar/atualizar ata do dia em memory/atas/YYYY-MM-DD.md\n3. Rodar: scripts/vanta-marker.sh memo_ativado\n\ntouch sem conteudo = REJEITADO."
     }
   }'
   exit 0
-else
-  # Checar se marker tem menos de 4h
-  NOW_TS=$(date +%s)
-  MARKER_TS=$(stat -f "%m" "$MEMO_MARKER" 2>/dev/null || echo 0)
-  DIFF=$((NOW_TS - MARKER_TS))
-  if [ "$DIFF" -gt 14400 ]; then
-    jq -n '{
-      hookSpecificOutput: {
-        hookEventName: "PreToolUse",
-        permissionDecision: "deny",
-        permissionDecisionReason: "BLOQUEADO — SESSÃO EXPIRADA\n\n🔴 Memo foi ativado há mais de 4h. Sessão expirou.\n\nO QUE FAZER:\n1. Reativar Memo: atualizar ata do dia\n2. Depois: touch /tmp/vanta_memo_ativado\n\nRenovar sessão pra continuar."
-      }
-    }'
-    exit 0
-  fi
 fi
 
 # ═══ GATE 3: Equipe consultada antes de perguntar ao Dan? ═══
 if [ "$TOOL_NAME" = "AskUserQuestion" ]; then
   EQUIPE_MARKER="/tmp/vanta_equipe_consultada"
-  if [ ! -f "$EQUIPE_MARKER" ]; then
+  EQUIPE_VALID=false
+  if [ -f "$EQUIPE_MARKER" ]; then
+    MARKER_CONTENT=$(cat "$EQUIPE_MARKER" 2>/dev/null)
+    if echo "$MARKER_CONTENT" | grep -q "^VANTA_MARKER|equipe_consultada|"; then
+      EQUIPE_VALID=true
+    fi
+  fi
+  if [ "$EQUIPE_VALID" = false ]; then
     QUESTION=$(echo "$INPUT" | jq -r '.tool_input.questions[0].question // empty')
     WORD_COUNT=$(echo "$QUESTION" | wc -w | tr -d ' ')
     if [ "$WORD_COUNT" -gt 5 ]; then
@@ -81,7 +108,7 @@ if [ "$TOOL_NAME" = "AskUserQuestion" ]; then
         hookSpecificOutput: {
           hookEventName: "PreToolUse",
           permissionDecision: "deny",
-          permissionDecisionReason: "BLOQUEADO — OBRIGAÇÃO NÃO CUMPRIDA\n\n🔴 Fazendo pergunta ao Dan SEM consultar equipe\n\nREGRA: Rafa NUNCA age sozinho.\n\nO QUE FAZER:\n1. Convocar agentes especializados (Luna, Iris, Kai, etc.)\n2. Cada um analisa e assina\n3. Rafa consolida recomendações\n4. Depois: touch /tmp/vanta_equipe_consultada\n5. SÓ ENTÃO formular perguntas ao Dan"
+          permissionDecisionReason: "BLOQUEADO — Pergunta ao Dan SEM consultar equipe\n\nO QUE FAZER:\n1. Convocar especialistas\n2. Cada um analisa e assina\n3. Rafa consolida\n4. Rodar: scripts/vanta-marker.sh equipe_consultada\n5. SO ENTAO formular perguntas ao Dan\n\ntouch sem conteudo = REJEITADO."
         }
       }'
       exit 0
@@ -96,23 +123,41 @@ if [ "$TOOL_NAME" = "Edit" ] || [ "$TOOL_NAME" = "Write" ]; then
   case "$FILE_PATH_CHECK" in
     *.ts|*.tsx)
       if echo "$NEW_STRING" | grep -q "as any" 2>/dev/null; then
-        # Verificar se é workaround de Supabase (supabase as any, from(xxx as any), etc)
-        if echo "$NEW_STRING" | grep -q "supabase.*as any\|from(.*as any\|\.from.*as any" 2>/dev/null; then
-          jq -n '{
-            hookSpecificOutput: {
-              hookEventName: "PreToolUse",
-              permissionDecision: "deny",
-              permissionDecisionReason: "BLOQUEADO — WORKAROUND PROIBIDO\n\n🔴 Tentando usar \"as any\" em código Supabase\n\nREGRA: NUNCA contornar tipos. Ordem correta:\n1. Criar migration\n2. Aplicar no Supabase (apply_migration via MCP)\n3. Gerar tipos (generate_typescript_types)\n4. SÓ ENTÃO escrever código que usa a tabela\n\nSe o TypeScript reclama que a tabela não existe, é porque a migration não foi aplicada."
-            }
-          }'
-          exit 0
-        fi
+        jq -n '{
+          hookSpecificOutput: {
+            hookEventName: "PreToolUse",
+            permissionDecision: "deny",
+            permissionDecisionReason: "BLOQUEADO — as any PROIBIDO\n\nRegra: ZERO uso de as any em codigo .ts/.tsx.\nSe e Supabase: migration primeiro, gerar tipos, depois codar.\nSe e outro caso: usar tipos corretos ou generics.\n\nSe REALMENTE necessario por motivo tecnico valido, pedir autorizacao ao Dan."
+          }
+        }'
+        exit 0
       fi
       ;;
   esac
 fi
 
-# ═══ GATE 5: Código com erro não pode ser entregue ═══
+# ═══ GATE 5: Delecoes massivas sem autorizacao ═══
+if [ "$TOOL_NAME" = "Edit" ]; then
+  OLD_STRING=$(echo "$INPUT" | jq -r '.tool_input.old_string // empty')
+  NEW_STRING_DEL=$(echo "$INPUT" | jq -r '.tool_input.new_string // empty')
+  if [ -n "$OLD_STRING" ]; then
+    OLD_LINES=$(echo "$OLD_STRING" | wc -l | tr -d ' ')
+    NEW_LINES=$(echo "$NEW_STRING_DEL" | wc -l | tr -d ' ')
+    # Se removendo mais de 15 linhas e new_string tem menos de 3 linhas
+    if [ "$OLD_LINES" -gt 15 ] && [ "$NEW_LINES" -lt 3 ]; then
+      jq -n --arg old "$OLD_LINES" --arg new "$NEW_LINES" '{
+        hookSpecificOutput: {
+          hookEventName: "PreToolUse",
+          permissionDecision: "deny",
+          permissionDecisionReason: ("BLOQUEADO — Delecao massiva detectada\n\nRemovendo " + $old + " linhas, substituindo por " + $new + " linhas.\n\nRegra: ZERO remocoes sem autorizacao do Dan.\nSe realmente precisa deletar, pedir autorizacao via AskUserQuestion.")
+        }
+      }'
+      exit 0
+    fi
+  fi
+fi
+
+# ═══ GATE 6: Código com erro não pode ser entregue ═══
 if [ "$TOOL_NAME" = "Edit" ] || [ "$TOOL_NAME" = "Write" ]; then
   FILE_PATH=$(echo "$INPUT" | jq -r '.tool_input.file_path // empty')
   case "$FILE_PATH" in

@@ -180,6 +180,7 @@ const NAV_TO_SUBVIEW: Record<NavItem, AdminSubView> = {
   COMPROVANTES: 'GESTAO_COMPROVANTES',
   PARCERIAS: 'SOLICITACOES_PARCERIA',
   SISTEMA: 'CATEGORIAS',
+  PENDENCIAS_APP: 'PENDENCIAS_APP',
 };
 
 // ── Role tabs (ferramenta de dev/análise) ────────────────────────────────────

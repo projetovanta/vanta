@@ -37,7 +37,8 @@ export type NavItem =
   | 'INDICA'
   | 'COMPROVANTES'
   | 'PARCERIAS'
-  | 'SISTEMA';
+  | 'SISTEMA'
+  | 'PENDENCIAS_APP';
 
 interface SidebarItemDef {
   id: NavItem;
@@ -96,6 +97,7 @@ const SECTIONS: SidebarSectionDef[] = [
       { id: 'COMPROVANTES', label: 'Comprovantes', icon: FileCheck, roles: ['vanta_masteradm'] },
       { id: 'PARCERIAS', label: 'Parcerias', icon: Handshake, roles: ['vanta_masteradm'] },
       { id: 'SISTEMA', label: 'Sistema', icon: Settings, roles: ['vanta_masteradm'] },
+      { id: 'PENDENCIAS_APP', label: 'Pendências App', icon: AlertCircle, roles: ['vanta_masteradm'] },
     ],
   },
 ];

@@ -1,0 +1,589 @@
+import React, { useState, useCallback } from 'react';
+import {
+  ArrowLeft,
+  Users,
+  Building2,
+  QrCode,
+  ListChecks,
+  ShieldPlus,
+  ChevronRight,
+  ChevronDown,
+  Banknote,
+  Database,
+  Menu,
+  ChevronLeft,
+  User,
+  Star,
+  Calendar,
+  ShoppingCart,
+  ClipboardList,
+  LayoutDashboard,
+  Compass,
+  Tag,
+  Bell,
+  Activity,
+  BarChart3,
+  Crown,
+  Settings,
+  AlertCircle,
+  FileCheck,
+  TrendingUp,
+  Handshake,
+  Sparkles,
+  Eye,
+  Send,
+  Lightbulb,
+  HelpCircle,
+  LinkIcon,
+  type LucideIcon,
+} from 'lucide-react';
+import type { ContaVantaLegacy } from '../../../types';
+
+export type AdminSubView =
+  | 'DASHBOARD'
+  | 'CURADORIA'
+  | 'COMUNIDADES'
+  | 'INDICA'
+  | 'NOTIFICACOES'
+  | 'LISTAS'
+  | 'PORTARIA_QR'
+  | 'PORTARIA_LISTA'
+  | 'CARGOS'
+  | 'FINANCEIRO_MASTER'
+  | 'FINANCEIRO'
+  | 'PORTARIA_SCANNER'
+  | 'MEUS_EVENTOS'
+  | 'CAIXA'
+  | 'PENDENTES'
+  | 'AUDIT_LOG'
+  | 'CATEGORIAS'
+  | 'PROMOTER_COTAS'
+  | 'MAIS_VANTA_HUB'
+  | 'MONITORAMENTO_MV'
+  | 'DIAGNOSTICO'
+  | 'ASSINATURAS_MV'
+  | 'PASSAPORTES_MV'
+  | 'DIVIDA_SOCIAL_MV'
+  | 'MEMBROS_GLOBAIS_MV'
+  | 'EVENTOS_GLOBAIS_MV'
+  | 'INFRACOES_GLOBAIS_MV'
+  | 'GESTAO_COMPROVANTES'
+  | 'RELATORIO_MASTER'
+  | 'PRODUCT_ANALYTICS'
+  | 'MAIS_VANTA'
+  | 'SOLICITACOES_PARCERIA'
+  | 'PENDENCIAS_HUB'
+  | 'CIDADES_MV'
+  | 'PARCEIROS_MV'
+  | 'DEALS_MV'
+  | 'CURADORIA_MV'
+  | 'CONVITES_MV'
+  | 'ANALYTICS_MV'
+  | 'MASTER_DASHBOARD'
+  | 'COMUNIDADE_DASHBOARD'
+  | 'MAIS_VANTA_DASHBOARD'
+  | 'INTELIGENCIA'
+  | 'FAQ'
+  | 'LINKS_UTEIS';
+
+interface SidebarSectionItem {
+  id: AdminSubView;
+  label: string;
+  icon: LucideIcon;
+  color?: string;
+  roles: ContaVantaLegacy[];
+  badge?: number;
+}
+
+interface SidebarSection {
+  label: string;
+  items: SidebarSectionItem[];
+}
+
+// audit-ok: Regra de acesso — vanta_masteradm: global | vanta_gerente: comunidade | vanta_socio: evento(s)
+// vanta_ger_portaria_*/vanta_portaria_*: check-in | vanta_promoter: listas | vanta_caixa: caixa
+// Cores por categoria — clean, sem arco-íris
+const COR = {
+  GERAL: '#FFFFFF',
+  PESSOAS: '#8B8B8B',
+  EVENTOS: '#A78BFA',
+  FINANCEIRO: '#34D399',
+  MAIS_VANTA: '#FFD300',
+  MARKETING: '#F472B6',
+  SISTEMA: '#525252',
+} as const;
+
+export const SIDEBAR_SECTIONS: SidebarSection[] = [
+  {
+    label: 'GERAL',
+    items: [
+      {
+        id: 'DASHBOARD',
+        label: 'Início',
+        icon: LayoutDashboard,
+        color: COR.GERAL,
+        roles: ['vanta_masteradm', 'vanta_socio', 'vanta_gerente'],
+      },
+      {
+        id: 'MASTER_DASHBOARD',
+        label: 'Painel Master',
+        icon: Crown,
+        color: COR.FINANCEIRO,
+        roles: ['vanta_masteradm'],
+      },
+      {
+        id: 'INTELIGENCIA',
+        label: 'Inteligência',
+        icon: Lightbulb,
+        color: COR.MAIS_VANTA,
+        roles: ['vanta_masteradm', 'vanta_gerente', 'vanta_socio'],
+      },
+      {
+        id: 'PENDENCIAS_HUB',
+        label: 'Pendências',
+        icon: AlertCircle,
+        color: COR.GERAL,
+        roles: ['vanta_masteradm', 'vanta_socio', 'vanta_gerente'],
+      },
+    ],
+  },
+  {
+    label: 'GESTÃO',
+    items: [
+      {
+        id: 'COMUNIDADES',
+        label: 'Comunidades',
+        icon: Building2,
+        color: COR.EVENTOS,
+        roles: ['vanta_masteradm', 'vanta_gerente', 'vanta_socio'],
+      },
+      {
+        id: 'PENDENTES',
+        label: 'Eventos Pendentes',
+        icon: ClipboardList,
+        color: COR.EVENTOS,
+        roles: ['vanta_masteradm'],
+      },
+      { id: 'CATEGORIAS', label: 'Categorias', icon: Tag, color: COR.EVENTOS, roles: ['vanta_masteradm'] },
+      {
+        id: 'SOLICITACOES_PARCERIA',
+        label: 'Parcerias',
+        icon: Handshake,
+        color: COR.EVENTOS,
+        roles: ['vanta_masteradm'],
+      },
+      { id: 'CARGOS', label: 'Cargos', icon: ShieldPlus, color: COR.PESSOAS, roles: ['vanta_masteradm'] },
+    ],
+  },
+  {
+    label: 'FINANCEIRO',
+    items: [
+      {
+        id: 'FINANCEIRO_MASTER',
+        label: 'Financeiro',
+        icon: Banknote,
+        color: COR.FINANCEIRO,
+        roles: ['vanta_masteradm'],
+      },
+      {
+        id: 'GESTAO_COMPROVANTES',
+        label: 'Comprovantes',
+        icon: FileCheck,
+        color: COR.FINANCEIRO,
+        roles: ['vanta_masteradm'],
+      },
+      {
+        id: 'RELATORIO_MASTER',
+        label: 'Relatórios',
+        icon: BarChart3,
+        color: COR.FINANCEIRO,
+        roles: ['vanta_masteradm'],
+      },
+    ],
+  },
+  {
+    label: 'MAIS VANTA',
+    items: [
+      { id: 'CURADORIA_MV', label: 'Curadoria', icon: Star, color: COR.MAIS_VANTA, roles: ['vanta_masteradm'] },
+      {
+        id: 'MEMBROS_GLOBAIS_MV',
+        label: 'Membros',
+        icon: Users,
+        color: COR.MAIS_VANTA,
+        roles: ['vanta_masteradm', 'vanta_gerente'],
+      },
+      {
+        id: 'INFRACOES_GLOBAIS_MV',
+        label: 'Infrações',
+        icon: AlertCircle,
+        color: COR.MAIS_VANTA,
+        roles: ['vanta_masteradm'],
+      },
+      {
+        id: 'CONVITES_MV',
+        label: 'Convites',
+        icon: Send,
+        color: COR.MAIS_VANTA,
+        roles: ['vanta_masteradm', 'vanta_gerente'],
+      },
+      {
+        id: 'MAIS_VANTA_DASHBOARD',
+        label: 'Painel MV',
+        icon: Sparkles,
+        color: COR.MAIS_VANTA,
+        roles: ['vanta_masteradm'],
+      },
+      { id: 'ANALYTICS_MV', label: 'Analytics', icon: BarChart3, color: COR.MAIS_VANTA, roles: ['vanta_masteradm'] },
+      { id: 'MONITORAMENTO_MV', label: 'Monitoramento', icon: Eye, color: COR.MAIS_VANTA, roles: ['vanta_masteradm'] },
+      { id: 'MAIS_VANTA_HUB', label: 'Config MV', icon: Settings, color: COR.MAIS_VANTA, roles: ['vanta_masteradm'] },
+    ],
+  },
+  {
+    label: 'MARKETING',
+    items: [
+      { id: 'INDICA', label: 'Vanta Indica', icon: Compass, color: COR.MARKETING, roles: ['vanta_masteradm'] },
+      { id: 'NOTIFICACOES', label: 'Notificações', icon: Bell, color: COR.MARKETING, roles: ['vanta_masteradm'] },
+    ],
+  },
+  {
+    label: 'SISTEMA',
+    items: [
+      {
+        id: 'PRODUCT_ANALYTICS',
+        label: 'Analytics',
+        icon: TrendingUp,
+        color: COR.SISTEMA,
+        roles: ['vanta_masteradm'],
+      },
+      { id: 'DIAGNOSTICO', label: 'Diagnóstico', icon: Activity, color: COR.SISTEMA, roles: ['vanta_masteradm'] },
+      { id: 'FAQ', label: 'FAQ', icon: HelpCircle, color: COR.SISTEMA, roles: ['vanta_masteradm'] },
+      { id: 'LINKS_UTEIS', label: 'Links Úteis', icon: LinkIcon, color: COR.SISTEMA, roles: ['vanta_masteradm'] },
+    ],
+  },
+];
+
+// Sidebar dedicado para contexto de comunidade (master na comunidade = gerente + extras)
+const ALL_COMMUNITY_ROLES: ContaVantaLegacy[] = [
+  'vanta_masteradm',
+  'vanta_socio',
+  'vanta_gerente',
+  'vanta_promoter',
+  'vanta_ger_portaria_lista',
+  'vanta_portaria_lista',
+  'vanta_ger_portaria_antecipado',
+  'vanta_portaria_antecipado',
+  'vanta_caixa',
+];
+export const COMMUNITY_SIDEBAR_SECTIONS: SidebarSection[] = [
+  {
+    label: 'GERAL',
+    items: [
+      { id: 'DASHBOARD', label: 'Início', icon: LayoutDashboard, color: COR.GERAL, roles: ALL_COMMUNITY_ROLES },
+      {
+        id: 'COMUNIDADE_DASHBOARD',
+        label: 'Painel',
+        icon: BarChart3,
+        color: COR.FINANCEIRO,
+        roles: ['vanta_masteradm', 'vanta_socio', 'vanta_gerente'],
+      },
+      { id: 'PENDENCIAS_HUB', label: 'Pendências', icon: AlertCircle, color: COR.GERAL, roles: ALL_COMMUNITY_ROLES },
+      {
+        id: 'MEUS_EVENTOS',
+        label: 'Eventos',
+        icon: Calendar,
+        color: COR.GERAL,
+        roles: ['vanta_masteradm', 'vanta_socio', 'vanta_gerente'],
+      },
+    ],
+  },
+  {
+    label: 'OPERAÇÃO DIA',
+    items: [
+      {
+        id: 'PORTARIA_QR',
+        label: 'Scanner QR',
+        icon: QrCode,
+        color: COR.EVENTOS,
+        roles: ['vanta_masteradm', 'vanta_ger_portaria_antecipado', 'vanta_portaria_antecipado'],
+      },
+      {
+        id: 'PORTARIA_LISTA',
+        label: 'Check-in Lista',
+        icon: ListChecks,
+        color: COR.EVENTOS,
+        roles: ['vanta_masteradm', 'vanta_ger_portaria_lista', 'vanta_portaria_lista'],
+      },
+      {
+        id: 'CAIXA',
+        label: 'Caixa',
+        icon: ShoppingCart,
+        color: COR.EVENTOS,
+        roles: ['vanta_masteradm', 'vanta_caixa'],
+      },
+      {
+        id: 'LISTAS',
+        label: 'Listas',
+        icon: ListChecks,
+        color: COR.EVENTOS,
+        roles: ['vanta_masteradm', 'vanta_socio', 'vanta_gerente', 'vanta_promoter'],
+      },
+      { id: 'PROMOTER_COTAS', label: 'Minhas Cotas', icon: BarChart3, color: COR.EVENTOS, roles: ['vanta_promoter'] },
+    ],
+  },
+  {
+    label: 'FINANCEIRO',
+    items: [
+      {
+        id: 'FINANCEIRO',
+        label: 'Financeiro',
+        icon: Banknote,
+        color: COR.FINANCEIRO,
+        roles: ['vanta_masteradm', 'vanta_socio', 'vanta_gerente'],
+      },
+      {
+        id: 'RELATORIO_MASTER',
+        label: 'Relatórios',
+        icon: BarChart3,
+        color: COR.FINANCEIRO,
+        roles: ['vanta_masteradm', 'vanta_gerente'],
+      },
+    ],
+  },
+  {
+    label: 'MAIS VANTA',
+    items: [
+      { id: 'MAIS_VANTA_HUB', label: 'MAIS VANTA', icon: Crown, color: COR.MAIS_VANTA, roles: ['vanta_masteradm'] },
+      { id: 'MAIS_VANTA', label: 'MAIS VANTA', icon: Crown, color: COR.MAIS_VANTA, roles: ['vanta_socio'] },
+    ],
+  },
+  {
+    label: 'ADMINISTRAÇÃO',
+    items: [
+      {
+        id: 'COMUNIDADES',
+        label: 'Editar Comunidade',
+        icon: Building2,
+        color: COR.SISTEMA,
+        roles: ['vanta_masteradm', 'vanta_gerente'],
+      },
+      { id: 'AUDIT_LOG', label: 'Audit Log', icon: ClipboardList, color: COR.SISTEMA, roles: ['vanta_masteradm'] },
+    ],
+  },
+];
+
+export const AdminSidebar: React.FC<{
+  open: boolean;
+  isDesktop: boolean;
+  onToggle: () => void;
+  activeView: AdminSubView;
+  onSelect: (id: AdminSubView) => void;
+  onClose: () => void;
+  adminRole: ContaVantaLegacy;
+  visibleSections: SidebarSection[];
+  pendentesCount?: number;
+  pendenciasHubCount?: number;
+  totalPendencias?: number;
+  tenantNome?: string;
+  tenantFoto?: string;
+}> = ({
+  open,
+  isDesktop,
+  onToggle,
+  activeView,
+  onSelect,
+  onClose,
+  visibleSections,
+  pendentesCount = 0,
+  pendenciasHubCount = 0,
+  totalPendencias = 0,
+  tenantNome,
+  tenantFoto,
+}) => {
+  // Desktop: sempre expandido. Mobile: toggle manual.
+  const expanded = isDesktop || open;
+
+  // Seções colapsáveis — estado persistido em localStorage
+  const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>(() => {
+    try {
+      const stored = localStorage.getItem('vanta_sidebar_collapsed');
+      return stored ? JSON.parse(stored) : {};
+    } catch {
+      return {};
+    }
+  });
+
+  const toggleSection = useCallback((label: string) => {
+    setCollapsedSections(prev => {
+      const next = { ...prev, [label]: !prev[label] };
+      try {
+        localStorage.setItem('vanta_sidebar_collapsed', JSON.stringify(next));
+      } catch {
+        /* */
+      }
+      return next;
+    });
+  }, []);
+
+  // Auto-expand seção que contém a view ativa
+  const activeSectionLabel = visibleSections.find(s => s.items.some(i => i.id === activeView))?.label;
+  const isSectionCollapsed = (label: string) => {
+    if (label === activeSectionLabel) return false; // nunca colapsa a ativa
+    return !!collapsedSections[label];
+  };
+
+  return (
+    <aside
+      className={`shrink-0 flex flex-col bg-[#080808] border-r border-white/5 overflow-hidden transition-all duration-200 ${expanded ? (isDesktop ? 'w-56' : 'w-48') : 'w-14'}`}
+    >
+      {/* Header */}
+      <div className="h-14 flex items-center shrink-0 border-b border-white/5 ">
+        {expanded ? (
+          <div className="flex items-center w-full px-2 gap-1">
+            <button
+              onClick={onClose}
+              className="flex items-center justify-center min-w-[2.75rem] min-h-[2.75rem] w-8 h-8 rounded-lg active:opacity-70 transition-opacity relative"
+            >
+              <ArrowLeft size="1rem" className="text-zinc-400" />
+              {totalPendencias > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 min-w-[0.875rem] h-[0.875rem] bg-red-500 text-white text-[0.4375rem] font-black rounded-full flex items-center justify-center px-0.5 leading-none">
+                  {totalPendencias > 99 ? '99+' : totalPendencias}
+                </span>
+              )}
+            </button>
+            {tenantNome ? (
+              <div className="flex-1 flex items-center gap-1.5 min-w-0 px-1">
+                {tenantFoto ? (
+                  <img loading="lazy" src={tenantFoto} alt="" className="w-5 h-5 rounded-full object-cover shrink-0" />
+                ) : null}
+                <span className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest truncate">
+                  {tenantNome}
+                </span>
+              </div>
+            ) : (
+              <span className="flex-1 text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest truncate px-1">
+                Portal VANTA
+              </span>
+            )}
+            {!isDesktop && (
+              <button
+                aria-label="Voltar"
+                onClick={onToggle}
+                className="flex items-center justify-center min-w-[2.75rem] min-h-[2.75rem] w-8 h-8 rounded-lg active:opacity-70 transition-opacity"
+              >
+                <ChevronLeft size="1rem" className="text-zinc-400" />
+              </button>
+            )}
+          </div>
+        ) : (
+          <div className="flex items-center justify-center w-full">
+            <button
+              aria-label="Abrir menu"
+              onClick={onToggle}
+              className="flex items-center justify-center w-10 h-10 rounded-lg active:bg-white/5 transition-all"
+            >
+              <Menu size="1.125rem" className="text-zinc-400" />
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Nav — seções colapsáveis */}
+      <nav className="flex-1 overflow-y-auto no-scrollbar py-2">
+        {visibleSections.map(section => {
+          const collapsed = isSectionCollapsed(section.label);
+          const sectionHasActive = section.items.some(i => i.id === activeView);
+          return (
+            <div key={section.label} className="mb-1">
+              {expanded ? (
+                <button
+                  onClick={() => toggleSection(section.label)}
+                  className="w-full flex items-center gap-1.5 px-4 pt-2 pb-1 group"
+                >
+                  {collapsed ? (
+                    <ChevronRight size="0.625rem" className="text-zinc-400 shrink-0 transition-transform" />
+                  ) : (
+                    <ChevronDown size="0.625rem" className="text-zinc-400 shrink-0 transition-transform" />
+                  )}
+                  <span
+                    className={`text-[0.5625rem] font-black uppercase tracking-[0.2em] truncate ${sectionHasActive ? 'text-zinc-400' : 'text-zinc-700'}`}
+                  >
+                    {section.label}
+                  </span>
+                </button>
+              ) : (
+                <div className="h-px bg-white/5 mx-2 my-1" />
+              )}
+              <div
+                className={`overflow-hidden transition-all duration-150 ${collapsed && expanded ? 'max-h-0 opacity-0' : 'max-h-[37.5rem] opacity-100'}`}
+              >
+                {section.items.map(item => {
+                  const Icon = item.icon;
+                  const isActive = activeView === item.id;
+                  const iconColor = item.color ?? (isActive ? '#FFD300' : undefined);
+                  const isPendencias = item.id === 'PENDENCIAS_HUB';
+                  const badgeCount =
+                    item.id === 'PENDENTES' ? pendentesCount : isPendencias ? pendenciasHubCount : (item.badge ?? 0);
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => onSelect(item.id)}
+                      className={`w-full flex items-center gap-3 px-3 py-3 transition-all relative ${
+                        isActive ? 'bg-[#FFD300]/10 text-white' : 'text-zinc-400 active:bg-white/5 active:text-zinc-300'
+                      }`}
+                    >
+                      {isActive && (
+                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 rounded-r bg-[#FFD300]" />
+                      )}
+                      <div className="relative shrink-0">
+                        <Icon
+                          size="1.125rem"
+                          style={
+                            isPendencias && badgeCount > 0
+                              ? { color: '#EF4444' }
+                              : iconColor
+                                ? { color: iconColor }
+                                : undefined
+                          }
+                        />
+                        {!expanded && badgeCount > 0 && (
+                          <span
+                            className={`absolute -top-1 -right-1 w-3.5 h-3.5 ${isPendencias ? 'bg-red-500' : 'bg-amber-500'} text-${isPendencias ? 'white' : 'black'} text-[0.4375rem] font-black rounded-full flex items-center justify-center leading-none`}
+                          >
+                            {badgeCount > 9 ? '9+' : badgeCount}
+                          </span>
+                        )}
+                      </div>
+                      {expanded && (
+                        <>
+                          <span
+                            className={`flex-1 text-xs font-semibold truncate leading-none ${isPendencias && badgeCount > 0 ? 'text-red-400' : ''}`}
+                          >
+                            {item.label}
+                          </span>
+                          {badgeCount > 0 && (
+                            <span
+                              className={`shrink-0 min-w-[1.125rem] h-[1.125rem] ${isPendencias ? 'bg-red-500 text-white' : 'bg-amber-500 text-black'} text-[0.5rem] font-black rounded-full flex items-center justify-center px-1 leading-none`}
+                            >
+                              {badgeCount > 99 ? '99+' : badgeCount}
+                            </span>
+                          )}
+                        </>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
+      </nav>
+
+      {/* Footer — ícone de usuário */}
+      <div className="shrink-0 border-t border-white/5 p-2">
+        <div className="flex items-center justify-center h-9">
+          <User size="1rem" className="text-zinc-400" />
+        </div>
+      </div>
+    </aside>
+  );
+};

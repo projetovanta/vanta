@@ -143,10 +143,8 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onRegister, onC
           animation: 'kenBurns 22s ease-in-out infinite alternate',
         }}
       />
-      {/* Camada escura uniforme */}
-      <div className="absolute inset-0 bg-black/75" />
-      {/* Gradiente extra escurecendo a base onde ficam os campos */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black" />
+      {/* Gradiente atmosférico — foto aparece no topo */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/70 to-black/95" />
 
       {/* ── Conteúdo ─────────────────────────────────────────────────── */}
       <div className="relative z-10 flex-1 flex flex-col">
@@ -154,7 +152,8 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onRegister, onC
         {onClose && (
           <button
             onClick={() => setConfirmClose(true)}
-            className="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-black/40 border border-white/10 flex items-center justify-center text-white/60 active:text-white active:bg-black/60 transition-all backdrop-blur-sm"
+            className="absolute right-5 z-20 p-3 rounded-full bg-black/40 border border-white/10 flex items-center justify-center text-white/60 active:text-white active:bg-black/60 transition-all backdrop-blur-sm"
+            style={{ top: 'calc(env(safe-area-inset-top, 0px) + 12px)' }}
           >
             <X size="1rem" />
           </button>
@@ -164,15 +163,15 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onRegister, onC
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <div className="flex flex-col items-center">
             <h1 className="font-serif text-white text-5xl mb-2 tracking-[0.12em] italic font-bold">VANTA</h1>
-            <p className="text-[#FFD300] text-xs font-black uppercase tracking-[0.35em]">lifestyle é acesso</p>
+            <p className="text-[#FFD300] text-xs font-black uppercase tracking-[0.35em]">a noite é sua</p>
           </div>
         </div>
 
         {/* Spacer para empurrar o form pro fundo */}
         <div className="flex-1" />
 
-        {/* Card de login — padding lateral menor para botões não ficarem full-width */}
-        <div className="shrink-0 px-8 pb-8 pt-6 space-y-4">
+        {/* Card de login — glass morphism */}
+        <div className="shrink-0 mx-5 mb-8 p-6 bg-[#0A0A0A]/80 backdrop-blur-2xl border border-[#FFD300]/10 rounded-2xl space-y-4">
           {!resetMode ? (
             <form
               onSubmit={e => {
@@ -262,7 +261,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onRegister, onC
                   onClick={onRegister}
                   className="w-full py-2.5 border border-white/25 rounded-xl text-white font-bold text-[0.6875rem] uppercase tracking-[0.18em] active:scale-95 transition-all text-center"
                 >
-                  Não tenho conta — Cadastrar
+                  Criar Conta
                 </button>
               </div>
             </form>

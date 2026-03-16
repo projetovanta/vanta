@@ -83,6 +83,7 @@
 [2026-03-15] Radar com PARCEIROS — migration parceiros_coords (JSONB), pins âmbar no mapa pra parceiros MV com coords. Todos veem pins, só membros veem benefício. types/supabase.ts regenerado → afeta radar, banco, types
 [2026-03-16] Minha Experiência COMPLETA — "Carteira"→"Minha Experiência", seção "Seus benefícios" pra membros MV no topo, subtítulo "Ingressos, presenças e benefícios" → afeta wallet/perfil
 [2026-03-16] Auditoria de COPY — 8x "deals"→"benefícios" (AceitarConviteMV, ParceiroDashboard), "Grátis"→"Entrada livre" (EventLanding), 3x "estabelecimentos parceiros"→"lugares parceiros" (ClubeOptIn) → afeta convite, parceiro, landing, clube
+[2026-03-16] Login REDESIGN — gradiente leve (foto aparece), card glass nos campos, slogan "a noite é sua", botão X com safe-area+44px, "Criar Conta" (era "Não tenho conta — Cadastrar") → afeta login
 
 ---
 

@@ -34,7 +34,7 @@ export const EventFooter: React.FC<EventFooterProps> = ({
               ? 'Sob Consulta'
               : minPrice > 0
                 ? `R$ ${minPrice.toFixed(2).replace('.', ',')}`
-                : 'Gratuito'}
+                : 'Entrada VIP'}
           </p>
           {isLotando && !hasTicket && (
             <p className="text-[0.5rem] font-bold uppercase tracking-widest text-red-400 mt-0.5">Últimas vagas</p>

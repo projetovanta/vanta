@@ -390,9 +390,9 @@ export const BeneficiosMVTab: React.FC<Props> = ({ userId, filteredEvents, onEve
         <div className="bg-[#FFD300]/5 border border-[#FFD300]/20 rounded-2xl p-4 space-y-3">
           <div className="flex items-center gap-2">
             <AlertTriangle size="0.75rem" className="text-[#FFD300]" />
-            <span className="text-[#FFD300] text-[0.625rem] font-black uppercase tracking-wider">Deal Ativo</span>
+            <span className="text-[#FFD300] text-[0.625rem] font-black uppercase tracking-wider">Benefício Ativo</span>
           </div>
-          <p className="text-white text-sm font-bold truncate">{meuResgate.dealTitulo ?? 'Deal'}</p>
+          <p className="text-white text-sm font-bold truncate">{meuResgate.dealTitulo ?? 'Benefício'}</p>
           <p className="text-zinc-400 text-[0.625rem]">{meuResgate.parceiroNome}</p>
 
           {(() => {

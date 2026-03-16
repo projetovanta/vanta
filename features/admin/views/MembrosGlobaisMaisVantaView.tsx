@@ -119,7 +119,8 @@ export const MembrosGlobaisMaisVantaView: React.FC<{
       banidos: membros.filter(m => m.banidoPermanente).length,
       divida: membros.filter(m => temDividaSocial(m.userId)).length,
     }),
-    [membros],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [membros, usersComDivida],
   );
 
   const handleRefresh = async () => {

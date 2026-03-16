@@ -36,6 +36,7 @@ export const CuponsComunidadeTab: React.FC<{
 
   useEffect(() => {
     void loadCupons();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [comunidadeId]);
 
   const handleCriar = async () => {

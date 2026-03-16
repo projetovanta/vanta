@@ -80,6 +80,7 @@ export const EventosGlobaisMaisVantaView: React.FC<{
     return () => {
       cancelled = true;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedEventId]);
 
   const totais = useMemo(() => {

@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { AlertCircle, Mail, Building2, CheckCircle2 } from 'lucide-react';
+import { AlertCircle, Mail, Building2, CheckCircle2, CreditCard, Smartphone, Link2 } from 'lucide-react';
 import { AdminViewHeader } from '../components/AdminViewHeader';
 
 interface PendenciaItem {
@@ -34,6 +34,33 @@ const PENDENCIAS: PendenciaItem[] = [
     status: 'PENDENTE',
     oQueFalta:
       'Registrar CNPJ, configurar conta Stripe Connect, obter DUNS pra Apple Developer. Após CNPJ: configurar secrets Stripe no Supabase.',
+  },
+  {
+    id: 'stripe-secrets',
+    titulo: 'Secrets do Stripe',
+    descricao: 'Chaves pra cobrar pagamentos de verdade',
+    icon: <CreditCard size="1.25rem" className="text-amber-400" />,
+    status: 'PENDENTE',
+    oQueFalta:
+      'Depende do CNPJ. Após ter conta Stripe: configurar STRIPE_SECRET_KEY e STRIPE_WEBHOOK_SECRET no Supabase Dashboard. Edge Functions de checkout e webhook já existem.',
+  },
+  {
+    id: 'teste-celular',
+    titulo: 'Teste em celular real',
+    descricao: '41 views nunca testadas em dispositivo móvel',
+    icon: <Smartphone size="1.25rem" className="text-amber-400" />,
+    status: 'PENDENTE',
+    oQueFalta:
+      'Testar em iPhone e Android reais. Verificar: scroll, safe areas, câmera QR, push notifications, performance. Pode revelar bugs de layout não visíveis no browser.',
+  },
+  {
+    id: 'deep-links',
+    titulo: 'Deep links + Info.plist',
+    descricao: 'Links que abrem direto no app (ex: convites, ingressos)',
+    icon: <Link2 size="1.25rem" className="text-amber-400" />,
+    status: 'PENDENTE',
+    oQueFalta:
+      'Configurar universal links (iOS) e app links (Android). Atualizar Info.plist e AndroidManifest. Necessário pra submissão nas lojas.',
   },
 ];
 

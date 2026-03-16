@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { ArrowLeft, BarChart3, RefreshCw, Download, Trophy, TrendingUp, Building2 } from 'lucide-react';
+import { AdminViewHeader } from '../../components/AdminViewHeader';
 import type { EventoAdmin, ListaEvento, Comunidade } from '../../../../types';
 import { eventosAdminService } from '../../services/eventosAdminService';
 import { listasService } from '../../services/listasService';
@@ -171,42 +172,16 @@ export const RelatorioMasterView: React.FC<Props> = ({ onBack }) => {
   };
 
   return (
-    <div className="absolute inset-0 flex flex-col bg-[#0A0A0A]">
-      {/* Header */}
-      <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-5 pt-8 pb-4 shrink-0">
-        <div className="flex items-start gap-3">
-          <button
-            aria-label="Voltar"
-            onClick={onBack}
-            className="w-9 h-9 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0 mt-0.5"
-          >
-            <ArrowLeft size="1rem" className="text-zinc-400" />
-          </button>
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2">
-              <BarChart3 size="0.75rem" className="text-[#FFD300] shrink-0" />
-              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">Relatório Master</p>
-            </div>
-            <p className="text-white text-sm font-bold truncate mt-0.5">Visão Global — VANTA</p>
-          </div>
-          <div className="flex gap-2 shrink-0">
-            <button
-              onClick={handleExport}
-              className="flex items-center gap-1 px-2 py-1 bg-emerald-950/40 border border-emerald-500/20 text-emerald-400 rounded-lg text-[0.5rem] font-black uppercase active:scale-90 transition-all"
-            >
-              <Download size="0.5625rem" /> Excel
-            </button>
-            <button
-              aria-label="Atualizar"
-              onClick={refresh}
-              className="flex items-center gap-1 px-2 py-1 bg-zinc-900 border border-white/10 rounded-lg active:scale-90 transition-all"
-            >
-              <RefreshCw size="0.625rem" className="text-zinc-400" />
-              <p className="text-zinc-400 text-[0.5rem]">{tempoStr}</p>
-            </button>
-          </div>
-        </div>
-      </div>
+    <div className="flex-1 flex flex-col bg-[#0A0A0A]">
+      <AdminViewHeader
+        title="Visão Global — VANTA"
+        kicker="Relatório Master"
+        onBack={onBack}
+        actions={[
+          { icon: Download, label: 'Excel', onClick: handleExport },
+          { icon: RefreshCw, label: 'Atualizar', onClick: refresh },
+        ]}
+      />
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto no-scrollbar p-5 space-y-5 pb-10">

@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { ArrowLeft, Calendar, Users, Zap, RefreshCw } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
+import { AdminViewHeader } from '../components/AdminViewHeader';
 import { clubeService } from '../services/clubeService';
 import { eventosAdminService } from '../services/eventosAdminService';
 import { comunidadesService } from '../services/comunidadesService';
@@ -89,29 +90,14 @@ export const EventosGlobaisMaisVantaView: React.FC<{
   if (selectedEvento && selectedEventId) {
     return (
       <div className="flex-1 flex flex-col overflow-hidden">
-        <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-6 pt-8 pb-4 shrink-0">
-          <div className="flex justify-between items-start mb-4">
-            <div className="flex-1 min-w-0 mr-3">
-              <button
-                onClick={() => setSelectedEventId(null)}
-                className="text-[#FFD300] text-sm mb-1 flex items-center gap-1"
-              >
-                <ArrowLeft size="0.875rem" /> Voltar
-              </button>
-              <h1 style={TYPOGRAPHY.screenTitle} className="text-lg italic truncate">
-                {selectedEvento.nome}
-              </h1>
-            </div>
-            <button
-              aria-label="Atualizar"
-              onClick={handleRefresh}
-              disabled={loading}
-              className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all disabled:opacity-40"
-            >
-              <RefreshCw size="1rem" className={`text-zinc-400 ${loading ? 'animate-spin' : ''}`} />
-            </button>
-          </div>
+        <AdminViewHeader
+          title={selectedEvento.nome}
+          kicker="Evento MAIS VANTA"
+          onBack={() => setSelectedEventId(null)}
+          actions={[{ icon: RefreshCw, label: 'Atualizar', onClick: handleRefresh }]}
+        />
 
+        <div className="flex-1 overflow-y-auto no-scrollbar p-5 space-y-4">
           <div className="space-y-2 text-xs text-zinc-400">
             <p>
               <span className="text-zinc-400 font-bold">Data:</span> {fmtDate(selectedEvento.dataInicio)} •{' '}
@@ -187,36 +173,14 @@ export const EventosGlobaisMaisVantaView: React.FC<{
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden">
-      <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-6 pt-8 pb-4 shrink-0">
-        <div className="flex justify-between items-start mb-4">
-          <div className="flex-1 min-w-0 mr-3">
-            <p style={TYPOGRAPHY.sectionKicker} className="mb-1">
-              Visão Global
-            </p>
-            <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic">
-              Eventos MAIS VANTA
-            </h1>
-          </div>
-          <div className="flex gap-2 shrink-0">
-            <button
-              aria-label="Atualizar"
-              onClick={handleRefresh}
-              disabled={loading}
-              className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all disabled:opacity-40"
-            >
-              <RefreshCw size="1rem" className={`text-zinc-400 ${loading ? 'animate-spin' : ''}`} />
-            </button>
-            <button
-              aria-label="Voltar"
-              onClick={onBack}
-              className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
-            >
-              <ArrowLeft size="1.125rem" className="text-zinc-400" />
-            </button>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-2 mb-4">
+      <AdminViewHeader
+        title="Eventos MAIS VANTA"
+        kicker="Visão Global"
+        onBack={onBack}
+        actions={[{ icon: RefreshCw, label: 'Atualizar', onClick: handleRefresh }]}
+      />
+      <div className="px-5 pt-3 pb-2 shrink-0 border-b border-white/5">
+        <div className="grid grid-cols-2 gap-2 mb-3">
           <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center">
             <p className="text-emerald-400 font-black text-2xl leading-none">{totais.ativos}</p>
             <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest mt-1">Ativos</p>

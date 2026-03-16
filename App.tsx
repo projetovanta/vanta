@@ -65,6 +65,9 @@ const AdminV2Gateway = lazy(() =>
 const AdminV3Gateway = lazy(() =>
   import('./features/admin-v3/AdminV3Gateway').then(m => ({ default: m.AdminV3Gateway })),
 );
+const DashboardV2Gateway = lazy(() =>
+  import('./features/dashboard-v2/DashboardV2Gateway').then(m => ({ default: m.DashboardV2Gateway })),
+);
 const AceitarConviteMVPage = lazy(() =>
   import('./modules/convite/AceitarConviteMVPage').then(m => ({ default: m.AceitarConviteMVPage })),
 );
@@ -455,6 +458,7 @@ export default function App() {
             {/* ── Standalone pages (sem tab bar) ─────────────────────── */}
             <Route path="/admin-v2" element={<AdminV2Gateway />} />
             <Route path="/admin-v3" element={<AdminV3Gateway />} />
+            <Route path="/dashboard-v2" element={<DashboardV2Gateway />} />
             <Route path="/checkout/sucesso" element={<CheckoutSuccessPage />} />
             <Route path="/checkout/:slug" element={<CheckoutPage />} />
             <Route path="/evento/:slug" element={<EventLandingPage />} />

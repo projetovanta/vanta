@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { ArrowLeft, QrCode, Check, X, AlertTriangle, Scan, RefreshCw } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
+import { AdminViewHeader } from '../components/AdminViewHeader';
 import { eventosAdminService, TicketCaixa } from '../services/eventosAdminService';
 import { signTicketToken, verifyTicketToken } from '../services/jwtService';
 
@@ -189,38 +190,9 @@ export const PortariaScannerView: React.FC<Props> = ({ onBack, eventoId }) => {
   }, [evId, scanning]);
 
   return (
-    <div className="absolute inset-0 bg-[#050505] flex flex-col overflow-hidden">
-      {/* Overlay de feedback */}
+    <div className="flex-1 bg-[#050505] flex flex-col overflow-hidden">
       {feedback && <FeedbackOverlay data={feedback} onDismiss={dismissFeedback} />}
-
-      {/* Header */}
-      <div
-        className="bg-[#050505]/95 backdrop-blur-xl border-b border-white/5 px-6 pb-5 shrink-0"
-        style={{ paddingTop: '2rem' }}
-      >
-        <div className="flex items-center justify-between">
-          <div>
-            <p style={TYPOGRAPHY.sectionKicker} className="mb-1">
-              Portaria
-            </p>
-            <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic">
-              Scanner QR
-            </h1>
-          </div>
-          <button
-            aria-label="Voltar"
-            onClick={onBack}
-            className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
-          >
-            <ArrowLeft size="1.125rem" className="text-zinc-400" />
-          </button>
-        </div>
-        {eventoAtivo && (
-          <p className="text-zinc-700 text-[0.5625rem] font-black uppercase tracking-widest mt-2 truncate">
-            {eventoAtivo.nome}
-          </p>
-        )}
-      </div>
+      <AdminViewHeader title="Scanner QR" kicker="Portaria" subtitle={eventoAtivo?.nome} onBack={onBack} />
 
       {/* Área central */}
       <div className="flex-1 flex flex-col items-center justify-center gap-8 px-6">

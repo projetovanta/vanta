@@ -8,6 +8,7 @@ import { EventosTab } from './EventosTab';
 import { FinanceiroTab } from './FinanceiroTab';
 import { AudienciaTab } from './AudienciaTab';
 import { EquipeTab } from './EquipeTab';
+import { AdminViewHeader } from '../../components/AdminViewHeader';
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -96,22 +97,9 @@ export const ComunidadeDashboard: React.FC<Props> = ({ comunidadeId, comunidadeN
   // ── Render ───────────────────────────────────────────────────────────────
 
   return (
-    <div className="absolute inset-0 flex flex-col overflow-hidden bg-[#0A0A0A]">
-      {/* Header */}
-      <div className="shrink-0 px-4 pt-[env(safe-area-inset-top)] pb-2 space-y-3">
-        {/* Top row: back + title */}
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={onBack}
-            className="shrink-0 p-1.5 rounded-lg active:bg-white/5 transition-colors"
-          >
-            <ArrowLeft size={20} className="text-zinc-400" />
-          </button>
-          <h1 className="text-white font-black text-base truncate flex-1 min-w-0">{comunidadeNome}</h1>
-        </div>
-
-        {/* Breadcrumb */}
+    <div className="flex-1 flex flex-col overflow-hidden bg-[#0A0A0A]">
+      <AdminViewHeader title={comunidadeNome} kicker="Painel Comunidade" onBack={onBack} />
+      <div className="shrink-0 px-4 pb-2 space-y-3">
         <DrillBreadcrumb items={[{ label: 'Comunidades', onClick: onBack }, { label: comunidadeNome }]} />
 
         {/* Period selector */}

@@ -101,6 +101,27 @@
 - Antes de confirmar ao usuario: reler o arquivo e validar que o conteudo esta correto
 - Fluxo: fazer → stat → reler → validar → registrar no log → so entao confirmar ao usuario
 
+## REGRA CRITICA — Rafa Convoca Equipe (definida 2026-03-16)
+- Rafa (gerente-geral) NUNCA faz trabalho especializado sozinho
+- SEMPRE convocar os agentes certos antes de qualquer decisao tecnica/visual/arquitetural
+- Cada agente ASSINA sua contribuicao (ex: "— Luna, Frontend")
+- Fluxo: Rafa convoca → especialistas analisam e reportam → Rafa consolida → pergunta ao Dan → Dan decide
+- Dan e o UNICO decisor. Rafa coordena. Especialistas contribuem.
+- Mesmo pra AskUserQuestion: ouvir especialistas ANTES de formular perguntas
+
+## REGRA CRITICA — Ler Memorias Obrigatorio (definida 2026-03-16)
+- SEMPRE ler TODAS as memorias de feedback (feedback_*.md) no inicio de cada sessao
+- Antes de qualquer acao relevante: verificar se existe feedback aplicavel
+- Se nao leu memorias → NAO agir. Ler primeiro. Sem excecao.
+
+## REGRA CRITICA — Supabase: Migration Antes de Codigo (definida 2026-03-16)
+- NUNCA escrever service/componente que referencia tabela nova sem ANTES ter aplicado a migration
+- Ordem OBRIGATORIA: 1. Criar migration → 2. Aplicar no Supabase (MCP apply_migration) → 3. Gerar tipos (MCP generate_typescript_types) → 4. Salvar types/supabase.ts → 5. Codar service
+- NUNCA usar `as any` pra contornar tipo inexistente — se TypeScript reclama, a migration nao foi aplicada
+- SEMPRE consultar schema real (MCP list_tables ou execute_sql) antes de codar queries novas
+- Plano envolve tabela/coluna nova? → migration PRIMEIRO, antes de qualquer linha de codigo
+- Edge Functions novas → deploy IMEDIATO (nao "depois")
+
 ## Scripts Obrigatorios
 - Antes de codificar: explore, deps, props, store-map
 - Durante: diff-check

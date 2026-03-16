@@ -93,6 +93,13 @@
 [2026-03-16] MODELO FINANCEIRO DEFINIDO — Ver memory/projeto_modelo_financeiro.md → afeta TUDO do financeiro
 [2026-03-16] CHECKOUT STRIPE INTEGRADO — processarCompra chama Edge Function create-ticket-checkout (já existia!) em vez de RPC direta. Fluxo gratuito mantém RPC. Webhook processa pagamento → cria tickets → notifica. Falta: secrets Stripe no Supabase → afeta checkout
 [2026-03-16] MODELO FINANCEIRO DEFINIDO — Taxa variável por negócio (master define), D+15 após evento, master autoriza repasse, Stripe Connect, reembolso produtor absorve, porta só registra sem cobrar. Ver memory/projeto_modelo_financeiro.md → afeta TUDO do financeiro
+[2026-03-16] DASHBOARD V2 criado em /dashboard-v2 — NÃO substitui admin atual. Panorama "caixa de entrada" + 6 homes por role + sidebar + todas subviews → afeta TODOS que usam painel admin
+[2026-03-16] AdminViewHeader.tsx CRIADO — componente padronizado de header pra TODAS as views admin (voltar ← esquerda, título, ações direita). 44 views migradas → afeta TODAS as views do painel
+[2026-03-16] Panorama "Caixa de Entrada" — tela inicial do V2 mostra tudo do usuário (pendências + negócios + operação). Toque num card → entra no contexto → afeta navegação do painel
+[2026-03-16] VendasTimelineChart.tsx — gráfico de vendas ao longo do tempo (linha dourada). getVendasTimeline() no dashboardAnalyticsService → afeta dashboard
+[2026-03-16] 6 homes por role: MasterHome, GerenteHome, SocioHome, PromoterHome, PortariaHome, CaixaHome → afeta dashboard V2
+[2026-03-16] 7 hooks de compliance criados (enforce-rules-compliance, enforce-memo-first, enforce-memo-ata, enforce-rafa-obligations, enforce-rafa-workflow, enforce-gate-duplo, track-diffcheck) → afeta fluxo de trabalho de TODOS os agentes
+[2026-03-16] Memo adicionado ao CLAUDE.md como agente obrigatório. Atas em BRT (America/Sao_Paulo) → afeta TODOS
 
 ---
 
@@ -101,7 +108,12 @@
 <!-- Dan às vezes cria regras novas durante o trabalho. Registrar aqui pra ninguém esquecer -->
 <!-- Formato: [DATA] REGRA — contexto -->
 
-_Nenhuma regra nova ainda._
+[2026-03-16] REGRA: Rafa NUNCA age sozinho — SEMPRE convoca especialistas antes de decisões. Hook enforce-rules-compliance bloqueia se não consultou equipe
+[2026-03-16] REGRA: Ler TODAS as memórias de feedback ANTES de qualquer ação — sem exceção. Hook bloqueia se não leu
+[2026-03-16] REGRA: Memo OBRIGATÓRIO em toda sessão — hook enforce-memo-first bloqueia sem Memo ativo
+[2026-03-16] REGRA: Gate Duplo (Lia + Memo) obrigatório antes de commit — hook enforce-gate-duplo bloqueia
+[2026-03-16] REGRA: Migration ANTES de código — NUNCA usar `as any` pra contornar tipos. Hook bloqueia
+[2026-03-16] REGRA: Zero erros tolerados — diff-check DEVE passar. Hook bloqueia edição se último diff-check falhou
 
 ---
 
@@ -119,7 +131,10 @@ _Nenhum problema registrado ainda._
 <!-- O que Dan quer que seja feito. Ordenado por prioridade -->
 <!-- Formato: PRIORIDADE — quem cuida — status (pendente/em andamento/feito) -->
 
-_Nenhuma prioridade definida ainda._
+1. Commitar 65 arquivos pendentes — Rafa (Dan precisa autorizar)
+2. Auditar TODOS os fluxos tela a tela do painel admin (criar evento, comunidade, parceiro, cupom, MV, etc.) — Rafa + Luna + equipe
+3. Configurar secrets Stripe no Supabase — quando Dan tiver conta
+4. Onboarding do produtor (tour guiado)
 
 ---
 

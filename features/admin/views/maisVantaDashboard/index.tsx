@@ -8,6 +8,7 @@ import { TiersTab } from './TiersTab';
 import { ResgatesTab } from './ResgatesTab';
 import { RetencaoTab } from './RetencaoTab';
 import { ParceirosTab } from './ParceirosTab';
+import { AdminViewHeader } from '../../components/AdminViewHeader';
 import { FinanceiroTab } from './FinanceiroTab';
 
 // ── Types ────────────────────────────────────────────────────────────────────
@@ -97,25 +98,9 @@ export const MaisVantaDashboard: React.FC<Props> = ({ onBack }) => {
   // ── Layout ─────────────────────────────────────────────────────────────
 
   return (
-    <div className="absolute inset-0 flex flex-col overflow-hidden bg-[#0A0A0A]">
-      {/* Header */}
-      <div className="shrink-0 px-4 pt-[env(safe-area-inset-top)] pb-2 space-y-3">
-        {/* Top row: back + title */}
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={onBack}
-            className="shrink-0 p-1.5 rounded-lg active:bg-white/5 transition-colors"
-          >
-            <ArrowLeft size={20} className="text-zinc-400" />
-          </button>
-          <div className="flex items-center gap-2 flex-1 min-w-0">
-            <Sparkles size={18} className="text-[#FFD300] shrink-0" />
-            <h1 className="text-white font-black text-base truncate">MAIS VANTA</h1>
-          </div>
-        </div>
-
-        {/* Period selector */}
+    <div className="flex-1 flex flex-col overflow-hidden bg-[#0A0A0A]">
+      <AdminViewHeader title="MAIS VANTA" kicker="Painel" onBack={onBack} />
+      <div className="shrink-0 px-4 pb-2 space-y-3">
         <PeriodSelector value={periodo} onChange={setPeriodo} />
 
         {/* Tab bar */}

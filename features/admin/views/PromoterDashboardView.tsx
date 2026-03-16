@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { ArrowLeft, Users, ChevronRight, ChevronDown, List, TrendingUp, UserCheck, Ticket } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
+import { AdminViewHeader } from '../components/AdminViewHeader';
 import { listasService } from '../services/listasService';
 import type { ListaEvento } from '../../../types';
 
@@ -66,29 +67,13 @@ export const PromoterDashboardView: React.FC<{
     eventoSelecionado && kpis.mediaUsado > 0 ? (eventoSelecionado.usado >= kpis.mediaUsado ? 'acima' : 'abaixo') : null;
 
   return (
-    <div className="absolute inset-0 bg-[#0A0A0A] flex flex-col overflow-hidden">
-      <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-6 pt-8 pb-5 shrink-0">
-        <div className="flex justify-between items-start">
-          <div>
-            <p style={TYPOGRAPHY.sectionKicker} className="mb-1.5">
-              Promoter
-            </p>
-            <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic">
-              Meu Painel
-            </h1>
-            <p className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-wider mt-1">
-              {listas.length} evento{listas.length !== 1 ? 's' : ''}
-            </p>
-          </div>
-          <button
-            aria-label="Voltar"
-            onClick={onBack}
-            className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all mt-1"
-          >
-            <ArrowLeft size="1.125rem" className="text-zinc-400" />
-          </button>
-        </div>
-      </div>
+    <div className="flex-1 bg-[#0A0A0A] flex flex-col overflow-hidden">
+      <AdminViewHeader
+        title="Meu Painel"
+        kicker="Promoter"
+        subtitle={`${listas.length} evento${listas.length !== 1 ? 's' : ''}`}
+        onBack={onBack}
+      />
 
       {metricas.length > 1 && (
         <div className="shrink-0 px-6 py-3 relative">

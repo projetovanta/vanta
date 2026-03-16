@@ -4,6 +4,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { ArrowLeft, Check, X, Clock, AlertCircle, Banknote, Shield, ListChecks, Star } from 'lucide-react';
 import { condicoesService } from '../services/condicoesService';
+import { AdminViewHeader } from '../components/AdminViewHeader';
 import type { CondicaoComercial } from '../../../types/eventos';
 import { useAuthStore } from '../../../stores/authStore';
 
@@ -92,25 +93,8 @@ export const CondicoesProducerView: React.FC<Props> = ({ onBack, comunidadeId, c
   );
 
   return (
-    <div className="absolute inset-0 bg-[#0A0A0A] flex flex-col overflow-hidden">
-      {/* Header */}
-      <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-6 pt-8 pb-4 shrink-0">
-        <div className="flex justify-between items-start">
-          <div className="flex-1 min-w-0 mr-3">
-            <p className="text-[0.5625rem] font-black uppercase tracking-[.25em] text-[#FFD300]/60 mb-1">
-              Condições Comerciais
-            </p>
-            <h1 className="text-xl font-bold italic text-white truncate">{comunidadeNome || 'Comunidade'}</h1>
-          </div>
-          <button
-            aria-label="Voltar"
-            onClick={onBack}
-            className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
-          >
-            <ArrowLeft size="1.125rem" className="text-zinc-400" />
-          </button>
-        </div>
-      </div>
+    <div className="flex-1 bg-[#0A0A0A] flex flex-col overflow-hidden">
+      <AdminViewHeader title={comunidadeNome || 'Comunidade'} kicker="Condições Comerciais" onBack={onBack} />
 
       <div className="flex-1 overflow-y-auto no-scrollbar p-6 space-y-5">
         {loading ? (

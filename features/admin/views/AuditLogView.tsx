@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { ArrowLeft, Shield, ChevronDown, ChevronUp } from 'lucide-react';
+import { AdminViewHeader } from '../components/AdminViewHeader';
 import { TYPOGRAPHY } from '../../../constants';
 import { auditService, AuditLog, AuditAction, formatAuditLog } from '../services/auditService';
 
@@ -178,35 +179,15 @@ export const AuditLogView: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   void formatAuditLog;
 
   return (
-    <div className="absolute inset-0 bg-[#0A0A0A] flex flex-col overflow-hidden">
-      {/* Header */}
-      <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-6 pt-8 pb-4 shrink-0">
-        <div className="flex justify-between items-start mb-4">
-          <div>
-            <p style={TYPOGRAPHY.sectionKicker} className="mb-1.5">
-              Portal Admin
-            </p>
-            <div className="flex items-center gap-3">
-              <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic">
-                Atividades
-              </h1>
-              <Shield size="1rem" className="text-[#34d399]" />
-              {filtered.length > 0 && (
-                <span className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest">
-                  {filtered.length} registro{filtered.length !== 1 ? 's' : ''}
-                </span>
-              )}
-            </div>
-          </div>
-          <button
-            aria-label="Voltar"
-            onClick={onBack}
-            className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all mt-1"
-          >
-            <ArrowLeft size="1.125rem" className="text-zinc-400" />
-          </button>
-        </div>
-
+    <div className="flex-1 bg-[#0A0A0A] flex flex-col overflow-hidden">
+      <AdminViewHeader
+        title="Atividades"
+        kicker="Portal Admin"
+        onBack={onBack}
+        badge={filtered.length > 0 ? filtered.length : undefined}
+        badgeColor="#34d399"
+      />
+      <div className="px-5 py-2 shrink-0">
         {/* Filtros */}
         <div className="flex flex-wrap gap-2 pb-1">
           {FILTROS.map(f => {

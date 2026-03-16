@@ -16,6 +16,7 @@ import {
 import { getPendencias, type PendenciaItem, type PendenciaTipo } from '../services/pendenciasService';
 import type { ContaVantaLegacy } from '../../../types';
 import type { AdminSubView } from '../components/AdminSidebar';
+import { AdminViewHeader } from '../components/AdminViewHeader';
 
 const TIPO_CONFIG: Record<PendenciaTipo, { icon: React.ElementType; color: string }> = {
   CURADORIA: { icon: Star, color: '#a78bfa' },
@@ -57,19 +58,13 @@ export const PendenciasHubView: React.FC<Props> = ({ userId, role, comunidadeIds
   }, [userId, role, comunidadeIds, eventoIds]);
 
   return (
-    <div className="absolute inset-0 flex flex-col overflow-hidden bg-[#0A0A0A]">
-      {/* Header */}
-      <div className="flex items-center gap-3 px-4 py-3 border-b border-zinc-800 shrink-0">
-        <button aria-label="Voltar" onClick={onBack} className="text-zinc-400 hover:text-white">
-          <ArrowLeft size="1.25rem" />
-        </button>
-        <h1 className="text-white font-semibold text-base truncate">Pendências</h1>
-        {!loading && (
-          <span className="ml-auto bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">
-            {items.length}
-          </span>
-        )}
-      </div>
+    <div className="flex-1 flex flex-col overflow-hidden bg-[#0A0A0A]">
+      <AdminViewHeader
+        title="Pendências"
+        onBack={onBack}
+        badge={loading ? undefined : items.length}
+        badgeColor="#ef4444"
+      />
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto no-scrollbar p-4 space-y-3">

@@ -17,6 +17,7 @@ import {
   MessageSquare,
 } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
+import { AdminViewHeader } from '../components/AdminViewHeader';
 import { EventoAdmin } from '../../../types';
 import { eventosAdminService } from '../services/eventosAdminService';
 import { useToast, ToastContainer } from '../../../components/Toast';
@@ -963,35 +964,15 @@ export const EventosPendentesView: React.FC<{
   }
 
   return (
-    <div className="absolute inset-0 bg-[#0A0A0A] flex flex-col overflow-hidden">
+    <div className="flex-1 bg-[#0A0A0A] flex flex-col overflow-hidden">
       <ToastContainer toasts={toasts} onDismiss={dismiss} />
-      {/* Header */}
-      <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-6 pt-8 pb-5 shrink-0">
-        <div className="flex justify-between items-start">
-          <div>
-            <p style={TYPOGRAPHY.sectionKicker} className="mb-1.5">
-              Portal Admin
-            </p>
-            <div className="flex items-center gap-3">
-              <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic">
-                Pendentes
-              </h1>
-              {pendentes.length > 0 && (
-                <span className="bg-amber-500 text-black text-[0.5625rem] font-black px-2.5 py-1 rounded-full">
-                  {pendentes.length}
-                </span>
-              )}
-            </div>
-          </div>
-          <button
-            aria-label="Voltar"
-            onClick={onBack}
-            className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all mt-1"
-          >
-            <ArrowLeft size="1.125rem" className="text-zinc-400" />
-          </button>
-        </div>
-      </div>
+      <AdminViewHeader
+        title="Pendentes"
+        kicker="Portal Admin"
+        onBack={onBack}
+        badge={pendentes.length > 0 ? pendentes.length : undefined}
+        badgeColor="#f59e0b"
+      />
 
       {/* Lista */}
       <div className="flex-1 overflow-y-auto no-scrollbar p-5 space-y-3">

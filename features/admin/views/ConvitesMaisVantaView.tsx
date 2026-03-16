@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { ArrowLeft, Send, Copy, Check, X, Loader2, Clock, UserCheck, Store, Crown, Trash2 } from 'lucide-react';
+import { ArrowLeft, Send, Copy, Check, X, Loader2, Clock, UserCheck, Store, Crown, Trash2, Plus } from 'lucide-react';
+import { AdminViewHeader } from '../components/AdminViewHeader';
 import { useAuthStore } from '../../../stores/authStore';
 import { clubeService } from '../services/clube';
 import type { ConviteMaisVanta } from '../services/clube/clubeConvitesService';
@@ -124,25 +125,13 @@ export const ConvitesMaisVantaView: React.FC<{
   const isExpirado = (c: ConviteMaisVanta) => c.status === 'PENDENTE' && new Date(c.expira_em) < new Date();
 
   return (
-    <div className="absolute inset-0 flex flex-col overflow-hidden bg-[#0A0A0A]">
-      {/* Header */}
-      <div className="shrink-0 flex items-center gap-3 px-4 py-3 border-b border-white/5">
-        <button
-          onClick={onBack}
-          className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center -ml-2 text-zinc-400 active:text-white"
-          aria-label="Voltar"
-        >
-          <ArrowLeft size="1rem" />
-        </button>
-        <Send size="0.875rem" className="text-[#FFD300]" />
-        <h1 className="text-white font-bold text-sm">Convites MAIS VANTA</h1>
-        <button
-          onClick={() => setShowForm(true)}
-          className="ml-auto px-3 py-1.5 bg-[#FFD300] text-black font-black text-[0.5625rem] uppercase tracking-widest rounded-xl active:scale-95 transition-all"
-        >
-          Novo Convite
-        </button>
-      </div>
+    <div className="flex-1 flex flex-col overflow-hidden bg-[#0A0A0A]">
+      <AdminViewHeader
+        title="Convites MAIS VANTA"
+        kicker="MAIS VANTA"
+        onBack={onBack}
+        actions={[{ icon: Plus, label: 'Novo Convite', onClick: () => setShowForm(true) }]}
+      />
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto no-scrollbar p-4 space-y-3">

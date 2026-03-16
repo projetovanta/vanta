@@ -5,6 +5,7 @@ import { eventosAdminService } from '../../services/eventosAdminService';
 import { listasService } from '../../services/listasService';
 import { fmtBRL } from '../../../../utils';
 import { exportRelatorioComExcel } from './exportRelatorioComunidade';
+import { AdminViewHeader } from '../../components/AdminViewHeader';
 
 interface Props {
   comunidadeId: string;
@@ -106,42 +107,20 @@ export const RelatorioComunidadeView: React.FC<Props> = ({ comunidadeId, comunid
   const maxEvConvidados = Math.max(...stats.eventosOrdenados.map(e => e.convidados + e.vendidos), 1);
 
   return (
-    <div className="absolute inset-0 flex flex-col bg-[#0A0A0A]">
-      {/* Header */}
-      <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-5 pt-8 pb-4 shrink-0">
-        <div className="flex items-start gap-3">
-          <button
-            aria-label="Voltar"
-            onClick={onBack}
-            className="w-9 h-9 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0 mt-0.5"
-          >
-            <ArrowLeft size="1rem" className="text-zinc-400" />
-          </button>
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2">
-              <BarChart3 size="0.75rem" className="text-[#FFD300] shrink-0" />
-              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">Relatório Comunidade</p>
-            </div>
-            <p className="text-white text-sm font-bold truncate mt-0.5">{comunidadeNome}</p>
-          </div>
-          <div className="flex gap-2 shrink-0">
-            <button
-              onClick={() => exportRelatorioComExcel(comunidadeNome, eventos, listasMap)}
-              className="flex items-center gap-1 px-2 py-1 bg-emerald-950/40 border border-emerald-500/20 text-emerald-400 rounded-lg text-[0.5rem] font-black uppercase active:scale-90 transition-all"
-            >
-              <Download size="0.5625rem" /> Excel
-            </button>
-            <button
-              aria-label="Atualizar"
-              onClick={refresh}
-              className="flex items-center gap-1 px-2 py-1 bg-zinc-900 border border-white/10 rounded-lg active:scale-90 transition-all"
-            >
-              <RefreshCw size="0.625rem" className="text-zinc-400" />
-              <p className="text-zinc-400 text-[0.5rem]">{tempoStr}</p>
-            </button>
-          </div>
-        </div>
-      </div>
+    <div className="flex-1 flex flex-col bg-[#0A0A0A]">
+      <AdminViewHeader
+        title={comunidadeNome}
+        kicker="Relatório Comunidade"
+        onBack={onBack}
+        actions={[
+          {
+            icon: Download,
+            label: 'Excel',
+            onClick: () => exportRelatorioComExcel(comunidadeNome, eventos, listasMap),
+          },
+          { icon: RefreshCw, label: 'Atualizar', onClick: refresh },
+        ]}
+      />
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto no-scrollbar p-5 space-y-5 pb-10">

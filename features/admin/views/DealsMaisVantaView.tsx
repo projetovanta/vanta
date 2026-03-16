@@ -5,6 +5,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Ticket, Plus, MapPin, Users, Eye, ArrowRight, Clock, CheckCircle2, XCircle } from 'lucide-react';
 import { clubeDealsService } from '../services/clube/clubeDealsService';
+import { AdminViewHeader } from '../components/AdminViewHeader';
 import { clubeResgatesService } from '../services/clube/clubeResgatesService';
 import { clubeParceirosService } from '../services/clube/clubeParceirosService';
 import { clubeCidadesService } from '../services/clube/clubeCidadesService';
@@ -13,7 +14,7 @@ import type { DealMaisVanta, ResgateMaisVanta, ParceiroMaisVanta, CidadeMaisVant
 
 type Tab = 'DEALS' | 'RESGATES';
 
-export const DealsMaisVantaView: React.FC = () => {
+export const DealsMaisVantaView: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
   const [tab, setTab] = useState<Tab>('DEALS');
   const [deals, setDeals] = useState<DealMaisVanta[]>([]);
   const [parceiros, setParceiros] = useState<ParceiroMaisVanta[]>([]);
@@ -265,191 +266,196 @@ export const DealsMaisVantaView: React.FC = () => {
   }
 
   return (
-    <div className="flex-1 overflow-y-auto no-scrollbar p-4 space-y-4">
-      {/* Tabs */}
-      <div className="flex items-center gap-2">
-        {(['DEALS', 'RESGATES'] as Tab[]).map(t => (
-          <button
-            key={t}
-            onClick={() => setTab(t)}
-            className={`px-3 py-1.5 rounded-lg text-[0.5625rem] font-black uppercase tracking-wider border transition-all ${
-              tab === t ? 'bg-[#FFD300] text-black border-transparent' : 'bg-zinc-900/60 text-zinc-400 border-white/5'
-            }`}
-          >
-            {t}
-          </button>
-        ))}
-        <div className="flex-1" />
-        {tab === 'DEALS' && (
-          <button
-            onClick={() => {
-              resetForm();
-              setShowForm(true);
-            }}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-[#FFD300] text-black rounded-lg text-[0.625rem] font-black uppercase tracking-wider active:scale-95 transition-all"
-          >
-            <Plus size="0.75rem" /> Novo Deal
-          </button>
-        )}
-      </div>
+    <div className="flex-1 flex flex-col overflow-hidden">
+      {onBack && <AdminViewHeader title="Benefícios" kicker="MAIS VANTA" onBack={onBack} />}
+      <div className="flex-1 overflow-y-auto no-scrollbar p-4 space-y-4">
+        {/* Tabs */}
+        <div className="flex items-center gap-2">
+          {(['DEALS', 'RESGATES'] as Tab[]).map(t => (
+            <button
+              key={t}
+              onClick={() => setTab(t)}
+              className={`px-3 py-1.5 rounded-lg text-[0.5625rem] font-black uppercase tracking-wider border transition-all ${
+                tab === t ? 'bg-[#FFD300] text-black border-transparent' : 'bg-zinc-900/60 text-zinc-400 border-white/5'
+              }`}
+            >
+              {t}
+            </button>
+          ))}
+          <div className="flex-1" />
+          {tab === 'DEALS' && (
+            <button
+              onClick={() => {
+                resetForm();
+                setShowForm(true);
+              }}
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-[#FFD300] text-black rounded-lg text-[0.625rem] font-black uppercase tracking-wider active:scale-95 transition-all"
+            >
+              <Plus size="0.75rem" /> Novo Deal
+            </button>
+          )}
+        </div>
 
-      {/* Form criar deal */}
-      {showForm && (
-        <div className="bg-zinc-900/80 border border-white/10 rounded-xl p-4 space-y-3">
-          <p className="text-white text-xs font-bold">Novo Deal</p>
+        {/* Form criar deal */}
+        {showForm && (
+          <div className="bg-zinc-900/80 border border-white/10 rounded-xl p-4 space-y-3">
+            <p className="text-white text-xs font-bold">Novo Deal</p>
 
-          <input
-            value={titulo}
-            onChange={e => setTitulo(e.target.value)}
-            placeholder="Título (ex: VIP + Open Bar)"
-            className="w-full bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/50"
-          />
+            <input
+              value={titulo}
+              onChange={e => setTitulo(e.target.value)}
+              placeholder="Título (ex: VIP + Open Bar)"
+              className="w-full bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/50"
+            />
 
-          <textarea
-            value={descricao}
-            onChange={e => setDescricao(e.target.value)}
-            placeholder="Descrição do deal"
-            className="w-full bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/50 min-h-[3.75rem] resize-none"
-          />
+            <textarea
+              value={descricao}
+              onChange={e => setDescricao(e.target.value)}
+              placeholder="Descrição do deal"
+              className="w-full bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/50 min-h-[3.75rem] resize-none"
+            />
 
-          {/* Parceiro */}
-          <div>
-            <p className="text-zinc-400 text-[0.625rem] font-bold uppercase tracking-wider mb-1">Parceiro</p>
-            <div className="flex flex-wrap gap-1.5">
-              {parceiros.map(p => (
+            {/* Parceiro */}
+            <div>
+              <p className="text-zinc-400 text-[0.625rem] font-bold uppercase tracking-wider mb-1">Parceiro</p>
+              <div className="flex flex-wrap gap-1.5">
+                {parceiros.map(p => (
+                  <button
+                    key={p.id}
+                    onClick={() => {
+                      setParceiroId(p.id);
+                      setCidadeId(p.cidadeId);
+                    }}
+                    className={`px-2.5 py-1 rounded-lg text-[0.5625rem] font-bold border transition-all ${
+                      parceiroId === p.id
+                        ? 'bg-[#FFD300] text-black border-transparent'
+                        : 'bg-zinc-800 text-zinc-400 border-white/5'
+                    }`}
+                  >
+                    {p.nome}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Tipo */}
+            <div className="flex gap-2">
+              {(['BARTER', 'DESCONTO'] as TipoDeal[]).map(t => (
                 <button
-                  key={p.id}
-                  onClick={() => {
-                    setParceiroId(p.id);
-                    setCidadeId(p.cidadeId);
-                  }}
-                  className={`px-2.5 py-1 rounded-lg text-[0.5625rem] font-bold border transition-all ${
-                    parceiroId === p.id
+                  key={t}
+                  onClick={() => setTipo(t)}
+                  className={`flex-1 py-2 rounded-lg text-[0.625rem] font-black uppercase tracking-wider border transition-all ${
+                    tipo === t
                       ? 'bg-[#FFD300] text-black border-transparent'
                       : 'bg-zinc-800 text-zinc-400 border-white/5'
                   }`}
                 >
-                  {p.nome}
+                  {t}
                 </button>
               ))}
             </div>
-          </div>
 
-          {/* Tipo */}
-          <div className="flex gap-2">
-            {(['BARTER', 'DESCONTO'] as TipoDeal[]).map(t => (
+            {tipo === 'BARTER' && (
+              <input
+                value={obrigacao}
+                onChange={e => setObrigacao(e.target.value)}
+                placeholder="Obrigação (ex: 1 story + 1 post)"
+                className="w-full bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/50"
+              />
+            )}
+            {tipo === 'DESCONTO' && (
+              <input
+                value={descontoPerc}
+                onChange={e => setDescontoPerc(e.target.value)}
+                placeholder="Desconto % (ex: 30)"
+                type="number"
+                min="1"
+                max="100"
+                className="w-full bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/50"
+              />
+            )}
+
+            <input
+              value={vagas}
+              onChange={e => setVagas(e.target.value)}
+              placeholder="Vagas"
+              type="number"
+              min="1"
+              className="w-full bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/50"
+            />
+
+            <div className="flex gap-2">
               <button
-                key={t}
-                onClick={() => setTipo(t)}
-                className={`flex-1 py-2 rounded-lg text-[0.625rem] font-black uppercase tracking-wider border transition-all ${
-                  tipo === t ? 'bg-[#FFD300] text-black border-transparent' : 'bg-zinc-800 text-zinc-400 border-white/5'
-                }`}
+                onClick={handleCriar}
+                className="flex-1 py-2 bg-[#FFD300] text-black rounded-lg text-[0.625rem] font-black uppercase tracking-wider active:scale-95 transition-all"
               >
-                {t}
+                Criar Deal
+              </button>
+              <button
+                onClick={() => {
+                  setShowForm(false);
+                  resetForm();
+                }}
+                className="px-4 py-2 bg-zinc-800 text-zinc-400 rounded-lg text-[0.625rem] font-black uppercase tracking-wider active:scale-95 transition-all"
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Lista deals */}
+        {loading ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="w-5 h-5 border-2 border-[#FFD300] border-t-transparent rounded-full animate-spin" />
+          </div>
+        ) : deals.length === 0 ? (
+          <div className="text-center py-12">
+            <Ticket size="2rem" className="text-zinc-700 mx-auto mb-2" />
+            <p className="text-zinc-400 text-xs">Nenhum deal cadastrado</p>
+          </div>
+        ) : (
+          <div className="space-y-2">
+            {deals.map(d => (
+              <button
+                key={d.id}
+                onClick={() => loadResgates(d.id)}
+                className="w-full text-left bg-zinc-900/60 border border-white/5 rounded-xl p-3 active:scale-[0.98] transition-all"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-zinc-800 rounded-xl flex items-center justify-center shrink-0 border border-white/5">
+                    <Ticket size="1.125rem" className="text-[#FFD300]" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-white text-sm font-semibold truncate">{d.titulo}</p>
+                    <div className="flex items-center gap-2 text-[0.625rem] text-zinc-400 mt-0.5">
+                      <span>{d.parceiroNome}</span>
+                      <span className="flex items-center gap-0.5">
+                        <MapPin size="0.5625rem" />
+                        {d.cidadeNome}
+                      </span>
+                      <span className={d.tipo === 'BARTER' ? 'text-purple-400' : 'text-green-400'}>{d.tipo}</span>
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-end gap-1 shrink-0">
+                    {statusBadge(d.status)}
+                    <div className="flex items-center gap-1 text-[0.625rem] text-zinc-400">
+                      <Users size="0.625rem" />
+                      {d.vagasPreenchidas}/{d.vagas}
+                    </div>
+                  </div>
+                </div>
+                {d.obrigacaoBarter && (
+                  <p className="text-zinc-400 text-[0.625rem] mt-1.5 truncate">
+                    <Clock size="0.5625rem" className="inline mr-1" />
+                    {d.obrigacaoBarter}
+                  </p>
+                )}
               </button>
             ))}
           </div>
-
-          {tipo === 'BARTER' && (
-            <input
-              value={obrigacao}
-              onChange={e => setObrigacao(e.target.value)}
-              placeholder="Obrigação (ex: 1 story + 1 post)"
-              className="w-full bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/50"
-            />
-          )}
-          {tipo === 'DESCONTO' && (
-            <input
-              value={descontoPerc}
-              onChange={e => setDescontoPerc(e.target.value)}
-              placeholder="Desconto % (ex: 30)"
-              type="number"
-              min="1"
-              max="100"
-              className="w-full bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/50"
-            />
-          )}
-
-          <input
-            value={vagas}
-            onChange={e => setVagas(e.target.value)}
-            placeholder="Vagas"
-            type="number"
-            min="1"
-            className="w-full bg-zinc-800 border border-white/10 rounded-lg px-3 py-2 text-white text-sm placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/50"
-          />
-
-          <div className="flex gap-2">
-            <button
-              onClick={handleCriar}
-              className="flex-1 py-2 bg-[#FFD300] text-black rounded-lg text-[0.625rem] font-black uppercase tracking-wider active:scale-95 transition-all"
-            >
-              Criar Deal
-            </button>
-            <button
-              onClick={() => {
-                setShowForm(false);
-                resetForm();
-              }}
-              className="px-4 py-2 bg-zinc-800 text-zinc-400 rounded-lg text-[0.625rem] font-black uppercase tracking-wider active:scale-95 transition-all"
-            >
-              Cancelar
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Lista deals */}
-      {loading ? (
-        <div className="flex items-center justify-center py-12">
-          <div className="w-5 h-5 border-2 border-[#FFD300] border-t-transparent rounded-full animate-spin" />
-        </div>
-      ) : deals.length === 0 ? (
-        <div className="text-center py-12">
-          <Ticket size="2rem" className="text-zinc-700 mx-auto mb-2" />
-          <p className="text-zinc-400 text-xs">Nenhum deal cadastrado</p>
-        </div>
-      ) : (
-        <div className="space-y-2">
-          {deals.map(d => (
-            <button
-              key={d.id}
-              onClick={() => loadResgates(d.id)}
-              className="w-full text-left bg-zinc-900/60 border border-white/5 rounded-xl p-3 active:scale-[0.98] transition-all"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-zinc-800 rounded-xl flex items-center justify-center shrink-0 border border-white/5">
-                  <Ticket size="1.125rem" className="text-[#FFD300]" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-white text-sm font-semibold truncate">{d.titulo}</p>
-                  <div className="flex items-center gap-2 text-[0.625rem] text-zinc-400 mt-0.5">
-                    <span>{d.parceiroNome}</span>
-                    <span className="flex items-center gap-0.5">
-                      <MapPin size="0.5625rem" />
-                      {d.cidadeNome}
-                    </span>
-                    <span className={d.tipo === 'BARTER' ? 'text-purple-400' : 'text-green-400'}>{d.tipo}</span>
-                  </div>
-                </div>
-                <div className="flex flex-col items-end gap-1 shrink-0">
-                  {statusBadge(d.status)}
-                  <div className="flex items-center gap-1 text-[0.625rem] text-zinc-400">
-                    <Users size="0.625rem" />
-                    {d.vagasPreenchidas}/{d.vagas}
-                  </div>
-                </div>
-              </div>
-              {d.obrigacaoBarter && (
-                <p className="text-zinc-400 text-[0.625rem] mt-1.5 truncate">
-                  <Clock size="0.5625rem" className="inline mr-1" />
-                  {d.obrigacaoBarter}
-                </p>
-              )}
-            </button>
-          ))}
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

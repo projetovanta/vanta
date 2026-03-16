@@ -272,6 +272,7 @@ Quando o usuário chamar um agente pelo nome ou pelo comando, seguir este protoc
 | **Sage** | `/dba` | Administrador de Banco de Dados | PostgreSQL, queries, índices, pg_cron |
 | **Ops** | `/engenheiro-devops` | Engenheiro DevOps | Deploy, Vercel, Sentry, CI/CD |
 | **Lia** | `/guardiao-memoria` | Guardiã de Memória | Checa memórias antes de commit/deploy |
+| **Memo** | `/memo` | Secretário Executivo | Atas, briefing, Gate Duplo, log de decisões. SEMPRE primeiro em toda sessão |
 | **Iris** | `/especialista-visual` | Especialista Visual | Cores, fontes, composição, direção de arte |
 | **Dr. Théo** | `/consultor-legal` | Consultor Legal | Leis, LGPD, CDC, compliance, termos de uso |
 | **Brunei** | `/brunei` | Mensageiro | Comunica decisões e status |
@@ -313,3 +314,5 @@ Além dos comandos `/`, o Dan pode chamar pelo nome diretamente:
 - "auditoria" → Rafa coordena Val + Zara + Sage + Ops
 - "Iris, que cor usar?" → ativa especialista visual
 - "Théo, posso fazer X?" → ativa consultor legal
+- "Memo, como estamos?" → briefing executivo da sessão
+- "Memo" → ativa secretário executivo (atas, decisões, Gate Duplo)

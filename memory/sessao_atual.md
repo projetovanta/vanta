@@ -2,8 +2,9 @@
 
 ## Branch: main
 ## Ultimo commit: `2237e31` — docs: sessao_atual
-## Mudancas locais: SIM (não commitado)
+## Mudancas locais: SIM — 65 arquivos (NÃO commitado, Dan precisa pedir commit)
 ## Preflight: 8/8
+## Dev server: precisa `npm run dev` pra testar
 
 ## Resumo da sessao (16 mar 2026)
 
@@ -45,18 +46,55 @@
 - ~/Downloads/ui-ux-pro-max-skill-main — ferramenta de busca UI/UX (usar pra dashboard)
 - ~/Downloads/claude-cookbooks-main — cookbooks do Claude (referência técnica)
 
-## Proximo passo (PRÓXIMA SESSÃO)
-1. **Dashboard impactante do painel admin** — mesmo design pra todos, dados filtrados por RBAC
-   - Master: soma plataforma inteira
-   - Gerente/dono comunidade: todos os eventos da comunidade
-   - Sócio/dono evento: só dados do evento
-   - RBAC manda: cada um só vê o que tem direito
-   - Usar ui-ux-pro-max-skill como referência visual
-   - Convocar Luna (frontend) + Iris (visual) + Kai (dados)
-   - Ler AdminDashboardHome.tsx (802L) — já investigado nesta sessão
-2. Merge dos 9 agentes restantes (frontend-engineer, mobile-engineer, etc.)
-3. Configurar secrets Stripe — quando Dan tiver conta
-4. Onboarding do produtor (tour guiado no painel)
+## Feito nesta sessão (16 mar continuação)
+
+### Dashboard V2 (COMPLETO — preflight 8/8)
+- Rota `/dashboard-v2` standalone — NÃO substitui o painel atual
+- `DashboardV2Gateway.tsx` — RBAC via get_admin_access + abas de role (ferramenta de dev)
+- `DashboardV2Home.tsx` — pendências primeiro, hero financeiro dourado, gráfico, pizza, resumo, MV, ações
+- `VendasTimelineChart.tsx` — gráfico de linha dourada (vendas ao longo do tempo)
+- `getVendasTimeline(periodo, comunidadeId?)` — método novo no dashboardAnalyticsService
+- Rota registrada no App.tsx
+
+### Hooks e regras
+- Hook `enforce-rules-compliance.sh` — bloqueia se não leu feedbacks ou não consultou equipe
+- Feedbacks: `feedback_rafa_convoca_equipe.md`, `feedback_ler_memorias_obrigatorio.md`
+- Regras atualizadas: convocação de equipe + leitura obrigatória de feedbacks
+
+## Feito nesta sessão (16 mar continuação 2)
+
+### Dashboard V2 — Panorama "Caixa de Entrada"
+- PanoramaHome criado — mostra TUDO do usuário (pendências + negócios + operação)
+- 6 homes por role (Master, Gerente, Sócio, Promoter, Portaria, Caixa)
+- Toque num card → entra no contexto com sidebar + home por cargo
+- "← Panorama" no header pra voltar
+
+### Padronização AdminViewHeader
+- AdminViewHeader.tsx criado — componente padrão (← esquerda, título, ações direita)
+- 44 views migradas — TODAS usam AdminViewHeader
+- Padrão único: voltar sempre esquerda, título + kicker, ações à direita, touch 44px+
+- `absolute inset-0` → `flex-1` em todas
+
+### Hooks criados/atualizados
+- enforce-rules-compliance.sh — gate master (feedbacks, Memo, equipe, as any, diff-check)
+- enforce-rafa-obligations.sh — checa obrigações pós-edit
+- enforce-rafa-workflow.sh — agentes por contexto + layout + Supabase
+- enforce-gate-duplo.sh — bloqueia commit sem Lia + Memo + preflight
+- enforce-memo-first.sh — bloqueia sem Memo ativo
+- enforce-memo-ata.sh — avisa se ata desatualizada após decisão
+- track-diffcheck.sh — marca diff-check passou/falhou
+- Memo adicionado ao CLAUDE.md + BRT
+
+### Regras documentadas
+- Rafa convoca equipe obrigatório
+- Ler feedbacks obrigatório
+- Supabase: migration antes de código
+- Preflight 8/8 antes de entregar
+
+## Proximo passo
+1. **Auditar todos os fluxos tela a tela** — criar evento, criar comunidade, criar parceiro, cupom, MAIS VANTA, etc.
+2. Configurar secrets Stripe — quando Dan tiver conta
+3. Onboarding do produtor (tour guiado)
 
 ## Decisões Dan (sessão 16/mar)
 - Painel admin: sidebar completa, V2/V3 são protótipos de referência

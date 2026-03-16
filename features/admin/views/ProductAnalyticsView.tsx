@@ -4,6 +4,7 @@ import { BarChart, Bar, LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tool
 import { supabase } from '../../../services/supabaseClient';
 import { VantaPieChart, type PieSlice } from '../components/VantaPieChart';
 import { TYPOGRAPHY } from '../../../constants';
+import { AdminViewHeader } from '../components/AdminViewHeader';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 interface WeeklyData {
@@ -300,7 +301,7 @@ export const ProductAnalyticsView: React.FC<{ onBack: () => void }> = ({ onBack 
   // ── Render ──────────────────────────────────────────────────────────────
   if (loading) {
     return (
-      <div className="absolute inset-0 flex flex-col overflow-hidden bg-[#0A0A0A]">
+      <div className="flex-1 flex flex-col overflow-hidden bg-[#0A0A0A]">
         <Header title="Product Analytics" onBack={onBack} />
         <div className="flex-1 flex items-center justify-center">
           <div className="w-6 h-6 border-2 border-[#FFD300]/30 border-t-[#FFD300] rounded-full animate-spin" />
@@ -310,7 +311,7 @@ export const ProductAnalyticsView: React.FC<{ onBack: () => void }> = ({ onBack 
   }
 
   return (
-    <div className="absolute inset-0 flex flex-col overflow-hidden bg-[#0A0A0A]">
+    <div className="flex-1 flex flex-col overflow-hidden bg-[#0A0A0A]">
       <Header title="Product Analytics" onBack={onBack} />
       <div className="flex-1 overflow-y-auto no-scrollbar p-4 space-y-4">
         {/* ── Bloco 1: Frequência ─────────────────────────────────── */}
@@ -431,18 +432,7 @@ export const ProductAnalyticsView: React.FC<{ onBack: () => void }> = ({ onBack 
 
 // ── Sub-components ────────────────────────────────────────────────────────────
 function Header({ title, onBack }: { title: string; onBack: () => void }) {
-  return (
-    <div className="shrink-0 flex items-center gap-3 px-4 py-3 border-b border-white/5">
-      <button
-        aria-label="Voltar"
-        onClick={onBack}
-        className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center -ml-2 rounded-lg hover:bg-white/5 transition-colors"
-      >
-        <ArrowLeft size="1.125rem" className="text-zinc-400" />
-      </button>
-      <h1 style={{ ...TYPOGRAPHY.screenTitle, fontSize: '0.875rem' }}>{title}</h1>
-    </div>
-  );
+  return <AdminViewHeader title={title} onBack={onBack} />;
 }
 
 function Card({

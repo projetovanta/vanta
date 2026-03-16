@@ -132,6 +132,8 @@
 - [feedback_zero_workarounds_any.md](feedback_zero_workarounds_any.md) — ZERO workarounds com `as any` no Supabase — migration primeiro, tipos depois, código por último
 - [feedback_plano_antes_execucao.md](feedback_plano_antes_execucao.md) — NUNCA executar sem plano aprovado
 - [feedback_alex_demitido.md](feedback_alex_demitido.md) — Alex demitido: NUNCA substituir admin sem teste, SEMPRE usar referências do Dan
+- [feedback_rafa_convoca_equipe.md](feedback_rafa_convoca_equipe.md) — Rafa NUNCA age sozinho — convoca especialistas, cada um assina, Rafa consolida e reporta ao Dan
+- [feedback_ler_memorias_obrigatorio.md](feedback_ler_memorias_obrigatorio.md) — OBRIGATÓRIO ler memórias de feedback antes de qualquer ação
 
 ## Meta
 

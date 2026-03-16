@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { ArrowLeft, Compass, Check, X, User, RefreshCw, Trash2 } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
+import { AdminViewHeader } from '../components/AdminViewHeader';
 import { clubeService } from '../services/clubeService';
 import { comunidadesService } from '../services/comunidadesService';
 import { supabase } from '../../../services/supabaseClient';
@@ -113,36 +114,13 @@ export const PassaportesMaisVantaView: React.FC<{
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden">
-      {/* Header */}
-      <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-6 pt-8 pb-4 shrink-0">
-        <div className="flex justify-between items-start mb-4">
-          <div className="flex-1 min-w-0 mr-3">
-            <p style={TYPOGRAPHY.sectionKicker} className="mb-1">
-              Visão Global
-            </p>
-            <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic">
-              Passaportes Globais
-            </h1>
-          </div>
-          <div className="flex gap-2 shrink-0">
-            <button
-              aria-label="Atualizar"
-              onClick={handleRefresh}
-              className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
-            >
-              <RefreshCw size="1rem" className="text-zinc-400" />
-            </button>
-            <button
-              aria-label="Voltar"
-              onClick={onBack}
-              className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
-            >
-              <ArrowLeft size="1.125rem" className="text-zinc-400" />
-            </button>
-          </div>
-        </div>
-
-        {/* Filtros */}
+      <AdminViewHeader
+        title="Passaportes Globais"
+        kicker="Visão Global"
+        onBack={onBack}
+        actions={[{ icon: RefreshCw, label: 'Atualizar', onClick: handleRefresh }]}
+      />
+      <div className="px-5 py-2 shrink-0 border-b border-white/5">
         <div className="flex flex-wrap gap-1.5">
           {filtros.map(f => (
             <button

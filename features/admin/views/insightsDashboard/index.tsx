@@ -6,6 +6,7 @@ import InsightsTab from './InsightsTab';
 import FinanceiroTab from './FinanceiroTab';
 import OperacoesTab from './OperacoesTab';
 import ValorTab from './ValorTab';
+import { AdminViewHeader } from '../../components/AdminViewHeader';
 
 type TabId = 'insights' | 'financeiro' | 'operacoes' | 'valor';
 
@@ -59,13 +60,8 @@ export const InsightsDashboardView: React.FC<Props> = ({ onBack, comunidadeId, o
 
   if (!comId) {
     return (
-      <div className="absolute inset-0 flex flex-col overflow-hidden bg-[#0A0A0A]">
-        <div className="flex items-center gap-3 px-4 py-3 border-b border-white/5">
-          <button onClick={onBack} className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center -ml-2">
-            <ArrowLeft className="w-5 h-5 text-white" />
-          </button>
-          <h2 className="text-white font-semibold">Inteligência VANTA</h2>
-        </div>
+      <div className="flex-1 flex flex-col overflow-hidden bg-[#0A0A0A]">
+        <AdminViewHeader title="Inteligência VANTA" onBack={onBack} />
         <div className="flex-1 flex items-center justify-center">
           <p className="text-zinc-500 text-sm">Nenhum evento encontrado.</p>
         </div>
@@ -74,17 +70,9 @@ export const InsightsDashboardView: React.FC<Props> = ({ onBack, comunidadeId, o
   }
 
   return (
-    <div className="absolute inset-0 flex flex-col overflow-hidden bg-[#0A0A0A]">
-      {/* Header */}
-      <div className="shrink-0 px-4 py-3 border-b border-white/5 space-y-3">
-        <div className="flex items-center gap-3">
-          <button onClick={onBack} className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center -ml-2">
-            <ArrowLeft className="w-5 h-5 text-white" />
-          </button>
-          <Lightbulb className="w-5 h-5 text-[#FFD300]" />
-          <h2 className="text-white font-semibold truncate">Inteligência VANTA</h2>
-        </div>
-
+    <div className="flex-1 flex flex-col overflow-hidden bg-[#0A0A0A]">
+      <AdminViewHeader title="Inteligência VANTA" onBack={onBack} />
+      <div className="shrink-0 px-4 py-2 border-b border-white/5 space-y-3">
         {/* Seletor de evento */}
         {eventos.length > 0 && (
           <div className="flex items-center gap-2">

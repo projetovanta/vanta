@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { ArrowLeft, Users, Shield, Ban, AlertCircle, RefreshCw, LogOut, Gift } from 'lucide-react';
+import { AdminViewHeader } from '../components/AdminViewHeader';
 import { TYPOGRAPHY } from '../../../constants';
 import { tsBR } from '../../../utils';
 import { clubeService } from '../services/clubeService';
@@ -245,10 +246,15 @@ export const MembrosGlobaisMaisVantaView: React.FC<{
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden">
-      {/* Header */}
-      <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-6 pt-8 pb-4 shrink-0">
+      <AdminViewHeader
+        title="Membros MAIS VANTA"
+        kicker="Visão Global"
+        onBack={onBack}
+        actions={[{ icon: RefreshCw, label: 'Atualizar', onClick: handleRefresh }]}
+      />
+      <div className="px-5 pt-3 pb-2 shrink-0 border-b border-white/5">
         {selecionados.size > 0 && (
-          <div className="mb-4 p-3 bg-amber-500/15 border border-amber-500/25 rounded-xl flex items-center justify-between">
+          <div className="mb-3 p-3 bg-amber-500/15 border border-amber-500/25 rounded-xl flex items-center justify-between">
             <span className="text-amber-400 text-[0.5625rem] font-black uppercase tracking-widest">
               {selecionados.size} selecionado(s)
             </span>
@@ -280,35 +286,8 @@ export const MembrosGlobaisMaisVantaView: React.FC<{
             </div>
           </div>
         )}
-        <div className="flex justify-between items-start">
-          <div className="flex-1 min-w-0 mr-3">
-            <p style={TYPOGRAPHY.sectionKicker} className="mb-1">
-              Visão Global
-            </p>
-            <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic">
-              Membros MAIS VANTA
-            </h1>
-          </div>
-          <div className="flex gap-2 shrink-0">
-            <button
-              aria-label="Atualizar"
-              onClick={handleRefresh}
-              className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
-            >
-              <RefreshCw size="1rem" className="text-zinc-400" />
-            </button>
-            <button
-              aria-label="Voltar"
-              onClick={onBack}
-              className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
-            >
-              <ArrowLeft size="1.125rem" className="text-zinc-400" />
-            </button>
-          </div>
-        </div>
-
         {/* KPIs */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 mb-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 mb-3">
           <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center">
             <p className="text-emerald-400 font-black text-xl leading-none">{totais.ativos}</p>
             <p className="text-zinc-400 text-[0.5625rem] font-bold uppercase tracking-wider mt-1">Ativos</p>

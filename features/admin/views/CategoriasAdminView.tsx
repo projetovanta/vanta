@@ -6,6 +6,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { ArrowLeft, Plus, Trash2, Check, X, Loader2, Pencil } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
+import { AdminViewHeader } from '../components/AdminViewHeader';
 import { supabase } from '../../../services/supabaseClient';
 import { useToast, ToastContainer } from '../../../components/Toast';
 
@@ -188,35 +189,20 @@ export const CategoriasAdminView: React.FC<{ onBack: () => void }> = ({ onBack }
   );
 
   return (
-    <div className="absolute inset-0 bg-[#0A0A0A] flex flex-col overflow-hidden">
+    <div className="flex-1 bg-[#0A0A0A] flex flex-col overflow-hidden">
       <ToastContainer toasts={toasts} onDismiss={dismiss} />
-
-      {/* Header */}
-      <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-6 pt-8 pb-5 shrink-0 flex justify-between items-start">
-        <div className="flex items-center gap-3">
-          <button
-            aria-label="Voltar"
-            onClick={onBack}
-            className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
-          >
-            <ArrowLeft size="1.125rem" className="text-zinc-400" />
-          </button>
-          <div>
-            <p style={TYPOGRAPHY.sectionKicker} className="mb-1">
-              Master
-            </p>
-            <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic">
-              Categorias
-            </h1>
-          </div>
-        </div>
-        <button
-          onClick={() => setEditItem({ label: '', ativo: true, ordem: currentItems.length })}
-          className="w-10 h-10 bg-[#FFD300]/15 rounded-full flex items-center justify-center border border-[#FFD300]/25 active:scale-90 transition-all mt-1"
-        >
-          <Plus size="1.125rem" className="text-[#FFD300]" />
-        </button>
-      </div>
+      <AdminViewHeader
+        title="Categorias"
+        kicker="Master"
+        onBack={onBack}
+        actions={[
+          {
+            icon: Plus,
+            label: 'Nova categoria',
+            onClick: () => setEditItem({ label: '', ativo: true, ordem: currentItems.length }),
+          },
+        ]}
+      />
 
       {/* Tabs — 3 abas */}
       <div className="shrink-0 px-5 pt-4 pb-2 flex flex-wrap gap-2">

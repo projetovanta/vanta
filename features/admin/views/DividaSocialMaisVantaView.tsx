@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { ArrowLeft, Gift, Clock, RefreshCw, User, AlertCircle } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
+import { AdminViewHeader } from '../components/AdminViewHeader';
 import { clubeService } from '../services/clubeService';
 import { comunidadesService } from '../services/comunidadesService';
 import { maisVantaConfigService } from '../services/maisVantaConfigService';
@@ -114,38 +115,14 @@ export const DividaSocialMaisVantaView: React.FC<{
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden">
-      {/* Header */}
-      <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-6 pt-8 pb-4 shrink-0">
-        <div className="flex justify-between items-start mb-4">
-          <div className="flex-1 min-w-0 mr-3">
-            <p style={TYPOGRAPHY.sectionKicker} className="mb-1">
-              Visão Global
-            </p>
-            <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic">
-              Dívida Social
-            </h1>
-          </div>
-          <div className="flex gap-2 shrink-0">
-            <button
-              aria-label="Atualizar"
-              onClick={handleRefresh}
-              disabled={loading}
-              className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all disabled:opacity-40"
-            >
-              <RefreshCw size="1rem" className={`text-zinc-400 ${loading ? 'animate-spin' : ''}`} />
-            </button>
-            <button
-              aria-label="Voltar"
-              onClick={onBack}
-              className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
-            >
-              <ArrowLeft size="1.125rem" className="text-zinc-400" />
-            </button>
-          </div>
-        </div>
-
-        {/* KPIs */}
-        <div className="grid grid-cols-2 gap-2 mb-4">
+      <AdminViewHeader
+        title="Dívida Social"
+        kicker="Visão Global"
+        onBack={onBack}
+        actions={[{ icon: RefreshCw, label: 'Atualizar', onClick: handleRefresh }]}
+      />
+      <div className="px-5 pt-3 pb-2 shrink-0 border-b border-white/5">
+        <div className="grid grid-cols-2 gap-2 mb-3">
           <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center">
             <p className="text-amber-400 font-black text-2xl leading-none">{totais.pendentes}</p>
             <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest mt-1">Pendentes</p>
@@ -155,13 +132,9 @@ export const DividaSocialMaisVantaView: React.FC<{
             <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest mt-1">Vencidas</p>
           </div>
         </div>
-
-        {/* Info */}
         <p className="text-zinc-400 text-[0.625rem] mb-3">
           Membros que reservaram mas ainda não postaram com #publi/@venue/@maisvanta
         </p>
-
-        {/* Filtros */}
         <div className="flex flex-wrap gap-1.5">
           {filtros.map(f => (
             <button

@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { ArrowLeft, AlertCircle, Trash2, RefreshCw, User } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
+import { AdminViewHeader } from '../components/AdminViewHeader';
 import { supabase } from '../../../services/supabaseClient';
 import { clubeService } from '../services/clubeService';
 import { maisVantaConfigService } from '../services/maisVantaConfigService';
@@ -123,38 +124,14 @@ export const InfracoesGlobaisMaisVantaView: React.FC<{
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden">
-      {/* Header */}
-      <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-6 pt-8 pb-4 shrink-0">
-        <div className="flex justify-between items-start mb-4">
-          <div className="flex-1 min-w-0 mr-3">
-            <p style={TYPOGRAPHY.sectionKicker} className="mb-1">
-              Visão Global
-            </p>
-            <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic">
-              Infrações MAIS VANTA
-            </h1>
-          </div>
-          <div className="flex gap-2 shrink-0">
-            <button
-              aria-label="Atualizar"
-              onClick={handleRefresh}
-              disabled={loading}
-              className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all disabled:opacity-40"
-            >
-              <RefreshCw size="1rem" className={`text-zinc-400 ${loading ? 'animate-spin' : ''}`} />
-            </button>
-            <button
-              aria-label="Voltar"
-              onClick={onBack}
-              className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
-            >
-              <ArrowLeft size="1.125rem" className="text-zinc-400" />
-            </button>
-          </div>
-        </div>
-
-        {/* KPIs */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5 mb-4">
+      <AdminViewHeader
+        title="Infrações MAIS VANTA"
+        kicker="Visão Global"
+        onBack={onBack}
+        actions={[{ icon: RefreshCw, label: 'Atualizar', onClick: handleRefresh }]}
+      />
+      <div className="px-5 pt-3 pb-2 shrink-0 border-b border-white/5">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5 mb-3">
           <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center">
             <p className="text-white font-black text-xl leading-none">{totais.total}</p>
             <p className="text-zinc-400 text-[0.5625rem] font-bold uppercase tracking-wider mt-1">Total</p>
@@ -168,8 +145,6 @@ export const InfracoesGlobaisMaisVantaView: React.FC<{
             <p className="text-zinc-400 text-[0.5625rem] font-bold uppercase tracking-wider mt-1">Não Postou</p>
           </div>
         </div>
-
-        {/* Filtros */}
         <div className="flex flex-wrap gap-1.5">
           {filtros.map(f => (
             <button

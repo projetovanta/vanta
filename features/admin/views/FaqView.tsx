@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowLeft, ChevronDown, ChevronUp, HelpCircle } from 'lucide-react';
+import { AdminViewHeader } from '../components/AdminViewHeader';
 import { TYPOGRAPHY } from '../../../constants';
 
 interface FaqItem {
@@ -121,24 +122,8 @@ export const FaqView: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   const toggle = (key: string) => setExpanded(prev => (prev === key ? null : key));
 
   return (
-    <div className="absolute inset-0 bg-[#0A0A0A] flex flex-col overflow-hidden">
-      {/* Header */}
-      <div className="shrink-0 px-5 pt-5 pb-4 border-b border-white/5">
-        <div className="flex items-center gap-3">
-          <button onClick={onBack} className="w-10 h-10 flex items-center justify-center rounded-xl active:bg-white/5">
-            <ArrowLeft size="1.125rem" className="text-zinc-400" />
-          </button>
-          <div className="flex-1 min-w-0">
-            <h1 style={TYPOGRAPHY.screenTitle} className="text-white text-lg">
-              Perguntas Frequentes
-            </h1>
-            <p className="text-zinc-500 text-[0.625rem] font-bold uppercase tracking-widest mt-0.5">
-              Dúvidas sobre o painel
-            </p>
-          </div>
-          <HelpCircle size="1.25rem" className="text-zinc-600 shrink-0" />
-        </div>
-      </div>
+    <div className="flex-1 bg-[#0A0A0A] flex flex-col overflow-hidden">
+      <AdminViewHeader title="Perguntas Frequentes" subtitle="Dúvidas sobre o painel" onBack={onBack} />
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto no-scrollbar px-5 py-4 space-y-6">

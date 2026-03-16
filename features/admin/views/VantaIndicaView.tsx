@@ -6,6 +6,7 @@ import { UnsavedChangesModal } from '../../../components/UnsavedChangesModal';
 import { TYPOGRAPHY } from '../../../constants';
 import { VantaIndicaCard, TipoIndicaCard, TipoAcaoIndica } from '../../../types';
 import { adminService } from '../services/adminService';
+import { AdminViewHeader } from '../components/AdminViewHeader';
 import { dataURLtoBlob } from '../../../utils';
 import { useToast, ToastContainer } from '../../../components/Toast';
 import { VantaSlider } from '../../../components/VantaSlider';
@@ -1438,41 +1439,16 @@ export const VantaIndicaView: React.FC<{ onBack: () => void; userId?: string }> 
   const inativos = cards.filter(c => !c.ativo);
 
   return (
-    <div className="absolute inset-0 bg-[#0A0A0A] flex flex-col overflow-hidden">
+    <div className="flex-1 bg-[#0A0A0A] flex flex-col overflow-hidden">
       <ToastContainer toasts={toasts} onDismiss={dismiss} />
-      <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-6 pt-8 pb-5 shrink-0">
-        <div className="flex justify-between items-start">
-          <div>
-            <p style={TYPOGRAPHY.sectionKicker} className="mb-1.5">
-              Portal Admin
-            </p>
-            <div className="flex items-center gap-3">
-              <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic">
-                VANTA Indica
-              </h1>
-              <span className="text-[0.5625rem] font-black text-zinc-400 bg-zinc-900 border border-white/5 px-2 py-0.5 rounded-full">
-                {ativos.length} ativo{ativos.length !== 1 ? 's' : ''}
-              </span>
-            </div>
-          </div>
-          <div className="flex items-center gap-2 mt-1">
-            <button
-              onClick={() => setModal({ open: true, data: EMPTY })}
-              className="flex items-center gap-2 px-4 py-2.5 bg-[#FFD300]/10 border border-[#FFD300]/20 rounded-xl active:scale-95 transition-all"
-            >
-              <Plus size="0.875rem" className="text-[#FFD300]" />
-              <span className="text-[#FFD300] text-[0.625rem] font-black uppercase tracking-wider">Novo</span>
-            </button>
-            <button
-              aria-label="Voltar"
-              onClick={onBack}
-              className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
-            >
-              <ArrowLeft size="1.125rem" className="text-zinc-400" />
-            </button>
-          </div>
-        </div>
-      </div>
+      <AdminViewHeader
+        title="VANTA Indica"
+        kicker="Portal Admin"
+        onBack={onBack}
+        badge={ativos.length}
+        badgeColor="#34d399"
+        actions={[{ icon: Plus, label: 'Novo card', onClick: () => setModal({ open: true, data: EMPTY }) }]}
+      />
 
       <div className="flex-1 overflow-y-auto no-scrollbar p-5 space-y-3">
         {loading && (

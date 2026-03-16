@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowLeft, ShoppingCart } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../../constants';
+import { AdminViewHeader } from '../../components/AdminViewHeader';
 import { eventosAdminService } from '../../services/eventosAdminService';
 import EventoCaixaView from './EventoCaixaView';
 
@@ -22,26 +23,8 @@ export const CaixaView: React.FC<{
     const backFn = eventoId ? onBack : () => setSelectedId(null);
 
     return (
-      <div className="absolute inset-0 bg-[#0A0A0A] flex flex-col overflow-hidden">
-        <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-6 pt-8 pb-5 shrink-0">
-          <div className="flex justify-between items-start">
-            <div className="flex-1 min-w-0 mr-3">
-              <p style={TYPOGRAPHY.sectionKicker} className="mb-1">
-                Venda na Porta
-              </p>
-              <h1 style={TYPOGRAPHY.screenTitle} className="text-lg italic truncate">
-                {evento?.nome ?? 'Evento'}
-              </h1>
-            </div>
-            <button
-              aria-label="Voltar"
-              onClick={backFn}
-              className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0 mt-1"
-            >
-              <ArrowLeft size="1.125rem" className="text-zinc-400" />
-            </button>
-          </div>
-        </div>
+      <div className="flex-1 bg-[#0A0A0A] flex flex-col overflow-hidden">
+        <AdminViewHeader title={evento?.nome ?? 'Evento'} kicker="Venda na Porta" onBack={backFn} />
         {evento ? (
           <EventoCaixaView evento={evento} onBack={backFn} />
         ) : (
@@ -55,24 +38,8 @@ export const CaixaView: React.FC<{
 
   // Picker de eventos com caixa ativo
   return (
-    <div className="absolute inset-0 bg-[#0A0A0A] flex flex-col overflow-hidden">
-      <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-6 pt-8 pb-5 flex justify-between items-start shrink-0">
-        <div>
-          <p style={TYPOGRAPHY.sectionKicker} className="mb-1.5">
-            Operador
-          </p>
-          <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic">
-            Venda na Porta
-          </h1>
-        </div>
-        <button
-          aria-label="Voltar"
-          onClick={onBack}
-          className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all mt-1"
-        >
-          <ArrowLeft size="1.125rem" className="text-zinc-400" />
-        </button>
-      </div>
+    <div className="flex-1 bg-[#0A0A0A] flex flex-col overflow-hidden">
+      <AdminViewHeader title="Venda na Porta" kicker="Operador" onBack={onBack} />
 
       <div className="flex-1 overflow-y-auto no-scrollbar p-6 space-y-3 max-w-3xl mx-auto w-full">
         {eventosComCaixa.length === 0 ? (

@@ -1,6 +1,7 @@
 import React, { useMemo, useCallback } from 'react';
 import { ArrowLeft, Download, FileText } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
+import { AdminViewHeader } from '../components/AdminViewHeader';
 import { listasService } from '../services/listasService';
 import { exportCSV, exportPDF } from '../../../utils/exportUtils';
 
@@ -60,7 +61,7 @@ export const PromoterCotasView: React.FC<{
 
   if (!lista) {
     return (
-      <div className="absolute inset-0 bg-[#0A0A0A] flex flex-col items-center justify-center gap-3">
+      <div className="flex-1 bg-[#0A0A0A] flex flex-col items-center justify-center gap-3">
         <p className="text-zinc-400 text-sm">Lista não encontrada.</p>
         <button onClick={onBack} className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest">
           Voltar
@@ -70,46 +71,17 @@ export const PromoterCotasView: React.FC<{
   }
 
   return (
-    <div className="absolute inset-0 bg-[#0A0A0A] flex flex-col overflow-hidden">
-      {/* Header */}
-      <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-6 pt-8 pb-5 shrink-0">
-        <div className="flex justify-between items-start">
-          <div className="min-w-0 flex-1">
-            <p style={TYPOGRAPHY.sectionKicker} className="mb-1.5">
-              Minhas Cotas
-            </p>
-            <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic truncate">
-              {lista.eventoNome}
-            </h1>
-            <p className="text-zinc-400 text-[0.625rem] mt-1 truncate">{lista.eventoLocal}</p>
-          </div>
-          <div className="flex items-center gap-2 shrink-0 ml-2">
-            <button
-              aria-label="Baixar"
-              onClick={handleExportCSV}
-              className="w-9 h-9 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
-              title="CSV"
-            >
-              <Download size="0.875rem" className="text-zinc-400" />
-            </button>
-            <button
-              aria-label="Documento"
-              onClick={handleExportPDF}
-              className="w-9 h-9 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
-              title="PDF"
-            >
-              <FileText size="0.875rem" className="text-zinc-400" />
-            </button>
-            <button
-              aria-label="Voltar"
-              onClick={onBack}
-              className="w-9 h-9 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all"
-            >
-              <ArrowLeft size="1rem" className="text-zinc-400" />
-            </button>
-          </div>
-        </div>
-      </div>
+    <div className="flex-1 bg-[#0A0A0A] flex flex-col overflow-hidden">
+      <AdminViewHeader
+        title={lista.eventoNome}
+        kicker="Minhas Cotas"
+        subtitle={lista.eventoLocal}
+        onBack={onBack}
+        actions={[
+          { icon: Download, label: 'CSV', onClick: handleExportCSV },
+          { icon: FileText, label: 'PDF', onClick: handleExportPDF },
+        ]}
+      />
 
       <div className="flex-1 overflow-y-auto no-scrollbar p-5 space-y-4">
         {/* Tabela de cotas por regra */}

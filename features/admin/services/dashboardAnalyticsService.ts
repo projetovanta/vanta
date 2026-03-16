@@ -119,7 +119,97 @@ const sumLucroVantaInRange = async (inicio: string, fim: string): Promise<number
   );
 };
 
+// ── Timeline de vendas (gráfico de tendência) ─────────────────────────────
+
+export interface VendasTimelinePoint {
+  data: string; // label do eixo X (ex: "14/03", "Seg", "10h")
+  valor: number; // R$ total
+  quantidade: number; // nº de tickets
+}
+
+type Granularidade = 'hora' | 'dia' | 'mes';
+
+const getGranularidade = (periodo: Periodo): Granularidade => {
+  switch (periodo) {
+    case 'HOJE':
+      return 'hora';
+    case 'SEMANA':
+      return 'dia';
+    case 'MES':
+      return 'dia';
+    case 'ANO':
+      return 'mes';
+  }
+};
+
+const formatLabel = (dateStr: string, granularidade: Granularidade): string => {
+  const d = new Date(dateStr);
+  if (granularidade === 'hora') return `${d.getHours()}h`;
+  if (granularidade === 'mes') {
+    const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+    return meses[d.getMonth()];
+  }
+  return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}`;
+};
+
+const getVendasTimeline = async (periodo: Periodo, comunidadeId?: string): Promise<VendasTimelinePoint[]> => {
+  const [inicio, fim] = getDateRanges(periodo);
+  const granularidade = getGranularidade(periodo);
+
+  let q = supabase
+    .from('tickets_caixa')
+    .select('criado_em, valor')
+    .gte('criado_em', inicio)
+    .lte('criado_em', fim)
+    .in('status', ['DISPONIVEL', 'USADO'])
+    .order('criado_em', { ascending: true })
+    .limit(5000);
+
+  if (comunidadeId) {
+    // Filtrar por eventos da comunidade — precisa join via evento_id
+    // Como Supabase JS não suporta GROUP BY, agrupamos no client
+    const { data: eventosIds } = await supabase.from('eventos_admin').select('id').eq('comunidade_id', comunidadeId);
+    if (eventosIds && eventosIds.length > 0) {
+      q = q.in(
+        'evento_id',
+        eventosIds.map(e => e.id),
+      );
+    }
+  }
+
+  const { data } = await q;
+  if (!data || data.length === 0) return [];
+
+  // Agrupar por granularidade no client
+  const buckets = new Map<string, { valor: number; quantidade: number }>();
+
+  for (const row of data as { criado_em: string; valor: number }[]) {
+    const d = new Date(row.criado_em);
+    let key: string;
+    if (granularidade === 'hora') {
+      key = new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours()).toISOString();
+    } else if (granularidade === 'mes') {
+      key = new Date(d.getFullYear(), d.getMonth(), 1).toISOString();
+    } else {
+      key = new Date(d.getFullYear(), d.getMonth(), d.getDate()).toISOString();
+    }
+    const existing = buckets.get(key) ?? { valor: 0, quantidade: 0 };
+    existing.valor += row.valor ?? 0;
+    existing.quantidade += 1;
+    buckets.set(key, existing);
+  }
+
+  return Array.from(buckets.entries())
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([dateKey, vals]) => ({
+      data: formatLabel(dateKey, granularidade),
+      valor: Math.round(vals.valor * 100) / 100,
+      quantidade: vals.quantidade,
+    }));
+};
+
 export const dashboardAnalyticsService = {
+  getVendasTimeline,
   async getMetrics(periodo: Periodo): Promise<DashboardMetrics> {
     const [ia, fa, ip, fp] = getDateRanges(periodo);
 

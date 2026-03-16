@@ -44,6 +44,9 @@ fi
 # 4. Lembrete de regras críticas
 CONTEXT="${CONTEXT}
 === LEMBRETES ===
+- LER TODAS as memórias de feedback (feedback_*.md) ANTES de qualquer ação — sem exceção
+- Rafa NUNCA age sozinho — SEMPRE convocar especialistas (Luna, Kai, Iris, etc.) antes de decisões
+- Fluxo: Rafa convoca → especialistas analisam e assinam → Rafa consolida → Dan decide
 - Ler memória do módulo ANTES de codificar (CLAUDE.md regra)
 - ZERO exclusões sem autorização do usuário
 - Atualizar memórias ANTES de entregar cada ação

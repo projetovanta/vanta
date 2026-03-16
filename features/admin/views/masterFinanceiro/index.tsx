@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { exportCSV, exportPDF } from '../../../../utils/exportUtils';
 import { TYPOGRAPHY } from '../../../../constants';
+import { AdminViewHeader } from '../../components/AdminViewHeader';
 import { Notificacao, EventoAdmin } from '../../../../types';
 import {
   eventosAdminService,
@@ -275,45 +276,16 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification 
 
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
-    <div className="absolute inset-0 bg-[#0A0A0A] flex flex-col overflow-hidden">
-      {/* Header */}
-      <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-6 pt-8 pb-5 shrink-0">
-        <div className="flex items-center justify-between">
-          <div>
-            <p style={TYPOGRAPHY.sectionKicker} className="mb-1">
-              Master Admin
-            </p>
-            <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic">
-              Financeiro Global
-            </h1>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              aria-label="Baixar"
-              onClick={handleExportCSV}
-              title="CSV"
-              className="w-9 h-9 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
-            >
-              <Download size="0.875rem" className="text-zinc-400" />
-            </button>
-            <button
-              aria-label="Documento"
-              onClick={handleExportPDF}
-              title="PDF"
-              className="w-9 h-9 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
-            >
-              <FileText size="0.875rem" className="text-zinc-400" />
-            </button>
-            <button
-              aria-label="Voltar"
-              onClick={onBack}
-              className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10 active:scale-90 transition-all shrink-0"
-            >
-              <ArrowLeft size="1.125rem" className="text-zinc-400" />
-            </button>
-          </div>
-        </div>
-      </div>
+    <div className="flex-1 bg-[#0A0A0A] flex flex-col overflow-hidden">
+      <AdminViewHeader
+        title="Financeiro Global"
+        kicker="Master Admin"
+        onBack={onBack}
+        actions={[
+          { icon: Download, label: 'CSV', onClick: handleExportCSV },
+          { icon: FileText, label: 'PDF', onClick: handleExportPDF },
+        ]}
+      />
 
       <div className="flex-1 overflow-y-auto no-scrollbar p-6 space-y-5 max-w-3xl mx-auto w-full">
         {/* CAMADA 1 — Card Principal: Lucro Líquido */}

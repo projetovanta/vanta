@@ -4,6 +4,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, CheckCircle, XCircle, Clock, FileCheck, ChevronDown, X, Search, Eye } from 'lucide-react';
+import { AdminViewHeader } from '../components/AdminViewHeader';
 import { comprovanteService } from '../services/comprovanteService';
 import { TIPOS_COMPROVANTE_MEIA } from '../../../types';
 import type { ComprovanteMeia } from '../../../types';
@@ -121,26 +122,15 @@ export const GestaoComprovantesView: React.FC<Props> = ({ onBack, masterId }) =>
   const pendentesCount = comprovantes.filter(c => c.status === 'PENDENTE').length;
 
   return (
-    <div className="absolute inset-0 flex flex-col bg-[#0A0A0A] overflow-hidden">
-      {/* Header */}
-      <div className="shrink-0 px-4 pb-3 border-b border-white/5" style={{ paddingTop: '1rem' }}>
-        <div className="flex items-center gap-3 mb-3">
-          <button
-            aria-label="Voltar"
-            onClick={onBack}
-            className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center -ml-2 hover:bg-white/5 rounded-lg transition-colors"
-          >
-            <ArrowLeft size="1.125rem" className="text-zinc-400" />
-          </button>
-          <div className="flex-1 min-w-0">
-            <h1 className="text-base font-bold text-white truncate">Comprovantes de Meia-Entrada</h1>
-            <p className="text-[0.625rem] text-zinc-400">
-              {pendentesCount} pendente{pendentesCount !== 1 ? 's' : ''}
-            </p>
-          </div>
-        </div>
-
-        {/* Tabs */}
+    <div className="flex-1 flex flex-col bg-[#0A0A0A] overflow-hidden">
+      <AdminViewHeader
+        title="Comprovantes"
+        subtitle={`${pendentesCount} pendente${pendentesCount !== 1 ? 's' : ''}`}
+        onBack={onBack}
+        badge={pendentesCount > 0 ? pendentesCount : undefined}
+        badgeColor="#f59e0b"
+      />
+      <div className="shrink-0 px-4 pb-3 border-b border-white/5">
         <div className="flex flex-wrap gap-1">
           {[
             { id: 'PENDENTES' as Tab, label: 'Pendentes', count: pendentesCount },

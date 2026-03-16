@@ -39,6 +39,29 @@ Após gate resolver: rbacService, comunidadesService, cortesiasService, eventosA
 - Período selecionável: HOJE, SEMANA, MES, ANO
 - Master: métricas globais. Comunidade: métricas filtradas
 
+## Dashboard V2 (rota /dashboard-v2) — criado 16/mar
+- Rota standalone `/dashboard-v2` — NÃO substitui o painel atual
+- Gateway: `features/dashboard-v2/DashboardV2Gateway.tsx` — resolve RBAC via `get_admin_access`
+- Home: `features/dashboard-v2/DashboardV2Home.tsx` — layout reorganizado
+- Gráfico: `features/dashboard-v2/VendasTimelineChart.tsx` — vendas ao longo do tempo (linha dourada)
+- Service: `getVendasTimeline(periodo, comunidadeId?)` em `dashboardAnalyticsService`
+- Abas de role no topo (master vê): troca aba e vê como cada cargo vê (ferramenta de dev)
+- Ordem: Pendências → Hero financeiro (dourado) → Gráfico vendas → KPIs → Pizza → Resumo financeiro → MV → Ações
+
+## AdminViewHeader (componente padronizado — 16/mar)
+- Arquivo: `features/admin/components/AdminViewHeader.tsx`
+- Props: title, subtitle, kicker, onBack, actions[], badge, badgeColor
+- Padrão: voltar ← esquerda, título centro, ações direita, backdrop-blur, touch 44px+
+- 44 views migradas — TODAS usam AdminViewHeader
+- Exceção: GerenteDashboardView (layout hero com foto)
+
+## Panorama "Caixa de Entrada" (Dashboard V2 — 16/mar)
+- Tela inicial do /dashboard-v2 quando NÃO tem contexto ativo
+- Mostra: pendências consolidadas + cards por negócio + operação do dia
+- Toque num card → entra no contexto (sidebar + home por cargo)
+- "← Panorama" no header pra voltar
+- Componente: `features/dashboard-v2/homes/PanoramaHome.tsx`
+
 ## Decisão Dan (sessão 16/mar): NÃO simplificar o painel
 - Sidebar completa com todas as seções por role (AdminSidebar)
 - Dashboard home impactante — empresário vê tudo de cara

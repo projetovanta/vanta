@@ -184,6 +184,8 @@ export const CommandPalette: React.FC<Props> = ({ isOpen, onClose, onSelect }) =
         <div className="flex items-center gap-3 px-5 py-4 border-b border-white/5">
           <Search size="1.125rem" className="text-zinc-500 shrink-0" />
           <input
+            id="command-palette-search"
+            name="command-palette-search"
             ref={inputRef}
             value={query}
             onChange={e => {
@@ -192,6 +194,7 @@ export const CommandPalette: React.FC<Props> = ({ isOpen, onClose, onSelect }) =
             }}
             onKeyDown={handleKeyDown}
             placeholder="Buscar tela, ação ou funcionalidade..."
+            autoComplete="off"
             className="flex-1 bg-transparent text-white text-sm outline-none placeholder-zinc-600"
           />
           <kbd className="px-2 py-0.5 bg-zinc-800 text-zinc-500 text-[0.5rem] font-bold rounded border border-white/10">

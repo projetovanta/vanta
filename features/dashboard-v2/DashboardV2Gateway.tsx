@@ -821,8 +821,9 @@ export const DashboardV2Gateway: React.FC<{
 
   // ── Layout ─────────────────────────────────────────────────────────────
   return (
-    <div className="absolute inset-0 flex flex-col items-center overflow-hidden bg-[#050505] text-white z-[100]">
-      <div className="w-full max-w-4xl flex-1 overflow-hidden flex bg-[#0A0A0A]">
+    <div className="absolute inset-0 flex overflow-hidden bg-[#050505] text-white z-[100]">
+      {/* Sidebar + conteúdo 500px — mesmo layout do app */}
+      <div className="w-full flex-1 overflow-hidden flex justify-center bg-[#050505]">
         {sidebarOpen && activeContext && (
           <SidebarV2
             active={activeNav}
@@ -837,10 +838,10 @@ export const DashboardV2Gateway: React.FC<{
           />
         )}
 
-        <div className="flex-1 flex flex-col overflow-hidden">
+        <div className="flex-1 max-w-[500px] flex flex-col overflow-hidden bg-[#0A0A0A]">
           {/* Header glass */}
           <div
-            className="shrink-0 flex items-center gap-3 px-5 h-14 border-b border-white/5"
+            className="shrink-0 flex items-center gap-2 px-3 md:px-5 h-14 border-b border-white/5"
             style={{ background: 'rgba(10,10,10,0.8)', backdropFilter: 'blur(15px)' }}
           >
             {activeContext && (
@@ -866,14 +867,14 @@ export const DashboardV2Gateway: React.FC<{
             >
               <Search size="0.875rem" className="text-zinc-500" />
               <span className="text-sm text-zinc-500">Buscar...</span>
-              <kbd className="ml-auto px-2 py-0.5 bg-zinc-800 text-zinc-600 text-[0.5rem] font-bold rounded border border-white/10">
+              <kbd className="ml-auto px-2 py-0.5 bg-zinc-800 text-zinc-600 text-[0.5rem] font-bold rounded border border-white/10 hidden md:block">
                 ⌘K
               </kbd>
             </button>
 
-            {/* Role tabs (dev tool) */}
+            {/* Role tabs (dev tool — desktop only) */}
             {isMasterReal && (
-              <div className="flex items-center gap-1 shrink-0">
+              <div className="hidden md:flex items-center gap-1 shrink-0">
                 <Eye size="0.625rem" className="text-zinc-700" />
                 <select
                   value={simulatedRole ?? ''}

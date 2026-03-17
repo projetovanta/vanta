@@ -119,11 +119,8 @@ export default function App() {
     const update = () => {
       cancelAnimationFrame(rafId);
       rafId = requestAnimationFrame(() => {
-        const isAdmin = el.classList.contains('max-w-4xl');
-        if (isAdmin) {
-          document.documentElement.style.fontSize = '16px';
-          return;
-        }
+        // Scaling fluido: 320-500px. Admin e app usam a mesma regra.
+        // No admin desktop, o conteúdo é max-w-[500px] então escala = 16px normal.
         const w = Math.max(320, Math.min(el.offsetWidth, 500));
         const fs = w <= 375 ? (w / 375) * 16 : 16 * (1 + ((w - 375) / 375) * 0.2);
         document.documentElement.style.fontSize = fs + 'px';
@@ -483,7 +480,7 @@ export default function App() {
     >
       <div
         id="vanta-app"
-        className={`w-full flex-1 bg-[#0A0A0A] relative overflow-hidden flex flex-col ${nav.activeTab === 'ADMIN_HUB' ? 'max-w-4xl' : 'max-w-[500px]'}`}
+        className={`w-full flex-1 bg-[#0A0A0A] relative overflow-hidden flex flex-col ${nav.activeTab === 'ADMIN_HUB' ? '' : 'max-w-[500px]'}`}
       >
         {showResetPassword && (
           <div className="absolute inset-0 z-[500]">

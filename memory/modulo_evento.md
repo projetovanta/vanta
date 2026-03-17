@@ -316,7 +316,7 @@ Negociação de sócio agora acontece fora do app (decisão Dan). RPCs de negoci
 | Dashboard Admin | features/admin/views/eventoDashboard/ | 8 sub-views |
 | Aprovacao | features/admin/views/EventosPendentesView.tsx | Eventos pendentes |
 | Criar Evento | features/admin/views/CriarEventoView.tsx | Copiar de anterior |
-| Vanta Indica | features/admin/views/VantaIndicaView.tsx | Card do evento (snap magnético, cqw proporcional, ações: link/evento/cupom/rota/comemorar) |
+| Vanta Indica | features/admin/views/VantaIndicaView.tsx | Card do evento (snap magnético, cqw proporcional, ações: link/evento/cupom/rota/comemorar/comunidade, 7 templates, preview fiel à Home, badge cores por tipo) |
 | Perfil/Historico | modules/profile/HistoricoView.tsx | Eventos passados |
 | Conquistas | services/achievementsService.ts | Badge por evento |
 | Campanhas | features/admin/services/campanhasService.ts | Segmentar por evento |

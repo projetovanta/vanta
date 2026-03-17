@@ -72,11 +72,16 @@
 
 ## Próximas Prioridades
 
-1. Conta Apple Developer ($99/ano) — login Apple + deep links iOS + App Store
-2. Android Studio — build Android
-3. Conta Google Play Console ($25) — Google Play
-4. Testar app no Simulador iOS (Xcode já pronto)
-5. Polir fluxos existentes tela a tela
+### Plano 4 Blocos de Melhorias (aprovado 17/mar sessão 4)
+1. **Bloco 1 — Polimento Visual** (PRÓXIMO): tema escuro consistente, empty states, skeleton loading, VANTA Indica editor (emoji + paleta + snaps + templates DB)
+2. **Bloco 2 — Navegação**: CommandPalette busca dados, breadcrumbs, deep links admin, cargos com descrição
+3. **Bloco 3 — Financeiro**: seletor período, sparklines KPIs, audit log contextual, evolução mensal
+4. **Bloco 4 — Operações**: batch actions, filtros avançados, notificações batch, sessão ativa + timeout
+
+### Pendências externas
+- Conta Apple Developer ($99/ano) — login Apple + deep links iOS + App Store
+- Android Studio — build Android
+- Conta Google Play Console ($25) — Google Play
 
 ---
 

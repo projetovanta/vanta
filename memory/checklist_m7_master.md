@@ -21,10 +21,12 @@
 
 ## F7.3 — VANTA INDICA (VantaIndicaView)
 - QUEM: master | ONDE: VantaIndicaView
-- ACOES: CRUD cards de recomendacao que aparecem no Home feed
-- COMO: adminService.getVantaIndica(), criarVantaIndica(), editarVantaIndica(), toggleVantaIndica()
+- ACOES: CRUD cards, 7 templates prontos, preview fiel à Home, drag-to-position com snaps magnéticos
+- COMO: adminService.getIndicaCards(), addCard(), updateCard(), toggleAtivoCard()
 - TABELAS: vanta_indica (INSERT/UPDATE/SELECT)
-- DOWNSTREAM: HomeView exibe cards Vanta Indica
+- HANDLERS HOME: 6 tipos de ação (evento, comemorar, comunidade, rota, cupom, link)
+- ROTAS: 13 destinos internos (tabs + perfil sub-views)
+- DOWNSTREAM: HomeView → Highlights exibe cards com gradiente reforçado, badge backdrop-blur, título truncate 1 linha
 - STATUS: OK
 
 ## F7.4 — EVENTOS PENDENTES (EventosPendentesView)

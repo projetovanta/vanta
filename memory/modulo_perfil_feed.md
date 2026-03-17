@@ -20,11 +20,11 @@ Radar = mapa de eventos por geolocalizacao.
 | Arquivo | Linhas | Funcao |
 |---|---|---|
 | HomeView.tsx | 263 | Tela principal do feed |
-| components/EventFeed.tsx | 184 | Feed de eventos com infinite scroll |
-| components/Highlights.tsx | 221 | Destaques (Vanta Indica) |
-| components/LiveNowSection.tsx | 52 | Eventos ao vivo agora |
-| components/NearYouSection.tsx | 70 | Eventos perto de voce |
-| components/ThisWeekSection.tsx | 33 | Eventos esta semana |
+| components/EventFeed.tsx | 196 | Feed de eventos com infinite scroll |
+| components/Highlights.tsx | 277 | Destaques (Vanta Indica) — gradiente reforçado, badge backdrop-blur, 6 handlers (evento/comemorar/comunidade/rota/cupom/link), props onComunidadeClick/onNavigateToTab/onNavigateToProfile |
+| components/LiveNowSection.tsx | 52 | Eventos ao vivo agora (label cidade, card 80vw) |
+| components/NearYouSection.tsx | 101 | Eventos perto de voce (distância via prop distLabel no EventCard, sem overlay) |
+| components/ThisWeekSection.tsx | 39 | Eventos esta semana |
 | components/ForYouSection.tsx | 69 | Eventos pra voce (personalizado) |
 | components/NewOnPlatformSection.tsx | 37 | Novos na plataforma |
 | components/SavedEventsSection.tsx | 35 | Eventos salvos |

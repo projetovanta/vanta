@@ -10,8 +10,9 @@
 ## Arquivos Principais
 | Arquivo | Linhas | Função |
 |---|---|---|
-| `features/admin/AdminGateway.tsx` | ~296 | Gate de entrada — RPC + seleção comunidade |
-| `features/admin/AdminDashboardView.tsx` | 654 | Container principal — sidebar + subviews |
+| `features/admin/AdminGateway.tsx` | 305 | Gate de entrada — RPC + seleção comunidade (sem sessionStorage) |
+| `features/admin/AdminDashboardView.tsx` | 933 | Container principal — sidebar + subviews (sem sessionStorage) |
+| `features/dashboard-v2/DashboardV2Gateway.tsx` | 927 | Admin principal V2 — sidebar + max-w-[500px] + relative (sem sessionStorage) |
 | `features/admin/components/AdminDashboardHome.tsx` | 749 | Dashboard home — KPIs + gráficos |
 | `features/admin/components/AdminSidebar.tsx` | 423 | Sidebar com seções por role |
 | `features/admin/components/KpiCards.tsx` | 144 | Cards de KPIs |

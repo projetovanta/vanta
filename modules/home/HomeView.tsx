@@ -21,6 +21,7 @@ interface HomeViewProps {
   onEventClick: (e: Evento) => void;
   onNavigateToSearch: () => void;
   onNavigateToProfile: (sub: string) => void;
+  onNavigateToTab?: (tab: string) => void;
   onOpenNotifications?: () => void;
   onEventoIndicaClick?: (eventoId: string) => void;
   onComunidadeClick?: (id: string) => void;
@@ -39,6 +40,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
   onEventClick,
   onNavigateToSearch,
   onNavigateToProfile,
+  onNavigateToTab,
   onOpenNotifications,
   onEventoIndicaClick,
   onComunidadeClick,
@@ -64,6 +66,8 @@ export const HomeView: React.FC<HomeViewProps> = ({
     () => eventos.filter(e => isEventHappeningNow(e) && (!selectedCity || e.cidade === selectedCity)),
     [eventos, selectedCity],
   );
+
+  const liveIds = useMemo(() => new Set(liveEventos.map(e => e.id)), [liveEventos]);
 
   const cityEventos = useMemo(
     () => eventos.filter(e => !selectedCity || e.cidade === selectedCity),
@@ -177,10 +181,17 @@ export const HomeView: React.FC<HomeViewProps> = ({
       )}
 
       {/* VANTA Indica (Highlights) */}
-      <Highlights currentCity={selectedCity} onEventoClick={onEventoIndicaClick} onComemorarClick={onComemorarClick} />
+      <Highlights
+        currentCity={selectedCity}
+        onEventoClick={onEventoIndicaClick}
+        onComemorarClick={onComemorarClick}
+        onComunidadeClick={onComunidadeClick}
+        onNavigateToTab={onNavigateToTab}
+        onNavigateToProfile={onNavigateToProfile}
+      />
 
       {/* Acontecendo Agora */}
-      <LiveNowSection eventos={liveEventos} onEventClick={onEventClick} />
+      <LiveNowSection eventos={liveEventos} onEventClick={onEventClick} showCityInsteadOfLocal={!selectedCity} />
 
       {/* Amigos vão — só aparece se logado e tem amigos com ingresso */}
       <FriendsGoingSection
@@ -197,6 +208,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
           onEventClick={onEventClick}
           onComunidadeClick={onComunidadeClick}
           showCityInsteadOfLocal={!selectedCity}
+          excludeIds={liveIds}
         />
       </LazySection>
 

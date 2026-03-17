@@ -241,14 +241,7 @@ export const DashboardV2Gateway: React.FC<{
 
   // ── Navegação ────────────────────────────────────────────────────────────
   const [activeNav, setActiveNav] = useState<NavItem>('DASHBOARD');
-  const [subView, _setSubView] = useState<AdminSubView>(() => {
-    const saved = sessionStorage.getItem('vanta_v2_subview');
-    return (saved as AdminSubView) || 'DASHBOARD';
-  });
-  const setSubView = (v: AdminSubView) => {
-    sessionStorage.setItem('vanta_v2_subview', v);
-    _setSubView(v);
-  };
+  const [subView, setSubView] = useState<AdminSubView>('DASHBOARD');
 
   const [showPalette, setShowPalette] = useState(false);
   const [isDesktop, setIsDesktop] = useState(() => window.matchMedia('(min-width: 768px)').matches);
@@ -838,7 +831,7 @@ export const DashboardV2Gateway: React.FC<{
           />
         )}
 
-        <div className="flex-1 max-w-[500px] flex flex-col overflow-hidden bg-[#0A0A0A]">
+        <div className="flex-1 max-w-[500px] flex flex-col overflow-hidden bg-[#0A0A0A] relative">
           {/* Header glass */}
           <div
             className="shrink-0 flex items-center gap-2 px-3 md:px-5 h-14 border-b border-white/5"
@@ -908,7 +901,7 @@ export const DashboardV2Gateway: React.FC<{
           </div>
 
           {/* Conteúdo principal */}
-          <div className="flex-1 overflow-y-auto no-scrollbar flex flex-col bg-[#0A0A0A]">
+          <div className="flex-1 overflow-y-auto no-scrollbar flex flex-col bg-[#0A0A0A] relative">
             <Suspense
               fallback={
                 <div className="flex-1 flex items-center justify-center">

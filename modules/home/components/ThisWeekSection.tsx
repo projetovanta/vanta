@@ -14,16 +14,17 @@ export const ThisWeekSection: React.FC<{
 
   return (
     /* px-5 individual — carrossel com edge-bleed, não usar px global */
-    <div className="py-4 w-full">
-      <div className="flex items-center gap-2 px-5 mb-3">
-        <CalendarDays size="0.875rem" className="text-[#FFD300]" />
-        <h3 style={TYPOGRAPHY.sectionKicker} className="text-sm">
-          Esta Semana
-        </h3>
+    <div className="py-5 w-full">
+      <div className="px-5 mb-4">
+        <div className="flex items-center gap-2 mb-0.5">
+          <CalendarDays size="0.875rem" className="text-[#FFD300]" />
+          <h3 className="text-base text-white font-semibold">Esta Semana</h3>
+        </div>
+        <p className="text-[0.7rem] text-zinc-500 ml-6">Os próximos eventos na sua cidade</p>
       </div>
       <div className="flex gap-3 overflow-x-auto no-scrollbar px-5 snap-x snap-mandatory">
         {eventos.map(e => (
-          <div key={e.id} className="shrink-0 w-[42vw] max-w-[11.25rem] snap-start">
+          <div key={e.id} className="shrink-0 w-[44vw] max-w-[12rem] snap-start">
             <EventCard
               evento={e}
               onClick={onEventClick}

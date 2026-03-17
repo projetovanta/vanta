@@ -8,8 +8,8 @@
 
 ## Seções da Home (ordem)
 1. **Saudação** — logado: "Boa noite, [Nome]" / guest: "Boa noite" + "Descubra o que tá rolando"
-2. **Highlights** (VANTA Indica) — carrossel horizontal de destaques editoriais
-3. **LiveNowSection** — eventos acontecendo agora
+2. **Highlights** (VANTA Indica) — carrossel com gradiente reforçado, badge rounded-lg backdrop-blur-md, handlers completos (6 tipos: evento, comemorar, comunidade, rota, cupom, link), props: onComunidadeClick, onNavigateToTab, onNavigateToProfile
+3. **LiveNowSection** — eventos acontecendo agora (label cidade, card 80vw)
 4. **FriendsGoingSection** — amigos que vão (só aparece se logado + tem amigos)
 5. **NearYouSection** — eventos perto (por cidade)
 6. **ThisWeekSection** — eventos nos próximos 7 dias
@@ -19,7 +19,7 @@
 ## Removidos da Home (redesign 2026-03-15)
 - SavedEventsSection — vai pro Perfil/Minha Experiência
 - NewOnPlatformSection — removido do redesign
-- MaisVantaBanner — vira card dentro do Highlights/Indica (fase futura)
+- MaisVantaBanner — agora é template "MAIS VANTA" dentro do Highlights/Indica
 
 ## Comportamento
 - Feed filtrado por cidade (authStore.selectedCity)

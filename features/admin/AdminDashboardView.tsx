@@ -171,14 +171,7 @@ export const AdminDashboardView: React.FC<{
   initialTenantId,
   initialTenantTipo,
 }) => {
-  const [subView, _setSubView] = useState<AdminSubView>(() => {
-    const saved = sessionStorage.getItem('vanta_admin_subview');
-    return (saved as AdminSubView) || 'DASHBOARD';
-  });
-  const setSubView = (v: AdminSubView) => {
-    sessionStorage.setItem('vanta_admin_subview', v);
-    _setSubView(v);
-  };
+  const [subView, setSubView] = useState<AdminSubView>('DASHBOARD');
   const [promoterCotasListaId, setPromoterCotasListaId] = useState<string>('');
   const [caixaEventoId, setCaixaEventoId] = useState<string | undefined>(undefined);
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(() => window.matchMedia('(min-width: 768px)').matches);

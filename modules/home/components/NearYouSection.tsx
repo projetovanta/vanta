@@ -10,7 +10,8 @@ export const NearYouSection: React.FC<{
   onEventClick: (e: Evento) => void;
   onComunidadeClick?: (id: string) => void;
   showCityInsteadOfLocal?: boolean;
-}> = React.memo(({ eventos, onEventClick, onComunidadeClick, showCityInsteadOfLocal }) => {
+  excludeIds?: Set<string>;
+}> = React.memo(({ eventos, onEventClick, onComunidadeClick, showCityInsteadOfLocal, excludeIds }) => {
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [asked, setAsked] = useState(false);
   const geo = useGeolocationPermission();
@@ -74,28 +75,24 @@ export const NearYouSection: React.FC<{
 
   return (
     /* px-5 individual — carrossel com edge-bleed, não usar px global */
-    <div className="py-4 w-full">
-      <div className="flex items-center gap-2 px-5 mb-3">
-        <Navigation size="0.875rem" className="text-[#FFD300]" />
-        <h3 style={TYPOGRAPHY.sectionKicker} className="text-sm">
-          Perto de Você
-        </h3>
+    <div className="py-5 w-full">
+      <div className="px-5 mb-4">
+        <div className="flex items-center gap-2 mb-0.5">
+          <Navigation size="0.875rem" className="text-[#FFD300]" />
+          <h3 className="text-base text-white font-semibold">Perto de Você</h3>
+        </div>
+        <p className="text-[0.7rem] text-zinc-500 ml-6">Eventos mais próximos de onde você está</p>
       </div>
       <div className="flex gap-3 overflow-x-auto no-scrollbar px-5 snap-x snap-mandatory">
         {nearbyEvents.map(({ evento, distKm }) => (
-          <div key={evento.id} className="shrink-0 w-[42vw] max-w-[11.25rem] snap-start relative">
+          <div key={evento.id} className="shrink-0 w-[44vw] max-w-[12rem] snap-start">
             <EventCard
               evento={evento}
               onClick={onEventClick}
               onComunidadeClick={onComunidadeClick}
               showCityInsteadOfLocal={showCityInsteadOfLocal}
+              distLabel={distKm < 1 ? `${Math.round(distKm * 1000)}m` : `${distKm.toFixed(1)}km`}
             />
-            <div className="absolute top-2.5 right-2.5 z-40 flex items-center gap-1 bg-black/60 backdrop-blur-md px-2 py-1 rounded-lg">
-              <MapPin size="0.5rem" className="text-[#FFD300]" />
-              <span className="text-[0.5rem] font-bold text-white tracking-wider">
-                {distKm < 1 ? `${Math.round(distKm * 1000)}m` : `${distKm.toFixed(1)}km`}
-              </span>
-            </div>
           </div>
         ))}
       </div>

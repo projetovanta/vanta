@@ -15,6 +15,12 @@
 - Dashboard V2 agora é o admin principal (importado como AdminGateway no App.tsx)
 - Componentes SidebarV2 e CommandPalette movidos pra features/dashboard-v2/components/
 
+## Regras de navegação admin (sessão 4)
+- Admin SEMPRE abre na Dashboard — sem persistir última view no sessionStorage
+- AdminGateway, AdminDashboardView, DashboardV2Gateway: sessionStorage removido
+- DashboardV2Gateway: conteúdo max-w-[500px] com `relative` — absolute inset-0 das subviews fica contido
+- VANTA Indica: 7 templates prontos, handlers de rota completos, preview 100% fiel à Home
+
 ## Fluxo AdminGateway
 1. `supabase.rpc('get_admin_access', { p_user_id })` → retorna {role, comunidades, eventos}
 2. `accessData === null` → spinner

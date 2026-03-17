@@ -30,7 +30,8 @@
 
 | Data | Sessões | Assuntos | Decisões-chave | Pendências | Tags |
 |------|---------|----------|----------------|------------|------|
-| <!-- Memo preenche aqui --> | | | | | |
+| 2026-03-16 | 1 | Hooks, gates, auditoria, markers | Gate Duplo obrigatório, markers com hash | — | #hooks #gates #markers |
+| 2026-03-17 | 4 | Sprint 1+2, Stripe, Login Social, iOS, Responsividade, Visual Redesign, VANTA Indica | Templates Indica, admin sem sessionStorage, preview fiel Home | Emoji picker, paleta cores, snaps, templates salvos DB | #visual #indica #admin #home #eventcard |
 
 ---
 
@@ -44,9 +45,9 @@
 
 | Métrica | Valor |
 |---------|-------|
-| Total de atas | 0 |
-| Total de sessões registradas | 0 |
-| Total de decisões registradas | 0 |
+| Total de atas | 2 |
+| Total de sessões registradas | 5 |
+| Total de decisões registradas | ~30 |
 | Ações pendentes acumuladas | 0 |
 
 ---

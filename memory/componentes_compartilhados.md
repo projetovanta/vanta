@@ -12,7 +12,7 @@
 | `NotificationPanel.tsx` | 432 | Painel lateral notificações |
 | `DevQuickLogin.tsx` | 356 | Login rápido dev — filtra profiles com auth.users, mostra role efetivo via RBAC, draggable |
 | `AppModals.tsx` | 227 | Container de todos modais do app |
-| `EventCard.tsx` | ~165 | Card de evento (imagem, nome, data, local, preço, tag colorida por estilo musical) |
+| `EventCard.tsx` | ~170 | Card de evento (imagem, nome, data, local, preço, tag estilo com backdrop-blur acima do título, prop `distLabel` pra distância ao lado do local) |
 | `Toast.tsx` | — | Toast de feedback |
 | `VantaPickerModal.tsx` | — | Picker modal customizado (substitui select nativo) |
 | `VantaDropdown.tsx` | — | Dropdown customizado global |

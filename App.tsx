@@ -4,7 +4,7 @@ import { Header, TabBar } from './components/Layout';
 import { HomeView } from './modules/home/HomeView';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { ModuleErrorBoundary } from './components/ModuleErrorBoundary';
-import { ProfileSubView } from './types';
+import { ProfileSubView, TabState } from './types';
 import type { Notificacao } from './types/auth';
 import { useNavigation } from './hooks/useNavigation';
 import { useAppHandlers } from './hooks/useAppHandlers';
@@ -333,6 +333,13 @@ export default function App() {
               onEventoIndicaClick={id => {
                 const ev = h.allEvents.find(e => e.id === id);
                 if (ev) nav.openEventDetail(ev);
+              }}
+              onNavigateToTab={tab => {
+                if (h.isGuest) {
+                  h.setGuestModalContext('generico');
+                  return;
+                }
+                nav.navigateToTab(tab as TabState);
               }}
               onComunidadeClick={nav.openComunidade}
               onComemorarClick={comId => {

@@ -38,10 +38,11 @@ interface EventCardProps {
   onClick: (event: Evento) => void;
   onComunidadeClick?: (comunidadeId: string) => void;
   showCityInsteadOfLocal?: boolean;
+  distLabel?: string;
 }
 
 export const EventCard: React.FC<EventCardProps> = React.memo(
-  ({ evento, onClick, onComunidadeClick, showCityInsteadOfLocal }) => {
+  ({ evento, onClick, onComunidadeClick, showCityInsteadOfLocal, distLabel }) => {
     const minPrice = getMinPrice(evento);
     const isHappening = isEventHappeningNow(evento);
     const isStartingSoon = isEventStartingSoon(evento);
@@ -87,11 +88,15 @@ export const EventCard: React.FC<EventCardProps> = React.memo(
       }
     };
 
+    const estiloCor = getEstiloCor(evento.estilos);
+
     return (
       <div
         className="group flex flex-col w-full rounded-2xl overflow-hidden cursor-pointer bg-[#111] border border-white/[0.06] transition-all duration-300 active:scale-[0.97]"
         onClick={() => onClick(evento)}
       >
+        {/* Linha colorida no topo baseada no estilo */}
+        <div className={`h-0.5 w-full ${estiloCor ? estiloCor.bg.replace('/15', '/40') : 'bg-[#FFD300]/30'}`} />
         <div className="relative aspect-[3/4] overflow-hidden bg-black">
           <OptimizedImage
             src={evento.imagem}
@@ -106,7 +111,7 @@ export const EventCard: React.FC<EventCardProps> = React.memo(
           />
           {/* Badge de data/status */}
           <div
-            className={`absolute top-2.5 left-2.5 z-30 px-2 py-1 rounded-lg font-bold text-[0.55rem] tracking-wider backdrop-blur-md ${badge.className}`}
+            className={`absolute top-2.5 left-2.5 z-30 px-2 py-1 rounded-lg font-bold text-[0.55rem] tracking-wider leading-none backdrop-blur-md ${badge.className}`}
           >
             {badge.text}
           </div>
@@ -116,46 +121,54 @@ export const EventCard: React.FC<EventCardProps> = React.memo(
               <Crown size="0.6rem" className="text-[#FFD300]" />
             </div>
           )}
-          {/* Overlay gradiente compacto — só embaixo */}
-          <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/80 to-transparent" />
+          {/* Overlay gradiente — mais suave, mostra mais foto */}
+          <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
           <div className="absolute inset-x-0 bottom-0 p-3">
-            {(() => {
-              const estiloCor = getEstiloCor(evento.estilos);
-              return (
-                <span
-                  className={`inline-block px-2 py-0.5 rounded-md text-[0.5rem] font-bold uppercase tracking-wider mb-1.5 ${
-                    estiloCor ? `${estiloCor.bg} ${estiloCor.text}` : 'bg-[#FFD300]/90 text-black'
-                  }`}
-                >
-                  {evento.estilos?.[0] || evento.formato || evento.categoria}
-                </span>
-              );
-            })()}
-            <h3 className="font-serif text-sm text-white leading-snug line-clamp-2 drop-shadow-lg">{evento.titulo}</h3>
+            <span
+              className={`inline-block px-2 py-0.5 rounded-md text-[0.5rem] font-bold uppercase tracking-wider mb-1.5 backdrop-blur-sm ${
+                estiloCor ? `${estiloCor.bg} ${estiloCor.text}` : 'bg-[#FFD300]/20 text-[#FFD300]'
+              }`}
+            >
+              {evento.estilos?.[0] || evento.formato || evento.categoria}
+            </span>
+            <h3 className="font-serif text-[0.9rem] text-white leading-snug line-clamp-2 drop-shadow-lg">
+              {evento.titulo}
+            </h3>
           </div>
         </div>
         {/* Footer do card */}
-        <div className="px-3 py-2.5 space-y-1">
-          <div className="flex items-center gap-1.5">
-            <MapPin size="0.65rem" className="text-[#FFD300] shrink-0" />
+        <div className="px-3 py-2.5 space-y-1.5">
+          {/* Local + Distância */}
+          <div className="flex items-center gap-1.5 min-w-0">
+            <MapPin size="0.6rem" className="text-[#FFD300]/60 shrink-0" />
             {evento.comunidade && onComunidadeClick ? (
               <button
                 onClick={handleLocalClick}
-                className="text-[0.65rem] text-zinc-300 font-medium truncate text-left active:opacity-70"
+                className="text-[0.65rem] text-zinc-400 font-medium truncate text-left active:opacity-70"
               >
                 {localLabel}
               </button>
             ) : (
-              <span className="text-[0.65rem] text-zinc-400 font-medium truncate">{localLabel}</span>
+              <span className="text-[0.65rem] text-zinc-500 font-medium truncate">{localLabel}</span>
+            )}
+            {distLabel && (
+              <>
+                <span className="text-zinc-600 text-[0.5rem]">•</span>
+                <span className="text-[0.6rem] text-[#FFD300]/70 font-semibold shrink-0">{distLabel}</span>
+              </>
             )}
           </div>
+          {/* Preço */}
           {!evento.ocultarValor && minPrice > 0 && (
-            <p
-              className="text-sm text-[#FFD300] leading-tight"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 700 }}
-            >
-              R$ {minPrice.toFixed(2).replace('.', ',')}
-            </p>
+            <div className="flex items-center gap-1.5">
+              <span className="text-[0.55rem] text-zinc-600 uppercase tracking-wider font-medium">A partir de</span>
+              <p
+                className="text-sm text-[#FFD300] leading-tight"
+                style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 700 }}
+              >
+                R$ {minPrice.toFixed(2).replace('.', ',')}
+              </p>
+            </div>
           )}
           {evento.ocultarValor && <span className="text-xs font-serif italic text-[#FFD300]">Consulta</span>}
         </div>

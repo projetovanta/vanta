@@ -7,8 +7,8 @@
 
 ## Estado Atual
 
-**Fase:** Produção e testes finais
-**Última sessão:** 2026-03-17 (sessão 3)
+**Fase:** Produção e testes finais + Visual Redesign
+**Última sessão:** 2026-03-17 (sessão 4)
 **Atualizado por:** Memo
 
 ---
@@ -39,6 +39,10 @@
 
 | O que mudou | Onde ler |
 |-------------|----------|
+| Visual Redesign Home + EventCard + VANTA Indica (sessão 4) | `memory/sessao_atual.md` |
+| VANTA Indica: handlers rota completos (6 tipos) + 7 templates | `memory/sessao_atual.md` |
+| Admin: sem sessionStorage, sempre abre Dashboard | `memory/sessao_atual.md` |
+| Admin: max-w-[500px] contém absolute inset-0 (relative) | `memory/sessao_atual.md` |
 | Bloco C completo (C1 login social, C2 onboarding produtor, C3 CMS master) | `memory/sessao_atual.md` |
 | Sprint 2 completo (comprovante, CSV, encerrar/cancelar, LGPD) | `memory/sessao_atual.md` |
 | Stripe TEST MODE ativo (secrets + webhook 9 eventos + 3 EFs) | `memory/modulo_compra_ingresso.md` |

@@ -156,13 +156,11 @@ const CategoryRow: React.FC<{
   return (
     <div>
       <div className="flex items-center justify-between px-5 mb-4">
-        <h3 style={TYPOGRAPHY.sectionKicker} className="text-xs">
-          {categoria}
-        </h3>
+        <h3 className="text-base text-white font-semibold">{categoria}</h3>
         {eventos.length > 3 && (
           <button
             onClick={() => onViewAll(categoria)}
-            className="flex items-center gap-1 text-[0.65rem] text-zinc-500 font-semibold uppercase tracking-wider active:text-[#FFD300] transition-colors"
+            className="flex items-center gap-0.5 text-xs text-[#FFD300]/70 font-medium active:text-[#FFD300] transition-colors"
           >
             Ver todos <ChevronRight size="0.875rem" />
           </button>

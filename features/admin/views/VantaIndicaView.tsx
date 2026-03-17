@@ -74,16 +74,18 @@ const ACAO_LABEL: Record<TipoAcaoIndica, string> = {
 
 const ROTAS_INTERNAS: { value: string; label: string; descricao: string }[] = [
   { value: 'tab:INICIO', label: 'Inicio', descricao: 'Feed de eventos' },
-  { value: 'tab:BUSCAR', label: 'Explorar', descricao: 'Buscar eventos' },
+  { value: 'tab:BUSCAR', label: 'Explorar', descricao: 'Buscar eventos e pessoas' },
   { value: 'tab:RADAR', label: 'Radar', descricao: 'Mapa de eventos' },
   { value: 'tab:MENSAGENS', label: 'Mensagens', descricao: 'Chat com amigos' },
   { value: 'perfil:WALLET', label: 'Minha Carteira', descricao: 'Ingressos e acessos' },
+  { value: 'perfil:MY_TICKETS', label: 'Meus Ingressos', descricao: 'Ver ingressos comprados' },
   { value: 'perfil:CLUBE', label: 'MAIS VANTA', descricao: 'Clube de beneficios' },
-  { value: 'perfil:SOLICITAR_PARCERIA', label: 'Seja Parceiro', descricao: 'Oferecer beneficios' },
+  { value: 'perfil:SOLICITAR_PARCERIA', label: 'Seja Parceiro', descricao: 'Oferecer beneficios como parceiro' },
   { value: 'perfil:HISTORICO', label: 'Meu Historico', descricao: 'Eventos passados' },
   { value: 'perfil:EDIT_PROFILE', label: 'Editar Perfil', descricao: 'Completar perfil' },
   { value: 'perfil:MEIA_ENTRADA', label: 'Meia-Entrada', descricao: 'Upload comprovante' },
-  { value: 'comemorar', label: 'Comemorar Aniversario', descricao: 'Solicitar comemoracao' },
+  { value: 'perfil:PREVIEW_PUBLIC', label: 'Meu Perfil Publico', descricao: 'Ver como outros me veem' },
+  { value: 'comemorar', label: 'Comemorar Aniversario', descricao: 'Solicitar comemoracao VIP' },
 ];
 
 const Toggle: React.FC<{ active: boolean; onChange: () => void }> = ({ active, onChange }) => (
@@ -146,6 +148,112 @@ const EMPTY: ModalForm = {
   _scaleSubtitulo: 1,
 };
 
+/** Badge colors para preview (espelha Highlights.tsx BADGE_COLORS) */
+const PREVIEW_BADGE_COLORS: Record<string, string> = {
+  EVENTO: 'bg-emerald-500/80 text-white border border-emerald-400/30',
+  DESTAQUE_EVENTO: 'bg-emerald-500/80 text-white border border-emerald-400/30',
+  PARCEIRO: 'bg-amber-500/80 text-black border border-amber-400/30',
+  MAIS_VANTA: 'bg-[#FFD300]/90 text-black border border-[#FFD300]/40',
+  PUBLICIDADE: 'bg-[#FFD300]/80 text-black border border-[#FFD300]/30',
+  EXPERIENCIA: 'bg-purple-500/80 text-white border border-purple-400/30',
+  INFORMATIVO: 'bg-zinc-700/80 text-white border border-white/10',
+};
+
+/** Templates prontos para criação rápida */
+const CARD_TEMPLATES: { label: string; descricao: string; form: Partial<ModalForm> }[] = [
+  {
+    label: 'MAIS VANTA',
+    descricao: 'Convida membros ou divulga o clube',
+    form: {
+      tipo: 'MAIS_VANTA',
+      badge: 'EXCLUSIVO',
+      titulo: 'Faça Parte do MAIS VANTA',
+      subtitulo: 'Benefícios exclusivos nos melhores lugares',
+      acaoTipo: 'rota',
+      acaoValor: 'perfil:CLUBE',
+      textAlign: 'end',
+    },
+  },
+  {
+    label: 'Comemorar Aniversário',
+    descricao: 'Leva pra solicitação de comemoração VIP',
+    form: {
+      tipo: 'EXPERIENCIA',
+      badge: 'COMEMORE COM A GENTE',
+      titulo: 'Seu Aniversário Merece Mais',
+      subtitulo: 'Solicite uma comemoração VIP',
+      acaoTipo: 'comemorar',
+      acaoValor: '',
+      textAlign: 'end',
+    },
+  },
+  {
+    label: 'Seja Parceiro',
+    descricao: 'Convida estabelecimentos a oferecer benefícios',
+    form: {
+      tipo: 'PARCEIRO',
+      badge: 'SEJA PARCEIRO',
+      titulo: 'Seu Estabelecimento no VANTA',
+      subtitulo: 'Ofereça benefícios e atraia o público certo',
+      acaoTipo: 'rota',
+      acaoValor: 'perfil:SOLICITAR_PARCERIA',
+      textAlign: 'end',
+    },
+  },
+  {
+    label: 'Evento Destaque',
+    descricao: 'Divulga um evento específico (selecione depois)',
+    form: {
+      tipo: 'DESTAQUE_EVENTO',
+      badge: '',
+      titulo: '',
+      subtitulo: '',
+      acaoTipo: 'evento',
+      acaoValor: '',
+      textAlign: 'end',
+    },
+  },
+  {
+    label: 'Comunidade Destaque',
+    descricao: 'Divulga um local/casa noturna (selecione depois)',
+    form: {
+      tipo: 'PARCEIRO',
+      badge: 'CONHEÇA',
+      titulo: '',
+      subtitulo: 'Um dos melhores lugares da cidade',
+      acaoTipo: 'comunidade',
+      acaoValor: '',
+      textAlign: 'end',
+    },
+  },
+  {
+    label: 'Explorar Eventos',
+    descricao: 'Leva pra aba de busca de eventos',
+    form: {
+      tipo: 'INFORMATIVO',
+      badge: 'DESCUBRA',
+      titulo: 'O Que Tem de Bom Hoje?',
+      subtitulo: 'Explore os melhores eventos da sua cidade',
+      acaoTipo: 'rota',
+      acaoValor: 'tab:BUSCAR',
+      textAlign: 'end',
+    },
+  },
+  {
+    label: 'Mapa / Radar',
+    descricao: 'Leva pro mapa de eventos e parceiros',
+    form: {
+      tipo: 'INFORMATIVO',
+      badge: 'PERTO DE VOCÊ',
+      titulo: 'Veja o Que Tem Por Perto',
+      subtitulo: 'Eventos e parceiros no mapa',
+      acaoTipo: 'rota',
+      acaoValor: 'tab:RADAR',
+      textAlign: 'end',
+    },
+  },
+];
+
 /** Snap points for magnetic alignment (percentages) */
 const SNAP_LINES_X = [5, 33.33, 50, 66.66, 95]; // margins, thirds, center
 const SNAP_LINES_Y = [5, 33.33, 50, 66.66, 95];
@@ -193,10 +301,11 @@ const useDragElement = (
 
   const onStart = (e: React.TouchEvent | React.MouseEvent) => {
     e.stopPropagation();
-    e.preventDefault();
     const [cx, cy] = getClientXY(e);
     startRef.current = { px: cx, py: cy, ox: posRef.current.x, oy: posRef.current.y };
     const onMove = (ev: TouchEvent | MouseEvent) => {
+      // Prevenir scroll APENAS durante o drag (via native handler, não React)
+      if ('cancelable' in ev && ev.cancelable) ev.preventDefault();
       const [mx, my] = 'touches' in ev ? [ev.touches[0].clientX, ev.touches[0].clientY] : [ev.clientX, ev.clientY];
       const rect = containerRef.current?.getBoundingClientRect();
       if (!rect) return;
@@ -220,17 +329,19 @@ const useDragElement = (
       onChange({ x: nx, y: ny });
       onSnapChange?.({ x: snapX, y: snapY });
     };
-    const onEnd = () => {
+    const cleanup = () => {
       document.removeEventListener('touchmove', onMove);
       document.removeEventListener('mousemove', onMove);
-      document.removeEventListener('touchend', onEnd);
-      document.removeEventListener('mouseup', onEnd);
+      document.removeEventListener('touchend', cleanup);
+      document.removeEventListener('touchcancel', cleanup);
+      document.removeEventListener('mouseup', cleanup);
       onSnapChange?.({ x: null, y: null });
     };
     document.addEventListener('touchmove', onMove, { passive: false });
     document.addEventListener('mousemove', onMove);
-    document.addEventListener('touchend', onEnd);
-    document.addEventListener('mouseup', onEnd);
+    document.addEventListener('touchend', cleanup);
+    document.addEventListener('touchcancel', cleanup);
+    document.addEventListener('mouseup', cleanup);
   };
 
   return { onTouchStart: onStart, onMouseDown: onStart };
@@ -687,6 +798,33 @@ const CardModal: React.FC<{
         className="flex-1 overflow-y-auto no-scrollbar px-6 pt-6 pb-10 space-y-4 max-w-3xl mx-auto w-full"
         style={{ paddingBottom: 'max(2.5rem, env(safe-area-inset-bottom, 2.5rem))' }}
       >
+        {/* Templates — só aparece em criação (form vazio) */}
+        {!initial.badge && !initial.titulo && (
+          <div className="space-y-2">
+            <span className="text-[0.5625rem] font-black text-zinc-500 uppercase tracking-widest">
+              Começar com template
+            </span>
+            <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
+              {CARD_TEMPLATES.map(tpl => (
+                <button
+                  key={tpl.label}
+                  type="button"
+                  onClick={() => {
+                    setForm(prev => ({ ...prev, ...tpl.form }));
+                    setBadgePos({ x: 5, y: 75 });
+                    setTituloPos({ x: 5, y: 82 });
+                    setSubtituloPos({ x: 5, y: 90 });
+                  }}
+                  className="shrink-0 px-3 py-2 bg-zinc-900 border border-white/10 rounded-xl text-left active:scale-[0.97] transition-all hover:border-[#FFD300]/30"
+                >
+                  <span className="text-[0.65rem] text-white font-bold block">{tpl.label}</span>
+                  <span className="text-[0.5rem] text-zinc-500 block mt-0.5">{tpl.descricao}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* 1. Tipo */}
         <Field label="Tipo do Card">
           <VantaSelect
@@ -1094,140 +1232,144 @@ const CardModal: React.FC<{
           </div>
 
           {/* Card preview — réplica exata do Highlights.tsx da home */}
-          <div
-            ref={previewRef}
-            className="relative w-full rounded-[2rem] overflow-hidden border border-white/10 shadow-lg select-none touch-none"
-            style={{ aspectRatio: '5 / 3', containerType: 'inline-size' }}
-          >
-            {form.imagem ? (
-              <img
-                src={form.imagem}
-                className="absolute inset-0 w-full h-full object-cover"
-                alt="preview"
-                draggable={false}
-              />
-            ) : (
-              <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900" />
-            )}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/60 via-transparent to-transparent" />
+          {/* Wrapper simula o px-5 da Home pra cqw calcular a mesma largura */}
+          <div className="w-full max-w-[500px] mx-auto px-5">
+            <div
+              ref={previewRef}
+              className="relative w-full rounded-[2rem] overflow-hidden glass-card shadow-lg select-none"
+              style={{ aspectRatio: '5 / 3', containerType: 'inline-size' }}
+            >
+              {form.imagem ? (
+                <img
+                  src={form.imagem}
+                  className="absolute inset-0 w-full h-full object-cover"
+                  alt="preview"
+                  draggable={false}
+                />
+              ) : (
+                <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900" />
+              )}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
 
-            {/* Guias de alinhamento */}
-            {showGuides && (
-              <>
-                {/* Centro vertical */}
-                <div
-                  className={`absolute left-1/2 top-0 bottom-0 pointer-events-none z-20 transition-all duration-150 ${activeSnap.x === 50 ? 'w-[2px] bg-[#FFD300]/80 shadow-[0_0_8px_rgba(255,211,0,0.5)]' : 'w-px bg-[#FFD300]/30'}`}
-                />
-                {/* Centro horizontal */}
-                <div
-                  className={`absolute top-1/2 left-0 right-0 pointer-events-none z-20 transition-all duration-150 ${activeSnap.y === 50 ? 'h-[2px] bg-[#FFD300]/80 shadow-[0_0_8px_rgba(255,211,0,0.5)]' : 'h-px bg-[#FFD300]/30'}`}
-                />
-                {/* Terços verticais */}
-                <div
-                  className={`absolute left-[33.33%] top-0 bottom-0 pointer-events-none z-20 transition-all duration-150 ${activeSnap.x !== null && Math.abs(activeSnap.x - 33.33) < 0.1 ? 'w-[2px] bg-[#FFD300]/60' : 'w-px bg-white/10'}`}
-                />
-                <div
-                  className={`absolute left-[66.66%] top-0 bottom-0 pointer-events-none z-20 transition-all duration-150 ${activeSnap.x !== null && Math.abs(activeSnap.x - 66.66) < 0.1 ? 'w-[2px] bg-[#FFD300]/60' : 'w-px bg-white/10'}`}
-                />
-                {/* Terços horizontais */}
-                <div
-                  className={`absolute top-[33.33%] left-0 right-0 pointer-events-none z-20 transition-all duration-150 ${activeSnap.y !== null && Math.abs(activeSnap.y - 33.33) < 0.1 ? 'h-[2px] bg-[#FFD300]/60' : 'h-px bg-white/10'}`}
-                />
-                <div
-                  className={`absolute top-[66.66%] left-0 right-0 pointer-events-none z-20 transition-all duration-150 ${activeSnap.y !== null && Math.abs(activeSnap.y - 66.66) < 0.1 ? 'h-[2px] bg-[#FFD300]/60' : 'h-px bg-white/10'}`}
-                />
-                {/* Margens seguras (5%) */}
-                <div
-                  className={`absolute inset-[5%] border border-dashed rounded-xl pointer-events-none z-20 transition-all duration-150 ${activeSnap.x === 5 || activeSnap.x === 95 || activeSnap.y === 5 || activeSnap.y === 95 ? 'border-[#FFD300]/40' : 'border-white/10'}`}
-                />
-                {/* Label central */}
-                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-20">
+              {/* Guias de alinhamento */}
+              {showGuides && (
+                <>
+                  {/* Centro vertical */}
                   <div
-                    className={`rounded-full transition-all duration-150 ${activeSnap.x === 50 && activeSnap.y === 50 ? 'w-3 h-3 bg-[#FFD300]/80 shadow-[0_0_10px_rgba(255,211,0,0.6)]' : 'w-2 h-2 bg-[#FFD300]/50'}`}
+                    className={`absolute left-1/2 top-0 bottom-0 pointer-events-none z-20 transition-all duration-150 ${activeSnap.x === 50 ? 'w-[2px] bg-[#FFD300]/80 shadow-[0_0_8px_rgba(255,211,0,0.5)]' : 'w-px bg-[#FFD300]/30'}`}
                   />
+                  {/* Centro horizontal */}
+                  <div
+                    className={`absolute top-1/2 left-0 right-0 pointer-events-none z-20 transition-all duration-150 ${activeSnap.y === 50 ? 'h-[2px] bg-[#FFD300]/80 shadow-[0_0_8px_rgba(255,211,0,0.5)]' : 'h-px bg-[#FFD300]/30'}`}
+                  />
+                  {/* Terços verticais */}
+                  <div
+                    className={`absolute left-[33.33%] top-0 bottom-0 pointer-events-none z-20 transition-all duration-150 ${activeSnap.x !== null && Math.abs(activeSnap.x - 33.33) < 0.1 ? 'w-[2px] bg-[#FFD300]/60' : 'w-px bg-white/10'}`}
+                  />
+                  <div
+                    className={`absolute left-[66.66%] top-0 bottom-0 pointer-events-none z-20 transition-all duration-150 ${activeSnap.x !== null && Math.abs(activeSnap.x - 66.66) < 0.1 ? 'w-[2px] bg-[#FFD300]/60' : 'w-px bg-white/10'}`}
+                  />
+                  {/* Terços horizontais */}
+                  <div
+                    className={`absolute top-[33.33%] left-0 right-0 pointer-events-none z-20 transition-all duration-150 ${activeSnap.y !== null && Math.abs(activeSnap.y - 33.33) < 0.1 ? 'h-[2px] bg-[#FFD300]/60' : 'h-px bg-white/10'}`}
+                  />
+                  <div
+                    className={`absolute top-[66.66%] left-0 right-0 pointer-events-none z-20 transition-all duration-150 ${activeSnap.y !== null && Math.abs(activeSnap.y - 66.66) < 0.1 ? 'h-[2px] bg-[#FFD300]/60' : 'h-px bg-white/10'}`}
+                  />
+                  {/* Margens seguras (5%) */}
+                  <div
+                    className={`absolute inset-[5%] border border-dashed rounded-xl pointer-events-none z-20 transition-all duration-150 ${activeSnap.x === 5 || activeSnap.x === 95 || activeSnap.y === 5 || activeSnap.y === 95 ? 'border-[#FFD300]/40' : 'border-white/10'}`}
+                  />
+                  {/* Label central */}
+                  <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-20">
+                    <div
+                      className={`rounded-full transition-all duration-150 ${activeSnap.x === 50 && activeSnap.y === 50 ? 'w-3 h-3 bg-[#FFD300]/80 shadow-[0_0_10px_rgba(255,211,0,0.6)]' : 'w-2 h-2 bg-[#FFD300]/50'}`}
+                    />
+                  </div>
+                  {/* Guias dinâmicas de alinhamento com outros elementos */}
+                  {activeSnap.x !== null && !SNAP_LINES_X.some(s => Math.abs(s - activeSnap.x!) < 0.1) && (
+                    <div
+                      className="absolute top-0 bottom-0 w-[2px] bg-cyan-400/60 pointer-events-none z-20 shadow-[0_0_6px_rgba(34,211,238,0.4)]"
+                      style={{ left: `${activeSnap.x}%` }}
+                    />
+                  )}
+                  {activeSnap.y !== null && !SNAP_LINES_Y.some(s => Math.abs(s - activeSnap.y!) < 0.1) && (
+                    <div
+                      className="absolute left-0 right-0 h-[2px] bg-cyan-400/60 pointer-events-none z-20 shadow-[0_0_6px_rgba(34,211,238,0.4)]"
+                      style={{ top: `${activeSnap.y}%` }}
+                    />
+                  )}
+                </>
+              )}
+
+              {form.badge.trim() && (
+                <div
+                  {...badgeDrag}
+                  style={{
+                    position: 'absolute',
+                    left: `${badgePos.x}%`,
+                    top: `${badgePos.y}%`,
+                    cursor: 'grab',
+                    transform: `scale(${badgeScale})`,
+                    transformOrigin: 'top left',
+                  }}
+                  className="active:cursor-grabbing z-10 touch-none"
+                >
+                  <span
+                    style={{ fontSize: '2.1cqw', lineHeight: 1 }}
+                    className={`${PREVIEW_BADGE_COLORS[form.tipo] ?? 'bg-[#FFD300]/80 text-black border border-[#FFD300]/30'} font-black px-2.5 py-1 rounded-lg uppercase tracking-widest shadow-lg backdrop-blur-md`}
+                  >
+                    {form.badge}
+                  </span>
                 </div>
-                {/* Guias dinâmicas de alinhamento com outros elementos */}
-                {activeSnap.x !== null && !SNAP_LINES_X.some(s => Math.abs(s - activeSnap.x!) < 0.1) && (
-                  <div
-                    className="absolute top-0 bottom-0 w-[2px] bg-cyan-400/60 pointer-events-none z-20 shadow-[0_0_6px_rgba(34,211,238,0.4)]"
-                    style={{ left: `${activeSnap.x}%` }}
-                  />
-                )}
-                {activeSnap.y !== null && !SNAP_LINES_Y.some(s => Math.abs(s - activeSnap.y!) < 0.1) && (
-                  <div
-                    className="absolute left-0 right-0 h-[2px] bg-cyan-400/60 pointer-events-none z-20 shadow-[0_0_6px_rgba(34,211,238,0.4)]"
-                    style={{ top: `${activeSnap.y}%` }}
-                  />
-                )}
-              </>
-            )}
+              )}
 
-            {form.badge.trim() && (
-              <div
-                {...badgeDrag}
-                style={{
-                  position: 'absolute',
-                  left: `${badgePos.x}%`,
-                  top: `${badgePos.y}%`,
-                  cursor: 'grab',
-                  transform: `scale(${badgeScale})`,
-                  transformOrigin: 'top left',
-                }}
-                className="active:cursor-grabbing z-10"
-              >
-                <span
-                  style={{ fontSize: '2.1cqw', lineHeight: 1 }}
-                  className="bg-[#FFD300] text-black font-black px-2.5 py-1 rounded-full uppercase tracking-widest shadow-[0_0_15px_rgba(255,211,0,0.4)] whitespace-nowrap"
+              {form.titulo.trim() && (
+                <div
+                  {...tituloDrag}
+                  style={{
+                    position: 'absolute',
+                    left: `${tituloPos.x}%`,
+                    top: `${tituloPos.y}%`,
+                    cursor: 'grab',
+                    transform: `scale(${tituloScale})`,
+                    transformOrigin: 'top left',
+                  }}
+                  className="active:cursor-grabbing z-10 max-w-[90%] touch-none"
                 >
-                  {form.badge}
-                </span>
-              </div>
-            )}
+                  <h2
+                    style={{ ...TYPOGRAPHY.screenTitle, fontSize: '5.3cqw', lineHeight: 1.2, fontStyle: 'italic' }}
+                    className="drop-shadow-lg truncate"
+                  >
+                    {form.titulo}
+                  </h2>
+                </div>
+              )}
 
-            {form.titulo.trim() && (
-              <div
-                {...tituloDrag}
-                style={{
-                  position: 'absolute',
-                  left: `${tituloPos.x}%`,
-                  top: `${tituloPos.y}%`,
-                  cursor: 'grab',
-                  transform: `scale(${tituloScale})`,
-                  transformOrigin: 'top left',
-                }}
-                className="active:cursor-grabbing z-10 max-w-[90%]"
-              >
-                <h2
-                  style={{ ...TYPOGRAPHY.screenTitle, fontSize: '5.3cqw', lineHeight: '7.4cqw', fontStyle: 'italic' }}
-                  className="drop-shadow-lg text-white whitespace-nowrap"
+              {form.subtitulo.trim() && (
+                <div
+                  {...subtituloDrag}
+                  style={{
+                    position: 'absolute',
+                    left: `${subtituloPos.x}%`,
+                    top: `${subtituloPos.y}%`,
+                    cursor: 'grab',
+                    transform: `scale(${subtituloScale})`,
+                    transformOrigin: 'top left',
+                  }}
+                  className="active:cursor-grabbing z-10 max-w-[90%] touch-none"
                 >
-                  {form.titulo}
-                </h2>
-              </div>
-            )}
-
-            {form.subtitulo.trim() && (
-              <div
-                {...subtituloDrag}
-                style={{
-                  position: 'absolute',
-                  left: `${subtituloPos.x}%`,
-                  top: `${subtituloPos.y}%`,
-                  cursor: 'grab',
-                  transform: `scale(${subtituloScale})`,
-                  transformOrigin: 'top left',
-                }}
-                className="active:cursor-grabbing z-10 max-w-[90%]"
-              >
-                <p
-                  style={{ fontSize: '2.6cqw', lineHeight: '4.2cqw', fontStyle: 'italic' }}
-                  className="text-[#FFD300] font-semibold leading-relaxed drop-shadow-md whitespace-nowrap"
-                >
-                  {form.subtitulo}
-                </p>
-              </div>
-            )}
+                  <p
+                    style={{ fontSize: '2.6cqw', lineHeight: '4.2cqw', fontStyle: 'italic' }}
+                    className="text-[#FFD300] font-semibold leading-relaxed drop-shadow-md line-clamp-3"
+                  >
+                    {form.subtitulo}
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
+          {/* fecha wrapper px-5 */}
 
           {/* Sliders de tamanho */}
           <div className="space-y-2 pt-1">

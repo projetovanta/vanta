@@ -15,7 +15,7 @@ App.tsx → tabs (Home, Busca, Radar, Carteira, Perfil) + views modais (EventDet
 | Evento | `modules/event-detail/EventDetailView.tsx` | 415 |
 | Checkout | `modules/checkout/CheckoutPage.tsx` | 786 |
 | Comunidade | `modules/community/ComunidadePublicView.tsx` | 407 |
-| Chat | `components/ConversationView.tsx` (dentro de components) | — |
+| Chat | `modules/messages/MessagesView.tsx` (inbox) + `modules/messages/components/ChatRoomView.tsx` (1:1) | — |
 
 ## Stores usadas
 - `useAuthStore` → conta, profile, notificações

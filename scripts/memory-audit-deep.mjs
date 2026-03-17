@@ -150,7 +150,7 @@ function extractSymbolRefs(content) {
 }
 
 // ── Verificar se symbol existe no código ──
-const CODE_DIRS = ['features', 'modules', 'services', 'components', 'hooks', 'stores', 'types', 'utils.ts', 'src']
+const CODE_DIRS = ['features', 'modules', 'services', 'components', 'hooks', 'stores', 'types', 'utils.ts', 'src', 'supabase']
   .filter(d => existsSync(join(PROJECT_DIR, d)));
 
 function grepSymbol(name) {
@@ -158,7 +158,7 @@ function grepSymbol(name) {
   try {
     const dirs = CODE_DIRS.join(' ');
     const result = execSync(
-      `grep -rl --include="*.ts" --include="*.tsx" -w "${name}" ${dirs} 2>/dev/null | head -5`,
+      `grep -rl --include="*.ts" --include="*.tsx" --include="*.sql" -w "${name}" ${dirs} 2>/dev/null | head -5`,
       { cwd: PROJECT_DIR, encoding: 'utf-8', timeout: 5000 },
     ).trim();
     return result ? result.split('\n').filter(Boolean) : [];

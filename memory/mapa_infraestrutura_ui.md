@@ -27,8 +27,8 @@
 | Componente | Linhas | Função |
 |---|---|---|
 | `AuthModal.tsx` | 531 | Login/cadastro |
-| `ConviteSocioModal.tsx` | 634 | LEGACY — substituido por NegociacaoSocioView |
-| `NegociacaoSocioView.tsx` | ~700 | Tela cheia chat negociacao socio/produtor |
+| ~~ConviteSocioModal~~ | — | REMOVIDO — negociação fora do app |
+| ~~NegociacaoSocioView~~ | — | REMOVIDO — negociação fora do app |
 | `NotificationPanel.tsx` | 432 | Painel de notificações |
 | `DevQuickLogin.tsx` | 356 | Login rápido (dev) — filtra auth.users, RBAC roles |
 | `AppModals.tsx` | 227 | Container de modais do app |

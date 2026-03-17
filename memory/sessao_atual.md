@@ -1,13 +1,13 @@
 # Sessao Atual — Estado para Continuidade
 
 ## Branch: main
-## Ultimo commit: `01e1f90` — fix: responsividade admin
+## Ultimo commit: `b93dc81` — fix: caminho sem volta admin + responsividade 320px
 ## Mudancas locais: NAO (tudo commitado e pushado)
 ## Preflight: diff-check OK
 
 ## Resumo da sessao (17 mar 2026 — sessao 2)
 
-### Commits desta sessao (15)
+### Commits desta sessao (20)
 1. `26c69fc` — feat: Sprint 2 completo (comprovante saque, CSV, encerrar/cancelar, LGPD)
 2. `bb5ac26` — docs: B1 Stripe test mode + B2 iOS gerado
 3. `56c1ca4` — feat: C1 Login Social Google + Apple
@@ -23,6 +23,11 @@
 13. `2d702a7` — fix: input CommandPalette sem id/name
 14. `88802bf` — fix: scroll trava após react-easy-crop (2 croppers)
 15. `01e1f90` — fix: responsividade admin (grid-cols-4/5 com breakpoints)
+16. `debfe0d` — docs: sessao_atual + ata completa
+17. `2d702a7` — fix: input CommandPalette sem id/name
+18. `88802bf` — fix: scroll trava após react-easy-crop (2 croppers)
+19. `420d1ac` — fix: responsividade 320px (admin scaling fluido + KPI empilhar)
+20. `b93dc81` — fix: caminho sem volta admin + botão ← Voltar no Panorama
 
 ### Sprint 2 — COMPLETO
 | Bloco | Itens | Status |

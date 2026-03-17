@@ -1,9 +1,9 @@
 # Sessao Atual — Estado para Continuidade
 
 ## Branch: main
-## Ultimo commit: `9277e32` — docs: 12 memorias atualizadas
-## Mudancas locais: NAO (tudo commitado e pushado)
-## Preflight: OK
+## Ultimo commit: `007009a` — docs: sessao_atual + ata final
+## Mudancas locais: SIM (Sprint 2 completo — 13+ arquivos + 2 migrations + 1 RPC)
+## Preflight: diff-check OK
 
 ## Resumo da sessao (17 mar 2026)
 
@@ -44,22 +44,29 @@ painel_administrativo, services_admin, modulo_comunidade, sub_comunidade_crud, c
 ### BLOCO A — COMPLETO ✅
 ### BLOCO B
 | B1 Stripe | ⏳ depende CNPJ | B2 Teste celular | ⏳ Pendencias App |
-| B3 Deep links | ⏳ Pendencias App | B4 Comprovante saque | ⏳ PROXIMO |
+| B3 Deep links | ⏳ Pendencias App | B4 Comprovante saque | ✅ |
 | B5 Cupom comunidade | ✅ | B6 Redes sociais | ✅ |
 | B7 Autonomia master | ✅ Sprint 1 feito |
 
 ### BLOCO C — DEPOIS
 | C1 Login social | ⏳ | C2 Onboarding produtor | ⏳ | C3 CMS master | ⏳ |
 
-## Proximo passo — Sprint 2
-1. B4: Comprovante de saque (migration + storage + UI)
-2. Templates de notificacao (tabela + editor)
-3. MV Cidades/Parceiros/Deals — validar CRUD real
-4. Categorias/config gerais
-5. Exportacao CSV basica
-6. Eventos: encerrar/cancelar
-7. LGPD: exportacao dados + exclusao conta
-8. Relatorios financeiros avancados
+## Sprint 2 — Progresso
+### S2-A: Financeiro & Comprovantes
+1. ✅ B4: Comprovante de saque (migration + storage + UI)
+2. ⏳ Exportacao CSV basica (saques, vendas, reembolsos)
+3. ⏳ Relatorios financeiros avancados
+
+### S2-B: Gestao de Eventos — COMPLETO
+4. ✅ Eventos: encerrar/cancelar (encerrarEvento + UI modais + badge cancelado)
+5. ✅ Templates de notificacao (já existia: push_templates + pushTemplatesService + NotificacoesAdminView)
+
+### S2-C: LGPD & Dados — COMPLETO
+6. ✅ LGPD: exportação dados (RPC exportar_dados_usuario) + exclusão conta (já existia)
+
+### S2-D: Validacao & Config — COMPLETO
+7. ✅ MV Cidades/Parceiros/Deals — CRUD funcional (views + services + tabelas existiam)
+8. ✅ Categorias — CategoriasAdminView + categorias_evento existiam
 
 ## Pendencias App (painel SISTEMA)
 - Email caixa (Resend) | CNPJ | Stripe secrets | Teste celular | Deep links

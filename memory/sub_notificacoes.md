@@ -97,6 +97,7 @@ Recebe notificacoes e navega para a tela correta baseado no `tipo` e `link`:
 | 6 | Campanhas em massa | OK | campanhasService.ts 297L (IN_APP + PUSH + EMAIL, segmentos: TODOS/CIDADE/COMUNIDADE/EVENTO/MV) |
 | 7 | Tabelas Supabase | OK | notifications (19 rows), push_subscriptions (2 rows), notificacoes_posevento |
 | 8 | Cron jobs | OK | 10 jobs ativos: cleanup tokens/tickets, finalizar eventos, limpar notifs, update IG, expirar negociacoes, weekly-report, notif-pedir-review, lembrete-reserva-mv, process-scheduled-push (1min) |
-| 9 | Toggle push por tipo | NAO EXISTE | Sem preferencias de notificacao |
+| 10 | Templates de push | OK | push_templates + pushTemplatesService 137L + NotificacoesAdminView 960L (CRUD + agendamento + segmentação) |
+| 11 | Toggle push por tipo | NAO EXISTE | Sem preferencias de notificacao |
 | 8 | Historico de notificacoes | NAO EXISTE | Sem tela dedicada de historico |
 | 9 | Unsubscribe email | NAO EXISTE | Sem link de unsubscribe nos emails |

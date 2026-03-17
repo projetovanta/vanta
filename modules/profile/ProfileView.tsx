@@ -19,6 +19,7 @@ import {
   Loader2,
   Ban,
   ClipboardList,
+  Download,
 } from 'lucide-react';
 import { TYPOGRAPHY } from '../../constants';
 import { OptimizedImage } from '../../components/OptimizedImage';
@@ -35,6 +36,7 @@ import { ComprovanteMeiaSection } from './ComprovanteMeiaSection';
 import { SolicitarParceriaView } from '../../features/admin/views/SolicitarParceriaView';
 import { MinhasSolicitacoesView } from './MinhasSolicitacoesView';
 import { BloqueadosView } from './BloqueadosView';
+import { lgpdExportService } from '../../services/lgpdExportService';
 import { useAuthStore } from '../../stores/authStore';
 import { useTicketsStore } from '../../stores/ticketsStore';
 import { useExtrasStore } from '../../stores/extrasStore';
@@ -107,6 +109,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
   const [showDeleteAccount, setShowDeleteAccount] = useState(false);
   const [deleteConfirmText, setDeleteConfirmText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
   const [passwordForm, setPasswordForm] = useState({ current: '', next: '', confirm: '' });
   const [passwordLoading, setPasswordLoading] = useState(false);
   const [passwordError, setPasswordError] = useState('');
@@ -270,6 +273,21 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
       setPasswordError('Erro ao alterar senha.');
     }
     setPasswordLoading(false);
+  };
+
+  // ── Exportar dados (LGPD Art. 18, V) ──
+  const handleExportData = async () => {
+    if (isExporting) return;
+    setIsExporting(true);
+    try {
+      const dados = await lgpdExportService.exportarMeusDados();
+      lgpdExportService.downloadJSON(dados);
+      onSuccess?.('Dados exportados com sucesso!');
+    } catch {
+      onSuccess?.('Erro ao exportar dados. Tente novamente.');
+    } finally {
+      setIsExporting(false);
+    }
   };
 
   // ── Excluir conta handler (anonimização Apple-compliant) ──
@@ -556,6 +574,20 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
         >
           <LogOut size="0.875rem" className="mr-2" />
           Sair da conta
+        </button>
+
+        {/* Baixar meus dados (LGPD) */}
+        <button
+          onClick={handleExportData}
+          disabled={isExporting}
+          className="w-full py-3 flex items-center justify-center text-zinc-400 text-[0.5625rem] font-bold uppercase tracking-[0.2em] transition-all active:text-white disabled:opacity-50"
+        >
+          {isExporting ? (
+            <Loader2 size="0.75rem" className="mr-2 animate-spin" />
+          ) : (
+            <Download size="0.75rem" className="mr-2" />
+          )}
+          {isExporting ? 'Exportando...' : 'Baixar meus dados'}
         </button>
 
         {/* Excluir conta */}

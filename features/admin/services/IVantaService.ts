@@ -139,7 +139,8 @@ export interface IVantaService {
   getSaldoFinanceiro(produtorId: string): Promise<SaldoFinanceiro>;
   getVendasLog(eventoId: string): Promise<VendaLog[]>;
   getSaquesByProdutor(produtorId: string): Promise<SolicitacaoSaque[]>;
-  confirmarSaque(saqueId: string, operadorId?: string): Promise<void>;
+  confirmarSaque(saqueId: string, operadorId?: string, comprovanteFile?: File): Promise<void>;
+  uploadComprovanteSaque(saqueId: string, file: File): Promise<string>;
   estornarSaque(saqueId: string, operadorId?: string): Promise<void>;
   getTicketsByEvento(eventoId: string): Promise<TicketCaixa[]>;
 

@@ -141,10 +141,16 @@ Mapa: tabela/store/RPC → arquivos que consomem. Consultar ANTES de mudar schem
 | Edge: update-instagram-followers | IN |
 | Edge: notif-infraccao-registrada | IN |
 
-### solicitacoes_saque (1 consumer)
+### solicitacoes_saque (2 consumers) — coluna comprovante_url adicionada
 | Arquivo | Dominio |
 |---|---|
 | eventosAdminFinanceiro.ts | FI |
+| supabaseVantaService.ts | FI |
+
+### storage: comprovantes-saque (1 consumer)
+| Arquivo | Dominio |
+|---|---|
+| eventosAdminFinanceiro.ts (uploadComprovanteSaque) | FI |
 
 ### reembolsos (2 consumers)
 | Arquivo | Dominio |
@@ -291,6 +297,8 @@ allEvents, savedEvents
 | get_ocorrencias_serie | SerieChips.tsx | AE |
 | inserir_notificacao | notificationsService.ts | IN |
 | has_evento_access | RLS: eventos_admin, lotes, variacoes_ingresso, equipe_evento | IN |
+| exportar_dados_usuario | lgpdExportService.ts (ProfileView) | PF |
+| anonimizar_conta | ProfileView.tsx | PF |
 
 ## REGRA DE USO
 

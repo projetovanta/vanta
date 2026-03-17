@@ -136,6 +136,7 @@
 - [feedback_ler_memorias_obrigatorio.md](feedback_ler_memorias_obrigatorio.md) — OBRIGATÓRIO ler memórias de feedback antes de qualquer ação
 - [feedback_sem_bypass_hooks.md](feedback_sem_bypass_hooks.md) — NUNCA contornar hooks via Bash/node/python/sed — pedir autorização ao Dan via AskUserQuestion
 - [feedback_nunca_burlar_marker.md](feedback_nunca_burlar_marker.md) — NUNCA rodar vanta-marker.sh sem ter feito o trabalho real — última chance
+- [feedback_padrao_sprint_sessao.md](feedback_padrao_sprint_sessao.md) — Padrão sprint: blocos temáticos → investigar → plano com equipe → Dan aprova → executar → memórias
 
 ## Meta
 

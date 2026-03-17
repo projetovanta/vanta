@@ -8,9 +8,9 @@
 |---|---|---|
 | `eventosAdminService.ts` | 168 | Fachada (re-exporta Core+Crud+Tickets+Financeiro+Aprovacao) |
 | `eventosAdminCore.ts` | 238 | Cache eventos, refresh, rowToEvento |
-| `eventosAdminCrud.ts` | 532 | CRUD eventos (criar, update, edição pendente) |
+| `eventosAdminCrud.ts` | ~720 | CRUD eventos (criar, update, edição pendente, encerrarEvento, solicitarCancelamento) |
 | `eventosAdminTickets.ts` | 344 | Vendas, checkins, QR, cancelar/reenviar |
-| `eventosAdminFinanceiro.ts` | 675 | Saques, reembolsos, chargebacks, taxas |
+| `eventosAdminFinanceiro.ts` | ~700 | Saques (+ uploadComprovanteSaque), reembolsos, chargebacks, taxas |
 | `eventosAdminAprovacao.ts` | 317 | Aprovação, rejeição, convites sócio |
 | `eventosAdminTypes.ts` | 115 | Tipos compartilhados |
 | `rbacService.ts` | 484 | RBAC multi-tenant (cache + Supabase) |

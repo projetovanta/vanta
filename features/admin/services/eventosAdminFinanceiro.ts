@@ -337,6 +337,7 @@ export const getSolicitacoesSaque = async (eventoIds?: string[]): Promise<Solici
     gerenteAprovadoPor: row.gerente_aprovado_por ?? undefined,
     gerenteAprovadoEm: row.gerente_aprovado_em ?? undefined,
     motivoRecusa: row.motivo_recusa ?? undefined,
+    comprovanteUrl: row.comprovante_url ?? undefined,
   }));
 };
 
@@ -345,7 +346,37 @@ export const getSaquesByProdutor = async (produtorId: string): Promise<Solicitac
   return all.filter(s => s.produtorId === produtorId);
 };
 
-export const confirmarSaque = async (saqueId: string, operadorId?: string): Promise<void> => {
+/** Upload de comprovante de pagamento do saque (imagem/PDF) */
+export const uploadComprovanteSaque = async (saqueId: string, file: File): Promise<string> => {
+  const ext = file.name.split('.').pop() ?? 'jpg';
+  const path = `${saqueId}/comprovante_${Date.now()}.${ext}`;
+
+  const { error: uploadErr } = await supabase.storage
+    .from('comprovantes-saque')
+    .upload(path, file, { contentType: file.type, upsert: true });
+  if (uploadErr) throw new Error(`Upload comprovante falhou: ${uploadErr.message}`);
+
+  const { data: signedData } = await supabase.storage
+    .from('comprovantes-saque')
+    .createSignedUrl(path, 60 * 60 * 24 * 365);
+  const url = signedData?.signedUrl ?? '';
+
+  const { error: updateErr } = await supabase
+    .from('solicitacoes_saque')
+    .update({ comprovante_url: url })
+    .eq('id', saqueId);
+  if (updateErr) throw new Error(`Erro ao salvar URL do comprovante: ${updateErr.message}`);
+
+  bumpVersion();
+  return url;
+};
+
+export const confirmarSaque = async (saqueId: string, operadorId?: string, comprovanteFile?: File): Promise<void> => {
+  // Upload do comprovante se fornecido
+  if (comprovanteFile) {
+    await uploadComprovanteSaque(saqueId, comprovanteFile);
+  }
+
   // Busca dados do saque antes de atualizar
   const { data: saqueRow } = await supabase
     .from('solicitacoes_saque')

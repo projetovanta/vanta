@@ -671,3 +671,42 @@ export const solicitarCancelamento = async (
 
   return true;
 };
+
+/**
+ * Encerra evento manualmente (marca como FINALIZADO antes da data_fim).
+ */
+export const encerrarEvento = async (eventoId: string, operadorId: string, operadorNome: string): Promise<boolean> => {
+  const ev = EVENTOS_ADMIN.find(e => e.id === eventoId);
+  if (!ev) return false;
+
+  const { error } = await supabase
+    .from('eventos_admin')
+    .update({
+      status_evento: 'FINALIZADO',
+      updated_at: ts(),
+    })
+    .eq('id', eventoId);
+
+  if (error) {
+    console.error('[eventosAdminCrud] encerrarEvento erro:', error);
+    return false;
+  }
+
+  const idx = EVENTOS_ADMIN.findIndex(e => e.id === eventoId);
+  if (idx !== -1) {
+    EVENTOS_ADMIN[idx] = { ...EVENTOS_ADMIN[idx], statusEvento: 'FINALIZADO' };
+  }
+  bumpVersion();
+
+  auditService.log(
+    operadorId,
+    'INTERVENCAO_MASTER',
+    'evento',
+    eventoId,
+    { eventoNome: ev.nome, acao: 'ENCERRAMENTO_MANUAL' },
+    undefined,
+    operadorNome,
+  );
+
+  return true;
+};

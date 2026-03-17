@@ -292,9 +292,15 @@ E o segundo bloco fundamental — depende de comunidade, alimenta todo o resto.
 
 ### CANCELAMENTO DE EVENTO
 **Quem**: Gerente ou master
-**Navegacao**: Dashboard evento -> Opcao cancelar
-**O que acontece**: solicitarCancelamento -> cancelamento_etapa inicia fluxo
+**Navegacao**: Dashboard evento -> seção "Gerenciar Evento" -> botão "Cancelar Evento"
+**O que acontece**: modal com motivo obrigatório -> solicitarCancelamento -> status CANCELADO + notifica cadeia
 **Consequencia**: ingressos vendidos devem ser reembolsados, evento some do feed
+
+### ENCERRAMENTO MANUAL DE EVENTO
+**Quem**: Gerente ou master
+**Navegacao**: Dashboard evento -> seção "Gerenciar Evento" -> botão "Encerrar Evento"
+**O que acontece**: modal confirmação -> encerrarEvento -> status FINALIZADO + audit log
+**Nota**: Encerramento automático via pg_cron (a cada 15min) também existe (trigger finalizar_eventos_expirados)
 
 ## Onde este modulo aparece (propagacao)
 
@@ -356,7 +362,8 @@ E o segundo bloco fundamental — depende de comunidade, alimenta todo o resto.
 | 15 | Copiar de anterior | OK | CopiarModal 178L |
 | 16 | ToS obrigatorio | OK | TosAcceptModal |
 | 17 | Negociacao socio | OK | NegociacaoSocioView tela cheia chat + 9 RPCs + cron + push FCM. Ver sub_negociacao_socio.md |
-| 18 | Cancelamento evento | OK | solicitarCancelamento + etapas |
+| 18 | Cancelamento evento | OK | solicitarCancelamento + UI modal + notifica cadeia |
+| 18b | Encerramento manual | OK | encerrarEvento + UI modal + audit log |
 | 19 | Edicao pendente | OK | submeterEdicao + aprovar/rejeitar |
 | 20 | Slug landing page | OK | /evento/:slug |
 | 21 | Mesas/camarotes | OK | mesas_ativo + planta_mesas |

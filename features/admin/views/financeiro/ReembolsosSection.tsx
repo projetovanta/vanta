@@ -1,7 +1,8 @@
-import React from 'react';
-import { RotateCcw, Check } from 'lucide-react';
+import React, { useCallback } from 'react';
+import { RotateCcw, Check, Download } from 'lucide-react';
 import type { Reembolso, StatusReembolso } from '../../services/eventosAdminTypes';
 import { fmtBRL } from '../../../../utils';
+import { exportCSV } from '../../../../utils/exportUtils';
 
 interface Props {
   reembolsos: Reembolso[];
@@ -38,6 +39,20 @@ export const ReembolsosSection: React.FC<Props> = ({
   onSolicitarManual,
   currentUserRole,
 }) => {
+  const handleExportCSV = useCallback(() => {
+    const headers = ['Tipo', 'Valor', 'Status', 'Motivo', 'Solicitante', 'Data', 'Evento'];
+    const rows = reembolsos.map(r => [
+      r.tipo,
+      fmtBRL(r.valor),
+      r.status,
+      r.motivo ?? '',
+      r.solicitadoNome ?? r.solicitadoPor ?? '',
+      new Date(r.solicitadoEm).toLocaleDateString('pt-BR'),
+      r.eventoNome ?? '',
+    ]);
+    exportCSV('reembolsos', headers, rows);
+  }, [reembolsos]);
+
   return (
     <div className="bg-zinc-900/40 border border-white/5 rounded-2xl p-5 space-y-4">
       <div className="flex items-center justify-between">
@@ -45,9 +60,20 @@ export const ReembolsosSection: React.FC<Props> = ({
           <RotateCcw size="0.8125rem" className="text-orange-400 shrink-0" />
           <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">Reembolsos</p>
         </div>
-        {reembolsos.length > 0 && (
-          <p className="text-orange-400 font-black text-sm">{fmtBRL(reembolsos.reduce((s, r) => s + r.valor, 0))}</p>
-        )}
+        <div className="flex items-center gap-3">
+          {reembolsos.length > 0 && (
+            <button
+              onClick={handleExportCSV}
+              className="flex items-center gap-1 text-[0.5rem] text-zinc-400 font-bold uppercase tracking-wider hover:text-white transition-colors"
+            >
+              <Download size="0.75rem" />
+              CSV
+            </button>
+          )}
+          {reembolsos.length > 0 && (
+            <p className="text-orange-400 font-black text-sm">{fmtBRL(reembolsos.reduce((s, r) => s + r.valor, 0))}</p>
+          )}
+        </div>
       </div>
       {reembolsos.length === 0 ? (
         <div className="flex flex-col items-center py-5 gap-2 opacity-40">

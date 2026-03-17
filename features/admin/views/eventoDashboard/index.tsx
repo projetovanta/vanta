@@ -127,6 +127,8 @@ export const EventoDashboard: React.FC<{
 
   const status = useMemo(() => {
     if (!evento) return 'desconhecido';
+    if (evento.statusEvento === 'CANCELADO') return 'cancelado';
+    if (evento.statusEvento === 'FINALIZADO') return 'encerrado';
     const agora = new Date();
     const dInicio = new Date(evento.dataInicio);
     const dFim = new Date(evento.dataFim);
@@ -134,6 +136,12 @@ export const EventoDashboard: React.FC<{
     if (dInicio > agora) return 'futuro';
     return 'encerrado';
   }, [evento]);
+
+  const [showCancelarModal, setShowCancelarModal] = useState(false);
+  const [showEncerrarModal, setShowEncerrarModal] = useState(false);
+  const [cancelMotivo, setCancelMotivo] = useState('');
+  const [actionLoading, setActionLoading] = useState(false);
+  const eventoAtivo = status !== 'cancelado' && status !== 'encerrado';
 
   // ── Event Analytics (para views temporais) ──────────────────────────────────
   const [eventAnalytics, setEventAnalytics] = useState<EventAnalytics | null>(null);
@@ -1125,7 +1133,132 @@ export const EventoDashboard: React.FC<{
             <p className="text-zinc-400 text-xs leading-relaxed line-clamp-4">{evento.descricao}</p>
           </div>
         )}
+
+        {/* Badge status cancelado/finalizado */}
+        {status === 'cancelado' && (
+          <div className="mt-5 bg-red-500/10 border border-red-500/20 rounded-xl p-4 text-center">
+            <p className="text-red-400 font-black text-xs uppercase tracking-widest">Evento Cancelado</p>
+          </div>
+        )}
+
+        {/* Gerenciar Evento */}
+        {eventoAtivo && (
+          <div className="mt-5 bg-zinc-900/40 border border-white/5 rounded-xl p-4 space-y-3">
+            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">Gerenciar Evento</p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowEncerrarModal(true)}
+                className="flex-1 min-h-[2.75rem] bg-amber-500/10 border border-amber-500/20 text-amber-400 rounded-xl text-[0.625rem] font-bold uppercase tracking-wider active:scale-95 transition-all"
+              >
+                Encerrar Evento
+              </button>
+              <button
+                onClick={() => setShowCancelarModal(true)}
+                className="flex-1 min-h-[2.75rem] bg-red-500/10 border border-red-500/20 text-red-400 rounded-xl text-[0.625rem] font-bold uppercase tracking-wider active:scale-95 transition-all"
+              >
+                Cancelar Evento
+              </button>
+            </div>
+          </div>
+        )}
       </div>
+
+      {/* Modal Encerrar Evento */}
+      {showEncerrarModal && (
+        <div
+          className="absolute inset-0 z-50 flex items-end justify-center bg-black/85"
+          onClick={() => setShowEncerrarModal(false)}
+        >
+          <div
+            className="w-full bg-zinc-900 rounded-t-3xl p-6 space-y-4"
+            style={{ paddingBottom: 'max(1.5rem, env(safe-area-inset-bottom, 1.5rem))' }}
+            onClick={e => e.stopPropagation()}
+          >
+            <p className="text-white font-bold text-sm text-center">Encerrar este evento?</p>
+            <p className="text-zinc-400 text-xs text-center">
+              O evento será marcado como finalizado. Não será mais possível vender ingressos.
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowEncerrarModal(false)}
+                className="flex-1 min-h-[2.75rem] bg-zinc-800 text-zinc-300 rounded-xl text-xs font-bold"
+              >
+                Voltar
+              </button>
+              <button
+                disabled={actionLoading}
+                onClick={async () => {
+                  setActionLoading(true);
+                  await eventosAdminService.encerrarEvento(eventoId, currentUserId, adminNome);
+                  setActionLoading(false);
+                  setShowEncerrarModal(false);
+                }}
+                className="flex-1 min-h-[2.75rem] bg-amber-500 text-black rounded-xl text-xs font-bold disabled:opacity-50"
+              >
+                {actionLoading ? 'Encerrando...' : 'Confirmar Encerramento'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal Cancelar Evento */}
+      {showCancelarModal && (
+        <div
+          className="absolute inset-0 z-50 flex items-end justify-center bg-black/85"
+          onClick={() => {
+            setShowCancelarModal(false);
+            setCancelMotivo('');
+          }}
+        >
+          <div
+            className="w-full bg-zinc-900 rounded-t-3xl p-6 space-y-4"
+            style={{ paddingBottom: 'max(1.5rem, env(safe-area-inset-bottom, 1.5rem))' }}
+            onClick={e => e.stopPropagation()}
+          >
+            <p className="text-white font-bold text-sm text-center">Cancelar este evento?</p>
+            <p className="text-red-400 text-xs text-center">
+              Compradores serão notificados. Esta ação não pode ser desfeita.
+            </p>
+            <input
+              type="text"
+              value={cancelMotivo}
+              onChange={e => setCancelMotivo(e.target.value)}
+              placeholder="Motivo do cancelamento (obrigatório)"
+              className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-white text-sm placeholder:text-zinc-500 outline-none focus:border-red-500/50"
+            />
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  setShowCancelarModal(false);
+                  setCancelMotivo('');
+                }}
+                className="flex-1 min-h-[2.75rem] bg-zinc-800 text-zinc-300 rounded-xl text-xs font-bold"
+              >
+                Voltar
+              </button>
+              <button
+                disabled={actionLoading || !cancelMotivo.trim()}
+                onClick={async () => {
+                  setActionLoading(true);
+                  await eventosAdminService.solicitarCancelamento(
+                    eventoId,
+                    cancelMotivo.trim(),
+                    currentUserId,
+                    adminNome,
+                  );
+                  setActionLoading(false);
+                  setShowCancelarModal(false);
+                  setCancelMotivo('');
+                }}
+                className="flex-1 min-h-[2.75rem] bg-red-500 text-white rounded-xl text-xs font-bold disabled:opacity-50"
+              >
+                {actionLoading ? 'Cancelando...' : 'Confirmar Cancelamento'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {subView === 'DUPLICAR' && (
         <DuplicarModal

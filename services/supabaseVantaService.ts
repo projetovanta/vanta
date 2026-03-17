@@ -93,8 +93,13 @@ export class SupabaseVantaService implements IVantaService {
   }
 
   // ── confirmarSaque ──────────────────────────────────────────────────────────
-  async confirmarSaque(saqueId: string, operadorId?: string): Promise<void> {
-    await eventosAdminService.confirmarSaque(saqueId, operadorId);
+  async confirmarSaque(saqueId: string, operadorId?: string, comprovanteFile?: File): Promise<void> {
+    await eventosAdminService.confirmarSaque(saqueId, operadorId, comprovanteFile);
+  }
+
+  // ── uploadComprovanteSaque ─────────────────────────────────────────────────
+  async uploadComprovanteSaque(saqueId: string, file: File): Promise<string> {
+    return eventosAdminService.uploadComprovanteSaque(saqueId, file);
   }
 
   // ── estornarSaque ───────────────────────────────────────────────────────────

@@ -227,8 +227,9 @@ Registro financeiro de cada venda. Colunas: valor_bruto, valor_liquido, taxa_apl
 | 15 | Lucro por comunidade | OK | LucroPorComunidade 101L |
 | 16 | RLS financeiro | OK | Todas tabelas com RLS |
 | 17 | Pagamento real (Stripe) | NAO ATIVO | Edge Functions existem, pagamento via RPC direto |
+| 17b | Comprovante de pagamento saque | OK | comprovante_url em solicitacoes_saque + bucket comprovantes-saque + uploadComprovanteSaque + UI master/produtor |
 | 18 | Nota fiscal | NAO EXISTE | Sem geracao de NF |
-| 19 | Relatorio exportavel financeiro | NAO EXISTE | Sem CSV/PDF dedicado do financeiro |
+| 19 | Relatorio exportavel financeiro | OK | CSV em HistoricoSaques + ReembolsosSection + MasterFinanceiro (saques). PDF já existia pra receita |
 | 20 | Notificacao ao aprovar saque | OK | SAQUE_APROVADO em eventosAdminFinanceiro.ts + useAppHandlers |
 | 21 | Notificacao reembolso (3 canais) | OK | reembolsoService usa notifyService (in-app + push + email) — REEMBOLSO_SOLICITADO, REEMBOLSO_APROVADO, REEMBOLSO_RECUSADO |
 | 22 | Observabilidade (logger.ts) | OK | reembolsoService + eventosAdminFinanceiro com logger.error (Sentry) + metadata contextual (IDs) |

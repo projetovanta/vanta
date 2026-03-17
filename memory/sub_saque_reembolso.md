@@ -120,7 +120,7 @@ Admin abre ModalReembolsoManual -> seleciona ticket -> motivo
 | 9 | Limite mensal | OK | reembolsos_contagem |
 | 10 | Notif reembolso (3 canais) | OK | REEMBOLSO_SOLICITADO/APROVADO/RECUSADO via notifyService (in-app + push + email) |
 | 11 | Chargeback | OK | registrarChargeback |
-| 12 | Comprovante de pagamento saque | NAO EXISTE | Sem upload de comprovante |
+| 12 | Comprovante de pagamento saque | OK | uploadComprovanteSaque + confirmarSaque aceita arquivo + HistoricoSaques mostra botão + modal fullscreen |
 | 13 | Extrato financeiro | NAO EXISTE | Sem extrato detalhado |
 | 14 | Double-click guard | OK | useRef + try/finally em confirmarSaque, estornarSaque (masterFinanceiro) e aprovarReembolso, rejeitarReembolso (financeiro) |
 | 15 | Observabilidade | OK | logger.error (Sentry) em reembolsoService + eventosAdminFinanceiro com IDs contextuais |

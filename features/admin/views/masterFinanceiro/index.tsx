@@ -195,6 +195,8 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification 
   const [selectedEventoId, setSelectedEventoId] = useState<string | null>(null);
   const [saqueConfirmId, setSaqueConfirmId] = useState<string | null>(null);
   const [saqueEstornoId, setSaqueEstornoId] = useState<string | null>(null);
+  const [comprovanteFile, setComprovanteFile] = useState<File | null>(null);
+  const [comprovantePreview, setComprovantePreview] = useState<string | null>(null);
   const selectedEvento = selectedEventoId ? allEventos.find(e => e.id === selectedEventoId) : null;
 
   // ── Handlers ───────────────────────────────────────────────────────────────
@@ -204,7 +206,7 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification 
     if (!s || financialActionRef.current) return;
     financialActionRef.current = true;
     try {
-      await eventosAdminService.confirmarSaque(saqueId);
+      await eventosAdminService.confirmarSaque(saqueId, undefined, comprovanteFile ?? undefined);
       addNotification({
         titulo: 'Saque Confirmado',
         mensagem: `Pagamento de ${fmtBRL(s.valorLiquido)} para ${s.produtorNome} confirmado.`,
@@ -215,6 +217,8 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification 
       });
     } finally {
       financialActionRef.current = false;
+      setComprovanteFile(null);
+      setComprovantePreview(null);
     }
   };
   const estornar = async (saqueId: string) => {
@@ -275,6 +279,22 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification 
       ],
     });
   }, [allEventos, lucroNoBolso, lucroAReceber, ticketMedioGlobal, takeRateEfetiva]);
+
+  const handleExportSaquesCSV = useCallback(() => {
+    const headers = ['Produtor', 'Evento', 'Valor', 'Líquido', 'Taxa', 'PIX', 'Status', 'Etapa', 'Data'];
+    const rows = saques.map(s => [
+      s.produtorNome,
+      s.eventoNome,
+      fmtBRL(s.valor),
+      fmtBRL(s.valorLiquido),
+      fmtBRL(s.valorTaxa),
+      `${s.pixTipo}: ${s.pixChave}`,
+      s.status,
+      s.etapa ?? '',
+      new Date(s.solicitadoEm).toLocaleDateString('pt-BR'),
+    ]);
+    exportCSV('saques_master', headers, rows);
+  }, [saques]);
 
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
@@ -643,7 +663,16 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification 
         {/* Histórico de Saques */}
         {historico.length > 0 && (
           <div>
-            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-3">Histórico</p>
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">Histórico</p>
+              <button
+                onClick={handleExportSaquesCSV}
+                className="flex items-center gap-1 text-[0.5rem] text-zinc-400 font-bold uppercase tracking-wider hover:text-white transition-colors"
+              >
+                <Download className="w-3 h-3" />
+                CSV
+              </button>
+            </div>
             <div className="space-y-2">
               {[...historico].reverse().map(s => {
                 const statusColor =
@@ -682,19 +711,61 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification 
         <CondicoesResumoCard />
       </div>
 
-      {/* Modal confirmação saque */}
+      {/* Modal confirmação saque + comprovante */}
       {saqueConfirmId && (
         <div
           className="absolute inset-0 z-50 flex items-end justify-center bg-black/85"
-          onClick={() => setSaqueConfirmId(null)}
+          onClick={() => {
+            setSaqueConfirmId(null);
+            setComprovanteFile(null);
+            setComprovantePreview(null);
+          }}
         >
-          <div className="w-full max-w-md bg-zinc-900 rounded-t-3xl p-6 space-y-4" onClick={e => e.stopPropagation()}>
+          <div
+            className="w-full bg-zinc-900 rounded-t-3xl p-6 space-y-4"
+            style={{ paddingBottom: 'max(1.5rem, env(safe-area-inset-bottom, 1.5rem))' }}
+            onClick={e => e.stopPropagation()}
+          >
             <p className="text-white font-bold text-sm text-center">Confirmar pagamento deste saque?</p>
-            <p className="text-zinc-400 text-xs text-center">Esta ação não pode ser desfeita.</p>
+            <p className="text-zinc-400 text-xs text-center">Anexe o comprovante PIX (opcional).</p>
+
+            {/* Upload comprovante */}
+            <label className="flex items-center justify-center gap-2 w-full min-h-[2.75rem] border border-dashed border-zinc-600 rounded-xl text-zinc-400 text-xs font-bold cursor-pointer hover:border-zinc-400 transition-colors">
+              <FileText className="w-4 h-4" />
+              {comprovanteFile ? comprovanteFile.name : 'Selecionar comprovante'}
+              <input
+                type="file"
+                accept="image/*,application/pdf"
+                className="hidden"
+                onChange={e => {
+                  const f = e.target.files?.[0];
+                  if (!f) return;
+                  setComprovanteFile(f);
+                  if (f.type.startsWith('image/')) {
+                    const url = URL.createObjectURL(f);
+                    setComprovantePreview(url);
+                  } else {
+                    setComprovantePreview(null);
+                  }
+                }}
+              />
+            </label>
+
+            {/* Preview */}
+            {comprovantePreview && (
+              <div className="w-full rounded-xl overflow-hidden bg-zinc-800">
+                <img src={comprovantePreview} alt="Preview" className="w-full h-auto max-h-48 object-contain" />
+              </div>
+            )}
+
             <div className="flex gap-3">
               <button
-                onClick={() => setSaqueConfirmId(null)}
-                className="flex-1 py-3 bg-zinc-800 text-zinc-300 rounded-xl text-xs font-bold"
+                onClick={() => {
+                  setSaqueConfirmId(null);
+                  setComprovanteFile(null);
+                  setComprovantePreview(null);
+                }}
+                className="flex-1 min-h-[2.75rem] bg-zinc-800 text-zinc-300 rounded-xl text-xs font-bold"
               >
                 Cancelar
               </button>
@@ -703,9 +774,9 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification 
                   confirmar(saqueConfirmId);
                   setSaqueConfirmId(null);
                 }}
-                className="flex-1 py-3 bg-[#34D399] text-black rounded-xl text-xs font-bold"
+                className="flex-1 min-h-[2.75rem] bg-[#34D399] text-black rounded-xl text-xs font-bold"
               >
-                Confirmar Pagamento
+                {comprovanteFile ? 'Enviar e Confirmar' : 'Confirmar sem comprovante'}
               </button>
             </div>
           </div>

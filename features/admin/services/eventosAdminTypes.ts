@@ -57,6 +57,8 @@ export interface SolicitacaoSaque {
   gerenteAprovadoEm?: string;
   /** Motivo da recusa (obrigatório ao recusar) */
   motivoRecusa?: string;
+  /** URL do comprovante de pagamento (imagem/PDF) */
+  comprovanteUrl?: string;
 }
 
 export type StatusReembolso =

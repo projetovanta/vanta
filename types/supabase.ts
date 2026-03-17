@@ -4591,6 +4591,7 @@ export type Database = {
       };
       solicitacoes_saque: {
         Row: {
+          comprovante_url: string | null;
           criado_em: string | null;
           etapa: string | null;
           evento_id: string;
@@ -4611,6 +4612,7 @@ export type Database = {
           valor_taxa: number;
         };
         Insert: {
+          comprovante_url?: string | null;
           criado_em?: string | null;
           etapa?: string | null;
           evento_id: string;
@@ -4631,6 +4633,7 @@ export type Database = {
           valor_taxa: number;
         };
         Update: {
+          comprovante_url?: string | null;
           criado_em?: string | null;
           etapa?: string | null;
           evento_id?: string;
@@ -5467,6 +5470,7 @@ export type Database = {
         Returns: number;
       };
       expirar_pedidos_checkout_pendentes: { Args: never; Returns: undefined };
+      exportar_dados_usuario: { Args: never; Returns: Json };
       finalizar_eventos_expirados: { Args: never; Returns: undefined };
       gerar_cortesias_comemoracao: {
         Args: { p_comemoracao_id: string };

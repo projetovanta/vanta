@@ -49,6 +49,7 @@ import {
   getNomeById,
   notificarEscalacao,
   solicitarCancelamento,
+  encerrarEvento,
 } from './eventosAdminCrud';
 
 import {
@@ -70,6 +71,7 @@ import {
   getSolicitacoesSaque,
   getSaquesByProdutor,
   confirmarSaque,
+  uploadComprovanteSaque,
   estornarSaque,
   isReembolsoAutomaticoElegivel,
   processarReembolsoAutomatico,
@@ -120,6 +122,7 @@ export const eventosAdminService = {
   getNomeById,
   notificarEscalacao,
   solicitarCancelamento,
+  encerrarEvento,
 
   // Aprovacao
   aprovarEvento,
@@ -139,6 +142,7 @@ export const eventosAdminService = {
   getSolicitacoesSaque,
   getSaquesByProdutor,
   confirmarSaque,
+  uploadComprovanteSaque,
   estornarSaque,
   isReembolsoAutomaticoElegivel,
   processarReembolsoAutomatico,

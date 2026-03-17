@@ -3438,6 +3438,44 @@ export type Database = {
           },
         ];
       };
+      platform_config: {
+        Row: {
+          descricao: string | null;
+          key: string;
+          label: string | null;
+          tipo: string | null;
+          updated_at: string | null;
+          updated_by: string | null;
+          value: string;
+        };
+        Insert: {
+          descricao?: string | null;
+          key: string;
+          label?: string | null;
+          tipo?: string | null;
+          updated_at?: string | null;
+          updated_by?: string | null;
+          value: string;
+        };
+        Update: {
+          descricao?: string | null;
+          key?: string;
+          label?: string | null;
+          tipo?: string | null;
+          updated_at?: string | null;
+          updated_by?: string | null;
+          value?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'platform_config_updated_by_fkey';
+            columns: ['updated_by'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
       pmf_responses: {
         Row: {
           created_at: string | null;

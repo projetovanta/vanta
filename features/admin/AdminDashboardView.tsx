@@ -128,6 +128,9 @@ const ProductAnalyticsView = lazy(() =>
 );
 const PendenciasHubView = lazy(() => import('./views/PendenciasHubView').then(m => ({ default: m.PendenciasHubView })));
 const PendenciasAppView = lazy(() => import('./views/PendenciasAppView').then(m => ({ default: m.PendenciasAppView })));
+const ConfigPlataformaView = lazy(() =>
+  import('./views/ConfigPlataformaView').then(m => ({ default: m.ConfigPlataformaView })),
+);
 const MasterDashboardView = lazy(() => import('./views/masterDashboard').then(m => ({ default: m.MasterDashboard })));
 const InsightsDashboardView = lazy(() =>
   import('./views/insightsDashboard').then(m => ({ default: m.InsightsDashboardView })),
@@ -811,6 +814,10 @@ export const AdminDashboardView: React.FC<{
           onNavigateGuestlist={() => setSubView('LISTAS')}
         />
       );
+    }
+    if (subView === 'CONFIG_PLATAFORMA') {
+      if (!isMasterOnly(currentUserId, adminRole)) return guardBlock(back);
+      return <ConfigPlataformaView onBack={back} currentUserId={currentUserId} />;
     }
     if (subView === 'PENDENCIAS_APP') {
       if (!isMasterOnly(currentUserId, adminRole)) return guardBlock(back);

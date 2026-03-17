@@ -161,6 +161,9 @@ const CondicoesProducerView = lazy(() =>
 const PendenciasAppView = lazy(() =>
   import('../admin/views/PendenciasAppView').then(m => ({ default: m.PendenciasAppView })),
 );
+const ConfigPlataformaView = lazy(() =>
+  import('../admin/views/ConfigPlataformaView').then(m => ({ default: m.ConfigPlataformaView })),
+);
 
 // ── Mapa NavItem → AdminSubView ──────────────────────────────────────────────
 const NAV_TO_SUBVIEW: Record<NavItem, AdminSubView> = {
@@ -181,6 +184,7 @@ const NAV_TO_SUBVIEW: Record<NavItem, AdminSubView> = {
   PARCERIAS: 'SOLICITACOES_PARCERIA',
   SISTEMA: 'CATEGORIAS',
   PENDENCIAS_APP: 'PENDENCIAS_APP',
+  CONFIG_PLATAFORMA: 'CONFIG_PLATAFORMA',
 };
 
 // ── Role tabs (ferramenta de dev/análise) ────────────────────────────────────
@@ -789,6 +793,7 @@ export const DashboardV2Gateway: React.FC<{
           comunidadeNome={tenantNome ?? undefined}
         />
       );
+    if (subView === 'CONFIG_PLATAFORMA') return <ConfigPlataformaView onBack={back} currentUserId={currentUserId} />;
     if (subView === 'PENDENCIAS_APP') return <PendenciasAppView onBack={back} />;
 
     return (

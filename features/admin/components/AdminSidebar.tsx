@@ -86,7 +86,8 @@ export type AdminSubView =
   | 'FAQ'
   | 'LINKS_UTEIS'
   | 'CONDICOES_COMERCIAIS'
-  | 'PENDENCIAS_APP';
+  | 'PENDENCIAS_APP'
+  | 'CONFIG_PLATAFORMA';
 
 interface SidebarSectionItem {
   id: AdminSubView;
@@ -260,6 +261,13 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
       { id: 'DIAGNOSTICO', label: 'Diagnóstico', icon: Activity, color: COR.SISTEMA, roles: ['vanta_masteradm'] },
       { id: 'FAQ', label: 'FAQ', icon: HelpCircle, color: COR.SISTEMA, roles: ['vanta_masteradm'] },
       { id: 'LINKS_UTEIS', label: 'Links Úteis', icon: LinkIcon, color: COR.SISTEMA, roles: ['vanta_masteradm'] },
+      {
+        id: 'CONFIG_PLATAFORMA',
+        label: 'Config Plataforma',
+        icon: Settings,
+        color: COR.SISTEMA,
+        roles: ['vanta_masteradm'],
+      },
       {
         id: 'PENDENCIAS_APP',
         label: 'Pendências App',

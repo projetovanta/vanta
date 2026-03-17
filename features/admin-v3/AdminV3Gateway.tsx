@@ -172,6 +172,7 @@ const NAV_TO_SUBVIEW: Record<NavItem, AdminSubView> = {
   PARCERIAS: 'SOLICITACOES_PARCERIA',
   SISTEMA: 'CATEGORIAS',
   PENDENCIAS_APP: 'PENDENCIAS_APP',
+  CONFIG_PLATAFORMA: 'CONFIG_PLATAFORMA',
 };
 
 // ── Componente Principal ───────────────────────────────────────────────────────

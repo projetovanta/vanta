@@ -2448,6 +2448,57 @@ export type Database = {
         };
         Relationships: [];
       };
+      legal_documents: {
+        Row: {
+          conteudo: string;
+          criado_em: string | null;
+          criado_por: string | null;
+          id: string;
+          publicado: boolean | null;
+          publicado_em: string | null;
+          publicado_por: string | null;
+          tipo: string;
+          versao: number;
+        };
+        Insert: {
+          conteudo?: string;
+          criado_em?: string | null;
+          criado_por?: string | null;
+          id?: string;
+          publicado?: boolean | null;
+          publicado_em?: string | null;
+          publicado_por?: string | null;
+          tipo: string;
+          versao?: number;
+        };
+        Update: {
+          conteudo?: string;
+          criado_em?: string | null;
+          criado_por?: string | null;
+          id?: string;
+          publicado?: boolean | null;
+          publicado_em?: string | null;
+          publicado_por?: string | null;
+          tipo?: string;
+          versao?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'legal_documents_criado_por_fkey';
+            columns: ['criado_por'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'legal_documents_publicado_por_fkey';
+            columns: ['publicado_por'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
       listas_evento: {
         Row: {
           created_at: string;
@@ -4242,6 +4293,41 @@ export type Database = {
           },
         ];
       };
+      site_content: {
+        Row: {
+          categoria: string | null;
+          key: string;
+          label: string | null;
+          updated_at: string | null;
+          updated_by: string | null;
+          value: string;
+        };
+        Insert: {
+          categoria?: string | null;
+          key: string;
+          label?: string | null;
+          updated_at?: string | null;
+          updated_by?: string | null;
+          value?: string;
+        };
+        Update: {
+          categoria?: string | null;
+          key?: string;
+          label?: string | null;
+          updated_at?: string | null;
+          updated_by?: string | null;
+          value?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'site_content_updated_by_fkey';
+            columns: ['updated_by'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
       socios_evento: {
         Row: {
           created_at: string | null;
@@ -4905,6 +4991,41 @@ export type Database = {
         };
         Relationships: [];
       };
+      user_consents: {
+        Row: {
+          aceito_em: string;
+          documento_tipo: string;
+          documento_versao: number;
+          id: string;
+          ip_address: string | null;
+          user_id: string;
+        };
+        Insert: {
+          aceito_em?: string;
+          documento_tipo: string;
+          documento_versao: number;
+          id?: string;
+          ip_address?: string | null;
+          user_id: string;
+        };
+        Update: {
+          aceito_em?: string;
+          documento_tipo?: string;
+          documento_versao?: number;
+          id?: string;
+          ip_address?: string | null;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'user_consents_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
       vanta_indica: {
         Row: {
           acao: Json | null;
@@ -5523,6 +5644,19 @@ export type Database = {
           p_ticket_id: string;
         };
         Returns: Json;
+      };
+      search_users: {
+        Args: { p_limit?: number; p_offset?: number; p_query?: string };
+        Returns: {
+          cidade: string;
+          criado_em: string;
+          email: string;
+          foto: string;
+          id: string;
+          nome: string;
+          role: string;
+          ultimo_acesso: string;
+        }[];
       };
       sign_ticket_token: { Args: { p_ticket_id: string }; Returns: string };
       user_shares_tenant: {

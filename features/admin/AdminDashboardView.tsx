@@ -131,6 +131,11 @@ const PendenciasAppView = lazy(() => import('./views/PendenciasAppView').then(m 
 const ConfigPlataformaView = lazy(() =>
   import('./views/ConfigPlataformaView').then(m => ({ default: m.ConfigPlataformaView })),
 );
+const SiteContentView = lazy(() => import('./views/SiteContentView').then(m => ({ default: m.SiteContentView })));
+const LegalEditorView = lazy(() => import('./views/LegalEditorView').then(m => ({ default: m.LegalEditorView })));
+const GestaoUsuariosView = lazy(() =>
+  import('./views/GestaoUsuariosView').then(m => ({ default: m.GestaoUsuariosView })),
+);
 const MasterDashboardView = lazy(() => import('./views/masterDashboard').then(m => ({ default: m.MasterDashboard })));
 const InsightsDashboardView = lazy(() =>
   import('./views/insightsDashboard').then(m => ({ default: m.InsightsDashboardView })),
@@ -814,6 +819,18 @@ export const AdminDashboardView: React.FC<{
           onNavigateGuestlist={() => setSubView('LISTAS')}
         />
       );
+    }
+    if (subView === 'SITE_CONTENT') {
+      if (!isMasterOnly(currentUserId, adminRole)) return guardBlock(back);
+      return <SiteContentView onBack={back} currentUserId={currentUserId} />;
+    }
+    if (subView === 'LEGAL_EDITOR') {
+      if (!isMasterOnly(currentUserId, adminRole)) return guardBlock(back);
+      return <LegalEditorView onBack={back} currentUserId={currentUserId} />;
+    }
+    if (subView === 'GESTAO_USUARIOS') {
+      if (!isMasterOnly(currentUserId, adminRole)) return guardBlock(back);
+      return <GestaoUsuariosView onBack={back} />;
     }
     if (subView === 'CONFIG_PLATAFORMA') {
       if (!isMasterOnly(currentUserId, adminRole)) return guardBlock(back);

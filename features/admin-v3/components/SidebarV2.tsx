@@ -18,6 +18,8 @@ import {
   Settings,
   X,
   LogOut,
+  Scale,
+  Users,
 } from 'lucide-react';
 import type { ContaVantaLegacy } from '../../../types';
 
@@ -39,7 +41,10 @@ export type NavItem =
   | 'PARCERIAS'
   | 'SISTEMA'
   | 'PENDENCIAS_APP'
-  | 'CONFIG_PLATAFORMA';
+  | 'CONFIG_PLATAFORMA'
+  | 'SITE_CONTENT'
+  | 'LEGAL_EDITOR'
+  | 'GESTAO_USUARIOS';
 
 interface SidebarItemDef {
   id: NavItem;
@@ -98,6 +103,9 @@ const SECTIONS: SidebarSectionDef[] = [
       { id: 'COMPROVANTES', label: 'Comprovantes', icon: FileCheck, roles: ['vanta_masteradm'] },
       { id: 'PARCERIAS', label: 'Parcerias', icon: Handshake, roles: ['vanta_masteradm'] },
       { id: 'SISTEMA', label: 'Sistema', icon: Settings, roles: ['vanta_masteradm'] },
+      { id: 'SITE_CONTENT', label: 'Textos do App', icon: FileText, roles: ['vanta_masteradm'] },
+      { id: 'LEGAL_EDITOR', label: 'Termos e Privacidade', icon: Scale, roles: ['vanta_masteradm'] },
+      { id: 'GESTAO_USUARIOS', label: 'Usuários', icon: Users, roles: ['vanta_masteradm'] },
       { id: 'CONFIG_PLATAFORMA', label: 'Config Plataforma', icon: Settings, roles: ['vanta_masteradm'] },
       { id: 'PENDENCIAS_APP', label: 'Pendências App', icon: AlertCircle, roles: ['vanta_masteradm'] },
     ],

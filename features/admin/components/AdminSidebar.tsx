@@ -35,6 +35,8 @@ import {
   Lightbulb,
   HelpCircle,
   LinkIcon,
+  FileText,
+  Scale,
   type LucideIcon,
 } from 'lucide-react';
 import type { ContaVantaLegacy } from '../../../types';
@@ -87,7 +89,10 @@ export type AdminSubView =
   | 'LINKS_UTEIS'
   | 'CONDICOES_COMERCIAIS'
   | 'PENDENCIAS_APP'
-  | 'CONFIG_PLATAFORMA';
+  | 'CONFIG_PLATAFORMA'
+  | 'SITE_CONTENT'
+  | 'LEGAL_EDITOR'
+  | 'GESTAO_USUARIOS';
 
 interface SidebarSectionItem {
   id: AdminSubView;
@@ -261,6 +266,15 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
       { id: 'DIAGNOSTICO', label: 'Diagnóstico', icon: Activity, color: COR.SISTEMA, roles: ['vanta_masteradm'] },
       { id: 'FAQ', label: 'FAQ', icon: HelpCircle, color: COR.SISTEMA, roles: ['vanta_masteradm'] },
       { id: 'LINKS_UTEIS', label: 'Links Úteis', icon: LinkIcon, color: COR.SISTEMA, roles: ['vanta_masteradm'] },
+      { id: 'SITE_CONTENT', label: 'Textos do App', icon: FileText, color: COR.SISTEMA, roles: ['vanta_masteradm'] },
+      {
+        id: 'LEGAL_EDITOR',
+        label: 'Termos e Privacidade',
+        icon: Scale,
+        color: COR.SISTEMA,
+        roles: ['vanta_masteradm'],
+      },
+      { id: 'GESTAO_USUARIOS', label: 'Usuários', icon: Users, color: COR.SISTEMA, roles: ['vanta_masteradm'] },
       {
         id: 'CONFIG_PLATAFORMA',
         label: 'Config Plataforma',

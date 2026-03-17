@@ -164,6 +164,15 @@ const PendenciasAppView = lazy(() =>
 const ConfigPlataformaView = lazy(() =>
   import('../admin/views/ConfigPlataformaView').then(m => ({ default: m.ConfigPlataformaView })),
 );
+const SiteContentView = lazy(() =>
+  import('../admin/views/SiteContentView').then(m => ({ default: m.SiteContentView })),
+);
+const LegalEditorView = lazy(() =>
+  import('../admin/views/LegalEditorView').then(m => ({ default: m.LegalEditorView })),
+);
+const GestaoUsuariosView = lazy(() =>
+  import('../admin/views/GestaoUsuariosView').then(m => ({ default: m.GestaoUsuariosView })),
+);
 
 // ── Mapa NavItem → AdminSubView ──────────────────────────────────────────────
 const NAV_TO_SUBVIEW: Record<NavItem, AdminSubView> = {
@@ -185,6 +194,9 @@ const NAV_TO_SUBVIEW: Record<NavItem, AdminSubView> = {
   SISTEMA: 'CATEGORIAS',
   PENDENCIAS_APP: 'PENDENCIAS_APP',
   CONFIG_PLATAFORMA: 'CONFIG_PLATAFORMA',
+  SITE_CONTENT: 'SITE_CONTENT',
+  LEGAL_EDITOR: 'LEGAL_EDITOR',
+  GESTAO_USUARIOS: 'GESTAO_USUARIOS',
 };
 
 // ── Role tabs (ferramenta de dev/análise) ────────────────────────────────────
@@ -793,6 +805,9 @@ export const DashboardV2Gateway: React.FC<{
           comunidadeNome={tenantNome ?? undefined}
         />
       );
+    if (subView === 'SITE_CONTENT') return <SiteContentView onBack={back} currentUserId={currentUserId} />;
+    if (subView === 'LEGAL_EDITOR') return <LegalEditorView onBack={back} currentUserId={currentUserId} />;
+    if (subView === 'GESTAO_USUARIOS') return <GestaoUsuariosView onBack={back} />;
     if (subView === 'CONFIG_PLATAFORMA') return <ConfigPlataformaView onBack={back} currentUserId={currentUserId} />;
     if (subView === 'PENDENCIAS_APP') return <PendenciasAppView onBack={back} />;
 

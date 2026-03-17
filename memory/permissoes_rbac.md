@@ -16,8 +16,8 @@
 | `canAccessCheckin(userId, role, ctx)` | PORTARIA_* ou superior |
 | `canAccessQR(userId, role, ctx)` | PORTARIA_* ou superior |
 | `canAccessCaixa(userId, role, ctx)` | CAIXA ou superior |
-| `canEditEvento(userId, role, ctx)` | GERENTE/SOCIO ou master |
-| `canManageEquipe(userId, role, ctx)` | GERENTE ou master |
+| `canAccessPortariaScanner(userId, role, ctx)` | PORTARIA ou superior |
+| `canAccessComunidades(userId, role)` | GERENTE ou master |
 | `isMasterOnly(userId, role)` | role === 'vanta_masteradm' |
 | `canAccessMeusEventos(userId, role)` | qualquer cargo ativo |
 | `isSocioEvento(eventoId, userId, role)` | cargo SOCIO no evento ou comunidade |

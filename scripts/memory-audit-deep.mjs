@@ -15,11 +15,8 @@ import { readdirSync, readFileSync, existsSync } from 'fs';
 import { join, resolve } from 'path';
 import { execSync } from 'child_process';
 
-const MEMORY_DIR = resolve(
-  process.env.HOME,
-  '.claude/projects/-Users-vanta-Documents-prevanta/memory',
-);
 const PROJECT_DIR = resolve(process.cwd());
+const MEMORY_DIR = resolve(PROJECT_DIR, 'memory');
 
 // ── Cores ──
 const R = '\x1b[31m';

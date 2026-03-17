@@ -69,10 +69,10 @@ RLS: INSERT/SELECT/DELETE own
 | mutualFriends | Record<string, string[]> | Amigos em comum por usuario |
 
 **Acoes:**
-- `loadFriendships(userId)` — friendshipsService.getAll
-- `sendRequest(userId, targetId)` — friendshipsService.request + notify
-- `acceptRequest(userId, requesterId)` — friendshipsService.accept + notify
-- `removeFriend(userId, otherId)` — friendshipsService.remove
+- `init(userId)` — carrega friendships via friendshipsService.getAll
+- `requestFriendship(memberId)` — friendshipsService.request + notify
+- `handleAcceptFriend(memberId)` — friendshipsService.accept + notify
+- `removeFriend(memberId)` — friendshipsService.remove
 
 ### useChatStore (stores/chatStore.ts, 266L)
 | Estado | Tipo | Descricao |
@@ -83,11 +83,9 @@ RLS: INSERT/SELECT/DELETE own
 | activeChatParticipantId | string | Chat ativo |
 
 **Acoes:**
-- `loadChats(userId)` — messagesService.getChats (cache 30s)
-- `sendMessage(senderId, recipientId, text)` — messagesService.sendMessage
-- `markAsRead(senderId, recipientId)` — messagesService.markAsRead
-- `deleteMessage(messageId)` — messagesService.deleteMessage
-- `subscribeRealtime(userId)` — Supabase Realtime para novas mensagens
+- `init(userId)` — carrega inbox via messagesService.getInbox + subscribe Realtime (retorna cleanup)
+- `sendMessage(participantId, text)` — messagesService.sendMessage
+- `markChatAsRead(participantId)` — messagesService.markAsRead
 
 ## Servicos
 
@@ -106,8 +104,8 @@ RLS: INSERT/SELECT/DELETE own
 - `criarDenuncia(params)` — INSERT denuncias (tipo, alvo, motivo, descricao)
 - `bloquearUsuario(bloqueadoId)` — INSERT bloqueios + cache local
 - `desbloquearUsuario(bloqueadoId)` — DELETE bloqueios + cache local
-- `listarBloqueados()` — SELECT bloqueios → Set<string> (cache lazy)
-- `isUsuarioBloqueado(targetId)` — cache check
+- `listarBloqueados()` — SELECT bloqueios → string[] (cache lazy)
+- `listarBloqueadosComDetalhes()` — bloqueados com nome/foto
 
 ## Arquivos
 | Arquivo | Linhas | Funcao |

@@ -77,9 +77,8 @@ Admin abre ModalReembolsoManual -> seleciona ticket -> motivo
 - `aprovarReembolsoManual(id)` — aprova
 - `rejeitarReembolsoManual(id, motivo)` — rejeita
 - `getReembolsosPorEvento(eventoId)` — lista
-- `getReembolsosPendentes()` — master
-- `getReembolsosAprovados()` — aprovados
-- `getReembolsosRejeitados()` — rejeitados
+- `getReembolsosPendentes()` — pendentes
+- `getReembolsos(eventoIds?)` — todos (master financeiro)
 
 ### Metodos (eventosAdminService)
 - `verificarLimiteReembolso(userId)` — checa reembolsos_contagem

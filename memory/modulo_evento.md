@@ -277,18 +277,8 @@ E o segundo bloco fundamental — depende de comunidade, alimenta todo o resto.
 **O que acontece**: preenche wizard com dados do evento selecionado
 **Consequencia**: admin ajusta e segue wizard normal
 
-### NEGOCIACAO SOCIO (COM_SOCIO)
-**Quem**: Socio convidado OU produtor (ambos usam NegociacaoSocioView)
-**Navegacao**: Notificacao CONVITE_SOCIO -> NegociacaoSocioView (tela cheia) OU dentro do evento no admin
-**O que acontece**:
-- Tela cheia estilo chat com baloes alternados (produtor esquerda, socio direita)
-- Cada lado pode: Aceitar (com confirmacao) | Contrapor (novo % + mensagem 500 chars) | Recusar
-- Aceitar = evento PUBLICADO automaticamente
-- Max 3 rodadas, 48h por turno. Expirou = cancelado
-- Pos-falha: produtor pode reiniciar negociacao (mesmo socio) ou convidar outro
-- Push FCM + in-app em cada turno
-**Consequencia**: acordo = publicado. Falha = RASCUNHO, produtor decide proximo passo
-**View**: `features/admin/views/NegociacaoSocioView.tsx`
+### NEGOCIACAO SOCIO (COM_SOCIO) — REMOVIDO DO APP
+Negociação de sócio agora acontece fora do app (decisão Dan). RPCs de negociação existem no banco mas a view foi removida. Ver `sub_negociacao_socio.md`.
 
 ### CANCELAMENTO DE EVENTO
 **Quem**: Gerente ou master
@@ -361,7 +351,7 @@ E o segundo bloco fundamental — depende de comunidade, alimenta todo o resto.
 | 14 | Duplicar | OK | DuplicarModal 172L |
 | 15 | Copiar de anterior | OK | CopiarModal 178L |
 | 16 | ToS obrigatorio | OK | TosAcceptModal |
-| 17 | Negociacao socio | OK | NegociacaoSocioView tela cheia chat + 9 RPCs + cron + push FCM. Ver sub_negociacao_socio.md |
+| 17 | Negociacao socio | REMOVIDO | Negociação fora do app (decisão Dan). RPCs existem no banco mas view removida |
 | 18 | Cancelamento evento | OK | solicitarCancelamento + UI modal + notifica cadeia |
 | 18b | Encerramento manual | OK | encerrarEvento + UI modal + audit log |
 | 19 | Edicao pendente | OK | submeterEdicao + aprovar/rejeitar |

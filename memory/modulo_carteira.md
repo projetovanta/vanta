@@ -70,7 +70,7 @@ Usada por cortesiasService para registrar cada cortesia emitida.
 | transferenciasPendentes | TransferenciaPendente[] | Transferencias aguardando |
 
 **Acoes:**
-- `loadMyTickets(userId)` — SELECT tickets_caixa WHERE owner_id + cache 30s
+- `init(userId)` → `vantaService.getMyTickets(userId)` — SELECT tickets_caixa WHERE owner_id + cache 30s
 - `devolverCortesia(ticket)` — cortesiasService.devolverCortesia
 - `transferirIngresso(ticket, destId, destNome)` — transferenciaService.transferir
 - `aceitarCortesiaPendente(id)` — cortesiasService.aceitarCortesia → gera ticket

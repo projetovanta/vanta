@@ -56,7 +56,7 @@ VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 1. Terminal:
    ```bash
-   cd /Users/vanta/Documents/prevanta
+   cd /Users/vanta/prevanta
    npm run dev
    ```
 

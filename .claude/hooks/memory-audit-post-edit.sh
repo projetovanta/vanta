@@ -41,7 +41,6 @@ FILENAME=$(basename "$FILE_PATH")
 MEM_DIRS=(
   "$PROJECT_DIR/memory"
   "$HOME/.claude/projects/-Users-vanta-prevanta/memory"
-  "$HOME/.claude/projects/-Users-vanta-Documents-prevanta/memory"
 )
 
 REFS=""

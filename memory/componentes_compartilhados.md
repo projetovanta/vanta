@@ -6,8 +6,8 @@
 ## Principais
 | Componente | Linhas | Função |
 |---|---|---|
-| `ConviteSocioModal.tsx` | 634 | LEGACY — substituido por NegociacaoSocioView no App.tsx |
-| `NegociacaoSocioView.tsx` | ~700 | Tela cheia chat negociacao socio/produtor (features/admin/views/) |
+| ~~ConviteSocioModal~~ | — | REMOVIDO — negociação sócio fora do app |
+| ~~NegociacaoSocioView~~ | — | REMOVIDO — negociação fora do app (decisão Dan) |
 | `AuthModal.tsx` | 531 | Login/cadastro multi-step |
 | `NotificationPanel.tsx` | 432 | Painel lateral notificações |
 | `DevQuickLogin.tsx` | 356 | Login rápido dev — filtra profiles com auth.users, mostra role efetivo via RBAC, draggable |
@@ -17,7 +17,7 @@
 | `VantaPickerModal.tsx` | — | Picker modal customizado (substitui select nativo) |
 | `VantaDropdown.tsx` | — | Dropdown customizado global |
 | `ReviewModal.tsx` | — | Modal review de evento |
-| `BottomSheet.tsx` | 33 | Wrapper bottom-sheet com safe-area + backdrop + animação |
+| `BottomSheet.tsx` | 38 | Wrapper bottom-sheet com safe-area + backdrop + pill handle + animação |
 | `ErrorBoundary.tsx` | 57 | Error boundary React |
 | `LegalView.tsx` | — | Termos de uso |
 | `PushPermissionBanner.tsx` | — | Banner permissão push |

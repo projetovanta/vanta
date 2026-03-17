@@ -10,9 +10,6 @@ MEMORY_DIR="$PROJECT_DIR/memory"
 if [ ! -d "$MEMORY_DIR" ]; then
   MEMORY_DIR="$HOME/.claude/projects/-Users-vanta-prevanta/memory"
 fi
-if [ ! -d "$MEMORY_DIR" ]; then
-  MEMORY_DIR="$HOME/.claude/projects/-Users-vanta-Documents-prevanta/memory"
-fi
 SESSAO="$MEMORY_DIR/sessao_atual.md"
 MEMORY="$MEMORY_DIR/MEMORY.md"
 

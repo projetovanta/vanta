@@ -4,8 +4,7 @@
 ## Arquivos
 - `services/offlineDB.ts` (289L) — IndexedDB cache
 - `services/offlineEventService.ts` (389L) — sync offline → online
-- `services/offlineCheckinService.ts` (14L) — wrapper
-- `services/offlineCheckinDB.ts` (14L) — wrapper
+- Check-in offline funciona via offlineEventService direto (wrappers removidos)
 
 ## Fluxo
 1. Antes do evento: `offlineEventService` baixa tickets + convidados + lotes para IndexedDB

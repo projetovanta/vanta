@@ -105,8 +105,7 @@ Registro financeiro de cada venda. Colunas: valor_bruto, valor_liquido, taxa_apl
 - `rejeitarReembolsoManual(reembolsoId, rejeitadoPorId, motivo)` — qualquer nível pode rejeitar → REJEITADO (final)
 - `getReembolsosPorEvento(eventoId)` — lista por evento
 - `getReembolsosPendentes()` — pendentes (qualquer nível aguardando)
-- `getReembolsosAprovados()` — aprovados
-- `getReembolsosRejeitados()` — rejeitados
+- `getReembolsos(eventoIds?)` — todos (master financeiro, filtro opcional por eventos)
 
 ## Arquivos
 | Arquivo | Linhas | Funcao |

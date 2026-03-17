@@ -49,10 +49,11 @@ Membros da equipe por evento com papel e liberar_lista.
 - `atribuir({userId, tenantType, tenantId, cargo, permissoes, atribuidoPor})` — INSERT atribuicoes_rbac
 - `revogar(id)` — DELETE atribuicao
 - `getCargosCustomizados(tenantTipo, tenantId)` — retorna cargos customizados da comunidade
-- `getPermissoes(userId, tenantType, tenantId)` — SELECT permissoes do usuario
-- `getEquipeEvento(eventoId)` — SELECT equipe_evento + atribuicoes
-- `atribuirParaEvento(...)` — wrapper que atribui cargo a nivel de evento
-- `revogarDeEvento(...)` — wrapper que revoga de evento
+- `getPermissoesPlataforma()` — permissões do cargo plataforma
+- `getAtribuicoes(userId)` — todas atribuições do usuário
+- `getAtribuicoesTenant(tipo, tenantId)` — atribuições de um tenant
+- `getRecrutados(eventoId, cargo?)` — equipe recrutada pro evento
+- `getElegiveis(comunidadeId, eventoId, cargo)` — elegíveis pra recrutamento
 
 ## Regras de nivel (DEFINITIVO)
 - **GERENTE** = SOMENTE nivel COMUNIDADE

@@ -10,13 +10,16 @@
 
 ## messagesService API
 - `getInbox(userId)` → InboxEntry[] (parceiros + última msg + unread)
-- `getMessages(userId, partnerId)` → mensagens entre 2 users
+- `getHistory(userId, partnerId)` → mensagens entre 2 users
 - `sendMessage(senderId, receiverId, text)` → insere mensagem
-- `markRead(userId, partnerId)` → marca como lidas
+- `markAsRead(senderId, recipientId)` → marca como lidas
+- `deleteMessage(messageId)` → deleta mensagem
+- `toggleReaction(messageId, userId, emoji)` → reação
+- `updateLastSeen(userId)` → atualiza presença
 
 ## useChatStore
 - Estado: chats, onlineUsers, totalUnreadMessages, activeChatParticipantId
-- Actions: loadInbox, loadMessages, sendMessage, markRead
+- Actions: loadInbox, loadMessages, sendMessage, markAsRead
 - Realtime: subscription Supabase para novas mensagens
 
 ## InboxEntry

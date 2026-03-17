@@ -106,9 +106,10 @@ tipo_comunidade TEXT DEFAULT 'ESPACO_FIXO' -- 'ESPACO_FIXO' | 'PRODUTORA'
 - Lista com status PENDENTE (badge com contagem)
 - Ao abrir: ve dossie completo (todos os dados do wizard)
 - Acoes:
-  - APROVAR: master cria comunidade usando dados + adiciona solicitante como gerente
+  - APROVAR: master define taxas VANTA + cria comunidade com tipo_comunidade e instagram + atribui cargo GERENTE via rbacService ao solicitante + notifica
   - REJEITAR: com motivo (contato via WhatsApp se necessario)
 - Notificacoes: push + in-app ao solicitante quando status muda
+- Fix 16/mar: RBAC GERENTE agora e atribuido na aprovacao (antes faltava). tipo_comunidade e instagram passados pro criar().
 
 ## Onboarding pos-aprovacao
 - Solicitante recebe notificacao: "Sua solicitacao foi aprovada!"

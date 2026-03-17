@@ -64,19 +64,23 @@ CAIXA: CaixaTab + CaixaDrilldownModal
 RELATORIO: navega para relatorios
 ```
 
-### EditarModal (521L) — campos editaveis
-nome, bio, foto, capa, endereco, horarios, capacidade, taxa VANTA, repasse, gateway fee mode, cargos custom, CNPJ, razao, telefone, dono, horario_overrides
+### EditarModal (~960L) — campos editaveis
+nome, bio, foto, capa, endereco, horarios, capacidade, taxa VANTA, repasse, gateway fee mode, cargos custom, CNPJ, razao, telefone, dono, horario_overrides, instagram, whatsapp, tiktok, site (secao "Redes Sociais" grid 2x2)
 
-## Pagina Publica (1 arquivo, 490L)
+### CuponsComunidadeTab — cupons por comunidade
+Tab "Cupons" na ComunidadeDetalheView. Criar/toggle/remover cupons que valem pra todos os eventos da comunidade. Service: `cuponsService.getCuponsByComunidade()`
+
+## Pagina Publica
 | Arquivo | Linhas | Funcao |
 |---|---|---|
-| ComunidadePublicView.tsx | 490 | Pagina publica da comunidade |
+| ComunidadePublicView.tsx | ~660 | Pagina publica da comunidade |
 
 ### Fluxo
 ```
 Usuario ve evento -> clica nome/logo comunidade -> ComunidadePublicView
 - Foto + capa
 - Nome, bio, cidade, endereco
+- Icones redes sociais (Instagram rosa, WhatsApp verde, TikTok cyan, Site cinza) — so mostra se preenchido
 - Horario de funcionamento (HorarioPublicDisplay)
 - Eventos futuros da comunidade
 - Reviews (reviewsService)

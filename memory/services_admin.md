@@ -33,5 +33,15 @@
 | `auditService.ts` | 197 | Log de auditoria |
 | `IVantaService.ts` | 196 | Interfaces de contrato |
 
+## Services novos (sessão 17/mar)
+| Service | Função |
+|---|---|
+| `platformConfigService.ts` | Config dinâmica da plataforma (taxas VANTA, gateway). Tabela `platform_config` |
+| `siteContentService.ts` | CMS de textos editáveis pelo master. Tabela `site_content` |
+| `legalService.ts` | Documentos legais com versionamento + consentimentos LGPD. Tabelas `legal_documents`, `user_consents` |
+| `cuponsService.ts` | Atualizado: `getCuponsByComunidade()` novo — cupons por comunidade |
+| `comunidadesService.ts` | Atualizado: campos `instagram`, `whatsapp`, `tiktok`, `site` em criar/atualizar |
+| `clube/clubeReservasService.ts` | Substitui stubs: `getResgatesUsuario`, `getResgatesEvento`, `getResgatesPendentePost` agora são queries reais |
+
 ## Clube (subdiretório clube/)
 Fachada: `clube/index.ts` (220L). Sub-services: cache, membros, tiers, solicitações, lotes, reservas, infrações, passport, instagram, config.

@@ -4,6 +4,15 @@
 
 Mapa: tabela/store/RPC → arquivos que consomem. Consultar ANTES de mudar schema, store ou RPC.
 
+## TABELAS NOVAS (sessao 17/mar)
+| Tabela | Consumers |
+|---|---|
+| platform_config | ConfigPlataformaView |
+| site_content | SiteContentView |
+| legal_documents | LegalEditorView |
+| user_consents | legalService |
+| comunidades.instagram/whatsapp/tiktok/site | EditarModal, ComunidadePublicView, SolicitacoesParceriaView |
+
 ## TABELAS → Consumers
 
 ### socios_evento (6 consumers)

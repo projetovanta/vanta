@@ -62,6 +62,23 @@ Após gate resolver: rbacService, comunidadesService, cortesiasService, eventosA
 - "← Panorama" no header pra voltar
 - Componente: `features/dashboard-v2/homes/PanoramaHome.tsx`
 
+## Views novas (sessão 17/mar — Sprint 1 autonomia master)
+| View | Arquivo | Função |
+|---|---|---|
+| SiteContentView | `views/SiteContentView.tsx` | CMS de textos — editar qualquer texto do app |
+| LegalEditorView | `views/LegalEditorView.tsx` | Editor de Termos/Privacidade com versionamento |
+| GestaoUsuariosView | `views/GestaoUsuariosView.tsx` | Buscar e ver qualquer usuário do app |
+| ConfigPlataformaView | `views/ConfigPlataformaView.tsx` | Taxas dinâmicas da plataforma |
+| PendenciasAppView | `views/PendenciasAppView.tsx` | Checklist de config pendentes (email, CNPJ, etc.) |
+| CuponsComunidadeTab | `views/comunidades/CuponsComunidadeTab.tsx` | Cupons que valem pra todos os eventos da comunidade |
+
+## Services novos (sessão 17/mar)
+| Service | Função |
+|---|---|
+| `platformConfigService.ts` | Config dinâmica key/value (taxas VANTA) |
+| `siteContentService.ts` | CMS textos key/value |
+| `legalService.ts` | Documentos legais + consentimentos LGPD |
+
 ## Decisão Dan (sessão 16/mar): NÃO simplificar o painel
 - Sidebar completa com todas as seções por role (AdminSidebar)
 - Dashboard home impactante — empresário vê tudo de cara

@@ -124,3 +124,4 @@ Admin abre ModalReembolsoManual -> seleciona ticket -> motivo
 | 13 | Extrato financeiro | NAO EXISTE | Sem extrato detalhado |
 | 14 | Double-click guard | OK | useRef + try/finally em confirmarSaque, estornarSaque (masterFinanceiro) e aprovarReembolso, rejeitarReembolso (financeiro) |
 | 15 | Observabilidade | OK | logger.error (Sentry) em reembolsoService + eventosAdminFinanceiro com IDs contextuais |
+| 16 | Modal "Tem certeza?" saque | OK | Fix 16/mar: modal bottom-sheet antes de confirmar/estornar saque no masterFinanceiro |

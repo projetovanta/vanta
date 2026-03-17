@@ -19,6 +19,10 @@ Sem cascata: membro recebe APENAS benefício do SEU tier exato (`===`), não dos
 - **Hub separado**: MaisVantaHubView tem 7 abas (Planos, Cidades, Parceiros, Deals, Assinaturas, Passaportes, Config) — sem CLUBE
 - **Passaporte = cidade**: campo principal é `cidade`, `comunidade_id` é deprecated. Label: "Passport Regional"
 
+## Stubs corrigidos (17/mar)
+- `getReservasUsuario`, `getReservasEvento`, `getReservasPendentePost`: eram stubs retornando `[]`. Agora usam `clubeReservasService` com queries reais na tabela `resgates_mv_evento`.
+- DividaSocialMV, MembrosGlobaisMV, EventosGlobaisMV: agora mostram dados reais do banco.
+
 ## Tabelas Supabase
 
 ### membros_clube

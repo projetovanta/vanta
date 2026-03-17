@@ -139,8 +139,9 @@ Fluxo paralelo ao checkout — entrada por lista, nao por compra.
 **Navegacao**: Tela de check-in -> busca por nome -> confirma
 **O que acontece**:
 1. Portaria busca nome (index GIN trgm para busca fuzzy)
-2. listasService.checkIn → UPDATE checked_in=true, checked_in_em=now(), checked_in_por_nome
+2. listasService.checkIn → UPDATE checked_in=true, checked_in_em=tsBR(), checked_in_por_nome
 3. Se regra tem valor: portaria cobra na entrada
+**Fix 16/mar**: Tab CHECKIN agora aparece pro porteiro (antes role mismatch impedia). Timestamps corrigidos pra tsBR() (4 pontos).
 
 **Consequencia**: convidado marcado como presente, cota contabilizada
 

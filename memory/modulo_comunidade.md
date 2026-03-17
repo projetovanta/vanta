@@ -54,6 +54,10 @@ E o bloco fundamental do app — tudo depende dela.
 | evento_privado_atracoes | JSONB | nao | Opcoes atracoes (string[]) |
 | evento_privado_faixas_capacidade | JSONB | nao | Faixas capacidade (string[]) |
 | onboarding_completo | BOOLEAN | nao | Default false — true quando gerente completou dados pos-aprovacao |
+| instagram | TEXT | nao | Handle Instagram (sem @) |
+| whatsapp | TEXT | nao | Numero WhatsApp |
+| tiktok | TEXT | nao | Handle TikTok (sem @) |
+| site | TEXT | nao | URL do site |
 
 ### community_follows (seguidores)
 | Coluna | Tipo | Descricao |

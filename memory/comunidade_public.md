@@ -11,6 +11,7 @@ comunidadeId: string, onBack, onEventClick, onMemberClick
 
 ## Funcionalidades
 - Exibe info da comunidade (nome, foto, descrição, horário funcionamento)
+- Ícones de redes sociais clicáveis (Instagram rosa, WhatsApp verde, TikTok cyan, Site cinza) — só mostra se preenchido
 - Lista eventos da comunidade
 - Lista membros
 - Reviews da comunidade

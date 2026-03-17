@@ -70,11 +70,15 @@ Ja documentada em modulo_evento.md (CuponsSubView). Usado aqui via cuponsService
 
 **Atomicidade**: tudo roda em uma transacao SQL. Se falha em qualquer ponto, rollback completo.
 
+## Cupom por Comunidade (novo 17/mar)
+Cupom vinculado a comunidade (nao a evento) vale pra todos os eventos dela. `cuponsService.getCuponsByComunidade(comunidadeId)`. UI: CuponsComunidadeTab na ComunidadeDetalheView (tab "Cupons").
+
 ## Servicos
 
 ### cuponsService (features/admin/services/cuponsService.ts)
-- `validarCupom(codigo, eventoId)` — valida se cupom existe, ativo, nao expirado, nao excedeu limite
+- `validarCupom(codigo, eventoId)` — valida se cupom existe, ativo, nao expirado, nao excedeu limite. Cupom de evento tem prioridade sobre cupom de comunidade
 - `calcDesconto(cupom, subtotal)` — calcula desconto (% ou valor fixo)
+- `getCuponsByComunidade(comunidadeId)` — cupons da comunidade (sem evento_id)
 - `usarCupom(cupomId)` — incrementa usos_count
 
 ### waitlistService (services/waitlistService.ts)

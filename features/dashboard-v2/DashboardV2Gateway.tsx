@@ -7,8 +7,8 @@
 
 import React, { useState, useEffect, useCallback, useMemo, Suspense, lazy } from 'react';
 import { Search, Loader2, Eye, Menu } from 'lucide-react';
-import { SidebarV2, type NavItem } from '../admin-v3/components/SidebarV2';
-import { CommandPalette } from '../admin-v3/components/CommandPalette';
+import { SidebarV2, type NavItem } from './components/SidebarV2';
+import { CommandPalette } from './components/CommandPalette';
 
 import { eventosAdminService, type SolicitacaoSaque } from '../admin/services/eventosAdminService';
 import { clubeService } from '../admin/services/clubeService';

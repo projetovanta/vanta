@@ -44,7 +44,9 @@ const MessagesView = lazy(() => import('./modules/messages/MessagesView').then(m
 const ChatRoomView = lazy(() =>
   import('./modules/messages/components/ChatRoomView').then(m => ({ default: m.ChatRoomView })),
 );
-const AdminGateway = lazy(() => import('./features/admin/AdminGateway').then(m => ({ default: m.AdminGateway })));
+const AdminGateway = lazy(() =>
+  import('./features/dashboard-v2/DashboardV2Gateway').then(m => ({ default: m.DashboardV2Gateway })),
+);
 const PublicProfilePreviewView = lazy(() =>
   import('./modules/profile/PublicProfilePreviewView').then(m => ({ default: m.PublicProfilePreviewView })),
 );
@@ -60,15 +62,7 @@ const CheckoutPage = lazy(() => import('./modules/checkout/CheckoutPage').then(m
 const CheckoutSuccessPage = lazy(() =>
   import('./modules/checkout/CheckoutSuccessPage').then(m => ({ default: m.CheckoutSuccessPage })),
 );
-const AdminV2Gateway = lazy(() =>
-  import('./features/admin-v2/AdminV2Gateway').then(m => ({ default: m.AdminV2Gateway })),
-);
-const AdminV3Gateway = lazy(() =>
-  import('./features/admin-v3/AdminV3Gateway').then(m => ({ default: m.AdminV3Gateway })),
-);
-const DashboardV2Gateway = lazy(() =>
-  import('./features/dashboard-v2/DashboardV2Gateway').then(m => ({ default: m.DashboardV2Gateway })),
-);
+// admin-v2 e admin-v3 removidos (protótipos mock — decisão Dan 17/mar)
 const AceitarConviteMVPage = lazy(() =>
   import('./modules/convite/AceitarConviteMVPage').then(m => ({ default: m.AceitarConviteMVPage })),
 );
@@ -421,7 +415,7 @@ export default function App() {
         }
         return (
           <ModuleErrorBoundary moduleName="Admin">
-            <AdminGateway onBack={() => nav.navigateToTab('INICIO')} />
+            <AdminGateway onClose={() => nav.navigateToTab('INICIO')} />
           </ModuleErrorBoundary>
         );
       }
@@ -504,9 +498,7 @@ export default function App() {
         <Suspense fallback={suspenseFallback}>
           <Routes>
             {/* ── Standalone pages (sem tab bar) ─────────────────────── */}
-            <Route path="/admin-v2" element={<AdminV2Gateway />} />
-            <Route path="/admin-v3" element={<AdminV3Gateway />} />
-            <Route path="/dashboard-v2" element={<DashboardV2Gateway />} />
+            {/* admin-v2, admin-v3, dashboard-v2 removidos — dashboard-v2 agora é o admin principal */}
             <Route path="/checkout/sucesso" element={<CheckoutSuccessPage />} />
             <Route path="/checkout/:slug" element={<CheckoutPage />} />
             <Route path="/evento/:slug" element={<EventLandingPage />} />

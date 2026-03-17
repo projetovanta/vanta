@@ -10,11 +10,10 @@
 | `features/admin/components/AdminSidebar.tsx` | ~590 | Navegação lateral por role |
 | `features/admin/components/KpiCards.tsx` | 144 | Cards de métricas |
 
-## Protótipos visuais (referência, NÃO substituem admin)
-| Rota | Pasta | Descrição |
-|---|---|---|
-| /admin-v2 | features/admin-v2/ | Sidebar 5 ícones + command palette (mock) |
-| /admin-v3 | features/admin-v3/ | 16 itens em 4 seções + views plugadas |
+## Protótipos visuais — REMOVIDOS (decisão Dan 17/mar)
+- admin-v2 e admin-v3 deletados (eram protótipos mock)
+- Dashboard V2 agora é o admin principal (importado como AdminGateway no App.tsx)
+- Componentes SidebarV2 e CommandPalette movidos pra features/dashboard-v2/components/
 
 ## Fluxo AdminGateway
 1. `supabase.rpc('get_admin_access', { p_user_id })` → retorna {role, comunidades, eventos}
@@ -79,8 +78,8 @@ Após gate resolver: rbacService, comunidadesService, cortesiasService, eventosA
 | `siteContentService.ts` | CMS textos key/value |
 | `legalService.ts` | Documentos legais + consentimentos LGPD |
 
-## Decisão Dan (sessão 16/mar): NÃO simplificar o painel
-- Sidebar completa com todas as seções por role (AdminSidebar)
-- Dashboard home impactante — empresário vê tudo de cara
-- V2/V3 ficam como referência visual, NÃO substituem
-- Painel master continua igual
+## Decisão Dan (sessão 17/mar): Dashboard V2 é o admin principal
+- Dashboard V2 (features/dashboard-v2/) agora é o painel admin oficial
+- Homes por cargo: Panorama, Gerente, Sócio, Caixa, Portaria, Promoter
+- 49 subviews idênticas ao admin anterior — todas funcionais
+- admin-v2 e admin-v3 deletados (protótipos mock)

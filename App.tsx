@@ -103,6 +103,8 @@ export default function App() {
   const initAuth = useAuthStore(s => s.init);
   const currentAccountId = useAuthStore(s => s.currentAccount.id);
   const authLoading = useAuthStore(s => s.authLoading);
+  const profile = useAuthStore(s => s.profile);
+  const needsProfileCompletion = !!(currentAccountId && profile && !profile.dataNascimento);
   const ticketsInit = useTicketsStore(s => s.init);
   const chatInit = useChatStore(s => s.init);
   const socialInit = useSocialStore(s => s.init);
@@ -402,6 +404,27 @@ export default function App() {
         return null;
     }
   };
+
+  // ── Perfil incompleto (login social sem data nascimento) ──────────────────
+  if (needsProfileCompletion) {
+    const CompletarPerfilSocial = lazy(() =>
+      import('./components/CompletarPerfilSocial').then(m => ({ default: m.CompletarPerfilSocial })),
+    );
+    return (
+      <div className="fixed inset-0 bg-[#050505]">
+        <Suspense fallback={null}>
+          <CompletarPerfilSocial
+            userId={currentAccountId}
+            userName={profile?.nome ?? ''}
+            onComplete={() => {
+              // Recarregar profile pra pegar data_nascimento
+              useAuthStore.getState().init();
+            }}
+          />
+        </Suspense>
+      </div>
+    );
+  }
 
   // ── Loading state ─────────────────────────────────────────────────────────
   if (authLoading) {

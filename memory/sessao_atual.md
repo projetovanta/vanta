@@ -47,16 +47,17 @@
 | B5 Cupom comunidade | ✅ | B6 Redes sociais | ✅ |
 | B7 Autonomia master | ✅ Sprint 1+2 |
 
-### BLOCO C — PROXIMO
-| C1 Login social | ⏳ | C2 Onboarding produtor | ⏳ | C3 CMS master | ⏳ |
+### BLOCO C
+| C1 Login social | ✅ (código pronto, aguarda credenciais Google/Apple) | C2 Onboarding produtor | ⏳ | C3 CMS master | ⏳ |
 
 ## Pendencias App (painel SISTEMA)
 - Email caixa (Resend) | CNPJ | Deep links (TEAMID + SHA-256)
 - Android Studio (instalar pra build Android)
 
 ## Pendencias gerais
-- Conta Apple Developer ($99/ano) — pra App Store + deep links iOS + teste celular real
+- Conta Apple Developer ($99/ano) — pra App Store + deep links iOS + teste celular real + login Apple
 - Conta Google Play Console ($25) — pra Google Play + deep links Android
+- Google Cloud Console — Client ID pra login Google (grátis)
 - CNPJ + emails legais
 - Regime tributario
 - NFS-e integrador

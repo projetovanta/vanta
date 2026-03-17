@@ -134,6 +134,37 @@ export const authService = {
   },
 
   /**
+   * Login social (Google/Apple).
+   * Web: redireciona pro provider. App nativo: usa idToken do Capacitor.
+   */
+  signInWithSocial: async (provider: 'google' | 'apple', idToken?: string): Promise<{ ok: boolean; erro?: string }> => {
+    try {
+      if (idToken) {
+        // App nativo (Capacitor) — usa token do provider direto
+        const { error } = await supabase.auth.signInWithIdToken({
+          provider,
+          token: idToken,
+        });
+        if (error) return { ok: false, erro: error.message };
+        return { ok: true };
+      }
+
+      // Web — redireciona pro OAuth do provider
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider,
+        options: {
+          redirectTo: window.location.origin,
+        },
+      });
+      if (error) return { ok: false, erro: error.message };
+      return { ok: true };
+    } catch (e: unknown) {
+      logger.error(`[auth] social login ${provider} failed`, e);
+      return { ok: false, erro: e instanceof Error ? e.message : 'Erro ao conectar.' };
+    }
+  },
+
+  /**
    * Cadastro: cria usuário no Supabase Auth e insere profile.
    * Retorna Membro ou erro.
    */

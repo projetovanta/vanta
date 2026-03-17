@@ -61,13 +61,15 @@ Radar = mapa de eventos por geolocalizacao.
 ### Auth / Cadastro (components/auth/ + components/)
 | Arquivo | Funcao |
 |---|---|
-| AuthModal.tsx | Cadastro Nivel 1: email, senha, nome, telefone (DDD+numero), data nascimento, termos. Ken Burns bg. ~350L |
+| AuthModal.tsx | Cadastro Nivel 1: email/senha OU login social (Apple/Google) + nome, data nascimento, termos. Ken Burns bg |
+| LoginView.tsx | Tela de login: botões Apple + Google + email/senha + recuperar senha |
+| CompletarPerfilSocial.tsx | Tela pós-login social: data nascimento + aceitar termos (quando profile.data_nascimento NULL) |
 | auth/FieldError.tsx | Componente de erro de campo |
 | auth/authHelpers.ts | Validadores: isValidDate, isAdult, isValidEmail, isValidCPF, formatadores: fmtDataNasc, fmtTelefone, fmtCPF |
 | CompletarPerfilCPF.tsx | Modal CPF (Nivel 2) — exibido no checkout se profile nao tem CPF. Valida CPF, salva no Supabase |
 
 ### Perfil Progressivo (3 niveis)
-- **Nivel 1 (signup)**: email, senha, nome, data nascimento, termos — campos obrigatorios (telefone removido)
+- **Nivel 1 (signup)**: email/senha OU login social (Apple/Google). Social: 1 tap + completar data nascimento + termos
 - **Nivel 2 (primeira compra)**: CPF (CompletarPerfilCPF) + Telefone (modal inline no checkout)
 - **Nivel 3 (sob demanda)**: genero, instagram, foto, cidade, estado — editaveis em EditProfileView
 - Avatar padrao: NEUTRO (silhueta) ate usuario enviar foto ou definir genero
@@ -165,4 +167,5 @@ Radar = mapa de eventos por geolocalizacao.
 | 28b | Exportar meus dados (LGPD) | OK | RPC exportar_dados_usuario() + lgpdExportService + botão "Baixar meus dados" no ProfileView |
 | 29 | Denunciar perfil | OK | ReportModal no PublicProfilePreviewView (tipo USUARIO + bloquear) |
 | 28 | SubView SOLICITAR_PARCERIA | OK | ProfileSubView em types/auth.ts |
+| 30 | Login social (Google/Apple) | OK (AGUARDA CONFIG) | authService.signInWithSocial + botões LoginView/AuthModal + CompletarPerfilSocial + trigger handle_new_user. Falta: credenciais Google Cloud + Apple Developer no Supabase |
 | 29 | SubView MINHAS_SOLICITACOES | OK | MinhasSolicitacoesView.tsx (Privados + Comemoracoes com timeline + progresso vendas) |

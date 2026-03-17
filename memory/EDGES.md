@@ -299,6 +299,7 @@ allEvents, savedEvents
 | has_evento_access | RLS: eventos_admin, lotes, variacoes_ingresso, equipe_evento | IN |
 | exportar_dados_usuario | lgpdExportService.ts (ProfileView) | PF |
 | anonimizar_conta | ProfileView.tsx | PF |
+| handle_new_user (trigger) | auth.users INSERT → profiles auto-create | PF |
 
 ## REGRA DE USO
 

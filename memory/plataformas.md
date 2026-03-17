@@ -23,12 +23,14 @@
 
 ## Capacitor (projetos nativos GERADOS)
 - `capacitor.config.ts` — appId `com.maisvanta.app`, webDir `dist`
-- Plugins: SplashScreen (#050505), StatusBar (DARK)
-- `@capacitor/core`, `@capacitor/ios`, `@capacitor/android` em dependencies
+- Plugins: SplashScreen (#050505), StatusBar (DARK), PushNotifications, App (deep links)
+- `@capacitor/core`, `@capacitor/ios`, `@capacitor/android`, `@capacitor/app`, `@capacitor/push-notifications` em dependencies
 - `@capacitor/cli` em devDependencies
-- Projetos gerados: `ios/` e `android/` (no `.gitignore`)
+- Projetos gerados: `ios/App/App.xcodeproj` (android pendente — Android Studio não instalado)
 - Sincronizado: `npx cap sync` OK
 - Abrir: `npm run cap:ios` (Xcode) ou `npm run cap:android` (Android Studio)
+- Deep links: `deepLinkService.ts` escuta `appUrlOpen` → navega pra evento/comunidade/checkout/wallet/perfil
+- hostname: `maisvanta.com` configurado no capacitor.config.ts
 
 ## Playwright E2E (configurado, testes NÃO rodados)
 - `playwright.config.ts` — 3 projetos: Mobile Chrome (Pixel 7), Mobile Safari (iPhone 14), Desktop Chrome

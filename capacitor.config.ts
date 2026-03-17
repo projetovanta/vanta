@@ -6,7 +6,13 @@ const config: CapacitorConfig = {
   webDir: 'dist',
   server: {
     androidScheme: 'https',
+    // Deep links: hostname que o app intercepta
+    hostname: 'maisvanta.com',
   },
+  // App Links (Android) + Universal Links (iOS)
+  // Configurar nos projetos nativos:
+  //   iOS: Associated Domains → applinks:maisvanta.com
+  //   Android: intent-filter em AndroidManifest.xml → maisvanta.com
   plugins: {
     SplashScreen: {
       launchAutoHide: true,

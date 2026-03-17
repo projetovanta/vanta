@@ -43,12 +43,12 @@
 ### BLOCO A — COMPLETO ✅
 ### BLOCO B
 | B1 Stripe | ✅ TEST MODE | B2 Teste celular | ✅ iOS gerado |
-| B3 Deep links | ⏳ (falta TEAMID Apple + SHA-256 Android) | B4 Comprovante saque | ✅ |
+| B3 Deep links | ✅ código + listener + plugin (falta TEAMID + SHA-256 pra produção) | B4 Comprovante saque | ✅ |
 | B5 Cupom comunidade | ✅ | B6 Redes sociais | ✅ |
 | B7 Autonomia master | ✅ Sprint 1+2 |
 
 ### BLOCO C
-| C1 Login social | ✅ (código pronto, aguarda credenciais Google/Apple) | C2 Onboarding produtor | ⏳ | C3 CMS master | ⏳ |
+| C1 Login social | ✅ Google ATIVO + Apple aguarda conta Developer | C2 Onboarding produtor | ⏳ | C3 CMS master | ⏳ |
 
 ## Pendencias App (painel SISTEMA)
 - Email caixa (Resend) | CNPJ | Deep links (TEAMID + SHA-256)
@@ -57,7 +57,7 @@
 ## Pendencias gerais
 - Conta Apple Developer ($99/ano) — pra App Store + deep links iOS + teste celular real + login Apple
 - Conta Google Play Console ($25) — pra Google Play + deep links Android
-- Google Cloud Console — Client ID pra login Google (grátis)
+- Google Cloud Console — ✅ FEITO (Client ID ativo, login Google funcional)
 - CNPJ + emails legais
 - Regime tributario
 - NFS-e integrador

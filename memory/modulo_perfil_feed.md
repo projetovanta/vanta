@@ -167,5 +167,5 @@ Radar = mapa de eventos por geolocalizacao.
 | 28b | Exportar meus dados (LGPD) | OK | RPC exportar_dados_usuario() + lgpdExportService + botão "Baixar meus dados" no ProfileView |
 | 29 | Denunciar perfil | OK | ReportModal no PublicProfilePreviewView (tipo USUARIO + bloquear) |
 | 28 | SubView SOLICITAR_PARCERIA | OK | ProfileSubView em types/auth.ts |
-| 30 | Login social (Google/Apple) | OK (AGUARDA CONFIG) | authService.signInWithSocial + botões LoginView/AuthModal + CompletarPerfilSocial + trigger handle_new_user. Falta: credenciais Google Cloud + Apple Developer no Supabase |
+| 30 | Login social (Google/Apple) | OK (Google ATIVO, Apple aguarda conta Developer) | authService.signInWithSocial + botões LoginView/AuthModal + CompletarPerfilSocial + trigger handle_new_user. Google Cloud configurado no Supabase |
 | 29 | SubView MINHAS_SOLICITACOES | OK | MinhasSolicitacoesView.tsx (Privados + Comemoracoes com timeline + progresso vendas) |

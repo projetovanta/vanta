@@ -29,6 +29,7 @@ import { nativePushService } from './services/nativePushService';
 import { logger } from './services/logger';
 import { useDevNavLogger } from './hooks/useDevNavLogger';
 import { initDevLogging } from './services/devLogInit';
+import { registerDeepLinkListener } from './services/deepLinkService';
 
 const DevLogPanel = lazy(() => import('./components/DevLogPanel').then(m => ({ default: m.DevLogPanel })));
 
@@ -153,6 +154,30 @@ export default function App() {
     window.addEventListener('vanta:password-recovery', handler);
     return () => window.removeEventListener('vanta:password-recovery', handler);
   }, []);
+
+  // ── Deep links (Capacitor nativo) ──────────────────────────────────────────
+  useEffect(() => {
+    return registerDeepLinkListener(result => {
+      switch (result.type) {
+        case 'EVENT':
+          if (result.id) window.location.href = `/evento/${result.id}`;
+          break;
+        case 'COMMUNITY':
+          if (result.id) window.location.href = `/comunidade/${result.id}`;
+          break;
+        case 'CHECKOUT':
+          if (result.id) window.location.href = `/checkout/${result.id}`;
+          break;
+        case 'WALLET':
+          nav.navigateToTab('PERFIL');
+          nav.setProfileSubView('WALLET');
+          break;
+        case 'PROFILE':
+          nav.navigateToTab('PERFIL');
+          break;
+      }
+    });
+  }, [nav]);
 
   // ── Native push listeners (Capacitor) ────────────────────────────────────
   useEffect(() => {

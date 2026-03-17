@@ -1,13 +1,13 @@
 # Sessao Atual — Estado para Continuidade
 
 ## Branch: main
-## Ultimo commit: `7aba981` — fix: avatar padrão VANTA
-## Mudancas locais: SIM (sidebar mobile fix)
+## Ultimo commit: `01e1f90` — fix: responsividade admin
+## Mudancas locais: NAO (tudo commitado e pushado)
 ## Preflight: diff-check OK
 
 ## Resumo da sessao (17 mar 2026 — sessao 2)
 
-### Commits desta sessao (10)
+### Commits desta sessao (15)
 1. `26c69fc` — feat: Sprint 2 completo (comprovante saque, CSV, encerrar/cancelar, LGPD)
 2. `bb5ac26` — docs: B1 Stripe test mode + B2 iOS gerado
 3. `56c1ca4` — feat: C1 Login Social Google + Apple
@@ -18,6 +18,11 @@
 8. `c9b00b3` — feat: Dashboard V2 é o admin principal + admin-v2/v3 deletados
 9. `1d5ad5b` — fix: CSP img-src Google avatar
 10. `7aba981` — fix: avatar padrão VANTA sempre
+11. `9dfaf91` — fix: sidebar mobile fechada + memórias
+12. `cbdd2f8` — docs: ata completa com 11 commits
+13. `2d702a7` — fix: input CommandPalette sem id/name
+14. `88802bf` — fix: scroll trava após react-easy-crop (2 croppers)
+15. `01e1f90` — fix: responsividade admin (grid-cols-4/5 com breakpoints)
 
 ### Sprint 2 — COMPLETO
 | Bloco | Itens | Status |

@@ -55,11 +55,19 @@
 - modules/home/components/NearYouSection.tsx (distLabel via prop)
 - modules/home/components/ThisWeekSection.tsx (ajustes)
 
-## Pendencias proxima sessao
-- Emoji picker no campo badge do VANTA Indica
-- Paleta de cores por intenção (celebração, energia, exclusividade, etc.)
-- Snaps melhorados (centro mais forte, feedback visual)
-- Templates editáveis salvos no Supabase (vanta_indica_templates)
+## Plano aprovado — 4 Blocos de Melhorias
+Ver detalhes em `memory/plano_blocos_melhorias.md`
+
+### Bloco 1 — Polimento Visual (PRÓXIMO)
+- 1.1 Tema escuro consistente
+- 1.2 Empty states com ilustração + CTA
+- 1.3 Skeleton loading
+- 1.4 VANTA Indica editor (emoji picker + paleta cores + snaps + templates salvos DB)
+
+### Blocos 2-4 (depois)
+- Bloco 2: Navegação + Busca inteligente
+- Bloco 3: Financeiro com contexto temporal
+- Bloco 4: Operações em escala
 
 ## Pendencias externas (sem mudança)
 - Conta Apple Developer ($99/ano)

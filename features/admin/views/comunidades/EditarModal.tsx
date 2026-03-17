@@ -71,6 +71,12 @@ export const EditarModal: React.FC<{
   const [novaAtracao, setNovaAtracao] = useState('');
   const [novaFaixa, setNovaFaixa] = useState('');
 
+  // ── Estado: Redes Sociais ──────────────────────────────────────────────────
+  const [igHandle, setIgHandle] = useState(comunidade.instagram ?? '');
+  const [wpNum, setWpNum] = useState(comunidade.whatsapp ?? '');
+  const [tkHandle, setTkHandle] = useState(comunidade.tiktok ?? '');
+  const [siteUrl, setSiteUrl] = useState(comunidade.site ?? '');
+
   // ── Estado: Horário de Funcionamento ──────────────────────────────────────
   const [horarios, setHorarios] = useState<HorarioSemanal[]>(
     comunidade.horarioFuncionamento?.length ? comunidade.horarioFuncionamento : DEFAULT_HORARIOS,
@@ -228,6 +234,10 @@ export const EditarModal: React.FC<{
     baseUpdates.evento_privado_formatos = epFormatos;
     baseUpdates.evento_privado_atracoes = epAtracoes;
     baseUpdates.evento_privado_faixas_capacidade = epFaixas;
+    baseUpdates.instagram = igHandle || undefined;
+    baseUpdates.whatsapp = wpNum || undefined;
+    baseUpdates.tiktok = tkHandle || undefined;
+    baseUpdates.site = siteUrl || undefined;
     onSave(baseUpdates);
   };
 
@@ -625,6 +635,50 @@ export const EditarModal: React.FC<{
               </div>
             </div>
           )}
+
+          {/* Redes Sociais */}
+          <div className="space-y-3 pt-1 border-t border-white/5">
+            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">Redes Sociais</p>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="text-zinc-500 text-[0.5625rem] font-bold mb-1 block">Instagram</label>
+                <input
+                  placeholder="@nomedacasa"
+                  value={igHandle}
+                  onChange={e => setIgHandle(e.target.value.replace('@', ''))}
+                  className="w-full bg-zinc-800/60 border border-white/5 rounded-xl px-3 py-2.5 text-white text-xs"
+                />
+              </div>
+              <div>
+                <label className="text-zinc-500 text-[0.5625rem] font-bold mb-1 block">WhatsApp</label>
+                <input
+                  placeholder="11999999999"
+                  value={wpNum}
+                  onChange={e => setWpNum(e.target.value.replace(/\D/g, ''))}
+                  inputMode="tel"
+                  className="w-full bg-zinc-800/60 border border-white/5 rounded-xl px-3 py-2.5 text-white text-xs"
+                />
+              </div>
+              <div>
+                <label className="text-zinc-500 text-[0.5625rem] font-bold mb-1 block">TikTok</label>
+                <input
+                  placeholder="@nomedacasa"
+                  value={tkHandle}
+                  onChange={e => setTkHandle(e.target.value.replace('@', ''))}
+                  className="w-full bg-zinc-800/60 border border-white/5 rounded-xl px-3 py-2.5 text-white text-xs"
+                />
+              </div>
+              <div>
+                <label className="text-zinc-500 text-[0.5625rem] font-bold mb-1 block">Site</label>
+                <input
+                  placeholder="https://..."
+                  value={siteUrl}
+                  onChange={e => setSiteUrl(e.target.value)}
+                  className="w-full bg-zinc-800/60 border border-white/5 rounded-xl px-3 py-2.5 text-white text-xs"
+                />
+              </div>
+            </div>
+          </div>
 
           {/* Evento Privado — config */}
           <div className="space-y-3 pt-1 border-t border-white/5">

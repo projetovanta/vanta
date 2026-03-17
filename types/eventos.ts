@@ -69,6 +69,11 @@ export interface Comunidade {
   evento_privado_faixas_capacidade?: string[];
   tipo_comunidade?: 'ESPACO_FIXO' | 'PRODUTORA' | null;
   onboarding_completo?: boolean;
+  // ── Redes sociais ──
+  instagram?: string;
+  whatsapp?: string;
+  tiktok?: string;
+  site?: string;
 }
 
 // ── VANTA Indica ───────────────────────────────────────────────────────────

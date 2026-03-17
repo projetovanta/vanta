@@ -59,6 +59,10 @@ const rowToComunidade = (r: ComunidadeRow): Comunidade => ({
   evento_privado_faixas_capacidade: (r.evento_privado_faixas_capacidade as unknown as string[]) ?? [],
   tipo_comunidade: (r.tipo_comunidade as 'ESPACO_FIXO' | 'PRODUTORA') ?? null,
   onboarding_completo: r.onboarding_completo ?? false,
+  instagram: r.instagram ?? undefined,
+  whatsapp: r.whatsapp ?? undefined,
+  tiktok: r.tiktok ?? undefined,
+  site: r.site ?? undefined,
 });
 
 export const comunidadesService = {
@@ -113,6 +117,10 @@ export const comunidadesService = {
     razaoSocial?: string;
     telefone?: string;
     tipo_comunidade?: 'ESPACO_FIXO' | 'PRODUTORA';
+    instagram?: string;
+    whatsapp?: string;
+    tiktok?: string;
+    site?: string;
   }): Promise<string> {
     const { data: inserted, error } = await supabase
       .from('comunidades')
@@ -135,6 +143,10 @@ export const comunidadesService = {
         razao_social: data.razaoSocial ?? null,
         telefone: data.telefone ?? null,
         tipo_comunidade: data.tipo_comunidade ?? null,
+        instagram: data.instagram ?? null,
+        whatsapp: data.whatsapp ?? null,
+        tiktok: data.tiktok ?? null,
+        site: data.site ?? null,
       })
       .select('*')
       .single();
@@ -189,6 +201,10 @@ export const comunidadesService = {
       evento_privado_faixas_capacidade: string[];
       onboarding_completo: boolean;
       tipo_comunidade: 'ESPACO_FIXO' | 'PRODUTORA';
+      instagram: string;
+      whatsapp: string;
+      tiktok: string;
+      site: string;
     }>,
   ): Promise<boolean> {
     const dbUpdates: Record<string, unknown> = {};
@@ -235,6 +251,10 @@ export const comunidadesService = {
       dbUpdates.evento_privado_faixas_capacidade = updates.evento_privado_faixas_capacidade;
     if (updates.onboarding_completo !== undefined) dbUpdates.onboarding_completo = updates.onboarding_completo;
     if (updates.tipo_comunidade !== undefined) dbUpdates.tipo_comunidade = updates.tipo_comunidade;
+    if (updates.instagram !== undefined) dbUpdates.instagram = updates.instagram;
+    if (updates.whatsapp !== undefined) dbUpdates.whatsapp = updates.whatsapp;
+    if (updates.tiktok !== undefined) dbUpdates.tiktok = updates.tiktok;
+    if (updates.site !== undefined) dbUpdates.site = updates.site;
 
     const { error } = await supabase.from('comunidades').update(dbUpdates).eq('id', id);
     if (error) {

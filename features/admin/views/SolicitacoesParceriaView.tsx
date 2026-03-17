@@ -88,6 +88,7 @@ export const SolicitacoesParceriaView: React.FC<{
         createdBy: detalhe.userId,
         telefone: detalhe.telefone,
         tipo_comunidade: detalhe.tipo,
+        instagram: detalhe.instagram,
       });
 
       if (!comunidadeId) {

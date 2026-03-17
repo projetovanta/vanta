@@ -281,6 +281,52 @@ export const ComunidadePublicView: React.FC<ComunidadePublicViewProps> = ({
                   </p>
                 </div>
               </div>
+              {/* Redes sociais */}
+              {(comunidade.instagram || comunidade.whatsapp || comunidade.tiktok || comunidade.site) && (
+                <div className="flex items-center gap-3 mt-1.5">
+                  {comunidade.instagram && (
+                    <button
+                      onClick={() => window.open(`https://instagram.com/${comunidade.instagram}`, '_blank')}
+                      className="w-7 h-7 rounded-lg bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400 flex items-center justify-center active:scale-90 transition-all"
+                      title={`@${comunidade.instagram}`}
+                    >
+                      <span className="text-white text-[0.5625rem] font-black">IG</span>
+                    </button>
+                  )}
+                  {comunidade.whatsapp && (
+                    <button
+                      onClick={() => window.open(`https://wa.me/55${comunidade.whatsapp}`, '_blank')}
+                      className="w-7 h-7 rounded-lg bg-[#25D366] flex items-center justify-center active:scale-90 transition-all"
+                      title={comunidade.whatsapp}
+                    >
+                      <span className="text-white text-[0.5625rem] font-black">WA</span>
+                    </button>
+                  )}
+                  {comunidade.tiktok && (
+                    <button
+                      onClick={() => window.open(`https://tiktok.com/@${comunidade.tiktok}`, '_blank')}
+                      className="w-7 h-7 rounded-lg bg-black border border-[#00f2ea]/40 flex items-center justify-center active:scale-90 transition-all"
+                      title={`@${comunidade.tiktok}`}
+                    >
+                      <span className="text-[#00f2ea] text-[0.5625rem] font-black">TK</span>
+                    </button>
+                  )}
+                  {comunidade.site && (
+                    <button
+                      onClick={() =>
+                        window.open(
+                          comunidade.site!.startsWith('http') ? comunidade.site! : `https://${comunidade.site}`,
+                          '_blank',
+                        )
+                      }
+                      className="w-7 h-7 rounded-lg bg-zinc-800 border border-white/10 flex items-center justify-center active:scale-90 transition-all"
+                      title={comunidade.site}
+                    >
+                      <span className="text-zinc-300 text-[0.5625rem] font-black">WEB</span>
+                    </button>
+                  )}
+                </div>
+              )}
             </div>
             <button
               onClick={handleToggleFollow}

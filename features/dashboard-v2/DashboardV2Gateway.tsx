@@ -252,7 +252,7 @@ export const DashboardV2Gateway: React.FC<{
 
   const [showPalette, setShowPalette] = useState(false);
   const [isDesktop, setIsDesktop] = useState(() => window.matchMedia('(min-width: 768px)').matches);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(() => window.matchMedia('(min-width: 768px)').matches);
   const [promoterCotasListaId, setPromoterCotasListaId] = useState('');
   const [caixaEventoId, setCaixaEventoId] = useState<string | undefined>(undefined);
   const [toastMsg, setToastMsg] = useState('');

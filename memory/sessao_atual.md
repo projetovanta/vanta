@@ -1,14 +1,23 @@
 # Sessao Atual — Estado para Continuidade
 
 ## Branch: main
-## Ultimo commit: `26c69fc` — feat: Sprint 2 completo
-## Mudancas locais: SIM (B1 Stripe deploy + B2 iOS gerado + memórias)
-## Preflight: 8/8 verde (pre-commit do 26c69fc)
+## Ultimo commit: `7aba981` — fix: avatar padrão VANTA
+## Mudancas locais: SIM (sidebar mobile fix)
+## Preflight: diff-check OK
 
 ## Resumo da sessao (17 mar 2026 — sessao 2)
 
-### Commits desta sessao
+### Commits desta sessao (10)
 1. `26c69fc` — feat: Sprint 2 completo (comprovante saque, CSV, encerrar/cancelar, LGPD)
+2. `bb5ac26` — docs: B1 Stripe test mode + B2 iOS gerado
+3. `56c1ca4` — feat: C1 Login Social Google + Apple
+4. `2c71806` — feat: B3 Deep Links + Google ATIVO
+5. `defc6b7` — fix: caminhos antigos + auditoria + BottomSheet
+6. `1b9e1ee` — fix: audit deep com SQL + supabase dir
+7. `79d7712` — docs: sincronizar memórias agentes
+8. `c9b00b3` — feat: Dashboard V2 é o admin principal + admin-v2/v3 deletados
+9. `1d5ad5b` — fix: CSP img-src Google avatar
+10. `7aba981` — fix: avatar padrão VANTA sempre
 
 ### Sprint 2 — COMPLETO
 | Bloco | Itens | Status |
@@ -33,10 +42,15 @@
 ### Migrations aplicadas nesta sessao
 - 20260317200000_comprovante_saque (comprovante_url + bucket comprovantes-saque)
 - 20260317210000_rpc_exportar_dados_usuario (LGPD exportação)
+- 20260317220000_trigger_profile_social_login (auto-create profile)
+- 20260317230000_fix_avatar_padrao_vanta (avatar NEUTRO sempre)
 
-### Arquivos novos
-- services/lgpdExportService.ts (exportação dados LGPD via RPC)
-- memory/feedback_padrao_sprint_sessao.md (padrão de trabalho aprovado)
+### Painel Admin
+- Dashboard V2 agora é o admin principal (features/dashboard-v2/)
+- admin-v2 e admin-v3 deletados (protótipos mock, 2269L removidas)
+- Sidebar mobile: começa fechada, fecha ao clicar item
+- CSP: lh3.googleusercontent.com liberado em img-src
+- Avatar: sempre padrão VANTA, nunca importa foto de provider
 
 ## Mapa de blocos
 

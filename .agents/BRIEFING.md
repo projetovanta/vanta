@@ -99,4 +99,4 @@ App de **descoberta de vida noturna** no Brasil. NÃO é ticketeria. É o app qu
 
 ---
 
-*Atualizado em 2026-03-15 por Alex (Gerente Geral). Atualizar ao final de toda sessão.*
+*Atualizado em 2026-03-17 por Rafa (Gerente Geral). Atualizar ao final de toda sessão.*

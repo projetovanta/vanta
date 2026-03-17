@@ -8,8 +8,8 @@
 ## Estado Atual
 
 **Fase:** Produção e testes finais
-**Última sessão:** 2026-03-16
-**Atualizado por:** Rafa
+**Última sessão:** 2026-03-17 (sessão 2)
+**Atualizado por:** Lia
 
 ---
 
@@ -28,7 +28,10 @@
 | Posicionamento VANTA = descoberta + curadoria + benefícios | `memory/projeto_posicionamento.md` |
 | Identidade visual: Confiança, Curadoria, Estilo | `memory/projeto_identidade_visual.md` |
 | Modelo financeiro: taxa variável, D+15, Stripe Connect | `memory/projeto_modelo_financeiro.md` |
-| Checkout Stripe integrado (falta secrets) | `memory/modulo_compra_ingresso.md` |
+| Stripe TEST MODE ativo (secrets + 3 EFs deployed) | `memory/modulo_compra_ingresso.md` |
+| Login Google ATIVO, Apple aguarda conta Developer | `memory/modulo_perfil_feed.md` |
+| Padrão sprint: blocos → investigar → plano → Dan aprova → executar | `memory/feedback_padrao_sprint_sessao.md` |
+| Negociação sócio REMOVIDA do app (fora do app) | `memory/sub_negociacao_socio.md` |
 
 ---
 
@@ -36,12 +39,16 @@
 
 | O que mudou | Onde ler |
 |-------------|----------|
-| Dashboard V2 + Panorama + AdminViewHeader | `memory/painel_administrativo.md` |
-| Negociação comercial completa | `memory/sub_aprovacao_negociacao.md` |
-| 7 hooks de compliance criados | `.claude/settings.json` |
-| 3 hooks de delegação criados (16/mar) | `block-rafa-memory-update.sh`, `block-rafa-ata.sh`, `warn-rafa-delegate.sh` |
-| Copy auditada (deals→benefícios, grátis→entrada livre) | `memory/projeto_posicionamento.md` |
-| Home reorganizada, perfil simplificado, checkout redesign | Memórias dos módulos respectivos |
+| Sprint 2 completo (comprovante, CSV, encerrar/cancelar, LGPD) | `memory/sessao_atual.md` |
+| Stripe TEST MODE ativo (secrets + webhook 9 eventos + 3 EFs) | `memory/modulo_compra_ingresso.md` |
+| Login social Google + Apple (código pronto, Google ativo) | `memory/modulo_perfil_feed.md` |
+| Deep links Capacitor (deepLinkService + @capacitor/app) | `memory/plataformas.md` |
+| iOS gerado (npx cap add ios + sync) | `memory/plataformas.md` |
+| LGPD exportação dados (RPC exportar_dados_usuario) | `memory/modulo_perfil_feed.md` |
+| Encerrar/cancelar evento (UI + service) | `memory/modulo_evento.md` |
+| BottomSheet componente reutilizável criado | `memory/componentes_compartilhados.md` |
+| Audit scripts corrigidos (apontam pra memory/ do repo) | Scripts `memory-audit*.mjs` |
+| 20 divergências de memória corrigidas | Auditoria 17/mar |
 
 ---
 
@@ -60,10 +67,11 @@
 
 ## Próximas Prioridades
 
-1. Auditar fluxos tela a tela do painel admin
-2. Redesenhar hooks/protocolos de delegação dos 25 agentes
-3. Configurar secrets Stripe (quando Dan tiver conta)
-4. Onboarding do produtor (tour guiado)
+1. Conta Apple Developer ($99/ano) — login Apple + deep links iOS + App Store
+2. Android Studio — build Android
+3. Conta Google Play Console ($25) — Google Play
+4. Testar app no Simulador iOS (Xcode já pronto)
+5. Polir fluxos existentes tela a tela
 
 ---
 
@@ -87,4 +95,4 @@
 - **NUNCA** escrever detalhes aqui — só ponteiros
 - **Conflito** com memória de módulo → este arquivo tem prioridade (decisão mais recente)
 
-*Criado: 14/mar/2026. Formato simplificado: 16/mar/2026.*
+*Criado: 14/mar/2026. Atualizado: 17/mar/2026.*

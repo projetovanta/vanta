@@ -12,6 +12,17 @@ export const ImageCropperModal: React.FC<{ image: string; onConfirm: (img: strin
   onCancel,
 }) => {
   useModalBack(true, onCancel, 'image-cropper');
+
+  // Fix: react-easy-crop pode travar touch scroll ao desmontar.
+  // Força restauração do scroll no container pai ao fechar.
+  useEffect(() => {
+    return () => {
+      document.querySelectorAll('[style*="touch-action"]').forEach(el => {
+        (el as HTMLElement).style.touchAction = '';
+      });
+    };
+  }, []);
+
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [pixels, setPixels] = useState<any>(null);

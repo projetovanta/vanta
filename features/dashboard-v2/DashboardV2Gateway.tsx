@@ -900,7 +900,7 @@ export const DashboardV2Gateway: React.FC<{
           </div>
 
           {/* Conteúdo principal */}
-          <div className="flex-1 overflow-hidden flex flex-col bg-[#0A0A0A]">
+          <div className="flex-1 overflow-y-auto no-scrollbar flex flex-col bg-[#0A0A0A]">
             <Suspense
               fallback={
                 <div className="flex-1 flex items-center justify-center">

@@ -9,7 +9,7 @@
  * Em desktop, o container é limitado a max-w-[500px] para evitar crop area gigante.
  */
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import Cropper, { Area } from 'react-easy-crop';
 import { X, Check, ZoomIn, ZoomOut } from 'lucide-react';
 import { useModalBack } from '../hooks/useModalStack';
@@ -65,6 +65,16 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
   autoSkipWhenFit = true,
 }) => {
   useModalBack(true, onClose, 'image-crop');
+
+  // Fix: react-easy-crop pode travar touch scroll ao desmontar.
+  useEffect(() => {
+    return () => {
+      document.querySelectorAll('[style*="touch-action"]').forEach(el => {
+        (el as HTMLElement).style.touchAction = '';
+      });
+    };
+  }, []);
+
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedArea, setCroppedArea] = useState<Area | null>(null);

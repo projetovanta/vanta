@@ -142,6 +142,7 @@ export const EditProfileView: React.FC<{
   const [isSaving, setIsSaving] = useState(false);
   const [tempImage, setTempImage] = useState<string | null>(null);
   const [cropTarget, setCropTarget] = useState<'avatar' | number | null>(null);
+  const [scrollKey, setScrollKey] = useState(0);
   const [showExitConfirm, setShowExitConfirm] = useState(false);
 
   const [privacy, setPrivacy] = useState<PrivacidadeConfig>({
@@ -212,6 +213,7 @@ export const EditProfileView: React.FC<{
     }
     setTempImage(null);
     setCropTarget(null);
+    setScrollKey(k => k + 1);
   };
 
   const removeAlbumPhoto = (index: number) => {
@@ -336,7 +338,7 @@ export const EditProfileView: React.FC<{
 
       <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/*" className="hidden" />
 
-      <div className="flex-1 overflow-y-auto no-scrollbar">
+      <div key={scrollKey} className="flex-1 overflow-y-auto no-scrollbar">
         <form onSubmit={handleSubmit} className="p-5 space-y-5 pb-10">
           {/* ── SEÇÃO 1: Foto & Nome ──────────────────────────────── */}
           <div className="flex flex-col items-center pt-2 pb-2">
@@ -634,6 +636,7 @@ export const EditProfileView: React.FC<{
           onCancel={() => {
             setTempImage(null);
             setCropTarget(null);
+            setScrollKey(k => k + 1);
           }}
         />
       )}

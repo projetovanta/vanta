@@ -207,7 +207,7 @@ Cupom vinculado a comunidade (nao a evento) vale pra todos os eventos dela. `cup
 | 13 | Waitlist | OK | WaitlistModal 60L |
 | 14 | Meia-entrada comprovante | OK | Upload + flag requer_comprovante |
 | 15 | Mesas/camarotes | OK | Selecao de mesa no checkout |
-| 16 | Pagamento real Stripe | BRANCH | feat/stripe-ingressos — EFs + frontend prontos, aguarda CNPJ/secrets |
+| 16 | Pagamento real Stripe | OK (TEST MODE) | 3 Edge Functions deployed (create-checkout, create-ticket-checkout, stripe-webhook). Secrets configurados. 9 eventos webhook. Cartão teste: 4242 4242 4242 4242 |
 | 25 | Desconto MV no checkout | OK | useEffect busca membros_clube + mais_vanta_lotes_evento, aplica desconto_percentual paralelo ao cupom |
 | 17 | Cadastro inline | NAO EXISTE | Apenas login, nao tem signup no checkout |
 | 18 | PIX como metodo | NAO EXISTE | Apenas Stripe (cartao) |

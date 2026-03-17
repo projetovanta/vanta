@@ -226,7 +226,7 @@ Registro financeiro de cada venda. Colunas: valor_bruto, valor_liquido, taxa_apl
 | 14 | Raio-X evento | OK | RaioXEvento 84L |
 | 15 | Lucro por comunidade | OK | LucroPorComunidade 101L |
 | 16 | RLS financeiro | OK | Todas tabelas com RLS |
-| 17 | Pagamento real (Stripe) | NAO ATIVO | Edge Functions existem, pagamento via RPC direto |
+| 17 | Pagamento real (Stripe) | OK (TEST MODE) | 3 Edge Functions deployed, secrets configurados, 9 eventos webhook, cartão teste 4242 |
 | 17b | Comprovante de pagamento saque | OK | comprovante_url em solicitacoes_saque + bucket comprovantes-saque + uploadComprovanteSaque + UI master/produtor |
 | 18 | Nota fiscal | NAO EXISTE | Sem geracao de NF |
 | 19 | Relatorio exportavel financeiro | OK | CSV em HistoricoSaques + ReembolsosSection + MasterFinanceiro (saques). PDF já existia pra receita |

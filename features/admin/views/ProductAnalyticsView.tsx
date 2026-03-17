@@ -347,21 +347,23 @@ export const ProductAnalyticsView: React.FC<{ onBack: () => void }> = ({ onBack 
           {discoveryRows.length === 0 ? (
             <p className="text-zinc-400 text-xs">Sem dados de discovery ainda</p>
           ) : (
-            <div className="space-y-2">
-              <div className="grid grid-cols-5 gap-2 text-[0.625rem] font-bold text-zinc-400 uppercase">
-                <span className="col-span-2">Evento</span>
-                <span className="text-right">Views</span>
-                <span className="text-right">Opens</span>
-                <span className="text-right">Conv.</span>
-              </div>
-              {discoveryRows.map((r, i) => (
-                <div key={i} className="grid grid-cols-5 gap-2 text-xs text-zinc-300">
-                  <span className="col-span-2 truncate">{r.evento_nome}</span>
-                  <span className="text-right">{r.views}</span>
-                  <span className="text-right">{r.opens}</span>
-                  <span className="text-right text-[#FFD300]">{r.rate}%</span>
+            <div className="overflow-x-auto no-scrollbar">
+              <div className="space-y-2 min-w-72">
+                <div className="grid grid-cols-5 gap-2 text-[0.625rem] font-bold text-zinc-400 uppercase">
+                  <span className="col-span-2">Evento</span>
+                  <span className="text-right">Views</span>
+                  <span className="text-right">Opens</span>
+                  <span className="text-right">Conv.</span>
                 </div>
-              ))}
+                {discoveryRows.map((r, i) => (
+                  <div key={i} className="grid grid-cols-5 gap-2 text-xs text-zinc-300">
+                    <span className="col-span-2 truncate">{r.evento_nome}</span>
+                    <span className="text-right">{r.views}</span>
+                    <span className="text-right">{r.opens}</span>
+                    <span className="text-right text-[#FFD300]">{r.rate}%</span>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </Card>

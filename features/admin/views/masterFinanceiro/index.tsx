@@ -63,7 +63,7 @@ const CondicoesResumoCard: React.FC = () => {
         <Handshake size="0.875rem" className="text-[#FFD300]" />
         <p className="text-xs font-black uppercase tracking-wider text-zinc-400">Condições Comerciais</p>
       </div>
-      <div className="grid grid-cols-4 gap-2">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
         {[
           { label: 'Aceitas', value: aceitos, color: 'text-emerald-400 bg-emerald-500/10' },
           { label: 'Pendentes', value: pendentes, color: 'text-amber-400 bg-amber-500/10' },

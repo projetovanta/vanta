@@ -844,12 +844,19 @@ export const DashboardV2Gateway: React.FC<{
             className="shrink-0 flex items-center gap-2 px-3 md:px-5 h-14 border-b border-white/5"
             style={{ background: 'rgba(10,10,10,0.8)', backdropFilter: 'blur(15px)' }}
           >
-            {activeContext && (
+            {activeContext ? (
               <button
                 onClick={handleBackToPanorama}
                 className="flex items-center gap-1.5 py-2 text-zinc-400 active:text-white transition-colors shrink-0"
               >
                 <span className="text-[0.625rem] font-bold">← Panorama</span>
+              </button>
+            ) : (
+              <button
+                onClick={() => onClose?.()}
+                className="flex items-center gap-1.5 py-2 text-zinc-400 active:text-white transition-colors shrink-0"
+              >
+                <span className="text-[0.625rem] font-bold">← Voltar</span>
               </button>
             )}
             {!sidebarOpen && activeContext && (

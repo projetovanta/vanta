@@ -8,7 +8,8 @@ export const ThisWeekSection: React.FC<{
   eventos: Evento[];
   onEventClick: (e: Evento) => void;
   onComunidadeClick?: (id: string) => void;
-}> = React.memo(({ eventos, onEventClick, onComunidadeClick }) => {
+  showCityInsteadOfLocal?: boolean;
+}> = React.memo(({ eventos, onEventClick, onComunidadeClick, showCityInsteadOfLocal }) => {
   if (eventos.length === 0) return null;
 
   return (
@@ -23,7 +24,12 @@ export const ThisWeekSection: React.FC<{
       <div className="flex gap-3 overflow-x-auto no-scrollbar px-5 snap-x snap-mandatory">
         {eventos.map(e => (
           <div key={e.id} className="shrink-0 w-[42vw] max-w-[11.25rem] snap-start">
-            <EventCard evento={e} onClick={onEventClick} onComunidadeClick={onComunidadeClick} />
+            <EventCard
+              evento={e}
+              onClick={onEventClick}
+              onComunidadeClick={onComunidadeClick}
+              showCityInsteadOfLocal={showCityInsteadOfLocal}
+            />
           </div>
         ))}
       </div>

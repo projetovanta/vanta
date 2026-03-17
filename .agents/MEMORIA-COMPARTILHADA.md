@@ -8,8 +8,8 @@
 ## Estado Atual
 
 **Fase:** Produção e testes finais
-**Última sessão:** 2026-03-17 (sessão 2)
-**Atualizado por:** Lia
+**Última sessão:** 2026-03-17 (sessão 3)
+**Atualizado por:** Memo
 
 ---
 
@@ -39,6 +39,7 @@
 
 | O que mudou | Onde ler |
 |-------------|----------|
+| Bloco C completo (C1 login social, C2 onboarding produtor, C3 CMS master) | `memory/sessao_atual.md` |
 | Sprint 2 completo (comprovante, CSV, encerrar/cancelar, LGPD) | `memory/sessao_atual.md` |
 | Stripe TEST MODE ativo (secrets + webhook 9 eventos + 3 EFs) | `memory/modulo_compra_ingresso.md` |
 | Login social Google + Apple (código pronto, Google ativo) | `memory/modulo_perfil_feed.md` |

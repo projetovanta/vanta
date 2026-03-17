@@ -128,7 +128,7 @@ export class SupabaseVantaService implements IVantaService {
           'id, slug, nome, descricao, data_inicio, data_fim, local, endereco, cidade, foto, formato, estilos, experiencias, categoria, subcategorias, coords, comunidade_id, venda_vanta, link_externo, comunidades(id, nome, foto, cidade, endereco), lotes(id, nome, ativo, variacoes_ingresso(valor))',
         )
         .eq('publicado', true)
-        .gte('data_inicio', now)
+        .gte('data_fim', now)
         .order('data_inicio', { ascending: true })
         .limit(1000);
 
@@ -235,7 +235,7 @@ export class SupabaseVantaService implements IVantaService {
           'id, slug, nome, descricao, data_inicio, data_fim, local, endereco, cidade, foto, formato, estilos, experiencias, categoria, subcategorias, coords, comunidade_id, venda_vanta, link_externo, comunidades(id, nome, foto, cidade, endereco), lotes(id, nome, ativo, variacoes_ingresso(valor))',
         )
         .eq('publicado', true)
-        .gte('data_inicio', now)
+        .gte('data_fim', now)
         .order('data_inicio', { ascending: true })
         .range(from, to);
 
@@ -283,7 +283,7 @@ export class SupabaseVantaService implements IVantaService {
           'id, slug, nome, descricao, data_inicio, data_fim, local, endereco, cidade, foto, formato, estilos, experiencias, categoria, subcategorias, coords, comunidade_id, venda_vanta, link_externo, comunidades(id, nome, foto, cidade, endereco), lotes(id, nome, ativo, variacoes_ingresso(valor))',
         )
         .eq('publicado', true)
-        .gte('data_inicio', now)
+        .gte('data_fim', now)
         .or(`nome.ilike.${pattern},local.ilike.${pattern},cidade.ilike.${pattern}`)
         .order('data_inicio', { ascending: true })
         .limit(limit);

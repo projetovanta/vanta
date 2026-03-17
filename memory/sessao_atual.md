@@ -71,8 +71,8 @@
 | B5 Cupom comunidade | ✅ | B6 Redes sociais | ✅ |
 | B7 Autonomia master | ✅ Sprint 1+2 |
 
-### BLOCO C
-| C1 Login social | ✅ Google ATIVO + Apple aguarda conta Developer | C2 Onboarding produtor | ⏳ | C3 CMS master | ⏳ |
+### BLOCO C — COMPLETO ✅
+| C1 Login social | ✅ Google ATIVO + Apple aguarda conta Developer | C2 Onboarding produtor | ✅ funcional (OnboardingWelcome + Checklist) | C3 CMS master | ✅ funcional (SiteContentView + LegalEditorView) |
 
 ## Pendencias App (painel SISTEMA)
 - Email caixa (Resend) | CNPJ | Deep links (TEAMID + SHA-256)

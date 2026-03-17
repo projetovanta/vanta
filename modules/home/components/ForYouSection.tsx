@@ -11,7 +11,8 @@ export const ForYouSection: React.FC<{
   presencaIds: string[];
   onEventClick: (e: Evento) => void;
   onComunidadeClick?: (id: string) => void;
-}> = React.memo(({ eventos, tickets, presencaIds, onEventClick, onComunidadeClick }) => {
+  showCityInsteadOfLocal?: boolean;
+}> = React.memo(({ eventos, tickets, presencaIds, onEventClick, onComunidadeClick, showCityInsteadOfLocal }) => {
   const recommended = useMemo(() => {
     // Calcula formatos/categorias mais frequentados pelo usuário
     const attendedIds = new Set([...tickets.map(t => t.eventoId), ...presencaIds]);
@@ -59,7 +60,12 @@ export const ForYouSection: React.FC<{
       <div className="flex gap-3 overflow-x-auto no-scrollbar px-5 snap-x snap-mandatory">
         {recommended.map(e => (
           <div key={e.id} className="shrink-0 w-[42vw] max-w-[11.25rem] snap-start">
-            <EventCard evento={e} onClick={onEventClick} onComunidadeClick={onComunidadeClick} />
+            <EventCard
+              evento={e}
+              onClick={onEventClick}
+              onComunidadeClick={onComunidadeClick}
+              showCityInsteadOfLocal={showCityInsteadOfLocal}
+            />
           </div>
         ))}
       </div>

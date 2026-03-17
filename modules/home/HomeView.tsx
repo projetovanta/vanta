@@ -144,34 +144,34 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </div>
       )}
 
-      {/* Saudação — personalizada se logado, genérica se guest, coroa se MV */}
-      <div className="px-5 pt-6 pb-2">
-        <p className="text-sm text-zinc-400">
-          {getGreeting()}
-          {firstName ? ',' : ''}
-        </p>
-        {firstName ? (
-          <div className="flex items-center gap-2">
-            <h1 style={TYPOGRAPHY.screenTitle} className="text-2xl text-white">
-              {firstName}
-            </h1>
-            {isMembroMV && <Crown size="1rem" className="text-[#FFD300]" />}
-          </div>
-        ) : (
-          <p className="text-zinc-500 text-xs mt-1">Descubra o que tá rolando</p>
-        )}
+      {/* Saudação — compacta */}
+      <div className="px-5 pt-5 pb-2 flex items-center justify-between">
+        <div className="flex items-center gap-1.5">
+          <p className="text-sm text-zinc-400">
+            {getGreeting()}
+            {firstName ? `, ` : ''}
+          </p>
+          {firstName && <p className="text-sm text-white font-semibold">{firstName}</p>}
+          {isMembroMV && <Crown size="0.7rem" className="text-[#FFD300] ml-0.5" />}
+        </div>
+        {!firstName && <p className="text-xs text-zinc-500">Descubra a noite</p>}
       </div>
 
       {/* Seus Benefícios — só membros MV */}
       {isMembroMV && (
-        <div className="px-5 pb-2">
+        <div className="px-5 pb-4">
           <button
             onClick={() => onNavigateToProfile?.('CLUBE')}
-            className="w-full flex items-center gap-3 px-4 py-3 bg-[#FFD300]/5 border border-[#FFD300]/15 rounded-xl active:scale-[0.98] transition-all"
+            className="w-full flex items-center gap-3 px-4 py-3.5 bg-gradient-to-r from-[#FFD300]/8 to-[#FFD300]/3 border border-[#FFD300]/15 rounded-2xl active:scale-[0.97] transition-all hover:border-[#FFD300]/30"
           >
-            <Crown size="1rem" className="text-[#FFD300] shrink-0" />
-            <span className="text-sm text-zinc-300">Seus benefícios disponíveis</span>
-            <span className="ml-auto text-[#FFD300] text-xs font-bold">Ver</span>
+            <div className="w-8 h-8 rounded-full bg-[#FFD300]/10 flex items-center justify-center shrink-0">
+              <Crown size="0.875rem" className="text-[#FFD300]" />
+            </div>
+            <div className="flex flex-col items-start">
+              <span className="text-sm text-white font-medium">Seus benefícios</span>
+              <span className="text-[0.65rem] text-zinc-500">Exclusivos pra você</span>
+            </div>
+            <span className="ml-auto text-[#FFD300] text-xs font-bold tracking-wide">Ver →</span>
           </button>
         </div>
       )}
@@ -183,16 +183,31 @@ export const HomeView: React.FC<HomeViewProps> = ({
       <LiveNowSection eventos={liveEventos} onEventClick={onEventClick} />
 
       {/* Amigos vão — só aparece se logado e tem amigos com ingresso */}
-      <FriendsGoingSection eventos={eventos} onEventClick={onEventClick} onComunidadeClick={onComunidadeClick} />
+      <FriendsGoingSection
+        eventos={eventos}
+        onEventClick={onEventClick}
+        onComunidadeClick={onComunidadeClick}
+        showCityInsteadOfLocal={!selectedCity}
+      />
 
       {/* Perto de você */}
       <LazySection>
-        <NearYouSection eventos={cityEventos} onEventClick={onEventClick} onComunidadeClick={onComunidadeClick} />
+        <NearYouSection
+          eventos={cityEventos}
+          onEventClick={onEventClick}
+          onComunidadeClick={onComunidadeClick}
+          showCityInsteadOfLocal={!selectedCity}
+        />
       </LazySection>
 
       {/* Esta semana */}
       <LazySection>
-        <ThisWeekSection eventos={thisWeekEventos} onEventClick={onEventClick} onComunidadeClick={onComunidadeClick} />
+        <ThisWeekSection
+          eventos={thisWeekEventos}
+          onEventClick={onEventClick}
+          onComunidadeClick={onComunidadeClick}
+          showCityInsteadOfLocal={!selectedCity}
+        />
       </LazySection>
 
       {/* Pra Você */}
@@ -203,6 +218,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
           presencaIds={presencaIds}
           onEventClick={onEventClick}
           onComunidadeClick={onComunidadeClick}
+          showCityInsteadOfLocal={!selectedCity}
         />
       </LazySection>
 
@@ -233,16 +249,16 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </div>
       )}
 
-      {/* Empty State — px-8 individual, não usar px global */}
+      {/* Empty State */}
       {!hasAnyContent && !eventsLoading && (
-        <div className="flex flex-col items-center justify-center px-8 py-20 text-center">
-          <div className="w-12 h-12 rounded-full bg-zinc-900 border border-white/5 flex items-center justify-center mb-4">
-            <MapPin size="1.125rem" className="text-zinc-400" />
+        <div className="flex flex-col items-center justify-center px-8 py-24 text-center">
+          <div className="w-16 h-16 rounded-2xl bg-[#FFD300]/5 border border-[#FFD300]/10 flex items-center justify-center mb-5">
+            <MapPin size="1.5rem" className="text-[#FFD300]" />
           </div>
-          <h3 style={TYPOGRAPHY.screenTitle} className="text-lg text-white mb-2">
+          <h3 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-2">
             Nenhum evento{selectedCity ? ` em ${selectedCity}` : ''}
           </h3>
-          <p className="text-zinc-400 text-sm mb-6 max-w-[15rem] mx-auto">
+          <p className="text-zinc-500 text-sm mb-8 max-w-[16rem] mx-auto leading-relaxed">
             {selectedCity
               ? 'Explore outras cidades ou volte depois — novos eventos aparecem toda semana.'
               : 'Novos eventos aparecem toda semana. Fique de olho!'}
@@ -250,7 +266,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
           {selectedCity && (
             <button
               onClick={onNavigateToSearch}
-              className="flex items-center gap-2 bg-[#FFD300] text-black px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-widest active:scale-95 transition-transform"
+              className="flex items-center gap-2 bg-[#FFD300] text-black px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-widest active:scale-95 transition-all shadow-[0_0_20px_rgba(255,211,0,0.2)]"
             >
               <Search size="0.875rem" />
               Explorar

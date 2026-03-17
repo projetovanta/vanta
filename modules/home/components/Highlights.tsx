@@ -187,7 +187,7 @@ export const Highlights: React.FC<HighlightsProps> = React.memo(({ currentCity, 
                         lineHeight: '7.4cqw',
                         fontStyle: 'italic',
                       }}
-                      className="drop-shadow-lg truncate"
+                      className="drop-shadow-lg line-clamp-2"
                     >
                       {item.titulo}
                     </h2>
@@ -215,7 +215,7 @@ export const Highlights: React.FC<HighlightsProps> = React.memo(({ currentCity, 
                   >
                     <p
                       style={{ fontSize: '2.6cqw', lineHeight: '4.2cqw', fontStyle: 'italic' }}
-                      className="text-[#FFD300] font-semibold leading-relaxed line-clamp-2 drop-shadow-md"
+                      className="text-[#FFD300] font-semibold leading-relaxed line-clamp-3 drop-shadow-md"
                     >
                       {item.subtitulo}
                     </p>

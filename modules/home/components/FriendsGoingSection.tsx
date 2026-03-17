@@ -11,7 +11,8 @@ export const FriendsGoingSection: React.FC<{
   eventos: Evento[];
   onEventClick: (e: Evento) => void;
   onComunidadeClick?: (id: string) => void;
-}> = React.memo(({ eventos, onEventClick, onComunidadeClick }) => {
+  showCityInsteadOfLocal?: boolean;
+}> = React.memo(({ eventos, onEventClick, onComunidadeClick, showCityInsteadOfLocal }) => {
   const currentAccount = useAuthStore(s => s.currentAccount);
   const friendships = useSocialStore(s => s.friendships);
   const [friendEventIds, setFriendEventIds] = useState<Set<string>>(new Set());
@@ -86,7 +87,12 @@ export const FriendsGoingSection: React.FC<{
       <div className="flex gap-3 overflow-x-auto no-scrollbar px-5 snap-x snap-mandatory">
         {friendEvents.map(evento => (
           <div key={evento.id} className="shrink-0 w-[42vw] max-w-[11.25rem] snap-start relative">
-            <EventCard evento={evento} onClick={onEventClick} onComunidadeClick={onComunidadeClick} />
+            <EventCard
+              evento={evento}
+              onClick={onEventClick}
+              onComunidadeClick={onComunidadeClick}
+              showCityInsteadOfLocal={showCityInsteadOfLocal}
+            />
             {(friendCountByEvent[evento.id] || 0) > 0 && (
               <div className="absolute top-2 left-2 z-40 flex items-center gap-1 bg-black/70 backdrop-blur-md px-1.5 py-0.5 rounded-full">
                 <Users size="0.4375rem" className="text-[#FFD300]" />

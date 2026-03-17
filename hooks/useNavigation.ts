@@ -89,7 +89,7 @@ export const useNavigation = () => {
       saveScrollPosition(activeTab);
       setSelectedEvent(e);
       const slug = e.slug || e.id;
-      navigate(`/evento/${slug}`);
+      navigate(`/app/evento/${slug}`);
     },
     [activeTab, navigate, saveScrollPosition],
   );

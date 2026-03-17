@@ -9,7 +9,8 @@ export const NearYouSection: React.FC<{
   eventos: Evento[];
   onEventClick: (e: Evento) => void;
   onComunidadeClick?: (id: string) => void;
-}> = React.memo(({ eventos, onEventClick, onComunidadeClick }) => {
+  showCityInsteadOfLocal?: boolean;
+}> = React.memo(({ eventos, onEventClick, onComunidadeClick, showCityInsteadOfLocal }) => {
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [asked, setAsked] = useState(false);
   const geo = useGeolocationPermission();
@@ -83,10 +84,15 @@ export const NearYouSection: React.FC<{
       <div className="flex gap-3 overflow-x-auto no-scrollbar px-5 snap-x snap-mandatory">
         {nearbyEvents.map(({ evento, distKm }) => (
           <div key={evento.id} className="shrink-0 w-[42vw] max-w-[11.25rem] snap-start relative">
-            <EventCard evento={evento} onClick={onEventClick} onComunidadeClick={onComunidadeClick} />
-            <div className="absolute top-2 left-2 z-40 flex items-center gap-1 bg-black/70 backdrop-blur-md px-1.5 py-0.5 rounded-full">
-              <MapPin size="0.4375rem" className="text-[#FFD300]" />
-              <span className="text-[0.4375rem] font-black text-white tracking-wider">
+            <EventCard
+              evento={evento}
+              onClick={onEventClick}
+              onComunidadeClick={onComunidadeClick}
+              showCityInsteadOfLocal={showCityInsteadOfLocal}
+            />
+            <div className="absolute top-2.5 right-2.5 z-40 flex items-center gap-1 bg-black/60 backdrop-blur-md px-2 py-1 rounded-lg">
+              <MapPin size="0.5rem" className="text-[#FFD300]" />
+              <span className="text-[0.5rem] font-bold text-white tracking-wider">
                 {distKm < 1 ? `${Math.round(distKm * 1000)}m` : `${distKm.toFixed(1)}km`}
               </span>
             </div>

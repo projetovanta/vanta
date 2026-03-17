@@ -85,20 +85,20 @@ export const EventFeed: React.FC<{
   if (!formatosLoaded) {
     // Skeleton loading enquanto carrega categorias do Supabase
     return (
-      <div className="py-4 w-full space-y-8">
+      <div className="py-4 w-full space-y-10">
         {[1, 2, 3].map(i => (
           <div key={i}>
-            <div className="px-5 mb-3">
-              <div className="h-4 w-24 bg-zinc-800/50 rounded animate-pulse" />
+            <div className="px-5 mb-4">
+              <div className="h-3 w-20 bg-zinc-800/40 rounded-lg animate-pulse" />
             </div>
             <div className="flex gap-3 px-5">
               {[1, 2, 3].map(j => (
-                <div key={j} className="shrink-0 w-[42vw] max-w-[11.25rem]">
-                  <div className="rounded-2xl overflow-hidden bg-[#161616] border border-white/5">
-                    <div className="aspect-[4/5] bg-zinc-800/30 animate-pulse" />
+                <div key={j} className="shrink-0 w-[44vw] max-w-[12rem]">
+                  <div className="rounded-2xl overflow-hidden bg-[#111] border border-white/[0.06]">
+                    <div className="aspect-[3/4] bg-zinc-800/20 animate-pulse" />
                     <div className="p-3 space-y-2">
-                      <div className="h-3 w-20 bg-zinc-800/30 rounded animate-pulse" />
-                      <div className="h-3 w-14 bg-zinc-800/30 rounded animate-pulse" />
+                      <div className="h-3 w-20 bg-zinc-800/20 rounded-lg animate-pulse" />
+                      <div className="h-2.5 w-14 bg-zinc-800/20 rounded-lg animate-pulse" />
                     </div>
                   </div>
                 </div>
@@ -112,11 +112,11 @@ export const EventFeed: React.FC<{
 
   if (categorized.length === 0) {
     return (
-      <div className="py-16 flex flex-col items-center justify-center gap-3 px-8">
-        <div className="w-16 h-16 rounded-full bg-zinc-900 border border-white/5 flex items-center justify-center">
-          <Ticket size="1.5rem" className="text-zinc-700" />
+      <div className="py-20 flex flex-col items-center justify-center gap-4 px-8">
+        <div className="w-16 h-16 rounded-2xl bg-[#FFD300]/5 border border-[#FFD300]/10 flex items-center justify-center">
+          <Ticket size="1.5rem" className="text-[#FFD300]/40" />
         </div>
-        <p className="text-zinc-400 text-sm text-center leading-relaxed max-w-[15rem]">
+        <p className="text-zinc-500 text-sm text-center leading-relaxed max-w-[16rem]">
           Sem eventos na sua cidade por enquanto.
         </p>
       </div>
@@ -155,17 +155,16 @@ const CategoryRow: React.FC<{
 
   return (
     <div>
-      {/* px-5 individual — carrossel com edge-bleed, não usar px global */}
-      <div className="flex items-center justify-between px-5 mb-3">
-        <h3 style={TYPOGRAPHY.sectionKicker} className="text-sm">
+      <div className="flex items-center justify-between px-5 mb-4">
+        <h3 style={TYPOGRAPHY.sectionKicker} className="text-xs">
           {categoria}
         </h3>
         {eventos.length > 3 && (
           <button
             onClick={() => onViewAll(categoria)}
-            className="flex items-center gap-1 text-[0.5625rem] text-zinc-400 font-black uppercase tracking-widest active:text-[#FFD300] transition-colors"
+            className="flex items-center gap-1 text-[0.65rem] text-zinc-500 font-semibold uppercase tracking-wider active:text-[#FFD300] transition-colors"
           >
-            Ver todos <ChevronRight size="0.75rem" />
+            Ver todos <ChevronRight size="0.875rem" />
           </button>
         )}
       </div>
@@ -173,7 +172,7 @@ const CategoryRow: React.FC<{
       {/* Carrossel horizontal */}
       <div ref={scrollRef} className="flex gap-3 overflow-x-auto no-scrollbar px-5 snap-x snap-mandatory">
         {visibleEvents.map(e => (
-          <div key={e.id} className="shrink-0 w-[42vw] max-w-[11.25rem] snap-start">
+          <div key={e.id} className="shrink-0 w-[44vw] max-w-[12rem] snap-start">
             <EventCard
               evento={e}
               onClick={onEventClick}
@@ -185,11 +184,12 @@ const CategoryRow: React.FC<{
         {hasMore && (
           <button
             onClick={() => onViewAll(categoria)}
-            className="shrink-0 w-[42vw] max-w-[11.25rem] snap-start flex flex-col items-center justify-center gap-2 rounded-2xl border border-white/10 bg-[#161616] aspect-[4/5] active:scale-95 transition-transform"
+            className="shrink-0 w-[44vw] max-w-[12rem] snap-start flex flex-col items-center justify-center gap-3 rounded-2xl border border-white/[0.06] bg-[#111] aspect-[3/4] active:scale-95 transition-all"
           >
-            <ChevronRight size="1.5rem" className="text-[#FFD300]" />
-            <span className="text-[0.625rem] font-black text-zinc-400 uppercase tracking-widest">Ver Mais</span>
-            <span className="text-[0.5625rem] text-zinc-400">+{eventos.length - MAX_VISIBLE} eventos</span>
+            <div className="w-10 h-10 rounded-xl bg-[#FFD300]/10 flex items-center justify-center">
+              <ChevronRight size="1.25rem" className="text-[#FFD300]" />
+            </div>
+            <span className="text-xs font-semibold text-zinc-400">Ver mais {eventos.length - MAX_VISIBLE}</span>
           </button>
         )}
       </div>

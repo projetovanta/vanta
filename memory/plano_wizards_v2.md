@@ -70,12 +70,12 @@ type: project
 24. pg_cron limpeza → pendente (não urgente, expira em 30 dias)
 
 ### Fase 5 — Backend Robusto ✅ COMPLETA (parcial)
-25. RPC criar_evento_completo → PENDENTE (transação atômica)
-26. RPC criar_comunidade_completa → PENDENTE
+25. RPC criar_evento_completo ✅ (migration + service integrado)
+26. RPC criar_comunidade_completa ✅ (migration + comunidadesService.criarCompleta)
 27. Migration 16 índices ✅
 28. Migration 10 CHECK constraints + UNIQUE dedup ✅
 29. classificacao_etaria + limite_notificacoes_mes ✅
-30. Edge Function notificações batch → PENDENTE
+30. Edge Function notificações batch → loop de seguidores já funciona (batch pra escala futura)
 31. Types supabase.ts regenerados ✅
 
 ### Fase 6 — Features Novas ✅ COMPLETA (parcial)
@@ -84,6 +84,6 @@ type: project
 34. "Últimos ingressos" + timer lote ✅
 35. Benefício MV ao lado do botão comprar ✅
 36. Classificação etária wizard + badge ✅
-37. Link direto aceite sócio → PENDENTE
-38. Push 2h antes pra equipe → PENDENTE
-39. Resumo promoter D+1 → PENDENTE
+37. Deep link convite sócio ✅ (rota /convite-socio/:eventoId/:socioId no deepLinkService)
+38. Push 2h antes pra equipe ✅ (INSERT push_agendados no criarEvento)
+39. Resumo promoter D+1 ✅ (listasService.gerarResumoPromoter)

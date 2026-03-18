@@ -93,6 +93,9 @@ Fluxo paralelo ao checkout — entrada por lista, nao por compra.
 - `checkIn(listaId, convidadoId, porteiroNome)` — UPDATE checked_in=true, checked_in_em, checked_in_por_nome
 - `checkInGlobal(convidadoId, porteiroNome)` — check-in sem saber lista (busca automatica)
 
+**Resumo promoter:**
+- `gerarResumoPromoter(eventoId, promoterId)` — retorna {nomesInseridos, checkIns, taxaComparecimento} do cache local. Para D+1 ou dashboard.
+
 **Cache:** cache local sincrono + refresh async do Supabase (padrao do projeto)
 - `refresh()` busca nomes de profiles para IDs unicos (promoters) e popula PROMOTERS_CACHE
 - `buildListas(rows, nomesLookup)` aceita Map de nomes para resolver inserido_por_nome e promoterNome

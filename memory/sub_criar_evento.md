@@ -79,21 +79,25 @@ Fundidos porque cotas de lista dependem da equipe
 **O que faz**: carrega evento anterior, preenche lotes, variacoes, listas, equipe
 **Fonte**: eventosAdminService.getEvento + listasService
 
-## handlePublicar — 8 reacoes atomicas
+## handlePublicar — RPC atômica + operações pós-transação
 ```
-1. eventosAdminService.criarEvento → INSERT eventos_admin
-   Status: PENDENTE (sempre — negociação sócio removida)
-   publicado: false
-1b. INSERT socios_evento (N socios, cada um com split_percentual)
-    Notifica cada socio com SOCIO_ADICIONADO
-2. INSERT lotes (por lote: nome, ordem, data_validade)
-3. INSERT variacoes_ingresso (por variacao: area, genero, valor, limite)
-4. cortesiasService.initCortesia (se habilitado)
-5. clubeService.salvarBeneficiosEvento (se MV ativo, benefícios por tier → mais_vanta_lotes_evento)
-6. listasService.criarLista → INSERT listas_evento + regras_lista
-   listasService.distribuirCota → INSERT cotas_promoter
-7. adminService.addCard → INSERT vanta_indica (card inativo auto)
-8. Para cada membro equipe: INSERT equipe_evento
+TRANSAÇÃO ATÔMICA (RPC criar_evento_completo):
+1. INSERT eventos_admin (status PENDENTE, publicado false)
+2. INSERT socios_evento (N sócios com split)
+3. INSERT lotes (N lotes)
+4. INSERT variacoes_ingresso (N*M variações)
+5. INSERT equipe_evento (N membros)
+6. INSERT atribuicoes_rbac (criador como SOCIO do evento)
+→ Se qualquer parte falhar: ROLLBACK total, zero dados órfãos
+
+PÓS-TRANSAÇÃO (best-effort, não transacional):
+7. cortesiasService.initCortesia (se habilitado)
+8. clubeService.salvarBeneficiosEvento (se MV ativo)
+9. listasService.criarLista + distribuirCota
+10. adminService.addCard (VANTA Indica inativo)
+11. Notificações: equipe (notificarEscalacao), masters, sócios, seguidores
+12. INSERT push_agendados (push 2h antes pra equipe)
+13. refresh() cache local
 ```
 
 ## Checklist

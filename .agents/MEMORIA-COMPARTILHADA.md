@@ -46,6 +46,10 @@
 | 16 índices + 10 CHECK constraints + UNIQUE dedup evento | Migration Supabase |
 | classificacao_etaria (LIVRE/16+/18+) + limite_notificacoes_mes na comunidade | Migration Supabase |
 | Social proof, urgência "Últimos ingressos", benefício MV ao lado do botão, return-to-context | Fase 6 |
+| RPCs atômicas: criar_evento_completo + criar_comunidade_completa (transação única) | `memory/sub_criar_evento.md` + `memory/sub_comunidade_crud.md` |
+| Push 2h antes pra equipe (push_agendados) + deep link convite sócio + resumo promoter D+1 | `memory/sessao_atual.md` |
+| Storage RLS restritiva: bucket comunidades só gerente RBAC ou masteradm | Migration Supabase |
+| Backlog limpo: CARGO_DESCRICOES já integrado, fontSize px normal (Recharts SVG) | Verificado 18/mar |
 | RTK instalado + TTL markers 30min + markers reutilizáveis (velocidade 3-4x) | `memory/sessao_atual.md` |
 | Auditoria limpeza: selects, deprecated, fontFamily, cnpjValidator | `memory/sessao_atual.md` |
 | Bloco 8 Auditoria COMPLETO (sessão 5): audit RBAC, extrato, CNPJ, histórico edições | `memory/plano_blocos_melhorias.md` |

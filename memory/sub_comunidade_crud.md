@@ -43,12 +43,22 @@ AO FINALIZAR:
 4. Para cada produtor: rbacService.atribuir (cargo GERENTE, permissoes completas)
 5. generateSlug(nome) → slug unico
 
+AO FINALIZAR (RPC atômica):
+1. comunidadesService.criarCompleta() → RPC criar_comunidade_completa
+   - INSERT comunidade + RBAC produtores + slug (transação única)
+   - Se falhar: ROLLBACK total
+2. Upload fotos → bucket comunidades → UPDATE URLs (pós-RPC)
+3. UPDATE taxas avançadas (pós-RPC)
+
 PROTEÇÕES (18/mar):
 - Guard anti-double-click: isCriando + botão disabled + "Criando..."
 - Toast sucesso/erro via useToast + ToastContainer
 - Scroll to error: setErroScroll rola pro topo ao falhar validação
 - Upload: validação tipo real (JPEG/PNG/WebP) + máx 5MB
 - Labels mínimo 10px (antes era 7-8px)
+- Rascunho automático: useDraft('COMUNIDADE') + DraftBanner
+- CelebrationScreen no sucesso (partículas douradas)
+- Storage RLS: só gerente RBAC ou masteradm faz upload
 ```
 
 ## Gestao de Comunidade (14 arquivos, 2041L)

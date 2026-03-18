@@ -50,6 +50,10 @@
 | Push 2h antes pra equipe (push_agendados) + deep link convite sócio + resumo promoter D+1 | `memory/sessao_atual.md` |
 | Storage RLS restritiva: bucket comunidades só gerente RBAC ou masteradm | Migration Supabase |
 | Backlog limpo: CARGO_DESCRICOES já integrado, fontSize px normal (Recharts SVG) | Verificado 18/mar |
+| VantaConfirmModal + VantaAlertModal: zero alert/confirm nativo | `components/VantaConfirmModal.tsx` |
+| VANTA Indica: fontSize editável, snap centro, apagar card, subtítulo sem clamp | `features/admin/views/VantaIndicaView.tsx` |
+| Mobile-first: zero hover, EventCard footer h-[5.5rem] fixo | `components/EventCard.tsx` |
+| Direção visual: profundidade "preto não preto", contraste entre camadas | `memory/feedback_visual_profundidade.md` |
 | RTK instalado + TTL markers 30min + markers reutilizáveis (velocidade 3-4x) | `memory/sessao_atual.md` |
 | Auditoria limpeza: selects, deprecated, fontFamily, cnpjValidator | `memory/sessao_atual.md` |
 | Bloco 8 Auditoria COMPLETO (sessão 5): audit RBAC, extrato, CNPJ, histórico edições | `memory/plano_blocos_melhorias.md` |

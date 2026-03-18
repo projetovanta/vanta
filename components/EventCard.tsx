@@ -94,7 +94,7 @@ export const EventCard: React.FC<EventCardProps> = React.memo(
 
     return (
       <div
-        className="group flex flex-col w-full rounded-2xl overflow-hidden cursor-pointer bg-[#111] border border-white/[0.06] transition-all duration-300 active:scale-[0.97]"
+        className="flex flex-col w-full rounded-2xl overflow-hidden cursor-pointer bg-[#111] border border-white/[0.06] active:scale-[0.97] transition-transform"
         onClick={() => onClick(evento)}
       >
         {/* Linha colorida no topo baseada no estilo */}
@@ -104,7 +104,7 @@ export const EventCard: React.FC<EventCardProps> = React.memo(
             src={evento.imagem}
             alt={evento.titulo}
             width={400}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            className="w-full h-full object-cover"
             fallback={
               <div className="w-full h-full bg-gradient-to-br from-zinc-900 to-black flex items-center justify-center">
                 <span className="text-zinc-600 text-[0.6rem] font-bold uppercase tracking-widest">Sem Imagem</span>
@@ -145,8 +145,8 @@ export const EventCard: React.FC<EventCardProps> = React.memo(
             </h3>
           </div>
         </div>
-        {/* Footer do card */}
-        <div className="px-3 py-2.5 space-y-1.5">
+        {/* Footer do card — altura fixa pra alinhar cards */}
+        <div className="px-3 py-2.5 space-y-1.5 h-[5.5rem] flex flex-col justify-between">
           {/* Social proof */}
           {confirmados != null && confirmados > 0 && (
             <div className="flex items-center gap-1">

@@ -166,7 +166,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
         <div className="px-5 pb-4">
           <button
             onClick={() => onNavigateToProfile?.('CLUBE')}
-            className="w-full flex items-center gap-3 px-4 py-3.5 bg-gradient-to-r from-[#FFD300]/8 to-[#FFD300]/3 border border-[#FFD300]/15 rounded-2xl active:scale-[0.97] transition-all hover:border-[#FFD300]/30"
+            className="w-full flex items-center gap-3 px-4 py-3.5 bg-gradient-to-r from-[#FFD300]/8 to-[#FFD300]/3 border border-[#FFD300]/15 rounded-2xl active:scale-[0.97] transition-all"
           >
             <div className="w-8 h-8 rounded-full bg-[#FFD300]/10 flex items-center justify-center shrink-0">
               <Crown size="0.875rem" className="text-[#FFD300]" />

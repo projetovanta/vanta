@@ -66,6 +66,6 @@ SearchView -> tab Radar -> RadarView
 | 8 | Debounce busca | OK | useDebounce hook |
 | 9 | Radar mapa | OK | RPC get_eventos_por_regiao |
 | 10 | Permissao GPS | OK | usePermission |
-| 11 | Busca por comunidade | NAO EXISTE | Sem tab dedicada |
-| 12 | Historico de buscas | NAO EXISTE | Sem recentes |
-| 13 | Sugestoes autocomplete | NAO EXISTE | Sem autocomplete |
+| 11 | Busca por comunidade | OK | Tab "Lugares" na busca, PlacesResults.tsx, busca Supabase comunidades |
+| 12 | Historico de buscas | OK | localStorage, pills clicáveis, botão Limpar, máx 10 termos |
+| 13 | Sugestoes autocomplete | OK | Debounce 300ms ao vivo em todas as tabs |

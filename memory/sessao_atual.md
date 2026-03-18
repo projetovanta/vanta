@@ -56,15 +56,16 @@
 - modules/home/components/ThisWeekSection.tsx (ajustes)
 
 ### Arquivos criados (sessão 5)
-- components/EmptyState.tsx, components/BatchActionBar.tsx, components/FilterBar.tsx
-- features/admin/services/indicaTemplatesService.ts, features/admin/services/brandProfilesService.ts
+- components/EmptyState.tsx, BatchActionBar.tsx, FilterBar.tsx
+- features/admin/services/indicaTemplatesService.ts, brandProfilesService.ts
 - hooks/useSessionTimeout.ts
+- modules/search/components/PlacesResults.tsx
 - .claude/agents/engenheiro-integracoes.md, product-designer.md, growth-engineer.md, artista-ia.md
 - .claude/commands/analisar-marca.md
 - memory/decisoes_features_futuras.md
 
 ### Arquivos modificados (sessão 5)
-- 23 arquivos de código (Blocos 1-4) + tipos + memórias
+- 25+ arquivos de código (Blocos 1-5) + tipos + memórias
 
 ## Plano aprovado — 4 Blocos de Melhorias
 Ver detalhes em `memory/plano_blocos_melhorias.md`
@@ -108,6 +109,13 @@ Ver detalhes em `memory/plano_blocos_melhorias.md`
 - Tabela `brand_profiles` criada no Supabase (perfis visuais de marca)
 - Service `brandProfilesService.ts` criado
 - 20 decisões de features futuras documentadas (decisoes_features_futuras.md)
+- Lux (Artista IA) testada e dispensada — volta quando capacitada
+
+### Bloco 5 — Busca Inteligente (COMPLETO — sessão 5)
+- 5.1 Aba "Lugares" na busca (4 tabs: Eventos, Pessoas, Lugares, Pra Você)
+- 5.2 Autocomplete ao vivo (já funcionava via debounce)
+- 5.3 Histórico de buscas com opção de limpar (localStorage + pills)
+- PlacesResults.tsx criado (busca comunidades no Supabase)
 
 ## Pendencias externas (sem mudança)
 - Conta Apple Developer ($99/ano)

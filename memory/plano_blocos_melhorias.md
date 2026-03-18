@@ -51,3 +51,43 @@ Plano de melhorias aprovado em 17/mar/2026 (sessão 4). 4 blocos independentes, 
 | 4.2 | FilterBar componente | ✅ |
 | 4.3 | Notificações batch (enviarAgora) | ✅ |
 | 4.4 | Session timeout 30min (useSessionTimeout) | ✅ |
+
+## Bloco 5 — Busca Inteligente (COMPLETO — sessão 5)
+**Donos: Luna | Impacto: descoberta de eventos e lugares**
+
+| # | Item | Status |
+|---|------|--------|
+| 5.1 | Aba "Lugares" na busca (comunidades) | ✅ |
+| 5.2 | Autocomplete ao vivo | ✅ (já existia via debounce) |
+| 5.3 | Histórico buscas com limpar | ✅ localStorage + pills |
+
+## Bloco 6 — Carteira Premium (PRÓXIMO)
+**Donos: Luna + Axel + Rio | Impacto: experiência do ingresso**
+
+| # | Item | Onde afeta |
+|---|------|-----------|
+| 6.1 | PDF comprovante (sem QR) | Carteira |
+| 6.2 | Apple/Google Wallet | Carteira + nativo (precisa contas) |
+| 6.3 | Histórico de transferências | Carteira |
+
+## Bloco 7 — Admin ao Vivo
+| # | Item | Onde afeta |
+|---|------|-----------|
+| 7.1 | Dashboard realtime | Supabase Realtime |
+| 7.2 | Notificação promoter (cota) | Push + in-app |
+| 7.3 | Remover da lista (só quem adicionou) | Listas |
+
+## Bloco 8 — Auditoria e Controle
+| # | Item | Onde afeta |
+|---|------|-----------|
+| 8.1 | Audit RBAC | Painel |
+| 8.2 | Extrato financeiro completo | Financeiro |
+| 8.3 | Validar CNPJ (Receita Federal) | Comunidade |
+| 8.4 | Histórico edições comunidade | Comunidade |
+
+## Bloco 9 — Integrações Externas (precisa contas)
+| # | Item | Dependência |
+|---|------|------------|
+| 9.1 | Apple Wallet | Conta Developer $99 |
+| 9.2 | Google Wallet | Service account GCP |
+| 9.3 | Nota fiscal NFe.io | CNPJ ativo |

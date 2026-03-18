@@ -5,6 +5,7 @@ import { sortEvents, isEventExpired } from '../../utils';
 import { SearchHeader } from './components/SearchHeader';
 import { SearchResults } from './components/SearchResults';
 import { PeopleResults } from './components/PeopleResults';
+import { PlacesResults } from './components/PlacesResults';
 import { CityFilterModal } from './components/CityFilterModal';
 import { VibeFilterModal } from './components/VibeFilterModal';
 import { TimeFilterModal } from './components/TimeFilterModal';
@@ -36,8 +37,28 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
   const searchEventsServerSide = useExtrasStore(s => s.searchEventsServerSide);
   const [query, setQuery] = useState('');
   const debouncedQuery = useDebounce(query, 300);
+
+  // Histórico de buscas recentes (localStorage)
+  const HISTORY_KEY = 'vanta_search_history';
+  const [searchHistory, setSearchHistory] = useState<string[]>(() => {
+    try {
+      return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+    } catch {
+      return [];
+    }
+  });
+  const saveToHistory = (term: string) => {
+    if (!term || term.length < 2) return;
+    const updated = [term, ...searchHistory.filter(h => h !== term)].slice(0, 10);
+    setSearchHistory(updated);
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(updated));
+  };
+  const clearHistory = () => {
+    setSearchHistory([]);
+    localStorage.removeItem(HISTORY_KEY);
+  };
   const [serverSearchResults, setServerSearchResults] = useState<Evento[] | null>(null);
-  const [activeTab, setActiveTab] = useState<'EVENTS' | 'PEOPLE' | 'BENEFICIOS'>('EVENTS');
+  const [activeTab, setActiveTab] = useState<'EVENTS' | 'PEOPLE' | 'LUGARES' | 'BENEFICIOS'>('EVENTS');
   const currentUserId = useAuthStore(s => s.currentAccount?.id ?? '');
   const isMembroMV = useMemo(() => clubeService.isMembro(currentUserId), [currentUserId]);
   const [selectedCities, setSelectedCities] = useState<string[]>([]);
@@ -62,6 +83,7 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
       return;
     }
     let cancelled = false;
+    saveToHistory(debouncedQuery);
     void searchEventsServerSide(debouncedQuery).then(results => {
       if (!cancelled) setServerSearchResults(results);
     });
@@ -211,6 +233,38 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
     };
   }, [debouncedQuery, activeTab, bloqueados]);
 
+  // ── Busca de lugares (comunidades) ──────────────────────────────────────
+  const [placesResults, setPlacesResults] = useState<
+    { id: string; nome: string; cidade: string; foto: string; tipo_comunidade?: string }[]
+  >([]);
+  const [placesLoading, setPlacesLoading] = useState(false);
+  useEffect(() => {
+    if (activeTab !== 'LUGARES' || debouncedQuery.length < 2) {
+      setPlacesResults([]);
+      setPlacesLoading(false);
+      return;
+    }
+    let cancelled = false;
+    setPlacesLoading(true);
+    void (async () => {
+      try {
+        const { data } = await supabase
+          .from('comunidades')
+          .select('id, nome, cidade, foto, tipo_comunidade')
+          .ilike('nome', `%${debouncedQuery}%`)
+          .limit(20);
+        if (!cancelled) setPlacesResults(data ?? []);
+      } catch (err) {
+        console.error('[SearchView] busca lugares:', err);
+      } finally {
+        if (!cancelled) setPlacesLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [debouncedQuery, activeTab]);
+
   // ── Spotlight de comunidade na busca de eventos (query direta Supabase) ───
   const [comunidadeSpotlight, setComunidadeSpotlight] = useState<{
     comunidade: { id: string; nome: string; foto: string; cidade: string };
@@ -275,6 +329,32 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
         onOpenPriceFilter={() => setIsPriceFilterOpen(true)}
       />
       <div ref={contentRef} onScroll={handleScroll} className="flex-1 overflow-y-auto no-scrollbar px-6 pt-6 pb-4">
+        {/* Histórico de buscas recentes */}
+        {!query && searchHistory.length > 0 && activeTab !== 'BENEFICIOS' && (
+          <div className="mb-6">
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-[0.5625rem] font-black uppercase tracking-widest text-zinc-500">Recentes</p>
+              <button
+                onClick={clearHistory}
+                className="text-[0.5rem] font-bold uppercase tracking-widest text-zinc-600 active:text-[#FFD300] transition-colors"
+              >
+                Limpar
+              </button>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {searchHistory.map(term => (
+                <button
+                  key={term}
+                  onClick={() => setQuery(term)}
+                  className="px-3 py-1.5 bg-zinc-900/60 border border-white/5 rounded-full text-xs text-zinc-300 active:border-[#FFD300]/30 transition-all"
+                >
+                  {term}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
         {activeTab === 'BENEFICIOS' ? (
           isMembroMV ? (
             <BeneficiosMVTab
@@ -392,6 +472,16 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
               </div>
             )}
           </>
+        ) : activeTab === 'LUGARES' ? (
+          placesLoading ? (
+            <div className="space-y-1 px-2">
+              {[1, 2, 3, 4].map(i => (
+                <PersonCardSkeleton key={i} />
+              ))}
+            </div>
+          ) : (
+            <PlacesResults results={placesResults} onPlaceClick={onComunidadeClick} />
+          )
         ) : peopleLoading ? (
           <div className="space-y-1 px-2">
             {[1, 2, 3, 4].map(i => (

@@ -7,8 +7,8 @@ interface SearchHeaderProps {
   query: string;
   setQuery: (q: string) => void;
   onClearSearch: () => void;
-  activeTab: 'EVENTS' | 'PEOPLE' | 'BENEFICIOS';
-  onTabChange: (tab: 'EVENTS' | 'PEOPLE' | 'BENEFICIOS') => void;
+  activeTab: 'EVENTS' | 'PEOPLE' | 'LUGARES' | 'BENEFICIOS';
+  onTabChange: (tab: 'EVENTS' | 'PEOPLE' | 'LUGARES' | 'BENEFICIOS') => void;
   isMembroMV?: boolean;
   selectedCities: string[];
   onOpenCityFilter: () => void;
@@ -64,14 +64,14 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
       <h1 style={TYPOGRAPHY.screenTitle} className="text-3xl text-[#FFD300] mb-6">
         Explorar
       </h1>
-      <div className="grid grid-cols-3 gap-2 mb-6 p-1 bg-zinc-900/50 rounded-2xl border border-white/5">
-        {(['EVENTS', 'PEOPLE', 'BENEFICIOS'] as const).map(t => (
+      <div className="grid grid-cols-4 gap-1.5 mb-6 p-1 bg-zinc-900/50 rounded-2xl border border-white/5">
+        {(['EVENTS', 'PEOPLE', 'LUGARES', 'BENEFICIOS'] as const).map(t => (
           <button
             key={t}
-            onClick={() => onTabChange(t as 'EVENTS' | 'PEOPLE' | 'BENEFICIOS')}
-            className={`py-3.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${activeTab === t ? 'bg-[#FFD300] text-black' : 'text-zinc-400'}`}
+            onClick={() => onTabChange(t)}
+            className={`py-3.5 rounded-xl text-[0.5625rem] font-black uppercase tracking-widest transition-all ${activeTab === t ? 'bg-[#FFD300] text-black' : 'text-zinc-400'}`}
           >
-            {t === 'EVENTS' ? 'Eventos' : t === 'PEOPLE' ? 'Pessoas' : 'Pra Você'}
+            {t === 'EVENTS' ? 'Eventos' : t === 'PEOPLE' ? 'Pessoas' : t === 'LUGARES' ? 'Lugares' : 'Pra Você'}
           </button>
         ))}
       </div>
@@ -83,10 +83,12 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
           className="w-full pl-11 pr-11 py-4 bg-zinc-900/80 border border-zinc-800 rounded-2xl text-white text-sm"
           placeholder={
             activeTab === 'BENEFICIOS'
-              ? 'Buscar lugares pra você...'
+              ? 'Buscar benefícios pra você...'
               : activeTab === 'PEOPLE'
                 ? 'Nome ou e-mail...'
-                : 'O que busca hoje?'
+                : activeTab === 'LUGARES'
+                  ? 'Bar, casa noturna, restaurante...'
+                  : 'O que busca hoje?'
           }
           value={query}
           onChange={e => setQuery(e.target.value)}

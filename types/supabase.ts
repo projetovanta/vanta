@@ -1071,6 +1071,7 @@ export type Database = {
           horario_overrides: Json;
           id: string;
           instagram: string | null;
+          limite_notificacoes_mes: number;
           nome: string;
           onboarding_completo: boolean | null;
           razao_social: string | null;
@@ -1122,6 +1123,7 @@ export type Database = {
           horario_overrides?: Json;
           id?: string;
           instagram?: string | null;
+          limite_notificacoes_mes?: number;
           nome: string;
           onboarding_completo?: boolean | null;
           razao_social?: string | null;
@@ -1173,6 +1175,7 @@ export type Database = {
           horario_overrides?: Json;
           id?: string;
           instagram?: string | null;
+          limite_notificacoes_mes?: number;
           nome?: string;
           onboarding_completo?: boolean | null;
           razao_social?: string | null;
@@ -2004,6 +2007,7 @@ export type Database = {
           cancelamento_solicitado_por: string | null;
           categoria: string | null;
           cidade: string | null;
+          classificacao_etaria: string;
           codigo_afiliado: string | null;
           comissao_vanta: number | null;
           comunidade_id: string | null;
@@ -2075,6 +2079,7 @@ export type Database = {
           cancelamento_solicitado_por?: string | null;
           categoria?: string | null;
           cidade?: string | null;
+          classificacao_etaria?: string;
           codigo_afiliado?: string | null;
           comissao_vanta?: number | null;
           comunidade_id?: string | null;
@@ -2146,6 +2151,7 @@ export type Database = {
           cancelamento_solicitado_por?: string | null;
           categoria?: string | null;
           cidade?: string | null;
+          classificacao_etaria?: string;
           codigo_afiliado?: string | null;
           comissao_vanta?: number | null;
           comunidade_id?: string | null;
@@ -5655,6 +5661,7 @@ export type Database = {
           cancelamento_solicitado_por: string | null;
           categoria: string | null;
           cidade: string | null;
+          classificacao_etaria: string;
           codigo_afiliado: string | null;
           comissao_vanta: number | null;
           comunidade_id: string | null;

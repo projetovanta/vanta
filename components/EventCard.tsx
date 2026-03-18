@@ -162,10 +162,7 @@ export const EventCard: React.FC<EventCardProps> = React.memo(
           {!evento.ocultarValor && minPrice > 0 && (
             <div className="flex items-center gap-1.5">
               <span className="text-[0.55rem] text-zinc-600 uppercase tracking-wider font-medium">A partir de</span>
-              <p
-                className="text-sm text-[#FFD300] leading-tight"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 700 }}
-              >
+              <p className="text-sm text-[#FFD300] leading-tight" style={TYPOGRAPHY.cardTitle}>
                 R$ {minPrice.toFixed(2).replace('.', ',')}
               </p>
             </div>

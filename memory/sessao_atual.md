@@ -146,9 +146,21 @@ Ver detalhes em `memory/plano_blocos_melhorias.md`
 - [ ] ProfileSkeleton, ChatItemSkeleton, HighlightCardSkeleton — aplicar nas telas
 - [ ] CARGO_DESCRICOES — exibir na UI de cargos
 
-### Menor prioridade
+### FontFamily + CNPJ — RESOLVIDO
+- [x] 2 fontFamily inline → TYPOGRAPHY (masterDashboard + EventCard)
+- [x] cnpjValidator integrado no form de comunidade (validação + formatação)
+
+### Menor prioridade (futuro)
 - [ ] 3 fontSize em px hardcoded
 - [ ] api/og.ts, api/robots.ts, api/sitemap.xml.ts — SEO futuro (manter)
+- [ ] Integrar BatchActionBar e FilterBar quando houver UI de batch
+- [ ] Aplicar ProfileSkeleton, ChatItemSkeleton, HighlightCardSkeleton quando houver loading fullscreen
+
+### Otimizações de velocidade (18/mar)
+- RTK instalado (brew install rtk) — economiza 60-90% tokens nos comandos Bash
+- Hook RTK configurado no ~/.claude/settings.json
+- TTL markers: 5min → 30min em todos os hooks
+- Markers reutilizáveis (não consomem após 1 uso)
 
 ## Pendencias externas (sem mudança)
 - Conta Apple Developer ($99/ano)

@@ -39,7 +39,8 @@
 
 | O que mudou | Onde ler |
 |-------------|----------|
-| Auditoria limpeza: 2 selects corrigidos, 5→_deprecated, 6 legados @deprecated | `memory/sessao_atual.md` |
+| RTK instalado + TTL markers 30min + markers reutilizáveis (velocidade 3-4x) | `memory/sessao_atual.md` |
+| Auditoria limpeza: selects, deprecated, fontFamily, cnpjValidator | `memory/sessao_atual.md` |
 | Bloco 8 Auditoria COMPLETO (sessão 5): audit RBAC, extrato, CNPJ, histórico edições | `memory/plano_blocos_melhorias.md` |
 | Blocos 6-7 COMPLETOS (sessão 5): PDF comprovante, histórico transf, realtime, remover lista | `memory/plano_blocos_melhorias.md` |
 | Bloco 5 Busca Inteligente COMPLETO (sessão 5): aba Lugares, histórico buscas | `memory/sub_busca_filtros.md` |

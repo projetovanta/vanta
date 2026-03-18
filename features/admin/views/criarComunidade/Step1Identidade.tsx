@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { HorarioSemanal } from '../../../../types';
 import { HorarioFuncionamentoEditor } from '../../../../components/HorarioFuncionamentoEditor';
+import { validarDigitoCnpj, formatarCnpj } from '../../../../utils/cnpjValidator';
 
 const inputCls =
   'w-full bg-zinc-900/60 border border-white/5 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-[#FFD300]/30 placeholder-zinc-700';
@@ -119,10 +120,16 @@ export const Step1Identidade: React.FC<{
         <label className={labelCls}>CNPJ</label>
         <input
           value={cnpj}
-          onChange={e => setCnpj(e.target.value)}
+          onChange={e => {
+            const raw = e.target.value.replace(/\D/g, '').slice(0, 14);
+            setCnpj(raw.length === 14 ? formatarCnpj(raw) : e.target.value);
+          }}
           placeholder="Ex: 00.000.000/0001-00"
           className={inputCls}
         />
+        {cnpj && cnpj.replace(/\D/g, '').length === 14 && !validarDigitoCnpj(cnpj) && (
+          <p className="text-red-400 text-[0.625rem] mt-1">CNPJ inválido — verifique os dígitos</p>
+        )}
       </div>
       <div>
         <label className={labelCls}>Telefone / Contato</label>

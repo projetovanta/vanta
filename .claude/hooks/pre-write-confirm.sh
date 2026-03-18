@@ -50,9 +50,9 @@ if [ -n "$PROTECTED" ]; then
     if echo "$AUTH_CONTENT" | grep -q "^VANTA_MARKER|dan_authorized|"; then
       AUTH_TS=$(echo "$AUTH_CONTENT" | cut -d'|' -f3)
       NOW_TS=$(date +%s)
-      if [ $((NOW_TS - AUTH_TS)) -le 300 ]; then
+      if [ $((NOW_TS - AUTH_TS)) -le 1800 ]; then
         # Autorizado — consumir marker (one-shot)
-        rm -f "$AUTH_MARKER"
+        # marker reutilizável — TTL 30min (não consumir)
         exit 0
       fi
     fi

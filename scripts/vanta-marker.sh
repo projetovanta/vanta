@@ -11,7 +11,7 @@
 #   lia_approved      — registra timestamp
 #   memo_approved     — registra timestamp
 #   preflight_passed  — registra timestamp + resultado
-#   dan_authorized    — registra timestamp (TTL 5min)
+#   dan_authorized    — registra timestamp (TTL 30min)
 #   schema_checked    — registra timestamp
 #   agent:<nome>      — marca agente como consultado
 #   diffcheck_ran     — registra timestamp + resultado
@@ -81,17 +81,17 @@ case "$TIPO" in
     # Cria ambos markers (edit + bash) — Dan autoriza a acao, nao o canal
     echo "VANTA_MARKER|dan_authorized|${NOW}|authorized" > /tmp/vanta_dan_authorized_edit
     echo "VANTA_MARKER|dan_authorized|${NOW}|authorized" > /tmp/vanta_dan_authorized_bash
-    echo "Marker criado: dan_authorized edit+bash (TTL 5min)"
+    echo "Marker criado: dan_authorized edit+bash (TTL 30min)"
     ;;
 
   dan_authorized_edit)
     echo "VANTA_MARKER|dan_authorized|${NOW}|authorized" > /tmp/vanta_dan_authorized_edit
-    echo "Marker criado: dan_authorized_edit (TTL 5min)"
+    echo "Marker criado: dan_authorized_edit (TTL 30min)"
     ;;
 
   dan_authorized_bash)
     echo "VANTA_MARKER|dan_authorized|${NOW}|authorized" > /tmp/vanta_dan_authorized_bash
-    echo "Marker criado: dan_authorized_bash (TTL 5min)"
+    echo "Marker criado: dan_authorized_bash (TTL 30min)"
     ;;
 
   schema_checked)

@@ -3,6 +3,7 @@ import { Crown, BarChart3, Building2, DollarSign, Settings2, TrendingUp } from '
 import { getMasterAnalytics } from '../../services/analytics';
 import type { MasterAnalytics, Periodo } from '../../services/analytics/types';
 import { PeriodSelector } from '../../components/dashboard';
+import { TYPOGRAPHY } from '../../../../constants';
 import { OverviewTab } from './OverviewTab';
 import { ComunidadesTab } from './ComunidadesTab';
 import { FinanceiroTab } from './FinanceiroTab';
@@ -153,10 +154,7 @@ export const MasterDashboard: React.FC<Props> = ({ onSelectComunidade, onSelectE
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2 min-w-0">
             <Crown size={20} className="text-[#FFD300] shrink-0" />
-            <h1
-              className="text-white font-bold text-lg truncate"
-              style={{ fontFamily: "'Playfair Display SC', serif" }}
-            >
+            <h1 className="text-white font-bold text-lg truncate" style={TYPOGRAPHY.screenTitle}>
               Painel Master
             </h1>
           </div>

@@ -23,7 +23,7 @@ if [ -f "$EDIT_COUNTER" ]; then
       if echo "$DC_CONTENT" | grep -q "^VANTA_MARKER|diffcheck_ran|"; then
         DC_TS=$(echo "$DC_CONTENT" | cut -d'|' -f3)
         NOW_TS=$(date +%s)
-        if [ $((NOW_TS - DC_TS)) -le 300 ]; then
+        if [ $((NOW_TS - DC_TS)) -le 1800 ]; then
           DIFFCHECK_OK=true
         fi
       fi

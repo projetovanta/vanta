@@ -212,4 +212,19 @@ export const transferenciaService = {
 
     return true;
   },
+
+  /** Histórico de transferências enviadas pelo usuário */
+  async getHistorico(userId: string): Promise<TransferenciaPendente[]> {
+    const { data, error } = await supabase
+      .from('transferencias_ingresso')
+      .select('*')
+      .eq('remetente_id', userId)
+      .order('criado_em', { ascending: false })
+      .limit(50);
+    if (error) {
+      logger.error('[transferenciaService] getHistorico:', error);
+      return [];
+    }
+    return (data ?? []).map(rowToTransferencia);
+  },
 };

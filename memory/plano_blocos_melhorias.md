@@ -61,21 +61,23 @@ Plano de melhorias aprovado em 17/mar/2026 (sessão 4). 4 blocos independentes, 
 | 5.2 | Autocomplete ao vivo | ✅ (já existia via debounce) |
 | 5.3 | Histórico buscas com limpar | ✅ localStorage + pills |
 
-## Bloco 6 — Carteira Premium (PRÓXIMO)
-**Donos: Luna + Axel + Rio | Impacto: experiência do ingresso**
+## Bloco 6 — Carteira Premium (COMPLETO — sessão 5)
+**Donos: Luna + Kai | Impacto: experiência do ingresso**
 
-| # | Item | Onde afeta |
-|---|------|-----------|
-| 6.1 | PDF comprovante (sem QR) | Carteira |
-| 6.2 | Apple/Google Wallet | Carteira + nativo (precisa contas) |
-| 6.3 | Histórico de transferências | Carteira |
+| # | Item | Status |
+|---|------|--------|
+| 6.1 | PDF comprovante sem QR | ✅ ticketReceiptPdf + botão Comprovante |
+| 6.2 | Apple/Google Wallet | ⏭️ Bloco 9 (contas externas) |
+| 6.3 | Histórico transferências | ✅ getHistorico + seção Wallet |
 
-## Bloco 7 — Admin ao Vivo
-| # | Item | Onde afeta |
-|---|------|-----------|
-| 7.1 | Dashboard realtime | Supabase Realtime |
-| 7.2 | Notificação promoter (cota) | Push + in-app |
-| 7.3 | Remover da lista (só quem adicionou) | Listas |
+## Bloco 7 — Admin ao Vivo (COMPLETO — sessão 5)
+**Donos: Luna + Kai | Impacto: operação do evento**
+
+| # | Item | Status |
+|---|------|--------|
+| 7.1 | Dashboard realtime | ✅ Supabase Realtime tickets_caixa |
+| 7.2 | Notificação promoter (cota) | ✅ Já existia (notify 3 canais) |
+| 7.3 | Remover da lista | ✅ removerConvidado (só quem adicionou) |
 
 ## Bloco 8 — Auditoria e Controle
 | # | Item | Onde afeta |

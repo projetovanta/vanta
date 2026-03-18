@@ -29,6 +29,7 @@ import {
 } from 'lucide-react';
 import { TYPOGRAPHY } from '../../constants';
 import { fmtBRL } from '../../utils';
+import { supabase } from '../../services/supabaseClient';
 import type { ContaVantaLegacy } from '../../types';
 import type { AdminSubView } from '../admin/components/AdminSidebar';
 
@@ -136,6 +137,30 @@ export const DashboardV2Home: React.FC<Props> = ({
   const [resumoLoading, setResumoLoading] = useState(false);
   const [timeline, setTimeline] = useState<VendasTimelinePoint[]>([]);
   const [timelineLoading, setTimelineLoading] = useState(false);
+
+  // ── Realtime: atualiza ao vivo quando há nova venda ou check-in ──
+  const [realtimeTick, setRealtimeTick] = useState(0);
+  useEffect(() => {
+    if (!canSeeFinanceiro) return;
+    const channel = supabase
+      .channel('dashboard-live')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'tickets_caixa' }, () => {
+        setRealtimeTick(t => t + 1);
+      })
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'tickets_caixa' }, () => {
+        setRealtimeTick(t => t + 1);
+      })
+      .subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [canSeeFinanceiro]);
+
+  // Refresh dados quando realtime notifica
+  useEffect(() => {
+    if (realtimeTick === 0) return;
+    eventosAdminService.refresh();
+  }, [realtimeTick]);
 
   // KPIs temporais (master global)
   useEffect(() => {

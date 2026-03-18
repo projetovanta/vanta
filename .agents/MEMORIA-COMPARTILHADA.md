@@ -39,6 +39,7 @@
 
 | O que mudou | Onde ler |
 |-------------|----------|
+| Blocos 6-7 COMPLETOS (sessão 5): PDF comprovante, histórico transf, realtime, remover lista | `memory/plano_blocos_melhorias.md` |
 | Bloco 5 Busca Inteligente COMPLETO (sessão 5): aba Lugares, histórico buscas | `memory/sub_busca_filtros.md` |
 | 3 novos agentes: Axel (Integrações), Maya (Produto), Pixel (Crescimento) | `.claude/agents/` |
 | 20 decisões features futuras (Dan, sessão 5) | `memory/decisoes_features_futuras.md` |

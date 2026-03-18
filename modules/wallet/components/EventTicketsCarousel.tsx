@@ -13,10 +13,12 @@ import {
   Lock,
   Clock,
   RotateCcw as ReembolsoIcon,
+  Download,
 } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import { Ingresso, Membro } from '../../../types';
 import { TYPOGRAPHY } from '../../../constants';
+import { gerarComprovantePdf } from '../../../utils/ticketReceiptPdf';
 import { authService } from '../../../services/authService';
 import { signTicketToken } from '../../../features/admin/services/jwtService';
 import { TicketQRModal } from './TicketQRModal';
@@ -680,6 +682,24 @@ export const EventTicketsCarousel: React.FC<Props> = ({
                                 <ArrowRightLeft size="0.625rem" /> Transferir
                               </button>
                             )}
+                            <button
+                              onClick={() =>
+                                gerarComprovantePdf({
+                                  nomeEvento: grupo.titulo,
+                                  dataEvento: grupo.data,
+                                  local: ticket.local || '',
+                                  cidade: ticket.cidade || '',
+                                  nomeComprador: ticket.nomeComprador || '',
+                                  variacao: ticket.variacao || ticket.area || '',
+                                  valor: ticket.valor ?? 0,
+                                  codigoPedido: ticket.id.slice(0, 8).toUpperCase(),
+                                  dataCompra: ticket.criadoEm || '',
+                                })
+                              }
+                              className="flex-1 py-2.5 bg-zinc-900/60 border border-white/10 text-zinc-300 rounded-xl text-[0.5625rem] font-black uppercase tracking-wider active:scale-95 transition-all flex items-center justify-center gap-1.5"
+                            >
+                              <Download size="0.625rem" /> Comprovante
+                            </button>
                             {isCortesia && onDevolverCortesia && (
                               <button
                                 onClick={() => {

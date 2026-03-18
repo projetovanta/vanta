@@ -188,7 +188,7 @@ Usada por cortesiasService para registrar cada cortesia emitida.
 | 11 | Reembolso de ingresso (usuario) | OK | EventTicketsCarousel importa solicitarReembolsoAutomatico de reembolsoService, elegibilidade verificada, modal inline |
 | 12 | Notificacao ao receber transferencia | OK | transferenciaService envia notify tipo TRANSFERENCIA_PENDENTE |
 | 13 | Notificacao ao receber cortesia | OK | cortesiasService envia notificationsService.add tipo CORTESIA_PENDENTE |
-| 14 | Historico de transferencias | NAO EXISTE | Usuario nao ve historico de transferencias feitas |
-| 15 | Download ingresso PDF | NAO EXISTE | Sem export do ingresso |
-| 16 | Apple Wallet / Google Wallet | NAO EXISTE | Sem integracao com wallets nativas |
+| 14 | Historico de transferencias | OK | transferenciaService.getHistorico(userId) + seção na tab Passados WalletView |
+| 15 | PDF comprovante (sem QR) | OK | ticketReceiptPdf.ts + botão Comprovante no EventTicketsCarousel |
+| 16 | Apple Wallet / Google Wallet | A FAZER | Precisa conta Apple Developer + GCP (Bloco 9) |
 | 17 | RLS segura (tickets/cortesias/transf) | OK | Policies restritivas: owner, team, admin. Zero brechas. RPC aceitar_cortesia_rpc SECURITY DEFINER |

@@ -193,9 +193,9 @@ Fluxo paralelo ao checkout — entrada por lista, nao por compra.
 | 12 | Pagamentos promoter | OK | Tabela pagamentos_promoter criada |
 | 13 | Teto global | OK | teto_global_total |
 | 14 | RLS | OK | Todas tabelas com RLS ativo |
-| 15 | Notificacao ao promoter quando recebe cota | NAO EXISTE | Promoter nao e notificado |
+| 15 | Notificacao ao promoter quando recebe cota | OK | notify 3 canais (in-app + push + email) em listasService.alocarCota |
 | 16 | Dashboard visual do promoter (cotas/nomes) | OK | PromoterDashboardView.tsx + PromoterCotasView.tsx + features/admin/views/listas/ (TabNomes, TabEquipe, index) |
-| 17 | Remover convidado da lista | NAO EXISTE | Nao achei funcao removerConvidado no listasService |
+| 17 | Remover convidado da lista | OK | removerConvidado(convidadoId, userId) — só quem adicionou (inserido_por) pode remover, devolve cota |
 | 18 | Historico de check-ins da lista | NAO EXISTE | Sem tela dedicada |
 | 19 | inserido_por_nome persistido | OK | Coluna TEXT em convidados_lista, populado no INSERT e migration backfill |
 | 20 | PROMOTERS_CACHE populado | OK | refresh() busca profiles e popula cache de nomes |

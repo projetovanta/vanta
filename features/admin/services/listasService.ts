@@ -437,6 +437,34 @@ export const listasService = {
     return true;
   },
 
+  /** Remove convidado da lista — só quem adicionou pode remover */
+  removerConvidado: async (convidadoId: string, userId: string): Promise<boolean> => {
+    const { data: row } = await supabase
+      .from('convidados_lista')
+      .select('id, inserido_por, lista_id, regra_id')
+      .eq('id', convidadoId)
+      .maybeSingle();
+
+    if (!row || row.inserido_por !== userId) return false;
+
+    const { error } = await supabase.from('convidados_lista').delete().eq('id', convidadoId);
+    if (error) {
+      console.error('[listasService] removerConvidado:', error);
+      return false;
+    }
+
+    for (const lista of LISTAS) {
+      if (lista.id !== row.lista_id) continue;
+      const cota = lista.cotas.find(c => c.promoterId === userId && c.regraId === row.regra_id);
+      if (cota) cota.usado = Math.max(0, cota.usado - 1);
+      lista.convidados = lista.convidados.filter(c => c.id !== convidadoId);
+      const regra = lista.regras.find(r => r.id === row.regra_id);
+      if (regra) regra.saldoBanco += 1;
+    }
+
+    return true;
+  },
+
   inserirForce: async (
     listaId: string,
     regraId: string,

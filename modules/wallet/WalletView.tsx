@@ -23,6 +23,8 @@ import { EventTicketsCarousel, EventoGroup } from './components/EventTicketsCaro
 import { useAuthStore } from '../../stores/authStore';
 import { useTicketsStore } from '../../stores/ticketsStore';
 import { useExtrasStore } from '../../stores/extrasStore';
+import { transferenciaService } from '../../services/transferenciaService';
+import type { TransferenciaPendente } from '../../types';
 import { TicketCardSkeleton } from '../../components/Skeleton';
 import { EmptyState } from '../../components/EmptyState';
 
@@ -58,6 +60,15 @@ export const WalletView: React.FC<WalletViewProps> = ({
   const [isUnlocked, setIsUnlocked] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<WalletTab>('UPCOMING');
   const [carouselGrupo, setCarouselGrupo] = useState<EventoGroup | null>(null);
+  const [transHistorico, setTransHistorico] = useState<TransferenciaPendente[]>([]);
+  const transHistoricoLoaded = useRef(false);
+
+  // Carrega histórico de transferências ao abrir tab PAST
+  React.useEffect(() => {
+    if (activeTab !== 'PAST' || transHistoricoLoaded.current || !userId) return;
+    transHistoricoLoaded.current = true;
+    transferenciaService.getHistorico(userId).then(setTransHistorico);
+  }, [activeTab, userId]);
   const [mvPostUrl, setMvPostUrl] = useState('');
   const ticketsLoaded = useRef(false);
   if (tickets.length > 0) ticketsLoaded.current = true;
@@ -463,6 +474,43 @@ export const WalletView: React.FC<WalletViewProps> = ({
             <TicketList tickets={past.tickets} onSelectTicket={() => {}} isPast={true} />
           )}
           {activeTab === 'PAST' && past.presencas.length > 0 && <PresencaList events={past.presencas} isPast={true} />}
+
+          {/* ── PAST: histórico de transferências ── */}
+          {activeTab === 'PAST' && transHistorico.length > 0 && (
+            <div className="mt-6">
+              <h2 style={TYPOGRAPHY.uiLabel} className="mb-3 text-zinc-500">
+                <ArrowRightLeft size="0.75rem" className="inline mr-1.5" />
+                Transferências ({transHistorico.length})
+              </h2>
+              <div className="space-y-2">
+                {transHistorico.map(t => (
+                  <div
+                    key={t.id}
+                    className="flex items-center gap-3 p-3 bg-zinc-900/40 border border-white/5 rounded-xl"
+                  >
+                    <div className="w-9 h-9 rounded-full bg-zinc-800 flex items-center justify-center shrink-0">
+                      <Send size="0.75rem" className="text-zinc-500" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-white text-sm font-medium truncate">{t.tituloEvento || 'Ingresso'}</p>
+                      <p className="text-zinc-500 text-xs truncate">Para {t.destinatarioNome}</p>
+                    </div>
+                    <span
+                      className={`text-[0.5rem] font-black uppercase tracking-widest px-2 py-0.5 rounded-full ${
+                        t.status === 'ACEITO'
+                          ? 'bg-emerald-500/10 text-emerald-400'
+                          : t.status === 'RECUSADO'
+                            ? 'bg-red-500/10 text-red-400'
+                            : 'bg-amber-500/10 text-amber-400'
+                      }`}
+                    >
+                      {t.status === 'ACEITO' ? 'Aceito' : t.status === 'RECUSADO' ? 'Recusado' : 'Pendente'}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

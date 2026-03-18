@@ -112,10 +112,17 @@ Ver detalhes em `memory/plano_blocos_melhorias.md`
 - Lux (Artista IA) testada e dispensada — volta quando capacitada
 
 ### Bloco 5 — Busca Inteligente (COMPLETO — sessão 5)
-- 5.1 Aba "Lugares" na busca (4 tabs: Eventos, Pessoas, Lugares, Pra Você)
-- 5.2 Autocomplete ao vivo (já funcionava via debounce)
-- 5.3 Histórico de buscas com opção de limpar (localStorage + pills)
-- PlacesResults.tsx criado (busca comunidades no Supabase)
+- 5.1 Aba "Lugares" + 5.2 Autocomplete + 5.3 Histórico buscas
+
+### Bloco 6 — Carteira Premium (COMPLETO — sessão 5)
+- 6.1 PDF comprovante sem QR (ticketReceiptPdf.ts + botão Comprovante no carrossel)
+- 6.3 Histórico transferências (getHistorico + seção na tab Passados da Wallet)
+- 6.2 Apple/Google Wallet → Bloco 9 (contas externas)
+
+### Bloco 7 — Admin ao Vivo (COMPLETO — sessão 5)
+- 7.1 Dashboard realtime (Supabase Realtime INSERT/UPDATE tickets_caixa)
+- 7.2 Notificação promoter cota — já existia (notify 3 canais)
+- 7.3 Remover convidado da lista (removerConvidado, só quem adicionou)
 
 ## Pendencias externas (sem mudança)
 - Conta Apple Developer ($99/ano)

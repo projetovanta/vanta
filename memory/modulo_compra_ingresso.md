@@ -60,15 +60,17 @@ Ja documentada em modulo_evento.md (CuponsSubView). Usado aqui via cuponsService
 
 ### processar_compra_checkout(p_evento_id, p_lote_id, p_variacao_id, p_email, p_valor_unit, p_quantidade, p_comprador_id, p_taxa, p_ref_code)
 **O que faz (atomico)**:
-1. CHECK vendidos < limite na variacoes_ingresso (se esgotado, retorna erro)
-2. INSERT tickets_caixa (status DISPONIVEL, origem CHECKOUT)
-3. INSERT transactions (valor_bruto, valor_liquido, taxa_aplicada)
-4. UPDATE variacoes_ingresso SET vendidos = vendidos + 1
-5. INSERT vendas_log (variacao_label, valor, origem CHECKOUT)
-6. Se p_ref_code: UPDATE comemoracoes SET vendas_count += p_quantidade + gerar_cortesias_comemoracao()
-6. Retorna {ok: true, tickets: [{ticketId}]}
+1. SELECT vendidos, limite FROM variacoes_ingresso WHERE id = p_variacao_id **FOR UPDATE** (lock anti-overselling)
+2. CHECK vendidos + p_quantidade > limite → erro
+3. INSERT tickets_caixa (status DISPONIVEL, origem ANTECIPADO)
+4. INSERT transactions (valor_bruto, valor_liquido, taxa_aplicada)
+5. UPDATE variacoes_ingresso SET vendidos = vendidos + p_quantidade (1 UPDATE, não N)
+6. INSERT vendas_log consolidado (1 INSERT)
+7. Se p_ref_code: UPDATE comemoracoes SET vendas_count += p_quantidade + gerar_cortesias_comemoracao()
+8. Retorna {ok: true, tickets: [{ticketId}]}
 
 **Atomicidade**: tudo roda em uma transacao SQL. Se falha em qualquer ponto, rollback completo.
+**Anti-overselling**: FOR UPDATE na variacoes_ingresso previne 2 compras simultâneas do último ingresso.
 
 ## Cupom por Comunidade (novo 17/mar)
 Cupom vinculado a comunidade (nao a evento) vale pra todos os eventos dela. `cuponsService.getCuponsByComunidade(comunidadeId)`. UI: CuponsComunidadeTab na ComunidadeDetalheView (tab "Cupons").
@@ -106,7 +108,9 @@ Cupom vinculado a comunidade (nao a evento) vale pra todos os eventos dela. `cup
 | Arquivo | Linhas | Funcao |
 |---|---|---|
 | supabase/functions/create-checkout/index.ts | 133 | Cria sessao Stripe Checkout |
-| supabase/functions/stripe-webhook/index.ts | 163 | Recebe webhook checkout.session.completed |
+| supabase/functions/create-ticket-checkout/index.ts | 309 | Cria sessao Stripe Checkout (tickets) |
+| supabase/functions/stripe-webhook/index.ts | ~350 | Webhook: checkout.session.completed, idempotência, cupom |
+| supabase/functions/process-stripe-refund/index.ts | 143 | Refund Stripe (auto até R$100, manual acima) |
 
 ## Fluxos
 

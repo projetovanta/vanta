@@ -39,6 +39,22 @@
 
 | O que mudou | Onde ler |
 |-------------|----------|
+| **AUDITORIA TOTAL sessão 3**: 28 pendências resolvidas (4 commits) | `memory/PENDENCIAS-18-MARCO-2026.md` |
+| FOR UPDATE anti-overselling na RPC processar_compra_checkout | `supabase/migrations/20260319000100` |
+| Webhook FALHA_PROCESSAMENTO + idempotência retry Stripe | `stripe-webhook/index.ts` |
+| Edge Function process-stripe-refund deployed (auto R$100) | `supabase/functions/process-stripe-refund/` |
+| Reembolso: emitido_em→criado_em + refund Stripe integrado | `reembolsoService.ts` |
+| 44 FKs recriadas para auth.users(id) em 33 tabelas | `supabase/migrations/20260319000500` |
+| Policy socios_evento corrigida (cargos inexistentes) | `supabase/migrations/20260319000400` |
+| 2 RPCs versionadas: criar_comunidade_completa + criar_evento_completo | `supabase/migrations/20260319000600` |
+| Design tokens @theme (16 tokens) + hover-real @custom-variant | `app.css` |
+| Inter peso 900 carregado (font-black 1659 usos) | `index.html` |
+| font-light→font-normal (11 ocorrências, 8 arquivos) | Vários |
+| Cores neon→paleta + animate-pulse removido | `EventCard.tsx` |
+| DOMPurify no LegalEditorView | `LegalEditorView.tsx` |
+| npm 0 vulnerabilities (override serialize-javascript) | `package.json` |
+| Deep links comunidade/admin corrigidos + push cleanup | `App.tsx` + `DashboardV2Gateway.tsx` |
+| .nvmrc Node 20, buckets versionados, transferencias UUID+FK | Vários |
 | Plano Wizards v2: 6 FASES COMPLETAS (38 itens entregues em 1 sessão) | `memory/plano_wizards_v2.md` |
 | Fase 1-6: correções + design system + wizards 4 steps + drafts + índices/constraints + features | `memory/sessao_atual.md` |
 | 10 componentes novos: FormWizard, InputField, UploadArea, CelebrationScreen, AccordionSection, etc. | `components/wizard/` + `components/form/` |

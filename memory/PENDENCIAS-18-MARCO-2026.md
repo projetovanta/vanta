@@ -6,6 +6,28 @@
 
 ---
 
+## STATUS — Atualizado 18/mar sessão 3
+
+### RESOLVIDOS (28 itens)
+✅ C1 overselling FOR UPDATE | ✅ C2 webhook PAGO/PAGO | ✅ C3 emitido_em→criado_em
+✅ C4 refund Stripe EF | ✅ C8 RPCs versionadas (2 de 5) | ✅ C10 FKs auth.users (44 colunas)
+✅ C11 CASCADE→RESTRICT | ✅ C12 policy socios_evento | ✅ C13 timestamps renomeados
+✅ C14 deep link comunidade | ✅ C15 deep links admin | ✅ C16 push cleanup
+✅ C23 design tokens @theme | ✅ A1 DOMPurify XSS | ✅ A4 npm 0 vulns
+✅ A6 .limit() RBAC | ✅ A8 buckets storage | ✅ A11 N+1 membros
+✅ A12 transferencias UUID+FK | ✅ A23 font-light | ✅ A24 cores neon
+✅ A25 Inter peso 900 | ✅ A26 .nvmrc | ✅ A30 cupom usos webhook
+
+### PENDENTES PRIORITÁRIOS
+- C9 schema base (dump) | C5/C6/C7 credenciais (risco baixo)
+- C17-C20 mobile (depende contas Apple/Google)
+- C21/C22 testes (cobertura 2-3%)
+- A2 CORS 7 EFs | A5 N+1 financeiro | A13 arquivos órfãos
+- A22 hover mobile (160 ocorrências) | A27 lazy load ExcelJS/jsPDF
+- Memórias: 18 desync, EDGES.md, paths
+
+---
+
 ## LEGENDA
 - **CRÍTICO** = bloqueia produção / risco de perda de dados ou dinheiro
 - **ALTO** = deve corrigir antes de ir pra loja

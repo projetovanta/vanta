@@ -32,7 +32,7 @@
 |------|---------|----------|----------------|------------|------|
 | 2026-03-16 | 1 | Hooks, gates, auditoria, markers | Gate Duplo obrigatório, markers com hash | — | #hooks #gates #markers |
 | 2026-03-17 | 5 | Sprint 1+2, Stripe, Login Social, iOS, Visual Redesign, 4 Blocos Melhorias, Contratações, IA Visual | 4 blocos completos, 20 decisões features, 4 novos agentes, Skill analisar-marca, brand_profiles | — | #blocos #visual #indica #financeiro #operacoes #agentes #ia #lux |
-| 2026-03-18 | 3 | Auditoria full, limpeza código, RTK, Plano Wizards v2 (38 itens completos), Visual Redesign, sessão 3 em andamento | Wizards 4 steps, rascunho auto, RPC atômica, classificação idade, MV ao lado do botão, importar anterior, link sócio | Sessão 3 em andamento | #wizards #auditoria #rtk #plano #visual |
+| 2026-03-18 | 3 | Auditoria total (10 agentes), Blocos 1-5 (28 pendências), FKs auth.users, design tokens, refund Stripe | FOR UPDATE, FALHA_PROCESSAMENTO, refund auto R$100, 44 FKs, @theme tokens, hover-real | A2 CORS, C9 schema, A22 hover | #auditoria #dinheiro #seguranca #visual #banco #tokens |
 
 ---
 
@@ -47,9 +47,9 @@
 | Métrica | Valor |
 |---------|-------|
 | Total de atas | 3 |
-| Total de sessões registradas | 7 |
-| Total de decisões registradas | ~55 |
-| Ações pendentes acumuladas | 0 |
+| Total de sessões registradas | 8 |
+| Total de decisões registradas | ~70 |
+| Ações pendentes acumuladas | ~10 (CORS, schema base, hover, testes) |
 
 ---
 

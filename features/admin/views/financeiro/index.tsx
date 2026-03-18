@@ -29,6 +29,7 @@ import { fmtBRL, tsBR } from '../../../../utils';
 import { PeriodSelector } from '../../components/dashboard/PeriodSelector';
 import type { Periodo } from '../../services/analytics/types';
 import { VendasTimelineChart } from '../../../dashboard-v2/VendasTimelineChart';
+import { ExtratoFinanceiro } from '../../components/ExtratoFinanceiro';
 import {
   dashboardAnalyticsService,
   getDateRanges,
@@ -542,6 +543,9 @@ export const FinanceiroView: React.FC<Props> = ({
 
         {/* Evolução de vendas */}
         <VendasTimelineChart data={timeline} loading={timelineLoading} />
+
+        {/* Extrato detalhado */}
+        <ExtratoFinanceiro eventoIds={meusEventos.map(e => e.id)} comunidadeId={comunidadeId} />
 
         {/* Banner de sucesso */}
         {saqueOk && (

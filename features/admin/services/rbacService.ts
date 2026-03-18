@@ -494,6 +494,11 @@ export const rbacService = {
     return ATRIBUICOES.filter(a => a.ativo && a.tenant.tipo === tipo && a.tenant.id === tenantId);
   },
 
+  /** Todas as atribuições (pra audit log de RBAC) */
+  getAllAtribuicoes(): AtribuicaoRBAC[] {
+    return [...ATRIBUICOES];
+  },
+
   // ── Recrutamento (baseado em AtribuicaoRBAC) ──────────────────────────────
 
   /** Cargos recrutáveis para evento */

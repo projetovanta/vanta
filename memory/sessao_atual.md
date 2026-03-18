@@ -124,6 +124,12 @@ Ver detalhes em `memory/plano_blocos_melhorias.md`
 - 7.2 Notificação promoter cota — já existia (notify 3 canais)
 - 7.3 Remover convidado da lista (removerConvidado, só quem adicionou)
 
+### Bloco 8 — Auditoria e Controle (COMPLETO — sessão 5)
+- 8.1 Audit RBAC (getAllAtribuicoes + atribuidoPor/atribuidoEm já existiam)
+- 8.2 Extrato financeiro completo (ExtratoFinanceiro.tsx com filtros vendas/saques/reembolsos)
+- 8.3 Validar CNPJ (cnpjValidator.ts — dígito offline + BrasilAPI Receita Federal)
+- 8.4 Histórico edições comunidade (COMUNIDADE_EDITADA no audit log)
+
 ## Pendencias externas (sem mudança)
 - Conta Apple Developer ($99/ano)
 - Conta Google Play Console ($25)

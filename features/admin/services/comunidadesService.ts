@@ -262,6 +262,17 @@ export const comunidadesService = {
       return false;
     }
 
+    // Audit log de edições
+    try {
+      const { auditService } = await import('./auditService');
+      const changedFields = Object.keys(updates).filter(k => (updates as Record<string, unknown>)[k] !== undefined);
+      auditService.log('', 'COMUNIDADE_EDITADA', 'comunidade', id, undefined, {
+        campos: changedFields,
+      });
+    } catch {
+      /* silencioso */
+    }
+
     // Atualiza cache
     const idx = _comunidades.findIndex(c => c.id === id);
     if (idx !== -1) {

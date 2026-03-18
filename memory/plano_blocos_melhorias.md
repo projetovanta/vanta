@@ -79,13 +79,15 @@ Plano de melhorias aprovado em 17/mar/2026 (sessão 4). 4 blocos independentes, 
 | 7.2 | Notificação promoter (cota) | ✅ Já existia (notify 3 canais) |
 | 7.3 | Remover da lista | ✅ removerConvidado (só quem adicionou) |
 
-## Bloco 8 — Auditoria e Controle
-| # | Item | Onde afeta |
-|---|------|-----------|
-| 8.1 | Audit RBAC | Painel |
-| 8.2 | Extrato financeiro completo | Financeiro |
-| 8.3 | Validar CNPJ (Receita Federal) | Comunidade |
-| 8.4 | Histórico edições comunidade | Comunidade |
+## Bloco 8 — Auditoria e Controle (COMPLETO — sessão 5)
+**Donos: Kai + Luna + Axel | Impacto: governança e rastreio**
+
+| # | Item | Status |
+|---|------|--------|
+| 8.1 | Audit RBAC | ✅ getAllAtribuicoes + atribuidoPor/atribuidoEm |
+| 8.2 | Extrato financeiro | ✅ ExtratoFinanceiro.tsx com filtros |
+| 8.3 | Validar CNPJ | ✅ cnpjValidator.ts (dígito + BrasilAPI) |
+| 8.4 | Histórico edições comunidade | ✅ COMUNIDADE_EDITADA no audit |
 
 ## Bloco 9 — Integrações Externas (precisa contas)
 | # | Item | Dependência |

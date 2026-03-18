@@ -118,5 +118,5 @@ masteradm — acesso total (is_masteradm() ou is_vanta_admin())
 | 8 | RLS | OK | atribuicoes_rbac + cargos com RLS |
 | 9 | Soberania acesso | OK | soberania_acesso tabela + SovereigntyGuard |
 | 10 | RPC aceitar_convite_socio | OK | Cria RBAC SOCIO no EVENTO com permissoes corretas |
-| 11 | Audit log de atribuicoes | NAO EXISTE | Sem registro de quem atribuiu quando |
-| 12 | Expirar cargo automaticamente | NAO EXISTE | Sem TTL em atribuicoes |
+| 11 | Audit log de atribuicoes | OK | atribuido_por + atribuido_em na tabela + getAllAtribuicoes() + CARGO_DESCRICOES |
+| 12 | Expirar cargo automaticamente | DECISAO: NAO | Dan decidiu que não precisa — evento já limita naturalmente |

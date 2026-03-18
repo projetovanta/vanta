@@ -60,7 +60,8 @@ export type AuditAction =
   | 'PROPOSTA_VANTA_ACEITA'
   | 'PROPOSTA_VANTA_RECUSADA'
   | 'PROPOSTA_VANTA_REENVIADA'
-  | 'EVENTO_CORRECAO_ENVIADA';
+  | 'EVENTO_CORRECAO_ENVIADA'
+  | 'COMUNIDADE_EDITADA';
 
 // ── Cache local ──────────────────────────────────────────────────────────────
 let _logs: AuditLog[] = [];
@@ -198,6 +199,7 @@ const ACTION_LABELS: Record<AuditAction, string> = {
   PROPOSTA_VANTA_RECUSADA: 'recusou proposta VANTA',
   PROPOSTA_VANTA_REENVIADA: 'reenviou proposta VANTA',
   EVENTO_CORRECAO_ENVIADA: 'enviou correções de evento',
+  COMUNIDADE_EDITADA: 'editou comunidade',
 };
 
 /**

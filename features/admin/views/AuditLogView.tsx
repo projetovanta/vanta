@@ -104,6 +104,7 @@ const ACTION_LABELS: Record<AuditAction, string> = {
   PROPOSTA_VANTA_RECUSADA: 'recusou proposta VANTA',
   PROPOSTA_VANTA_REENVIADA: 'reenviou proposta VANTA',
   EVENTO_CORRECAO_ENVIADA: 'enviou correções de evento',
+  COMUNIDADE_EDITADA: 'editou comunidade',
 };
 
 // ── Item de log ────────────────────────────────────────────────────────────────

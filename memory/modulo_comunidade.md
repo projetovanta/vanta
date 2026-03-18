@@ -224,10 +224,10 @@ Step 3 (Step3Fotos 273L): foto perfil (crop), foto capa (crop), produtores (min 
 | Campos condicoes | OK | condicoes_status + condicoes_aceitas_em na tabela comunidades |
 | RLS | OK | Migration 20260305900000 |
 | Notificacao ao criar | NAO EXISTE | Nenhum push/email quando comunidade e criada |
-| Validacao CNPJ | NAO EXISTE | Aceita qualquer texto |
-| Notificacao ao desativar | NAO EXISTE | Membros/seguidores nao sao avisados |
-| Historico de edicoes | NAO EXISTE | Sem audit log de mudancas na comunidade |
-| Limite de comunidades | NAO EXISTE | Admin pode criar infinitas |
+| Validacao CNPJ | OK | cnpjValidator.ts — dígito offline + BrasilAPI Receita Federal (razão social, situação, atividade) |
+| Notificacao ao desativar | DECISAO: NAO PRECISA | Dan decidiu que não é necessário (sessão 5) |
+| Historico de edicoes | OK | COMUNIDADE_EDITADA no auditService com campos alterados |
+| Limite de comunidades | DECISAO: SEM LIMITE | Dan decidiu sem limite (sessão 5) |
 | Solicitacao de Parceria | OK | Ver `sub_solicitacao_parceria.md` — wizard + painel master |
 | tipo_comunidade | OK | ESPACO_FIXO (local travado) ou PRODUTORA (local editavel por evento) |
 | Evento Privado | OK | Ver `sub_evento_privado.md` — solicitacao + timeline + painel gerente |

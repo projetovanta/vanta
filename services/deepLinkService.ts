@@ -12,8 +12,9 @@ import { Capacitor } from '@capacitor/core';
 import { App as CapApp } from '@capacitor/app';
 
 export interface DeepLinkResult {
-  type: 'EVENT' | 'COMMUNITY' | 'CHECKOUT' | 'WALLET' | 'PROFILE' | 'UNKNOWN';
+  type: 'EVENT' | 'COMMUNITY' | 'CHECKOUT' | 'WALLET' | 'PROFILE' | 'CONVITE_SOCIO' | 'UNKNOWN';
   id?: string;
+  extra?: string; // ex: socioId para CONVITE_SOCIO
 }
 
 /** Parseia URL de deep link e retorna tipo + id */
@@ -36,6 +37,10 @@ export function parseDeepLink(url: string): DeepLinkResult {
     // /checkout/:eventoId
     const checkoutMatch = path.match(/^\/checkout\/(.+)$/);
     if (checkoutMatch) return { type: 'CHECKOUT', id: checkoutMatch[1] };
+
+    // /convite-socio/:eventoId/:socioId
+    const conviteMatch = path.match(/^\/convite-socio\/([^/]+)\/([^/]+)$/);
+    if (conviteMatch) return { type: 'CONVITE_SOCIO', id: conviteMatch[1], extra: conviteMatch[2] };
 
     // /perfil
     if (path === '/perfil') return { type: 'PROFILE' };

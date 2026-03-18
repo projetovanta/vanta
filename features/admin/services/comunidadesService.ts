@@ -161,6 +161,72 @@ export const comunidadesService = {
     return nova.id;
   },
 
+  /** Cria comunidade + RBAC produtores numa transação atômica via RPC. */
+  async criarCompleta(
+    data: Partial<{
+      nome: string;
+      descricao: string;
+      cidade: string;
+      estado: string;
+      cep: string;
+      endereco: string;
+      foto: string;
+      fotoCapa: string;
+      coords: { lat: number; lng: number };
+      capacidadeMax: number;
+      horarioFuncionamento: HorarioSemanal[];
+      createdBy: string;
+      donoId: string;
+      cnpj: string;
+      razaoSocial: string;
+      telefone: string;
+      tipo_comunidade: 'ESPACO_FIXO' | 'PRODUTORA';
+      instagram: string;
+      whatsapp: string;
+      tiktok: string;
+      site: string;
+    }>,
+    produtorIds: string[],
+  ): Promise<string> {
+    const p_comunidade = {
+      nome: data.nome ?? '',
+      descricao: data.descricao ?? '',
+      cidade: data.cidade ?? '',
+      estado: data.estado ?? null,
+      cep: data.cep ?? null,
+      endereco: data.endereco ?? '',
+      foto: data.foto ?? null,
+      foto_capa: data.fotoCapa ?? null,
+      coords: data.coords ?? null,
+      capacidade_max: data.capacidadeMax ?? null,
+      horario_funcionamento: data.horarioFuncionamento ?? [],
+      created_by: data.createdBy ?? null,
+      dono_id: data.donoId ?? data.createdBy ?? null,
+      slug: generateSlug(data.nome ?? ''),
+      cnpj: data.cnpj ?? null,
+      razao_social: data.razaoSocial ?? null,
+      telefone: data.telefone ?? null,
+      tipo_comunidade: data.tipo_comunidade ?? null,
+      instagram: data.instagram ?? null,
+      whatsapp: data.whatsapp ?? null,
+      tiktok: data.tiktok ?? null,
+      site: data.site ?? null,
+    };
+
+    const { data: result, error } = await supabase.rpc('criar_comunidade_completa', {
+      p_comunidade: p_comunidade as unknown as Json,
+      p_produtores: produtorIds,
+    });
+
+    if (error || !result?.comunidade_id) {
+      console.error('[comunidadesService.criarCompleta]', error);
+      return '';
+    }
+
+    await this.refresh();
+    return result.comunidade_id as string;
+  },
+
   async atualizar(
     id: string,
     updates: Partial<{

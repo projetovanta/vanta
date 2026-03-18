@@ -2,7 +2,6 @@ import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { ArrowLeft, Check, FileText } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../../constants';
 import { comunidadesService } from '../../services/comunidadesService';
-import { rbacService, CARGO_PERMISSOES } from '../../services/rbacService';
 import { UnsavedChangesModal } from '../../../../components/UnsavedChangesModal';
 import { useToast, ToastContainer } from '../../../../components/Toast';
 import { Membro, HorarioSemanal } from '../../../../types';
@@ -277,29 +276,32 @@ export const CriarComunidadeView: React.FC<{
       const enderecoCompleto = [rua, numero, complemento, bairro].filter(Boolean).join(', ');
       const finalCoords = coords;
 
-      // Criar comunidade com placeholder de foto (será atualizado após upload)
-      const novoId = await comunidadesService.criar({
-        nome: nome.trim(),
-        descricao: bio.trim(),
-        cidade: cidade.trim(),
-        estado: estado.trim(),
-        cep: cep.trim() || undefined,
-        endereco: enderecoCompleto,
-        foto: '',
-        fotoCapa: '',
-        coords: finalCoords ?? undefined,
-        capacidadeMax: parseInt(capacidade),
-        horarioFuncionamento: horarios,
-        createdBy: adminId || undefined,
-        donoId: adminId || undefined,
-        cnpj: cnpj.trim() || undefined,
-        razaoSocial: razaoSocial.trim() || undefined,
-        telefone: telefone.trim() || undefined,
-        instagram: instagram.trim() || undefined,
-        whatsapp: whatsapp.trim() || undefined,
-        tiktok: tiktok.trim() || undefined,
-        site: site.trim() || undefined,
-      });
+      // Criar comunidade + RBAC produtores via RPC atômica
+      const novoId = await comunidadesService.criarCompleta(
+        {
+          nome: nome.trim(),
+          descricao: bio.trim(),
+          cidade: cidade.trim(),
+          estado: estado.trim(),
+          cep: cep.trim() || undefined,
+          endereco: enderecoCompleto,
+          foto: '',
+          fotoCapa: '',
+          coords: finalCoords ?? undefined,
+          capacidadeMax: parseInt(capacidade),
+          horarioFuncionamento: horarios,
+          createdBy: adminId || undefined,
+          donoId: adminId || undefined,
+          cnpj: cnpj.trim() || undefined,
+          razaoSocial: razaoSocial.trim() || undefined,
+          telefone: telefone.trim() || undefined,
+          instagram: instagram.trim() || undefined,
+          whatsapp: whatsapp.trim() || undefined,
+          tiktok: tiktok.trim() || undefined,
+          site: site.trim() || undefined,
+        },
+        produtores.map(p => p.id),
+      );
 
       if (!novoId) {
         setErroScroll('Erro ao criar comunidade. Tente novamente.');
@@ -333,21 +335,7 @@ export const CriarComunidadeView: React.FC<{
         await comunidadesService.atualizar(novoId, taxasUpdate);
       }
 
-      // Atribuir produtores como GERENTE da comunidade via RBAC
-      if (produtores.length > 0) {
-        await Promise.all(
-          produtores.map(p =>
-            rbacService.atribuir({
-              userId: p.id,
-              tenant: { tipo: 'COMUNIDADE', id: novoId, nome: nome.trim(), foto: fotoUrl },
-              cargo: 'GERENTE',
-              permissoes: CARGO_PERMISSOES.GERENTE,
-              atribuidoPor: adminId || '',
-              ativo: true,
-            }),
-          ),
-        );
-      }
+      // RBAC dos produtores já foi atribuído pela RPC criar_comunidade_completa
 
       toast({ title: 'Comunidade criada!', variant: 'success' });
       await discardDraft();

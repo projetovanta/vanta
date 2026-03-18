@@ -1021,4 +1021,24 @@ export const listasService = {
 
   totalPorRegra: (lista: ListaEvento, regraId: string): number =>
     lista.convidados.filter(c => c.regraId === regraId).length,
+
+  /** Resumo de performance do promoter num evento (para D+1) */
+  async gerarResumoPromoter(
+    eventoId: string,
+    promoterId: string,
+  ): Promise<{
+    nomesInseridos: number;
+    checkIns: number;
+    taxaComparecimento: number;
+  }> {
+    const lista = LISTAS.find(l => l.eventoId === eventoId);
+    if (!lista) return { nomesInseridos: 0, checkIns: 0, taxaComparecimento: 0 };
+
+    const meusConvidados = lista.convidados.filter(c => c.inseridoPor === promoterId);
+    const nomesInseridos = meusConvidados.length;
+    const checkIns = meusConvidados.filter(c => c.checkedIn).length;
+    const taxaComparecimento = nomesInseridos > 0 ? Math.round((checkIns / nomesInseridos) * 100) : 0;
+
+    return { nomesInseridos, checkIns, taxaComparecimento };
+  },
 };

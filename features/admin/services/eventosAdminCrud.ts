@@ -41,148 +41,114 @@ export const criarEvento = async (
   } = await supabase.auth.getUser();
   const createdBy = user?.id || data.criadorId || null;
 
-  // Insere evento no Supabase
-  const { data: inserted, error } = await supabase
-    .from('eventos_admin')
-    .insert({
-      comunidade_id: data.comunidadeId,
-      nome: data.nome,
-      descricao: data.descricao,
-      data_inicio: data.dataInicio,
-      data_fim: data.dataFim,
-      local: data.local,
-      endereco: data.endereco,
-      cidade: data.cidade,
-      foto: data.foto,
-      coords: data.coords ?? null,
-      publicado: false,
-      caixa_ativo: data.caixaAtivo ?? false,
-      gateway_fee_mode: data.gateway_fee_mode ?? 'ABSORVER',
-      taxa_processamento_percent: data.taxa_processamento_percent ?? null,
-      taxa_porta_percent: data.taxa_porta_percent ?? null,
-      taxa_minima: data.taxa_minima ?? null,
-      taxa_fixa_evento: data.taxa_fixa_evento ?? 0,
-      quem_paga_servico: data.quem_paga_servico ?? 'PRODUTOR_ESCOLHE',
-      cota_nomes_lista: data.cota_nomes_lista ?? null,
-      taxa_nome_excedente: data.taxa_nome_excedente ?? null,
-      cota_cortesias: data.cota_cortesias ?? null,
-      taxa_cortesia_excedente_pct: data.taxa_cortesia_excedente_pct ?? null,
-      prazo_pagamento_dias: data.prazo_pagamento_dias ?? null,
-      created_by: createdBy,
-      tipo_fluxo: data.tipoFluxo ?? null,
-      status_evento: data.statusEvento ?? 'PENDENTE',
-      socio_convidado_id: data.socioConvidadoId ?? null,
-      split_produtor: data.splitProdutor ?? null,
-      split_socio: data.splitSocio ?? null,
-      permissoes_produtor: data.permissoesProdutor ?? null,
-      rodada_negociacao: data.tipoFluxo === 'COM_SOCIO' ? 1 : null,
-      formato: data.formato ?? null,
-      estilos: data.estilos ?? [],
-      experiencias: data.experiencias ?? [],
-      categoria: data.formato ?? data.categoria ?? null,
-      subcategorias: data.subcategorias ?? [],
-      venda_vanta: data.vendaVanta ?? true,
-      link_externo: data.linkExterno ?? null,
-      plataforma_externa: data.plataformaExterna ?? null,
-      recorrencia: data.recorrencia ?? 'UNICO',
-      recorrencia_ate: data.recorrenciaAte ?? null,
-      classificacao_etaria: data.classificacaoEtaria ?? 'LIVRE',
-    })
-    .select('id')
-    .single();
+  // ── Monta payload p_evento (JSONB) ──────────────────────────────────────
+  const p_evento = {
+    comunidade_id: data.comunidadeId,
+    nome: data.nome,
+    descricao: data.descricao,
+    data_inicio: data.dataInicio,
+    data_fim: data.dataFim,
+    local: data.local,
+    endereco: data.endereco,
+    cidade: data.cidade,
+    foto: data.foto,
+    coords: data.coords ?? null,
+    publicado: false,
+    caixa_ativo: data.caixaAtivo ?? false,
+    gateway_fee_mode: data.gateway_fee_mode ?? 'ABSORVER',
+    taxa_processamento_percent: data.taxa_processamento_percent ?? null,
+    taxa_porta_percent: data.taxa_porta_percent ?? null,
+    taxa_minima: data.taxa_minima ?? null,
+    taxa_fixa_evento: data.taxa_fixa_evento ?? 0,
+    quem_paga_servico: data.quem_paga_servico ?? 'PRODUTOR_ESCOLHE',
+    cota_nomes_lista: data.cota_nomes_lista ?? null,
+    taxa_nome_excedente: data.taxa_nome_excedente ?? null,
+    cota_cortesias: data.cota_cortesias ?? null,
+    taxa_cortesia_excedente_pct: data.taxa_cortesia_excedente_pct ?? null,
+    prazo_pagamento_dias: data.prazo_pagamento_dias ?? null,
+    created_by: createdBy,
+    tipo_fluxo: data.tipoFluxo ?? null,
+    status_evento: data.statusEvento ?? 'PENDENTE',
+    socio_convidado_id: data.socioConvidadoId ?? null,
+    split_produtor: data.splitProdutor ?? null,
+    split_socio: data.splitSocio ?? null,
+    permissoes_produtor: data.permissoesProdutor ?? null,
+    rodada_negociacao: data.tipoFluxo === 'COM_SOCIO' ? 1 : null,
+    formato: data.formato ?? null,
+    estilos: data.estilos ?? [],
+    experiencias: data.experiencias ?? [],
+    categoria: data.formato ?? data.categoria ?? null,
+    subcategorias: data.subcategorias ?? [],
+    venda_vanta: data.vendaVanta ?? true,
+    link_externo: data.linkExterno ?? null,
+    plataforma_externa: data.plataformaExterna ?? null,
+    recorrencia: data.recorrencia ?? 'UNICO',
+    recorrencia_ate: data.recorrenciaAte ?? null,
+    classificacao_etaria: data.classificacaoEtaria ?? 'LIVRE',
+  };
 
-  if (error || !inserted) {
-    console.error('[eventosAdminService] criarEvento erro:', error);
+  // ── Monta p_lotes ───────────────────────────────────────────────────────
+  const p_lotes = data.lotes.map((lote, idx) => ({
+    nome: lote.nome,
+    ordem: idx,
+    data_validade: lote.dataValidade ?? null,
+    virar_pct: lote.virarPct ?? null,
+    ativo: lote.ativo,
+    variacoes: lote.variacoes.map(v => ({
+      area: v.area,
+      area_custom: v.areaCustom ?? null,
+      genero: v.genero,
+      valor: v.valor,
+      limite: v.limite,
+      requer_comprovante: v.requerComprovante ?? false,
+      tipo_comprovante: v.tipoComprovante ?? null,
+    })),
+  }));
+
+  // ── Monta p_equipe ──────────────────────────────────────────────────────
+  const p_equipe = data.equipe.map(m => ({
+    membro_id: m.id,
+    papel: m.papel,
+    liberar_lista: false,
+    permissoes: m.permissoes ?? [],
+  }));
+
+  // ── Monta p_socios ──────────────────────────────────────────────────────
+  let p_socios: { socio_id: string; split_percentual: number; permissoes: string[] }[] = [];
+  if (data.socios?.length) {
+    p_socios = data.socios.map(s => ({
+      socio_id: s.socioId,
+      split_percentual: s.splitPercentual,
+      permissoes: s.permissoes ?? [],
+    }));
+  } else if (data.tipoFluxo === 'COM_SOCIO' && data.socioConvidadoId) {
+    p_socios = [
+      {
+        socio_id: data.socioConvidadoId,
+        split_percentual: data.splitSocio ?? 70,
+        permissoes: [],
+      },
+    ];
+  }
+
+  // ── Chama RPC atômica ───────────────────────────────────────────────────
+  const { data: rpcResult, error } = await supabase.rpc('criar_evento_completo', {
+    p_evento: p_evento as unknown as Json,
+    p_lotes: p_lotes as unknown as Json,
+    p_equipe: p_equipe as unknown as Json,
+    p_socios: p_socios as unknown as Json,
+  });
+
+  if (error || !rpcResult?.evento_id) {
+    console.error('[eventosAdminService] criarEvento RPC erro:', error);
     return '';
   }
 
-  const eventoId = inserted.id as string;
+  const eventoId = rpcResult.evento_id as string;
 
-  // Insere socios (multi-socio) — se tiver socios[] usa array, senao fallback pro socio unico legado
-  if (data.socios?.length) {
-    for (const s of data.socios) {
-      const { error: errSocio } = await supabase.from('socios_evento').insert({
-        evento_id: eventoId,
-        socio_id: s.socioId,
-        split_percentual: s.splitPercentual,
-        permissoes: s.permissoes ?? [],
-        status: 'PENDENTE',
-        rodada_negociacao: 1,
-      });
-      if (errSocio) console.error('[criarEvento] insert socio:', errSocio);
-    }
-  } else if (data.tipoFluxo === 'COM_SOCIO' && data.socioConvidadoId) {
-    const { error: errSocio } = await supabase.from('socios_evento').insert({
-      evento_id: eventoId,
-      socio_id: data.socioConvidadoId,
-      split_percentual: data.splitSocio ?? 70,
-      permissoes: [],
-      status: 'PENDENTE',
-      rodada_negociacao: 1,
-    });
-    if (errSocio) console.error('[criarEvento] insert socio legado:', errSocio);
-  }
-
-  // Insere lotes e variacoes
-  for (const lote of data.lotes) {
-    const { data: loteInserted } = await supabase
-      .from('lotes')
-      .insert({
-        evento_id: eventoId,
-        nome: lote.nome,
-        data_validade: lote.dataValidade ?? null,
-        ativo: lote.ativo,
-        ordem: 0,
-        virar_pct: lote.virarPct ?? null,
-      })
-      .select('id')
-      .single();
-
-    if (loteInserted) {
-      const loteId = loteInserted.id as string;
-      for (const v of lote.variacoes) {
-        const { error: errVar } = await supabase.from('variacoes_ingresso').insert({
-          lote_id: loteId,
-          area: v.area,
-          area_custom: v.areaCustom ?? null,
-          genero: v.genero,
-          valor: v.valor,
-          limite: v.limite,
-          vendidos: 0,
-          requer_comprovante: v.requerComprovante ?? false,
-          tipo_comprovante: v.tipoComprovante ?? null,
-        });
-        if (errVar) console.error('[criarEvento] insert variacao:', errVar);
-      }
-    }
-  }
-
-  // Insere equipe (com permissoes 10p) + notifica cada membro
+  // Notifica cada membro da equipe (pós-RPC — notificações não são transacionais)
   for (const m of data.equipe) {
-    const { error: eqErr } = await supabase.from('equipe_evento').insert({
-      evento_id: eventoId,
-      membro_id: m.id,
-      papel: m.papel,
-      permissoes: m.permissoes ?? [],
-    });
-    if (!eqErr) void notificarEscalacao(m.id, m.papel, eventoId, data.nome);
-  }
-
-  // ── Atribuir criador como SOCIO/GERENTE via RBAC ──────────────────────────
-  if (data.criadorId) {
-    try {
-      const { rbacService, CARGO_PERMISSOES } = await import('./rbacService');
-      await rbacService.atribuir({
-        userId: data.criadorId,
-        tenant: { tipo: 'EVENTO', id: eventoId, nome: data.nome },
-        cargo: 'SOCIO',
-        permissoes: CARGO_PERMISSOES.SOCIO,
-        atribuidoPor: data.criadorId,
-        ativo: true,
-      });
-    } catch {
-      /* silencioso — não bloquear criação do evento */
-    }
+    void notificarEscalacao(m.id, m.papel, eventoId, data.nome);
   }
 
   // Notifica o master SEMPRE (B2: masteradmin aprova tudo)
@@ -237,6 +203,31 @@ export const criarEvento = async (
     }
   } catch {
     /* silencioso */
+  }
+
+  // Agendar push pra equipe 2h antes do evento
+  if (data.equipe.length > 0 && data.dataInicio) {
+    try {
+      const eventoStart = new Date(data.dataInicio);
+      const pushTime = new Date(eventoStart.getTime() - 2 * 60 * 60 * 1000); // 2h antes
+      if (pushTime > new Date()) {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+        await supabase.from('push_agendados').insert({
+          titulo: `Seu turno começa em 2h`,
+          mensagem: `Evento "${data.nome}". Prepare-se!`,
+          agendar_para: pushTime.toISOString(),
+          segmento_tipo: 'EQUIPE_EVENTO',
+          segmento_valor: eventoId,
+          canais: ['push', 'in_app'],
+          criado_por: user?.id ?? data.criadorId ?? '',
+          link_notif: eventoId,
+        });
+      }
+    } catch {
+      /* silencioso — push agendado é best-effort */
+    }
   }
 
   // Refresh cache

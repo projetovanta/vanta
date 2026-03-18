@@ -5633,6 +5633,14 @@ export type Database = {
         Args: { p_evento_origem_id: string };
         Returns: number;
       };
+      criar_comunidade_completa: {
+        Args: { p_comunidade: Json; p_produtores: string[] };
+        Returns: { comunidade_id: string; success: boolean };
+      };
+      criar_evento_completo: {
+        Args: { p_evento: Json; p_lotes: Json; p_equipe: Json; p_socios: Json };
+        Returns: { evento_id: string; success: boolean };
+      };
       expirar_pedidos_checkout_pendentes: { Args: never; Returns: undefined };
       exportar_dados_usuario: { Args: never; Returns: Json };
       finalizar_eventos_expirados: { Args: never; Returns: undefined };

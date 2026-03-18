@@ -6,7 +6,7 @@ import { Membro } from '../../../../types';
 
 const inputCls =
   'w-full bg-zinc-900/60 border border-white/5 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-[#FFD300]/30 placeholder-zinc-700';
-const labelCls = 'text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block';
+const labelCls = 'text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block';
 
 export const Step3Fotos: React.FC<{
   fotoPerfil: string;
@@ -60,6 +60,18 @@ export const Step3Fotos: React.FC<{
   const pickImg = (ref: React.RefObject<HTMLInputElement>, target: 'perfil' | 'capa') => {
     const file = ref.current?.files?.[0];
     if (!file) return;
+    const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+    if (file.size > MAX_FILE_SIZE) {
+      alert('A imagem deve ter no máximo 5MB');
+      if (ref.current) ref.current.value = '';
+      return;
+    }
+    const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      alert('Formato aceito: JPEG, PNG ou WebP');
+      if (ref.current) ref.current.value = '';
+      return;
+    }
     const reader = new FileReader();
     reader.onload = e => {
       const src = e.target?.result as string;
@@ -118,8 +130,8 @@ export const Step3Fotos: React.FC<{
                 <Upload size="0.875rem" className="text-white" />
               </div>
             </button>
-            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">Perfil *</p>
-            <p className="text-[0.4375rem] text-zinc-700 font-black uppercase tracking-widest">Mín. 400×400</p>
+            <p className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest">Perfil *</p>
+            <p className="text-[0.625rem] text-zinc-700 font-black uppercase tracking-widest">Mín. 400×400</p>
           </div>
 
           {/* Foto de capa */}
@@ -140,15 +152,15 @@ export const Step3Fotos: React.FC<{
               ) : (
                 <div className="w-full h-full flex flex-col items-center justify-center gap-1">
                   <Camera size="1.125rem" className="text-zinc-400" />
-                  <p className="text-zinc-700 text-[0.5rem] font-black uppercase tracking-widest">Capa</p>
+                  <p className="text-zinc-700 text-[0.625rem] font-black uppercase tracking-widest">Capa</p>
                 </div>
               )}
               <div className="absolute inset-0 bg-black/50 opacity-0 group-active:opacity-100 flex items-center justify-center">
                 <Upload size="0.875rem" className="text-white" />
               </div>
             </button>
-            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">Capa *</p>
-            <p className="text-[0.4375rem] text-zinc-700 font-black uppercase tracking-widest">Mín. 1200×400</p>
+            <p className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest">Capa *</p>
+            <p className="text-[0.625rem] text-zinc-700 font-black uppercase tracking-widest">Mín. 1200×400</p>
           </div>
         </div>
       </div>
@@ -173,7 +185,7 @@ export const Step3Fotos: React.FC<{
       {/* Produtor responsável */}
       <div>
         <label className={labelCls}>Produtor Responsável * (ao menos 1)</label>
-        <p className="text-[0.5rem] text-zinc-700 mb-3 font-black uppercase tracking-widest">
+        <p className="text-[0.625rem] text-zinc-700 mb-3 font-black uppercase tracking-widest">
           Busque pelo email ou nome do membro na base VANTA.
         </p>
 
@@ -257,7 +269,7 @@ export const Step3Fotos: React.FC<{
                 <img loading="lazy" src={p.foto} alt={p.nome} className="w-10 h-10 rounded-xl object-cover shrink-0" />
                 <div className="flex-1 min-w-0">
                   <p className="text-white font-bold text-sm leading-none truncate">{p.nome}</p>
-                  <p className="text-[#FFD300]/60 text-[0.5rem] font-black uppercase tracking-widest mt-0.5">
+                  <p className="text-[#FFD300]/60 text-[0.625rem] font-black uppercase tracking-widest mt-0.5">
                     Produtor
                   </p>
                 </div>

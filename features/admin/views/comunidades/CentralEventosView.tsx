@@ -10,12 +10,21 @@ import { EventoTab } from './types';
 export const CentralEventosView: React.FC<{
   comunidade: Comunidade;
   onBack: () => void;
-}> = ({ comunidade, onBack }) => {
+  currentUserId?: string;
+  currentUserNome?: string;
+}> = ({ comunidade, onBack, currentUserId, currentUserNome }) => {
   const [tab, setTab] = useState<EventoTab>('CRIAR');
   const [criandoEvento, setCriando] = useState(false);
 
   if (criandoEvento) {
-    return <CriarEventoView comunidade={comunidade} onBack={() => setCriando(false)} />;
+    return (
+      <CriarEventoView
+        comunidade={comunidade}
+        onBack={() => setCriando(false)}
+        currentUserId={currentUserId}
+        currentUserNome={currentUserNome}
+      />
+    );
   }
 
   const TABS: { id: EventoTab; label: string }[] = [

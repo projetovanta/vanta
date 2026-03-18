@@ -82,6 +82,18 @@ export const Step1Evento: React.FC<Props> = p => {
   const handleFotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+    if (file.size > MAX_FILE_SIZE) {
+      alert('A imagem deve ter no máximo 5MB');
+      if (fotoRef.current) fotoRef.current.value = '';
+      return;
+    }
+    const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      alert('Formato aceito: JPEG, PNG ou WebP');
+      if (fotoRef.current) fotoRef.current.value = '';
+      return;
+    }
     const reader = new FileReader();
     reader.onload = () => {
       if (reader.result) setCropSrc(reader.result as string);
@@ -122,7 +134,7 @@ export const Step1Evento: React.FC<Props> = p => {
 
       <div>
         <label className={labelCls}>Foto do evento *</label>
-        <p className="text-[0.5rem] text-zinc-700 mb-3 font-black uppercase tracking-widest">
+        <p className="text-[0.625rem] text-zinc-700 mb-3 font-black uppercase tracking-widest">
           1080 × 1350 px · proporção 4:5 · JPG ou PNG
         </p>
         <input ref={fotoRef} type="file" accept="image/*" onChange={handleFotoChange} className="hidden" />
@@ -145,7 +157,7 @@ export const Step1Evento: React.FC<Props> = p => {
           {p.foto && (
             <div className="absolute bottom-3 right-3 bg-black/60 backdrop-blur-sm border border-white/10 rounded-full px-3 py-1.5 flex items-center gap-1.5">
               <Upload size="0.625rem" className="text-white/60" />
-              <p className="text-white text-[0.5rem] font-black uppercase tracking-widest">Trocar foto</p>
+              <p className="text-white text-[0.625rem] font-black uppercase tracking-widest">Trocar foto</p>
             </div>
           )}
         </button>
@@ -216,7 +228,7 @@ export const Step1Evento: React.FC<Props> = p => {
         </button>
         {openSection === 'formato' && (
           <div className="px-4 pb-3 space-y-2">
-            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">
+            <p className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest">
               O que é / Onde acontece · selecione 1
             </p>
             {loading ? (
@@ -274,7 +286,7 @@ export const Step1Evento: React.FC<Props> = p => {
                 {p.estilos.map(e => (
                   <span
                     key={e}
-                    className="px-1.5 py-0.5 bg-purple-500/15 border border-purple-500/30 rounded text-purple-400 text-[0.5rem] font-bold truncate"
+                    className="px-1.5 py-0.5 bg-purple-500/15 border border-purple-500/30 rounded text-purple-400 text-[0.625rem] font-bold truncate"
                   >
                     {e}
                   </span>
@@ -292,11 +304,11 @@ export const Step1Evento: React.FC<Props> = p => {
         </button>
         {openSection === 'estilo' && (
           <div className="px-4 pb-3 space-y-2">
-            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">
+            <p className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest">
               Som / Vibe · min. 1, max. 5
             </p>
             <p
-              className={`text-[0.5rem] font-black uppercase tracking-widest ${p.estilos.length < 1 ? 'text-amber-500' : p.estilos.length >= 5 ? 'text-blue-400' : 'text-emerald-500'}`}
+              className={`text-[0.625rem] font-black uppercase tracking-widest ${p.estilos.length < 1 ? 'text-amber-500' : p.estilos.length >= 5 ? 'text-blue-400' : 'text-emerald-500'}`}
             >
               {p.estilos.length}/5 selecionados
             </p>
@@ -360,7 +372,7 @@ export const Step1Evento: React.FC<Props> = p => {
                 {p.experiencias.map(e => (
                   <span
                     key={e}
-                    className="px-1.5 py-0.5 bg-emerald-500/15 border border-emerald-500/30 rounded text-emerald-400 text-[0.5rem] font-bold truncate"
+                    className="px-1.5 py-0.5 bg-emerald-500/15 border border-emerald-500/30 rounded text-emerald-400 text-[0.625rem] font-bold truncate"
                   >
                     {e}
                   </span>
@@ -378,11 +390,11 @@ export const Step1Evento: React.FC<Props> = p => {
         </button>
         {openSection === 'experiencia' && (
           <div className="px-4 pb-3 space-y-2">
-            <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">
+            <p className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest">
               Modelo / Diferencial · min. 1, max. 5
             </p>
             <p
-              className={`text-[0.5rem] font-black uppercase tracking-widest ${p.experiencias.length < 1 ? 'text-amber-500' : p.experiencias.length >= 5 ? 'text-blue-400' : 'text-emerald-500'}`}
+              className={`text-[0.625rem] font-black uppercase tracking-widest ${p.experiencias.length < 1 ? 'text-amber-500' : p.experiencias.length >= 5 ? 'text-blue-400' : 'text-emerald-500'}`}
             >
               {p.experiencias.length}/5 selecionadas
             </p>
@@ -548,7 +560,7 @@ export const Step1Evento: React.FC<Props> = p => {
                 className={inputCls + ' opacity-40 cursor-not-allowed'}
               />
             </div>
-            <p className="text-[0.5rem] text-zinc-700 font-black uppercase tracking-widest">
+            <p className="text-[0.625rem] text-zinc-700 font-black uppercase tracking-widest">
               Somente o VANTA masteradm pode alterar local e endereço.
             </p>
           </>

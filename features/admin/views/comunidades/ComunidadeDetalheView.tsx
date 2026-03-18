@@ -30,7 +30,14 @@ export const ComunidadeDetalheView: React.FC<{
   const { toasts, dismiss, toast } = useToast();
 
   if (verCentral) {
-    return <CentralEventosView comunidade={comunidade} onBack={() => setVerCentral(false)} />;
+    return (
+      <CentralEventosView
+        comunidade={comunidade}
+        onBack={() => setVerCentral(false)}
+        currentUserId={adminId}
+        currentUserNome={adminNome}
+      />
+    );
   }
 
   const refreshComunidade = () => {

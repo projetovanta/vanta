@@ -1,4 +1,4 @@
-# Criado: 2026-03-06 01:45 | Ultima edicao: 2026-03-06 01:45
+# Criado: 2026-03-06 01:45 | Ultima edicao: 2026-03-18
 
 # Sub-modulo: Criar Evento (Wizard 5 Steps)
 
@@ -7,7 +7,7 @@
 ## Arquivos (13 arquivos, 2900L total)
 | Arquivo | Linhas | Funcao |
 |---|---|---|
-| CriarEventoView.tsx | 868 | Wizard principal — orquestra steps + handlePublicar |
+| CriarEventoView.tsx | 941 | Wizard principal — orquestra steps + handlePublicar + toast + scrollRef |
 | TipoEventoScreen.tsx | 75 | Escolha FESTA_DA_CASA ou COM_SOCIO |
 | Step1Evento.tsx | 378 | Dados basicos do evento |
 | Step2Ingressos.tsx | 650 | Lotes + variacoes + MV |
@@ -132,5 +132,9 @@ LoteMaisVantaForm: @deprecated (compat)
 | 10 | Meia-entrada config | OK | requerComprovante por variacao |
 | 11 | MV por tier | OK | TierEventoMV com quantidade/acompanhantes |
 | 12 | Validacao de campos | OK | Steps validam antes de avancar |
-| 13 | Draft/rascunho | NAO EXISTE | Se sair no meio, perde tudo |
-| 14 | Preview antes de publicar | NAO EXISTE | Sem preview visual do evento |
+| 13 | Draft/rascunho | NAO EXISTE → PLANEJADO | Plano Wizards v2 Fase 4 (tabela drafts, auto-save 3s) |
+| 14 | Preview antes de publicar | NAO EXISTE → PLANEJADO | Plano Wizards v2 Fase 3 (step 4 Revisar+Publicar) |
+| 15 | Toast sucesso/erro | OK (18/mar) | useToast + ToastContainer |
+| 16 | Scroll to error | OK (18/mar) | scrollRef.scrollTo no handlePublicar catch |
+| 17 | Upload validação | OK (18/mar) | Tipo real JPEG/PNG/WebP + máx 5MB |
+| 18 | Labels mínimo 10px | OK (18/mar) | text-[0.4375rem] e text-[0.5rem] → text-[0.625rem] em 11 arquivos |

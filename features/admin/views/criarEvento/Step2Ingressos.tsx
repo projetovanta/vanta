@@ -226,7 +226,7 @@ export const Step2Ingressos: React.FC<Props> = ({
 
   return (
     <div className="space-y-4">
-      <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">
+      <p className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest">
         Ao menos um lote obrigatório. Quando esgotar, o próximo ativa automaticamente.
       </p>
       {lotes.map((lote, idx) => (
@@ -262,7 +262,7 @@ export const Step2Ingressos: React.FC<Props> = ({
                     className={inputDateCls}
                   />
                 </div>
-                <p className="text-[0.5rem] text-zinc-700 mt-1 font-black uppercase tracking-widest">
+                <p className="text-[0.625rem] text-zinc-700 mt-1 font-black uppercase tracking-widest">
                   Ex: virada de lote às 14h do dia X
                 </p>
               </div>
@@ -284,7 +284,7 @@ export const Step2Ingressos: React.FC<Props> = ({
                       %
                     </span>
                   </div>
-                  <p className="text-[0.5rem] text-zinc-700 mt-1 font-black uppercase tracking-widest">
+                  <p className="text-[0.625rem] text-zinc-700 mt-1 font-black uppercase tracking-widest">
                     Ao atingir esse %, ativa o próximo lote
                   </p>
                 </div>
@@ -484,7 +484,7 @@ export const Step2Ingressos: React.FC<Props> = ({
 
           {maisVantaEvento.enabled && (
             <div className="space-y-3 px-1 mt-4">
-              <p className="text-[0.5rem] font-black uppercase tracking-widest text-zinc-400">
+              <p className="text-[0.625rem] font-black uppercase tracking-widest text-zinc-400">
                 Benefícios por nível de membro
               </p>
 
@@ -546,7 +546,7 @@ export const Step2Ingressos: React.FC<Props> = ({
                           <div className="px-4 pb-3 space-y-2">
                             {/* Tipo: ingresso ou lista */}
                             <div>
-                              <label className="text-zinc-400 text-[0.5rem] font-black uppercase">
+                              <label className="text-zinc-400 text-[0.625rem] font-black uppercase">
                                 Tipo de benefício
                               </label>
                               <div className="flex gap-2 mt-1">
@@ -569,7 +569,7 @@ export const Step2Ingressos: React.FC<Props> = ({
 
                             {/* Vincular a lote ou lista */}
                             <div>
-                              <label className="text-zinc-400 text-[0.5rem] font-black uppercase">
+                              <label className="text-zinc-400 text-[0.625rem] font-black uppercase">
                                 {b.tipo === 'ingresso' ? 'Vincular a lote' : 'Vincular a lista'}
                               </label>
                               <VantaDropdown
@@ -584,7 +584,7 @@ export const Step2Ingressos: React.FC<Props> = ({
                             {/* Desconto (somente tier lista) */}
                             {isDesconto && (
                               <div>
-                                <label className="text-zinc-400 text-[0.5rem] font-black uppercase flex items-center gap-1">
+                                <label className="text-zinc-400 text-[0.625rem] font-black uppercase flex items-center gap-1">
                                   <Percent size="0.625rem" /> Desconto
                                 </label>
                                 <div className="flex items-center gap-2 mt-1">
@@ -604,7 +604,7 @@ export const Step2Ingressos: React.FC<Props> = ({
                             {/* Sub-nível creator */}
                             {b.tierId === 'creator' && (
                               <div>
-                                <label className="text-zinc-400 text-[0.5rem] font-black uppercase">
+                                <label className="text-zinc-400 text-[0.625rem] font-black uppercase">
                                   A partir de qual faixa
                                 </label>
                                 <div className="flex gap-1.5 mt-1">
@@ -636,7 +636,7 @@ export const Step2Ingressos: React.FC<Props> = ({
 
                             {/* Limite de vagas */}
                             <div>
-                              <label className="text-zinc-400 text-[0.5rem] font-black uppercase">
+                              <label className="text-zinc-400 text-[0.625rem] font-black uppercase">
                                 Limite de vagas
                               </label>
                               <div className="flex items-center gap-2 mt-1">
@@ -672,7 +672,7 @@ export const Step2Ingressos: React.FC<Props> = ({
               {/* Alcance estimado */}
               {alcanceEstimado && alcanceEstimado.membros > 0 && (
                 <div className="bg-[#FFD300]/5 border border-[#FFD300]/15 rounded-xl p-3 space-y-1.5">
-                  <p className="text-[0.5rem] font-black uppercase tracking-widest text-[#FFD300]/70">
+                  <p className="text-[0.625rem] font-black uppercase tracking-widest text-[#FFD300]/70">
                     Alcance estimado
                   </p>
                   <div className="flex items-center gap-4">

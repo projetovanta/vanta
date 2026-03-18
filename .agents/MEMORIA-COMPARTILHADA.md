@@ -8,7 +8,7 @@
 ## Estado Atual
 
 **Fase:** Produção e testes finais + Visual Redesign
-**Última sessão:** 2026-03-17 (sessão 4)
+**Última sessão:** 2026-03-18 (sessão 2)
 **Atualizado por:** Memo
 
 ---
@@ -39,6 +39,8 @@
 
 | O que mudou | Onde ler |
 |-------------|----------|
+| Plano Wizards v2 aprovado: 38 itens, 6 fases (comunidade 4 steps, evento 4 steps + preview) | `memory/plano_wizards_v2.md` |
+| Fase 1 Correções Críticas COMPLETA: double-click, toast, upload 5MB, labels 10px, scroll-error | `memory/sessao_atual.md` |
 | RTK instalado + TTL markers 30min + markers reutilizáveis (velocidade 3-4x) | `memory/sessao_atual.md` |
 | Auditoria limpeza: selects, deprecated, fontFamily, cnpjValidator | `memory/sessao_atual.md` |
 | Bloco 8 Auditoria COMPLETO (sessão 5): audit RBAC, extrato, CNPJ, histórico edições | `memory/plano_blocos_melhorias.md` |

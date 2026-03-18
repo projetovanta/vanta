@@ -1,166 +1,69 @@
 # Sessao Atual — Estado para Continuidade
 
 ## Branch: visual-redesign
-## Ultimo commit: (pendente commit)
-## Mudancas locais: SIM — 12+ arquivos modificados
+## Ultimo commit: (pendente commit — sessão 18/mar sessão 2)
+## Mudancas locais: SIM — 15+ arquivos modificados
 ## Preflight: diff-check 4/4 OK
 
-## Resumo da sessao (17 mar 2026 — sessao 4)
+## Resumo da sessao (18 mar 2026 — sessao 2)
 
 ### O que foi feito
 
-#### Visual Redesign Home
-- EventCard: tag estilo com backdrop-blur, movida acima do título na imagem
-- EventCard: distância via prop `distLabel` no footer ao lado do local
-- EventCard: badge data/hora com leading-none alinhado
-- NearYouSection: distância via prop (sem overlay absoluto)
-- LiveNowSection: label de cidade, card maior, visual mais limpo
+#### Auditoria completa dos fluxos de criação (comunidade + evento)
+- 6 especialistas analisaram: Luna (frontend), Kai (backend), Zara (segurança), Iris (visual), Sage (DBA), Maya (produto)
+- 5 equipes elaboraram plano completo: Maya, Luna+Iris, Kai+Sage, Zara+Théo, Pixel+Nix
+- 8 personas mapeadas (visitante, membro, MV, produtor, sócio, equipe, promoter, master)
+- Benchmark 6 concorrentes (Shotgun, Xceed, Dice, Fever, Sympla, Ingresse)
+- 26 problemas identificados, priorizados em 6 fases
 
-#### VANTA Indica — Visual
-- Gradiente reforçado: from-black/80 via-black/30 to-transparent
-- Badge: rounded-lg + backdrop-blur-md + border sutil + cores por tipo
-- Título: truncate 1 linha (nunca quebra)
-- Subtítulo: line-clamp-3
-- Preview admin sincronizada 100% com Home (wrapper px-5, glass-card, mesmas classes)
+#### Plano Wizards v2 — 38 itens aprovados pelo Dan (6 blocos A-F)
+- Comunidade: 3 → 4 steps (Identidade+Fotos → Localização → Operação → Produtores+Taxas)
+- Evento: 5 → 4 steps + preview (Essencial → Ingressos+Classificação → Equipe+Listas → Revisar+Publicar)
+- Classificação: Formato obrigatório (1), Estilo obrigatório (mín 1, sem teto), Experiência OPCIONAL
+- Rascunho automático no banco (tabela drafts, auto-save 3s, expira 30 dias)
+- Kit completo de componentes visuais (FormWizard, InputField, UploadArea, etc.)
+- Tela sucesso: check dourado + partículas + Playfair "Evento criado!"
+- RPC atômica criar_evento_completo (transação única)
+- Classificação de idade (Livre / +16 / +18)
+- Notificações seguidores: limite por comunidade, definido pelo master
+- Benefício MV: ícone coroa ao lado do botão comprar
+- Importação de evento anterior com checkboxes
+- Convite sócio via link direto WhatsApp/email
+- Push 2h antes pra equipe
+- Acordeões: manter roxo e verde
+- Plano salvo em memory/plano_wizards_v2.md
 
-#### VANTA Indica — Funcionalidade
-- handleCardClick expandido: 6 tipos (evento, comemorar, comunidade, rota, cupom, link)
-- Props novas: onComunidadeClick, onNavigateToTab, onNavigateToProfile
-- 7 templates prontos (MAIS VANTA, Comemorar, Parceiro, Evento, Comunidade, Explorar, Radar)
-- ROTAS_INTERNAS: 13 destinos (+MY_TICKETS, +PREVIEW_PUBLIC)
-- Fix scroll: drag não bloqueia mais scroll (preventDefault só no move nativo + touchcancel)
-- touch-none só nos elementos arrastáveis (não no container)
+#### Fase 1 — Correções Críticas (COMPLETA)
+- Guard anti-double-click na criação de comunidade (isCriando + disabled + "Criando...")
+- Toast sucesso/erro em ambos wizards (useToast + ToastContainer)
+- currentUserId/currentUserNome passados na CentralEventosView → CriarEventoView
+- Validação upload: tipo real (JPEG/PNG/WebP) + máx 5MB (Step3Fotos + Step1Evento)
+- Labels 7-8px → 10px mínimo (11 arquivos dos wizards)
+- Scroll to error (setErroScroll + scrollRef em ambos wizards)
 
-#### Fixes Admin
-- DashboardV2Gateway: relative nos containers (absolute inset-0 contido em 500px)
-- DashboardV2Gateway: removida persistência sessionStorage subView — sempre abre Dashboard
-- AdminGateway: removida persistência sessionStorage destino — sempre abre seleção
-- AdminDashboardView: removida persistência sessionStorage subView
+### Arquivos modificados (sessão 2 do 18/mar)
+- features/admin/views/criarComunidade/index.tsx (guard, toast, scrollRef, setErroScroll)
+- features/admin/views/criarComunidade/Step1Identidade.tsx (labels 10px)
+- features/admin/views/criarComunidade/Step2Localizacao.tsx (labels 10px)
+- features/admin/views/criarComunidade/Step3Fotos.tsx (labels 10px + validação upload 5MB)
+- features/admin/views/CriarEventoView.tsx (toast, scrollRef, ToastContainer)
+- features/admin/views/criarEvento/Step1Evento.tsx (labels 10px + validação upload 5MB)
+- features/admin/views/criarEvento/Step2Ingressos.tsx (labels 10px)
+- features/admin/views/criarEvento/Step3Listas.tsx (labels 10px)
+- features/admin/views/criarEvento/Step4EquipeCasa.tsx (labels 10px)
+- features/admin/views/criarEvento/Step4EquipeSocio.tsx (labels 10px)
+- features/admin/views/criarEvento/Step5Financeiro.tsx (labels 10px)
+- features/admin/views/criarEvento/TipoEventoScreen.tsx (labels 10px)
+- features/admin/views/criarEvento/CapacidadeModal.tsx (labels 10px)
+- features/admin/views/comunidades/CentralEventosView.tsx (props currentUserId/currentUserNome)
+- features/admin/views/comunidades/ComunidadeDetalheView.tsx (repassa currentUserId/currentUserNome)
 
-#### Dados de teste
-- 4 eventos criados no Supabase (Techno Underground, Sunset Sessions, Rooftop Chill, Funk na Mansion)
-- Status: acontecendo agora, começa em breve, acaba em breve, amanhã
-
-### Arquivos modificados (sessão 4)
-- App.tsx (import TabState + onNavigateToTab callback)
-- components/EventCard.tsx (distLabel prop, tag acima do título, backdrop-blur)
-- features/admin/AdminDashboardView.tsx (sem sessionStorage)
-- features/admin/AdminGateway.tsx (sem sessionStorage)
-- features/admin/views/VantaIndicaView.tsx (templates, paleta, preview fiel, drag fix)
-- features/dashboard-v2/DashboardV2Gateway.tsx (relative, sem sessionStorage)
-- modules/home/HomeView.tsx (onNavigateToTab prop)
-- modules/home/components/EventFeed.tsx (ajustes layout)
-- modules/home/components/Highlights.tsx (handlers, visual, props)
-- modules/home/components/LiveNowSection.tsx (label cidade, visual)
-- modules/home/components/NearYouSection.tsx (distLabel via prop)
-- modules/home/components/ThisWeekSection.tsx (ajustes)
-
-### Arquivos criados (sessão 5)
-- components/EmptyState.tsx, BatchActionBar.tsx, FilterBar.tsx
-- features/admin/services/indicaTemplatesService.ts, brandProfilesService.ts
-- hooks/useSessionTimeout.ts
-- modules/search/components/PlacesResults.tsx
-- .claude/agents/engenheiro-integracoes.md, product-designer.md, growth-engineer.md, artista-ia.md
-- .claude/commands/analisar-marca.md
-- memory/decisoes_features_futuras.md
-
-### Arquivos modificados (sessão 5)
-- 25+ arquivos de código (Blocos 1-5) + tipos + memórias
-
-## Plano aprovado — 4 Blocos de Melhorias
-Ver detalhes em `memory/plano_blocos_melhorias.md`
-
-### Bloco 1 — Polimento Visual (COMPLETO — sessão 5)
-- 1.1 Tema escuro consistente — já estava OK (95% correto)
-- 1.2 EmptyState reutilizável — componente novo + aplicado em 5 telas (MyTickets, Wallet, Historico, Messages, Search)
-- 1.3 Skeleton loading — 5 variantes novas + spinners substituídos em 4 telas (MyTickets, Search eventos+pessoas, Historico)
-- 1.4 VANTA Indica editor — emoji picker (24), paleta cores (8), badgeColor no layoutConfig, preview fiel na Home
-
-### Bloco 2 — Navegação + Busca inteligente (COMPLETO — sessão 5)
-- 2.1 CommandPalette busca dados reais (Supabase, debounce 300ms)
-- 2.2 Breadcrumbs no AdminViewHeader (prop opcional)
-- 2.3 Deep links admin (hash URL #admin/VIEW)
-- 2.4 Cargos com descrição (8 cargos, Sócio+Promoter adicionados)
-
-### Bloco 3 — Financeiro com contexto temporal (COMPLETO — sessão 5)
-- 3.1 PeriodSelector nos 2 financeiros + filtro real de dados por dataInicio
-- 3.2 Sparklines — N/A (financeiros usam dados estáticos, Dashboard já tem)
-- 3.3 Audit log contextual — initialFilter + botão Histórico nos 2 financeiros
-- 3.4 VendasTimelineChart nos 2 financeiros
-
-### Pendências resolvidas (sessão 5)
-- 2.2 Breadcrumbs aplicados em 4 views (Financeiro, MasterFinanceiro, Cargos, Eventos)
-- 1.4 Templates Indica salvos no DB (migration + service + UI salvar/carregar)
-
-### Bloco 4 — Operações em escala (COMPLETO — sessão 5)
-- 4.1 BatchActionBar componente reutilizável
-- 4.2 FilterBar componente reutilizável
-- 4.3 Notificações batch: enviarAgora no pushAgendadosService
-- 4.4 Session timeout 30min (useSessionTimeout hook)
-
-### Novos agentes contratados (sessão 5)
-- Axel — Engenheiro de Integrações (Apple/Google Wallet, NFe.io, Receita Federal)
-- Maya — Designer de Produto (jornada do usuário, wireframes, métricas)
-- Pixel — Engenheiro de Crescimento (ASO, funil, push segmentado)
-- Lux — Artista IA (análise visual, identidade de marca, geração de imagem)
-
-### Infraestrutura IA visual (sessão 5)
-- Skill `/analisar-marca` criada (.claude/commands/analisar-marca.md)
-- Tabela `brand_profiles` criada no Supabase (perfis visuais de marca)
-- Service `brandProfilesService.ts` criado
-- 20 decisões de features futuras documentadas (decisoes_features_futuras.md)
-- Lux (Artista IA) testada e dispensada — volta quando capacitada
-
-### Bloco 5 — Busca Inteligente (COMPLETO — sessão 5)
-- 5.1 Aba "Lugares" + 5.2 Autocomplete + 5.3 Histórico buscas
-
-### Bloco 6 — Carteira Premium (COMPLETO — sessão 5)
-- 6.1 PDF comprovante sem QR (ticketReceiptPdf.ts + botão Comprovante no carrossel)
-- 6.3 Histórico transferências (getHistorico + seção na tab Passados da Wallet)
-- 6.2 Apple/Google Wallet → Bloco 9 (contas externas)
-
-### Bloco 7 — Admin ao Vivo (COMPLETO — sessão 5)
-- 7.1 Dashboard realtime (Supabase Realtime INSERT/UPDATE tickets_caixa)
-- 7.2 Notificação promoter cota — já existia (notify 3 canais)
-- 7.3 Remover convidado da lista (removerConvidado, só quem adicionou)
-
-### Bloco 8 — Auditoria e Controle (COMPLETO — sessão 5)
-- 8.1 Audit RBAC, 8.2 Extrato financeiro, 8.3 Validar CNPJ, 8.4 Histórico edições
-
-## Pendências da Auditoria (full-audit 18/mar)
-
-### Urgente — RESOLVIDO
-- [x] 2 `<select>` nativos corrigidos → VantaDropdown (DashboardV2Gateway + SiteContentView)
-- [ ] 2 fontFamily inline: masterDashboard/index.tsx:158 + EventCard.tsx:167
-
-### Código morto — RESOLVIDO
-- [x] 5 arquivos movidos pra `_deprecated/` (2 backups + 3 Home não usados)
-- [x] 6 views legadas sinalizadas com @deprecated (AdminDashboardView, AdminGateway, CaixaDash, PortariaListaDash, PortariaQRDash, SocioDash)
-- [x] `_deprecated/` excluída do tsconfig.json
-
-### Componentes criados mas não integrados
-- [ ] BatchActionBar.tsx — criar UI que use (ex: MembrosGlobais, Convites)
-- [ ] FilterBar.tsx — criar UI que use (ex: Pendências, Eventos)
-- [ ] cnpjValidator.ts — integrar no form de comunidade
-- [ ] brandProfilesService.ts — aguardando IA visual (Lux futura)
-- [ ] ProfileSkeleton, ChatItemSkeleton, HighlightCardSkeleton — aplicar nas telas
-- [ ] CARGO_DESCRICOES — exibir na UI de cargos
-
-### FontFamily + CNPJ — RESOLVIDO
-- [x] 2 fontFamily inline → TYPOGRAPHY (masterDashboard + EventCard)
-- [x] cnpjValidator integrado no form de comunidade (validação + formatação)
-
-### Menor prioridade (futuro)
-- [ ] 3 fontSize em px hardcoded
-- [ ] api/og.ts, api/robots.ts, api/sitemap.xml.ts — SEO futuro (manter)
-- [ ] Integrar BatchActionBar e FilterBar quando houver UI de batch
-- [ ] Aplicar ProfileSkeleton, ChatItemSkeleton, HighlightCardSkeleton quando houver loading fullscreen
-
-### Otimizações de velocidade (18/mar)
-- RTK instalado (brew install rtk) — economiza 60-90% tokens nos comandos Bash
-- Hook RTK configurado no ~/.claude/settings.json
-- TTL markers: 5min → 30min em todos os hooks
-- Markers reutilizáveis (não consomem após 1 uso)
+### Próximas fases (plano_wizards_v2.md)
+- Fase 2: Componentes visuais (FormWizard, InputField, UploadArea, SectionTitle, AccordionSection, CelebrationScreen)
+- Fase 3: Reorganizar wizards (comunidade 4 steps, evento 4 steps + preview)
+- Fase 4: Rascunho automático (tabela drafts + auto-save + banner)
+- Fase 5: Backend robusto (RPCs atômicas, 16 índices, 10 constraints, view comunidades_admin)
+- Fase 6: Features novas (social proof, urgência, MV, deep links sócio, push equipe)
 
 ## Pendencias externas (sem mudança)
 - Conta Apple Developer ($99/ano)

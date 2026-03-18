@@ -1,5 +1,6 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { UnsavedChangesModal } from '../../../components/UnsavedChangesModal';
+import { useToast, ToastContainer } from '../../../components/Toast';
 import { ArrowLeft, Check, Clock, Mail } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
 import type { Comunidade, LoteAdmin, MembroEquipeEvento } from '../../../types';
@@ -47,6 +48,8 @@ export const CriarEventoView: React.FC<{
   const [step, setStep] = useState(1);
   const [publicado, setPublicado] = useState(false);
   const [isPublicando, setIsPublicando] = useState(false);
+  const { toasts, dismiss, toast } = useToast();
+  const scrollRef = useRef<HTMLDivElement>(null);
   const [erro, setErro] = useState('');
   const [copiarOpen, setCopiarOpen] = useState(false);
   const [conviteEnviado, setConviteEnviado] = useState(false);
@@ -540,9 +543,12 @@ export const CriarEventoView: React.FC<{
         }
       }
 
+      toast({ title: 'Evento criado!', variant: 'success' });
       setPublicado(true);
     } catch (e) {
       setErro('Erro ao publicar evento. Tente novamente.');
+      toast({ title: 'Erro ao publicar evento', variant: 'error' });
+      scrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
     } finally {
       setIsPublicando(false);
     }
@@ -803,7 +809,7 @@ export const CriarEventoView: React.FC<{
       </div>
 
       {/* Conteúdo */}
-      <div className="flex-1 overflow-y-auto no-scrollbar p-6 max-w-3xl mx-auto w-full">
+      <div ref={scrollRef} className="flex-1 overflow-y-auto no-scrollbar p-6 max-w-3xl mx-auto w-full">
         {step === 1 && (
           <Step1Evento
             foto={foto}
@@ -929,6 +935,7 @@ export const CriarEventoView: React.FC<{
         />
       )}
       {showExitConfirm && <UnsavedChangesModal onStay={() => setShowExitConfirm(false)} onLeave={onBack} />}
+      <ToastContainer toasts={toasts} onDismiss={dismiss} />
     </div>
   );
 };

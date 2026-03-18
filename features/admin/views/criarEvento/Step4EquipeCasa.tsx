@@ -175,7 +175,7 @@ export const Step4EquipeCasa: React.FC<Props> = ({
           className="w-full flex items-center justify-between"
         >
           <div className="text-left">
-            <p className="text-white text-[0.5rem] font-black uppercase tracking-widest mb-0.5">Gerente de Evento</p>
+            <p className="text-white text-[0.625rem] font-black uppercase tracking-widest mb-0.5">Gerente de Evento</p>
             <p className="text-zinc-400 text-[0.625rem] leading-relaxed">
               Opcional. Designe alguém para supervisionar a operação.
             </p>
@@ -270,7 +270,7 @@ export const Step4EquipeCasa: React.FC<Props> = ({
               <p className="text-white font-bold text-sm leading-none truncate">{gerente.nome}</p>
               <p className="text-zinc-400 text-[0.625rem] mt-0.5 truncate">{gerente.email}</p>
             </div>
-            <span className="text-[0.4375rem] font-black uppercase tracking-widest text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full shrink-0">
+            <span className="text-[0.625rem] font-black uppercase tracking-widest text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full shrink-0">
               Gerente
             </span>
             <button
@@ -288,7 +288,7 @@ export const Step4EquipeCasa: React.FC<Props> = ({
         {/* Permissões do Gerente */}
         {gerenteEnabled && gerente && (
           <div className="space-y-2">
-            <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest">Permissões do Gerente</p>
+            <p className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest">Permissões do Gerente</p>
             {GERENTE_PERMISSOES.map(p => (
               <button
                 key={p.id}
@@ -316,7 +316,7 @@ export const Step4EquipeCasa: React.FC<Props> = ({
       {/* ── EQUIPE DA CASA ── */}
       <div className="space-y-4">
         <div>
-          <p className="text-white text-[0.5rem] font-black uppercase tracking-widest mb-1">Equipe da Casa</p>
+          <p className="text-white text-[0.625rem] font-black uppercase tracking-widest mb-1">Equipe da Casa</p>
           <p className="text-zinc-400 text-[0.625rem] leading-relaxed">
             Busque pelo email ou nome do membro para adicioná-lo à equipe.
           </p>
@@ -408,7 +408,7 @@ export const Step4EquipeCasa: React.FC<Props> = ({
                   />
                   <div className="flex-1 min-w-0">
                     <p className="text-white font-bold text-sm leading-none mb-1 truncate">{m.nome}</p>
-                    <span className="text-[0.5rem] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-zinc-900 text-zinc-400 border border-white/5">
+                    <span className="text-[0.625rem] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-zinc-900 text-zinc-400 border border-white/5">
                       {papelInfo?.label || m.papel}
                     </span>
                   </div>

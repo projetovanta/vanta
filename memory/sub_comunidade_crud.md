@@ -1,4 +1,4 @@
-# Criado: 2026-03-06 01:50 | Ultima edicao: 2026-03-06 01:50
+# Criado: 2026-03-06 01:50 | Ultima edicao: 2026-03-18
 
 # Sub-modulo: Comunidade CRUD + Pagina Publica
 
@@ -7,10 +7,10 @@
 ## Criar Comunidade (4 arquivos, 942L)
 | Arquivo | Linhas | Funcao |
 |---|---|---|
-| criarComunidade/index.tsx | 358 | CriarComunidadeView — wizard 3 steps |
-| criarComunidade/Step1Identidade.tsx | 141 | Nome, bio, capacidade, taxa, horarios, CNPJ |
-| criarComunidade/Step2Localizacao.tsx | 170 | CEP auto → endereco + coords |
-| criarComunidade/Step3Fotos.tsx | 273 | Foto perfil/capa (crop) + produtores |
+| criarComunidade/index.tsx | 400 | CriarComunidadeView — wizard 3 steps + guard anti-double-click + toast + scroll-to-error |
+| criarComunidade/Step1Identidade.tsx | 283 | Nome, bio, capacidade, taxa, horarios, CNPJ (labels 10px mín) |
+| criarComunidade/Step2Localizacao.tsx | 172 | CEP auto → endereco + coords (labels 10px mín) |
+| criarComunidade/Step3Fotos.tsx | 278 | Foto perfil/capa (crop) + produtores + validação upload 5MB JPEG/PNG/WebP |
 
 ### Fluxo Criar
 ```
@@ -35,6 +35,13 @@ AO FINALIZAR:
 3. UPDATE vanta_fee_percent
 4. Para cada produtor: rbacService.atribuir (cargo GERENTE, permissoes completas)
 5. generateSlug(nome) → slug unico
+
+PROTEÇÕES (18/mar):
+- Guard anti-double-click: isCriando + botão disabled + "Criando..."
+- Toast sucesso/erro via useToast + ToastContainer
+- Scroll to error: setErroScroll rola pro topo ao falhar validação
+- Upload: validação tipo real (JPEG/PNG/WebP) + máx 5MB
+- Labels mínimo 10px (antes era 7-8px)
 ```
 
 ## Gestao de Comunidade (14 arquivos, 2041L)
@@ -45,7 +52,7 @@ AO FINALIZAR:
 | EditarModal.tsx | 521 | Editar todos campos |
 | EquipeTab.tsx | 173 | Equipe RBAC da comunidade |
 | AdicionarMembroModal.tsx | 159 | Adicionar membro + cargo |
-| CentralEventosView.tsx | 83 | Hub eventos (criar/proximos/encerrados) |
+| CentralEventosView.tsx | 85 | Hub eventos (criar/proximos/encerrados) + repassa currentUserId/currentUserNome |
 | ProximosEventosTab.tsx | 59 | Eventos futuros |
 | EventosEncerradosTab.tsx | 86 | Eventos passados |
 | ResumoEventoModal.tsx | 171 | Resumo de evento encerrado |

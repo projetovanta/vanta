@@ -35,7 +35,7 @@ export const Step5Financeiro: React.FC<Props> = ({ split, setSplit, socio }) => 
   return (
     <div className="space-y-6">
       <div>
-        <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1">Split Financeiro</p>
+        <p className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest mb-1">Split Financeiro</p>
         <p className="text-zinc-400 text-[0.625rem] leading-relaxed">
           Defina a divisão da receita líquida entre sócio e produtor. A taxa VANTA é aplicada antes do split.
         </p>
@@ -93,7 +93,7 @@ export const Step5Financeiro: React.FC<Props> = ({ split, setSplit, socio }) => 
         {/* Slider */}
         <div className="space-y-2">
           <VantaSlider min={0} max={100} value={pSocio} onChange={v => handleSlider(v)} className="w-full" />
-          <div className="flex justify-between text-[0.5rem] font-black uppercase tracking-widest">
+          <div className="flex justify-between text-[0.625rem] font-black uppercase tracking-widest">
             <span className="text-zinc-400">0% Sócio</span>
             <span className="text-zinc-400">100% Sócio</span>
           </div>

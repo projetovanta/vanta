@@ -4,7 +4,7 @@ import { buscarCep, formatCep, geocodeEndereco } from '../../../../services/cepS
 
 const inputCls =
   'w-full bg-zinc-900/60 border border-white/5 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-[#FFD300]/30 placeholder-zinc-700';
-const labelCls = 'text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block';
+const labelCls = 'text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block';
 
 export const Step2Localizacao: React.FC<{
   cep: string;
@@ -153,7 +153,7 @@ export const Step2Localizacao: React.FC<{
             <p className="text-emerald-400 text-[0.5625rem] font-black uppercase tracking-widest">
               Coordenadas definidas
             </p>
-            <p className="text-zinc-400 text-[0.5rem] mt-0.5">
+            <p className="text-zinc-400 text-[0.625rem] mt-0.5">
               Lat {p.coords.lat.toFixed(4)} · Lng {p.coords.lng.toFixed(4)}
             </p>
           </div>

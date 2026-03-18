@@ -5,7 +5,7 @@ import { validarDigitoCnpj, formatarCnpj } from '../../../../utils/cnpjValidator
 
 const inputCls =
   'w-full bg-zinc-900/60 border border-white/5 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-[#FFD300]/30 placeholder-zinc-700';
-const labelCls = 'text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block';
+const labelCls = 'text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest mb-1.5 block';
 
 export const Step1Identidade: React.FC<{
   nome: string;
@@ -100,7 +100,7 @@ export const Step1Identidade: React.FC<{
         placeholder="Ex: 500"
         className={inputCls}
       />
-      <p className="text-[0.5rem] text-zinc-700 mt-1.5 font-black uppercase tracking-widest leading-relaxed">
+      <p className="text-[0.625rem] text-zinc-700 mt-1.5 font-black uppercase tracking-widest leading-relaxed">
         Limite de pessoas na casa. Vai alertar ao criar lotes ou listas de convidados acima deste valor.
       </p>
     </div>
@@ -150,7 +150,7 @@ export const Step1Identidade: React.FC<{
     {/* Taxa Vanta — lucro da plataforma por ingresso vendido */}
     <div className="pt-3 border-t border-white/5 space-y-1.5">
       <label className={labelCls}>Taxa Vanta (%) — Seu lucro por ingresso *</label>
-      <p className="text-[0.5rem] text-zinc-700 font-black uppercase tracking-widest leading-relaxed mb-2">
+      <p className="text-[0.625rem] text-zinc-700 font-black uppercase tracking-widest leading-relaxed mb-2">
         Percentual que o VANTA recebe sobre cada ingresso vendido nesta comunidade. Esse valor é descontado do repasse
         ao dono da comunidade. Ex: 10% = R$10 a cada R$100 vendidos.
       </p>
@@ -167,7 +167,7 @@ export const Step1Identidade: React.FC<{
         />
         <span className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 text-sm font-bold">%</span>
       </div>
-      <p className="text-[0.5rem] text-zinc-700 font-black uppercase tracking-widest leading-relaxed">
+      <p className="text-[0.625rem] text-zinc-700 font-black uppercase tracking-widest leading-relaxed">
         O custo do gateway de pagamento (ex: cartão, PIX) é cobrado separadamente e sempre pago pelo dono da comunidade.
       </p>
     </div>
@@ -175,12 +175,12 @@ export const Step1Identidade: React.FC<{
     {/* Taxas Avançadas */}
     <div className="pt-3 border-t border-white/5 space-y-2">
       <label className={labelCls}>Taxas Avançadas (Padrão para eventos)</label>
-      <p className="text-[0.5rem] text-zinc-700 font-black uppercase tracking-widest leading-relaxed mb-2">
+      <p className="text-[0.625rem] text-zinc-700 font-black uppercase tracking-widest leading-relaxed mb-2">
         Valores padrão para novos eventos desta comunidade. O produtor pode propor alterações na criação do evento.
       </p>
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-1">
-          <label className="text-[0.4375rem] text-zinc-400 font-black uppercase tracking-widest">
+          <label className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest">
             Taxa Processamento (%)
           </label>
           <input
@@ -195,7 +195,7 @@ export const Step1Identidade: React.FC<{
           />
         </div>
         <div className="space-y-1">
-          <label className="text-[0.4375rem] text-zinc-400 font-black uppercase tracking-widest">Taxa Porta (%)</label>
+          <label className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest">Taxa Porta (%)</label>
           <input
             type="number"
             min="0"
@@ -208,9 +208,7 @@ export const Step1Identidade: React.FC<{
           />
         </div>
         <div className="space-y-1">
-          <label className="text-[0.4375rem] text-zinc-400 font-black uppercase tracking-widest">
-            Taxa Mínima (R$)
-          </label>
+          <label className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest">Taxa Mínima (R$)</label>
           <input
             type="number"
             min="0"
@@ -222,9 +220,7 @@ export const Step1Identidade: React.FC<{
           />
         </div>
         <div className="space-y-1">
-          <label className="text-[0.4375rem] text-zinc-400 font-black uppercase tracking-widest">
-            Cota Nomes Lista
-          </label>
+          <label className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest">Cota Nomes Lista</label>
           <input
             type="number"
             min="0"
@@ -236,7 +232,7 @@ export const Step1Identidade: React.FC<{
           />
         </div>
         <div className="space-y-1">
-          <label className="text-[0.4375rem] text-zinc-400 font-black uppercase tracking-widest">
+          <label className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest">
             R$/Nome Excedente
           </label>
           <input
@@ -250,7 +246,7 @@ export const Step1Identidade: React.FC<{
           />
         </div>
         <div className="space-y-1">
-          <label className="text-[0.4375rem] text-zinc-400 font-black uppercase tracking-widest">Cota Cortesias</label>
+          <label className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest">Cota Cortesias</label>
           <input
             type="number"
             min="0"
@@ -262,7 +258,7 @@ export const Step1Identidade: React.FC<{
           />
         </div>
         <div className="col-span-2 space-y-1">
-          <label className="text-[0.4375rem] text-zinc-400 font-black uppercase tracking-widest">
+          <label className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest">
             % Cortesia Excedente (sobre valor face)
           </label>
           <input

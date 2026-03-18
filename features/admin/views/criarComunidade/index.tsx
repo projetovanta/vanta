@@ -1,9 +1,10 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import { ArrowLeft, Check } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../../constants';
 import { comunidadesService } from '../../services/comunidadesService';
 import { rbacService, CARGO_PERMISSOES } from '../../services/rbacService';
 import { UnsavedChangesModal } from '../../../../components/UnsavedChangesModal';
+import { useToast, ToastContainer } from '../../../../components/Toast';
 import { Membro, HorarioSemanal } from '../../../../types';
 import { DEFAULT_HORARIOS } from '../../../../components/HorarioFuncionamentoEditor';
 import { Step1Identidade } from './Step1Identidade';
@@ -18,6 +19,9 @@ export const CriarComunidadeView: React.FC<{
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [criado, setCriado] = useState(false);
   const [erro, setErro] = useState('');
+  const [isCriando, setIsCriando] = useState(false);
+  const { toasts, dismiss, toast } = useToast();
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   // Step 1
   const [nome, setNome] = useState('');
@@ -63,23 +67,28 @@ export const CriarComunidadeView: React.FC<{
 
   const STEP_LABELS = ['Identidade', 'Localização', 'Visual'];
 
+  const setErroScroll = (msg: string) => {
+    setErro(msg);
+    scrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const validar1 = (): boolean => {
     if (!nome.trim()) {
-      setErro('Nome da comunidade é obrigatório.');
+      setErroScroll('Nome da comunidade é obrigatório.');
       return false;
     }
     if (!bio.trim()) {
-      setErro('Bio é obrigatória.');
+      setErroScroll('Bio é obrigatória.');
       return false;
     }
     const cap = parseInt(capacidade);
     if (!capacidade || isNaN(cap) || cap <= 0) {
-      setErro('Capacidade máxima inválida.');
+      setErroScroll('Capacidade máxima inválida.');
       return false;
     }
     const taxa = parseFloat(taxaVantaStr);
     if (!taxaVantaStr || isNaN(taxa) || taxa < 0 || taxa > 100) {
-      setErro('Taxa Vanta deve ser entre 0% e 100%.');
+      setErroScroll('Taxa Vanta deve ser entre 0% e 100%.');
       return false;
     }
     return true;
@@ -87,23 +96,23 @@ export const CriarComunidadeView: React.FC<{
 
   const validar2 = (): boolean => {
     if (!rua.trim()) {
-      setErro('Rua é obrigatória.');
+      setErroScroll('Rua é obrigatória.');
       return false;
     }
     if (!numero.trim()) {
-      setErro('Número é obrigatório.');
+      setErroScroll('Número é obrigatório.');
       return false;
     }
     if (!bairro.trim()) {
-      setErro('Bairro é obrigatório.');
+      setErroScroll('Bairro é obrigatório.');
       return false;
     }
     if (!cidade.trim()) {
-      setErro('Cidade é obrigatória.');
+      setErroScroll('Cidade é obrigatória.');
       return false;
     }
     if (!estado.trim()) {
-      setErro('Estado é obrigatório.');
+      setErroScroll('Estado é obrigatório.');
       return false;
     }
     return true;
@@ -111,15 +120,15 @@ export const CriarComunidadeView: React.FC<{
 
   const validar3 = (): boolean => {
     if (!fotoPerfil) {
-      setErro('Foto de perfil é obrigatória.');
+      setErroScroll('Foto de perfil é obrigatória.');
       return false;
     }
     if (!fotoCapa) {
-      setErro('Foto de capa é obrigatória.');
+      setErroScroll('Foto de capa é obrigatória.');
       return false;
     }
     if (produtores.length === 0) {
-      setErro('Adicione ao menos um produtor responsável.');
+      setErroScroll('Adicione ao menos um produtor responsável.');
       return false;
     }
     return true;
@@ -138,6 +147,8 @@ export const CriarComunidadeView: React.FC<{
   };
 
   const handleCriar = async () => {
+    if (isCriando) return;
+    setIsCriando(true);
     setErro('');
     try {
       const enderecoCompleto = [rua, numero, complemento, bairro].filter(Boolean).join(', ');
@@ -164,7 +175,7 @@ export const CriarComunidadeView: React.FC<{
       });
 
       if (!novoId) {
-        setErro('Erro ao criar comunidade. Tente novamente.');
+        setErroScroll('Erro ao criar comunidade. Tente novamente.');
         return;
       }
 
@@ -211,10 +222,14 @@ export const CriarComunidadeView: React.FC<{
         );
       }
 
+      toast({ title: 'Comunidade criada!', variant: 'success' });
       setCriado(true);
     } catch (err) {
       console.error('[CriarComunidade] erro:', err);
-      setErro('Erro ao criar comunidade. Verifique os dados e tente novamente.');
+      setErroScroll('Erro ao criar comunidade. Verifique os dados e tente novamente.');
+      toast({ title: 'Erro ao criar comunidade', variant: 'error' });
+    } finally {
+      setIsCriando(false);
     }
   };
 
@@ -289,7 +304,7 @@ export const CriarComunidadeView: React.FC<{
           {STEP_LABELS.map((l, i) => (
             <p
               key={l}
-              className={`text-[0.4375rem] font-black uppercase tracking-widest ${step === i + 1 ? 'text-[#FFD300]' : 'text-zinc-700'}`}
+              className={`text-[0.625rem] font-black uppercase tracking-widest ${step === i + 1 ? 'text-[#FFD300]' : 'text-zinc-700'}`}
               style={{ width: '33%', textAlign: i === 0 ? 'left' : i === 2 ? 'right' : 'center' }}
             >
               {l}
@@ -299,7 +314,7 @@ export const CriarComunidadeView: React.FC<{
       </div>
 
       {/* Conteúdo */}
-      <div className="flex-1 overflow-y-auto no-scrollbar p-6 max-w-3xl mx-auto w-full">
+      <div ref={scrollRef} className="flex-1 overflow-y-auto no-scrollbar p-6 max-w-3xl mx-auto w-full">
         {step === 1 && (
           <Step1Identidade
             nome={nome}
@@ -382,11 +397,13 @@ export const CriarComunidadeView: React.FC<{
         )}
         <button
           onClick={avancar}
-          className="flex-1 py-3.5 bg-[#FFD300] text-black rounded-xl text-[0.625rem] font-black uppercase tracking-widest active:scale-95 transition-all"
+          disabled={isCriando}
+          className={`flex-1 py-3.5 rounded-xl text-[0.625rem] font-black uppercase tracking-widest active:scale-95 transition-all ${isCriando ? 'bg-[#FFD300]/50 text-black/50' : 'bg-[#FFD300] text-black'}`}
         >
-          {step === 3 ? 'Criar Comunidade' : 'Próximo'}
+          {step === 3 ? (isCriando ? 'Criando...' : 'Criar Comunidade') : 'Próximo'}
         </button>
       </div>
+      <ToastContainer toasts={toasts} onDismiss={dismiss} />
 
       {showExitConfirm && <UnsavedChangesModal onStay={() => setShowExitConfirm(false)} onLeave={onBack} />}
     </div>

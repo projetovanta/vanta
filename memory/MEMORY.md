@@ -127,6 +127,7 @@
 - [audit_mapeamento_progress.md](audit_mapeamento_progress.md) — Progresso mapeamento (132 fluxos)
 - [plano_blocos_melhorias.md](plano_blocos_melhorias.md) — 4 blocos de melhorias (visual, navegação, financeiro, operações) — COMPLETOS
 - [decisoes_features_futuras.md](decisoes_features_futuras.md) — 20 decisões de features futuras (Dan, 17/mar sessão 5)
+- [plano_wizards_v2.md](plano_wizards_v2.md) — Plano Wizards v2: 38 itens em 6 fases (aprovado 18/mar sessão 2)
 
 ## Feedback
 

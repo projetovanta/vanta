@@ -1,7 +1,7 @@
 import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { UnsavedChangesModal } from '../../../components/UnsavedChangesModal';
 import { useToast, ToastContainer } from '../../../components/Toast';
-import { ArrowLeft, Check, Clock, Mail } from 'lucide-react';
+import { ArrowLeft, Check, MapPin, Calendar, Users, ListChecks, Ticket, Search, Loader2 } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
 import type { Comunidade, LoteAdmin, MembroEquipeEvento } from '../../../types';
 import { eventosAdminService } from '../services/eventosAdminService';
@@ -34,6 +34,192 @@ import { Step5Financeiro } from './criarEvento/Step5Financeiro';
 import { CopiarModal } from './criarEvento/CopiarModal';
 import { CapacidadeModal } from './criarEvento/CapacidadeModal';
 import { TosAcceptModal, checkTosAccepted } from '../../../components/TosAcceptModal';
+import CelebrationScreen from '../../../components/CelebrationScreen';
+import AccordionSection from '../../../components/form/AccordionSection';
+
+// ── Classificação inline (formato/estilo/experiência) para Step Ingressos ──
+const ClassificacaoInline: React.FC<{
+  formato: string;
+  setFormato: (v: string) => void;
+  estilos: string[];
+  setEstilos: (v: string[]) => void;
+  experiencias: string[];
+  setExperiencias: (v: string[]) => void;
+}> = ({ formato, setFormato, estilos, setEstilos, experiencias, setExperiencias }) => {
+  const [dbFormatos, setDbFormatos] = React.useState<string[]>([]);
+  const [dbEstilos, setDbEstilos] = React.useState<string[]>([]);
+  const [dbExperiencias, setDbExperiencias] = React.useState<string[]>([]);
+  const [loading, setLoading] = React.useState(true);
+  const [searchFormato, setSearchFormato] = React.useState('');
+  const [searchEstilo, setSearchEstilo] = React.useState('');
+  const [searchExperiencia, setSearchExperiencia] = React.useState('');
+
+  React.useEffect(() => {
+    (async () => {
+      const [f, e, x] = await Promise.all([
+        supabase.from('formatos').select('label').eq('ativo', true).order('ordem', { ascending: true }),
+        supabase.from('estilos').select('label').eq('ativo', true).order('ordem', { ascending: true }),
+        supabase.from('experiencias').select('label').eq('ativo', true).order('ordem', { ascending: true }),
+      ]);
+      setDbFormatos((f.data ?? []).map((d: { label: string }) => d.label));
+      setDbEstilos((e.data ?? []).map((d: { label: string }) => d.label));
+      setDbExperiencias((x.data ?? []).map((d: { label: string }) => d.label));
+      setLoading(false);
+    })().catch(() => setLoading(false));
+  }, []);
+
+  const filterItems = (items: string[], search: string) =>
+    search ? items.filter(i => i.toLowerCase().includes(search.toLowerCase())) : items;
+
+  const toggleMulti = (arr: string[], item: string, max: number): string[] | null => {
+    if (arr.includes(item)) return arr.filter(x => x !== item);
+    if (arr.length >= max) return null;
+    return [...arr, item];
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center gap-2 py-4">
+        <Loader2 size="0.875rem" className="text-zinc-400 animate-spin" />
+        <span className="text-zinc-400 text-xs">Carregando classificações...</span>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-3">
+      {/* Formato */}
+      <AccordionSection
+        title="Formato"
+        iconEmoji="🧱"
+        badge={formato || 'Obrigatório'}
+        badgeColor={formato ? 'text-[#FFD300]' : 'text-amber-500'}
+        borderColor="border-[#FFD300]/20"
+      >
+        <p className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest mb-2">
+          O que é / Onde acontece · selecione 1
+        </p>
+        <div className="relative mb-2">
+          <Search size="0.75rem" className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+          <input
+            value={searchFormato}
+            onChange={e => setSearchFormato(e.target.value)}
+            placeholder="Buscar formato..."
+            className="w-full pl-8 pr-3 py-2 bg-zinc-900/50 border border-white/5 rounded-xl text-xs text-white placeholder:text-zinc-700"
+          />
+        </div>
+        <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto no-scrollbar">
+          {filterItems(dbFormatos, searchFormato).map(fmt => (
+            <button
+              key={fmt}
+              type="button"
+              onClick={() => setFormato(formato === fmt ? '' : fmt)}
+              className={`px-3 py-2 rounded-xl text-[0.625rem] font-bold uppercase tracking-wider border transition-all active:scale-95 ${
+                formato === fmt
+                  ? 'bg-[#FFD300]/15 border-[#FFD300]/40 text-[#FFD300]'
+                  : 'bg-zinc-900/50 border-white/5 text-zinc-400'
+              }`}
+            >
+              {fmt}
+            </button>
+          ))}
+        </div>
+      </AccordionSection>
+
+      {/* Estilo */}
+      <AccordionSection
+        title="Estilo"
+        iconEmoji="🎵"
+        badge={estilos.length > 0 ? `${estilos.length}/5` : 'Obrigatório'}
+        badgeColor={estilos.length > 0 ? 'text-purple-400' : 'text-amber-500'}
+        borderColor="border-purple-500/20"
+      >
+        <p className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest mb-2">
+          Som / Vibe · min. 1, sem teto máximo
+        </p>
+        <div className="relative mb-2">
+          <Search size="0.75rem" className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+          <input
+            value={searchEstilo}
+            onChange={e => setSearchEstilo(e.target.value)}
+            placeholder="Buscar estilo..."
+            className="w-full pl-8 pr-3 py-2 bg-zinc-900/50 border border-white/5 rounded-xl text-xs text-white placeholder:text-zinc-700"
+          />
+        </div>
+        <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto no-scrollbar">
+          {filterItems(dbEstilos, searchEstilo).map(est => {
+            const selected = estilos.includes(est);
+            return (
+              <button
+                key={est}
+                type="button"
+                onClick={() => {
+                  const r = toggleMulti(estilos, est, 999);
+                  if (r) setEstilos(r);
+                }}
+                className={`px-3 py-2 rounded-xl text-[0.625rem] font-bold uppercase tracking-wider border transition-all active:scale-95 ${
+                  selected
+                    ? 'bg-purple-500/15 border-purple-500/40 text-purple-400'
+                    : 'bg-zinc-900/50 border-white/5 text-zinc-400'
+                }`}
+              >
+                {est}
+              </button>
+            );
+          })}
+        </div>
+      </AccordionSection>
+
+      {/* Experiência (opcional) */}
+      <AccordionSection
+        title="Experiência"
+        iconEmoji="✨"
+        badge={experiencias.length > 0 ? `${experiencias.length} sel.` : 'Opcional'}
+        badgeColor={experiencias.length > 0 ? 'text-emerald-400' : 'text-zinc-500'}
+        borderColor="border-emerald-500/20"
+      >
+        <p className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest mb-2">
+          Modelo / Diferencial · opcional, max. 5
+        </p>
+        <div className="relative mb-2">
+          <Search size="0.75rem" className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+          <input
+            value={searchExperiencia}
+            onChange={e => setSearchExperiencia(e.target.value)}
+            placeholder="Buscar experiência..."
+            className="w-full pl-8 pr-3 py-2 bg-zinc-900/50 border border-white/5 rounded-xl text-xs text-white placeholder:text-zinc-700"
+          />
+        </div>
+        <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto no-scrollbar">
+          {filterItems(dbExperiencias, searchExperiencia).map(exp => {
+            const selected = experiencias.includes(exp);
+            const limitReached = experiencias.length >= 5 && !selected;
+            return (
+              <button
+                key={exp}
+                type="button"
+                disabled={limitReached}
+                onClick={() => {
+                  const r = toggleMulti(experiencias, exp, 5);
+                  if (r) setExperiencias(r);
+                }}
+                className={`px-3 py-2 rounded-xl text-[0.625rem] font-bold uppercase tracking-wider border transition-all active:scale-95 ${
+                  selected
+                    ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-400'
+                    : limitReached
+                      ? 'bg-zinc-900/30 border-white/3 text-zinc-700 opacity-40 cursor-not-allowed'
+                      : 'bg-zinc-900/50 border-white/5 text-zinc-400'
+                }`}
+              >
+                {exp}
+              </button>
+            );
+          })}
+        </div>
+      </AccordionSection>
+    </div>
+  );
+};
 
 // ── Entry: CriarEventoView ──────────────────────────────────────────────────
 export const CriarEventoView: React.FC<{
@@ -147,34 +333,18 @@ export const CriarEventoView: React.FC<{
     else onBack();
   };
 
-  // ── Dinâmico por fluxo (4 combinações) ──
+  // ── Dinâmico por fluxo (4 combinações → 4 steps ou 3 steps) ──
   const isComSocio = tipoFluxo === 'COM_SOCIO';
   const buildSteps = (): { labels: string[]; titles: string[] } => {
-    if (vendaVanta && isComSocio)
+    if (vendaVanta)
       return {
-        labels: ['Evento', 'Ingressos', 'Listas', 'Equipe', 'Financeiro'],
-        titles: [
-          'Sobre o Evento',
-          'Ingressos e Cortesias',
-          'Listas de Convidados',
-          'Equipe e Sócio',
-          'Split Financeiro',
-        ],
+        labels: ['Essencial', 'Ingressos', 'Equipe e Listas', 'Revisar'],
+        titles: ['Essencial', 'Ingressos e Classificação', 'Equipe e Listas', 'Revisar e Publicar'],
       };
-    if (vendaVanta && !isComSocio)
-      return {
-        labels: ['Evento', 'Ingressos', 'Listas', 'Equipe'],
-        titles: ['Sobre o Evento', 'Ingressos e Cortesias', 'Listas de Convidados', 'Equipe'],
-      };
-    if (!vendaVanta && isComSocio)
-      return {
-        labels: ['Evento', 'Listas', 'Equipe', 'Financeiro'],
-        titles: ['Sobre o Evento', 'Listas de Convidados', 'Equipe e Sócio', 'Split Financeiro'],
-      };
-    // SEM VENDA + FESTA DA CASA
+    // SEM VENDA (COM_SOCIO ou FESTA_DA_CASA)
     return {
-      labels: ['Evento', 'Listas', 'Equipe'],
-      titles: ['Sobre o Evento', 'Listas de Convidados', 'Equipe'],
+      labels: ['Essencial', 'Equipe e Listas', 'Revisar'],
+      titles: ['Essencial', 'Equipe e Listas', 'Revisar e Publicar'],
     };
   };
   const { labels: STEP_LABELS, titles: stepTitles } = buildSteps();
@@ -223,7 +393,7 @@ export const CriarEventoView: React.FC<{
   };
 
   // ── Validações ──
-  const validarStep1 = (): boolean => {
+  const validarEssencial = (): boolean => {
     if (!foto) {
       setErro('Foto do evento é obrigatória.');
       return false;
@@ -244,6 +414,21 @@ export const CriarEventoView: React.FC<{
       setErro('Hora de encerramento é obrigatória.');
       return false;
     }
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+    const inicio = new Date(dataInicio + 'T00:00:00');
+    if (inicio < hoje) {
+      setErro('O evento deve ser criado para uma data futura.');
+      return false;
+    }
+    if (horaInicio === horaFim) {
+      setErro('Horário de início e encerramento não podem ser iguais.');
+      return false;
+    }
+    return true;
+  };
+
+  const validarClassificacao = (): boolean => {
     if (!formato) {
       setErro('Selecione um formato.');
       return false;
@@ -256,24 +441,21 @@ export const CriarEventoView: React.FC<{
       setErro('Máximo de 5 estilos.');
       return false;
     }
-    if (experiencias.length < 1) {
-      setErro('Selecione pelo menos 1 experiência.');
-      return false;
-    }
-    if (experiencias.length > 5) {
-      setErro('Máximo de 5 experiências.');
-      return false;
-    }
-    const hoje = new Date();
-    hoje.setHours(0, 0, 0, 0);
-    const inicio = new Date(dataInicio + 'T00:00:00');
-    if (inicio < hoje) {
-      setErro('O evento deve ser criado para uma data futura.');
-      return false;
-    }
-    if (horaInicio === horaFim) {
-      setErro('Horário de início e encerramento não podem ser iguais.');
-      return false;
+    return true;
+  };
+
+  const validarRevisar = (): boolean => {
+    if (isComSocio) {
+      const pS = parseInt(split.percentSocio) || 0;
+      const pP = parseInt(split.percentProdutor) || 0;
+      if (pS + pP !== 100) {
+        setErro('O split deve somar 100%.');
+        return false;
+      }
+      if (pS < 0 || pP < 0) {
+        setErro('Percentuais não podem ser negativos.');
+        return false;
+      }
     }
     return true;
   };
@@ -329,20 +511,6 @@ export const CriarEventoView: React.FC<{
   const validarStep4 = (): boolean => {
     if (tipoFluxo === 'COM_SOCIO' && !socio) {
       setErro('Selecione um sócio para o evento.');
-      return false;
-    }
-    return true;
-  };
-
-  const validarStep5 = (): boolean => {
-    const pS = parseInt(split.percentSocio) || 0;
-    const pP = parseInt(split.percentProdutor) || 0;
-    if (pS + pP !== 100) {
-      setErro('O split deve somar 100%.');
-      return false;
-    }
-    if (pS < 0 || pP < 0) {
-      setErro('Percentuais não podem ser negativos.');
       return false;
     }
     return true;
@@ -558,9 +726,10 @@ export const CriarEventoView: React.FC<{
   const currentLabel = STEP_LABELS[step - 1];
   const avancar = () => {
     setErro('');
-    if (currentLabel === 'Evento' && !validarStep1()) return;
+    if (currentLabel === 'Essencial' && !validarEssencial()) return;
     if (currentLabel === 'Ingressos') {
       if (!validarStep2()) return;
+      if (!validarClassificacao()) return;
       const cap = comunidade.capacidadeMax;
       if (cap && cap > 0) {
         const totalLotes = lotes.reduce(
@@ -581,7 +750,8 @@ export const CriarEventoView: React.FC<{
         }
       }
     }
-    if (currentLabel === 'Listas') {
+    if (currentLabel === 'Equipe e Listas') {
+      if (!validarStep4()) return;
       if (!validarStep3()) return;
       if (listasEnabled) {
         const cap = comunidade.capacidadeMax;
@@ -602,9 +772,8 @@ export const CriarEventoView: React.FC<{
         }
       }
     }
-    if (currentLabel === 'Equipe' && !validarStep4()) return;
-    if (step === TOTAL_STEPS) {
-      if (isComSocio && !validarStep5()) return;
+    if (currentLabel === 'Revisar') {
+      if (!validarRevisar()) return;
       handlePublicar();
       return;
     }
@@ -663,84 +832,54 @@ export const CriarEventoView: React.FC<{
 
   // ── Tela de sucesso ──
   if (publicado) {
+    const handleEnviarConvite = async () => {
+      try {
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
+        const token = session?.access_token ?? '';
+        const res = await supabase.functions.invoke('send-invite', {
+          body: {
+            nome: socio?.nome,
+            email: socio?.email,
+            masterNome: currentUserNome ?? 'Produtor',
+            assunto: `Convite VANTA — ${nome}`,
+            mensagem: `Você foi convidado(a) para ser sócio(a) do evento "${nome}".\n\nData: ${dataInicio} às ${horaInicio}\nLocal: ${comunidade.tipo_comunidade === 'PRODUTORA' ? localNome : comunidade.nome}\nSplit: ${split.percentSocio}% Sócio / ${split.percentProdutor}% Produtor\n\nAbra o app VANTA para aceitar ou recusar o convite.`,
+            tipo: 'broadcast',
+          },
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        });
+        if (res.error || res.data?.error) {
+          setErro(res.data?.error ?? res.error?.message ?? 'Falha ao enviar convite.');
+        } else {
+          setConviteEnviado(true);
+        }
+      } catch {
+        setErro('Erro ao enviar convite.');
+      }
+    };
+
+    const celebrationActions: { label: string; onClick: () => void; variant: 'primary' | 'secondary' }[] = [];
+    if (isComSocio && socio?.email && !conviteEnviado) {
+      celebrationActions.push({ label: 'Enviar convite por email', onClick: handleEnviarConvite, variant: 'primary' });
+    }
+    celebrationActions.push({
+      label: 'Voltar para a Comunidade',
+      onClick: onBack,
+      variant: conviteEnviado || !isComSocio ? 'primary' : 'secondary',
+    });
+
     return (
-      <div className="absolute inset-0 bg-[#0A0A0A] flex flex-col items-center justify-center p-10 gap-6">
-        <div className="w-20 h-20 rounded-full bg-zinc-900 border border-white/10 flex items-center justify-center">
-          <Clock size="2.25rem" className="text-zinc-400" />
-        </div>
-        <div className="text-center">
-          <h2 style={TYPOGRAPHY.screenTitle} className="text-2xl italic mb-2">
-            {nome}
-          </h2>
-          <p className="text-zinc-400 text-sm leading-relaxed">
-            {isComSocio ? (
-              <>
-                Convite enviado ao sócio.
-                <br />
-                Após aceite, o evento segue para aprovação do Master.
-              </>
-            ) : (
-              <>
-                Evento enviado para aprovação.
-                <br />
-                Aguarde a análise do Master VANTA.
-              </>
-            )}
-          </p>
-        </div>
-        <div className="w-full max-w-xs bg-zinc-900/60 border border-white/5 rounded-2xl p-4 text-center">
-          <p className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest mb-1">Status</p>
-          <p className="font-bold text-sm text-amber-400">{isComSocio ? 'Aguardando sócio' : 'Aguardando aprovação'}</p>
-        </div>
-        {isComSocio && socio?.email && (
-          <button
-            onClick={async () => {
-              try {
-                const {
-                  data: { session },
-                } = await supabase.auth.getSession();
-                const token = session?.access_token ?? '';
-                const res = await supabase.functions.invoke('send-invite', {
-                  body: {
-                    nome: socio.nome,
-                    email: socio.email,
-                    masterNome: currentUserNome ?? 'Produtor',
-                    assunto: `Convite VANTA — ${nome}`,
-                    mensagem: `Você foi convidado(a) para ser sócio(a) do evento "${nome}".\n\nData: ${dataInicio} às ${horaInicio}\nLocal: ${comunidade.tipo_comunidade === 'PRODUTORA' ? localNome : comunidade.nome}\nSplit: ${split.percentSocio}% Sócio / ${split.percentProdutor}% Produtor\n\nAbra o app VANTA para aceitar ou recusar o convite.`,
-                    tipo: 'broadcast',
-                  },
-                  headers: token ? { Authorization: `Bearer ${token}` } : {},
-                });
-                if (res.error || res.data?.error) {
-                  setErro(res.data?.error ?? res.error?.message ?? 'Falha ao enviar convite.');
-                } else {
-                  setConviteEnviado(true);
-                }
-              } catch {
-                setErro('Erro ao enviar convite.');
-              }
-            }}
-            disabled={conviteEnviado}
-            className={`w-full max-w-xs py-4 font-bold text-[0.625rem] uppercase tracking-[0.3em] rounded-2xl active:scale-[0.98] transition-all flex items-center justify-center gap-2 ${conviteEnviado ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-[#FFD300] text-black'}`}
-          >
-            {conviteEnviado ? (
-              <>
-                <Check size="0.875rem" /> Convite enviado!
-              </>
-            ) : (
-              <>
-                <Mail size="0.875rem" /> Enviar convite por email
-              </>
-            )}
-          </button>
-        )}
-        <button
-          onClick={onBack}
-          className="w-full max-w-xs py-4 bg-zinc-800 border border-white/10 text-zinc-300 font-bold text-[0.625rem] uppercase tracking-[0.3em] rounded-2xl active:scale-[0.98] transition-all"
-        >
-          Voltar para a Comunidade
-        </button>
-      </div>
+      <CelebrationScreen
+        title={nome}
+        subtitle={
+          isComSocio
+            ? 'Convite enviado ao sócio. Após aceite, o evento segue para aprovação do Master.'
+            : 'Evento enviado para aprovação. Aguarde a análise do Master VANTA.'
+        }
+        icon="clock"
+        actions={celebrationActions}
+      />
     );
   }
 
@@ -810,7 +949,8 @@ export const CriarEventoView: React.FC<{
 
       {/* Conteúdo */}
       <div ref={scrollRef} className="flex-1 overflow-y-auto no-scrollbar p-6 max-w-3xl mx-auto w-full">
-        {step === 1 && (
+        {/* ── Step Essencial ── */}
+        {currentLabel === 'Essencial' && (
           <Step1Evento
             foto={foto}
             setFoto={setFoto}
@@ -843,59 +983,182 @@ export const CriarEventoView: React.FC<{
             setLocalCidade={setLocalCidade}
             onCopiar={() => setCopiarOpen(true)}
             temEventosAnteriores={temEventosAnteriores}
+            showClassification={false}
           />
         )}
-        {STEP_LABELS[step - 1] === 'Ingressos' && (
-          <Step2Ingressos
-            lotes={lotes}
-            setLotes={setLotes}
-            cortesiaEnabled={cortesiaEnabled}
-            setCortesiaEnabled={setCortesiaEnabled}
-            cortesiaLimites={cortesiaLimites}
-            setCortesiaLimites={setCortesiaLimites}
-            varTipos={varTipos}
-            maisVantaEvento={maisVantaEvento}
-            setMaisVantaEvento={setMaisVantaEvento}
-            varsLista={varsLista}
-            comunidadeId={comunidade.id}
-          />
+
+        {/* ── Step Ingressos + Classificação ── */}
+        {currentLabel === 'Ingressos' && (
+          <>
+            <Step2Ingressos
+              lotes={lotes}
+              setLotes={setLotes}
+              cortesiaEnabled={cortesiaEnabled}
+              setCortesiaEnabled={setCortesiaEnabled}
+              cortesiaLimites={cortesiaLimites}
+              setCortesiaLimites={setCortesiaLimites}
+              varTipos={varTipos}
+              maisVantaEvento={maisVantaEvento}
+              setMaisVantaEvento={setMaisVantaEvento}
+              varsLista={varsLista}
+              comunidadeId={comunidade.id}
+            />
+
+            {/* ── Classificação (formato/estilo/experiência) ── */}
+            <div className="mt-6 space-y-3">
+              <p className="text-white text-[0.625rem] font-black uppercase tracking-widest">Classificação do Evento</p>
+              <p className="text-zinc-400 text-[0.625rem] leading-relaxed">
+                Formato e estilo obrigatórios. Experiência é opcional.
+              </p>
+              <ClassificacaoInline
+                formato={formato}
+                setFormato={setFormato}
+                estilos={estilos}
+                setEstilos={setEstilos}
+                experiencias={experiencias}
+                setExperiencias={setExperiencias}
+              />
+            </div>
+          </>
         )}
-        {STEP_LABELS[step - 1] === 'Listas' && (
-          <Step3Listas
-            listasEnabled={listasEnabled}
-            setListasEnabled={setListasEnabled}
-            varsLista={varsLista}
-            setVarsLista={setVarsLista}
-            horaInicio={horaInicio}
-            horaFim={horaFim}
-            lotes={lotes}
-          />
+
+        {/* ── Step Equipe e Listas (fundidos) ── */}
+        {currentLabel === 'Equipe e Listas' && (
+          <>
+            {isComSocio ? (
+              <Step4EquipeSocio
+                socio={socio}
+                setSocio={setSocio}
+                permissoes={permissoes}
+                setPermissoes={setPermissoes}
+                equipe={equipe}
+                setEquipe={setEquipe}
+                varsLista={varsLista}
+                listasEnabled={listasEnabled}
+              />
+            ) : (
+              <Step4EquipeCasa
+                gerente={gerente}
+                setGerente={setGerente}
+                gerentePermissoes={gerentePermissoes}
+                setGerentePermissoes={setGerentePermissoes}
+                equipe={equipe}
+                setEquipe={setEquipe}
+                varsLista={varsLista}
+                listasEnabled={listasEnabled}
+              />
+            )}
+
+            {/* Separador visual */}
+            <div className="my-6 border-t border-white/5" />
+            <p className="text-white text-[0.625rem] font-black uppercase tracking-widest mb-4">Listas de Convidados</p>
+
+            <Step3Listas
+              listasEnabled={listasEnabled}
+              setListasEnabled={setListasEnabled}
+              varsLista={varsLista}
+              setVarsLista={setVarsLista}
+              horaInicio={horaInicio}
+              horaFim={horaFim}
+              lotes={lotes}
+            />
+          </>
         )}
-        {STEP_LABELS[step - 1] === 'Equipe' && isComSocio && (
-          <Step4EquipeSocio
-            socio={socio}
-            setSocio={setSocio}
-            permissoes={permissoes}
-            setPermissoes={setPermissoes}
-            equipe={equipe}
-            setEquipe={setEquipe}
-            varsLista={varsLista}
-            listasEnabled={listasEnabled}
-          />
+
+        {/* ── Step Revisar + Publicar ── */}
+        {currentLabel === 'Revisar' && (
+          <div className="space-y-5">
+            {/* Mini preview card */}
+            <div className="rounded-2xl overflow-hidden border border-white/10 bg-zinc-900/60">
+              {foto && (
+                <img loading="lazy" src={foto} alt={nome} className="w-full aspect-[4/5] max-h-48 object-cover" />
+              )}
+              <div className="p-4 space-y-2">
+                <h3
+                  className="text-white font-bold text-lg italic truncate"
+                  style={{ fontFamily: "'Playfair Display SC', serif" }}
+                >
+                  {nome || 'Nome do evento'}
+                </h3>
+                <div className="flex items-center gap-2 text-zinc-400 text-[0.625rem]">
+                  <Calendar size="0.75rem" className="shrink-0" />
+                  <span>
+                    {dataInicio
+                      ? new Date(dataInicio + 'T00:00:00').toLocaleDateString('pt-BR', {
+                          day: '2-digit',
+                          month: 'long',
+                          year: 'numeric',
+                        })
+                      : '—'}
+                  </span>
+                  <span className="text-zinc-700">·</span>
+                  <span>
+                    {horaInicio || '—'} - {horaFim || '—'}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2 text-zinc-400 text-[0.625rem]">
+                  <MapPin size="0.75rem" className="shrink-0" />
+                  <span className="truncate">
+                    {comunidade.tipo_comunidade === 'PRODUTORA' ? localNome : comunidade.nome}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Resumo */}
+            <div className="space-y-2">
+              <p className="text-white text-[0.625rem] font-black uppercase tracking-widest">Resumo</p>
+              <div className="bg-zinc-900/40 border border-white/5 rounded-2xl p-4 space-y-2.5">
+                {vendaVanta && (
+                  <div className="flex items-center gap-3">
+                    <Ticket size="0.875rem" className="text-zinc-400 shrink-0" />
+                    <span className="text-zinc-300 text-xs">
+                      {lotes.length} lote{lotes.length !== 1 ? 's' : ''}
+                      <span className="text-zinc-600 mx-1.5">·</span>
+                      {lotes.reduce((s, l) => s + l.variacoes.length, 0)} variação(ões)
+                    </span>
+                  </div>
+                )}
+                <div className="flex items-center gap-3">
+                  <Users size="0.875rem" className="text-zinc-400 shrink-0" />
+                  <span className="text-zinc-300 text-xs">
+                    {equipe.length} membro{equipe.length !== 1 ? 's' : ''} na equipe
+                    {isComSocio && socio ? ` + sócio (${socio.nome})` : ''}
+                  </span>
+                </div>
+                {listasEnabled && varsLista.length > 0 && (
+                  <div className="flex items-center gap-3">
+                    <ListChecks size="0.875rem" className="text-zinc-400 shrink-0" />
+                    <span className="text-zinc-300 text-xs">
+                      {varsLista.length} regra{varsLista.length !== 1 ? 's' : ''} de lista
+                    </span>
+                  </div>
+                )}
+                {formato && (
+                  <div className="flex items-center gap-3 text-zinc-400">
+                    <span className="text-[0.625rem] shrink-0">🧱</span>
+                    <span className="text-zinc-300 text-xs truncate">{formato}</span>
+                    {estilos.length > 0 && (
+                      <>
+                        <span className="text-zinc-700">·</span>
+                        <span className="text-zinc-300 text-xs truncate">{estilos.join(', ')}</span>
+                      </>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Split financeiro (só COM_SOCIO) */}
+            {isComSocio && (
+              <div className="space-y-2">
+                <p className="text-white text-[0.625rem] font-black uppercase tracking-widest">Split Financeiro</p>
+                <Step5Financeiro split={split} setSplit={setSplit} socio={socio} />
+              </div>
+            )}
+          </div>
         )}
-        {STEP_LABELS[step - 1] === 'Equipe' && !isComSocio && (
-          <Step4EquipeCasa
-            gerente={gerente}
-            setGerente={setGerente}
-            gerentePermissoes={gerentePermissoes}
-            setGerentePermissoes={setGerentePermissoes}
-            equipe={equipe}
-            setEquipe={setEquipe}
-            varsLista={varsLista}
-            listasEnabled={listasEnabled}
-          />
-        )}
-        {STEP_LABELS[step - 1] === 'Financeiro' && <Step5Financeiro split={split} setSplit={setSplit} socio={socio} />}
+
         {erro && <p className="mt-4 text-red-400 text-[0.625rem] font-black uppercase tracking-widest">{erro}</p>}
       </div>
 
@@ -916,10 +1179,10 @@ export const CriarEventoView: React.FC<{
         >
           {isPublicando
             ? 'Publicando...'
-            : step === TOTAL_STEPS
+            : currentLabel === 'Revisar'
               ? tipoFluxo === 'COM_SOCIO'
                 ? 'Enviar Convite'
-                : 'Enviar para Aprovação'
+                : 'Publicar'
               : 'Próximo'}
         </button>
       </div>

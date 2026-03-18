@@ -23,6 +23,8 @@ export const Step2Localizacao: React.FC<{
   setEstado(v: string): void;
   coords: { lat: number; lng: number } | null;
   setCoords(v: { lat: number; lng: number } | null): void;
+  capacidade: string;
+  setCapacidade(v: string): void;
 }> = p => {
   const [buscando, setBuscando] = useState(false);
   const [cepOk, setCepOk] = useState(false);
@@ -143,6 +145,22 @@ export const Step2Localizacao: React.FC<{
             maxLength={2}
           />
         </div>
+      </div>
+
+      {/* Capacidade */}
+      <div className="pt-3 border-t border-white/5">
+        <label className={labelCls}>Capacidade Máxima do Local *</label>
+        <input
+          value={p.capacidade}
+          onChange={e => p.setCapacidade(e.target.value)}
+          type="number"
+          min="1"
+          placeholder="Ex: 500"
+          className={inputCls}
+        />
+        <p className="text-[0.625rem] text-zinc-700 mt-1.5 font-black uppercase tracking-widest leading-relaxed">
+          Limite de pessoas na casa. Vai alertar ao criar lotes ou listas de convidados acima deste valor.
+        </p>
       </div>
 
       {/* Coords info */}

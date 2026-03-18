@@ -51,9 +51,12 @@ interface Props {
   setLocalCidade(v: string): void;
   onCopiar: () => void;
   temEventosAnteriores: boolean;
+  /** Se false, esconde os acordeões de classificação (formato/estilo/experiência) */
+  showClassification?: boolean;
 }
 
-export const Step1Evento: React.FC<Props> = p => {
+export const Step1Evento: React.FC<Props> = props => {
+  const p = { ...props, showClassification: props.showClassification ?? true };
   const fotoRef = useRef<HTMLInputElement>(null);
   const [cropSrc, setCropSrc] = useState<string | null>(null);
   const [dbFormatos, setDbFormatos] = useState<string[]>([]);
@@ -200,246 +203,251 @@ export const Step1Evento: React.FC<Props> = p => {
         />
       </div>
 
-      {/* ── FORMATO (acordeao) ── */}
-      <div
-        className={`border rounded-xl transition-all overflow-hidden ${openSection === 'formato' ? 'border-[#FFD300]/20 bg-zinc-900/30' : 'border-white/5 bg-zinc-900/20'}`}
-      >
-        <button
-          type="button"
-          onClick={() => setOpenSection(openSection === 'formato' ? null : 'formato')}
-          className="w-full flex items-center justify-between px-4 py-3"
-        >
-          <div className="flex items-center gap-2 min-w-0">
-            <span className="text-[0.625rem]">🧱</span>
-            <span className="text-white text-xs font-bold">Formato</span>
-            {p.formato && openSection !== 'formato' && (
-              <span className="px-2 py-0.5 bg-[#FFD300]/15 border border-[#FFD300]/30 rounded-lg text-[#FFD300] text-[0.5625rem] font-bold truncate">
-                {p.formato}
-              </span>
-            )}
-            {!p.formato && openSection !== 'formato' && (
-              <span className="text-zinc-400 text-[0.5625rem]">Nenhum selecionado</span>
-            )}
-          </div>
-          <ChevronDown
-            size="0.875rem"
-            className={`text-zinc-400 shrink-0 transition-transform ${openSection === 'formato' ? 'rotate-180' : ''}`}
-          />
-        </button>
-        {openSection === 'formato' && (
-          <div className="px-4 pb-3 space-y-2">
-            <p className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest">
-              O que é / Onde acontece · selecione 1
-            </p>
-            {loading ? (
-              <div className="flex items-center gap-2 py-2">
-                <Loader2 size="0.875rem" className="text-zinc-400 animate-spin" />
-                <span className="text-zinc-400 text-xs">Carregando...</span>
-              </div>
-            ) : (
-              <>
-                <div className="relative">
-                  <Search size="0.75rem" className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
-                  <input
-                    value={searchFormato}
-                    onChange={e => setSearchFormato(e.target.value)}
-                    placeholder="Buscar formato..."
-                    className="w-full pl-8 pr-3 py-2 bg-zinc-900/50 border border-white/5 rounded-xl text-xs text-white placeholder:text-zinc-700"
-                  />
-                </div>
-                <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto no-scrollbar">
-                  {filterItems(dbFormatos, searchFormato).map(fmt => (
-                    <button
-                      key={fmt}
-                      type="button"
-                      onClick={() => p.setFormato(p.formato === fmt ? '' : fmt)}
-                      className={`px-3 py-2 rounded-xl text-[0.625rem] font-bold uppercase tracking-wider border transition-all active:scale-95 ${
-                        p.formato === fmt
-                          ? 'bg-[#FFD300]/15 border-[#FFD300]/40 text-[#FFD300]'
-                          : 'bg-zinc-900/50 border-white/5 text-zinc-400'
-                      }`}
-                    >
-                      {fmt}
-                    </button>
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
-        )}
-      </div>
-
-      {/* ── ESTILO (acordeao) ── */}
-      <div
-        className={`border rounded-xl transition-all overflow-hidden ${openSection === 'estilo' ? 'border-purple-500/20 bg-zinc-900/30' : 'border-white/5 bg-zinc-900/20'}`}
-      >
-        <button
-          type="button"
-          onClick={() => setOpenSection(openSection === 'estilo' ? null : 'estilo')}
-          className="w-full flex items-center justify-between px-4 py-3"
-        >
-          <div className="flex items-center gap-2 min-w-0 flex-1">
-            <span className="text-[0.625rem]">🎵</span>
-            <span className="text-white text-xs font-bold shrink-0">Estilo</span>
-            {p.estilos.length > 0 && openSection !== 'estilo' && (
-              <div className="flex gap-1 flex-wrap min-w-0">
-                {p.estilos.map(e => (
-                  <span
-                    key={e}
-                    className="px-1.5 py-0.5 bg-purple-500/15 border border-purple-500/30 rounded text-purple-400 text-[0.625rem] font-bold truncate"
-                  >
-                    {e}
-                  </span>
-                ))}
-              </div>
-            )}
-            {p.estilos.length === 0 && openSection !== 'estilo' && (
-              <span className="text-zinc-400 text-[0.5625rem]">Nenhum selecionado</span>
-            )}
-          </div>
-          <ChevronDown
-            size="0.875rem"
-            className={`text-zinc-400 shrink-0 transition-transform ${openSection === 'estilo' ? 'rotate-180' : ''}`}
-          />
-        </button>
-        {openSection === 'estilo' && (
-          <div className="px-4 pb-3 space-y-2">
-            <p className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest">
-              Som / Vibe · min. 1, max. 5
-            </p>
-            <p
-              className={`text-[0.625rem] font-black uppercase tracking-widest ${p.estilos.length < 1 ? 'text-amber-500' : p.estilos.length >= 5 ? 'text-blue-400' : 'text-emerald-500'}`}
+      {/* ── CLASSIFICAÇÃO (formato/estilo/experiência) ── */}
+      {p.showClassification && (
+        <>
+          {/* ── FORMATO (acordeao) ── */}
+          <div
+            className={`border rounded-xl transition-all overflow-hidden ${openSection === 'formato' ? 'border-[#FFD300]/20 bg-zinc-900/30' : 'border-white/5 bg-zinc-900/20'}`}
+          >
+            <button
+              type="button"
+              onClick={() => setOpenSection(openSection === 'formato' ? null : 'formato')}
+              className="w-full flex items-center justify-between px-4 py-3"
             >
-              {p.estilos.length}/5 selecionados
-            </p>
-            {!loading && (
-              <>
-                <div className="relative">
-                  <Search size="0.75rem" className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
-                  <input
-                    value={searchEstilo}
-                    onChange={e => setSearchEstilo(e.target.value)}
-                    placeholder="Buscar estilo..."
-                    className="w-full pl-8 pr-3 py-2 bg-zinc-900/50 border border-white/5 rounded-xl text-xs text-white placeholder:text-zinc-700"
-                  />
-                </div>
-                <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto no-scrollbar">
-                  {filterItems(dbEstilos, searchEstilo).map(est => {
-                    const selected = p.estilos.includes(est);
-                    const limitReached = p.estilos.length >= 5 && !selected;
-                    return (
-                      <button
-                        key={est}
-                        type="button"
-                        disabled={limitReached}
-                        onClick={() => {
-                          const r = toggleMulti(p.estilos, est, 5);
-                          if (r) p.setEstilos(r);
-                        }}
-                        className={`px-3 py-2 rounded-xl text-[0.625rem] font-bold uppercase tracking-wider border transition-all active:scale-95 ${
-                          selected
-                            ? 'bg-purple-500/15 border-purple-500/40 text-purple-400'
-                            : limitReached
-                              ? 'bg-zinc-900/30 border-white/3 text-zinc-700 opacity-40 cursor-not-allowed'
-                              : 'bg-zinc-900/50 border-white/5 text-zinc-400'
-                        }`}
-                      >
-                        {est}
-                      </button>
-                    );
-                  })}
-                </div>
-              </>
-            )}
-          </div>
-        )}
-      </div>
-
-      {/* ── EXPERIENCIA (acordeao) ── */}
-      <div
-        className={`border rounded-xl transition-all overflow-hidden ${openSection === 'experiencia' ? 'border-emerald-500/20 bg-zinc-900/30' : 'border-white/5 bg-zinc-900/20'}`}
-      >
-        <button
-          type="button"
-          onClick={() => setOpenSection(openSection === 'experiencia' ? null : 'experiencia')}
-          className="w-full flex items-center justify-between px-4 py-3"
-        >
-          <div className="flex items-center gap-2 min-w-0 flex-1">
-            <span className="text-[0.625rem]">✨</span>
-            <span className="text-white text-xs font-bold shrink-0">Experiencia</span>
-            {p.experiencias.length > 0 && openSection !== 'experiencia' && (
-              <div className="flex gap-1 flex-wrap min-w-0">
-                {p.experiencias.map(e => (
-                  <span
-                    key={e}
-                    className="px-1.5 py-0.5 bg-emerald-500/15 border border-emerald-500/30 rounded text-emerald-400 text-[0.625rem] font-bold truncate"
-                  >
-                    {e}
+              <div className="flex items-center gap-2 min-w-0">
+                <span className="text-[0.625rem]">🧱</span>
+                <span className="text-white text-xs font-bold">Formato</span>
+                {p.formato && openSection !== 'formato' && (
+                  <span className="px-2 py-0.5 bg-[#FFD300]/15 border border-[#FFD300]/30 rounded-lg text-[#FFD300] text-[0.5625rem] font-bold truncate">
+                    {p.formato}
                   </span>
-                ))}
+                )}
+                {!p.formato && openSection !== 'formato' && (
+                  <span className="text-zinc-400 text-[0.5625rem]">Nenhum selecionado</span>
+                )}
+              </div>
+              <ChevronDown
+                size="0.875rem"
+                className={`text-zinc-400 shrink-0 transition-transform ${openSection === 'formato' ? 'rotate-180' : ''}`}
+              />
+            </button>
+            {openSection === 'formato' && (
+              <div className="px-4 pb-3 space-y-2">
+                <p className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest">
+                  O que é / Onde acontece · selecione 1
+                </p>
+                {loading ? (
+                  <div className="flex items-center gap-2 py-2">
+                    <Loader2 size="0.875rem" className="text-zinc-400 animate-spin" />
+                    <span className="text-zinc-400 text-xs">Carregando...</span>
+                  </div>
+                ) : (
+                  <>
+                    <div className="relative">
+                      <Search size="0.75rem" className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+                      <input
+                        value={searchFormato}
+                        onChange={e => setSearchFormato(e.target.value)}
+                        placeholder="Buscar formato..."
+                        className="w-full pl-8 pr-3 py-2 bg-zinc-900/50 border border-white/5 rounded-xl text-xs text-white placeholder:text-zinc-700"
+                      />
+                    </div>
+                    <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto no-scrollbar">
+                      {filterItems(dbFormatos, searchFormato).map(fmt => (
+                        <button
+                          key={fmt}
+                          type="button"
+                          onClick={() => p.setFormato(p.formato === fmt ? '' : fmt)}
+                          className={`px-3 py-2 rounded-xl text-[0.625rem] font-bold uppercase tracking-wider border transition-all active:scale-95 ${
+                            p.formato === fmt
+                              ? 'bg-[#FFD300]/15 border-[#FFD300]/40 text-[#FFD300]'
+                              : 'bg-zinc-900/50 border-white/5 text-zinc-400'
+                          }`}
+                        >
+                          {fmt}
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                )}
               </div>
             )}
-            {p.experiencias.length === 0 && openSection !== 'experiencia' && (
-              <span className="text-zinc-400 text-[0.5625rem]">Nenhum selecionado</span>
-            )}
           </div>
-          <ChevronDown
-            size="0.875rem"
-            className={`text-zinc-400 shrink-0 transition-transform ${openSection === 'experiencia' ? 'rotate-180' : ''}`}
-          />
-        </button>
-        {openSection === 'experiencia' && (
-          <div className="px-4 pb-3 space-y-2">
-            <p className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest">
-              Modelo / Diferencial · min. 1, max. 5
-            </p>
-            <p
-              className={`text-[0.625rem] font-black uppercase tracking-widest ${p.experiencias.length < 1 ? 'text-amber-500' : p.experiencias.length >= 5 ? 'text-blue-400' : 'text-emerald-500'}`}
+
+          {/* ── ESTILO (acordeao) ── */}
+          <div
+            className={`border rounded-xl transition-all overflow-hidden ${openSection === 'estilo' ? 'border-purple-500/20 bg-zinc-900/30' : 'border-white/5 bg-zinc-900/20'}`}
+          >
+            <button
+              type="button"
+              onClick={() => setOpenSection(openSection === 'estilo' ? null : 'estilo')}
+              className="w-full flex items-center justify-between px-4 py-3"
             >
-              {p.experiencias.length}/5 selecionadas
-            </p>
-            {!loading && (
-              <>
-                <div className="relative">
-                  <Search size="0.75rem" className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
-                  <input
-                    value={searchExperiencia}
-                    onChange={e => setSearchExperiencia(e.target.value)}
-                    placeholder="Buscar experiencia..."
-                    className="w-full pl-8 pr-3 py-2 bg-zinc-900/50 border border-white/5 rounded-xl text-xs text-white placeholder:text-zinc-700"
-                  />
-                </div>
-                <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto no-scrollbar">
-                  {filterItems(dbExperiencias, searchExperiencia).map(exp => {
-                    const selected = p.experiencias.includes(exp);
-                    const limitReached = p.experiencias.length >= 5 && !selected;
-                    return (
-                      <button
-                        key={exp}
-                        type="button"
-                        disabled={limitReached}
-                        onClick={() => {
-                          const r = toggleMulti(p.experiencias, exp, 5);
-                          if (r) p.setExperiencias(r);
-                        }}
-                        className={`px-3 py-2 rounded-xl text-[0.625rem] font-bold uppercase tracking-wider border transition-all active:scale-95 ${
-                          selected
-                            ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-400'
-                            : limitReached
-                              ? 'bg-zinc-900/30 border-white/3 text-zinc-700 opacity-40 cursor-not-allowed'
-                              : 'bg-zinc-900/50 border-white/5 text-zinc-400'
-                        }`}
+              <div className="flex items-center gap-2 min-w-0 flex-1">
+                <span className="text-[0.625rem]">🎵</span>
+                <span className="text-white text-xs font-bold shrink-0">Estilo</span>
+                {p.estilos.length > 0 && openSection !== 'estilo' && (
+                  <div className="flex gap-1 flex-wrap min-w-0">
+                    {p.estilos.map(e => (
+                      <span
+                        key={e}
+                        className="px-1.5 py-0.5 bg-purple-500/15 border border-purple-500/30 rounded text-purple-400 text-[0.625rem] font-bold truncate"
                       >
-                        {exp}
-                      </button>
-                    );
-                  })}
-                </div>
-              </>
+                        {e}
+                      </span>
+                    ))}
+                  </div>
+                )}
+                {p.estilos.length === 0 && openSection !== 'estilo' && (
+                  <span className="text-zinc-400 text-[0.5625rem]">Nenhum selecionado</span>
+                )}
+              </div>
+              <ChevronDown
+                size="0.875rem"
+                className={`text-zinc-400 shrink-0 transition-transform ${openSection === 'estilo' ? 'rotate-180' : ''}`}
+              />
+            </button>
+            {openSection === 'estilo' && (
+              <div className="px-4 pb-3 space-y-2">
+                <p className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest">
+                  Som / Vibe · min. 1, max. 5
+                </p>
+                <p
+                  className={`text-[0.625rem] font-black uppercase tracking-widest ${p.estilos.length < 1 ? 'text-amber-500' : p.estilos.length >= 5 ? 'text-blue-400' : 'text-emerald-500'}`}
+                >
+                  {p.estilos.length}/5 selecionados
+                </p>
+                {!loading && (
+                  <>
+                    <div className="relative">
+                      <Search size="0.75rem" className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+                      <input
+                        value={searchEstilo}
+                        onChange={e => setSearchEstilo(e.target.value)}
+                        placeholder="Buscar estilo..."
+                        className="w-full pl-8 pr-3 py-2 bg-zinc-900/50 border border-white/5 rounded-xl text-xs text-white placeholder:text-zinc-700"
+                      />
+                    </div>
+                    <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto no-scrollbar">
+                      {filterItems(dbEstilos, searchEstilo).map(est => {
+                        const selected = p.estilos.includes(est);
+                        const limitReached = p.estilos.length >= 5 && !selected;
+                        return (
+                          <button
+                            key={est}
+                            type="button"
+                            disabled={limitReached}
+                            onClick={() => {
+                              const r = toggleMulti(p.estilos, est, 5);
+                              if (r) p.setEstilos(r);
+                            }}
+                            className={`px-3 py-2 rounded-xl text-[0.625rem] font-bold uppercase tracking-wider border transition-all active:scale-95 ${
+                              selected
+                                ? 'bg-purple-500/15 border-purple-500/40 text-purple-400'
+                                : limitReached
+                                  ? 'bg-zinc-900/30 border-white/3 text-zinc-700 opacity-40 cursor-not-allowed'
+                                  : 'bg-zinc-900/50 border-white/5 text-zinc-400'
+                            }`}
+                          >
+                            {est}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </>
+                )}
+              </div>
             )}
           </div>
-        )}
-      </div>
+
+          {/* ── EXPERIENCIA (acordeao) ── */}
+          <div
+            className={`border rounded-xl transition-all overflow-hidden ${openSection === 'experiencia' ? 'border-emerald-500/20 bg-zinc-900/30' : 'border-white/5 bg-zinc-900/20'}`}
+          >
+            <button
+              type="button"
+              onClick={() => setOpenSection(openSection === 'experiencia' ? null : 'experiencia')}
+              className="w-full flex items-center justify-between px-4 py-3"
+            >
+              <div className="flex items-center gap-2 min-w-0 flex-1">
+                <span className="text-[0.625rem]">✨</span>
+                <span className="text-white text-xs font-bold shrink-0">Experiencia</span>
+                {p.experiencias.length > 0 && openSection !== 'experiencia' && (
+                  <div className="flex gap-1 flex-wrap min-w-0">
+                    {p.experiencias.map(e => (
+                      <span
+                        key={e}
+                        className="px-1.5 py-0.5 bg-emerald-500/15 border border-emerald-500/30 rounded text-emerald-400 text-[0.625rem] font-bold truncate"
+                      >
+                        {e}
+                      </span>
+                    ))}
+                  </div>
+                )}
+                {p.experiencias.length === 0 && openSection !== 'experiencia' && (
+                  <span className="text-zinc-400 text-[0.5625rem]">Nenhum selecionado</span>
+                )}
+              </div>
+              <ChevronDown
+                size="0.875rem"
+                className={`text-zinc-400 shrink-0 transition-transform ${openSection === 'experiencia' ? 'rotate-180' : ''}`}
+              />
+            </button>
+            {openSection === 'experiencia' && (
+              <div className="px-4 pb-3 space-y-2">
+                <p className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest">
+                  Modelo / Diferencial · min. 1, max. 5
+                </p>
+                <p
+                  className={`text-[0.625rem] font-black uppercase tracking-widest ${p.experiencias.length < 1 ? 'text-amber-500' : p.experiencias.length >= 5 ? 'text-blue-400' : 'text-emerald-500'}`}
+                >
+                  {p.experiencias.length}/5 selecionadas
+                </p>
+                {!loading && (
+                  <>
+                    <div className="relative">
+                      <Search size="0.75rem" className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+                      <input
+                        value={searchExperiencia}
+                        onChange={e => setSearchExperiencia(e.target.value)}
+                        placeholder="Buscar experiencia..."
+                        className="w-full pl-8 pr-3 py-2 bg-zinc-900/50 border border-white/5 rounded-xl text-xs text-white placeholder:text-zinc-700"
+                      />
+                    </div>
+                    <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto no-scrollbar">
+                      {filterItems(dbExperiencias, searchExperiencia).map(exp => {
+                        const selected = p.experiencias.includes(exp);
+                        const limitReached = p.experiencias.length >= 5 && !selected;
+                        return (
+                          <button
+                            key={exp}
+                            type="button"
+                            disabled={limitReached}
+                            onClick={() => {
+                              const r = toggleMulti(p.experiencias, exp, 5);
+                              if (r) p.setExperiencias(r);
+                            }}
+                            className={`px-3 py-2 rounded-xl text-[0.625rem] font-bold uppercase tracking-wider border transition-all active:scale-95 ${
+                              selected
+                                ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-400'
+                                : limitReached
+                                  ? 'bg-zinc-900/30 border-white/3 text-zinc-700 opacity-40 cursor-not-allowed'
+                                  : 'bg-zinc-900/50 border-white/5 text-zinc-400'
+                            }`}
+                          >
+                            {exp}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
+        </>
+      )}
 
       <div className="space-y-3">
         <label className={labelCls}>Data do Evento *</label>

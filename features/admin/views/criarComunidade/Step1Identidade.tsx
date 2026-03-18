@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
-import type { HorarioSemanal } from '../../../../types';
-import { HorarioFuncionamentoEditor } from '../../../../components/HorarioFuncionamentoEditor';
-import { validarDigitoCnpj, formatarCnpj } from '../../../../utils/cnpjValidator';
+import React, { useRef, useState } from 'react';
+import { Upload, Camera } from 'lucide-react';
+import { ImageCropModal } from '../../../../components/ImageCropModal';
 
 const inputCls =
   'w-full bg-zinc-900/60 border border-white/5 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-[#FFD300]/30 placeholder-zinc-700';
@@ -12,267 +11,153 @@ export const Step1Identidade: React.FC<{
   setNome(v: string): void;
   bio: string;
   setBio(v: string): void;
-  capacidade: string;
-  setCapacidade(v: string): void;
-  horarios: HorarioSemanal[];
-  setHorarios(h: HorarioSemanal[]): void;
-  taxaVantaStr: string;
-  setTaxaVantaStr(v: string): void;
-  cnpj: string;
-  setCnpj(v: string): void;
-  razaoSocial: string;
-  setRazaoSocial(v: string): void;
-  telefone: string;
-  setTelefone(v: string): void;
-  taxaProcStr: string;
-  setTaxaProcStr(v: string): void;
-  taxaPortaStr: string;
-  setTaxaPortaStr(v: string): void;
-  taxaMinimaStr: string;
-  setTaxaMinimaStr(v: string): void;
-  cotaNomesStr: string;
-  setCotaNomesStr(v: string): void;
-  taxaNomeExcStr: string;
-  setTaxaNomeExcStr(v: string): void;
-  cotaCortesiasStr: string;
-  setCotaCortesiasStr(v: string): void;
-  taxaCortExcStr: string;
-  setTaxaCortExcStr(v: string): void;
-}> = ({
-  nome,
-  setNome,
-  bio,
-  setBio,
-  capacidade,
-  setCapacidade,
-  horarios,
-  setHorarios,
-  taxaVantaStr,
-  setTaxaVantaStr,
-  cnpj,
-  setCnpj,
-  razaoSocial,
-  setRazaoSocial,
-  telefone,
-  setTelefone,
-  taxaProcStr,
-  setTaxaProcStr,
-  taxaPortaStr,
-  setTaxaPortaStr,
-  taxaMinimaStr,
-  setTaxaMinimaStr,
-  cotaNomesStr,
-  setCotaNomesStr,
-  taxaNomeExcStr,
-  setTaxaNomeExcStr,
-  cotaCortesiasStr,
-  setCotaCortesiasStr,
-  taxaCortExcStr,
-  setTaxaCortExcStr,
-}) => (
-  <div className="space-y-5">
-    <div>
-      <label className={labelCls}>Nome da Comunidade *</label>
-      <input
-        value={nome}
-        onChange={e => setNome(e.target.value)}
-        placeholder="Ex: Mansão no Joá"
-        className={inputCls}
-      />
-    </div>
-    <div>
-      <label className={labelCls}>Bio / Descrição *</label>
-      <textarea
-        value={bio}
-        onChange={e => setBio(e.target.value)}
-        placeholder="Descreva o local, atmosfera e proposta da comunidade..."
-        rows={4}
-        className={inputCls + ' resize-none leading-relaxed'}
-      />
-    </div>
-    <div>
-      <label className={labelCls}>Capacidade Máxima do Local *</label>
-      <input
-        value={capacidade}
-        onChange={e => setCapacidade(e.target.value)}
-        type="number"
-        min="1"
-        placeholder="Ex: 500"
-        className={inputCls}
-      />
-      <p className="text-[0.625rem] text-zinc-700 mt-1.5 font-black uppercase tracking-widest leading-relaxed">
-        Limite de pessoas na casa. Vai alertar ao criar lotes ou listas de convidados acima deste valor.
-      </p>
-    </div>
+  fotoPerfil: string;
+  setFotoPerfil(v: string): void;
+  fotoCapa: string;
+  setFotoCapa(v: string): void;
+}> = ({ nome, setNome, bio, setBio, fotoPerfil, setFotoPerfil, fotoCapa, setFotoCapa }) => {
+  const perfilRef = useRef<HTMLInputElement>(null);
+  const capaRef = useRef<HTMLInputElement>(null);
+  const [cropSrc, setCropSrc] = useState<string | null>(null);
+  const [cropTarget, setCropTarget] = useState<'perfil' | 'capa' | null>(null);
 
-    {/* Dados Jurídicos */}
-    <div className="pt-3 border-t border-white/5 space-y-5">
+  const pickImg = (ref: React.RefObject<HTMLInputElement>, target: 'perfil' | 'capa') => {
+    const file = ref.current?.files?.[0];
+    if (!file) return;
+    const MAX_FILE_SIZE = 5 * 1024 * 1024;
+    if (file.size > MAX_FILE_SIZE) {
+      alert('A imagem deve ter no máximo 5MB');
+      if (ref.current) ref.current.value = '';
+      return;
+    }
+    const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      alert('Formato aceito: JPEG, PNG ou WebP');
+      if (ref.current) ref.current.value = '';
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = e => {
+      const src = e.target?.result as string;
+      if (src) {
+        setCropSrc(src);
+        setCropTarget(target);
+      }
+    };
+    reader.readAsDataURL(file);
+    if (ref.current) ref.current.value = '';
+  };
+
+  const handleCropConfirm = (dataUrl: string) => {
+    if (cropTarget === 'perfil') setFotoPerfil(dataUrl);
+    if (cropTarget === 'capa') setFotoCapa(dataUrl);
+    setCropSrc(null);
+    setCropTarget(null);
+  };
+
+  return (
+    <div className="space-y-5">
       <div>
-        <label className={labelCls}>Razão Social</label>
+        <label className={labelCls}>Nome da Comunidade *</label>
         <input
-          value={razaoSocial}
-          onChange={e => setRazaoSocial(e.target.value)}
-          placeholder="Ex: Mansão Eventos LTDA"
+          value={nome}
+          onChange={e => setNome(e.target.value)}
+          placeholder="Ex: Mansão no Joá"
           className={inputCls}
         />
       </div>
       <div>
-        <label className={labelCls}>CNPJ</label>
-        <input
-          value={cnpj}
-          onChange={e => {
-            const raw = e.target.value.replace(/\D/g, '').slice(0, 14);
-            setCnpj(raw.length === 14 ? formatarCnpj(raw) : e.target.value);
+        <label className={labelCls}>Bio / Descrição *</label>
+        <textarea
+          value={bio}
+          onChange={e => setBio(e.target.value)}
+          placeholder="Descreva o local, atmosfera e proposta da comunidade..."
+          rows={4}
+          className={inputCls + ' resize-none leading-relaxed'}
+        />
+      </div>
+
+      {/* Fotos */}
+      <div>
+        <label className={labelCls}>Imagens</label>
+        <div className="flex gap-3 items-end">
+          {/* Foto de perfil */}
+          <div className="flex flex-col items-center gap-1.5 shrink-0">
+            <input
+              ref={perfilRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={() => pickImg(perfilRef, 'perfil')}
+            />
+            <button
+              type="button"
+              onClick={() => perfilRef.current?.click()}
+              className="w-20 h-20 rounded-2xl overflow-hidden border-2 border-dashed border-white/15 relative group active:scale-95 transition-all bg-zinc-900"
+            >
+              {fotoPerfil ? (
+                <img loading="lazy" src={fotoPerfil} alt="perfil" className="w-full h-full object-cover" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <Camera size="1.125rem" className="text-zinc-400" />
+                </div>
+              )}
+              <div className="absolute inset-0 bg-black/50 opacity-0 group-active:opacity-100 flex items-center justify-center">
+                <Upload size="0.875rem" className="text-white" />
+              </div>
+            </button>
+            <p className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest">Perfil *</p>
+            <p className="text-[0.625rem] text-zinc-700 font-black uppercase tracking-widest">Mín. 400x400</p>
+          </div>
+
+          {/* Foto de capa */}
+          <div className="flex-1 flex flex-col gap-1.5">
+            <input
+              ref={capaRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={() => pickImg(capaRef, 'capa')}
+            />
+            <button
+              type="button"
+              onClick={() => capaRef.current?.click()}
+              className="w-full h-20 rounded-2xl overflow-hidden border-2 border-dashed border-white/15 relative group active:scale-95 transition-all bg-zinc-900"
+            >
+              {fotoCapa ? (
+                <img loading="lazy" src={fotoCapa} alt="capa" className="w-full h-full object-cover" />
+              ) : (
+                <div className="w-full h-full flex flex-col items-center justify-center gap-1">
+                  <Camera size="1.125rem" className="text-zinc-400" />
+                  <p className="text-zinc-700 text-[0.625rem] font-black uppercase tracking-widest">Capa</p>
+                </div>
+              )}
+              <div className="absolute inset-0 bg-black/50 opacity-0 group-active:opacity-100 flex items-center justify-center">
+                <Upload size="0.875rem" className="text-white" />
+              </div>
+            </button>
+            <p className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest">Capa *</p>
+            <p className="text-[0.625rem] text-zinc-700 font-black uppercase tracking-widest">Mín. 1200x400</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Editor de crop */}
+      {cropSrc && cropTarget && (
+        <ImageCropModal
+          src={cropSrc}
+          aspect={cropTarget === 'perfil' ? 1 : 3}
+          minWidth={cropTarget === 'perfil' ? 400 : 1200}
+          minHeight={cropTarget === 'perfil' ? 400 : 400}
+          maxPx={cropTarget === 'perfil' ? 400 : 1200}
+          label={cropTarget === 'perfil' ? 'Foto de Perfil' : 'Foto de Capa'}
+          onConfirm={handleCropConfirm}
+          onClose={() => {
+            setCropSrc(null);
+            setCropTarget(null);
           }}
-          placeholder="Ex: 00.000.000/0001-00"
-          className={inputCls}
         />
-        {cnpj && cnpj.replace(/\D/g, '').length === 14 && !validarDigitoCnpj(cnpj) && (
-          <p className="text-red-400 text-[0.625rem] mt-1">CNPJ inválido — verifique os dígitos</p>
-        )}
-      </div>
-      <div>
-        <label className={labelCls}>Telefone / Contato</label>
-        <input
-          value={telefone}
-          onChange={e => setTelefone(e.target.value)}
-          placeholder="Ex: (21) 99999-9999"
-          className={inputCls}
-        />
-      </div>
+      )}
     </div>
-
-    {/* Horário de Funcionamento */}
-    <div className="pt-3 border-t border-white/5">
-      <HorarioFuncionamentoEditor horarios={horarios} onChange={setHorarios} />
-    </div>
-
-    {/* Taxa Vanta — lucro da plataforma por ingresso vendido */}
-    <div className="pt-3 border-t border-white/5 space-y-1.5">
-      <label className={labelCls}>Taxa Vanta (%) — Seu lucro por ingresso *</label>
-      <p className="text-[0.625rem] text-zinc-700 font-black uppercase tracking-widest leading-relaxed mb-2">
-        Percentual que o VANTA recebe sobre cada ingresso vendido nesta comunidade. Esse valor é descontado do repasse
-        ao dono da comunidade. Ex: 10% = R$10 a cada R$100 vendidos.
-      </p>
-      <div className="relative">
-        <input
-          type="number"
-          min="0"
-          max="100"
-          step="0.1"
-          value={taxaVantaStr}
-          onChange={e => setTaxaVantaStr(e.target.value)}
-          placeholder="Ex: 10.0"
-          className={inputCls + ' pr-10'}
-        />
-        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 text-sm font-bold">%</span>
-      </div>
-      <p className="text-[0.625rem] text-zinc-700 font-black uppercase tracking-widest leading-relaxed">
-        O custo do gateway de pagamento (ex: cartão, PIX) é cobrado separadamente e sempre pago pelo dono da comunidade.
-      </p>
-    </div>
-
-    {/* Taxas Avançadas */}
-    <div className="pt-3 border-t border-white/5 space-y-2">
-      <label className={labelCls}>Taxas Avançadas (Padrão para eventos)</label>
-      <p className="text-[0.625rem] text-zinc-700 font-black uppercase tracking-widest leading-relaxed mb-2">
-        Valores padrão para novos eventos desta comunidade. O produtor pode propor alterações na criação do evento.
-      </p>
-      <div className="grid grid-cols-2 gap-3">
-        <div className="space-y-1">
-          <label className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest">
-            Taxa Processamento (%)
-          </label>
-          <input
-            type="number"
-            min="0"
-            max="100"
-            step="0.1"
-            value={taxaProcStr}
-            onChange={e => setTaxaProcStr(e.target.value)}
-            placeholder="2.5"
-            className={inputCls}
-          />
-        </div>
-        <div className="space-y-1">
-          <label className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest">Taxa Porta (%)</label>
-          <input
-            type="number"
-            min="0"
-            max="100"
-            step="0.1"
-            value={taxaPortaStr}
-            onChange={e => setTaxaPortaStr(e.target.value)}
-            placeholder="= Taxa App"
-            className={inputCls}
-          />
-        </div>
-        <div className="space-y-1">
-          <label className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest">Taxa Mínima (R$)</label>
-          <input
-            type="number"
-            min="0"
-            step="0.01"
-            value={taxaMinimaStr}
-            onChange={e => setTaxaMinimaStr(e.target.value)}
-            placeholder="2.00"
-            className={inputCls}
-          />
-        </div>
-        <div className="space-y-1">
-          <label className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest">Cota Nomes Lista</label>
-          <input
-            type="number"
-            min="0"
-            step="1"
-            value={cotaNomesStr}
-            onChange={e => setCotaNomesStr(e.target.value)}
-            placeholder="500"
-            className={inputCls}
-          />
-        </div>
-        <div className="space-y-1">
-          <label className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest">
-            R$/Nome Excedente
-          </label>
-          <input
-            type="number"
-            min="0"
-            step="0.01"
-            value={taxaNomeExcStr}
-            onChange={e => setTaxaNomeExcStr(e.target.value)}
-            placeholder="0.50"
-            className={inputCls}
-          />
-        </div>
-        <div className="space-y-1">
-          <label className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest">Cota Cortesias</label>
-          <input
-            type="number"
-            min="0"
-            step="1"
-            value={cotaCortesiasStr}
-            onChange={e => setCotaCortesiasStr(e.target.value)}
-            placeholder="50"
-            className={inputCls}
-          />
-        </div>
-        <div className="col-span-2 space-y-1">
-          <label className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest">
-            % Cortesia Excedente (sobre valor face)
-          </label>
-          <input
-            type="number"
-            min="0"
-            max="100"
-            step="0.1"
-            value={taxaCortExcStr}
-            onChange={e => setTaxaCortExcStr(e.target.value)}
-            placeholder="5.0"
-            className={inputCls}
-          />
-        </div>
-      </div>
-    </div>
-  </div>
-);
+  );
+};

@@ -52,23 +52,16 @@ type: project
 5. Labels 7-8px → 10px mínimo
 6. Scroll to error nas validações
 
-### Fase 2 — Componentes Visuais (Design System)
-7. FormWizard (progress, steps, draft)
-8. InputField (validação inline)
-9. TextAreaField (contador)
-10. UploadArea (crop + validação tamanho + camera mobile)
-11. SectionTitle (Playfair)
-12. AccordionSection
-13. StepIndicator (barra dourada)
-14. CelebrationScreen (check + partículas)
-15. DraftBanner
-16. PreviewCard
+### Fase 2 — Componentes Visuais (Design System) ✅ COMPLETA
+7-16. 10 componentes criados: FormWizard, StepIndicator, DraftBanner, InputField, TextAreaField, SectionTitle, UploadArea, AccordionSection, CelebrationScreen + 2 barrel exports
 
-### Fase 3 — Reorganizar Wizards
-17. Comunidade: 4 steps usando componentes novos
-18. Evento: 4 steps + preview usando componentes novos
-19. Importação de evento anterior com checkboxes
-20. Classificação de idade no wizard
+### Fase 3 — Reorganizar Wizards ✅ COMPLETA
+17. Comunidade: 3→4 steps (Identidade+Fotos → Localização+Capacidade → Operação → Produtores+Taxas)
+18. Evento: 5→4 steps + preview (Essencial → Ingressos+Classificação → Equipe+Listas → Revisar+Publicar)
+19. Classificação movida pro Step Ingressos (AccordionSection colapsável)
+20. Step Revisar com mini preview card + resumo + split (COM_SOCIO) + CelebrationScreen
+- Step3Fotos.tsx → _deprecated/ (funcionalidade redistribuída)
+- Step1Evento.tsx: prop showClassification adicionada
 
 ### Fase 4 — Rascunho
 21. Migration tabela drafts

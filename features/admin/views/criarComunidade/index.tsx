@@ -7,40 +7,31 @@ import { UnsavedChangesModal } from '../../../../components/UnsavedChangesModal'
 import { useToast, ToastContainer } from '../../../../components/Toast';
 import { Membro, HorarioSemanal } from '../../../../types';
 import { DEFAULT_HORARIOS } from '../../../../components/HorarioFuncionamentoEditor';
+import CelebrationScreen from '../../../../components/CelebrationScreen';
 import { Step1Identidade } from './Step1Identidade';
 import { Step2Localizacao } from './Step2Localizacao';
-import { Step3Fotos } from './Step3Fotos';
+import { Step3Operacao } from './Step3Operacao';
+import { Step4ProdutoresTaxas } from './Step4ProdutoresTaxas';
 
 export const CriarComunidadeView: React.FC<{
   onBack: () => void;
   adminNome: string;
   adminId?: string;
 }> = ({ onBack, adminId }) => {
-  const [step, setStep] = useState<1 | 2 | 3>(1);
+  const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
   const [criado, setCriado] = useState(false);
   const [erro, setErro] = useState('');
   const [isCriando, setIsCriando] = useState(false);
   const { toasts, dismiss, toast } = useToast();
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Step 1
+  // Step 1 — Identidade
   const [nome, setNome] = useState('');
   const [bio, setBio] = useState('');
-  const [capacidade, setCapacidade] = useState('');
-  const [taxaVantaStr, setTaxaVantaStr] = useState('');
-  const [taxaProcStr, setTaxaProcStr] = useState('');
-  const [taxaPortaStr, setTaxaPortaStr] = useState('');
-  const [taxaMinimaStr, setTaxaMinimaStr] = useState('');
-  const [cotaNomesStr, setCotaNomesStr] = useState('');
-  const [taxaNomeExcStr, setTaxaNomeExcStr] = useState('');
-  const [cotaCortesiasStr, setCotaCortesiasStr] = useState('');
-  const [taxaCortExcStr, setTaxaCortExcStr] = useState('');
-  const [horarios, setHorarios] = useState<HorarioSemanal[]>(DEFAULT_HORARIOS);
-  const [cnpj, setCnpj] = useState('');
-  const [razaoSocial, setRazaoSocial] = useState('');
-  const [telefone, setTelefone] = useState('');
+  const [fotoPerfil, setFotoPerfil] = useState('');
+  const [fotoCapa, setFotoCapa] = useState('');
 
-  // Step 2
+  // Step 2 — Localização
   const [cep, setCep] = useState('');
   const [rua, setRua] = useState('');
   const [numero, setNumero] = useState('');
@@ -49,11 +40,29 @@ export const CriarComunidadeView: React.FC<{
   const [cidade, setCidade] = useState('');
   const [estado, setEstado] = useState('');
   const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
+  const [capacidade, setCapacidade] = useState('');
 
-  // Step 3
-  const [fotoPerfil, setFotoPerfil] = useState('');
-  const [fotoCapa, setFotoCapa] = useState('');
+  // Step 3 — Operação
+  const [horarios, setHorarios] = useState<HorarioSemanal[]>(DEFAULT_HORARIOS);
+  const [cnpj, setCnpj] = useState('');
+  const [razaoSocial, setRazaoSocial] = useState('');
+  const [telefone, setTelefone] = useState('');
+  const [instagram, setInstagram] = useState('');
+  const [whatsapp, setWhatsapp] = useState('');
+  const [tiktok, setTiktok] = useState('');
+  const [site, setSite] = useState('');
+
+  // Step 4 — Produtores + Taxas
   const [produtores, setProdutores] = useState<Membro[]>([]);
+  const [taxaVantaStr, setTaxaVantaStr] = useState('');
+  const [taxaProcStr, setTaxaProcStr] = useState('');
+  const [taxaPortaStr, setTaxaPortaStr] = useState('');
+  const [taxaMinimaStr, setTaxaMinimaStr] = useState('');
+  const [cotaNomesStr, setCotaNomesStr] = useState('');
+  const [taxaNomeExcStr, setTaxaNomeExcStr] = useState('');
+  const [cotaCortesiasStr, setCotaCortesiasStr] = useState('');
+  const [taxaCortExcStr, setTaxaCortExcStr] = useState('');
+
   const [showExitConfirm, setShowExitConfirm] = useState(false);
 
   const hasChanges = useMemo(() => {
@@ -65,7 +74,8 @@ export const CriarComunidadeView: React.FC<{
     else onBack();
   };
 
-  const STEP_LABELS = ['Identidade', 'Localização', 'Visual'];
+  const STEP_LABELS = ['Identidade', 'Localização', 'Operação', 'Produtores'];
+  const TOTAL_STEPS = 4;
 
   const setErroScroll = (msg: string) => {
     setErro(msg);
@@ -81,14 +91,12 @@ export const CriarComunidadeView: React.FC<{
       setErroScroll('Bio é obrigatória.');
       return false;
     }
-    const cap = parseInt(capacidade);
-    if (!capacidade || isNaN(cap) || cap <= 0) {
-      setErroScroll('Capacidade máxima inválida.');
+    if (!fotoPerfil) {
+      setErroScroll('Foto de perfil é obrigatória.');
       return false;
     }
-    const taxa = parseFloat(taxaVantaStr);
-    if (!taxaVantaStr || isNaN(taxa) || taxa < 0 || taxa > 100) {
-      setErroScroll('Taxa Vanta deve ser entre 0% e 100%.');
+    if (!fotoCapa) {
+      setErroScroll('Foto de capa é obrigatória.');
       return false;
     }
     return true;
@@ -115,20 +123,27 @@ export const CriarComunidadeView: React.FC<{
       setErroScroll('Estado é obrigatório.');
       return false;
     }
+    const cap = parseInt(capacidade);
+    if (!capacidade || isNaN(cap) || cap <= 0) {
+      setErroScroll('Capacidade máxima inválida.');
+      return false;
+    }
     return true;
   };
 
   const validar3 = (): boolean => {
-    if (!fotoPerfil) {
-      setErroScroll('Foto de perfil é obrigatória.');
-      return false;
-    }
-    if (!fotoCapa) {
-      setErroScroll('Foto de capa é obrigatória.');
-      return false;
-    }
+    // Step 3 (Operação) não tem campos obrigatórios — todos opcionais
+    return true;
+  };
+
+  const validar4 = (): boolean => {
     if (produtores.length === 0) {
       setErroScroll('Adicione ao menos um produtor responsável.');
+      return false;
+    }
+    const taxa = parseFloat(taxaVantaStr);
+    if (!taxaVantaStr || isNaN(taxa) || taxa < 0 || taxa > 100) {
+      setErroScroll('Taxa Vanta deve ser entre 0% e 100%.');
       return false;
     }
     return true;
@@ -138,12 +153,13 @@ export const CriarComunidadeView: React.FC<{
     setErro('');
     if (step === 1 && !validar1()) return;
     if (step === 2 && !validar2()) return;
-    if (step === 3) {
-      if (!validar3()) return;
+    if (step === 3 && !validar3()) return;
+    if (step === 4) {
+      if (!validar4()) return;
       handleCriar();
       return;
     }
-    setStep(s => (s + 1) as 1 | 2 | 3);
+    setStep(s => (s + 1) as 1 | 2 | 3 | 4);
   };
 
   const handleCriar = async () => {
@@ -172,6 +188,10 @@ export const CriarComunidadeView: React.FC<{
         cnpj: cnpj.trim() || undefined,
         razaoSocial: razaoSocial.trim() || undefined,
         telefone: telefone.trim() || undefined,
+        instagram: instagram.trim() || undefined,
+        whatsapp: whatsapp.trim() || undefined,
+        tiktok: tiktok.trim() || undefined,
+        site: site.trim() || undefined,
       });
 
       if (!novoId) {
@@ -235,27 +255,12 @@ export const CriarComunidadeView: React.FC<{
 
   if (criado) {
     return (
-      <div className="absolute inset-0 bg-[#0A0A0A] flex flex-col items-center justify-center p-10 gap-6">
-        <div className="w-20 h-20 rounded-full bg-[#FFD300]/10 border border-[#FFD300]/30 flex items-center justify-center">
-          <Check size="2.25rem" className="text-[#FFD300]" />
-        </div>
-        <div className="text-center">
-          <h2 style={TYPOGRAPHY.screenTitle} className="text-2xl italic mb-2">
-            {nome}
-          </h2>
-          <p className="text-zinc-400 text-sm leading-relaxed">
-            Comunidade criada com sucesso.
-            <br />
-            Já aparece no painel e está pronta para receber eventos.
-          </p>
-        </div>
-        <button
-          onClick={onBack}
-          className="w-full max-w-xs py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-[0.3em] rounded-2xl active:scale-[0.98] transition-all"
-        >
-          Voltar para Comunidades
-        </button>
-      </div>
+      <CelebrationScreen
+        title={nome}
+        subtitle="Comunidade criada com sucesso. Já aparece no painel e está pronta para receber eventos."
+        icon="check"
+        actions={[{ label: 'Voltar para Comunidades', onClick: onBack, variant: 'primary' }]}
+      />
     );
   }
 
@@ -283,7 +288,7 @@ export const CriarComunidadeView: React.FC<{
 
         {/* Progress */}
         <div className="flex items-center gap-1">
-          {([1, 2, 3] as const).map((s, i) => (
+          {([1, 2, 3, 4] as const).map((s, i) => (
             <React.Fragment key={s}>
               <div
                 className={`w-6 h-6 rounded-full flex items-center justify-center text-[0.5625rem] font-black border transition-all shrink-0 ${
@@ -296,7 +301,7 @@ export const CriarComunidadeView: React.FC<{
               >
                 {step > s ? <Check size="0.625rem" /> : s}
               </div>
-              {i < 2 && <div className={`flex-1 h-px ${step > s ? 'bg-[#FFD300]/20' : 'bg-white/5'}`} />}
+              {i < TOTAL_STEPS - 1 && <div className={`flex-1 h-px ${step > s ? 'bg-[#FFD300]/20' : 'bg-white/5'}`} />}
             </React.Fragment>
           ))}
         </div>
@@ -305,7 +310,10 @@ export const CriarComunidadeView: React.FC<{
             <p
               key={l}
               className={`text-[0.625rem] font-black uppercase tracking-widest ${step === i + 1 ? 'text-[#FFD300]' : 'text-zinc-700'}`}
-              style={{ width: '33%', textAlign: i === 0 ? 'left' : i === 2 ? 'right' : 'center' }}
+              style={{
+                width: `${100 / TOTAL_STEPS}%`,
+                textAlign: i === 0 ? 'left' : i === TOTAL_STEPS - 1 ? 'right' : 'center',
+              }}
             >
               {l}
             </p>
@@ -321,32 +329,10 @@ export const CriarComunidadeView: React.FC<{
             setNome={setNome}
             bio={bio}
             setBio={setBio}
-            capacidade={capacidade}
-            setCapacidade={setCapacidade}
-            horarios={horarios}
-            setHorarios={setHorarios}
-            taxaVantaStr={taxaVantaStr}
-            setTaxaVantaStr={setTaxaVantaStr}
-            cnpj={cnpj}
-            setCnpj={setCnpj}
-            razaoSocial={razaoSocial}
-            setRazaoSocial={setRazaoSocial}
-            telefone={telefone}
-            setTelefone={setTelefone}
-            taxaProcStr={taxaProcStr}
-            setTaxaProcStr={setTaxaProcStr}
-            taxaPortaStr={taxaPortaStr}
-            setTaxaPortaStr={setTaxaPortaStr}
-            taxaMinimaStr={taxaMinimaStr}
-            setTaxaMinimaStr={setTaxaMinimaStr}
-            cotaNomesStr={cotaNomesStr}
-            setCotaNomesStr={setCotaNomesStr}
-            taxaNomeExcStr={taxaNomeExcStr}
-            setTaxaNomeExcStr={setTaxaNomeExcStr}
-            cotaCortesiasStr={cotaCortesiasStr}
-            setCotaCortesiasStr={setCotaCortesiasStr}
-            taxaCortExcStr={taxaCortExcStr}
-            setTaxaCortExcStr={setTaxaCortExcStr}
+            fotoPerfil={fotoPerfil}
+            setFotoPerfil={setFotoPerfil}
+            fotoCapa={fotoCapa}
+            setFotoCapa={setFotoCapa}
           />
         )}
         {step === 2 && (
@@ -367,16 +353,50 @@ export const CriarComunidadeView: React.FC<{
             setEstado={setEstado}
             coords={coords}
             setCoords={setCoords}
+            capacidade={capacidade}
+            setCapacidade={setCapacidade}
           />
         )}
         {step === 3 && (
-          <Step3Fotos
-            fotoPerfil={fotoPerfil}
-            setFotoPerfil={setFotoPerfil}
-            fotoCapa={fotoCapa}
-            setFotoCapa={setFotoCapa}
+          <Step3Operacao
+            horarios={horarios}
+            setHorarios={setHorarios}
+            cnpj={cnpj}
+            setCnpj={setCnpj}
+            razaoSocial={razaoSocial}
+            setRazaoSocial={setRazaoSocial}
+            telefone={telefone}
+            setTelefone={setTelefone}
+            instagram={instagram}
+            setInstagram={setInstagram}
+            whatsapp={whatsapp}
+            setWhatsapp={setWhatsapp}
+            tiktok={tiktok}
+            setTiktok={setTiktok}
+            site={site}
+            setSite={setSite}
+          />
+        )}
+        {step === 4 && (
+          <Step4ProdutoresTaxas
             produtores={produtores}
             setProdutores={setProdutores}
+            taxaVantaStr={taxaVantaStr}
+            setTaxaVantaStr={setTaxaVantaStr}
+            taxaProcStr={taxaProcStr}
+            setTaxaProcStr={setTaxaProcStr}
+            taxaPortaStr={taxaPortaStr}
+            setTaxaPortaStr={setTaxaPortaStr}
+            taxaMinimaStr={taxaMinimaStr}
+            setTaxaMinimaStr={setTaxaMinimaStr}
+            cotaNomesStr={cotaNomesStr}
+            setCotaNomesStr={setCotaNomesStr}
+            taxaNomeExcStr={taxaNomeExcStr}
+            setTaxaNomeExcStr={setTaxaNomeExcStr}
+            cotaCortesiasStr={cotaCortesiasStr}
+            setCotaCortesiasStr={setCotaCortesiasStr}
+            taxaCortExcStr={taxaCortExcStr}
+            setTaxaCortExcStr={setTaxaCortExcStr}
           />
         )}
         {erro && <p className="mt-4 text-red-400 text-[0.625rem] font-black uppercase tracking-widest">{erro}</p>}
@@ -388,7 +408,7 @@ export const CriarComunidadeView: React.FC<{
           <button
             onClick={() => {
               setErro('');
-              setStep(s => (s - 1) as 1 | 2 | 3);
+              setStep(s => (s - 1) as 1 | 2 | 3 | 4);
             }}
             className="flex-1 py-3.5 bg-zinc-900 border border-white/10 rounded-xl text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest active:scale-95 transition-all"
           >
@@ -400,7 +420,7 @@ export const CriarComunidadeView: React.FC<{
           disabled={isCriando}
           className={`flex-1 py-3.5 rounded-xl text-[0.625rem] font-black uppercase tracking-widest active:scale-95 transition-all ${isCriando ? 'bg-[#FFD300]/50 text-black/50' : 'bg-[#FFD300] text-black'}`}
         >
-          {step === 3 ? (isCriando ? 'Criando...' : 'Criar Comunidade') : 'Próximo'}
+          {step === 4 ? (isCriando ? 'Criando...' : 'Criar Comunidade') : 'Próximo'}
         </button>
       </div>
       <ToastContainer toasts={toasts} onDismiss={dismiss} />

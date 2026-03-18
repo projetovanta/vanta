@@ -1,13 +1,13 @@
 # Sessao Atual — Estado para Continuidade
 
 ## Branch: visual-redesign
-## Ultimo commit: 465d290 (EventCard altura fixa + hover removido)
-## Mudancas locais: SIM — feedback_visual_profundidade.md + MEMORY.md (pendente commit)
+## Ultimo commit: 37c5020 (ata final + memória compartilhada)
+## Mudancas locais: NÃO
 ## Preflight: 8/8 OK + 11/11 testes E2E
 
 ## Resumo da sessao (18 mar 2026 — sessao 2)
 
-### Commits (11 total)
+### Commits (13 total)
 1. `4287fdf` — Fase 1: 6 correções críticas
 2. `a606ead` — Fase 2+3: 10 componentes + wizards reorganizados
 3. `8a2dfc4` — Fase 4: rascunho automático (drafts)
@@ -18,6 +18,8 @@
 8. `c202213` — Memórias finais
 9. `7f3136b` — Identidade visual: modais VANTA + VANTA Indica (fontSize, snap, apagar card)
 10. `465d290` — EventCard altura fixa + hover removido (mobile-first)
+11. `1883196` — Feedback visual profundidade + sessão encerrada
+12. `37c5020` — Ata final + memória compartilhada
 
 ### 7 Migrations Supabase
 - tabela drafts + RLS + trigger

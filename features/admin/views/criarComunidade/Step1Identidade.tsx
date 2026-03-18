@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Upload, Camera } from 'lucide-react';
 import { ImageCropModal } from '../../../../components/ImageCropModal';
+import { globalToast } from '../../../../components/Toast';
 
 const inputCls =
   'w-full bg-zinc-900/60 border border-white/5 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-[#FFD300]/30 placeholder-zinc-700';
@@ -26,13 +27,13 @@ export const Step1Identidade: React.FC<{
     if (!file) return;
     const MAX_FILE_SIZE = 5 * 1024 * 1024;
     if (file.size > MAX_FILE_SIZE) {
-      alert('A imagem deve ter no máximo 5MB');
+      globalToast('erro', 'A imagem deve ter no máximo 5MB');
       if (ref.current) ref.current.value = '';
       return;
     }
     const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
     if (!ALLOWED_TYPES.includes(file.type)) {
-      alert('Formato aceito: JPEG, PNG ou WebP');
+      globalToast('erro', 'Formato aceito: JPEG, PNG ou WebP');
       if (ref.current) ref.current.value = '';
       return;
     }

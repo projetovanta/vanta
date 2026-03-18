@@ -45,6 +45,7 @@ export type AuditAction =
   | 'TAG_ADICIONADA'
   | 'CARD_CRIADO'
   | 'CARD_EDITADO'
+  | 'CARD_REMOVIDO'
   | 'NIVEL_CRIADO'
   | 'NIVEL_EDITADO'
   | 'COTA_DISTRIBUIDA'
@@ -183,6 +184,7 @@ const ACTION_LABELS: Record<AuditAction, string> = {
   TAG_ADICIONADA: 'adicionou tag a membro',
   CARD_CRIADO: 'criou card VANTA Indica',
   CARD_EDITADO: 'editou card VANTA Indica',
+  CARD_REMOVIDO: 'removeu card VANTA Indica',
   NIVEL_CRIADO: 'criou nível de prestígio',
   NIVEL_EDITADO: 'editou nível de prestígio',
   COTA_DISTRIBUIDA: 'distribuiu cota de lista',

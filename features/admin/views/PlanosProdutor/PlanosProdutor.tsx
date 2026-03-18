@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Plus, Edit2, Trash2, Save, X, Crown, Users, Bell, Calendar, DollarSign, Check, UserCheck } from 'lucide-react';
 import type { PlanoProdutor, ProdutorPlano, TierMaisVanta } from '../../../../types';
 import { clubeService } from '../../services/clubeService';
+import { globalToast } from '../../../../components/Toast';
 
 const TIER_LABELS: Record<TierMaisVanta, string> = {
   lista: 'Lista',
@@ -106,7 +107,7 @@ export const PlanosProdutor: React.FC = () => {
   const handleDeletar = async (id: string) => {
     const res = await clubeService.deletarPlanoProdutor(id);
     if (!res.ok) {
-      alert(res.reason);
+      globalToast('erro', res.reason ?? 'Erro ao deletar plano');
       return;
     }
     await refresh();

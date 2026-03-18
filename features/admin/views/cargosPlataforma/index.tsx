@@ -8,6 +8,8 @@ import {
   type AtribuicaoPlataforma,
   type PermissaoPlataforma,
 } from '../../services/cargosPlataformaService';
+import { globalToast } from '../../../../components/Toast';
+import { VantaConfirmModal } from '../../../../components/VantaConfirmModal';
 
 interface Props {
   currentUserId: string;
@@ -21,6 +23,11 @@ export const CargosPlataformaView: React.FC<Props> = ({ currentUserId, onBack, e
   const [atribuicoes, setAtribuicoes] = useState<AtribuicaoPlataforma[]>([]);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState<'CARGOS' | 'ATRIBUICOES'>('CARGOS');
+  const [pendingConfirm, setPendingConfirm] = useState<{
+    title: string;
+    message: string;
+    action: () => Promise<void>;
+  } | null>(null);
 
   // Form state
   const [showForm, setShowForm] = useState(false);
@@ -71,7 +78,7 @@ export const CargosPlataformaView: React.FC<Props> = ({ currentUserId, onBack, e
       setFormPermissoes([]);
       await refresh();
     } catch (err) {
-      alert((err as Error).message);
+      globalToast('erro', (err as Error).message);
     }
   };
 
@@ -83,10 +90,15 @@ export const CargosPlataformaView: React.FC<Props> = ({ currentUserId, onBack, e
     setShowForm(true);
   };
 
-  const handleDesativar = async (id: string) => {
-    if (!confirm('Tem certeza que quer desativar este cargo?')) return;
-    await cargosPlataformaService.desativarCargo(id);
-    await refresh();
+  const handleDesativar = (id: string) => {
+    setPendingConfirm({
+      title: 'Desativar cargo',
+      message: 'Tem certeza que quer desativar este cargo? Membros com esse cargo perderão o acesso.',
+      action: async () => {
+        await cargosPlataformaService.desativarCargo(id);
+        await refresh();
+      },
+    });
   };
 
   const handleSearch = async (termo: string) => {
@@ -112,14 +124,19 @@ export const CargosPlataformaView: React.FC<Props> = ({ currentUserId, onBack, e
       setSearchResults([]);
       await refresh();
     } catch (err) {
-      alert((err as Error).message);
+      globalToast('erro', (err as Error).message);
     }
   };
 
-  const handleRevogar = async (atribuicaoId: string) => {
-    if (!confirm('Tem certeza que quer revogar esta atribuição?')) return;
-    await cargosPlataformaService.revogar(atribuicaoId);
-    await refresh();
+  const handleRevogar = (atribuicaoId: string) => {
+    setPendingConfirm({
+      title: 'Revogar atribuição',
+      message: 'Tem certeza que quer revogar esta atribuição? O membro perderá o acesso.',
+      action: async () => {
+        await cargosPlataformaService.revogar(atribuicaoId);
+        await refresh();
+      },
+    });
   };
 
   const togglePermissao = (p: PermissaoPlataforma) => {
@@ -385,6 +402,21 @@ export const CargosPlataformaView: React.FC<Props> = ({ currentUserId, onBack, e
             </div>
           </div>
         </div>
+      )}
+
+      {pendingConfirm && (
+        <VantaConfirmModal
+          title={pendingConfirm.title}
+          message={pendingConfirm.message}
+          confirmLabel="Confirmar"
+          cancelLabel="Cancelar"
+          variant="danger"
+          onConfirm={async () => {
+            await pendingConfirm.action();
+            setPendingConfirm(null);
+          }}
+          onCancel={() => setPendingConfirm(null)}
+        />
       )}
     </div>
   );

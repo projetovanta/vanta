@@ -7,6 +7,7 @@ import { todayBR } from '../../../../utils';
 import { inputCls, inputDateCls, labelCls } from './constants';
 import { VantaDropdown } from '../../../../components/VantaDropdown';
 import { VantaDatePicker } from '../../../../components/VantaDatePicker';
+import { globalToast } from '../../../../components/Toast';
 
 // Horarios de 30 em 30 min (00:00 ate 23:30)
 const ALL_HORA_OPTS = (() => {
@@ -87,13 +88,13 @@ export const Step1Evento: React.FC<Props> = props => {
     if (!file) return;
     const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
     if (file.size > MAX_FILE_SIZE) {
-      alert('A imagem deve ter no máximo 5MB');
+      globalToast('erro', 'A imagem deve ter no máximo 5MB');
       if (fotoRef.current) fotoRef.current.value = '';
       return;
     }
     const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
     if (!ALLOWED_TYPES.includes(file.type)) {
-      alert('Formato aceito: JPEG, PNG ou WebP');
+      globalToast('erro', 'Formato aceito: JPEG, PNG ou WebP');
       if (fotoRef.current) fotoRef.current.value = '';
       return;
     }

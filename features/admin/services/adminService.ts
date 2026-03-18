@@ -218,6 +218,22 @@ export const adminService = {
     }
   },
 
+  deleteCard: async (id: string): Promise<void> => {
+    const { error } = await supabase.from('vanta_indica').delete().eq('id', id);
+    if (error) {
+      console.error('[adminService] deleteCard:', error);
+      return;
+    }
+    const idx = _indicaCards.findIndex(c => c.id === id);
+    if (idx !== -1) _indicaCards.splice(idx, 1);
+    try {
+      const { auditService } = await import('./auditService');
+      auditService.log('sistema', 'CARD_REMOVIDO', 'indica_card', id);
+    } catch {
+      /* silencioso */
+    }
+  },
+
   // ── Membros Classificados ──────────────────────────────────────────────────
   getMembrosClassificados,
 

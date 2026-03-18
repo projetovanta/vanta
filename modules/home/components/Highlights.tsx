@@ -221,12 +221,12 @@ export const Highlights: React.FC<HighlightsProps> = React.memo(
                               transform: `translateY(${item.layoutConfig?.tituloY ?? 0}px)`,
                             }
                       }
-                      className="max-w-[90%]"
+                      className="max-w-[95%]"
                     >
                       <h2
                         style={{
                           ...TYPOGRAPHY.screenTitle,
-                          fontSize: '5.3cqw',
+                          fontSize: `${item.layoutConfig?.tituloFontSize ?? 5.3}cqw`,
                           lineHeight: 1.2,
                           fontStyle: 'italic',
                         }}
@@ -254,11 +254,15 @@ export const Highlights: React.FC<HighlightsProps> = React.memo(
                               transform: `translateY(${item.layoutConfig?.subtituloY ?? 0}px)`,
                             }
                       }
-                      className="max-w-[90%]"
+                      className="max-w-[95%]"
                     >
                       <p
-                        style={{ fontSize: '2.6cqw', lineHeight: '4.2cqw', fontStyle: 'italic' }}
-                        className="text-[#FFD300] font-semibold leading-relaxed line-clamp-3 drop-shadow-md"
+                        style={{
+                          fontSize: `${item.layoutConfig?.subtituloFontSize ?? 2.6}cqw`,
+                          lineHeight: `${(item.layoutConfig?.subtituloFontSize ?? 2.6) * 1.6}cqw`,
+                          fontStyle: 'italic',
+                        }}
+                        className="text-[#FFD300] font-semibold leading-relaxed drop-shadow-md"
                       >
                         {item.subtitulo}
                       </p>

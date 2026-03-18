@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import { ArrowLeft, Plus, Edit2, X, Check, Loader2, Compass, ImagePlus, Eye, Search } from 'lucide-react';
+import { ArrowLeft, Plus, Edit2, X, Check, Loader2, Compass, ImagePlus, Eye, Search, Trash2 } from 'lucide-react';
+import { VantaConfirmModal } from '../../../components/VantaConfirmModal';
 import { supabase } from '../../../services/supabaseClient';
 import { ImageCropModal } from '../../../components/ImageCropModal';
 import { UnsavedChangesModal } from '../../../components/UnsavedChangesModal';
@@ -127,6 +128,8 @@ type ModalForm = {
   _scaleBadge: number;
   _scaleTitulo: number;
   _scaleSubtitulo: number;
+  _fontSizeTitulo: number;
+  _fontSizeSubtitulo: number;
 };
 
 const EMPTY: ModalForm = {
@@ -150,6 +153,8 @@ const EMPTY: ModalForm = {
   _scaleBadge: 1,
   _scaleTitulo: 1,
   _scaleSubtitulo: 1,
+  _fontSizeTitulo: 5.3,
+  _fontSizeSubtitulo: 2.6,
 };
 
 /** Badge colors para preview (espelha Highlights.tsx BADGE_COLORS) */
@@ -299,9 +304,9 @@ const BADGE_PALETTE = [
 ];
 
 /** Snap points for magnetic alignment (percentages) */
-const SNAP_LINES_X = [5, 33.33, 50, 66.66, 95]; // margins, thirds, center
-const SNAP_LINES_Y = [5, 33.33, 50, 66.66, 95];
-const SNAP_THRESHOLD = 2.5; // % distance to trigger snap
+const SNAP_LINES_X = [50]; // só centro
+const SNAP_LINES_Y = [50];
+const SNAP_THRESHOLD = 4; // % distance to trigger snap (mais generoso)
 
 function snapToGuides(
   val: number,
@@ -321,7 +326,7 @@ function snapToGuides(
   return closest !== null ? { snapped: closest, guide: closest } : { snapped: val, guide: null };
 }
 
-/** Hook for drag-to-position on touch/mouse with magnetic snap */
+/** Hook for drag-to-position on touch/mouse with magnetic snap (center-aware) */
 const useDragElement = (
   initial: LayoutPos,
   containerRef: React.RefObject<HTMLDivElement | null>,
@@ -332,6 +337,7 @@ const useDragElement = (
 ) => {
   const posRef = useRef(initial);
   const startRef = useRef({ px: 0, py: 0, ox: 0, oy: 0 });
+  const elementRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     posRef.current = initial;
@@ -362,10 +368,49 @@ const useDragElement = (
       if (snapEnabled) {
         const otherXs = otherPositions.map(p => p.x);
         const otherYs = otherPositions.map(p => p.y);
-        const sx = snapToGuides(nx, SNAP_LINES_X, otherXs);
-        const sy = snapToGuides(ny, SNAP_LINES_Y, otherYs);
-        nx = sx.snapped;
-        ny = sy.snapped;
+
+        // Calcular centro do elemento em % do container usando getBoundingClientRect (respeita scale/transform)
+        let elWidthPct = 0;
+        let elHeightPct = 0;
+        if (elementRef.current && rect) {
+          const elRect = elementRef.current.getBoundingClientRect();
+          elWidthPct = (elRect.width / rect.width) * 100;
+          elHeightPct = (elRect.height / rect.height) * 100;
+        }
+        const centerX = nx + elWidthPct / 2;
+        const centerY = ny + elHeightPct / 2;
+
+        // Snap pelo centro do elemento + alinhamento com outros elementos
+        // Adicionar bordas e centros dos outros elementos como guias extras
+        const extraGuidesX: number[] = [];
+        const extraGuidesY: number[] = [];
+        for (const op of otherPositions) {
+          // Início (left) do outro elemento
+          extraGuidesX.push(op.x);
+          extraGuidesY.push(op.y);
+        }
+        // Snap: centro do elemento vs centro do container + bordas dos outros
+        const sx = snapToGuides(centerX, [...SNAP_LINES_X], []);
+        const sy = snapToGuides(centerY, [...SNAP_LINES_Y], []);
+        // Se não snapou pelo centro, tentar snap pela borda esquerda (alinhamento de início)
+        if (sx.guide === null) {
+          const sxLeft = snapToGuides(nx, [], extraGuidesX);
+          if (sxLeft.guide !== null) {
+            nx = sxLeft.snapped;
+            snapX = sxLeft.guide;
+          }
+        }
+        if (sy.guide === null) {
+          const syTop = snapToGuides(ny, [], extraGuidesY);
+          if (syTop.guide !== null) {
+            ny = syTop.snapped;
+            snapY = syTop.guide;
+          }
+        }
+
+        // Converter snap de volta pra posição top-left
+        if (sx.guide !== null) nx = sx.snapped - elWidthPct / 2;
+        if (sy.guide !== null) ny = sy.snapped - elHeightPct / 2;
         snapX = sx.guide;
         snapY = sy.guide;
       }
@@ -388,7 +433,7 @@ const useDragElement = (
     document.addEventListener('mouseup', cleanup);
   };
 
-  return { onTouchStart: onStart, onMouseDown: onStart };
+  return { onTouchStart: onStart, onMouseDown: onStart, ref: elementRef };
 };
 
 const Field: React.FC<{ label: string; children: React.ReactNode }> = ({ label, children }) => (
@@ -572,6 +617,8 @@ const CardModal: React.FC<{
   const [badgeScale, setBadgeScale] = useState(initial._scaleBadge ?? 1);
   const [tituloScale, setTituloScale] = useState(initial._scaleTitulo ?? 1);
   const [subtituloScale, setSubtituloScale] = useState(initial._scaleSubtitulo ?? 1);
+  const [subtituloFontSize, setSubtituloFontSize] = useState(initial._fontSizeSubtitulo ?? 2.6);
+  const [tituloFontSize, setTituloFontSize] = useState(initial._fontSizeTitulo ?? 5.3);
   const [showGuides, setShowGuides] = useState(false);
   const [activeSnap, setActiveSnap] = useState<{ x: number | null; y: number | null }>({ x: null, y: null });
   const [eventQuery, setEventQuery] = useState('');
@@ -1449,12 +1496,18 @@ const CardModal: React.FC<{
                     cursor: 'grab',
                     transform: `scale(${tituloScale})`,
                     transformOrigin: 'top left',
+                    whiteSpace: 'nowrap',
                   }}
-                  className="active:cursor-grabbing z-10 max-w-[90%] touch-none"
+                  className="active:cursor-grabbing z-10 touch-none"
                 >
                   <h2
-                    style={{ ...TYPOGRAPHY.screenTitle, fontSize: '5.3cqw', lineHeight: 1.2, fontStyle: 'italic' }}
-                    className="drop-shadow-lg truncate"
+                    style={{
+                      ...TYPOGRAPHY.screenTitle,
+                      fontSize: `${tituloFontSize}cqw`,
+                      lineHeight: 1.2,
+                      fontStyle: 'italic',
+                    }}
+                    className="drop-shadow-lg"
                   >
                     {form.titulo}
                   </h2>
@@ -1472,11 +1525,15 @@ const CardModal: React.FC<{
                     transform: `scale(${subtituloScale})`,
                     transformOrigin: 'top left',
                   }}
-                  className="active:cursor-grabbing z-10 max-w-[90%] touch-none"
+                  className="active:cursor-grabbing z-10 touch-none"
                 >
                   <p
-                    style={{ fontSize: '2.6cqw', lineHeight: '4.2cqw', fontStyle: 'italic' }}
-                    className="text-[#FFD300] font-semibold leading-relaxed drop-shadow-md line-clamp-3"
+                    style={{
+                      fontSize: `${subtituloFontSize}cqw`,
+                      lineHeight: `${subtituloFontSize * 1.6}cqw`,
+                      fontStyle: 'italic',
+                    }}
+                    className="text-[#FFD300] font-semibold leading-relaxed drop-shadow-md"
                   >
                     {form.subtitulo}
                   </p>
@@ -1486,51 +1543,76 @@ const CardModal: React.FC<{
           </div>
           {/* fecha wrapper px-5 */}
 
-          {/* Sliders de tamanho */}
+          {/* Controle de tamanho da fonte (numérico + slider) */}
           <div className="space-y-2 pt-1">
-            <p className="text-[0.5625rem] text-zinc-500 font-black uppercase tracking-widest">Tamanho dos elementos</p>
+            <p className="text-[0.5625rem] text-zinc-500 font-black uppercase tracking-widest">Tamanho da fonte</p>
             {form.badge.trim() && (
               <div className="flex items-center gap-3">
                 <span className="text-[0.5625rem] text-zinc-400 w-16 shrink-0">Selo</span>
+                <input
+                  type="number"
+                  min={0.5}
+                  max={5}
+                  step={0.1}
+                  value={badgeScale}
+                  onChange={e => setBadgeScale(parseFloat(e.target.value) || 1)}
+                  className="w-16 bg-zinc-900/60 border border-white/5 rounded-lg px-2 py-1.5 text-white text-xs text-center outline-none focus:border-[#FFD300]/30"
+                />
                 <VantaSlider
                   min={0.5}
-                  max={2.5}
+                  max={5}
                   step={0.1}
                   value={badgeScale}
                   onChange={setBadgeScale}
                   className="flex-1"
                 />
-                <span className="text-[0.5625rem] text-zinc-500 w-8 text-right">{Math.round(badgeScale * 100)}%</span>
+                <span className="text-[0.5625rem] text-zinc-500 w-10 text-right">{badgeScale}x</span>
               </div>
             )}
             {form.titulo.trim() && (
               <div className="flex items-center gap-3">
                 <span className="text-[0.5625rem] text-zinc-400 w-16 shrink-0">Título</span>
-                <VantaSlider
-                  min={0.5}
-                  max={2.5}
+                <input
+                  type="number"
+                  min={1}
+                  max={15}
                   step={0.1}
-                  value={tituloScale}
-                  onChange={setTituloScale}
+                  value={tituloFontSize}
+                  onChange={e => setTituloFontSize(parseFloat(e.target.value) || 5.3)}
+                  className="w-16 bg-zinc-900/60 border border-white/5 rounded-lg px-2 py-1.5 text-white text-xs text-center outline-none focus:border-[#FFD300]/30"
+                />
+                <VantaSlider
+                  min={1}
+                  max={15}
+                  step={0.1}
+                  value={tituloFontSize}
+                  onChange={setTituloFontSize}
                   className="flex-1"
                 />
-                <span className="text-[0.5625rem] text-zinc-500 w-8 text-right">{Math.round(tituloScale * 100)}%</span>
+                <span className="text-[0.5625rem] text-zinc-500 w-10 text-right">{tituloFontSize}cqw</span>
               </div>
             )}
             {form.subtitulo.trim() && (
               <div className="flex items-center gap-3">
                 <span className="text-[0.5625rem] text-zinc-400 w-16 shrink-0">Subtítulo</span>
-                <VantaSlider
-                  min={0.5}
-                  max={2.5}
+                <input
+                  type="number"
+                  min={1}
+                  max={10}
                   step={0.1}
-                  value={subtituloScale}
-                  onChange={setSubtituloScale}
+                  value={subtituloFontSize}
+                  onChange={e => setSubtituloFontSize(parseFloat(e.target.value) || 2.6)}
+                  className="w-16 bg-zinc-900/60 border border-white/5 rounded-lg px-2 py-1.5 text-white text-xs text-center outline-none focus:border-[#FFD300]/30"
+                />
+                <VantaSlider
+                  min={1}
+                  max={10}
+                  step={0.1}
+                  value={subtituloFontSize}
+                  onChange={setSubtituloFontSize}
                   className="flex-1"
                 />
-                <span className="text-[0.5625rem] text-zinc-500 w-8 text-right">
-                  {Math.round(subtituloScale * 100)}%
-                </span>
+                <span className="text-[0.5625rem] text-zinc-500 w-12 text-right">{subtituloFontSize}cqw</span>
               </div>
             )}
           </div>
@@ -1547,6 +1629,8 @@ const CardModal: React.FC<{
               _scaleBadge: badgeScale,
               _scaleTitulo: tituloScale,
               _scaleSubtitulo: subtituloScale,
+              _fontSizeTitulo: tituloFontSize,
+              _fontSizeSubtitulo: subtituloFontSize,
             })
           }
           disabled={!canSave || isSaving || uploadingImg}
@@ -1606,6 +1690,7 @@ export const VantaIndicaView: React.FC<{ onBack: () => void; userId?: string }> 
     data: EMPTY,
   });
   const [isSaving, setIsSaving] = useState(false);
+  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
   const [dbTemplates, setDbTemplates] = useState<IndicaTemplate[]>([]);
   const { toasts, dismiss, toast } = useToast();
 
@@ -1659,6 +1744,8 @@ export const VantaIndicaView: React.FC<{ onBack: () => void; userId?: string }> 
         _scaleBadge: card.layoutConfig?.badgeScale ?? 1,
         _scaleTitulo: card.layoutConfig?.tituloScale ?? 1,
         _scaleSubtitulo: card.layoutConfig?.subtituloScale ?? 1,
+        _fontSizeTitulo: card.layoutConfig?.tituloFontSize ?? 5.3,
+        _fontSizeSubtitulo: card.layoutConfig?.subtituloFontSize ?? 2.6,
         badgeColor: card.layoutConfig?.badgeColor || '',
       },
       eventName: card.tipo === 'DESTAQUE_EVENTO' ? card.titulo : '',
@@ -1698,6 +1785,8 @@ export const VantaIndicaView: React.FC<{ onBack: () => void; userId?: string }> 
         badgeScale: form._scaleBadge,
         tituloScale: form._scaleTitulo,
         subtituloScale: form._scaleSubtitulo,
+        tituloFontSize: form._fontSizeTitulo,
+        subtituloFontSize: form._fontSizeSubtitulo,
         badgeColor: form.badgeColor || undefined,
       },
       criadoPor: userId || 'sistema',
@@ -1785,6 +1874,12 @@ export const VantaIndicaView: React.FC<{ onBack: () => void; userId?: string }> 
                       >
                         <Edit2 size="0.6875rem" className="text-zinc-400" />
                       </button>
+                      <button
+                        onClick={() => setDeleteConfirmId(card.id)}
+                        className="w-7 h-7 bg-zinc-900 border border-red-500/20 rounded-lg flex items-center justify-center active:scale-90 transition-all"
+                      >
+                        <Trash2 size="0.6875rem" className="text-red-400" />
+                      </button>
                     </div>
                   </div>
                   <p className="text-white font-bold text-sm leading-tight truncate">{card.titulo}</p>
@@ -1821,6 +1916,22 @@ export const VantaIndicaView: React.FC<{ onBack: () => void; userId?: string }> 
             await refreshTemplates();
             toast('sucesso', 'Template salvo');
           }}
+        />
+      )}
+
+      {deleteConfirmId && (
+        <VantaConfirmModal
+          title="Apagar card"
+          message="Tem certeza que deseja apagar este card do VANTA Indica? Essa ação não pode ser desfeita."
+          confirmLabel="Apagar"
+          cancelLabel="Cancelar"
+          variant="danger"
+          onConfirm={async () => {
+            await adminService.deleteCard(deleteConfirmId);
+            setCards(prev => prev.filter(c => c.id !== deleteConfirmId));
+            setDeleteConfirmId(null);
+          }}
+          onCancel={() => setDeleteConfirmId(null)}
         />
       )}
     </div>

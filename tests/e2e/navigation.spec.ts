@@ -35,8 +35,8 @@ test.describe('Navegação principal', () => {
   });
 
   test('feed mostra saudação e seções', async ({ page }) => {
-    // Guest vê saudação genérica + subtítulo
-    await expect(page.getByText(/descubra/i).first()).toBeVisible();
+    // Guest vê saudação + bem-vindo
+    await expect(page.getByText(/bem-vindo/i).first()).toBeVisible();
   });
 
   test('nenhum console.error crítico durante navegação', async ({ page }) => {

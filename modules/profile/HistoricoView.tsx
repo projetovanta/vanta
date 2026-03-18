@@ -8,12 +8,15 @@ import {
   PartyPopper,
   Compass,
   Users,
+  Search,
   MessageSquare,
   Trophy,
 } from 'lucide-react';
 import { TYPOGRAPHY } from '../../constants';
 import { Ingresso, Evento } from '../../types';
 import { achievementsService, Achievement, Badge, NIVEL_CONFIG } from '../../services/achievementsService';
+import { EmptyState } from '../../components/EmptyState';
+import { EventCardSkeleton } from '../../components/Skeleton';
 
 interface HistoricoViewProps {
   myTickets: Ingresso[];
@@ -128,8 +131,10 @@ export const HistoricoView: React.FC<HistoricoViewProps> = ({
         style={{ display: 'grid', gridTemplateRows: 'minmax(100%, auto)' }}
       >
         {loading ? (
-          <div className="flex items-center justify-center py-20">
-            <Loader2 size="1.25rem" className="text-zinc-700 animate-spin" />
+          <div className="px-5 space-y-3 py-6">
+            {[1, 2, 3].map(i => (
+              <EventCardSkeleton key={i} />
+            ))}
           </div>
         ) : (
           <>
@@ -218,12 +223,12 @@ export const HistoricoView: React.FC<HistoricoViewProps> = ({
                 Eventos ({historico.length})
               </p>
               {historico.length === 0 ? (
-                <div className="flex flex-col items-center py-14 gap-3">
-                  <div className="w-12 h-12 bg-zinc-900 rounded-2xl border border-white/5 flex items-center justify-center">
-                    <Calendar size="1.25rem" className="text-zinc-700" />
-                  </div>
-                  <p className="text-zinc-400 text-sm text-center">Nenhum evento no histórico ainda</p>
-                </div>
+                <EmptyState
+                  icon={Calendar}
+                  title="Nenhum evento ainda"
+                  subtitle="Seus eventos aparecerão aqui após participar."
+                  compact
+                />
               ) : (
                 <div className="space-y-3">
                   {historico.map(item => (

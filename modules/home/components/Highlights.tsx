@@ -187,8 +187,17 @@ export const Highlights: React.FC<HighlightsProps> = React.memo(
                       }
                     >
                       <span
-                        style={{ fontSize: '2.1cqw', lineHeight: 1 }}
-                        className={`${BADGE_COLORS[item.tipo] ?? 'bg-[#FFD300]/80 text-black border border-[#FFD300]/30'} font-black px-2.5 py-1 rounded-lg uppercase tracking-widest shadow-lg backdrop-blur-md`}
+                        style={{
+                          fontSize: '2.1cqw',
+                          lineHeight: 1,
+                          ...(item.layoutConfig?.badgeColor
+                            ? {
+                                backgroundColor: item.layoutConfig.badgeColor + 'cc',
+                                borderColor: item.layoutConfig.badgeColor + '50',
+                              }
+                            : {}),
+                        }}
+                        className={`${item.layoutConfig?.badgeColor ? 'text-black border' : (BADGE_COLORS[item.tipo] ?? 'bg-[#FFD300]/80 text-black border border-[#FFD300]/30')} font-black px-2.5 py-1 rounded-lg uppercase tracking-widest shadow-lg backdrop-blur-md`}
                       >
                         {item.badge}
                       </span>

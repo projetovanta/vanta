@@ -41,7 +41,7 @@
 - 4 eventos criados no Supabase (Techno Underground, Sunset Sessions, Rooftop Chill, Funk na Mansion)
 - Status: acontecendo agora, começa em breve, acaba em breve, amanhã
 
-### Arquivos modificados
+### Arquivos modificados (sessão 4)
 - App.tsx (import TabState + onNavigateToTab callback)
 - components/EventCard.tsx (distLabel prop, tag acima do título, backdrop-blur)
 - features/admin/AdminDashboardView.tsx (sem sessionStorage)
@@ -55,19 +55,49 @@
 - modules/home/components/NearYouSection.tsx (distLabel via prop)
 - modules/home/components/ThisWeekSection.tsx (ajustes)
 
+### Arquivos modificados (sessão 5 — Bloco 1)
+- components/EmptyState.tsx (NOVO — componente reutilizável)
+- components/Skeleton.tsx (5 variantes novas: Profile, PersonCard, ChatItem, HighlightCard)
+- features/tickets/views/MyTicketsView.tsx (EmptyState + TicketCardSkeleton loading)
+- modules/wallet/WalletView.tsx (EmptyState)
+- modules/profile/HistoricoView.tsx (EmptyState + EventCardSkeleton loading)
+- modules/messages/MessagesView.tsx (EmptyState)
+- modules/search/SearchView.tsx (EventCardSkeleton + PersonCardSkeleton loading)
+- modules/search/components/SearchResults.tsx (EmptyState)
+- features/admin/views/VantaIndicaView.tsx (emoji picker, paleta cores, badgeColor)
+- modules/home/components/Highlights.tsx (badgeColor custom no badge)
+- types/eventos.ts (badgeColor no layoutConfig)
+
 ## Plano aprovado — 4 Blocos de Melhorias
 Ver detalhes em `memory/plano_blocos_melhorias.md`
 
-### Bloco 1 — Polimento Visual (PRÓXIMO)
-- 1.1 Tema escuro consistente
-- 1.2 Empty states com ilustração + CTA
-- 1.3 Skeleton loading
-- 1.4 VANTA Indica editor (emoji picker + paleta cores + snaps + templates salvos DB)
+### Bloco 1 — Polimento Visual (COMPLETO — sessão 5)
+- 1.1 Tema escuro consistente — já estava OK (95% correto)
+- 1.2 EmptyState reutilizável — componente novo + aplicado em 5 telas (MyTickets, Wallet, Historico, Messages, Search)
+- 1.3 Skeleton loading — 5 variantes novas + spinners substituídos em 4 telas (MyTickets, Search eventos+pessoas, Historico)
+- 1.4 VANTA Indica editor — emoji picker (24), paleta cores (8), badgeColor no layoutConfig, preview fiel na Home
 
-### Blocos 2-4 (depois)
-- Bloco 2: Navegação + Busca inteligente
-- Bloco 3: Financeiro com contexto temporal
-- Bloco 4: Operações em escala
+### Bloco 2 — Navegação + Busca inteligente (COMPLETO — sessão 5)
+- 2.1 CommandPalette busca dados reais (Supabase, debounce 300ms)
+- 2.2 Breadcrumbs no AdminViewHeader (prop opcional)
+- 2.3 Deep links admin (hash URL #admin/VIEW)
+- 2.4 Cargos com descrição (8 cargos, Sócio+Promoter adicionados)
+
+### Bloco 3 — Financeiro com contexto temporal (COMPLETO — sessão 5)
+- 3.1 PeriodSelector nos 2 financeiros + filtro real de dados por dataInicio
+- 3.2 Sparklines — N/A (financeiros usam dados estáticos, Dashboard já tem)
+- 3.3 Audit log contextual — initialFilter + botão Histórico nos 2 financeiros
+- 3.4 VendasTimelineChart nos 2 financeiros
+
+### Pendências resolvidas (sessão 5)
+- 2.2 Breadcrumbs aplicados em 4 views (Financeiro, MasterFinanceiro, Cargos, Eventos)
+- 1.4 Templates Indica salvos no DB (migration + service + UI salvar/carregar)
+
+### Bloco 4 — Operações em escala (PRÓXIMO)
+- 4.1 Batch actions (checkbox + barra de ação)
+- 4.2 Filtros avançados em listas (componente reutilizável)
+- 4.3 Notificações batch (enviar pra grupo)
+- 4.4 Sessão ativa + timeout (30min inativo = logout)
 
 ## Pendencias externas (sem mudança)
 - Conta Apple Developer ($99/ano)

@@ -13,6 +13,7 @@ import { getMinPrice } from '../../utils';
 import { authService } from '../../services/authService';
 import { useBloqueados } from '../../hooks/useBloqueados';
 import { OptimizedImage } from '../../components/OptimizedImage';
+import { EventCardSkeleton, PersonCardSkeleton } from '../../components/Skeleton';
 import { supabase } from '../../services/supabaseClient';
 import { useAuthStore } from '../../stores/authStore';
 import { useExtrasStore } from '../../stores/extrasStore';
@@ -385,14 +386,17 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
               onClearSearch={clearAllFilters}
             />
             {visibleEvents.length < totalResults && (
-              <div className="py-10 flex justify-center">
-                <div className="w-6 h-6 border-2 border-[#FFD300] border-t-transparent rounded-full animate-spin"></div>
+              <div className="px-3 space-y-1">
+                <EventCardSkeleton />
+                <EventCardSkeleton />
               </div>
             )}
           </>
         ) : peopleLoading ? (
-          <div className="flex items-center justify-center py-16">
-            <div className="w-6 h-6 border-2 border-[#FFD300] border-t-transparent rounded-full animate-spin" />
+          <div className="space-y-1 px-2">
+            {[1, 2, 3, 4].map(i => (
+              <PersonCardSkeleton key={i} />
+            ))}
           </div>
         ) : (
           <PeopleResults results={peopleResults} onMemberClick={onMemberClick} />

@@ -12,42 +12,42 @@ Plano de melhorias aprovado em 17/mar/2026 (sessão 4). 4 blocos independentes, 
 
 ---
 
-## Bloco 1 — Polimento Visual (PRIORIDADE 1)
+## Bloco 1 — Polimento Visual (COMPLETO — sessão 5)
 **Donos: Iris + Luna | Impacto: percepção de qualidade**
 
-| # | Item | Onde afeta |
-|---|------|-----------|
-| 1.1 | Tema escuro consistente (#0A0A0A base) | Todas 49 views admin + Home + modais |
-| 1.2 | Empty states com ilustração + CTA | Admin (listas vazias) + App (carteira, sem eventos, sem amigos) |
-| 1.3 | Skeleton loading (substituir spinners) | Admin (tabelas) + App (feed, cards, perfil) |
-| 1.4 | VANTA Indica editor completo | Emoji picker + paleta cores + snaps melhorados + templates salvos no DB |
+| # | Item | Status |
+|---|------|--------|
+| 1.1 | Tema escuro consistente | ✅ Já estava 95% OK |
+| 1.2 | EmptyState reutilizável + CTA | ✅ Componente + 5 telas |
+| 1.3 | Skeleton loading | ✅ 5 variantes + 4 telas |
+| 1.4 | VANTA Indica editor (emoji + paleta) | ✅ 24 emojis + 8 cores + badgeColor |
 
-## Bloco 2 — Navegação e Busca Inteligente (PRIORIDADE 2)
+## Bloco 2 — Navegação e Busca Inteligente (COMPLETO — sessão 5)
 **Donos: Luna + Kai | Impacto: produtividade do admin**
 
-| # | Item | Onde afeta |
-|---|------|-----------|
-| 2.1 | CommandPalette busca dados (eventos, membros, comunidades) | Admin |
-| 2.2 | Breadcrumbs (até 4 níveis de profundidade) | Admin |
-| 2.3 | Deep links admin (URL reflete view atual) | Admin + compartilhável |
-| 2.4 | Cargos com descrição (o que cada cargo pode fazer) | Admin + App |
+| # | Item | Status |
+|---|------|--------|
+| 2.1 | CommandPalette busca dados reais | ✅ Supabase + debounce |
+| 2.2 | Breadcrumbs no AdminViewHeader | ✅ Prop opcional |
+| 2.3 | Deep links admin (hash URL) | ✅ #admin/VIEW |
+| 2.4 | Cargos com descrição | ✅ 8 cargos + CARGO_DESCRICOES |
 
-## Bloco 3 — Financeiro e Dados com Contexto (PRIORIDADE 3)
+## Bloco 3 — Financeiro e Dados com Contexto (COMPLETO — sessão 5)
 **Donos: Nix + Kai + Luna | Impacto: decisões de negócio**
 
-| # | Item | Onde afeta |
-|---|------|-----------|
-| 3.1 | Seletor de período (hoje/7d/30d/custom) | Financeiro + Analytics + Relatórios + Dashboard |
-| 3.2 | Sparklines nos KPIs (tendência visual) | Dashboard + Financeiro + Analytics MV |
-| 3.3 | Audit log contextual (botão "Histórico" em cada view) | Financeiro + Eventos + Membros |
-| 3.4 | Evolução mensal gráfico (receita/tickets por mês) | Financeiro Master + Dashboard comunidade |
+| # | Item | Status |
+|---|------|--------|
+| 3.1 | PeriodSelector + filtro real nos financeiros | ✅ |
+| 3.2 | Sparklines KPIs | ⏭️ N/A (Dashboard já tem) |
+| 3.3 | Audit log contextual + botão Histórico | ✅ |
+| 3.4 | VendasTimelineChart nos financeiros | ✅ |
 
-## Bloco 4 — Operações em Escala (PRIORIDADE 4)
+## Bloco 4 — Operações em Escala (COMPLETO — sessão 5)
 **Donos: Luna + Kai + Zara | Impacto: eficiência operacional**
 
-| # | Item | Onde afeta |
-|---|------|-----------|
-| 4.1 | Batch actions (checkbox + barra de ação) | Membros, Eventos, Convites |
-| 4.2 | Filtros avançados em listas (componente reutilizável) | Pendências, Eventos, Membros |
-| 4.3 | Notificações batch (enviar pra grupo) | Admin → Usuário |
-| 4.4 | Sessão ativa + timeout (30min inativo = logout) | Admin header + segurança |
+| # | Item | Status |
+|---|------|--------|
+| 4.1 | BatchActionBar componente | ✅ |
+| 4.2 | FilterBar componente | ✅ |
+| 4.3 | Notificações batch (enviarAgora) | ✅ |
+| 4.4 | Session timeout 30min (useSessionTimeout) | ✅ |

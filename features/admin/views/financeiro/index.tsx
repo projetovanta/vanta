@@ -26,6 +26,14 @@ import { VantaPieChart } from '../../components/VantaPieChart';
 import { getReembolsosPorEvento, solicitarReembolsoManual } from '../../services/reembolsoService';
 import type { Reembolso } from '../../services/eventosAdminTypes';
 import { fmtBRL, tsBR } from '../../../../utils';
+import { PeriodSelector } from '../../components/dashboard/PeriodSelector';
+import type { Periodo } from '../../services/analytics/types';
+import { VendasTimelineChart } from '../../../dashboard-v2/VendasTimelineChart';
+import {
+  dashboardAnalyticsService,
+  getDateRanges,
+  type VendasTimelinePoint,
+} from '../../services/dashboardAnalyticsService';
 
 import { ModalReembolsoManual } from './ModalReembolsoManual';
 import { ModalFechamento } from './ModalFechamento';
@@ -43,9 +51,16 @@ interface Props {
   currentUserId: string;
   addNotification: (n: Omit<Notificacao, 'id'>) => void;
   comunidadeId?: string;
+  onNavigate?: (view: string) => void;
 }
 
-export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNotification, comunidadeId }) => {
+export const FinanceiroView: React.FC<Props> = ({
+  onBack,
+  currentUserId,
+  addNotification,
+  comunidadeId,
+  onNavigate,
+}) => {
   // Polling de versão para re-calcular após mudanças externas (master aprova saque)
   const { toasts, dismiss, toast } = useToast();
   const [svcVersion, setSvcVersion] = useState(() => eventosAdminService.getVersion());
@@ -91,20 +106,24 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
   const [showFechaModal, setShowFechaModal] = useState(false);
   useModalBack(showFechaModal, () => setShowFechaModal(false), 'fechamento-modal');
 
+  const [periodo, setPeriodo] = useState<Periodo>('MES');
+
   // Taxas efetivas do primeiro evento do produtor (resolvidas no momento de abrir o modal)
   const meusEventos = useMemo(
     () => {
+      const [inicio] = getDateRanges(periodo);
       const all = eventosAdminService
         .getEventos()
         .filter(e =>
           rbacService
             .getAtribuicoes(currentUserId)
             .some(a => a.ativo && a.tenant.tipo === 'EVENTO' && a.tenant.id === e.id && a.cargo === 'SOCIO'),
-        );
+        )
+        .filter(e => e.dataInicio >= inicio);
       return comunidadeId ? all.filter(e => e.comunidadeId === comunidadeId) : all;
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [currentUserId, svcVersion, comunidadeId],
+    [currentUserId, svcVersion, comunidadeId, periodo],
   );
 
   const eventoSaque = meusEventos[0];
@@ -221,6 +240,27 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
   }, [currentUserId, svcVersion, isGGC]);
 
   const [saldo, setSaldo] = useState({ totalVendas: 0, saldoDisponivel: 0, aReceber: 0, saquesProcessados: 0 });
+  const [timeline, setTimeline] = useState<VendasTimelinePoint[]>([]);
+  const [timelineLoading, setTimelineLoading] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    setTimelineLoading(true);
+    dashboardAnalyticsService
+      .getVendasTimeline(periodo, comunidadeId)
+      .then(d => {
+        if (!cancelled) {
+          setTimeline(d);
+          setTimelineLoading(false);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setTimelineLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [periodo, comunidadeId]);
   useEffect(() => {
     eventosAdminService
       .getSaldoFinanceiro(currentUserId)
@@ -488,13 +528,21 @@ export const FinanceiroView: React.FC<Props> = ({ onBack, currentUserId, addNoti
         title="Finanças"
         kicker="Produtor"
         onBack={onBack}
+        breadcrumbs={[{ label: 'Dashboard', onClick: onBack }, { label: 'Finanças' }]}
         actions={[
+          { icon: Clock, label: 'Histórico', onClick: () => onNavigate?.('AUDIT_LOG') },
           { icon: Download, label: 'CSV', onClick: handleExportCSV },
           { icon: FileText, label: 'PDF', onClick: handleExportPDF },
         ]}
       />
 
       <div className="flex-1 overflow-y-auto no-scrollbar p-6 space-y-5 max-w-3xl mx-auto w-full">
+        {/* Seletor de período */}
+        <PeriodSelector value={periodo} onChange={setPeriodo} />
+
+        {/* Evolução de vendas */}
+        <VendasTimelineChart data={timeline} loading={timelineLoading} />
+
         {/* Banner de sucesso */}
         {saqueOk && (
           <div className="flex items-center gap-3 p-4 bg-emerald-500/10 border border-emerald-500/25 rounded-2xl animate-in slide-in-from-top duration-300">

@@ -5083,6 +5083,39 @@ export type Database = {
         };
         Relationships: [];
       };
+      vanta_indica_templates: {
+        Row: {
+          ativo: boolean;
+          atualizado_em: string;
+          criado_em: string;
+          criado_por: string | null;
+          descricao: string;
+          form_data: Json;
+          id: string;
+          label: string;
+        };
+        Insert: {
+          ativo?: boolean;
+          atualizado_em?: string;
+          criado_em?: string;
+          criado_por?: string | null;
+          descricao?: string;
+          form_data?: Json;
+          id?: string;
+          label: string;
+        };
+        Update: {
+          ativo?: boolean;
+          atualizado_em?: string;
+          criado_em?: string;
+          criado_por?: string | null;
+          descricao?: string;
+          form_data?: Json;
+          id?: string;
+          label?: string;
+        };
+        Relationships: [];
+      };
       variacoes_ingresso: {
         Row: {
           area: string;

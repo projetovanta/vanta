@@ -20,7 +20,11 @@ import {
   HelpCircle,
   Sparkles,
   TrendingUp,
+  MapPin,
+  User,
+  Loader2,
 } from 'lucide-react';
+import { supabase } from '../../../services/supabaseClient';
 
 interface CommandItem {
   id: string;
@@ -125,16 +129,28 @@ const COMMANDS: CommandItem[] = [
   { id: 'FAQ', label: 'FAQ', section: 'Config', icon: HelpCircle, keywords: 'faq ajuda perguntas' },
 ];
 
+type DataResult = {
+  id: string;
+  label: string;
+  subtitle: string;
+  section: string;
+  type: 'evento' | 'comunidade' | 'membro';
+};
+
 interface Props {
   isOpen: boolean;
   onClose: () => void;
   onSelect: (id: string) => void;
+  onDataSelect?: (type: 'evento' | 'comunidade' | 'membro', id: string) => void;
 }
 
-export const CommandPalette: React.FC<Props> = ({ isOpen, onClose, onSelect }) => {
+export const CommandPalette: React.FC<Props> = ({ isOpen, onClose, onSelect, onDataSelect }) => {
   const [query, setQuery] = useState('');
   const [selectedIdx, setSelectedIdx] = useState(0);
+  const [dataResults, setDataResults] = useState<DataResult[]>([]);
+  const [searching, setSearching] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const debounceRef = useRef<ReturnType<typeof setTimeout>>();
 
   const filtered =
     query.length === 0
@@ -145,10 +161,79 @@ export const CommandPalette: React.FC<Props> = ({ isOpen, onClose, onSelect }) =
             c.keywords.toLowerCase().includes(query.toLowerCase()),
         );
 
+  const allResults = [
+    ...filtered.map(f => ({ ...f, _isCommand: true as const })),
+    ...dataResults.map(d => ({ ...d, _isCommand: false as const })),
+  ];
+
+  // Busca dinâmica no Supabase
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    if (query.length < 2) {
+      setDataResults([]);
+      setSearching(false);
+      return;
+    }
+
+    setSearching(true);
+    debounceRef.current = setTimeout(async () => {
+      const q = query.toLowerCase();
+      const results: DataResult[] = [];
+
+      const [evRes, comRes, memRes] = await Promise.all([
+        supabase.from('eventos_admin').select('id, nome, cidade').ilike('nome', `%${q}%`).limit(5),
+        supabase.from('comunidades').select('id, nome, cidade').ilike('nome', `%${q}%`).limit(5),
+        supabase.from('profiles').select('id, nome, email, cidade').ilike('nome', `%${q}%`).limit(5),
+      ]);
+
+      if (evRes.data) {
+        for (const e of evRes.data) {
+          results.push({
+            id: e.id,
+            label: e.nome,
+            subtitle: e.cidade || 'Sem cidade',
+            section: 'Eventos',
+            type: 'evento',
+          });
+        }
+      }
+      if (comRes.data) {
+        for (const c of comRes.data) {
+          results.push({
+            id: c.id,
+            label: c.nome,
+            subtitle: c.cidade || '',
+            section: 'Comunidades',
+            type: 'comunidade',
+          });
+        }
+      }
+      if (memRes.data) {
+        for (const m of memRes.data) {
+          results.push({
+            id: m.id,
+            label: m.nome || 'Sem nome',
+            subtitle: m.cidade || m.email || '',
+            section: 'Membros',
+            type: 'membro',
+          });
+        }
+      }
+
+      setDataResults(results);
+      setSearching(false);
+    }, 300);
+
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [query]);
+
   useEffect(() => {
     if (isOpen) {
       setQuery('');
       setSelectedIdx(0);
+      setDataResults([]);
       setTimeout(() => inputRef.current?.focus(), 100);
     }
   }, [isOpen]);
@@ -157,18 +242,23 @@ export const CommandPalette: React.FC<Props> = ({ isOpen, onClose, onSelect }) =
     (e: React.KeyboardEvent) => {
       if (e.key === 'ArrowDown') {
         e.preventDefault();
-        setSelectedIdx(i => Math.min(i + 1, filtered.length - 1));
+        setSelectedIdx(i => Math.min(i + 1, allResults.length - 1));
       } else if (e.key === 'ArrowUp') {
         e.preventDefault();
         setSelectedIdx(i => Math.max(i - 1, 0));
-      } else if (e.key === 'Enter' && filtered[selectedIdx]) {
-        onSelect(filtered[selectedIdx].id);
+      } else if (e.key === 'Enter' && allResults[selectedIdx]) {
+        const item = allResults[selectedIdx];
+        if (item._isCommand) {
+          onSelect(item.id);
+        } else if (onDataSelect) {
+          onDataSelect((item as DataResult & { _isCommand: false }).type, item.id);
+        }
         onClose();
       } else if (e.key === 'Escape') {
         onClose();
       }
     },
-    [filtered, selectedIdx, onSelect, onClose],
+    [allResults, selectedIdx, onSelect, onDataSelect, onClose],
   );
 
   if (!isOpen) return null;
@@ -193,10 +283,11 @@ export const CommandPalette: React.FC<Props> = ({ isOpen, onClose, onSelect }) =
               setSelectedIdx(0);
             }}
             onKeyDown={handleKeyDown}
-            placeholder="Buscar tela, ação ou funcionalidade..."
+            placeholder="Buscar tela, evento, membro, comunidade..."
             autoComplete="off"
             className="flex-1 bg-transparent text-white text-sm outline-none placeholder-zinc-600"
           />
+          {searching && <Loader2 size="0.875rem" className="text-zinc-500 animate-spin shrink-0" />}
           <kbd className="px-2 py-0.5 bg-zinc-800 text-zinc-500 text-[0.5rem] font-bold rounded border border-white/10">
             ESC
           </kbd>
@@ -204,16 +295,28 @@ export const CommandPalette: React.FC<Props> = ({ isOpen, onClose, onSelect }) =
 
         {/* Results */}
         <div className="max-h-[50vh] overflow-y-auto no-scrollbar py-2">
-          {filtered.length === 0 ? (
+          {allResults.length === 0 && !searching ? (
             <p className="text-zinc-500 text-sm text-center py-8">Nenhum resultado</p>
           ) : (
-            filtered.map((item, idx) => {
-              const Icon = item.icon;
+            allResults.map((item, idx) => {
+              const DATA_ICONS = { evento: Calendar, comunidade: MapPin, membro: User };
+              const Icon = item._isCommand
+                ? (item as CommandItem & { _isCommand: true }).icon
+                : DATA_ICONS[(item as DataResult & { _isCommand: false }).type];
+              const section = item._isCommand
+                ? (item as CommandItem & { _isCommand: true }).section
+                : (item as DataResult & { _isCommand: false }).section;
+              const subtitle = item._isCommand ? section : (item as DataResult & { _isCommand: false }).subtitle;
+
               return (
                 <button
-                  key={item.id}
+                  key={`${item._isCommand ? 'cmd' : 'data'}-${item.id}`}
                   onClick={() => {
-                    onSelect(item.id);
+                    if (item._isCommand) {
+                      onSelect(item.id);
+                    } else if (onDataSelect) {
+                      onDataSelect((item as DataResult & { _isCommand: false }).type, item.id);
+                    }
                     onClose();
                   }}
                   className={`w-full flex items-center gap-3 px-5 py-3 text-left transition-colors ${
@@ -222,13 +325,18 @@ export const CommandPalette: React.FC<Props> = ({ isOpen, onClose, onSelect }) =
                 >
                   <Icon size="1rem" className={idx === selectedIdx ? 'text-[#FFD300]' : 'text-zinc-500'} />
                   <div className="flex-1 min-w-0">
-                    <p className={`text-sm ${idx === selectedIdx ? 'text-white font-bold' : 'text-zinc-300'}`}>
+                    <p className={`text-sm truncate ${idx === selectedIdx ? 'text-white font-bold' : 'text-zinc-300'}`}>
                       {item.label}
                     </p>
-                    <p className="text-[0.625rem] text-zinc-600">{item.section}</p>
+                    <p className="text-[0.625rem] text-zinc-600 truncate">{subtitle}</p>
                   </div>
+                  {!item._isCommand && (
+                    <span className="text-[0.5rem] font-bold uppercase tracking-widest text-zinc-600 shrink-0">
+                      {section}
+                    </span>
+                  )}
                   {idx === selectedIdx && (
-                    <kbd className="px-1.5 py-0.5 bg-zinc-800 text-zinc-500 text-[0.5rem] font-bold rounded border border-white/10">
+                    <kbd className="px-1.5 py-0.5 bg-zinc-800 text-zinc-500 text-[0.5rem] font-bold rounded border border-white/10 shrink-0">
                       ↵
                     </kbd>
                   )}

@@ -8,6 +8,7 @@ import { ArchiveModal } from './components/ArchiveModal';
 import { useChatStore } from '../../stores/chatStore';
 import { useSocialStore } from '../../stores/socialStore';
 import { useDebounce } from '../../hooks/useDebounce';
+import { EmptyState } from '../../components/EmptyState';
 import { moodService, MoodData } from '../../services/moodService';
 import { Skeleton } from '../../components/Skeleton';
 import { useBloqueados } from '../../hooks/useBloqueados';
@@ -187,22 +188,17 @@ export const MessagesView: React.FC<MessagesViewProps> = ({ onOpenChat }) => {
             );
           })
         ) : (
-          <div className="py-32 text-center animate-in fade-in duration-700">
-            <div className="w-16 h-16 bg-zinc-900 rounded-full flex items-center justify-center mx-auto mb-6 border border-white/5 opacity-40">
-              {activeTab === 'ARQUIVADAS' ? (
-                <Archive size="1.5rem" className="text-zinc-400" />
-              ) : (
-                <MessageSquare size="1.5rem" className="text-zinc-400" />
-              )}
-            </div>
-            <p className="text-zinc-400 italic text-sm">
-              {activeTab === 'ARQUIVADAS'
-                ? 'Nenhuma conversa arquivada.'
+          <EmptyState
+            icon={activeTab === 'ARQUIVADAS' ? Archive : MessageSquare}
+            title={
+              activeTab === 'ARQUIVADAS'
+                ? 'Nenhuma conversa arquivada'
                 : query
-                  ? 'Nenhuma conversa encontrada.'
-                  : 'Sua caixa está vazia. Comece uma conexão!'}
-            </p>
-          </div>
+                  ? 'Nenhuma conversa encontrada'
+                  : 'Sua caixa está vazia'
+            }
+            subtitle={activeTab === 'ARQUIVADAS' ? undefined : query ? 'Tente outro nome.' : 'Comece uma conexão!'}
+          />
         )}
       </div>
 

@@ -47,6 +47,18 @@ export const CARGO_LABELS: Record<CargoUnificado, string> = {
   CAIXA: 'Caixa',
 };
 
+/** Descrição curta de cada cargo — o que a pessoa pode fazer */
+export const CARGO_DESCRICOES: Record<CargoUnificado, string> = {
+  GERENTE: 'Acesso total: financeiro, equipe, eventos e comunidade',
+  SOCIO: 'Cria e gerencia eventos, vê financeiro dos seus eventos',
+  PROMOTER: 'Gerencia listas e convites, vê relatório de vendas',
+  GER_PORTARIA_LISTA: 'Coordena equipe de portaria de listas',
+  PORTARIA_LISTA: 'Check-in de convidados da lista na entrada',
+  GER_PORTARIA_ANTECIPADO: 'Coordena equipe de portaria de antecipados',
+  PORTARIA_ANTECIPADO: 'Check-in de ingressos antecipados na entrada',
+  CAIXA: 'Vende ingressos e registra consumação no evento',
+};
+
 /** Mapa único de permissões por cargo — fonte da verdade */
 export const CARGO_PERMISSOES: Record<CargoUnificado, PermissaoVanta[]> = {
   GERENTE: [

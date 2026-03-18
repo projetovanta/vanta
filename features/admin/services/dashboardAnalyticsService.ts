@@ -35,7 +35,7 @@ export const getPeriodoLabel = (p: Periodo): string => PERIODO_LABELS[p];
 // ── Helpers de data ──────────────────────────────────────────────────────────
 
 /** Retorna [inicioAtual, fimAtual, inicioAnterior, fimAnterior] como ISO strings */
-const getDateRanges = (periodo: Periodo): [string, string, string, string] => {
+export const getDateRanges = (periodo: Periodo): [string, string, string, string] => {
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 

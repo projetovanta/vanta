@@ -33,6 +33,7 @@ import { rbacService, CARGO_TO_PORTAL } from '../admin/services/rbacService';
 import { SIDEBAR_SECTIONS, COMMUNITY_SIDEBAR_SECTIONS, type AdminSubView } from '../admin/components/AdminSidebar';
 import { useAuthStore } from '../../stores/authStore';
 import { supabase } from '../../services/supabaseClient';
+import { useSessionTimeout } from '../../hooks/useSessionTimeout';
 
 // Home V2
 import { DashboardV2Home } from './DashboardV2Home';
@@ -241,7 +242,14 @@ export const DashboardV2Gateway: React.FC<{
 
   // ── Navegação ────────────────────────────────────────────────────────────
   const [activeNav, setActiveNav] = useState<NavItem>('DASHBOARD');
-  const [subView, setSubView] = useState<AdminSubView>('DASHBOARD');
+  const [subView, _setSubView] = useState<AdminSubView>(() => {
+    const hash = window.location.hash.replace('#admin/', '');
+    return hash && hash !== '' ? (hash as AdminSubView) : 'DASHBOARD';
+  });
+  const setSubView = useCallback((v: AdminSubView) => {
+    _setSubView(v);
+    window.history.replaceState(null, '', v === 'DASHBOARD' ? window.location.pathname : `#admin/${v}`);
+  }, []);
 
   const [showPalette, setShowPalette] = useState(false);
   const [isDesktop, setIsDesktop] = useState(() => window.matchMedia('(min-width: 768px)').matches);
@@ -250,6 +258,14 @@ export const DashboardV2Gateway: React.FC<{
   const [caixaEventoId, setCaixaEventoId] = useState<string | undefined>(undefined);
   const [toastMsg, setToastMsg] = useState('');
   const [simulatedRole, setSimulatedRole] = useState<ContaVantaLegacy | null>(null);
+
+  // ── Session timeout (30min inativo = logout) ──────────────────────────
+  useSessionTimeout(
+    useCallback(() => {
+      supabase.auth.signOut();
+    }, []),
+    true,
+  );
 
   // ── Panorama vs Contexto ────────────────────────────────────────────────
   // null = panorama (caixa de entrada). Preenchido = dentro de um contexto.
@@ -914,7 +930,20 @@ export const DashboardV2Gateway: React.FC<{
           </div>
         </div>
 
-        <CommandPalette isOpen={showPalette} onClose={() => setShowPalette(false)} onSelect={handleNavigate} />
+        <CommandPalette
+          isOpen={showPalette}
+          onClose={() => setShowPalette(false)}
+          onSelect={handleNavigate}
+          onDataSelect={type => {
+            if (type === 'evento') {
+              setSubView('MEUS_EVENTOS');
+            } else if (type === 'comunidade') {
+              setSubView('COMUNIDADES');
+            } else if (type === 'membro') {
+              setSubView('GESTAO_USUARIOS');
+            }
+          }}
+        />
 
         {toastMsg && (
           <div className="absolute bottom-6 left-1/2 -translate-x-1/2 px-4 py-2 bg-zinc-800 border border-white/10 rounded-xl text-white text-xs font-medium z-[200] shadow-lg">

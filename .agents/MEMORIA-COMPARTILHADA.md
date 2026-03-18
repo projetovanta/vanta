@@ -39,6 +39,7 @@
 
 | O que mudou | Onde ler |
 |-------------|----------|
+| Bloco 1 Polimento Visual COMPLETO (sessão 5): EmptyState, Skeleton, Indica editor | `memory/sessao_atual.md` |
 | Visual Redesign Home + EventCard + VANTA Indica (sessão 4) | `memory/sessao_atual.md` |
 | VANTA Indica: handlers rota completos (6 tipos) + 7 templates | `memory/sessao_atual.md` |
 | Admin: sem sessionStorage, sempre abre Dashboard | `memory/sessao_atual.md` |
@@ -73,10 +74,10 @@
 ## Próximas Prioridades
 
 ### Plano 4 Blocos de Melhorias (aprovado 17/mar sessão 4)
-1. **Bloco 1 — Polimento Visual** (PRÓXIMO): tema escuro consistente, empty states, skeleton loading, VANTA Indica editor (emoji + paleta + snaps + templates DB)
-2. **Bloco 2 — Navegação**: CommandPalette busca dados, breadcrumbs, deep links admin, cargos com descrição
-3. **Bloco 3 — Financeiro**: seletor período, sparklines KPIs, audit log contextual, evolução mensal
-4. **Bloco 4 — Operações**: batch actions, filtros avançados, notificações batch, sessão ativa + timeout
+1. **Bloco 1 — Polimento Visual** ✅ COMPLETO
+2. **Bloco 2 — Navegação** ✅ COMPLETO
+3. **Bloco 3 — Financeiro** ✅ COMPLETO
+4. **Bloco 4 — Operações** ✅ COMPLETO — todos os 4 blocos entregues na sessão 5
 
 ### Pendências externas
 - Conta Apple Developer ($99/ano) — login Apple + deep links iOS + App Store

@@ -10,6 +10,8 @@ import { AdminViewHeader } from '../components/AdminViewHeader';
 import { dataURLtoBlob } from '../../../utils';
 import { useToast, ToastContainer } from '../../../components/Toast';
 import { VantaSlider } from '../../../components/VantaSlider';
+import { indicaTemplatesService, type IndicaTemplate } from '../services/indicaTemplatesService';
+import type { Json } from '../../../types/supabase';
 
 const TIPO_CONFIG: Record<TipoIndicaCard, { label: string; dot: string; bg: string; text: string; border: string }> = {
   EVENTO: {
@@ -109,6 +111,7 @@ type ModalForm = {
   eventoId: string;
   imagem: string;
   badge: string;
+  badgeColor: string;
   titulo: string;
   subtitulo: string;
   alvoLocalidades: string;
@@ -131,6 +134,7 @@ const EMPTY: ModalForm = {
   eventoId: '',
   imagem: '',
   badge: '',
+  badgeColor: '',
   titulo: '',
   subtitulo: '',
   alvoLocalidades: 'GLOBAL',
@@ -252,6 +256,46 @@ const CARD_TEMPLATES: { label: string; descricao: string; form: Partial<ModalFor
       textAlign: 'end',
     },
   },
+];
+
+/** Emojis populares pra curadoria noturna */
+const EMOJI_PICKS = [
+  '🔥',
+  '✨',
+  '🎶',
+  '🍸',
+  '🌙',
+  '💎',
+  '🎉',
+  '🏆',
+  '👑',
+  '🎵',
+  '🌟',
+  '🍾',
+  '💫',
+  '🎤',
+  '🪩',
+  '❤️',
+  '🎧',
+  '🥂',
+  '⚡',
+  '🎭',
+  '💜',
+  '🖤',
+  '🤍',
+  '💛',
+];
+
+/** Paleta de cores pra badge custom */
+const BADGE_PALETTE = [
+  { color: '#FFD300', label: 'Dourado' },
+  { color: '#10b981', label: 'Esmeralda' },
+  { color: '#a855f7', label: 'Roxo' },
+  { color: '#f59e0b', label: 'Âmbar' },
+  { color: '#ef4444', label: 'Vermelho' },
+  { color: '#3b82f6', label: 'Azul' },
+  { color: '#ec4899', label: 'Pink' },
+  { color: '#ffffff', label: 'Branco' },
 ];
 
 /** Snap points for magnetic alignment (percentages) */
@@ -515,7 +559,9 @@ const CardModal: React.FC<{
   onSave: (f: ModalForm) => void;
   onClose: () => void;
   isSaving: boolean;
-}> = ({ initial, initialEventName, onSave, onClose, isSaving }) => {
+  dbTemplates?: IndicaTemplate[];
+  onSaveTemplate?: (label: string, descricao: string, formData: Json) => Promise<void>;
+}> = ({ initial, initialEventName, onSave, onClose, isSaving, dbTemplates = [], onSaveTemplate }) => {
   const [form, setForm] = useState<ModalForm>(initial);
   const [uploadingImg, setUploadingImg] = useState(false);
   const [cropSrc, setCropSrc] = useState<string | null>(null);
@@ -821,6 +867,23 @@ const CardModal: React.FC<{
                   <span className="text-[0.5rem] text-zinc-500 block mt-0.5">{tpl.descricao}</span>
                 </button>
               ))}
+              {dbTemplates.map(tpl => (
+                <button
+                  key={tpl.id}
+                  type="button"
+                  onClick={() => {
+                    const fd = tpl.form_data as Partial<ModalForm>;
+                    setForm(prev => ({ ...prev, ...fd }));
+                    setBadgePos({ x: 5, y: 75 });
+                    setTituloPos({ x: 5, y: 82 });
+                    setSubtituloPos({ x: 5, y: 90 });
+                  }}
+                  className="shrink-0 px-3 py-2 bg-[#FFD300]/5 border border-[#FFD300]/20 rounded-xl text-left active:scale-[0.97] transition-all hover:border-[#FFD300]/40"
+                >
+                  <span className="text-[0.65rem] text-[#FFD300] font-bold block">{tpl.label}</span>
+                  <span className="text-[0.5rem] text-zinc-500 block mt-0.5">{tpl.descricao}</span>
+                </button>
+              ))}
             </div>
           </div>
         )}
@@ -921,15 +984,61 @@ const CardModal: React.FC<{
           </Field>
         )}
 
-        {/* 3. Badge */}
+        {/* 3. Badge + Emoji picker + Cor */}
         <Field label="Badge">
-          <input
-            value={form.badge}
-            onChange={e => !isDestaque && set('badge', e.target.value)}
-            readOnly={isDestaque}
-            placeholder={isDestaque ? 'Auto: VANTA INDICA' : 'CURADORIA'}
-            className={inputCls + (isDestaque ? ' text-zinc-400 cursor-not-allowed' : '')}
-          />
+          <div className="space-y-2">
+            <input
+              value={form.badge}
+              onChange={e => !isDestaque && set('badge', e.target.value)}
+              readOnly={isDestaque}
+              placeholder={isDestaque ? 'Auto: VANTA INDICA' : 'CURADORIA'}
+              className={inputCls + (isDestaque ? ' text-zinc-400 cursor-not-allowed' : '')}
+            />
+            {!isDestaque && (
+              <>
+                {/* Emoji picker */}
+                <div className="flex flex-wrap gap-1.5">
+                  {EMOJI_PICKS.map(e => (
+                    <button
+                      key={e}
+                      type="button"
+                      onClick={() => set('badge', form.badge + e)}
+                      className="w-8 h-8 rounded-lg bg-zinc-900/60 border border-white/5 flex items-center justify-center text-base hover:border-[#FFD300]/30 active:scale-90 transition-all"
+                    >
+                      {e}
+                    </button>
+                  ))}
+                </div>
+                {/* Cor do badge */}
+                <p className="text-[0.5rem] font-black uppercase tracking-widest text-zinc-500 mt-1">Cor do badge</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {BADGE_PALETTE.map(c => (
+                    <button
+                      key={c.color}
+                      type="button"
+                      onClick={() => set('badgeColor', form.badgeColor === c.color ? '' : c.color)}
+                      className={`w-7 h-7 rounded-full border-2 transition-all active:scale-90 ${
+                        form.badgeColor === c.color
+                          ? 'border-white scale-110'
+                          : 'border-transparent hover:border-white/30'
+                      }`}
+                      style={{ backgroundColor: c.color }}
+                      title={c.label}
+                    />
+                  ))}
+                  {form.badgeColor && (
+                    <button
+                      type="button"
+                      onClick={() => set('badgeColor', '')}
+                      className="h-7 px-2 rounded-full bg-zinc-800 border border-white/10 text-zinc-400 text-[0.5rem] font-bold uppercase tracking-widest flex items-center active:scale-90 transition-all"
+                    >
+                      Auto
+                    </button>
+                  )}
+                </div>
+              </>
+            )}
+          </div>
         </Field>
 
         {/* 4. Título */}
@@ -1316,8 +1425,14 @@ const CardModal: React.FC<{
                   className="active:cursor-grabbing z-10 touch-none"
                 >
                   <span
-                    style={{ fontSize: '2.1cqw', lineHeight: 1 }}
-                    className={`${PREVIEW_BADGE_COLORS[form.tipo] ?? 'bg-[#FFD300]/80 text-black border border-[#FFD300]/30'} font-black px-2.5 py-1 rounded-lg uppercase tracking-widest shadow-lg backdrop-blur-md`}
+                    style={{
+                      fontSize: '2.1cqw',
+                      lineHeight: 1,
+                      ...(form.badgeColor
+                        ? { backgroundColor: form.badgeColor + 'cc', borderColor: form.badgeColor + '50' }
+                        : {}),
+                    }}
+                    className={`${form.badgeColor ? 'text-black border font-black px-2.5 py-1 rounded-lg uppercase tracking-widest shadow-lg backdrop-blur-md' : `${PREVIEW_BADGE_COLORS[form.tipo] ?? 'bg-[#FFD300]/80 text-black border border-[#FFD300]/30'} font-black px-2.5 py-1 rounded-lg uppercase tracking-widest shadow-lg backdrop-blur-md`}`}
                   >
                     {form.badge}
                   </span>
@@ -1440,6 +1555,22 @@ const CardModal: React.FC<{
           {isSaving ? <Loader2 size="0.875rem" className="animate-spin" /> : <Check size="0.875rem" />}
           {isSaving ? 'Salvando...' : 'Salvar Card'}
         </button>
+        {!form.id && form.titulo && onSaveTemplate && (
+          <button
+            type="button"
+            onClick={async () => {
+              const { id: _id, ...formWithoutId } = form;
+              await onSaveTemplate(
+                form.titulo || 'Template sem nome',
+                form.subtitulo || '',
+                formWithoutId as unknown as Json,
+              );
+            }}
+            className="w-full py-3 bg-zinc-900 border border-[#FFD300]/20 text-[#FFD300] font-bold text-[0.5625rem] uppercase tracking-[0.2em] rounded-xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all"
+          >
+            Salvar como Template
+          </button>
+        )}
       </div>
 
       {/* Editor de crop — sobrepõe o modal */}
@@ -1475,6 +1606,7 @@ export const VantaIndicaView: React.FC<{ onBack: () => void; userId?: string }> 
     data: EMPTY,
   });
   const [isSaving, setIsSaving] = useState(false);
+  const [dbTemplates, setDbTemplates] = useState<IndicaTemplate[]>([]);
   const { toasts, dismiss, toast } = useToast();
 
   const refresh = async () => {
@@ -1482,8 +1614,14 @@ export const VantaIndicaView: React.FC<{ onBack: () => void; userId?: string }> 
     setCards(adminService.getIndicaCards());
   };
 
+  const refreshTemplates = async () => {
+    const tpls = await indicaTemplatesService.list();
+    setDbTemplates(tpls);
+  };
+
   useEffect(() => {
     void refresh().finally(() => setLoading(false));
+    void refreshTemplates();
   }, []);
 
   const handleToggle = async (id: string) => {
@@ -1521,6 +1659,7 @@ export const VantaIndicaView: React.FC<{ onBack: () => void; userId?: string }> 
         _scaleBadge: card.layoutConfig?.badgeScale ?? 1,
         _scaleTitulo: card.layoutConfig?.tituloScale ?? 1,
         _scaleSubtitulo: card.layoutConfig?.subtituloScale ?? 1,
+        badgeColor: card.layoutConfig?.badgeColor || '',
       },
       eventName: card.tipo === 'DESTAQUE_EVENTO' ? card.titulo : '',
     });
@@ -1559,6 +1698,7 @@ export const VantaIndicaView: React.FC<{ onBack: () => void; userId?: string }> 
         badgeScale: form._scaleBadge,
         tituloScale: form._scaleTitulo,
         subtituloScale: form._scaleSubtitulo,
+        badgeColor: form.badgeColor || undefined,
       },
       criadoPor: userId || 'sistema',
     };
@@ -1675,6 +1815,12 @@ export const VantaIndicaView: React.FC<{ onBack: () => void; userId?: string }> 
           onSave={handleSave}
           onClose={() => setModal({ open: false, data: EMPTY })}
           isSaving={isSaving}
+          dbTemplates={dbTemplates}
+          onSaveTemplate={async (label, descricao, formData) => {
+            await indicaTemplatesService.save(label, descricao, formData);
+            await refreshTemplates();
+            toast('sucesso', 'Template salvo');
+          }}
         />
       )}
     </div>

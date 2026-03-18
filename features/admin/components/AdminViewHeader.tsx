@@ -11,7 +11,7 @@
  */
 
 import React from 'react';
-import { ArrowLeft, type LucideIcon } from 'lucide-react';
+import { ArrowLeft, ChevronRight, type LucideIcon } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
 
 interface ActionButton {
@@ -20,12 +20,18 @@ interface ActionButton {
   onClick: () => void;
 }
 
+interface BreadcrumbItem {
+  label: string;
+  onClick?: () => void;
+}
+
 interface Props {
   title: string;
   subtitle?: string;
   subtitleColor?: string;
   onBack: () => void;
   actions?: ActionButton[];
+  breadcrumbs?: BreadcrumbItem[];
   badge?: number;
   badgeColor?: string;
   /** Kicker acima do título (ex: "Master Admin", "Gerente") */
@@ -41,8 +47,32 @@ export const AdminViewHeader: React.FC<Props> = ({
   badge,
   badgeColor = '#f59e0b',
   kicker,
+  breadcrumbs,
 }) => (
   <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-5 pt-5 pb-4 shrink-0">
+    {/* Breadcrumbs */}
+    {breadcrumbs && breadcrumbs.length > 0 && (
+      <div className="flex items-center gap-1 mb-2 overflow-x-auto no-scrollbar">
+        {breadcrumbs.map((crumb, i) => (
+          <React.Fragment key={i}>
+            {i > 0 && <ChevronRight size={10} className="shrink-0 text-zinc-700" />}
+            {crumb.onClick ? (
+              <button
+                type="button"
+                onClick={crumb.onClick}
+                className="shrink-0 text-[0.5rem] uppercase tracking-widest text-zinc-500 hover:text-white transition-colors"
+              >
+                {crumb.label}
+              </button>
+            ) : (
+              <span className="shrink-0 text-[0.5rem] font-bold uppercase tracking-widest text-zinc-300">
+                {crumb.label}
+              </span>
+            )}
+          </React.Fragment>
+        ))}
+      </div>
+    )}
     <div className="flex items-start gap-3">
       {/* Voltar — SEMPRE à esquerda, 44px touch target */}
       <button

@@ -43,5 +43,10 @@
 | `comunidadesService.ts` | Atualizado: campos `instagram`, `whatsapp`, `tiktok`, `site` em criar/atualizar |
 | `clube/clubeReservasService.ts` | Substitui stubs: `getResgatesUsuario`, `getResgatesEvento`, `getResgatesPendentePost` agora são queries reais |
 
+| `indicaTemplatesService.ts` | CRUD templates VANTA Indica salvos no DB. Tabela `vanta_indica_templates` |
+| `pushTemplatesService.ts` | Atualizado: `enviarAgora()` — envio imediato batch (agenda com data = agora) |
+| `dashboardAnalyticsService.ts` | Atualizado: `getDateRanges()` exportado pra uso nos financeiros |
+| `rbacService.ts` | Atualizado: `CARGO_DESCRICOES` adicionado (8 cargos com descrição) |
+
 ## Clube (subdiretório clube/)
 Fachada: `clube/index.ts` (220L). Sub-services: cache, membros, tiers, solicitações, lotes, reservas, infrações, passport, instagram, config.

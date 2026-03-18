@@ -12,7 +12,9 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, QrCode, Sparkles, Clock, Ticket, RefreshCw, User, Check, Loader2 } from 'lucide-react';
+import { ArrowLeft, QrCode, Sparkles, Clock, Ticket, RefreshCw, User, Check, Loader2, Search } from 'lucide-react';
+import { EmptyState } from '../../../components/EmptyState';
+import { TicketCardSkeleton } from '../../../components/Skeleton';
 import { TYPOGRAPHY } from '../../../constants';
 import { vantaService } from '../../../services/vantaService';
 import { MyTicket } from '../../admin/services/IVantaService';
@@ -343,21 +345,18 @@ export const MyTicketsView: React.FC<{
       {/* Conteúdo */}
       <div className="flex-1 overflow-y-auto no-scrollbar p-5 space-y-6">
         {loading ? (
-          <div className="flex items-center justify-center py-20">
-            <RefreshCw size="1.5rem" className="text-zinc-700 animate-spin" />
+          <div className="space-y-3">
+            {[1, 2, 3].map(i => (
+              <TicketCardSkeleton key={i} />
+            ))}
           </div>
         ) : tickets.length === 0 ? (
-          <div className="flex flex-col items-center py-20 gap-4">
-            <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/5 flex items-center justify-center">
-              <Ticket size="1.75rem" className="text-zinc-700" />
-            </div>
-            <p className="text-zinc-700 text-[0.625rem] font-black uppercase tracking-widest text-center">
-              Nenhum ingresso
-            </p>
-            <p className="text-zinc-800 text-[0.5625rem] text-center leading-relaxed">
-              Seus ingressos comprados aparecerão aqui.
-            </p>
-          </div>
+          <EmptyState
+            icon={Ticket}
+            title="Nenhum ingresso"
+            subtitle="Seus ingressos comprados aparecerão aqui."
+            action={{ label: 'Explorar eventos', onClick: () => onBack?.(), icon: Search }}
+          />
         ) : (
           <>
             {/* Disponíveis */}

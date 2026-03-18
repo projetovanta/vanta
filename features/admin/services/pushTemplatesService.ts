@@ -133,4 +133,21 @@ export const pushAgendadosService = {
       .eq('status', 'PENDENTE');
     if (error) throw error;
   },
+
+  /** Envio imediato para grupo — agenda com data = agora (processado pelo cron) */
+  async enviarAgora(
+    campanha: {
+      titulo: string;
+      mensagem: string;
+      canais: CanalCampanha[];
+      segmento_tipo: string;
+      segmento_valor: string;
+      tipo_acao: string;
+      acao_valor: string;
+      link_notif: string;
+    },
+    userId: string,
+  ): Promise<PushAgendado> {
+    return this.agendar({ ...campanha, agendar_para: tsBR() }, userId);
+  },
 };

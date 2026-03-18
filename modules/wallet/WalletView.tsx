@@ -24,6 +24,7 @@ import { useAuthStore } from '../../stores/authStore';
 import { useTicketsStore } from '../../stores/ticketsStore';
 import { useExtrasStore } from '../../stores/extrasStore';
 import { TicketCardSkeleton } from '../../components/Skeleton';
+import { EmptyState } from '../../components/EmptyState';
 
 interface WalletViewProps {
   onGoToHome: () => void;
@@ -375,20 +376,15 @@ export const WalletView: React.FC<WalletViewProps> = ({
           ))}
         </div>
       ) : isEmpty ? (
-        <div className="flex flex-col items-center justify-center py-20 opacity-40">
-          <div className="w-16 h-16 bg-zinc-900 rounded-full flex items-center justify-center mb-6 border border-zinc-800">
-            {activeTab === 'UPCOMING' ? (
-              <Ticket size="1.5rem" className="text-zinc-400" />
-            ) : (
-              <Calendar size="1.5rem" className="text-zinc-400" />
-            )}
-          </div>
-          <p className="text-zinc-400 text-[0.625rem] font-bold tracking-widest text-center max-w-[15rem]">
-            {activeTab === 'UPCOMING'
-              ? 'A noite te espera. Quando garantir seu ingresso, ele aparece aqui.'
-              : 'Nenhum histórico encontrado'}
-          </p>
-        </div>
+        <EmptyState
+          icon={activeTab === 'UPCOMING' ? Ticket : Calendar}
+          title={activeTab === 'UPCOMING' ? 'A noite te espera' : 'Nenhum histórico'}
+          subtitle={
+            activeTab === 'UPCOMING'
+              ? 'Quando garantir seu ingresso, ele aparece aqui.'
+              : 'Seus eventos passados aparecerão aqui.'
+          }
+        />
       ) : (
         <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
           {/* ── UPCOMING: um card por evento (agrupado) ── */}

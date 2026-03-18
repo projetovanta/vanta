@@ -15,6 +15,19 @@
 - Dashboard V2 agora é o admin principal (importado como AdminGateway no App.tsx)
 - Componentes SidebarV2 e CommandPalette movidos pra features/dashboard-v2/components/
 
+## Melhorias sessão 5 (4 blocos)
+- CommandPalette: busca dados reais (eventos, comunidades, membros) no Supabase com debounce 300ms
+- AdminViewHeader: prop `breadcrumbs` opcional — aplicado em Financeiro, MasterFinanceiro, Cargos, Eventos
+- Deep links admin: hash URL `#admin/VIEW` — navegação direta via URL
+- Cargos: CARGO_DESCRICOES + Sócio e Promoter nos pré-definidos (8 cargos)
+- PeriodSelector + filtro real por dataInicio nos 2 financeiros
+- VendasTimelineChart nos 2 financeiros
+- AuditLogView: `initialFilter` + botão Histórico nos financeiros
+- VANTA Indica: emoji picker (24), paleta cores (8), badgeColor, templates DB
+- Session timeout: 30min inativo = signOut (useSessionTimeout)
+- Componentes novos: EmptyState, BatchActionBar, FilterBar
+- Notificações batch: `enviarAgora` no pushAgendadosService
+
 ## Regras de navegação admin (sessão 4)
 - Admin SEMPRE abre na Dashboard — sem persistir última view no sessionStorage
 - AdminGateway, AdminDashboardView, DashboardV2Gateway: sessionStorage removido

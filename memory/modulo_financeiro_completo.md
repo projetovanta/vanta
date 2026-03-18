@@ -200,7 +200,7 @@ Registro financeiro de cada venda. Colunas: valor_bruto, valor_liquido, taxa_apl
 | Create Checkout | Calcula taxas |
 
 ### Se mexer nas tabelas financeiras, verificar:
-- FinanceiroView (790L) + MasterFinanceiroView (636L)
+- FinanceiroView (~850L) + MasterFinanceiroView (~840L) — ambos com PeriodSelector, VendasTimelineChart, filtro por período, botão Histórico, breadcrumbs
 - reembolsoService (449L)
 - eventosAdminService (metodos financeiros, ~20 funcoes)
 - Hierarquia: socio → gerente → master em saques E reembolsos

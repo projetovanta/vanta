@@ -116,6 +116,7 @@ export interface VantaIndicaCard {
     badgeScale?: number;
     tituloScale?: number;
     subtituloScale?: number;
+    badgeColor?: string;
     /** @deprecated — legado, usar badge/titulo/subtitulo com x/y */
     badgeY?: number;
     tituloY?: number;

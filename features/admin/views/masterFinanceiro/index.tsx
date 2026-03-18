@@ -15,6 +15,14 @@ import {
 import { exportCSV, exportPDF } from '../../../../utils/exportUtils';
 import { TYPOGRAPHY } from '../../../../constants';
 import { AdminViewHeader } from '../../components/AdminViewHeader';
+import { PeriodSelector } from '../../components/dashboard/PeriodSelector';
+import type { Periodo } from '../../services/analytics/types';
+import { VendasTimelineChart } from '../../../dashboard-v2/VendasTimelineChart';
+import {
+  dashboardAnalyticsService,
+  getDateRanges,
+  type VendasTimelinePoint,
+} from '../../services/dashboardAnalyticsService';
 import { Notificacao, EventoAdmin } from '../../../../types';
 import {
   eventosAdminService,
@@ -91,9 +99,10 @@ const CondicoesResumoCard: React.FC = () => {
 interface Props {
   onBack: () => void;
   addNotification: (n: Omit<Notificacao, 'id'>) => void;
+  onNavigate?: (view: string) => void;
 }
 
-export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification }) => {
+export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification, onNavigate }) => {
   const [svcVersion, setSvcVersion] = useState(() => eventosAdminService.getVersion());
   useEffect(() => {
     const id = setInterval(() => setSvcVersion(eventosAdminService.getVersion()), 2_000);
@@ -126,7 +135,13 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification 
   const lucroAReceber = pendentes.reduce((s, sq) => s + sq.valorTaxa, 0);
   const receitaTotalTaxas = lucroNoBolso + lucroAReceber;
 
-  const allEventos = eventosAdminService.getEventos();
+  const [periodo, setPeriodo] = useState<Periodo>('MES');
+
+  const allEventosRaw = eventosAdminService.getEventos();
+  const allEventos = useMemo(() => {
+    const [inicio] = getDateRanges(periodo);
+    return allEventosRaw.filter(e => e.dataInicio >= inicio);
+  }, [allEventosRaw, periodo]);
 
   const totalReembolsadoAprovado = reembolsos
     .filter(r => r.status === 'APROVADO' || r.tipo === 'AUTOMATICO')
@@ -193,6 +208,27 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification 
   // ── Raio-X do Evento ──────────────────────────────────────────────────────
   const [selectedComId, setSelectedComId] = useState<string | null>(null);
   const [selectedEventoId, setSelectedEventoId] = useState<string | null>(null);
+  const [timeline, setTimeline] = useState<VendasTimelinePoint[]>([]);
+  const [timelineLoading, setTimelineLoading] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    setTimelineLoading(true);
+    dashboardAnalyticsService
+      .getVendasTimeline(periodo)
+      .then(d => {
+        if (!cancelled) {
+          setTimeline(d);
+          setTimelineLoading(false);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setTimelineLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [periodo]);
   const [saqueConfirmId, setSaqueConfirmId] = useState<string | null>(null);
   const [saqueEstornoId, setSaqueEstornoId] = useState<string | null>(null);
   const [comprovanteFile, setComprovanteFile] = useState<File | null>(null);
@@ -303,13 +339,18 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification 
         title="Financeiro Global"
         kicker="Master Admin"
         onBack={onBack}
+        breadcrumbs={[{ label: 'Dashboard', onClick: onBack }, { label: 'Financeiro Global' }]}
         actions={[
+          { icon: Clock, label: 'Histórico', onClick: () => onNavigate?.('AUDIT_LOG') },
           { icon: Download, label: 'CSV', onClick: handleExportCSV },
           { icon: FileText, label: 'PDF', onClick: handleExportPDF },
         ]}
       />
 
       <div className="flex-1 overflow-y-auto no-scrollbar p-6 space-y-5 max-w-3xl mx-auto w-full">
+        {/* Seletor de período */}
+        <PeriodSelector value={periodo} onChange={setPeriodo} />
+
         {/* CAMADA 1 — Card Principal: Lucro Líquido */}
         <div className="bg-gradient-to-br from-zinc-900/60 to-zinc-900/30 border border-emerald-500/15 rounded-2xl p-5 space-y-4">
           <div className="flex items-center gap-2">
@@ -409,6 +450,9 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification 
             </div>
           ))}
         </div>
+
+        {/* Evolução de vendas */}
+        <VendasTimelineChart data={timeline} loading={timelineLoading} />
 
         {/* CAMADA 2 — Pizza: Lucro por Comunidade */}
         <LucroPorComunidade

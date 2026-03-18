@@ -19,7 +19,11 @@ export const CargosUnificadoView: React.FC<Props> = ({ onBack, currentUserId, ad
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden bg-[#0A0A0A]">
-      <AdminViewHeader title="Cargos" onBack={onBack} />
+      <AdminViewHeader
+        title="Cargos"
+        onBack={onBack}
+        breadcrumbs={[{ label: 'Dashboard', onClick: onBack }, { label: 'Cargos' }]}
+      />
 
       {/* Tabs */}
       <div className="shrink-0 flex border-b border-white/10">

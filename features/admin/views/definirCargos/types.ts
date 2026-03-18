@@ -49,12 +49,18 @@ export { inputCls, labelCls } from '../../../../constants';
 
 // ── Cargos pré-definidos ─────────────────────────────────────────────────────
 export const CARGOS_PREDEFINIDOS: { id: CargoUnificado; label: string; desc: string }[] = [
-  { id: 'GERENTE', label: 'Gerente', desc: 'Acesso total ao portal' },
-  { id: 'GER_PORTARIA_LISTA', label: 'Ger. Portaria (Lista)', desc: 'Gerente de portaria - lista' },
-  { id: 'PORTARIA_LISTA', label: 'Portaria (Lista)', desc: 'Check-in por lista' },
-  { id: 'GER_PORTARIA_ANTECIPADO', label: 'Ger. Portaria (Antecipado)', desc: 'Gerente de portaria - antecipado' },
-  { id: 'PORTARIA_ANTECIPADO', label: 'Portaria (Antecipado)', desc: 'Check-in antecipado (QR)' },
-  { id: 'CAIXA', label: 'Caixa', desc: 'Venda na porta' },
+  { id: 'GERENTE', label: 'Gerente', desc: 'Acesso total: financeiro, equipe, eventos e comunidade' },
+  { id: 'SOCIO', label: 'Sócio', desc: 'Cria e gerencia eventos, vê financeiro dos seus eventos' },
+  { id: 'PROMOTER', label: 'Promoter', desc: 'Gerencia listas e convites, vê relatório de vendas' },
+  { id: 'GER_PORTARIA_LISTA', label: 'Ger. Portaria (Lista)', desc: 'Coordena equipe de portaria de listas' },
+  { id: 'PORTARIA_LISTA', label: 'Portaria (Lista)', desc: 'Check-in de convidados da lista na entrada' },
+  {
+    id: 'GER_PORTARIA_ANTECIPADO',
+    label: 'Ger. Portaria (Antecipado)',
+    desc: 'Coordena equipe de portaria de antecipados',
+  },
+  { id: 'PORTARIA_ANTECIPADO', label: 'Portaria (Antecipado)', desc: 'Check-in de ingressos antecipados na entrada' },
+  { id: 'CAIXA', label: 'Caixa', desc: 'Vende ingressos e registra consumação no evento' },
 ];
 
 // ── Variações genéricas para destino COMUNIDADE ──────────────────────────────

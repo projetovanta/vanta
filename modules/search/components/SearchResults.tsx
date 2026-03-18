@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { Search, Calendar, MapPin, ArrowRight } from 'lucide-react';
+import { EmptyState } from '../../../components/EmptyState';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { Evento } from '../../../types';
 import { TYPOGRAPHY } from '../../../constants';
@@ -95,14 +96,7 @@ export const SearchResults: React.FC<{
           </div>
         </div>
       ) : (
-        <div className="py-16 flex flex-col items-center justify-center gap-3 px-8">
-          <div className="w-14 h-14 rounded-full bg-zinc-900 border border-white/5 flex items-center justify-center">
-            <Search size="1.25rem" className="text-zinc-700" />
-          </div>
-          <p className="text-zinc-400 text-sm text-center leading-relaxed max-w-[15rem]">
-            Sem resultados. Tente outro filtro.
-          </p>
-        </div>
+        <EmptyState icon={Search} title="Sem resultados" subtitle="Tente outro filtro ou palavra-chave." compact />
       )}
     </div>
   );

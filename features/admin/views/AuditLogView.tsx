@@ -5,7 +5,7 @@ import { TYPOGRAPHY } from '../../../constants';
 import { auditService, AuditLog, AuditAction, formatAuditLog } from '../services/auditService';
 
 // ── Categorias de filtro ───────────────────────────────────────────────────────
-type FiltroCategoria = 'TODOS' | 'EVENTOS' | 'MEMBROS' | 'INGRESSOS' | 'SAQUES' | 'CARGOS' | 'LISTAS';
+export type FiltroCategoria = 'TODOS' | 'EVENTOS' | 'MEMBROS' | 'INGRESSOS' | 'SAQUES' | 'CARGOS' | 'LISTAS';
 
 const FILTROS: { id: FiltroCategoria; label: string }[] = [
   { id: 'TODOS', label: 'Todos' },
@@ -162,8 +162,11 @@ const LogItem: React.FC<{ log: AuditLog }> = ({ log }) => {
 };
 
 // ── AuditLogView ───────────────────────────────────────────────────────────────
-export const AuditLogView: React.FC<{ onBack: () => void }> = ({ onBack }) => {
-  const [filtro, setFiltro] = useState<FiltroCategoria>('TODOS');
+export const AuditLogView: React.FC<{ onBack: () => void; initialFilter?: FiltroCategoria }> = ({
+  onBack,
+  initialFilter,
+}) => {
+  const [filtro, setFiltro] = useState<FiltroCategoria>(initialFilter ?? 'TODOS');
   const [allLogs, setAllLogs] = useState<AuditLog[]>(() => auditService.getLogs());
 
   useEffect(() => {

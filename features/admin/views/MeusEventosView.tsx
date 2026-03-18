@@ -107,7 +107,12 @@ export const MeusEventosView: React.FC<{
 
   return (
     <div className="flex-1 bg-[#0A0A0A] flex flex-col overflow-hidden">
-      <AdminViewHeader title="Eventos da Comunidade" kicker="Eventos" onBack={onBack} />
+      <AdminViewHeader
+        title="Eventos da Comunidade"
+        kicker="Eventos"
+        onBack={onBack}
+        breadcrumbs={[{ label: 'Dashboard', onClick: onBack }, { label: 'Eventos' }]}
+      />
 
       {/* Tabs */}
       <div className="flex gap-0 border-b border-white/5 shrink-0">

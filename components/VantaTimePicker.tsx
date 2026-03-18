@@ -133,7 +133,7 @@ const TimePickerModal: React.FC<TimePickerModalProps> = ({ value, step, onSelect
                   type="button"
                   onClick={() => setSelH(hr)}
                   className={`w-full flex items-center justify-center transition-all ${
-                    selH === hr ? 'bg-[#FFD300] text-black font-bold' : 'text-zinc-300 hover:bg-zinc-800'
+                    selH === hr ? 'bg-[#FFD300] text-black font-bold' : 'text-zinc-300 hover-real:bg-zinc-800'
                   }`}
                   style={{ height: ITEM_H }}
                 >
@@ -156,7 +156,7 @@ const TimePickerModal: React.FC<TimePickerModalProps> = ({ value, step, onSelect
                   type="button"
                   onClick={() => setSelM(mn)}
                   className={`w-full flex items-center justify-center transition-all ${
-                    selM === mn ? 'bg-[#FFD300] text-black font-bold' : 'text-zinc-300 hover:bg-zinc-800'
+                    selM === mn ? 'bg-[#FFD300] text-black font-bold' : 'text-zinc-300 hover-real:bg-zinc-800'
                   }`}
                   style={{ height: ITEM_H }}
                 >

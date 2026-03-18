@@ -263,7 +263,7 @@ export const EventSocialProof: React.FC<EventSocialProofProps> = ({ eventoId, to
                           <button
                             key={member.id}
                             onClick={() => onMemberClick(member)}
-                            className="w-full flex items-center gap-4 p-3 rounded-2xl hover:bg-zinc-900/40 active:bg-zinc-900 transition-colors border border-transparent hover:border-[#FFD300]/10"
+                            className="w-full flex items-center gap-4 p-3 rounded-2xl hover-real:bg-zinc-900/40 active:bg-zinc-900 transition-colors border border-transparent hover-real:border-[#FFD300]/10"
                           >
                             <div className="w-12 h-12 rounded-full border-2 border-[#FFD300]/30 overflow-hidden bg-black shrink-0">
                               <OptimizedImage
@@ -293,7 +293,7 @@ export const EventSocialProof: React.FC<EventSocialProofProps> = ({ eventoId, to
                           <button
                             key={member.id}
                             onClick={() => onMemberClick(member)}
-                            className="w-full flex items-center gap-4 p-3 rounded-2xl hover:bg-zinc-900/40 active:bg-zinc-900 transition-colors border border-transparent hover:border-white/5"
+                            className="w-full flex items-center gap-4 p-3 rounded-2xl hover-real:bg-zinc-900/40 active:bg-zinc-900 transition-colors border border-transparent hover-real:border-white/5"
                           >
                             <div className="w-12 h-12 rounded-full border border-white/10 overflow-hidden bg-black shrink-0">
                               <OptimizedImage

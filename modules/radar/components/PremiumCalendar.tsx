@@ -42,7 +42,7 @@ export const PremiumCalendar: React.FC<PremiumCalendarProps> = ({ onSelectDate, 
           onSelectDate(dateToCheck);
           onClose();
         }}
-        className={`relative h-10 w-10 rounded-full flex items-center justify-center text-sm transition-all ${isPast ? 'text-zinc-700 cursor-not-allowed' : 'text-zinc-200 hover:bg-zinc-800'} ${isToday ? 'border border-[#FFD300] text-[#FFD300] font-bold shadow-[0_0_10px_rgba(255,211,0,0.2)]' : ''} active:scale-90`}
+        className={`relative h-10 w-10 rounded-full flex items-center justify-center text-sm transition-all ${isPast ? 'text-zinc-700 cursor-not-allowed' : 'text-zinc-200 hover-real:bg-zinc-800'} ${isToday ? 'border border-[#FFD300] text-[#FFD300] font-bold shadow-[0_0_10px_rgba(255,211,0,0.2)]' : ''} active:scale-90`}
       >
         {i}
         {hasEvent && !isPast && (
@@ -81,7 +81,7 @@ export const PremiumCalendar: React.FC<PremiumCalendarProps> = ({ onSelectDate, 
           <h2 className="text-[#FFD300] font-serif italic text-xl">Escolha a Data</h2>
           <button
             onClick={onClose}
-            className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center bg-zinc-900 rounded-full text-zinc-400 hover:text-white active:opacity-70 transition-opacity -mr-2"
+            className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center bg-zinc-900 rounded-full text-zinc-400 hover-real:text-white active:opacity-70 transition-opacity -mr-2"
           >
             <X size="1.125rem" />
           </button>
@@ -89,7 +89,7 @@ export const PremiumCalendar: React.FC<PremiumCalendarProps> = ({ onSelectDate, 
         <div className="flex justify-between items-center mb-4 px-2">
           <button
             onClick={() => changeMonth(-1)}
-            className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center text-zinc-400 hover:text-white active:opacity-70 transition-opacity -ml-2"
+            className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center text-zinc-400 hover-real:text-white active:opacity-70 transition-opacity -ml-2"
           >
             <ChevronLeft />
           </button>
@@ -98,7 +98,7 @@ export const PremiumCalendar: React.FC<PremiumCalendarProps> = ({ onSelectDate, 
           </span>
           <button
             onClick={() => changeMonth(1)}
-            className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center text-zinc-400 hover:text-white active:opacity-70 transition-opacity -mr-2"
+            className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center text-zinc-400 hover-real:text-white active:opacity-70 transition-opacity -mr-2"
           >
             <ChevronRight />
           </button>

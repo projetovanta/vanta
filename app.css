@@ -36,8 +36,15 @@
 }
 
 /* Hover real: só aplica em devices com mouse (não mobile touch)
-   Uso: hover-real:bg-white/10 — só ativa em desktop com mouse */
-@custom-variant hover-real (@media (hover: hover) and (pointer: fine));
+   O Tailwind v4 hover: variant já funciona em touch (sticky hover).
+   Para views mobile-first, usar hover-real: em vez de hover: */
+@custom-variant hover-real {
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @slot;
+    }
+  }
+}
 
 
 /* Performance: desativar backdrop-blur e animações em dispositivos fracos */

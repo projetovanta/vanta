@@ -163,7 +163,7 @@ export const TicketQRModal: React.FC<TicketQRModalProps> = ({ ticket, onClose })
         {/* Botão fechar */}
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 p-1.5 bg-black/20 hover:bg-black/40 rounded-full text-white/70 hover:text-white transition-colors"
+          className="absolute top-3 right-3 p-1.5 bg-black/20 hover-real:bg-black/40 rounded-full text-white/70 hover-real:text-white transition-colors"
         >
           <X size="0.875rem" />
         </button>

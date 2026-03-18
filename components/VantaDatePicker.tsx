@@ -168,7 +168,7 @@ const CalendarModal: React.FC<CalendarModalProps> = ({ value, min, max, onSelect
           <button
             type="button"
             onClick={() => setShowYearPicker(!showYearPicker)}
-            className="text-[#FFD300] font-serif italic text-lg hover:opacity-80 transition-opacity"
+            className="text-[#FFD300] font-serif italic text-lg hover-real:opacity-80 transition-opacity"
           >
             {showYearPicker ? 'Voltar' : `${MONTH_NAMES[viewDate.getMonth()]} ${viewDate.getFullYear()}`}
           </button>
@@ -192,7 +192,7 @@ const CalendarModal: React.FC<CalendarModalProps> = ({ value, min, max, onSelect
                   setShowYearPicker(false);
                 }}
                 className={`py-2 rounded-xl text-xs font-bold transition-all ${
-                  y === viewDate.getFullYear() ? 'bg-[#FFD300] text-black' : 'text-zinc-400 hover:bg-zinc-800'
+                  y === viewDate.getFullYear() ? 'bg-[#FFD300] text-black' : 'text-zinc-400 hover-real:bg-zinc-800'
                 }`}
               >
                 {y}
@@ -206,7 +206,7 @@ const CalendarModal: React.FC<CalendarModalProps> = ({ value, min, max, onSelect
               <button
                 type="button"
                 onClick={() => changeMonth(-1)}
-                className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center text-zinc-400 hover:text-white active:opacity-70 transition-opacity -ml-2"
+                className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center text-zinc-400 hover-real:text-white active:opacity-70 transition-opacity -ml-2"
               >
                 <ChevronLeft size="1.125rem" />
               </button>
@@ -216,7 +216,7 @@ const CalendarModal: React.FC<CalendarModalProps> = ({ value, min, max, onSelect
               <button
                 type="button"
                 onClick={() => changeMonth(1)}
-                className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center text-zinc-400 hover:text-white active:opacity-70 transition-opacity -mr-2"
+                className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center text-zinc-400 hover-real:text-white active:opacity-70 transition-opacity -mr-2"
               >
                 <ChevronRight size="1.125rem" />
               </button>
@@ -254,7 +254,7 @@ const CalendarModal: React.FC<CalendarModalProps> = ({ value, min, max, onSelect
                           ? 'bg-[#FFD300] text-black font-bold'
                           : today
                             ? 'border border-[#FFD300] text-[#FFD300] font-bold'
-                            : 'text-zinc-200 hover:bg-zinc-800'
+                            : 'text-zinc-200 hover-real:bg-zinc-800'
                     }`}
                   >
                     {day}

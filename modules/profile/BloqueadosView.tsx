@@ -99,7 +99,7 @@ export const BloqueadosView: React.FC<Props> = ({ onBack }) => {
                 ) : (
                   <button
                     onClick={() => setConfirmar(b.id)}
-                    className="px-3 py-1.5 bg-zinc-800 border border-white/10 rounded-lg text-zinc-400 text-[0.5rem] font-black uppercase active:scale-95 transition-all hover:bg-zinc-700"
+                    className="px-3 py-1.5 bg-zinc-800 border border-white/10 rounded-lg text-zinc-400 text-[0.5rem] font-black uppercase active:scale-95 transition-all hover-real:bg-zinc-700"
                   >
                     Desbloquear
                   </button>

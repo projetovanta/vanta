@@ -281,7 +281,7 @@ export const WalletLockScreen: React.FC<WalletLockScreenProps> = ({ onUnlock, on
       {!lockUntil && !showErrorModal && !pinMismatch && (
         <button
           onClick={onExit}
-          className="mt-12 text-zinc-400 hover:text-zinc-400 text-[0.625rem] font-black uppercase tracking-[0.2em] flex items-center gap-2 transition-colors"
+          className="mt-12 text-zinc-400 hover-real:text-zinc-400 text-[0.625rem] font-black uppercase tracking-[0.2em] flex items-center gap-2 transition-colors"
         >
           <LogOut size="0.75rem" />
           Voltar ao Perfil

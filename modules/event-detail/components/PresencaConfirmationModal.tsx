@@ -74,7 +74,7 @@ export const PresencaConfirmationModal: React.FC<PresencaConfirmationModalProps>
 
         <button
           onClick={onClose}
-          className="absolute top-6 right-6 p-2 text-zinc-400 hover:text-white transition-colors"
+          className="absolute top-6 right-6 p-2 text-zinc-400 hover-real:text-white transition-colors"
         >
           <X size="1.125rem" />
         </button>

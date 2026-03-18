@@ -134,7 +134,7 @@ export const RadarView: React.FC<RadarViewProps> = ({ onEventSelect }) => {
                 radar.resetToToday();
                 radar.setShowLiveOnly(false);
               }}
-              className={`px-3 py-1.5 rounded-full text-[0.5625rem] font-bold uppercase tracking-widest transition-all ${radar.isToday && !radar.showLiveOnly ? 'bg-[#FFD300] text-black shadow-[0_0_15px_rgba(255,211,0,0.4)]' : 'text-zinc-400 hover:text-white'}`}
+              className={`px-3 py-1.5 rounded-full text-[0.5625rem] font-bold uppercase tracking-widest transition-all ${radar.isToday && !radar.showLiveOnly ? 'bg-[#FFD300] text-black shadow-[0_0_15px_rgba(255,211,0,0.4)]' : 'text-zinc-400 hover-real:text-white'}`}
             >
               Hoje
             </button>
@@ -144,7 +144,7 @@ export const RadarView: React.FC<RadarViewProps> = ({ onEventSelect }) => {
                 radar.resetToToday();
                 radar.setShowLiveOnly(true);
               }}
-              className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-[0.5625rem] font-bold uppercase tracking-widest transition-all ${radar.showLiveOnly ? 'bg-red-500 text-white shadow-[0_0_15px_rgba(239,68,68,0.5)]' : 'text-zinc-400 hover:text-white'}`}
+              className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-[0.5625rem] font-bold uppercase tracking-widest transition-all ${radar.showLiveOnly ? 'bg-red-500 text-white shadow-[0_0_15px_rgba(239,68,68,0.5)]' : 'text-zinc-400 hover-real:text-white'}`}
             >
               <Radio size="0.625rem" className={radar.showLiveOnly ? 'animate-pulse' : ''} />
               Ao Vivo
@@ -157,14 +157,14 @@ export const RadarView: React.FC<RadarViewProps> = ({ onEventSelect }) => {
                 radar.handleDateSelect(d.toISOString().split('T')[0]);
                 radar.setShowLiveOnly(false);
               }}
-              className={`px-3 py-1.5 rounded-full text-[0.5625rem] font-bold uppercase tracking-widest transition-all ${radar.customDateLabel === 'Amanhã' && !radar.showLiveOnly ? 'bg-[#FFD300] text-black shadow-[0_0_15px_rgba(255,211,0,0.4)]' : 'text-zinc-400 hover:text-white'}`}
+              className={`px-3 py-1.5 rounded-full text-[0.5625rem] font-bold uppercase tracking-widest transition-all ${radar.customDateLabel === 'Amanhã' && !radar.showLiveOnly ? 'bg-[#FFD300] text-black shadow-[0_0_15px_rgba(255,211,0,0.4)]' : 'text-zinc-400 hover-real:text-white'}`}
             >
               Amanhã
             </button>
             <div className="w-[1px] h-3 bg-white/10 mx-0.5" />
             <button
               onClick={() => radar.setIsCalendarOpen(true)}
-              className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-[0.5625rem] font-bold uppercase tracking-widest transition-all ${!radar.isToday && radar.customDateLabel !== 'Amanhã' ? 'bg-[#FFD300] text-black shadow-[0_0_15px_rgba(255,211,0,0.4)]' : 'bg-transparent text-zinc-400 hover:text-white'}`}
+              className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-[0.5625rem] font-bold uppercase tracking-widest transition-all ${!radar.isToday && radar.customDateLabel !== 'Amanhã' ? 'bg-[#FFD300] text-black shadow-[0_0_15px_rgba(255,211,0,0.4)]' : 'bg-transparent text-zinc-400 hover-real:text-white'}`}
             >
               <CalendarIcon size="0.625rem" />
               {!radar.isToday && radar.customDateLabel !== 'Amanhã' && <span>{radar.customDateLabel}</span>}
@@ -316,7 +316,8 @@ export const RadarView: React.FC<RadarViewProps> = ({ onEventSelect }) => {
               </p>
               <div className="flex items-center gap-3">
                 <div className="flex items-center text-[0.625rem] font-bold text-white group">
-                  Ver detalhes <ArrowRight size="0.75rem" className="ml-1 group-hover:translate-x-1 text-[#FFD300]" />
+                  Ver detalhes{' '}
+                  <ArrowRight size="0.75rem" className="ml-1 group-hover-real:translate-x-1 text-[#FFD300]" />
                 </div>
                 {radar.activeEvent.coords && (
                   <button

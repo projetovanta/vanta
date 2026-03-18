@@ -225,7 +225,7 @@ export const TimeFilterModal: React.FC<{
               </div>
               <button
                 onClick={onClose}
-                className="p-2 bg-black/50 rounded-full text-zinc-400 hover:text-white transition-colors"
+                className="p-2 bg-black/50 rounded-full text-zinc-400 hover-real:text-white transition-colors"
               >
                 <X size="1rem" />
               </button>
@@ -329,7 +329,7 @@ export const TimeFilterModal: React.FC<{
                 onSelectTimeFilter(null);
                 onClose();
               }}
-              className="w-full py-4 bg-black/60 border-t border-white/5 text-[0.5625rem] font-black uppercase tracking-[0.3em] text-zinc-400 hover:text-white transition-colors"
+              className="w-full py-4 bg-black/60 border-t border-white/5 text-[0.5625rem] font-black uppercase tracking-[0.3em] text-zinc-400 hover-real:text-white transition-colors"
             >
               Limpar Filtro
             </button>

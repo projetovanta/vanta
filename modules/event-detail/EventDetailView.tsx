@@ -518,7 +518,7 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
           >
             <button
               onClick={fecharSheet}
-              className="absolute top-5 right-5 p-1.5 text-zinc-400 hover:text-white transition-colors"
+              className="absolute top-5 right-5 p-1.5 text-zinc-400 hover-real:text-white transition-colors"
             >
               <X size="1rem" />
             </button>

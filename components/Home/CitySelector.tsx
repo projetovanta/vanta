@@ -19,7 +19,7 @@ export const CitySelector: React.FC<{
       <div className="absolute top-[4.5rem] left-1/2 -translate-x-1/2 w-[85%] bg-zinc-900/40 backdrop-blur-2xl rounded-[2rem] border border-white/10 overflow-hidden shadow-2xl animate-in slide-in-from-top-2 relative">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-1.5 bg-black/50 rounded-full text-zinc-400 hover:text-white transition-colors z-10"
+          className="absolute top-4 right-4 p-1.5 bg-black/50 rounded-full text-zinc-400 hover-real:text-white transition-colors z-10"
         >
           <X size="0.875rem" />
         </button>

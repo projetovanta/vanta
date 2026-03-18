@@ -64,7 +64,7 @@ export const PriceFilterModal: React.FC<PriceFilterModalProps> = ({ isOpen, onCl
               </div>
               <button
                 onClick={onClose}
-                className="p-2 bg-black/50 rounded-full text-zinc-400 hover:text-white transition-colors"
+                className="p-2 bg-black/50 rounded-full text-zinc-400 hover-real:text-white transition-colors"
               >
                 <X size="1rem" />
               </button>
@@ -111,7 +111,7 @@ export const PriceFilterModal: React.FC<PriceFilterModalProps> = ({ isOpen, onCl
           <div className="flex border-t border-white/5">
             <button
               onClick={handleClear}
-              className="flex-1 py-4 bg-black/60 text-[0.5625rem] font-black uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors"
+              className="flex-1 py-4 bg-black/60 text-[0.5625rem] font-black uppercase tracking-[0.2em] text-zinc-400 hover-real:text-white transition-colors"
             >
               Limpar
             </button>

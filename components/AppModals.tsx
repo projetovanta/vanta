@@ -35,7 +35,7 @@ const GuestAreaModal = ({
     <div className="relative w-full max-w-[85%] bg-[#0A0A0A]/80 backdrop-blur-2xl border border-[#FFD300]/20 rounded-[2.5rem] p-8 text-center shadow-[0_0_50px_rgba(255,211,0,0.05)] animate-in zoom-in-95 duration-300">
       <button
         onClick={onCancel}
-        className="absolute top-5 right-5 p-3 text-zinc-400 hover:text-white transition-colors"
+        className="absolute top-5 right-5 p-3 text-zinc-400 hover-real:text-white transition-colors"
       >
         <X size="1.125rem" />
       </button>
@@ -76,7 +76,10 @@ const SuccessFeedbackModal = ({ message, onClose }: { message: string; onClose: 
   <div className="absolute inset-0 z-[300] flex items-center justify-center p-6 animate-in fade-in duration-300">
     <div className="absolute inset-0 bg-black/80 backdrop-blur-xl" role="presentation" onClick={onClose} />
     <div className="relative w-full max-w-[85%] bg-[#0A0A0A] border border-[#FFD300]/20 rounded-[2.5rem] p-8 text-center shadow-[0_0_50px_rgba(255,211,0,0.1)] animate-in zoom-in-95 duration-500">
-      <button onClick={onClose} className="absolute top-6 right-6 p-2 text-zinc-400 hover:text-white transition-colors">
+      <button
+        onClick={onClose}
+        className="absolute top-6 right-6 p-2 text-zinc-400 hover-real:text-white transition-colors"
+      >
         <X size="1.125rem" />
       </button>
       <div className="w-20 h-20 bg-zinc-900 rounded-full flex items-center justify-center mx-auto mb-6 border border-[#FFD300]/20 shadow-xl">

@@ -137,7 +137,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = React.memo(
                     onReact(msg.id, emoji);
                     setShowActions(false);
                   }}
-                  className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-zinc-800 active:scale-90 transition-all text-lg"
+                  className="w-9 h-9 flex items-center justify-center rounded-full hover-real:bg-zinc-800 active:scale-90 transition-all text-lg"
                 >
                   {emoji}
                 </button>
@@ -148,7 +148,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = React.memo(
                     onDelete(msg.id);
                     setShowActions(false);
                   }}
-                  className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-red-900/30 active:scale-90 transition-all text-red-400 ml-1 border-l border-white/10 pl-1"
+                  className="w-9 h-9 flex items-center justify-center rounded-full hover-real:bg-red-900/30 active:scale-90 transition-all text-red-400 ml-1 border-l border-white/10 pl-1"
                 >
                   <Trash2 size="1rem" />
                 </button>

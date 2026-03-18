@@ -177,7 +177,7 @@ export const ComprovanteMeiaSection: React.FC<Props> = ({ userId, onSuccess, onB
             <button
               aria-label="Voltar"
               onClick={onBack}
-              className="p-1.5 hover:bg-white/5 rounded-lg transition-colors"
+              className="p-1.5 hover-real:bg-white/5 rounded-lg transition-colors"
             >
               <ArrowLeft size="1.125rem" className="text-zinc-400" />
             </button>
@@ -274,7 +274,7 @@ export const ComprovanteMeiaSection: React.FC<Props> = ({ userId, onSuccess, onB
                           setTipoSelecionado(t.id);
                           setShowTipoDropdown(false);
                         }}
-                        className="w-full px-3 py-2.5 text-left text-sm text-white hover:bg-white/5 transition-colors border-b border-white/5 last:border-0"
+                        className="w-full px-3 py-2.5 text-left text-sm text-white hover-real:bg-white/5 transition-colors border-b border-white/5 last:border-0"
                       >
                         {t.label}
                       </button>
@@ -284,7 +284,7 @@ export const ComprovanteMeiaSection: React.FC<Props> = ({ userId, onSuccess, onB
                         setTipoSelecionado('CUSTOM');
                         setShowTipoDropdown(false);
                       }}
-                      className="w-full px-3 py-2.5 text-left text-sm text-zinc-400 hover:bg-white/5 transition-colors"
+                      className="w-full px-3 py-2.5 text-left text-sm text-zinc-400 hover-real:bg-white/5 transition-colors"
                     >
                       Outro tipo...
                     </button>
@@ -318,7 +318,7 @@ export const ComprovanteMeiaSection: React.FC<Props> = ({ userId, onSuccess, onB
                       <span className="text-[0.5625rem] text-zinc-400 truncate max-w-[7.5rem]">{arq.filename}</span>
                       <button
                         onClick={() => removeArquivo(arq.label)}
-                        className="p-1 text-zinc-400 hover:text-red-400 transition-colors shrink-0"
+                        className="p-1 text-zinc-400 hover-real:text-red-400 transition-colors shrink-0"
                       >
                         <Trash2 size="0.75rem" />
                       </button>
@@ -339,7 +339,7 @@ export const ComprovanteMeiaSection: React.FC<Props> = ({ userId, onSuccess, onB
                   <div className="relative">
                     <button
                       onClick={() => setShowSourcePicker(showSourcePicker ? null : proximoLabel)}
-                      className="w-full h-24 bg-zinc-900/40 border-2 border-dashed border-white/10 rounded-xl flex flex-col items-center justify-center gap-1.5 hover:border-white/20 transition-colors active:scale-[0.98]"
+                      className="w-full h-24 bg-zinc-900/40 border-2 border-dashed border-white/10 rounded-xl flex flex-col items-center justify-center gap-1.5 hover-real:border-white/20 transition-colors active:scale-[0.98]"
                     >
                       <Plus size="1.125rem" className="text-zinc-400" />
                       <span className="text-[0.5625rem] text-zinc-400 font-bold uppercase tracking-wider">
@@ -353,21 +353,21 @@ export const ComprovanteMeiaSection: React.FC<Props> = ({ userId, onSuccess, onB
                       <div className="absolute bottom-full left-0 right-0 mb-2 bg-zinc-800 border border-white/10 rounded-xl overflow-hidden shadow-2xl z-10 animate-in fade-in slide-in-from-bottom-2 duration-150">
                         <button
                           onClick={() => cameraRef.current?.click()}
-                          className="w-full flex items-center gap-3 px-4 py-3 text-white hover:bg-white/5 transition-colors border-b border-white/5"
+                          className="w-full flex items-center gap-3 px-4 py-3 text-white hover-real:bg-white/5 transition-colors border-b border-white/5"
                         >
                           <Camera size="1rem" className="text-cyan-400 shrink-0" />
                           <span className="text-sm">Tirar foto agora</span>
                         </button>
                         <button
                           onClick={() => galleryRef.current?.click()}
-                          className="w-full flex items-center gap-3 px-4 py-3 text-white hover:bg-white/5 transition-colors border-b border-white/5"
+                          className="w-full flex items-center gap-3 px-4 py-3 text-white hover-real:bg-white/5 transition-colors border-b border-white/5"
                         >
                           <Image size="1rem" className="text-purple-400 shrink-0" />
                           <span className="text-sm">Escolher da galeria</span>
                         </button>
                         <button
                           onClick={() => fileRef.current?.click()}
-                          className="w-full flex items-center gap-3 px-4 py-3 text-white hover:bg-white/5 transition-colors"
+                          className="w-full flex items-center gap-3 px-4 py-3 text-white hover-real:bg-white/5 transition-colors"
                         >
                           <File size="1rem" className="text-amber-400 shrink-0" />
                           <span className="text-sm">Enviar arquivo (PDF/imagem)</span>
@@ -449,7 +449,7 @@ export const ComprovanteMeiaSection: React.FC<Props> = ({ userId, onSuccess, onB
             </p>
             <button
               onClick={() => setArquivos([])}
-              className="text-[0.5625rem] text-zinc-400 font-bold uppercase tracking-wider hover:text-zinc-400 transition-colors"
+              className="text-[0.5625rem] text-zinc-400 font-bold uppercase tracking-wider hover-real:text-zinc-400 transition-colors"
             >
               Deseja atualizar o comprovante?
             </button>

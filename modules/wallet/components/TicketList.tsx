@@ -95,7 +95,7 @@ const TransferirModal: React.FC<{
                 <button
                   key={m.id}
                   onClick={() => handleSelect(m)}
-                  className="w-full flex items-center gap-3 px-4 py-3 hover:bg-zinc-800/60 active:bg-zinc-800 transition-colors border-b border-white/5 last:border-0"
+                  className="w-full flex items-center gap-3 px-4 py-3 hover-real:bg-zinc-800/60 active:bg-zinc-800 transition-colors border-b border-white/5 last:border-0"
                 >
                   <img
                     loading="lazy"

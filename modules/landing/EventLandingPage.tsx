@@ -280,7 +280,7 @@ export const EventLandingPage: React.FC = () => {
                               className={`px-4 py-2 rounded-lg text-xs font-bold transition-all active:scale-95 ${
                                 esgotado
                                   ? 'bg-zinc-800 text-zinc-400 cursor-not-allowed'
-                                  : 'bg-[#FFD300] text-black hover:bg-[#FFD300]/90'
+                                  : 'bg-[#FFD300] text-black hover-real:bg-[#FFD300]/90'
                               }`}
                             >
                               {esgotado ? 'Esgotado' : 'Comprar'}

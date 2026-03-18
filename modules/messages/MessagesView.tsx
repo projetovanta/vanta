@@ -108,7 +108,7 @@ export const MessagesView: React.FC<MessagesViewProps> = ({ onOpenChat }) => {
             onClick={() => setIsNewChatModalOpen(true)}
             className="px-4 py-2 bg-zinc-900 border border-white/10 rounded-full flex items-center gap-2 active:scale-95 transition-all group"
           >
-            <Plus size="0.875rem" className="text-[#FFD300] group-hover:rotate-90 transition-transform" />
+            <Plus size="0.875rem" className="text-[#FFD300] group-hover-real:rotate-90 transition-transform" />
             <span className="text-[0.625rem] font-black uppercase tracking-widest text-zinc-300">Nova</span>
           </button>
         </div>

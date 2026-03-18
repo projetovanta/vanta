@@ -59,7 +59,7 @@ export const HorarioOverridesEditor: React.FC<{
               <button
                 type="button"
                 onClick={() => remove(idx)}
-                className="text-red-400/60 hover:text-red-400 transition-colors shrink-0"
+                className="text-red-400/60 hover-real:text-red-400 transition-colors shrink-0"
               >
                 <Trash2 size="0.875rem" />
               </button>
@@ -95,7 +95,7 @@ export const HorarioOverridesEditor: React.FC<{
       <button
         type="button"
         onClick={add}
-        className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-dashed border-white/10 text-zinc-400 text-[0.625rem] font-bold uppercase tracking-wider hover:border-[#FFD300]/30 hover:text-[#FFD300]/70 transition-colors"
+        className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-dashed border-white/10 text-zinc-400 text-[0.625rem] font-bold uppercase tracking-wider hover-real:border-[#FFD300]/30 hover-real:text-[#FFD300]/70 transition-colors"
       >
         <Plus size="0.75rem" /> Adicionar exceção
       </button>

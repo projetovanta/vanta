@@ -57,7 +57,7 @@ jobs:
       - run: npm ci
 
       - name: npm audit — vulnerabilidades
-        run: npm audit --audit-level=high || true
+        run: npm audit --audit-level=high
 
       - name: Secrets — verificar senhas no código
         run: |
@@ -83,3 +83,41 @@ jobs:
             exit 1
           fi
           echo "Nenhuma key sensível com VITE_ prefix."
+
+  e2e:
+    name: Testes E2E (Playwright)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: quality
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Instalar browsers Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Build app
+        run: npm run build
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+
+      - name: Rodar testes E2E
+        run: npx playwright test --project="Desktop Chrome"
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+
+      - name: Upload relatório Playwright
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7

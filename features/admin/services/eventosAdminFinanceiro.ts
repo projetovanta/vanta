@@ -142,17 +142,31 @@ export const getSaldoFinanceiro = async (currentUserId: string): Promise<SaldoFi
       .some(a => a.ativo && a.tenant.tipo === 'EVENTO' && a.tenant.id === e.id && a.cargo === 'SOCIO'),
   );
 
+  // FIX A5: Buscar vendas_log de TODOS os eventos em 1 query (em vez de N)
+  const eventoIds = meusEventos.map(e => e.id);
+  const { data: allVendas } =
+    eventoIds.length > 0
+      ? await supabase
+          .from('vendas_log')
+          .select('evento_id, variacao_id, variacao_label, valor, produtor_id, ts, origem')
+          .in('evento_id', eventoIds)
+          .order('ts', { ascending: false })
+          .limit(10000)
+      : { data: [] };
+
+  const vendasPorEvento = new Map<string, NonNullable<typeof allVendas>>();
+  for (const row of allVendas ?? []) {
+    const eid = row.evento_id as string;
+    if (!vendasPorEvento.has(eid)) vendasPorEvento.set(eid, []);
+    vendasPorEvento.get(eid)!.push(row);
+  }
+
   let totalVendas = 0;
   for (const ev of meusEventos) {
     const fees = getContractedFees(ev.id);
-    const { data } = await supabase
-      .from('vendas_log')
-      .select('variacao_id, variacao_label, valor, produtor_id, ts, origem')
-      .eq('evento_id', ev.id)
-      .order('ts', { ascending: false })
-      .limit(2000);
+    const evVendas = vendasPorEvento.get(ev.id) ?? [];
 
-    const logs: VendaLog[] = (data ?? []).map(row => ({
+    const logs: VendaLog[] = evVendas.map(row => ({
       variacaoId: row.variacao_id ?? '',
       variacaoLabel: row.variacao_label ?? '',
       valor: Number(row.valor ?? 0),

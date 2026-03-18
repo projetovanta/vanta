@@ -96,8 +96,8 @@ masteradm — acesso total (is_masteradm() ou is_vanta_admin())
 
 | Tela | O que usa |
 |---|---|
-| AdminGateway | Filtra acesso por cargo |
-| AdminDashboardView | Menu baseado em permissoes |
+| DashboardV2Gateway | Filtra acesso por cargo (RPC get_admin_access) |
+| SidebarV2 | Menu baseado em permissoes |
 | CriarEventoView Step 4 | Atribuir equipe |
 | EditarEventoView | Editar equipe |
 | FinanceiroView | Verifica permissao de saque |

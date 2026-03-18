@@ -3,22 +3,22 @@
 
 ## Fluxo de Acesso
 1. App.tsx verifica `role !== guest && accessNodes.length > 0` → mostra aba admin
-2. AdminGateway.tsx → RPC `get_admin_access` retorna comunidades/eventos do user
-3. Seleção de comunidade → AdminDashboardView
-4. AdminDashboardView → AdminDashboardHome (KPIs) + AdminSidebar (navegação) + SubViews
+2. DashboardV2Gateway → RPC `get_admin_access` → panorama + seleção de contexto
+3. Seleção de comunidade/evento → contexto ativo com sidebar
+4. SubViews carregadas lazy dentro do contexto
 
 ## Arquivos Principais
-| Arquivo | Linhas | Função |
-|---|---|---|
-| `features/admin/AdminGateway.tsx` | 305 | Gate de entrada — RPC + seleção comunidade (sem sessionStorage) |
-| `features/admin/AdminDashboardView.tsx` | 933 | Container principal — sidebar + subviews (sem sessionStorage) |
-| `features/dashboard-v2/DashboardV2Gateway.tsx` | 927 | Admin principal V2 — sidebar + max-w-[500px] + relative (sem sessionStorage) |
-| `features/admin/components/AdminDashboardHome.tsx` | 749 | Dashboard home — KPIs + gráficos |
-| `features/admin/components/AdminSidebar.tsx` | 423 | Sidebar com seções por role |
-| `features/admin/components/KpiCards.tsx` | 144 | Cards de KPIs |
-| `features/admin/permissoes.ts` | 240 | Guards de permissão (canAccess*, isSocio, etc) |
+| Arquivo | Função |
+|---|---|
+| `features/dashboard-v2/DashboardV2Gateway.tsx` | Admin principal — panorama + contexto (sem sessionStorage) |
+| `features/dashboard-v2/DashboardV2Home.tsx` | Dashboard home — KPIs + pendências |
+| `features/dashboard-v2/components/SidebarV2.tsx` | Sidebar com seções por role |
+| `features/dashboard-v2/components/CommandPalette.tsx` | Busca rápida (⌘K) |
+| `features/admin/components/AdminDashboardHome.tsx` | Home KPIs + gráficos (usado pelo V2) |
+| `features/admin/components/KpiCards.tsx` | Cards de KPIs |
+| `features/admin/permissoes.ts` | Guards de permissão (canAccess*, isSocio, etc) |
 
-## Gate (AdminGateway)
+## Gate (DashboardV2Gateway)
 - Usa RPC `get_admin_access(p_user_id)` — 1 query retorna role + comunidades + eventos
 - `accessData === null` → spinner
 - `comunidades.length === 0 && !isMaster` → "Sem atribuições"

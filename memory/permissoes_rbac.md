@@ -37,4 +37,4 @@
 - Migration: `20260305000000_rpc_get_admin_access.sql`
 - `get_admin_access(p_user_id UUID)` → JSONB {role, comunidades[], eventos[]}
 - SECURITY DEFINER — bypassa RLS
-- Usado pelo AdminGateway como 1 fonte de verdade para o gate
+- Usado pelo DashboardV2Gateway como 1 fonte de verdade para o gate

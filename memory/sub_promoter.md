@@ -18,7 +18,7 @@
 ## Fluxo do Promoter
 ```
 Promoter recebe cargo (equipe_evento papel=promoter)
--> AdminGateway libera acesso ao PromoterDashboardView
+-> DashboardV2Gateway libera acesso ao PromoterDashboardView
 -> Ve eventos onde tem cota
 -> Seleciona evento -> PromoterCotasView
 -> Ve suas cotas por regra (VIP: 10/20, CONSUMO: 5/15...)

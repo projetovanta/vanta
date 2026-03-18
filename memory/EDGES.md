@@ -46,7 +46,7 @@ Mapa: tabela/store/RPC → arquivos que consomem. Consultar ANTES de mudar schem
 | FinanceiroView.tsx | FI |
 | VantaIndicaView.tsx | MA |
 | indicaTemplatesService.ts → vanta_indica_templates | MA |
-| brandProfilesService.ts → brand_profiles | MA |
+| ~~brandProfilesService.ts~~ → REMOVIDO (sessão 3) | MA |
 | ProductAnalyticsView.tsx | RE |
 | Edge Functions (notif-evento-*) | IN |
 
@@ -248,7 +248,7 @@ currentAccount, profile, authLoading, selectedCity, notifications, accessNodes
 - MessagesView.tsx, ChatRoomView.tsx
 - chatStore.ts, ticketsStore.ts, socialStore.ts, extrasStore.ts
 - ComunidadePublicView.tsx
-- AdminGateway.tsx
+- DashboardV2Gateway.tsx
 - useAppHandlers.ts
 
 ### useTicketsStore (4 consumers)
@@ -284,7 +284,7 @@ allEvents, savedEvents
 | verify_ticket_token | jwtService.ts | OP |
 | get_eventos_por_regiao | supabaseVantaService.ts | DS |
 | buscar_membros | authService.ts | ID |
-| get_admin_access | AdminGateway.tsx | IN |
+| get_admin_access | DashboardV2Gateway.tsx | IN |
 | get_convite_socio | REMOVIDO (negociação fora do app) | AE |
 | aceitar_convite_socio | deep link WhatsApp → RPC | AE |
 | recusar_convite_socio | deep link WhatsApp → RPC | AE |

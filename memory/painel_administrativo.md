@@ -29,28 +29,20 @@
 - Componentes novos: EmptyState, BatchActionBar, FilterBar
 - Notificações batch: `enviarAgora` no pushAgendadosService
 
-## Regras de navegação admin (sessão 4)
+## Regras de navegação admin
 - Admin SEMPRE abre na Dashboard — sem persistir última view no sessionStorage
-- AdminGateway, AdminDashboardView, DashboardV2Gateway: sessionStorage removido
 - DashboardV2Gateway: conteúdo max-w-[500px] com `relative` — absolute inset-0 das subviews fica contido
 - VANTA Indica: 7 templates prontos, handlers de rota completos, preview 100% fiel à Home
 
-## Fluxo AdminGateway
+## Fluxo DashboardV2Gateway
 1. `supabase.rpc('get_admin_access', { p_user_id })` → retorna {role, comunidades, eventos}
-2. `accessData === null` → spinner
-3. `comunidades.length === 0 && !isMaster` → "Sem atribuições"
-4. Lista comunidades → user seleciona → `setConfirmado(destino)`
-5. Master tem botão "Visão Global" extra
-6. Após confirmação → `AdminDashboardView` com `adminRole` resolvido via dados RPC
+2. Panorama (null context): KPIs globais, pendências, atalhos
+3. Seleção de comunidade/evento → `setActiveContext({tenantId, tenantTipo, cargo})`
+4. Sidebar + subviews renderizadas dentro do contexto
+5. Deep links admin consumidos via `adminDeepLink` (sessão 3)
 
-## Services carregados em background (Fase 2)
+## Services carregados em background
 Após gate resolver: rbacService, comunidadesService, cortesiasService, eventosAdminService, listasService, clubeService, assinaturaService, maisVantaConfigService
-
-## AdminDashboardView
-- Recebe: onClose, adminNome, adminRole, currentUserId, addNotification, initialTenantId, initialTenantTipo
-- Sidebar controla navegação entre subviews
-- SubViews renderizadas condicionalmente
-- AdminSubView inclui CONDICOES_COMERCIAIS (aceite de condições pro sócio)
 
 ## AdminDashboardHome
 - KPIs: comunidades, eventos, membros, vendas, lucro VANTA

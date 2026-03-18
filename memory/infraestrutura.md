@@ -83,7 +83,7 @@ Sistema de debug logging ativo APENAS em `import.meta.env.DEV`. Em produção: Z
 
 ## Build
 - `vite.config.ts`: logLevel `error`
-- manualChunks: vendor-supabase, vendor-sentry, vendor-qr (recharts e leaflet removidos — carregam lazy via AdminGateway e RadarView)
+- manualChunks: vendor-supabase, vendor-sentry, vendor-qr (recharts e leaflet carregam lazy via DashboardV2Gateway e RadarView)
 - Bundle core ~4MB, lazy chunks (admin, radar, exceljs, jspdf) carregam sob demanda
 - `npm run build` → dist/
 - `npx tsc --noEmit` → type check

@@ -50,7 +50,7 @@
 - STATUS: OK
 
 ## F9.8 — ADMIN GATEWAY (roteamento por role)
-- QUEM: qualquer admin | ONDE: AdminGateway.tsx
+- QUEM: qualquer admin | ONDE: DashboardV2Gateway.tsx
 - COMO: verifica role + comunidades do usuario → redireciona
 - MASTER: opcao "Visao Global" + lista todas comunidades
 - GERENTE/SOCIO: lista comunidades onde tem cargo

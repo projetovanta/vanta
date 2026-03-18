@@ -193,7 +193,7 @@ E o segundo bloco fundamental — depende de comunidade, alimenta todo o resto.
 
 ### CRIAR EVENTO
 **Quem**: Gerente ou socio com permissao
-**Navegacao**: Bottom nav Admin -> AdminGateway (só rbacService+comunidadesService) -> AdminDashboardView (lazy init: eventosAdminService imediato, listas/cortesias/clube/assinatura/maisVantaConfig com delay 2s via dynamic import) -> Comunidade -> Central Eventos -> Botao "Criar Evento" -> TipoEventoScreen -> CriarEventoView (5 steps)
+**Navegacao**: Bottom nav Admin -> DashboardV2Gateway (panorama + contexto) -> Comunidade -> Central Eventos -> Botao "Criar Evento" -> TipoEventoScreen -> CriarEventoView (4 steps + preview)
 
 **Steps do wizard** (CriarEventoView.tsx, 868L):
 - Step 1 DADOS: nome, descricao, foto (upload+crop), data inicio/fim, categoria, subcategorias, estilos, experiencias

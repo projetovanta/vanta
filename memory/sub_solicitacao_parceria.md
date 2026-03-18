@@ -148,7 +148,7 @@ tipo_comunidade TEXT DEFAULT 'ESPACO_FIXO' -- 'ESPACO_FIXO' | 'PRODUTORA'
 | features/admin/views/SolicitarParceriaView.tsx | Wizard 4 steps + upload fotos com preview |
 | features/admin/views/SolicitacoesParceriaView.tsx | Painel master: lista + dossie + aprovar/rejeitar |
 | features/admin/components/AdminSidebar.tsx | Item SOLICITACOES_PARCERIA na sidebar master |
-| features/admin/AdminDashboardView.tsx | Routing + lazy import |
+| features/dashboard-v2/DashboardV2Gateway.tsx | Routing + lazy import |
 | modules/profile/ProfileView.tsx | CTA "Quero ser parceiro" + subView handler |
 | types/auth.ts | ProfileSubView SOLICITAR_PARCERIA + 3 tipos notificacao |
 | types/supabase.ts | Regenerado com novas tabelas/colunas |

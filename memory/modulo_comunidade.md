@@ -95,7 +95,7 @@ E o bloco fundamental do app — tudo depende dela.
 
 ### CRIAR COMUNIDADE
 **Quem**: Master admin
-**Navegacao**: Bottom nav Admin -> AdminGateway -> AdminDashboardView -> sidebar "Comunidades" -> ComunidadesView -> botao "+ Nova Comunidade" -> CriarComunidadeView
+**Navegacao**: Bottom nav Admin -> DashboardV2Gateway -> sidebar "Comunidades" -> ComunidadesView -> botao "+ Nova Comunidade" -> CriarComunidadeView
 **Arquivos**: features/admin/views/criarComunidade/ (4 arquivos, 942L total)
 
 **O que acontece**:
@@ -111,7 +111,7 @@ Step 4 (Step4ProdutoresTaxas): produtores (min 1, busca por nome), configuracoes
 4. Para cada produtor: INSERT atribuicoes_rbac (cargo GERENTE, permissoes completas)
 
 **Quem recebe**:
-- Produtores (GERENTE): veem no AdminDashboardView -> ComunidadesView -> ComunidadeDetalheView (tabs: EVENTOS, EQUIPE, LOGS, CAIXA, RELATORIO, PRIVADOS, COMEMORACOES, COMERCIAL)
+- Produtores (GERENTE): veem no DashboardV2Gateway -> ComunidadesView -> ComunidadeDetalheView (tabs: EVENTOS, EQUIPE, LOGS, CAIXA, RELATORIO, PRIVADOS, COMEMORACOES, COMERCIAL)
 - Usuarios: veem em ComunidadePublicView (via EventDetailView -> clica comunidade)
 - Master: ve em ComunidadesView (todas as comunidades)
 
@@ -187,7 +187,7 @@ Step 4 (Step4ProdutoresTaxas): produtores (min 1, busca por nome), configuracoes
 | Passaportes MV | features/admin/views/PassaportesMaisVantaView.tsx | comunidade_id | Passaporte por cidade |
 | Campanhas | features/admin/services/campanhasService.ts | comunidade_id | Segmentar por comunidade |
 | RBAC | features/admin/services/rbacService.ts | tenant COMUNIDADE | Permissoes por comunidade |
-| Admin Gateway | features/admin/AdminGateway.tsx | comunidades do user | Filtra acesso |
+| Admin Gateway | features/dashboard-v2/DashboardV2Gateway.tsx | comunidades do user | Filtra acesso |
 | Admin Home | features/admin/components/AdminDashboardHome.tsx | comunidades | Lista no dashboard |
 | Checkout | supabase/functions/create-checkout/ | comunidade_id | Taxa da comunidade |
 | Stripe Webhook | supabase/functions/stripe-webhook/ | comunidade_id | Associar receita |

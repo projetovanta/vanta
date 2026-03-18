@@ -28,8 +28,8 @@ GERENTE > SOCIO > PROMOTER > GER_PORTARIA_* > PORTARIA_* > CAIXA
 
 ## Gate de Acesso
 1. App.tsx: `role !== guest && accessNodes.length > 0` → mostra tab admin
-2. AdminGateway: RPC `get_admin_access` → lista comunidades/eventos
-3. AdminDashboardView: sidebar filtra seções por role
+2. DashboardV2Gateway: RPC `get_admin_access` → panorama + contexto
+3. SidebarV2: sidebar filtra seções por role
 4. permissoes.ts: guards granulares (canAccessFinanceiro, canAccessListas, etc)
 
 ## Tabela Supabase: atribuicoes_rbac

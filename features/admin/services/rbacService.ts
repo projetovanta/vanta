@@ -178,7 +178,7 @@ export const rbacService = {
       }
 
       // Carregar atribuições RBAC do usuário (ou todas se master)
-      const atribQuery = supabase.from('atribuicoes_rbac').select('*').eq('ativo', true);
+      const atribQuery = supabase.from('atribuicoes_rbac').select('*').eq('ativo', true).limit(5000);
       if (!isMaster) atribQuery.eq('user_id', userId);
 
       // Carregar permissões de plataforma (RBAC V2)
@@ -217,11 +217,11 @@ export const rbacService = {
       }
 
       // Carregar comunidades e eventos filtrados (master = tudo, normal = só seus tenants)
-      const comQuery = supabase.from('comunidades').select('id, nome, foto').eq('ativa', true);
+      const comQuery = supabase.from('comunidades').select('id, nome, foto').eq('ativa', true).limit(500);
       if (!isMaster && comunidadeIds.size > 0) comQuery.in('id', [...comunidadeIds]);
       else if (!isMaster && comunidadeIds.size === 0) comQuery.limit(0);
 
-      const evQuery = supabase.from('eventos_admin').select('id, nome, foto, comunidade_id');
+      const evQuery = supabase.from('eventos_admin').select('id, nome, foto, comunidade_id').limit(2000);
       if (!isMaster && eventoIds.size > 0) evQuery.in('id', [...eventoIds]);
       else if (!isMaster && eventoIds.size === 0) evQuery.limit(0);
 

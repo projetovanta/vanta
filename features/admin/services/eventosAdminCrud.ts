@@ -139,12 +139,13 @@ export const criarEvento = async (
     p_socios: p_socios as unknown as Json,
   });
 
-  if (error || !rpcResult?.evento_id) {
+  const res = rpcResult as Record<string, unknown> | null;
+  if (error || !res?.evento_id) {
     console.error('[eventosAdminService] criarEvento RPC erro:', error);
     return '';
   }
 
-  const eventoId = rpcResult.evento_id as string;
+  const eventoId = res.evento_id as string;
 
   // Notifica cada membro da equipe (pós-RPC — notificações não são transacionais)
   for (const m of data.equipe) {

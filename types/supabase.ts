@@ -4017,6 +4017,7 @@ export type Database = {
           motivo: string;
           notificado_em: string | null;
           processado_em: string | null;
+          refund_automatico: boolean | null;
           rejeitado_em: string | null;
           rejeitado_motivo: string | null;
           rejeitado_por: string | null;
@@ -4026,6 +4027,7 @@ export type Database = {
           solicitado_em: string;
           solicitado_por: string;
           status: string;
+          stripe_refund_id: string | null;
           ticket_id: string;
           tipo: string;
           updated_at: string;
@@ -4044,6 +4046,7 @@ export type Database = {
           motivo: string;
           notificado_em?: string | null;
           processado_em?: string | null;
+          refund_automatico?: boolean | null;
           rejeitado_em?: string | null;
           rejeitado_motivo?: string | null;
           rejeitado_por?: string | null;
@@ -4053,6 +4056,7 @@ export type Database = {
           solicitado_em?: string;
           solicitado_por: string;
           status?: string;
+          stripe_refund_id?: string | null;
           ticket_id: string;
           tipo: string;
           updated_at?: string;
@@ -4071,6 +4075,7 @@ export type Database = {
           motivo?: string;
           notificado_em?: string | null;
           processado_em?: string | null;
+          refund_automatico?: boolean | null;
           rejeitado_em?: string | null;
           rejeitado_motivo?: string | null;
           rejeitado_por?: string | null;
@@ -4080,6 +4085,7 @@ export type Database = {
           solicitado_em?: string;
           solicitado_por?: string;
           status?: string;
+          stripe_refund_id?: string | null;
           ticket_id?: string;
           tipo?: string;
           updated_at?: string;
@@ -5634,12 +5640,17 @@ export type Database = {
         Returns: number;
       };
       criar_comunidade_completa: {
-        Args: { p_comunidade: Json; p_produtores: string[] };
-        Returns: { comunidade_id: string; success: boolean };
+        Args: { p_comunidade: Json; p_produtores?: string[] };
+        Returns: Json;
       };
       criar_evento_completo: {
-        Args: { p_evento: Json; p_lotes: Json; p_equipe: Json; p_socios: Json };
-        Returns: { evento_id: string; success: boolean };
+        Args: {
+          p_equipe?: Json;
+          p_evento: Json;
+          p_lotes?: Json;
+          p_socios?: Json;
+        };
+        Returns: Json;
       };
       expirar_pedidos_checkout_pendentes: { Args: never; Returns: undefined };
       exportar_dados_usuario: { Args: never; Returns: Json };

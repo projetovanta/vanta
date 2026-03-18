@@ -306,7 +306,7 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
             <h3 style={TYPOGRAPHY.sectionKicker} className="mb-3">
               Sobre o Evento
             </h3>
-            <p className="text-zinc-400 text-sm leading-relaxed font-light break-words">{evento.descricao}</p>
+            <p className="text-zinc-400 text-sm leading-relaxed font-normal break-words">{evento.descricao}</p>
           </div>
 
           {/* Comemorar aqui */}

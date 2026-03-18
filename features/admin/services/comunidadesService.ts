@@ -218,13 +218,14 @@ export const comunidadesService = {
       p_produtores: produtorIds,
     });
 
-    if (error || !result?.comunidade_id) {
+    const res = result as Record<string, unknown> | null;
+    if (error || !res?.comunidade_id) {
       console.error('[comunidadesService.criarCompleta]', error);
       return '';
     }
 
     await this.refresh();
-    return result.comunidade_id as string;
+    return res.comunidade_id as string;
   },
 
   async atualizar(

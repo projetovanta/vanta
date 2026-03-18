@@ -7,6 +7,7 @@ import { FileText, Loader2, Plus, Eye, Upload } from 'lucide-react';
 import { AdminViewHeader } from '../components/AdminViewHeader';
 import { useToast, ToastContainer } from '../../../components/Toast';
 import { legalService, type LegalDocument } from '../services/legalService';
+import DOMPurify from 'dompurify';
 
 const TIPOS = [
   { id: 'TERMOS_USO', label: 'Termos de Uso' },
@@ -137,7 +138,7 @@ export const LegalEditorView: React.FC<{
 
             {showPreview ? (
               <div className="bg-zinc-900/50 border border-white/5 rounded-2xl p-6 prose prose-invert prose-sm max-w-none">
-                <div dangerouslySetInnerHTML={{ __html: conteudo.replace(/\n/g, '<br/>') }} />
+                <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(conteudo.replace(/\n/g, '<br/>')) }} />
               </div>
             ) : (
               <textarea

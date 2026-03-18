@@ -183,7 +183,7 @@ export const EventCheckInView: React.FC<{
             <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest mb-1.5">Presentes</p>
             <div className="flex items-baseline gap-2">
               <span className="text-emerald-400 font-black text-5xl leading-none">{usados}</span>
-              <span className="text-zinc-400 text-2xl font-light">/{total}</span>
+              <span className="text-zinc-400 text-2xl font-normal">/{total}</span>
             </div>
           </div>
           <div className="text-right pb-1">

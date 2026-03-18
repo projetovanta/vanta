@@ -71,21 +71,27 @@ export const nativePushService = {
    * Configura listeners de notificação recebida (apenas nativo).
    * Chama callback quando usuário toca na notificação.
    */
-  async setupNativeListeners(onNotificationTap: (data: Record<string, string>) => void): Promise<void> {
-    if (!isNative) return;
+  async setupNativeListeners(onNotificationTap: (data: Record<string, string>) => void): Promise<() => void> {
+    if (!isNative) return () => {};
 
     const { PushNotifications } = await import('@capacitor/push-notifications');
 
     // Notificação recebida com app aberto
-    PushNotifications.addListener('pushNotificationReceived', notification => {
+    const h1 = await PushNotifications.addListener('pushNotificationReceived', notification => {
       console.debug('[nativePush] received:', notification.title);
     });
 
     // Usuário tocou na notificação
-    PushNotifications.addListener('pushNotificationActionPerformed', action => {
+    const h2 = await PushNotifications.addListener('pushNotificationActionPerformed', action => {
       const data = (action.notification.data ?? {}) as Record<string, string>;
       onNotificationTap(data);
     });
+
+    // Retorna cleanup pra useEffect
+    return () => {
+      h1.remove();
+      h2.remove();
+    };
   },
 
   /** Remove subscriptions ao logout */

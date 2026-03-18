@@ -32,7 +32,7 @@
 |------|---------|----------|----------------|------------|------|
 | 2026-03-16 | 1 | Hooks, gates, auditoria, markers | Gate Duplo obrigatório, markers com hash | — | #hooks #gates #markers |
 | 2026-03-17 | 5 | Sprint 1+2, Stripe, Login Social, iOS, Visual Redesign, 4 Blocos Melhorias, Contratações, IA Visual | 4 blocos completos, 20 decisões features, 4 novos agentes, Skill analisar-marca, brand_profiles | — | #blocos #visual #indica #financeiro #operacoes #agentes #ia #lux |
-| 2026-03-18 | 2 | Auditoria full, limpeza código, RTK, Plano Wizards v2 (38 itens), Fase 1 correções críticas | Wizards 4 steps, rascunho auto, RPC atômica, classificação idade, MV ao lado do botão, importar anterior, link sócio | Fases 2-6 do plano | #wizards #auditoria #rtk #plano #fase1 |
+| 2026-03-18 | 3 | Auditoria full, limpeza código, RTK, Plano Wizards v2 (38 itens completos), Visual Redesign, sessão 3 em andamento | Wizards 4 steps, rascunho auto, RPC atômica, classificação idade, MV ao lado do botão, importar anterior, link sócio | Sessão 3 em andamento | #wizards #auditoria #rtk #plano #visual |
 
 ---
 

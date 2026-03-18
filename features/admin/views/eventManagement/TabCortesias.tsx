@@ -297,7 +297,7 @@ export const TabCortesias: React.FC<{
         <div className="flex items-end justify-between mb-4">
           <div className="flex items-baseline gap-2">
             <span className="text-white font-black text-5xl leading-none">{saldo}</span>
-            <span className="text-zinc-400 text-xl font-light">/{config.limite}</span>
+            <span className="text-zinc-400 text-xl font-normal">/{config.limite}</span>
           </div>
           <div className="text-right pb-1">
             <p className="text-[#FFD300] font-black text-3xl leading-none">{usados}</p>

@@ -22,7 +22,7 @@ export const TYPOGRAPHY = {
   uiLabel: {
     fontFamily: FONTS.sans,
     color: COLORS.textMuted,
-    fontWeight: 800,
+    fontWeight: 900,
     textTransform: 'uppercase' as const,
     letterSpacing: '0.22em',
     fontSize: '0.625rem',

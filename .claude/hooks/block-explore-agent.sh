@@ -4,6 +4,10 @@
 # Bloqueia: Explore agents (qualquer), e qualquer Agent cujo prompt indica leitura de código.
 # Permitidos: Agent para tarefas que NÃO envolvem leitura de código (ex: claude-code-guide, statusline).
 
+# Se Dan autorizou explicitamente via marker, liberar tudo
+# DESATIVADO por padrão — só ativar com marker dan_authorized
+# if [ -f "/tmp/vanta_dan_authorized_edit" ] || [ -f "/tmp/vanta_dan_authorized_bash" ]; then exit 0; fi
+
 INPUT=$(cat /dev/stdin)
 TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name // empty')
 

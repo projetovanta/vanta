@@ -259,7 +259,7 @@ export const TabRelatorio: React.FC<{ eventoAdminId: string }> = ({ eventoAdminI
             <span className="text-emerald-400 font-black text-4xl leading-none print:text-green-600">
               {rel.totalCheckins}
             </span>
-            <span className="text-zinc-400 text-xl font-light print:text-gray-400">/{rel.totalVendidos}</span>
+            <span className="text-zinc-400 text-xl font-normal print:text-gray-400">/{rel.totalVendidos}</span>
           </div>
           <span className="text-white font-black text-2xl leading-none print:text-black">{rel.taxaConversao}%</span>
         </div>

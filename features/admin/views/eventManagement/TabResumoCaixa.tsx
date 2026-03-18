@@ -408,7 +408,7 @@ export const TabResumoCaixa: React.FC<{ lista: ListaEvento; toastFn?: (t: 'suces
         <div className="flex items-end justify-between mb-3">
           <div className="flex items-baseline gap-1.5">
             <span className="text-emerald-400 font-black text-4xl leading-none">{entraram}</span>
-            <span className="text-zinc-400 text-xl font-light">/{total}</span>
+            <span className="text-zinc-400 text-xl font-normal">/{total}</span>
           </div>
           <span className="text-white font-black text-2xl leading-none">{pctFreq}%</span>
         </div>
@@ -449,7 +449,7 @@ export const TabResumoCaixa: React.FC<{ lista: ListaEvento; toastFn?: (t: 'suces
                 <span className="font-black text-xl leading-none" style={{ color: cor }}>
                   {r.count}
                 </span>
-                <span className="text-zinc-400 text-sm font-light">/{r.tetoGlobal}</span>
+                <span className="text-zinc-400 text-sm font-normal">/{r.tetoGlobal}</span>
               </div>
             </div>
             <div className="w-full h-1.5 bg-zinc-800 rounded-full overflow-hidden mb-1.5">

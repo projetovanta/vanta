@@ -128,7 +128,7 @@ export const ChatListItem: React.FC<ChatListItemProps> = React.memo(
                 </span>
               </div>
               <p
-                className={`text-[0.75rem] truncate italic ${chat.unreadCount > 0 ? 'text-zinc-200 font-bold' : 'text-zinc-400 font-light'}`}
+                className={`text-[0.75rem] truncate italic ${chat.unreadCount > 0 ? 'text-zinc-200 font-bold' : 'text-zinc-400 font-normal'}`}
               >
                 {chat.lastMessage || 'Nenhuma mensagem trocada.'}
               </p>

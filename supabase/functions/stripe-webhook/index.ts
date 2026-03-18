@@ -113,11 +113,12 @@ serve(async (req: Request) => {
           }
 
           // Buscar pedido
+          // Buscar pedido — aceita PENDENTE (primeira tentativa) ou FALHA_PROCESSAMENTO (retry do Stripe)
           const { data: pedido, error: pedidoErr } = await supabase
             .from('pedidos_checkout')
             .select('*')
             .eq('id', pedidoId)
-            .eq('status', 'PENDENTE')
+            .in('status', ['PENDENTE', 'FALHA_PROCESSAMENTO'])
             .maybeSingle();
 
           if (pedidoErr || !pedido) {
@@ -152,19 +153,32 @@ serve(async (req: Request) => {
             }
           }
 
-          // Atualizar pedido
+          // Atualizar pedido — FIX C2: FALHA_PROCESSAMENTO quando RPC falha (retry do Stripe vai retentar)
           const nowBRT = tsBR();
           const { error: updErr } = await supabase
             .from('pedidos_checkout')
             .update({
-              status: allOk ? 'PAGO' : 'PAGO',
-              paid_at: nowBRT,
+              status: allOk ? 'PAGO' : 'FALHA_PROCESSAMENTO',
+              paid_at: allOk ? nowBRT : null,
               stripe_session_id: session.id,
               stripe_payment_intent_id: session.payment_intent,
             })
             .eq('id', pedidoId);
 
           if (updErr) console.error('[stripe-webhook] ingresso: update pedido erro', updErr.message);
+
+          // FIX A30: Decrementar usos do cupom (só quando tickets foram criados com sucesso)
+          if (allOk && dadosCompra?.cupom_id) {
+            const { error: cupomErr } = await supabase.rpc('incrementar_usos_cupom', {
+              cupom_id: dadosCompra.cupom_id,
+            });
+            if (cupomErr) {
+              console.error('[stripe-webhook] cupom: erro ao incrementar usos', {
+                cupom_id: dadosCompra.cupom_id,
+                err: cupomErr.message,
+              });
+            }
+          }
 
           // Notificar comprador (in-app + push + email)
           if (allOk && pedido.user_id) {

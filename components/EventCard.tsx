@@ -71,9 +71,9 @@ export const EventCard: React.FC<EventCardProps> = React.memo(
     };
 
     const getBadgeConfig = () => {
-      if (isEndingSoon) return { text: 'ACABA EM BREVE', className: 'bg-[#FF3131]/80 animate-pulse text-white' };
-      if (isStartingSoon) return { text: 'COMEÇA EM BREVE', className: 'bg-[#FF8C00]/80 animate-pulse text-white' };
-      if (isHappening) return { text: 'ACONTECENDO AGORA', className: 'bg-[#39FF14]/80 animate-pulse text-black' };
+      if (isEndingSoon) return { text: 'ACABA EM BREVE', className: 'bg-red-500/80 text-white' };
+      if (isStartingSoon) return { text: 'COMEÇA EM BREVE', className: 'bg-amber-500/80 text-white' };
+      if (isHappening) return { text: 'ACONTECENDO AGORA', className: 'bg-emerald-400/80 text-black' };
       return {
         text: `${formatDateLabel(evento.data).toUpperCase()} • ${evento.horario}`,
         className: 'bg-black/80 text-white/90',

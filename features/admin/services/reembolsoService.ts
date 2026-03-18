@@ -201,7 +201,7 @@ export async function podeReembolsoAutomatico(
   try {
     const { data: ticket, error: ticketErr } = await supabase
       .from('tickets_caixa')
-      .select('emitido_em, status')
+      .select('criado_em, status')
       .eq('id', ticketId)
       .maybeSingle();
 
@@ -224,7 +224,7 @@ export async function podeReembolsoAutomatico(
     }
 
     const agora = new Date();
-    const dataCompra = new Date(ticket.emitido_em);
+    const dataCompra = new Date(ticket.criado_em);
     const dataEvento = new Date(evento.data_inicio);
 
     const diasDesdeCompra = Math.floor((agora.getTime() - dataCompra.getTime()) / (1000 * 60 * 60 * 24));
@@ -293,6 +293,16 @@ export async function solicitarReembolsoAutomatico(
     if (ticketUpd.error || reembolsoIns.error || !reembolsoIns.data) {
       return { success: false, error: 'Erro ao processar reembolso' };
     }
+
+    // C4: Refund real no Stripe (automático até R$100, manual acima)
+    supabase.functions
+      .invoke('process-stripe-refund', {
+        body: { reembolso_id: reembolsoIns.data.id },
+      })
+      .then(({ error: refundErr }) => {
+        if (refundErr)
+          logger.error('[reembolso] refund Stripe falhou', { reembolsoId: reembolsoIns.data.id, err: refundErr });
+      });
 
     return { success: true, reembolsoId: reembolsoIns.data.id };
   } catch (err) {
@@ -423,6 +433,15 @@ export async function aprovarReembolsoEtapa(
     // Se master aprovou (próximo = APROVADO), marcar ticket como REEMBOLSADO
     if (proximoStatus === 'APROVADO') {
       await supabase.from('tickets_caixa').update({ status: 'REEMBOLSADO' }).eq('id', reembolso.ticket_id);
+
+      // C4: Refund real no Stripe (automático até R$100, manual acima)
+      supabase.functions
+        .invoke('process-stripe-refund', {
+          body: { reembolso_id: reembolsoId },
+        })
+        .then(({ error: refundErr }) => {
+          if (refundErr) logger.error('[reembolso] refund Stripe falhou', { reembolsoId, err: refundErr });
+        });
 
       // Notificar solicitante
       const { data: evento } = await supabase

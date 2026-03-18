@@ -1,65 +1,56 @@
 # Sessao Atual — Estado para Continuidade
 
 ## Branch: visual-redesign
-## Ultimo commit: 37c5020 (ata final + memória compartilhada)
-## Mudancas locais: NÃO
-## Preflight: 8/8 OK + 11/11 testes E2E
+## Ultimo commit: PENDENTE (19 arquivos editados, aguardando commit)
+## Mudancas locais: SIM (19 arquivos + 3 migrations + 1 Edge Function + types)
+## Preflight: 8/8 OK
 
-## Resumo da sessao (18 mar 2026 — sessao 2)
+## Resumo da sessao (18 mar 2026 — sessao 3)
 
-### Commits (13 total)
-1. `4287fdf` — Fase 1: 6 correções críticas
-2. `a606ead` — Fase 2+3: 10 componentes + wizards reorganizados
-3. `8a2dfc4` — Fase 4: rascunho automático (drafts)
-4. `e5845cf` — Fase 5: 16 índices + 10 constraints + classificação etária
-5. `037db2e` — Fase 6: social proof, urgência, MV, return-to-context
-6. `ef6fab5` — Memórias (1a rodada)
-7. `617a717` — RPCs atômicas + push 2h + deep link sócio + resumo promoter + Storage RLS
-8. `c202213` — Memórias finais
-9. `7f3136b` — Identidade visual: modais VANTA + VANTA Indica (fontSize, snap, apagar card)
-10. `465d290` — EventCard altura fixa + hover removido (mobile-first)
-11. `1883196` — Feedback visual profundidade + sessão encerrada
-12. `37c5020` — Ata final + memória compartilhada
+### Auditoria Total (10 agentes, ~500k tokens)
+- 22 críticos, 28 altos, 53 médios, 39 baixos encontrados
+- Relatório completo: memory/PENDENCIAS-18-MARCO-2026.md
+- Val nomeada Guardiã do Código
 
-### 7 Migrations Supabase
-- tabela drafts + RLS + trigger
-- 16 índices de performance
-- 10 CHECK constraints + UNIQUE dedup
-- classificacao_etaria + limite_notificacoes_mes
-- RPC criar_evento_completo + criar_comunidade_completa
-- Storage RLS restritiva
+### Bloco 1 — Dinheiro (COMPLETO)
+- C1: FOR UPDATE na RPC processar_compra_checkout (anti-overselling)
+- C2: Fix webhook PAGO/PAGO → FALHA_PROCESSAMENTO + idempotência retry Stripe
+- C3: emitido_em → criado_em no reembolsoService (CDC Art. 49)
+- C4: Edge Function process-stripe-refund (automático até R$100, manual acima)
+- A30: Cupom decrementar usos no webhook
+- C11: CASCADE → RESTRICT em reembolsos (registro fiscal)
 
-### VANTA Indica melhorias
-- Controle numérico de fontSize (título + subtítulo + selo)
-- Snap pelo centro real (getBoundingClientRect)
-- Snap entre elementos (alinhamento de bordas)
-- Só guia do centro (removidas laterais)
-- Textos flutuam livres (sem max-w limitando)
-- Botão apagar card (Trash2 + deleteCard + audit)
-- Subtítulo sem line-clamp (flui naturalmente)
+### Bloco 2 — Frontend crítico (COMPLETO)
+- C14: Deep link comunidade → nav.openComunidade() (sem hard reload)
+- C15: adminDeepLink consumido no DashboardV2Gateway
+- C16: Push listeners com cleanup (setupNativeListeners retorna cleanup)
 
-### Identidade Visual
-- VantaConfirmModal + VantaAlertModal criados
-- Zero alert()/confirm() nativo no código ativo (5 arquivos corrigidos)
-- globalToast pra erros de upload
-- EventCard: footer h-[5.5rem] fixo (cards mesma altura)
-- Removido hover em mobile (EventCard, HomeView)
+### Bloco 5 — Visual (COMPLETO)
+- A25: Inter peso 900 carregado (1659 usos de font-black corrigidos)
+- A24: Cores neon → paleta (red-500, amber-500, emerald-400) + removido animate-pulse
+- A23: font-light → font-normal (11 ocorrências, 8 arquivos)
 
-### HomeV2 — testada e descartada
-- 3 versões criadas (editorial, Nubank, dark glossy) — Dan preferiu manter Home V1 atual
-- Direção visual definida: "preto não preto", profundidade entre camadas, contraste sutil
-- Salva como feedback_visual_profundidade.md pra próxima sessão
+### Bloco 4 — Segurança (PARCIAL)
+- A1: DOMPurify.sanitize no LegalEditorView
+- A4: npm 0 vulnerabilities (override serialize-javascript)
 
-### Backlog limpo
-- CARGO_DESCRICOES: já integrado
-- fontSize px: só gráficos Recharts (normal)
-- BatchActionBar/FilterBar/Skeletons: componentes prontos, views sem UI pra eles ainda
+### 3 Migrations aplicadas no Supabase
+- fix_race_condition_overselling (FOR UPDATE)
+- add_status_falha_processamento (novo CHECK)
+- reembolsos_stripe_refund (colunas + RESTRICT)
+
+### 1 Edge Function deployed
+- process-stripe-refund (refund Stripe com threshold R$100)
+
+### Types regenerados (6046 linhas)
 
 ## Próxima sessão — prioridades
-1. Refinamento visual: paleta de superfícies (profundidade entre camadas)
-2. Ícones 3D prontos (Icons8 3D ou similar) pra onboarding/empty states
-3. Visual do VANTA Indica: snap precisa de mais teste
-4. Preparar pra loja (screenshots, ícone, splash)
+1. Bloco 3 — Banco (schema base, FKs auth.users, policy socios_evento)
+2. A2 — CORS em 7 Edge Functions
+3. Bloco 6 — Testes (checkout, RPCs)
+4. Bloco 7 — DevOps (.nvmrc, lazy load ExcelJS/jsPDF, Playwright CI)
+5. Bloco 8 — Memórias (18 desync, EDGES.md, paths)
+6. Integrar componentes wizard/form nos wizards
 
 ## Pendencias externas (sem mudança)
 - Conta Apple Developer ($99/ano)

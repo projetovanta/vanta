@@ -34,6 +34,7 @@ import { SIDEBAR_SECTIONS, COMMUNITY_SIDEBAR_SECTIONS, type AdminSubView } from 
 import { useAuthStore } from '../../stores/authStore';
 import { supabase } from '../../services/supabaseClient';
 import { useSessionTimeout } from '../../hooks/useSessionTimeout';
+import { adminDeepLink } from '../../hooks/useAppHandlers';
 import { VantaDropdown } from '../../components/VantaDropdown';
 
 // Home V2
@@ -290,6 +291,22 @@ export const DashboardV2Gateway: React.FC<{
       if (!error && data) setAccessData(data as unknown as typeof accessData & object);
     });
   }, [currentUserId]);
+
+  // C15: Consumir deep link admin (push notification → admin/comunidade/:id ou admin/evento/:id)
+  useEffect(() => {
+    if (adminDeepLink.tenantId && accessData) {
+      setActiveContext({
+        tenantId: adminDeepLink.tenantId,
+        tenantTipo: adminDeepLink.tenantTipo ?? 'COMUNIDADE',
+        cargo: '',
+      });
+      setSubView('DASHBOARD');
+      setActiveNav('DASHBOARD');
+      // Consumir deep link (não reprocessar)
+      adminDeepLink.tenantId = null;
+      adminDeepLink.tenantTipo = null;
+    }
+  }, [accessData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleEnterContext = (tenantId: string, tenantTipo: 'COMUNIDADE' | 'EVENTO' | 'MASTER', cargo: string) => {
     setActiveContext({ tenantId, tenantTipo, cargo });

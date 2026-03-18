@@ -1,5 +1,5 @@
 import React, { useEffect, useState, lazy, Suspense } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { Header, TabBar } from './components/Layout';
 import { HomeView } from './modules/home/HomeView';
 import { ProtectedRoute } from './components/ProtectedRoute';
@@ -91,6 +91,7 @@ if (!localStorage.getItem(_LS_CLEAN_KEY)) {
 
 export default function App() {
   const nav = useNavigation();
+  const navigate = useNavigate();
   const pwa = usePWA();
   const h = useAppHandlers(nav, pwa);
 
@@ -151,13 +152,16 @@ export default function App() {
     return registerDeepLinkListener(result => {
       switch (result.type) {
         case 'EVENT':
-          if (result.id) window.location.href = `/evento/${result.id}`;
+          // Rota /evento/:slug existe — navegação interna sem hard reload
+          if (result.id) navigate(`/evento/${result.id}`);
           break;
         case 'COMMUNITY':
-          if (result.id) window.location.href = `/comunidade/${result.id}`;
+          // Não existe rota /comunidade/:id — usar nav.openComunidade que seta state
+          if (result.id) nav.openComunidade(result.id);
           break;
         case 'CHECKOUT':
-          if (result.id) window.location.href = `/checkout/${result.id}`;
+          // Rota /checkout/:slug existe — navegação interna
+          if (result.id) navigate(`/checkout/${result.id}`);
           break;
         case 'WALLET':
           nav.navigateToTab('PERFIL');
@@ -168,17 +172,24 @@ export default function App() {
           break;
       }
     });
-  }, [nav]);
+  }, [nav, navigate]);
 
-  // ── Native push listeners (Capacitor) ────────────────────────────────────
+  // ── Native push listeners (Capacitor) — com cleanup pra evitar memory leak ──
   useEffect(() => {
-    nativePushService.setupNativeListeners(data => {
-      const link = data.link || '';
-      const tipo = (data.tipo || 'SISTEMA') as Notificacao['tipo'];
-      // Reutiliza a mesma lógica de deep link do handler de notificações
-      const fakeNotif = { id: '', titulo: '', mensagem: '', tipo, lida: true, link, timestamp: '' };
-      h.handleNotificationActionClickComposite(fakeNotif);
-    });
+    let cleanup: (() => void) | undefined;
+    nativePushService
+      .setupNativeListeners(data => {
+        const link = data.link || '';
+        const tipo = (data.tipo || 'SISTEMA') as Notificacao['tipo'];
+        const fakeNotif = { id: '', titulo: '', mensagem: '', tipo, lida: true, link, timestamp: '' };
+        h.handleNotificationActionClickComposite(fakeNotif);
+      })
+      .then(fn => {
+        cleanup = fn;
+      });
+    return () => {
+      cleanup?.();
+    };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => initAuth(), [initAuth]);

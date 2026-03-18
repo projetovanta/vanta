@@ -193,6 +193,7 @@ const rowToEventoAdmin = (
     recorrencia: (row.recorrencia as EventoAdmin['recorrencia']) ?? 'UNICO',
     recorrenciaAte: row.recorrencia_ate ?? undefined,
     eventoOrigemId: row.evento_origem_id ?? undefined,
+    classificacaoEtaria: (row.classificacao_etaria as EventoAdmin['classificacaoEtaria']) ?? undefined,
   };
 };
 

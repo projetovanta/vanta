@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useMemo } from 'react';
-import { Check, X, Star, Crown, Lock, UserPlus, Globe, Cake } from 'lucide-react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import { Check, X, Star, Crown, Lock, UserPlus, Globe, Cake, Clock, AlertTriangle } from 'lucide-react';
 import { Evento, Membro } from '../../types';
 import { TYPOGRAPHY } from '../../constants';
 import { getMinPrice } from '../../utils';
@@ -175,6 +175,40 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
   const isNextDay =
     evento.horarioFim && parseInt(evento.horarioFim.replace(':', '')) < parseInt(evento.horario.replace(':', ''));
 
+  // ── Lote ativo: timer de validade + % vendido ──
+  const loteAtivo = useMemo(() => {
+    if (!eventoAdmin) return null;
+    return eventoAdmin.lotes.find(l => l.ativo) ?? eventoAdmin.lotes[eventoAdmin.lotes.length - 1] ?? null;
+  }, [eventoAdmin]);
+
+  const loteDataValidade = loteAtivo?.dataValidade;
+  const [loteCountdown, setLoteCountdown] = useState('');
+
+  useEffect(() => {
+    if (!loteDataValidade) return;
+    const target = new Date(loteDataValidade);
+    if (isNaN(target.getTime())) return;
+
+    const tick = () => {
+      const diff = target.getTime() - Date.now();
+      if (diff <= 0) {
+        setLoteCountdown('');
+        return;
+      }
+      const h = Math.floor(diff / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      setLoteCountdown(`Lote encerra em ${h}h ${m}min`);
+    };
+    tick();
+    const interval = setInterval(tick, 60000);
+    return () => clearInterval(interval);
+  }, [loteDataValidade]);
+
+  const percentVendido = useMemo(() => {
+    if (!loteAtivo || loteAtivo.limitTotal <= 0) return 0;
+    return Math.round((loteAtivo.vendidos / loteAtivo.limitTotal) * 100);
+  }, [loteAtivo]);
+
   const handlePresencaClick = () => {
     if (onConfirmarPresenca(evento) === false) return; // bloqueado pelo gatekeeper (guest)
     setShowPresencaModal(true);
@@ -238,6 +272,35 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
             totalConfirmados={evento.membrosConfirmados}
             onMemberClick={onMemberClick}
           />
+          {/* Badges de urgencia: ultimos ingressos + timer de lote */}
+          {(percentVendido > 80 || loteCountdown) && (
+            <div className="flex flex-wrap gap-2">
+              {percentVendido > 80 && (
+                <div className="flex items-center gap-1.5 px-3 py-1.5 bg-red-500/15 border border-red-500/30 rounded-xl">
+                  <AlertTriangle size={12} className="text-red-400 shrink-0" />
+                  <span className="text-red-400 text-[0.625rem] font-bold uppercase tracking-wider">
+                    Ultimos ingressos
+                  </span>
+                </div>
+              )}
+              {loteCountdown && (
+                <div className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-500/15 border border-amber-500/30 rounded-xl">
+                  <Clock size={12} className="text-amber-400 shrink-0" />
+                  <span className="text-amber-400 text-[0.625rem] font-bold">{loteCountdown}</span>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Classificacao etaria */}
+          {evento.classificacaoEtaria && evento.classificacaoEtaria !== 'LIVRE' && (
+            <div className="flex items-center gap-1.5">
+              <span className="px-2.5 py-1 bg-amber-500/15 border border-amber-500/30 rounded-lg text-amber-400 text-[0.625rem] font-bold">
+                {evento.classificacaoEtaria}
+              </span>
+            </div>
+          )}
+
           <EventInfo evento={evento} isNextDay={!!isNextDay} onComunidadeClick={onComunidadeClick} />
           <div>
             <h3 style={TYPOGRAPHY.sectionKicker} className="mb-3">
@@ -420,6 +483,8 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
         minPrice={minPrice}
         hasTicket={hasTicket}
         hasPresenca={hasPresenca}
+        temBeneficioMV={!!beneficioElegivel && !isDescontoOnly && !vagasEsgotadas}
+        beneficioMVDetalhe={beneficioElegivel ? beneficioLabel : undefined}
         onBuy={handleBuyClick}
         onConfirmarPresenca={handlePresencaClick}
       />

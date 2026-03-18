@@ -269,6 +269,7 @@ export const CriarEventoView: React.FC<{
   const [experiencias, setExperiencias] = useState<string[]>([]);
   const [recorrencia, setRecorrencia] = useState('UNICO');
   const [recorrenciaAte, setRecorrenciaAte] = useState('');
+  const [classificacaoEtaria, setClassificacaoEtaria] = useState<'LIVRE' | '16+' | '18+'>('LIVRE');
   const [localNome, setLocalNome] = useState(comunidade.nome);
   const [localEndereco, setLocalEndereco] = useState(
     comunidade.endereco ? `${comunidade.endereco}, ${comunidade.cidade}` : comunidade.cidade,
@@ -717,6 +718,7 @@ export const CriarEventoView: React.FC<{
         experiencias: experiencias.length > 0 ? experiencias : undefined,
         recorrencia: (recorrencia as 'UNICO' | 'SEMANAL' | 'QUINZENAL' | 'MENSAL') || undefined,
         recorrenciaAte: recorrenciaAte || undefined,
+        classificacaoEtaria: classificacaoEtaria || undefined,
       });
 
       if (!eventoId) {
@@ -1165,6 +1167,27 @@ export const CriarEventoView: React.FC<{
                 experiencias={experiencias}
                 setExperiencias={setExperiencias}
               />
+
+              {/* ── Classificação Etária ── */}
+              <div className="pt-4 space-y-2">
+                <p className="text-white text-[0.625rem] font-black uppercase tracking-widest">Classificacao Etaria</p>
+                <div className="flex gap-2">
+                  {(['LIVRE', '16+', '18+'] as const).map(opt => (
+                    <button
+                      key={opt}
+                      type="button"
+                      onClick={() => setClassificacaoEtaria(opt)}
+                      className={`flex-1 py-2.5 rounded-xl text-[0.625rem] font-bold uppercase tracking-wider border transition-all active:scale-95 ${
+                        classificacaoEtaria === opt
+                          ? 'bg-[#FFD300]/15 border-[#FFD300]/40 text-[#FFD300]'
+                          : 'bg-zinc-900/50 border-white/5 text-zinc-400'
+                      }`}
+                    >
+                      {opt}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
           </>
         )}

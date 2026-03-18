@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Crown } from 'lucide-react';
+import { MapPin, Crown, Users } from 'lucide-react';
 import { Evento } from '../types';
 import { TYPOGRAPHY } from '../constants';
 import { getMinPrice, isEventHappeningNow, isEventStartingSoon, isEventEndingSoon } from '../utils';
@@ -39,10 +39,12 @@ interface EventCardProps {
   onComunidadeClick?: (comunidadeId: string) => void;
   showCityInsteadOfLocal?: boolean;
   distLabel?: string;
+  confirmados?: number;
+  percentVendido?: number;
 }
 
 export const EventCard: React.FC<EventCardProps> = React.memo(
-  ({ evento, onClick, onComunidadeClick, showCityInsteadOfLocal, distLabel }) => {
+  ({ evento, onClick, onComunidadeClick, showCityInsteadOfLocal, distLabel, confirmados, percentVendido }) => {
     const minPrice = getMinPrice(evento);
     const isHappening = isEventHappeningNow(evento);
     const isStartingSoon = isEventStartingSoon(evento);
@@ -124,13 +126,20 @@ export const EventCard: React.FC<EventCardProps> = React.memo(
           {/* Overlay gradiente — mais suave, mostra mais foto */}
           <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
           <div className="absolute inset-x-0 bottom-0 p-3">
-            <span
-              className={`inline-block px-2 py-0.5 rounded-md text-[0.5rem] font-bold uppercase tracking-wider mb-1.5 backdrop-blur-sm ${
-                estiloCor ? `${estiloCor.bg} ${estiloCor.text}` : 'bg-[#FFD300]/20 text-[#FFD300]'
-              }`}
-            >
-              {evento.estilos?.[0] || evento.formato || evento.categoria}
-            </span>
+            <div className="flex items-center gap-1.5 flex-wrap mb-1.5">
+              <span
+                className={`inline-block px-2 py-0.5 rounded-md text-[0.5rem] font-bold uppercase tracking-wider backdrop-blur-sm ${
+                  estiloCor ? `${estiloCor.bg} ${estiloCor.text}` : 'bg-[#FFD300]/20 text-[#FFD300]'
+                }`}
+              >
+                {evento.estilos?.[0] || evento.formato || evento.categoria}
+              </span>
+              {percentVendido != null && percentVendido > 80 && (
+                <span className="inline-block px-2 py-0.5 rounded-md text-[0.5rem] font-bold uppercase tracking-wider backdrop-blur-sm bg-red-500/15 border border-red-500/30 text-red-400">
+                  Ultimos ingressos
+                </span>
+              )}
+            </div>
             <h3 className="font-serif text-[0.9rem] text-white leading-snug line-clamp-2 drop-shadow-lg">
               {evento.titulo}
             </h3>
@@ -138,6 +147,15 @@ export const EventCard: React.FC<EventCardProps> = React.memo(
         </div>
         {/* Footer do card */}
         <div className="px-3 py-2.5 space-y-1.5">
+          {/* Social proof */}
+          {confirmados != null && confirmados > 0 && (
+            <div className="flex items-center gap-1">
+              <Users size={12} className="text-zinc-400 shrink-0" />
+              <span className="text-[0.625rem] text-zinc-400">
+                {confirmados} {confirmados === 1 ? 'pessoa vai' : 'pessoas vao'}
+              </span>
+            </div>
+          )}
           {/* Local + Distância */}
           <div className="flex items-center gap-1.5 min-w-0">
             <MapPin size="0.6rem" className="text-[#FFD300]/60 shrink-0" />

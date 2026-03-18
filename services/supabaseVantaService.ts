@@ -125,7 +125,7 @@ export class SupabaseVantaService implements IVantaService {
       const { data, error } = await supabase
         .from('eventos_admin')
         .select(
-          'id, slug, nome, descricao, data_inicio, data_fim, local, endereco, cidade, foto, formato, estilos, experiencias, categoria, subcategorias, coords, comunidade_id, venda_vanta, link_externo, comunidades(id, nome, foto, cidade, endereco), lotes(id, nome, ativo, variacoes_ingresso(valor))',
+          'id, slug, nome, descricao, data_inicio, data_fim, local, endereco, cidade, foto, formato, estilos, experiencias, categoria, subcategorias, coords, comunidade_id, venda_vanta, link_externo, classificacao_etaria, comunidades(id, nome, foto, cidade, endereco), lotes(id, nome, ativo, variacoes_ingresso(valor))',
         )
         .eq('publicado', true)
         .gte('data_fim', now)
@@ -218,6 +218,7 @@ export class SupabaseVantaService implements IVantaService {
         slug: row.slug ?? undefined,
         ocultarValor: row.venda_vanta === false ? true : undefined,
         urlIngressos: row.venda_vanta === false ? (row.link_externo ?? undefined) : undefined,
+        classificacaoEtaria: row.classificacao_etaria ?? undefined,
       } satisfies Evento;
     });
   }
@@ -232,7 +233,7 @@ export class SupabaseVantaService implements IVantaService {
       const { data, error } = await supabase
         .from('eventos_admin')
         .select(
-          'id, slug, nome, descricao, data_inicio, data_fim, local, endereco, cidade, foto, formato, estilos, experiencias, categoria, subcategorias, coords, comunidade_id, venda_vanta, link_externo, comunidades(id, nome, foto, cidade, endereco), lotes(id, nome, ativo, variacoes_ingresso(valor))',
+          'id, slug, nome, descricao, data_inicio, data_fim, local, endereco, cidade, foto, formato, estilos, experiencias, categoria, subcategorias, coords, comunidade_id, venda_vanta, link_externo, classificacao_etaria, comunidades(id, nome, foto, cidade, endereco), lotes(id, nome, ativo, variacoes_ingresso(valor))',
         )
         .eq('publicado', true)
         .gte('data_fim', now)
@@ -256,7 +257,7 @@ export class SupabaseVantaService implements IVantaService {
       const { data, error } = await supabase
         .from('eventos_admin')
         .select(
-          'id, slug, nome, descricao, data_inicio, data_fim, local, endereco, cidade, foto, formato, estilos, experiencias, categoria, subcategorias, coords, comunidade_id, venda_vanta, link_externo, comunidades(id, nome, foto, cidade, endereco), lotes(id, nome, ativo, variacoes_ingresso(valor))',
+          'id, slug, nome, descricao, data_inicio, data_fim, local, endereco, cidade, foto, formato, estilos, experiencias, categoria, subcategorias, coords, comunidade_id, venda_vanta, link_externo, classificacao_etaria, comunidades(id, nome, foto, cidade, endereco), lotes(id, nome, ativo, variacoes_ingresso(valor))',
         )
         .eq('id', id)
         .maybeSingle();
@@ -280,7 +281,7 @@ export class SupabaseVantaService implements IVantaService {
       const { data, error } = await supabase
         .from('eventos_admin')
         .select(
-          'id, slug, nome, descricao, data_inicio, data_fim, local, endereco, cidade, foto, formato, estilos, experiencias, categoria, subcategorias, coords, comunidade_id, venda_vanta, link_externo, comunidades(id, nome, foto, cidade, endereco), lotes(id, nome, ativo, variacoes_ingresso(valor))',
+          'id, slug, nome, descricao, data_inicio, data_fim, local, endereco, cidade, foto, formato, estilos, experiencias, categoria, subcategorias, coords, comunidade_id, venda_vanta, link_externo, classificacao_etaria, comunidades(id, nome, foto, cidade, endereco), lotes(id, nome, ativo, variacoes_ingresso(valor))',
         )
         .eq('publicado', true)
         .gte('data_fim', now)

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Evento, Ingresso, Membro, Notificacao, TabState, ContaVantaLegacy, ProfileSubView } from '../types';
 import { useAuthStore } from '../stores/authStore';
 import { useTicketsStore } from '../stores/ticketsStore';
@@ -55,6 +55,7 @@ export const useAppHandlers = (nav: Nav, pwa: PWA) => {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showLoginView, setShowLoginView] = useState(false);
   const [guestModalContext, setGuestModalContext] = useState<string | null>(null);
+  const authReturnToRef = useRef<(() => void) | null>(null);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showAdminGuide, setShowAdminGuide] = useState(false);
   const [showProfileSuccess, setShowProfileSuccess] = useState(false);
@@ -70,6 +71,10 @@ export const useAppHandlers = (nav: Nav, pwa: PWA) => {
     <T extends unknown[]>(fn: (...args: T) => void, contexto = 'generico') =>
     (...args: T) => {
       if (isGuest) {
+        // Se está num evento, guardar returnTo para voltar após cadastro/login
+        if (nav.selectedEvent) {
+          authReturnToRef.current = () => {};
+        }
         setGuestModalContext(contexto);
         return;
       }
@@ -79,6 +84,11 @@ export const useAppHandlers = (nav: Nav, pwa: PWA) => {
   const showSuccess = useCallback((msg: string) => {
     setSuccessMessage(msg);
     setShowSuccessModal(true);
+  }, []);
+
+  const closeAuthModal = useCallback(() => {
+    setShowAuthModal(false);
+    authReturnToRef.current = null;
   }, []);
 
   // ── Handlers compostos ───────────────────────────────────────────────────
@@ -100,6 +110,12 @@ export const useAppHandlers = (nav: Nav, pwa: PWA) => {
 
   const handlePresencaComposite = (e: Evento): boolean | void => {
     if (isGuest) {
+      // Guardar returnTo para que, após cadastro/login, o visitante permaneça no evento
+      if (nav.selectedEvent) {
+        authReturnToRef.current = () => {
+          // noop — o selectedEvent já está setado, basta não navegar
+        };
+      }
       setGuestModalContext('comprar');
       return false;
     }
@@ -110,12 +126,22 @@ export const useAppHandlers = (nav: Nav, pwa: PWA) => {
     registerUser(novaMembro);
     setShowAuthModal(false);
     setShowLoginView(false);
+    const returnTo = authReturnToRef.current;
+    authReturnToRef.current = null;
+    if (returnTo) {
+      returnTo();
+    }
     showSuccess('Bem-vindo à VANTA. A noite agora é sua.');
   };
 
   const handleLoginSuccess = (membro: Membro) => {
     loginWithMembro(membro);
     setShowLoginView(false);
+    const returnTo = authReturnToRef.current;
+    authReturnToRef.current = null;
+    if (returnTo) {
+      returnTo();
+    }
     if (pwa.notifPermission === 'granted') {
       pwa.registerFcmPush(membro.id);
     }
@@ -397,6 +423,7 @@ export const useAppHandlers = (nav: Nav, pwa: PWA) => {
     successMessage,
     showAuthModal,
     setShowAuthModal,
+    closeAuthModal,
     showLoginView,
     setShowLoginView,
     guestModalContext,

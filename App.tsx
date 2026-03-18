@@ -548,9 +548,7 @@ export default function App() {
           />
           <GlobalToastContainer />
           <SessionExpiredModal onLogin={() => h.setShowAuthModal(true)} />
-          {h.showAuthModal && (
-            <AuthModal isOpen onClose={() => h.setShowAuthModal(false)} onSuccess={h.handleAuthSuccess} />
-          )}
+          {h.showAuthModal && <AuthModal isOpen onClose={h.closeAuthModal} onSuccess={h.handleAuthSuccess} />}
           {showPmf && currentAccountId && (
             <PmfSurveyModal userId={currentAccountId} onClose={() => setShowPmf(false)} />
           )}

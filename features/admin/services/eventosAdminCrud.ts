@@ -86,6 +86,7 @@ export const criarEvento = async (
       plataforma_externa: data.plataformaExterna ?? null,
       recorrencia: data.recorrencia ?? 'UNICO',
       recorrencia_ate: data.recorrenciaAte ?? null,
+      classificacao_etaria: data.classificacaoEtaria ?? 'LIVRE',
     })
     .select('id')
     .single();

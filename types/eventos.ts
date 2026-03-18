@@ -167,6 +167,7 @@ export interface Evento {
   dataFimISO?: string; // ISO 8601 completo — usado para janela de validade do ingresso
   temBeneficioMaisVanta?: boolean; // true = tem lote MAIS VANTA com vagas disponíveis
   slug?: string; // URL slug para compartilhamento
+  classificacaoEtaria?: 'LIVRE' | '16+' | '18+'; // classificação etária do evento
 }
 
 export interface Ingresso {
@@ -384,6 +385,7 @@ export interface EventoAdmin {
   recorrencia?: 'UNICO' | 'SEMANAL' | 'QUINZENAL' | 'MENSAL'; // default UNICO
   recorrenciaAte?: string; // data limite ISO (YYYY-MM-DD) — até quando gerar ocorrências
   eventoOrigemId?: string; // se é ocorrência gerada, aponta pro evento template
+  classificacaoEtaria?: 'LIVRE' | '16+' | '18+'; // classificação etária do evento
 }
 
 // ── Reviews de Eventos ────────────────────────────────────────────────────

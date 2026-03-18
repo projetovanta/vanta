@@ -1,5 +1,5 @@
-import React from 'react';
-import { CheckCircle } from 'lucide-react';
+import React, { useState } from 'react';
+import { CheckCircle, Crown, ChevronDown, ChevronUp } from 'lucide-react';
 import { Evento } from '../../../types';
 
 interface EventFooterProps {
@@ -8,6 +8,8 @@ interface EventFooterProps {
   hasTicket: boolean;
   hasPresenca: boolean;
   capacityPct?: number;
+  temBeneficioMV?: boolean;
+  beneficioMVDetalhe?: string;
   onBuy: () => void;
   onConfirmarPresenca: () => void;
 }
@@ -18,11 +20,14 @@ export const EventFooter: React.FC<EventFooterProps> = ({
   hasTicket,
   hasPresenca,
   capacityPct,
+  temBeneficioMV,
+  beneficioMVDetalhe,
   onBuy,
   onConfirmarPresenca,
 }) => {
   const isFree = !evento.ocultarValor && minPrice === 0;
   const isLotando = (capacityPct ?? 0) >= 80;
+  const [showBeneficioDetalhe, setShowBeneficioDetalhe] = useState(false);
 
   return (
     <div className="shrink-0 w-full p-4 bg-[#0a0a0a] border-t border-white/5 z-50 pb-[calc(1rem+env(safe-area-inset-bottom,0px))]">
@@ -75,24 +80,42 @@ export const EventFooter: React.FC<EventFooterProps> = ({
           </button>
         ) : (
           /* Pago: "Eu vou!" secundário + "Garantir Ingresso" dourado */
-          <div className="flex gap-2">
-            <button
-              onClick={onConfirmarPresenca}
-              disabled={hasPresenca}
-              className={`px-4 py-3 rounded-xl font-bold text-[0.625rem] uppercase tracking-widest border transition-all ${
-                hasPresenca
-                  ? 'bg-zinc-800 text-zinc-400 border-zinc-700 cursor-not-allowed'
-                  : 'bg-transparent text-white border-white/20 active:bg-white/10'
-              }`}
-            >
-              {hasPresenca ? 'Confirmado' : 'Eu vou!'}
-            </button>
-            <button
-              onClick={onBuy}
-              className="px-5 py-3 bg-[#FFD300] rounded-xl font-bold text-[0.625rem] uppercase tracking-widest text-black shadow-[0_0_20px_rgba(255,211,0,0.3)] active:scale-95 transition-transform"
-            >
-              {evento.urlIngressos ? 'Comprar Fora' : 'Garantir Ingresso'}
-            </button>
+          <div className="flex flex-col gap-2">
+            <div className="flex gap-2">
+              <button
+                onClick={onConfirmarPresenca}
+                disabled={hasPresenca}
+                className={`px-4 py-3 rounded-xl font-bold text-[0.625rem] uppercase tracking-widest border transition-all ${
+                  hasPresenca
+                    ? 'bg-zinc-800 text-zinc-400 border-zinc-700 cursor-not-allowed'
+                    : 'bg-transparent text-white border-white/20 active:bg-white/10'
+                }`}
+              >
+                {hasPresenca ? 'Confirmado' : 'Eu vou!'}
+              </button>
+              <button
+                onClick={onBuy}
+                className="px-5 py-3 bg-[#FFD300] rounded-xl font-bold text-[0.625rem] uppercase tracking-widest text-black shadow-[0_0_20px_rgba(255,211,0,0.3)] active:scale-95 transition-transform"
+              >
+                {evento.urlIngressos ? 'Comprar Fora' : 'Garantir Ingresso'}
+              </button>
+            </div>
+            {temBeneficioMV && (
+              <button onClick={() => setShowBeneficioDetalhe(p => !p)} className="flex items-center gap-1.5 self-end">
+                <Crown size={16} className="text-[#FFD300] shrink-0" />
+                <span className="text-[#FFD300] text-[0.625rem] font-bold">Você tem benefício</span>
+                {showBeneficioDetalhe ? (
+                  <ChevronUp size={12} className="text-[#FFD300]" />
+                ) : (
+                  <ChevronDown size={12} className="text-[#FFD300]" />
+                )}
+              </button>
+            )}
+            {temBeneficioMV && showBeneficioDetalhe && beneficioMVDetalhe && (
+              <div className="bg-[#FFD300]/5 border border-[#FFD300]/15 rounded-xl p-4 mt-1 animate-in fade-in slide-in-from-top-2 duration-200">
+                <p className="text-zinc-300 text-xs leading-relaxed">{beneficioMVDetalhe}</p>
+              </div>
+            )}
           </div>
         )}
       </div>

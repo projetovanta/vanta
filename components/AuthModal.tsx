@@ -16,9 +16,10 @@ interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: (membro: Membro) => void;
+  returnTo?: () => void;
 }
 
-export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => {
+export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess, returnTo }) => {
   useModalBack(isOpen, onClose, 'auth-modal');
   const { legalPage, openTermos, openPrivacidade, closeLegal } = useLegalView();
 

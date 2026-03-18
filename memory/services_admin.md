@@ -44,7 +44,7 @@
 | `clube/clubeReservasService.ts` | Substitui stubs: `getResgatesUsuario`, `getResgatesEvento`, `getResgatesPendentePost` agora são queries reais |
 
 | `indicaTemplatesService.ts` | CRUD templates VANTA Indica salvos no DB. Tabela `vanta_indica_templates` |
-| `brandProfilesService.ts` | Perfis visuais de marca (identidade visual por IA). Tabela `brand_profiles` |
+| ~~brandProfilesService.ts~~ | REMOVIDO (sessão 3, Dan autorizou) |
 | `pushTemplatesService.ts` | Atualizado: `enviarAgora()` — envio imediato batch (agenda com data = agora) |
 | `dashboardAnalyticsService.ts` | Atualizado: `getDateRanges()` exportado pra uso nos financeiros |
 | `rbacService.ts` | Atualizado: `CARGO_DESCRICOES` adicionado (8 cargos com descrição) |

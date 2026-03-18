@@ -99,9 +99,10 @@ E o bloco fundamental do app — tudo depende dela.
 **Arquivos**: features/admin/views/criarComunidade/ (4 arquivos, 942L total)
 
 **O que acontece**:
-Step 1 (Step1Identidade ~195L): nome, bio, capacidade, taxa VANTA %, taxas avancadas (processamento, porta, minima, cota nomes, nome excedente, cota cortesias, cortesia excedente), horarios, CNPJ/razao/tel
-Step 2 (Step2Localizacao 170L): CEP auto -> endereco + coords GPS
-Step 3 (Step3Fotos 273L): foto perfil (crop), foto capa (crop), produtores (min 1, busca por nome)
+Step 1 (Step1Identidade): nome, bio, capacidade, fotos (perfil crop + capa crop), CNPJ/razao/tel
+Step 2 (Step2Localizacao): CEP auto -> endereco + coords GPS
+Step 3 (Step3Operacao): taxa VANTA %, taxas avancadas, horarios, tipo_comunidade
+Step 4 (Step4ProdutoresTaxas): produtores (min 1, busca por nome), configuracoes finais
 
 **Reacao no sistema**:
 1. INSERT comunidades (14 campos + slug auto)
@@ -207,7 +208,7 @@ Step 3 (Step3Fotos 273L): foto perfil (crop), foto capa (crop), produtores (min 
 ## Checklist de status
 | Item | Status | Detalhe |
 |---|---|---|
-| Criar comunidade wizard | OK | 3 steps, 942L |
+| Criar comunidade wizard | OK | 4 steps (Identidade, Localizacao, Operacao, ProdutoresTaxas) |
 | Editar comunidade | OK | EditarModal ~820L (inclui config Evento Privado) |
 | Desativar (soft delete) | OK | ativa=false |
 | Upload fotos | OK | Bucket comunidades |

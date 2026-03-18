@@ -43,7 +43,7 @@
 - Pessoas: query em profiles por nome (debounced)
 
 ## Radar (mapa)
-**Arquivo**: modules/search/RadarView.tsx (dentro de SearchView como sub-view)
+**Arquivo**: modules/radar/RadarView.tsx (tab RADAR independente)
 **Fluxo**:
 ```
 SearchView -> tab Radar -> RadarView

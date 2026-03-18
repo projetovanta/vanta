@@ -1,91 +1,58 @@
 # Sessao Atual — Estado para Continuidade
 
 ## Branch: visual-redesign
-## Ultimo commit: c7fa3e3 (C23 design tokens)
-## Mudancas locais: NÃO
+## Ultimo commit: f5cb533 (A13 dead code removido)
+## Mudancas locais: memórias atualizadas (não commitadas)
 ## Preflight: 8/8 OK | E2E: 11/11 | TSC: 0 | npm: 0 vulns
 
 ## Resumo da sessao (18 mar 2026 — sessao 3)
 
-### Auditoria Total
-- 10 agentes em paralelo (~500k tokens)
-- 22 críticos + 28 altos + 53 médios encontrados
-- Relatório: memory/PENDENCIAS-18-MARCO-2026.md
-- Val nomeada Guardiã do Código
+### Auditoria Total + Execução
+- 10 agentes em paralelo (~500k tokens) → relatório PENDENCIAS-18-MARCO-2026.md
+- ~37 pendências resolvidas em 10 commits
+- 11 migrations Supabase aplicadas
+- 8 Edge Functions deployed (1 nova + 7 CORS)
+- Types regenerados 2x
+- 2596 linhas de dead code removidas
 
-### 4 commits (28 pendências resolvidas)
-1. `fb6be8a` — Blocos 1+2+4+5: dinheiro, frontend, visual, segurança
-2. `6e1207a` — Bloco 3: banco (FKs, policy, timestamps, RPCs) + A6 + A26
-3. `5767024` — A8 buckets + A11 N+1 + A12 transferencias UUID
+### 10 commits
+1. `fb6be8a` — Blocos 1+2+4+5: dinheiro, frontend, visual, segurança (14 itens)
+2. `6e1207a` — Bloco 3 banco: FKs auth.users, policy, timestamps, RPCs + A6 + A26
+3. `5767024` — A8 buckets + A11 N+1 membros + A12 transferencias UUID
 4. `c7fa3e3` — C23 design tokens @theme + hover-real variant
+5. `7c5f488` — Memórias atualizadas
+6. `5a4e1e0` — A2 CORS 7 Edge Functions
+7. `7e47655` — A22 hover: → hover-real: em 26 views mobile
+8. `ae7d49f` — A5 N+1 financeiro + A28 Playwright CI + npm audit enforce
+9. `f5cb533` — A13 dead code removido (7 arquivos, -2596L)
+10. (pendente) — Memórias finais
 
-### Bloco 1 — Dinheiro (COMPLETO)
-- C1: FOR UPDATE anti-overselling
-- C2: FALHA_PROCESSAMENTO + idempotência retry Stripe
-- C3: emitido_em → criado_em (CDC Art. 49)
-- C4: Edge Function process-stripe-refund (auto R$100)
-- A30: Cupom decrementar usos no webhook
-- C11: CASCADE → RESTRICT em reembolsos
+### Críticos resolvidos (13)
+C1 overselling, C2 webhook, C3 reembolso, C4 refund Stripe, C8 RPCs, C10 FKs, C11 CASCADE, C12 policy, C13 timestamps, C14 deep link, C15 admin deep link, C16 push cleanup, C23 tokens
 
-### Bloco 2 — Frontend (COMPLETO)
-- C14: Deep link comunidade via nav.openComunidade()
-- C15: adminDeepLink no DashboardV2Gateway
-- C16: Push listeners com cleanup
+### Altos resolvidos (22)
+A1 XSS, A2 CORS, A3 upload (parcial), A4 npm, A5 N+1, A6 limit, A8 buckets, A11 N+1 membros, A12 transferencias, A13 dead code, A22 hover, A23 font-light, A24 cores neon, A25 Inter 900, A26 .nvmrc, A27 lazy (já OK), A28 Playwright CI, A30 cupom
 
-### Bloco 5 — Visual (COMPLETO)
-- A25: Inter peso 900 (1659 usos font-black)
-- A24: Cores neon → paleta + removido animate-pulse
-- A23: font-light → font-normal (11 ocorrências)
-
-### Bloco 4 — Segurança (PARCIAL)
-- A1: DOMPurify no LegalEditorView
-- A4: npm 0 vulns (override serialize-javascript)
-
-### Bloco 3 — Banco (4 de 5)
-- C10: 44 FKs recriadas para auth.users(id)
-- C12: Policy socios_evento corrigida
-- C13: Timestamps duplicados renomeados
-- C8: 2 RPCs versionadas
-
-### Outros resolvidos
-- A6: .limit() queries RBAC
-- A8: 3 buckets storage versionados
-- A11: N+1 membros → .in()
-- A12: transferencias TEXT → UUID + FKs
-- A26: .nvmrc (Node 20)
-- C23: Design tokens @theme (16 tokens + hover-real variant)
-
-### 11 Migrations Supabase aplicadas
-- fix_race_condition_overselling
-- add_status_falha_processamento
-- reembolsos_stripe_refund
-- fix_policy_socios_evento
-- fk_auth_users_bloco1_financeiro
-- fk_auth_users_bloco2_social
-- fk_auth_users_bloco3_rbac_admin
-- fk_auth_users_bloco4_restante
-- rpcs_criar_comunidade_evento
-- buckets_storage_faltantes
-- fix_transferencias_ingresso_types_fks
-
-### 1 Edge Function deployed
-- process-stripe-refund
+### Memórias atualizadas
+modulo_comunidade (wizard 4 steps), modulo_compra_ingresso (FOR UPDATE, webhook, refund), modulo_perfil_feed (paths auth), modulo_clube (paths views), sub_saque_reembolso (criado_em, refund Stripe), sub_busca_filtros (RadarView path), EDGES.md (removidos), painel_administrativo (DashboardV2), services_admin (brandProfiles removido), MEMORIA-COMPARTILHADA, PENDENCIAS, ata, sessao_atual
 
 ## Próxima sessão — prioridades
-1. A2 — CORS em 7 Edge Functions
-2. C9 — Schema base (dump)
-3. A5 — N+1 financeiro (refactor cuidadoso)
-4. A22 — Remover hover: de views mobile (usar hover-real:)
-5. A13 — Integrar componentes wizard/form nos wizards
-6. Bloco 6 — Testes (checkout, RPCs)
-7. Bloco 8 — Memórias restantes (18 desync, EDGES.md)
+1. C9 — Schema base dump
+2. Integrar componentes wizard/form nos wizards
+3. C21/C22 — Testes (cobertura 2-3%)
+4. C17-C20 — Mobile (depende contas Apple/Google)
+5. Memórias restantes (contagens de linhas)
+6. Fonte Nevan RUS (pendente decisão licença)
+7. Preparar pra loja (screenshots, ícone, splash)
 
 ## Decisões do Dan ativas
 - Refund automático até R$100, manual acima
-- Saques: preparar automático (não manual)
+- Saques: preparar automático
 - Componentes wizard/form: manter e integrar
-- Credenciais: só remover do .env.local (não rotacionar)
-- FKs por blocos verificando órfãos antes
+- BatchActionBar/BottomSheet/FilterBar: manter
+- api/og+robots+sitemap: manter (SEO)
+- brandProfilesService: removido
+- Admin antigo: removido (DashboardV2 é o principal)
 
 ## Pendencias externas (sem mudança)
 - Conta Apple Developer ($99/ano)

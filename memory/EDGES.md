@@ -21,8 +21,8 @@ Mapa: tabela/store/RPC → arquivos que consomem. Consultar ANTES de mudar schem
 | eventosAdminCore.ts | AE — refresh busca socios_evento |
 | eventosAdminCrud.ts | AE — criarEvento insere socios |
 | eventosAdminAprovacao.ts | AE — getConvitesPendentes, contraPropostaConvite |
-| NegociacaoSocioView.tsx | UI — tela cheia chat, RPCs aceitar/recusar/contrapor/reiniciar (produtor+socio) |
-| ConviteSocioModal.tsx | UI — LEGACY (substituido por NegociacaoSocioView no App.tsx) |
+| ~~NegociacaoSocioView.tsx~~ | REMOVIDO — negociação agora fora do app |
+| ~~ConviteSocioModal.tsx~~ | REMOVIDO — substituído por deep link WhatsApp |
 | MeusEventosView.tsx | UI — badge status negociacao no card do evento |
 
 ### eventos_admin (19 consumers)
@@ -205,15 +205,15 @@ Mapa: tabela/store/RPC → arquivos que consomem. Consultar ANTES de mudar schem
 |---|---|
 | reviewsService.ts | EV |
 
-### reservas_mais_vanta (1 consumer)
+### ~~reservas_mais_vanta~~ → renomeada para resgates_mv_evento
 | Arquivo | Dominio |
 |---|---|
 | clubeReservasService.ts | MG |
 
-### lotes_mais_vanta (1 consumer)
+### ~~lotes_mais_vanta~~ → DROPADA (substituída por mais_vanta_config_evento)
 | Arquivo | Dominio |
 |---|---|
-| clubeLotesService.ts | MG |
+| ~~clubeLotesService.ts~~ | DROPADA |
 
 ### assinaturas_mais_vanta (1 consumer)
 | Arquivo | Dominio |
@@ -285,14 +285,14 @@ allEvents, savedEvents
 | get_eventos_por_regiao | supabaseVantaService.ts | DS |
 | buscar_membros | authService.ts | ID |
 | get_admin_access | AdminGateway.tsx | IN |
-| get_convite_socio | NegociacaoSocioView.tsx | AE |
-| aceitar_convite_socio | NegociacaoSocioView.tsx | AE |
-| recusar_convite_socio | NegociacaoSocioView.tsx | AE |
-| contraproposta_convite_socio | NegociacaoSocioView.tsx | AE |
-| contraproposta_produtor | NegociacaoSocioView.tsx | AE |
-| aceitar_proposta_produtor | NegociacaoSocioView.tsx | AE |
-| cancelar_convite_produtor | NegociacaoSocioView.tsx | AE |
-| reiniciar_negociacao | NegociacaoSocioView.tsx | AE |
+| get_convite_socio | REMOVIDO (negociação fora do app) | AE |
+| aceitar_convite_socio | deep link WhatsApp → RPC | AE |
+| recusar_convite_socio | deep link WhatsApp → RPC | AE |
+| contraproposta_convite_socio | REMOVIDO | AE |
+| contraproposta_produtor | REMOVIDO | AE |
+| aceitar_proposta_produtor | REMOVIDO | AE |
+| cancelar_convite_produtor | REMOVIDO | AE |
+| reiniciar_negociacao | REMOVIDO | AE |
 | expirar_negociacoes_vencidas | pg_cron (hourly) | AE |
 | gerar_ocorrencias_recorrente | eventosAdminService.ts | AE |
 | cancelar_serie_recorrente | SerieChips.tsx | AE |

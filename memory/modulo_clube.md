@@ -302,12 +302,13 @@ Sem cascata: membro recebe APENAS benefício do SEU tier exato (`===`), não dos
 | CheckoutPage | Lotes MV disponiveis |
 | HomeView | Secao beneficios MV |
 | SearchView | Filtro beneficios MV |
-| AdminDashboardView | Secao MAIS VANTA |
-| AssinaturasMaisVantaView | Gerenciar assinaturas |
-| PassaportesMaisVantaView | Gerenciar passaportes |
-| ConvitesMaisVantaView | Convites master → membro/parceiro |
-| AnalyticsMaisVantaView | Analytics completo MV |
-| AceitarConviteMVPage | Standalone /convite-mv/:token |
+| features/admin/views/maisVanta/PlanosMaisVantaView | Gerenciar assinaturas |
+| features/admin/views/maisVanta/PassaportesMaisVantaView | Gerenciar passaportes |
+| features/admin/views/maisVanta/ConvitesMaisVantaView | Convites master → membro/parceiro |
+| features/admin/views/maisVanta/AnalyticsMaisVantaView | Analytics completo MV |
+| features/admin/views/maisVanta/NotifMVPendentesView | Notif produtor admin |
+| features/admin/views/maisVanta/ConviteEspecialMVView | Convites especiais |
+| modules/convite/AceitarConviteMVPage | Standalone /convite-mv/:token |
 | ParceiroDashboardPage | Standalone /parceiro (deals, resgates, QR scan) |
 | BeneficiosMVTab | Aba Buscar — resgate deals + QR VIP (substituiu DealsMembroSection) |
 

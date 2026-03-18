@@ -58,15 +58,16 @@ Radar = mapa de eventos por geolocalizacao.
 | components/ImageCropperModal.tsx | 148 | Crop de foto |
 | utils/imageUtils.ts | 44 | Compress + crop de imagem |
 
-### Auth / Cadastro (components/auth/ + components/)
+### Auth / Cadastro (components/)
 | Arquivo | Funcao |
 |---|---|
-| AuthModal.tsx | Cadastro Nivel 1: email/senha OU login social (Apple/Google) + nome, data nascimento, termos. Ken Burns bg |
-| LoginView.tsx | Tela de login: botões Apple + Google + email/senha + recuperar senha |
-| CompletarPerfilSocial.tsx | Tela pós-login social: data nascimento + aceitar termos (quando profile.data_nascimento NULL) |
-| auth/FieldError.tsx | Componente de erro de campo |
-| auth/authHelpers.ts | Validadores: isValidDate, isAdult, isValidEmail, isValidCPF, formatadores: fmtDataNasc, fmtTelefone, fmtCPF |
-| CompletarPerfilCPF.tsx | Modal CPF (Nivel 2) — exibido no checkout se profile nao tem CPF. Valida CPF, salva no Supabase |
+| components/AuthModal.tsx | Cadastro Nivel 1: email/senha OU login social (Apple/Google) + nome, data nascimento, termos. Ken Burns bg |
+| components/LoginView.tsx | Tela de login: botões Apple + Google + email/senha + recuperar senha |
+| components/CompletarPerfilSocial.tsx | Tela pós-login social: data nascimento + aceitar termos |
+| components/OnboardingView.tsx | Onboarding: vitrine → cadastro → cidade → interesses → boas-vindas |
+| components/auth/FieldError.tsx | Componente de erro de campo |
+| components/auth/authHelpers.ts | Validadores e formatadores (CPF, data, email, telefone) |
+| components/CompletarPerfilCPF.tsx | Modal CPF (Nivel 2) — exibido no checkout se profile nao tem CPF |
 
 ### Perfil Progressivo (3 niveis)
 - **Nivel 1 (signup)**: email/senha OU login social (Apple/Google). Social: 1 tap + completar data nascimento + termos

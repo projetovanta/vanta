@@ -2,17 +2,18 @@
 # Memória — Painel Administrativo
 
 ## Arquivos Principais
-| Arquivo | Linhas | Função |
-|---|---|---|
-| `features/admin/AdminGateway.tsx` | ~317 | Gate de entrada — RPC get_admin_access |
-| `features/admin/AdminDashboardView.tsx` | ~910 | Container — sidebar + subviews (admin principal) |
-| `features/admin/components/AdminDashboardHome.tsx` | ~802 | Home com KPIs + gráficos |
-| `features/admin/components/AdminSidebar.tsx` | ~590 | Navegação lateral por role |
-| `features/admin/components/KpiCards.tsx` | 144 | Cards de métricas |
+| Arquivo | Função |
+|---|---|
+| `features/dashboard-v2/DashboardV2Gateway.tsx` | Admin principal — panorama + contexto por comunidade/evento |
+| `features/dashboard-v2/DashboardV2Home.tsx` | Home com KPIs + gráficos |
+| `features/dashboard-v2/components/SidebarV2.tsx` | Navegação lateral por role |
+| `features/dashboard-v2/components/CommandPalette.tsx` | Busca rápida (⌘K) |
+| `features/admin/components/AdminDashboardHome.tsx` | Home KPIs (usado pelo V2) |
+| `features/admin/components/KpiCards.tsx` | Cards de métricas |
 
-## Protótipos visuais — REMOVIDOS (decisão Dan 17/mar)
-- admin-v2 e admin-v3 deletados (eram protótipos mock)
-- Dashboard V2 agora é o admin principal (importado como AdminGateway no App.tsx)
+## Admin antigo — REMOVIDO (sessão 3, 18/mar)
+- AdminGateway.tsx, AdminDashboardView.tsx, CaixaDash, PortariaListaDash, PortariaQRDash, SocioDash deletados
+- Dashboard V2 é o único admin ativo (importado como AdminGateway no App.tsx por naming)
 - Componentes SidebarV2 e CommandPalette movidos pra features/dashboard-v2/components/
 
 ## Melhorias sessão 5 (4 blocos)

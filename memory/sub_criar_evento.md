@@ -45,55 +45,34 @@ LoteMaisVantaForm: @deprecated (compat)
 **Opcoes**: FESTA_DA_CASA (gerente produz sozinho) ou COM_SOCIO (co-producao com socio)
 **Impacto**: define qual Step4 renderizar e se tem convite/split
 
-### PASSO 1 — DADOS (Step1Evento)
+### PASSO 1 — ESSENCIAL (Step1Evento, showClassification=false)
 **Campos**:
-- nome (obrigatorio)
-- descricao (obrigatorio)
-- foto (upload + crop via ImageCropModal)
-- data do evento (date) — campo unico
-- hora inicio (VantaDropdown 30min slots)
-- hora encerramento (VantaDropdown 30min slots) — se horaFim <= horaInicio, sistema calcula dia seguinte automaticamente
-- formato (acordeao colapsavel, selecao unica)
-- estilos (acordeao colapsavel, multi-select max 5)
-- experiencias (acordeao colapsavel, multi-select max 5)
-**NOTA**: data_fim NAO aparece no form — calculado automaticamente a partir de dataInicio + horaInicio + horaFim
+- nome, descricao (obrigatorios)
+- foto (upload + crop, max 5MB JPEG/PNG/WebP)
+- data, hora inicio, hora encerramento
+- recorrência, local (se produtora)
+- classificação etária (LIVRE/16+/18+)
+**NOTA**: formato/estilo/experiência REMOVIDOS deste step (movidos pro step 2)
 
-**Upload**: foto vai para bucket `eventos` como `{eventoId}/capa.jpg`
+### PASSO 2 — INGRESSOS + CLASSIFICAÇÃO (Step2Ingressos + ClassificacaoInline)
+**Ingressos**: N lotes x M variações (área, gênero, valor, limite, meia-entrada)
+**MAIS VANTA**: benefícios por tier em AccordionSection
+**Classificação** (AccordionSection colapsável no final):
+- Formato: obrigatório (1 escolha)
+- Estilo: obrigatório (mín 1, sem teto)
+- Experiência: OPCIONAL (max 5)
 
-### PASSO 2 — INGRESSOS (Step2Ingressos, 650L)
-**Estrutura**: N lotes, cada lote com M variacoes
-**Lote**: nome auto (1o Lote, 2o Lote...), data virada, % virada
-**Variacao**: area (PISTA/VIP/CAMAROTE/OUTRO + custom), genero (UNISEX/M/F), valor, limite
-**Meia-entrada**: requerComprovante + tipoComprovante por variacao
-**MAIS VANTA**: se MV ativo, vincula benefícios por tier (DESCONTO→VANTA_BLACK) a lotes/listas reais do evento (mais_vanta_lotes_evento)
+### PASSO 3 — EQUIPE E LISTAS (fundidos)
+**Equipe**: Step4EquipeCasa OU Step4EquipeSocio (conforme tipo)
+**Listas**: Step3Listas abaixo com separador visual
+Fundidos porque cotas de lista dependem da equipe
 
-### PASSO 3 — LISTAS (Step3Listas, 252L)
-**Estrutura**: N regras de lista por evento
-**Regra**: tipo (VIP/CONSUMO/ENTRADA/OUTRO), cor, genero, validade (NOITE_TODA ou HORARIO), limite, valor
-**Cotas**: por membro da equipe, quantos nomes pode inserir por regra
-**Teto global**: total maximo de convidados
-
-### PASSO 4A — EQUIPE CASA (Step4EquipeCasa, 479L)
-**Para**: FESTA_DA_CASA
-**O que faz**:
-- Busca membros por nome/email (authService)
-- Define papel: promoter, portaria, caixa, gerente (PAPEIS_CASA)
-- Define se libera lista
-- Define cotas de lista por membro
-- Permissoes toggle: VER_FINANCEIRO, GERIR_LISTAS, EMITIR_CORTESIAS
-
-### PASSO 4B — EQUIPE SOCIO (Step4EquipeSocio, 457L)
-**Para**: COM_SOCIO
-**O que faz**:
-- Convida N socios (busca por nome/email) — multi-socio suportado
-- Define split por socio (soma dos splits + split produtor = 100)
-- Define permissoes por socio
-- Dados salvos em socios_evento (tabela dedicada)
-- Resto da equipe igual ao Step4EquipeCasa
-
-### PASSO 5 — FINANCEIRO (Step5Financeiro, 135L)
-**O que faz**: TosAcceptModal obrigatorio (termos de servico)
-**Obrigacao**: nao pode publicar sem aceitar
+### PASSO 4 — REVISAR + PUBLICAR (inline no CriarEventoView)
+- Mini preview card (foto, nome, data, local)
+- Resumo (lotes, equipe, regras lista, classificação)
+- Split financeiro (só COM_SOCIO, Step5Financeiro inline)
+- Botão "Publicar" / "Enviar Convite"
+- CelebrationScreen no sucesso
 
 ### COPIAR (CopiarModal, 178L)
 **Quando**: ao iniciar criacao, botao "Copiar de evento anterior"

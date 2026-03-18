@@ -4,30 +4,37 @@
 
 ## Pertence a: modulo_comunidade.md
 
-## Criar Comunidade (4 arquivos, 942L)
+## Criar Comunidade (6 arquivos, ~1200L)
 | Arquivo | Linhas | Funcao |
 |---|---|---|
-| criarComunidade/index.tsx | 400 | CriarComunidadeView — wizard 3 steps + guard anti-double-click + toast + scroll-to-error |
-| criarComunidade/Step1Identidade.tsx | 283 | Nome, bio, capacidade, taxa, horarios, CNPJ (labels 10px mín) |
-| criarComunidade/Step2Localizacao.tsx | 172 | CEP auto → endereco + coords (labels 10px mín) |
-| criarComunidade/Step3Fotos.tsx | 278 | Foto perfil/capa (crop) + produtores + validação upload 5MB JPEG/PNG/WebP |
+| criarComunidade/index.tsx | ~450 | CriarComunidadeView — wizard 4 steps + guard + toast + scrollRef + useDraft + CelebrationScreen |
+| criarComunidade/Step1Identidade.tsx | ~200 | Nome, bio, fotos perfil/capa (UploadArea 5MB) |
+| criarComunidade/Step2Localizacao.tsx | ~180 | CEP auto → endereco + coords + capacidade |
+| criarComunidade/Step3Operacao.tsx | ~150 | NOVO: horários, CNPJ, razão social, telefone, redes sociais |
+| criarComunidade/Step4ProdutoresTaxas.tsx | ~220 | NOVO: produtores (min 1) + taxa VANTA + taxas avançadas (AccordionSection) |
 
-### Fluxo Criar
+### Fluxo Criar (refatorado 18/mar — 4 steps)
 ```
 Master -> ComunidadesView -> "+ Nova Comunidade" -> CriarComunidadeView
 
-Step 1 IDENTIDADE (141L):
-- nome, descricao, capacidade_max
-- vanta_fee_percent, horario_funcionamento
-- CNPJ, razao_social, telefone
+Step 1 IDENTIDADE:
+- nome, descricao
+- foto perfil (UploadArea, crop 1:1, max 5MB JPEG/PNG/WebP)
+- foto capa (UploadArea, crop 3:1, max 5MB)
 
-Step 2 LOCALIZACAO (170L):
+Step 2 LOCALIZAÇÃO:
 - CEP → cepService auto-preenche endereco, cidade, estado, coords
+- capacidade_max (movida pra cá)
 
-Step 3 FOTOS (273L):
-- foto perfil (ImageCropModal)
-- foto capa (ImageCropModal)
-- Produtores (busca por nome, min 1 obrigatorio)
+Step 3 OPERAÇÃO (NOVO):
+- horario_funcionamento (HorarioFuncionamentoEditor)
+- CNPJ (validação dígito), razao_social, telefone
+- Redes sociais: instagram, whatsapp, tiktok, site
+
+Step 4 PRODUTORES + TAXAS (NOVO):
+- Produtores (busca por nome/email, min 1 obrigatório)
+- Taxa VANTA (%)
+- Taxas avançadas em AccordionSection colapsável
 
 AO FINALIZAR:
 1. comunidadesService.criar → INSERT comunidades

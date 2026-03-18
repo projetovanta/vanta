@@ -39,8 +39,13 @@
 
 | O que mudou | Onde ler |
 |-------------|----------|
-| Plano Wizards v2 aprovado: 38 itens, 6 fases (comunidade 4 steps, evento 4 steps + preview) | `memory/plano_wizards_v2.md` |
-| Fase 1 Correções Críticas COMPLETA: double-click, toast, upload 5MB, labels 10px, scroll-error | `memory/sessao_atual.md` |
+| Plano Wizards v2: 6 FASES COMPLETAS (38 itens entregues em 1 sessão) | `memory/plano_wizards_v2.md` |
+| Fase 1-6: correções + design system + wizards 4 steps + drafts + índices/constraints + features | `memory/sessao_atual.md` |
+| 10 componentes novos: FormWizard, InputField, UploadArea, CelebrationScreen, AccordionSection, etc. | `components/wizard/` + `components/form/` |
+| Tabela drafts criada (rascunho auto-save 3s, expira 30 dias) | Migration Supabase |
+| 16 índices + 10 CHECK constraints + UNIQUE dedup evento | Migration Supabase |
+| classificacao_etaria (LIVRE/16+/18+) + limite_notificacoes_mes na comunidade | Migration Supabase |
+| Social proof, urgência "Últimos ingressos", benefício MV ao lado do botão, return-to-context | Fase 6 |
 | RTK instalado + TTL markers 30min + markers reutilizáveis (velocidade 3-4x) | `memory/sessao_atual.md` |
 | Auditoria limpeza: selects, deprecated, fontFamily, cnpjValidator | `memory/sessao_atual.md` |
 | Bloco 8 Auditoria COMPLETO (sessão 5): audit RBAC, extrato, CNPJ, histórico edições | `memory/plano_blocos_melhorias.md` |

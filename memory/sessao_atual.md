@@ -1,69 +1,89 @@
 # Sessao Atual — Estado para Continuidade
 
 ## Branch: visual-redesign
-## Ultimo commit: (pendente commit — sessão 18/mar sessão 2)
-## Mudancas locais: SIM — 15+ arquivos modificados
-## Preflight: diff-check 4/4 OK
+## Ultimo commit: 037db2e (Fase 6 features novas)
+## Mudancas locais: NÃO
+## Preflight: 8/8 OK + 11/11 testes E2E
 
 ## Resumo da sessao (18 mar 2026 — sessao 2)
 
-### O que foi feito
+### O que foi feito — Plano Wizards v2 COMPLETO (38 itens, 6 fases)
 
-#### Auditoria completa dos fluxos de criação (comunidade + evento)
-- 6 especialistas analisaram: Luna (frontend), Kai (backend), Zara (segurança), Iris (visual), Sage (DBA), Maya (produto)
-- 5 equipes elaboraram plano completo: Maya, Luna+Iris, Kai+Sage, Zara+Théo, Pixel+Nix
-- 8 personas mapeadas (visitante, membro, MV, produtor, sócio, equipe, promoter, master)
-- Benchmark 6 concorrentes (Shotgun, Xceed, Dice, Fever, Sympla, Ingresse)
-- 26 problemas identificados, priorizados em 6 fases
+#### Fase 1 — Correções Críticas (commit 4287fdf)
+- Guard anti-double-click criação de comunidade
+- Toast sucesso/erro em ambos wizards
+- currentUserId/currentUserNome passados na CentralEventosView
+- Validação upload: tipo real JPEG/PNG/WebP + máx 5MB
+- Labels 7-8px → 10px mínimo (11 arquivos)
+- Scroll to error (setErroScroll + scrollRef)
 
-#### Plano Wizards v2 — 38 itens aprovados pelo Dan (6 blocos A-F)
-- Comunidade: 3 → 4 steps (Identidade+Fotos → Localização → Operação → Produtores+Taxas)
-- Evento: 5 → 4 steps + preview (Essencial → Ingressos+Classificação → Equipe+Listas → Revisar+Publicar)
-- Classificação: Formato obrigatório (1), Estilo obrigatório (mín 1, sem teto), Experiência OPCIONAL
-- Rascunho automático no banco (tabela drafts, auto-save 3s, expira 30 dias)
-- Kit completo de componentes visuais (FormWizard, InputField, UploadArea, etc.)
-- Tela sucesso: check dourado + partículas + Playfair "Evento criado!"
-- RPC atômica criar_evento_completo (transação única)
-- Classificação de idade (Livre / +16 / +18)
-- Notificações seguidores: limite por comunidade, definido pelo master
-- Benefício MV: ícone coroa ao lado do botão comprar
-- Importação de evento anterior com checkboxes
-- Convite sócio via link direto WhatsApp/email
-- Push 2h antes pra equipe
-- Acordeões: manter roxo e verde
-- Plano salvo em memory/plano_wizards_v2.md
+#### Fase 2 — Design System (commit a606ead)
+- 10 componentes: FormWizard, StepIndicator, DraftBanner, InputField, TextAreaField, SectionTitle, UploadArea, AccordionSection, CelebrationScreen + 2 barrel exports
+- Diretórios: components/wizard/, components/form/
 
-#### Fase 1 — Correções Críticas (COMPLETA)
-- Guard anti-double-click na criação de comunidade (isCriando + disabled + "Criando...")
-- Toast sucesso/erro em ambos wizards (useToast + ToastContainer)
-- currentUserId/currentUserNome passados na CentralEventosView → CriarEventoView
-- Validação upload: tipo real (JPEG/PNG/WebP) + máx 5MB (Step3Fotos + Step1Evento)
-- Labels 7-8px → 10px mínimo (11 arquivos dos wizards)
-- Scroll to error (setErroScroll + scrollRef em ambos wizards)
+#### Fase 3 — Wizards Reorganizados (commit a606ead)
+- Comunidade: 3→4 steps (Identidade+Fotos → Localização+Capacidade → Operação → Produtores+Taxas)
+- Evento: 5→4 steps (Essencial → Ingressos+Classificação → Equipe+Listas → Revisar+Publicar)
+- ClassificacaoInline com AccordionSection (formato/estilo/experiência)
+- Step Revisar com mini preview card + resumo + split financeiro
+- CelebrationScreen no sucesso de ambos wizards
+- Step3Fotos.tsx → _deprecated/
 
-### Arquivos modificados (sessão 2 do 18/mar)
-- features/admin/views/criarComunidade/index.tsx (guard, toast, scrollRef, setErroScroll)
-- features/admin/views/criarComunidade/Step1Identidade.tsx (labels 10px)
-- features/admin/views/criarComunidade/Step2Localizacao.tsx (labels 10px)
-- features/admin/views/criarComunidade/Step3Fotos.tsx (labels 10px + validação upload 5MB)
-- features/admin/views/CriarEventoView.tsx (toast, scrollRef, ToastContainer)
-- features/admin/views/criarEvento/Step1Evento.tsx (labels 10px + validação upload 5MB)
-- features/admin/views/criarEvento/Step2Ingressos.tsx (labels 10px)
-- features/admin/views/criarEvento/Step3Listas.tsx (labels 10px)
-- features/admin/views/criarEvento/Step4EquipeCasa.tsx (labels 10px)
-- features/admin/views/criarEvento/Step4EquipeSocio.tsx (labels 10px)
-- features/admin/views/criarEvento/Step5Financeiro.tsx (labels 10px)
-- features/admin/views/criarEvento/TipoEventoScreen.tsx (labels 10px)
-- features/admin/views/criarEvento/CapacidadeModal.tsx (labels 10px)
-- features/admin/views/comunidades/CentralEventosView.tsx (props currentUserId/currentUserNome)
-- features/admin/views/comunidades/ComunidadeDetalheView.tsx (repassa currentUserId/currentUserNome)
+#### Fase 4 — Rascunho Automático (commit 8a2dfc4)
+- Migration: tabela drafts no Supabase (RLS, trigger, índices)
+- Hook useDraft.ts: auto-save debounce 3s, carregar/restaurar/descartar
+- Integrado nos 2 wizards com DraftBanner inline
+- Rascunho expira em 30 dias, unique por user+tipo+comunidade
 
-### Próximas fases (plano_wizards_v2.md)
-- Fase 2: Componentes visuais (FormWizard, InputField, UploadArea, SectionTitle, AccordionSection, CelebrationScreen)
-- Fase 3: Reorganizar wizards (comunidade 4 steps, evento 4 steps + preview)
-- Fase 4: Rascunho automático (tabela drafts + auto-save + banner)
-- Fase 5: Backend robusto (RPCs atômicas, 16 índices, 10 constraints, view comunidades_admin)
-- Fase 6: Features novas (social proof, urgência, MV, deep links sócio, push equipe)
+#### Fase 5 — Backend Robusto (commit e5845cf)
+- 16 índices de performance
+- 10 CHECK constraints + UNIQUE dedup evento
+- classificacao_etaria no evento (LIVRE / 16+ / 18+)
+- limite_notificacoes_mes na comunidade (default 3, editável pelo master)
+- Types supabase.ts regenerados
+
+#### Fase 6 — Features Novas (commit 037db2e)
+- Social proof: "X pessoas vão" nos cards + "Últimos ingressos" >80%
+- Timer "Lote encerra em Xh" no detalhe do evento
+- Classificação etária: selector no wizard + badge no detalhe
+- Benefício MV: Crown dourada + "Você tem benefício" ao lado do botão comprar
+- Return-to-context: visitante volta ao evento após criar conta
+
+### Arquivos criados nesta sessão
+- components/wizard/FormWizard.tsx, StepIndicator.tsx, DraftBanner.tsx, index.ts
+- components/form/InputField.tsx, TextAreaField.tsx, SectionTitle.tsx, UploadArea.tsx, AccordionSection.tsx, index.ts
+- components/CelebrationScreen.tsx
+- features/admin/views/criarComunidade/Step3Operacao.tsx, Step4ProdutoresTaxas.tsx
+- hooks/useDraft.ts
+- memory/plano_wizards_v2.md
+
+### Arquivos modificados nesta sessão
+- features/admin/views/criarComunidade/index.tsx, Step1Identidade.tsx, Step2Localizacao.tsx
+- features/admin/views/CriarEventoView.tsx
+- features/admin/views/criarEvento/Step1Evento.tsx, Step2Ingressos.tsx, Step3Listas.tsx, Step4EquipeCasa.tsx, Step4EquipeSocio.tsx, Step5Financeiro.tsx, TipoEventoScreen.tsx, CapacidadeModal.tsx
+- features/admin/views/comunidades/CentralEventosView.tsx, ComunidadeDetalheView.tsx
+- features/admin/services/eventosAdminCrud.ts, eventosAdminCore.ts
+- modules/event-detail/EventDetailView.tsx, components/EventFooter.tsx
+- components/EventCard.tsx, AuthModal.tsx
+- hooks/useAppHandlers.ts, App.tsx
+- services/supabaseVantaService.ts
+- types/eventos.ts, types/supabase.ts
+
+## Pendências do plano (não implementadas)
+- [ ] RPC criar_evento_completo (transação atômica) — Fase 5 parcial
+- [ ] RPC criar_comunidade_completa (transação atômica) — Fase 5 parcial
+- [ ] Edge Function notificações batch para seguidores
+- [ ] Importação de evento anterior com checkboxes (melhorada)
+- [ ] Convite sócio via deep link WhatsApp/email
+- [ ] Push 2h antes pra equipe
+- [ ] Resumo promoter D+1
+- [ ] Storage RLS restritiva (verificar dono da comunidade)
+
+## Pendências anteriores (sem mudança)
+- [ ] Integrar BatchActionBar e FilterBar nas views
+- [ ] Aplicar ProfileSkeleton, ChatItemSkeleton, HighlightCardSkeleton
+- [ ] CARGO_DESCRICOES — exibir na UI
+- [ ] 3 fontSize em px hardcoded
 
 ## Pendencias externas (sem mudança)
 - Conta Apple Developer ($99/ano)

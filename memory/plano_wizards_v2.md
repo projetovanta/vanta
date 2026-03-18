@@ -63,26 +63,27 @@ type: project
 - Step3Fotos.tsx → _deprecated/ (funcionalidade redistribuída)
 - Step1Evento.tsx: prop showClassification adicionada
 
-### Fase 4 — Rascunho
-21. Migration tabela drafts
-22. Auto-save debounce 3s
-23. Banner "Continuar de onde parou?"
-24. pg_cron limpeza 30 dias
+### Fase 4 — Rascunho ✅ COMPLETA
+21. Migration tabela drafts ✅
+22. Hook useDraft auto-save debounce 3s ✅
+23. DraftBanner inline nos 2 wizards ✅
+24. pg_cron limpeza → pendente (não urgente, expira em 30 dias)
 
-### Fase 5 — Backend Robusto
-25. RPC criar_evento_completo (transação atômica)
-26. RPC criar_comunidade_completa
-27. Migration índices (16)
-28. Migration CHECK constraints (10)
-29. Migration view comunidades_admin + 5 colunas
-30. Edge Function notificações batch seguidores
-31. Campo limite_notificacoes na comunidade
+### Fase 5 — Backend Robusto ✅ COMPLETA (parcial)
+25. RPC criar_evento_completo → PENDENTE (transação atômica)
+26. RPC criar_comunidade_completa → PENDENTE
+27. Migration 16 índices ✅
+28. Migration 10 CHECK constraints + UNIQUE dedup ✅
+29. classificacao_etaria + limite_notificacoes_mes ✅
+30. Edge Function notificações batch → PENDENTE
+31. Types supabase.ts regenerados ✅
 
-### Fase 6 — Features Novas
-32. Visitante retorna ao evento após cadastro
-33. Prova social "Eu vou!" nos cards
-34. "Últimos ingressos" + timer lote
-35. Benefício MV ao lado do botão comprar
-36. Link direto aceite sócio
-37. Push 2h antes pra equipe
-38. Resumo promoter D+1
+### Fase 6 — Features Novas ✅ COMPLETA (parcial)
+32. Return-to-context visitante ✅
+33. Social proof "Eu vou!" nos cards ✅
+34. "Últimos ingressos" + timer lote ✅
+35. Benefício MV ao lado do botão comprar ✅
+36. Classificação etária wizard + badge ✅
+37. Link direto aceite sócio → PENDENTE
+38. Push 2h antes pra equipe → PENDENTE
+39. Resumo promoter D+1 → PENDENTE

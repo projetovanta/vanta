@@ -1,7 +1,7 @@
-# Criado: 2026-03-04 13:17 | Ultima edicao: 2026-03-04 17:33
+# Criado: 2026-03-04 13:17 | Ultima edicao: 2026-03-18
 # Memória — Componentes Compartilhados
 
-## Diretório: components/ (27 arquivos, 5518L)
+## Diretório: components/ (37+ arquivos)
 
 ## Principais
 | Componente | Linhas | Função |
@@ -12,7 +12,18 @@
 | `NotificationPanel.tsx` | 432 | Painel lateral notificações |
 | `DevQuickLogin.tsx` | 356 | Login rápido dev — filtra profiles com auth.users, mostra role efetivo via RBAC, draggable |
 | `AppModals.tsx` | 227 | Container de todos modais do app |
-| `EventCard.tsx` | ~170 | Card de evento (imagem, nome, data, local, preço, tag estilo com backdrop-blur acima do título, prop `distLabel` pra distância ao lado do local) |
+| `EventCard.tsx` | ~180 | Card de evento (imagem, nome, data, local, preço, tag estilo, distLabel, confirmados "X pessoas vão", percentVendido "Últimos ingressos") |
+| `CelebrationScreen.tsx` | ~130 | Tela de sucesso (check dourado + partículas + Playfair + animações sequenciais, props: icon check/clock) |
+| **components/wizard/** | | |
+| `FormWizard.tsx` | ~100 | Container wizard (header + StepIndicator + scroll + footer + safe area) |
+| `StepIndicator.tsx` | ~60 | Barra progresso dourada 4px + labels responsivos |
+| `DraftBanner.tsx` | ~70 | Banner "Rascunho não finalizado" (localStorage check) |
+| **components/form/** | | |
+| `InputField.tsx` | ~80 | Input com label, erro inline, prefix/suffix, contador, required asterisco dourado |
+| `TextAreaField.tsx` | ~70 | Textarea com contador colorido (zinc/amber/red por %) |
+| `SectionTitle.tsx` | ~40 | Título Playfair Display SC italic + ícone + subtitle + action |
+| `UploadArea.tsx` | ~100 | Upload com validação tipo/tamanho 5MB + preview + aspect ratio |
+| `AccordionSection.tsx` | ~80 | Seção colapsável com animação max-height + ChevronDown |
 | `Toast.tsx` | — | Toast de feedback |
 | `VantaPickerModal.tsx` | — | Picker modal customizado (substitui select nativo) |
 | `VantaDropdown.tsx` | — | Dropdown customizado global |

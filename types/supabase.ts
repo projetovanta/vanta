@@ -5083,6 +5083,48 @@ export type Database = {
         };
         Relationships: [];
       };
+      brand_profiles: {
+        Row: {
+          id: string;
+          comunidade_id: string | null;
+          nome: string;
+          perfil_visual: Json;
+          referencias: string[];
+          ideogram_style_code: string | null;
+          flux_lora_id: string | null;
+          validado: boolean;
+          criado_por: string | null;
+          criado_em: string;
+          atualizado_em: string;
+        };
+        Insert: {
+          id?: string;
+          comunidade_id?: string | null;
+          nome: string;
+          perfil_visual?: Json;
+          referencias?: string[];
+          ideogram_style_code?: string | null;
+          flux_lora_id?: string | null;
+          validado?: boolean;
+          criado_por?: string | null;
+          criado_em?: string;
+          atualizado_em?: string;
+        };
+        Update: {
+          id?: string;
+          comunidade_id?: string | null;
+          nome?: string;
+          perfil_visual?: Json;
+          referencias?: string[];
+          ideogram_style_code?: string | null;
+          flux_lora_id?: string | null;
+          validado?: boolean;
+          criado_por?: string | null;
+          criado_em?: string;
+          atualizado_em?: string;
+        };
+        Relationships: [];
+      };
       vanta_indica_templates: {
         Row: {
           ativo: boolean;

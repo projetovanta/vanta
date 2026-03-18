@@ -275,6 +275,10 @@ Quando o usuário chamar um agente pelo nome ou pelo comando, seguir este protoc
 | **Memo** | `/memo` | Secretário Executivo | Atas, briefing, Gate Duplo, log de decisões. SEMPRE primeiro em toda sessão |
 | **Iris** | `/especialista-visual` | Especialista Visual | Cores, fontes, composição, direção de arte |
 | **Dr. Théo** | `/consultor-legal` | Consultor Legal | Leis, LGPD, CDC, compliance, termos de uso |
+| **Axel** | `/engenheiro-integracoes` | Engenheiro de Integrações | APIs externas, Apple/Google Wallet, NFe.io, Receita Federal |
+| **Maya** | `/designer-produto` | Designer de Produto | Jornada do usuário, wireframes, textos de interface, métricas de produto |
+| **Pixel** | `/engenheiro-crescimento` | Engenheiro de Crescimento | Otimização de loja, links de campanha, funil de conversão, testes A/B, push segmentado |
+| **Lux** | `/artista-ia` | Artista IA | Análise visual, extração de identidade de marca, geração de prompts, APIs de imagem |
 | **Brunei** | `/brunei` | Mensageiro | Comunica decisões e status |
 
 ### Squads de Marketing & Negócios
@@ -314,5 +318,10 @@ Além dos comandos `/`, o Dan pode chamar pelo nome diretamente:
 - "auditoria" → Rafa coordena Val + Zara + Sage + Ops
 - "Iris, que cor usar?" → ativa especialista visual
 - "Théo, posso fazer X?" → ativa consultor legal
+- "Axel, integra X" → ativa engenheiro de integrações
+- "Maya, desenha o fluxo" → ativa designer de produto
+- "Pixel, como medir X?" → ativa engenheiro de crescimento
+- "Lux, analisa essa marca" → ativa artista IA
+- "/analisar-marca" → Skill de análise de identidade visual
 - "Memo, como estamos?" → briefing executivo da sessão
 - "Memo" → ativa secretário executivo (atas, decisões, Gate Duplo)

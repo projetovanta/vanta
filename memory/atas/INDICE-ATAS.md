@@ -31,7 +31,7 @@
 | Data | Sessões | Assuntos | Decisões-chave | Pendências | Tags |
 |------|---------|----------|----------------|------------|------|
 | 2026-03-16 | 1 | Hooks, gates, auditoria, markers | Gate Duplo obrigatório, markers com hash | — | #hooks #gates #markers |
-| 2026-03-17 | 4 | Sprint 1+2, Stripe, Login Social, iOS, Responsividade, Visual Redesign, VANTA Indica | Templates Indica, admin sem sessionStorage, preview fiel Home | Emoji picker, paleta cores, snaps, templates salvos DB | #visual #indica #admin #home #eventcard |
+| 2026-03-17 | 5 | Sprint 1+2, Stripe, Login Social, iOS, Visual Redesign, 4 Blocos Melhorias, Contratações, IA Visual | 4 blocos completos, 20 decisões features, 4 novos agentes, Skill analisar-marca, brand_profiles | — | #blocos #visual #indica #financeiro #operacoes #agentes #ia #lux |
 
 ---
 

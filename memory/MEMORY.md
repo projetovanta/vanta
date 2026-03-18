@@ -125,7 +125,8 @@
 ## Auditoria & Progresso
 
 - [audit_mapeamento_progress.md](audit_mapeamento_progress.md) — Progresso mapeamento (132 fluxos)
-- [plano_blocos_melhorias.md](plano_blocos_melhorias.md) — 4 blocos de melhorias (visual, navegação, financeiro, operações)
+- [plano_blocos_melhorias.md](plano_blocos_melhorias.md) — 4 blocos de melhorias (visual, navegação, financeiro, operações) — COMPLETOS
+- [decisoes_features_futuras.md](decisoes_features_futuras.md) — 20 decisões de features futuras (Dan, 17/mar sessão 5)
 
 ## Feedback
 

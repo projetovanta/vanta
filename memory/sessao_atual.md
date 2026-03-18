@@ -55,18 +55,16 @@
 - modules/home/components/NearYouSection.tsx (distLabel via prop)
 - modules/home/components/ThisWeekSection.tsx (ajustes)
 
-### Arquivos modificados (sessão 5 — Bloco 1)
-- components/EmptyState.tsx (NOVO — componente reutilizável)
-- components/Skeleton.tsx (5 variantes novas: Profile, PersonCard, ChatItem, HighlightCard)
-- features/tickets/views/MyTicketsView.tsx (EmptyState + TicketCardSkeleton loading)
-- modules/wallet/WalletView.tsx (EmptyState)
-- modules/profile/HistoricoView.tsx (EmptyState + EventCardSkeleton loading)
-- modules/messages/MessagesView.tsx (EmptyState)
-- modules/search/SearchView.tsx (EventCardSkeleton + PersonCardSkeleton loading)
-- modules/search/components/SearchResults.tsx (EmptyState)
-- features/admin/views/VantaIndicaView.tsx (emoji picker, paleta cores, badgeColor)
-- modules/home/components/Highlights.tsx (badgeColor custom no badge)
-- types/eventos.ts (badgeColor no layoutConfig)
+### Arquivos criados (sessão 5)
+- components/EmptyState.tsx, components/BatchActionBar.tsx, components/FilterBar.tsx
+- features/admin/services/indicaTemplatesService.ts, features/admin/services/brandProfilesService.ts
+- hooks/useSessionTimeout.ts
+- .claude/agents/engenheiro-integracoes.md, product-designer.md, growth-engineer.md, artista-ia.md
+- .claude/commands/analisar-marca.md
+- memory/decisoes_features_futuras.md
+
+### Arquivos modificados (sessão 5)
+- 23 arquivos de código (Blocos 1-4) + tipos + memórias
 
 ## Plano aprovado — 4 Blocos de Melhorias
 Ver detalhes em `memory/plano_blocos_melhorias.md`
@@ -93,11 +91,23 @@ Ver detalhes em `memory/plano_blocos_melhorias.md`
 - 2.2 Breadcrumbs aplicados em 4 views (Financeiro, MasterFinanceiro, Cargos, Eventos)
 - 1.4 Templates Indica salvos no DB (migration + service + UI salvar/carregar)
 
-### Bloco 4 — Operações em escala (PRÓXIMO)
-- 4.1 Batch actions (checkbox + barra de ação)
-- 4.2 Filtros avançados em listas (componente reutilizável)
-- 4.3 Notificações batch (enviar pra grupo)
-- 4.4 Sessão ativa + timeout (30min inativo = logout)
+### Bloco 4 — Operações em escala (COMPLETO — sessão 5)
+- 4.1 BatchActionBar componente reutilizável
+- 4.2 FilterBar componente reutilizável
+- 4.3 Notificações batch: enviarAgora no pushAgendadosService
+- 4.4 Session timeout 30min (useSessionTimeout hook)
+
+### Novos agentes contratados (sessão 5)
+- Axel — Engenheiro de Integrações (Apple/Google Wallet, NFe.io, Receita Federal)
+- Maya — Designer de Produto (jornada do usuário, wireframes, métricas)
+- Pixel — Engenheiro de Crescimento (ASO, funil, push segmentado)
+- Lux — Artista IA (análise visual, identidade de marca, geração de imagem)
+
+### Infraestrutura IA visual (sessão 5)
+- Skill `/analisar-marca` criada (.claude/commands/analisar-marca.md)
+- Tabela `brand_profiles` criada no Supabase (perfis visuais de marca)
+- Service `brandProfilesService.ts` criado
+- 20 decisões de features futuras documentadas (decisoes_features_futuras.md)
 
 ## Pendencias externas (sem mudança)
 - Conta Apple Developer ($99/ano)

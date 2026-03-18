@@ -39,6 +39,9 @@
 
 | O que mudou | Onde ler |
 |-------------|----------|
+| 3 novos agentes: Axel (Integrações), Maya (Produto), Pixel (Crescimento) | `.claude/agents/` |
+| 20 decisões features futuras (Dan, sessão 5) | `memory/decisoes_features_futuras.md` |
+| Projeto IA visual: agente com visão + análise de marca + geração de imagem | Em investigação |
 | Bloco 1 Polimento Visual COMPLETO (sessão 5): EmptyState, Skeleton, Indica editor | `memory/sessao_atual.md` |
 | Visual Redesign Home + EventCard + VANTA Indica (sessão 4) | `memory/sessao_atual.md` |
 | VANTA Indica: handlers rota completos (6 tipos) + 7 templates | `memory/sessao_atual.md` |

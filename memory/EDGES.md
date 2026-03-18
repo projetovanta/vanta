@@ -46,6 +46,7 @@ Mapa: tabela/store/RPC → arquivos que consomem. Consultar ANTES de mudar schem
 | FinanceiroView.tsx | FI |
 | VantaIndicaView.tsx | MA |
 | indicaTemplatesService.ts → vanta_indica_templates | MA |
+| brandProfilesService.ts → brand_profiles | MA |
 | ProductAnalyticsView.tsx | RE |
 | Edge Functions (notif-evento-*) | IN |
 

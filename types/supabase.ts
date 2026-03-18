@@ -5129,7 +5129,22 @@ export type Database = {
           titulo_evento?: string | null;
           variacao_label?: string | null;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: 'fk_transf_evento';
+            columns: ['evento_id'];
+            isOneToOne: false;
+            referencedRelation: 'eventos_admin';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'fk_transf_ticket';
+            columns: ['ticket_id'];
+            isOneToOne: false;
+            referencedRelation: 'tickets_caixa';
+            referencedColumns: ['id'];
+          },
+        ];
       };
       user_consents: {
         Row: {

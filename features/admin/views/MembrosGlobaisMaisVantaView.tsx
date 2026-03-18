@@ -181,18 +181,16 @@ export const MembrosGlobaisMaisVantaView: React.FC<{
     const ids = Array.from(selecionados);
     setLoading('BULK');
     try {
-      for (const userId of ids) {
-        await supabase
-          .from('membros_clube')
-          .update({
-            bloqueio_nivel: 1,
-            bloqueio_ate:
-              new Date(Date.now() + 30 * 24 * 3600000)
-                .toLocaleString('sv-SE', { timeZone: 'America/Sao_Paulo' })
-                .replace(' ', 'T') + '-03:00',
-          })
-          .eq('user_id', userId as string);
-      }
+      await supabase
+        .from('membros_clube')
+        .update({
+          bloqueio_nivel: 1,
+          bloqueio_ate:
+            new Date(Date.now() + 30 * 24 * 3600000)
+              .toLocaleString('sv-SE', { timeZone: 'America/Sao_Paulo' })
+              .replace(' ', 'T') + '-03:00',
+        })
+        .in('user_id', ids as string[]);
       handleRefresh();
       setSelecionados(new Set());
     } catch (e) {
@@ -207,12 +205,10 @@ export const MembrosGlobaisMaisVantaView: React.FC<{
     const ids = Array.from(selecionados);
     setLoading('BULK');
     try {
-      for (const userId of ids) {
-        await supabase
-          .from('membros_clube')
-          .update({ bloqueio_nivel: 0, bloqueio_ate: null })
-          .eq('user_id', userId as string);
-      }
+      await supabase
+        .from('membros_clube')
+        .update({ bloqueio_nivel: 0, bloqueio_ate: null })
+        .in('user_id', ids as string[]);
       handleRefresh();
       setSelecionados(new Set());
     } catch (e) {

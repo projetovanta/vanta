@@ -1,7 +1,8 @@
 import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { UnsavedChangesModal } from '../../../components/UnsavedChangesModal';
 import { useToast, ToastContainer } from '../../../components/Toast';
-import { ArrowLeft, Check, MapPin, Calendar, Users, ListChecks, Ticket, Search, Loader2 } from 'lucide-react';
+import { ArrowLeft, Check, MapPin, Calendar, Users, ListChecks, Ticket, Search, Loader2, FileText } from 'lucide-react';
+import { useDraft } from '../../../hooks/useDraft';
 import { TYPOGRAPHY } from '../../../constants';
 import type { Comunidade, LoteAdmin, MembroEquipeEvento } from '../../../types';
 import { eventosAdminService } from '../services/eventosAdminService';
@@ -304,6 +305,74 @@ export const CriarEventoView: React.FC<{
   // ── UX ──
   const [showExitConfirm, setShowExitConfirm] = useState(false);
 
+  // ── Draft auto-save ──
+  const { draftLoaded, hasDraft, draftData, saveDraft, discardDraft } = useDraft('EVENTO', comunidade.id);
+
+  const allDraftData = useMemo(
+    () => ({
+      nome,
+      descricao,
+      foto,
+      dataInicio,
+      horaInicio,
+      horaFim,
+      dataFim,
+      formato,
+      estilos,
+      experiencias,
+      recorrencia,
+      recorrenciaAte,
+      localNome,
+      localEndereco,
+      localCidade,
+      lotes,
+      cortesiaEnabled,
+      cortesiaLimites,
+      maisVantaEvento,
+      listasEnabled,
+      varsLista,
+      equipe,
+      gerente,
+      gerentePermissoes,
+      socio,
+      permissoes,
+      split,
+      vendaVanta,
+      tipoFluxo,
+    }),
+    [
+      nome,
+      descricao,
+      foto,
+      dataInicio,
+      horaInicio,
+      horaFim,
+      dataFim,
+      formato,
+      estilos,
+      experiencias,
+      recorrencia,
+      recorrenciaAte,
+      localNome,
+      localEndereco,
+      localCidade,
+      lotes,
+      cortesiaEnabled,
+      cortesiaLimites,
+      maisVantaEvento,
+      listasEnabled,
+      varsLista,
+      equipe,
+      gerente,
+      gerentePermissoes,
+      socio,
+      permissoes,
+      split,
+      vendaVanta,
+      tipoFluxo,
+    ],
+  );
+
   // ── ToS gate ──
   const [tosChecked, setTosChecked] = useState(false);
   const [tosAccepted, setTosAccepted] = useState(false);
@@ -319,6 +388,46 @@ export const CriarEventoView: React.FC<{
   const hasChanges = useMemo(() => {
     return !!(foto || nome.trim() || descricao.trim() || dataInicio || horaInicio);
   }, [foto, nome, descricao, dataInicio, horaInicio]);
+
+  // Auto-save draft quando dados mudam (só após carregar draft existente e se tem mudanças)
+  useEffect(() => {
+    if (!draftLoaded || !hasChanges || !tipoFluxo) return;
+    saveDraft(allDraftData, step);
+  }, [draftLoaded, hasChanges, tipoFluxo, allDraftData, step, saveDraft]);
+
+  const handleRestoreDraft = () => {
+    if (!draftData) return;
+    const d = draftData.dados as typeof allDraftData;
+    setNome(d.nome || '');
+    setDescricao(d.descricao || '');
+    setFoto(d.foto || '');
+    setDataInicio(d.dataInicio || '');
+    setHoraInicio(d.horaInicio || '');
+    setHoraFim(d.horaFim || '');
+    setFormato(d.formato || '');
+    setEstilos(d.estilos || []);
+    setExperiencias(d.experiencias || []);
+    setRecorrencia(d.recorrencia || 'UNICO');
+    setRecorrenciaAte(d.recorrenciaAte || '');
+    setLocalNome(d.localNome || comunidade.nome);
+    setLocalEndereco(d.localEndereco || '');
+    setLocalCidade(d.localCidade || comunidade.cidade);
+    if (d.lotes) setLotes(d.lotes as LoteForm[]);
+    setCortesiaEnabled(d.cortesiaEnabled || false);
+    setCortesiaLimites((d.cortesiaLimites as Record<string, string>) || {});
+    if (d.maisVantaEvento) setMaisVantaEvento(d.maisVantaEvento as MaisVantaEventoForm);
+    setListasEnabled(d.listasEnabled || false);
+    if (d.varsLista) setVarsLista(d.varsLista as VarListaForm[]);
+    if (d.equipe) setEquipe(d.equipe as EquipeForm[]);
+    if (d.gerente) setGerente(d.gerente as typeof gerente);
+    if (d.gerentePermissoes) setGerentePermissoes(d.gerentePermissoes as string[]);
+    if (d.socio) setSocio(d.socio as SocioConviteForm);
+    if (d.permissoes) setPermissoes(d.permissoes as PermissaoToggle[]);
+    if (d.split) setSplit(d.split as SplitForm);
+    if (d.vendaVanta !== undefined) setVendaVanta(d.vendaVanta as boolean);
+    if (d.tipoFluxo) setTipoFluxo(d.tipoFluxo as TipoFluxoEvento);
+    setStep(draftData.step_atual);
+  };
 
   const safeBack = () => {
     if (!tipoFluxo) {
@@ -712,6 +821,7 @@ export const CriarEventoView: React.FC<{
       }
 
       toast({ title: 'Evento criado!', variant: 'success' });
+      await discardDraft();
       setPublicado(true);
     } catch (e) {
       setErro('Erro ao publicar evento. Tente novamente.');
@@ -949,6 +1059,43 @@ export const CriarEventoView: React.FC<{
 
       {/* Conteúdo */}
       <div ref={scrollRef} className="flex-1 overflow-y-auto no-scrollbar p-6 max-w-3xl mx-auto w-full">
+        {hasDraft && draftData && (
+          <div className="bg-[#FFD300]/10 border border-[#FFD300]/20 rounded-xl p-4 mb-4">
+            <div className="flex items-start gap-3">
+              <FileText size={20} className="text-[#FFD300] shrink-0 mt-0.5" />
+              <div className="flex-1 min-w-0">
+                <p className="text-white text-sm leading-snug">Você tem um rascunho não finalizado.</p>
+                {draftData.updated_at && (
+                  <p className="text-zinc-400 text-xs mt-0.5">
+                    Salvo em{' '}
+                    {new Date(draftData.updated_at).toLocaleString('pt-BR', {
+                      timeZone: 'America/Sao_Paulo',
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
+                  </p>
+                )}
+                <div className="flex items-center gap-2 mt-3">
+                  <button
+                    onClick={handleRestoreDraft}
+                    className="px-4 py-2 bg-[#FFD300] text-black text-[0.625rem] font-black uppercase tracking-widest rounded-lg active:scale-95 transition-all"
+                  >
+                    Continuar
+                  </button>
+                  <button
+                    onClick={() => void discardDraft()}
+                    className="px-4 py-2 text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest rounded-lg hover:text-zinc-300 active:scale-95 transition-all"
+                  >
+                    Descartar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
         {/* ── Step Essencial ── */}
         {currentLabel === 'Essencial' && (
           <Step1Evento

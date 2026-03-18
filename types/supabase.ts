@@ -268,6 +268,70 @@ export type Database = {
         };
         Relationships: [];
       };
+      brand_profiles: {
+        Row: {
+          atualizado_em: string;
+          comunidade_id: string | null;
+          criado_em: string;
+          criado_por: string | null;
+          flux_lora_id: string | null;
+          id: string;
+          ideogram_style_code: string | null;
+          nome: string;
+          perfil_visual: Json;
+          referencias: string[];
+          validado: boolean;
+        };
+        Insert: {
+          atualizado_em?: string;
+          comunidade_id?: string | null;
+          criado_em?: string;
+          criado_por?: string | null;
+          flux_lora_id?: string | null;
+          id?: string;
+          ideogram_style_code?: string | null;
+          nome: string;
+          perfil_visual?: Json;
+          referencias?: string[];
+          validado?: boolean;
+        };
+        Update: {
+          atualizado_em?: string;
+          comunidade_id?: string | null;
+          criado_em?: string;
+          criado_por?: string | null;
+          flux_lora_id?: string | null;
+          id?: string;
+          ideogram_style_code?: string | null;
+          nome?: string;
+          perfil_visual?: Json;
+          referencias?: string[];
+          validado?: boolean;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'brand_profiles_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'brand_profiles_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades_admin';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'brand_profiles_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades_publico';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
       cargos: {
         Row: {
           atribuido_em: string;
@@ -1779,6 +1843,67 @@ export type Database = {
           tipo?: string;
         };
         Relationships: [];
+      };
+      drafts: {
+        Row: {
+          comunidade_id: string | null;
+          created_at: string;
+          dados: Json;
+          expires_at: string;
+          foto_temp_url: string | null;
+          id: string;
+          step_atual: number;
+          tipo: string;
+          updated_at: string;
+          user_id: string;
+        };
+        Insert: {
+          comunidade_id?: string | null;
+          created_at?: string;
+          dados?: Json;
+          expires_at?: string;
+          foto_temp_url?: string | null;
+          id?: string;
+          step_atual?: number;
+          tipo: string;
+          updated_at?: string;
+          user_id: string;
+        };
+        Update: {
+          comunidade_id?: string | null;
+          created_at?: string;
+          dados?: Json;
+          expires_at?: string;
+          foto_temp_url?: string | null;
+          id?: string;
+          step_atual?: number;
+          tipo?: string;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'drafts_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'drafts_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades_admin';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'drafts_comunidade_id_fkey';
+            columns: ['comunidade_id'];
+            isOneToOne: false;
+            referencedRelation: 'comunidades_publico';
+            referencedColumns: ['id'];
+          },
+        ];
       };
       equipe_evento: {
         Row: {
@@ -5080,48 +5205,6 @@ export type Database = {
           text_align?: string | null;
           tipo?: string;
           titulo?: string;
-        };
-        Relationships: [];
-      };
-      brand_profiles: {
-        Row: {
-          id: string;
-          comunidade_id: string | null;
-          nome: string;
-          perfil_visual: Json;
-          referencias: string[];
-          ideogram_style_code: string | null;
-          flux_lora_id: string | null;
-          validado: boolean;
-          criado_por: string | null;
-          criado_em: string;
-          atualizado_em: string;
-        };
-        Insert: {
-          id?: string;
-          comunidade_id?: string | null;
-          nome: string;
-          perfil_visual?: Json;
-          referencias?: string[];
-          ideogram_style_code?: string | null;
-          flux_lora_id?: string | null;
-          validado?: boolean;
-          criado_por?: string | null;
-          criado_em?: string;
-          atualizado_em?: string;
-        };
-        Update: {
-          id?: string;
-          comunidade_id?: string | null;
-          nome?: string;
-          perfil_visual?: Json;
-          referencias?: string[];
-          ideogram_style_code?: string | null;
-          flux_lora_id?: string | null;
-          validado?: boolean;
-          criado_por?: string | null;
-          criado_em?: string;
-          atualizado_em?: string;
         };
         Relationships: [];
       };

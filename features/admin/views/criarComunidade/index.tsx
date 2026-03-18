@@ -1,5 +1,5 @@
-import React, { useState, useRef, useMemo } from 'react';
-import { ArrowLeft, Check } from 'lucide-react';
+import React, { useState, useRef, useMemo, useEffect } from 'react';
+import { ArrowLeft, Check, FileText } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../../constants';
 import { comunidadesService } from '../../services/comunidadesService';
 import { rbacService, CARGO_PERMISSOES } from '../../services/rbacService';
@@ -8,6 +8,7 @@ import { useToast, ToastContainer } from '../../../../components/Toast';
 import { Membro, HorarioSemanal } from '../../../../types';
 import { DEFAULT_HORARIOS } from '../../../../components/HorarioFuncionamentoEditor';
 import CelebrationScreen from '../../../../components/CelebrationScreen';
+import { useDraft } from '../../../../hooks/useDraft';
 import { Step1Identidade } from './Step1Identidade';
 import { Step2Localizacao } from './Step2Localizacao';
 import { Step3Operacao } from './Step3Operacao';
@@ -65,9 +66,115 @@ export const CriarComunidadeView: React.FC<{
 
   const [showExitConfirm, setShowExitConfirm] = useState(false);
 
+  // ── Draft auto-save ──
+  const { draftLoaded, hasDraft, draftData, saveDraft, discardDraft } = useDraft('COMUNIDADE');
+
+  const allDraftData = useMemo(
+    () => ({
+      nome,
+      bio,
+      capacidade,
+      fotoPerfil,
+      fotoCapa,
+      cep,
+      rua,
+      numero,
+      complemento,
+      bairro,
+      cidade,
+      estado,
+      cnpj,
+      razaoSocial,
+      telefone,
+      instagram,
+      whatsapp,
+      tiktok,
+      site,
+      taxaVantaStr,
+      taxaProcStr,
+      taxaPortaStr,
+      taxaMinimaStr,
+      cotaNomesStr,
+      taxaNomeExcStr,
+      cotaCortesiasStr,
+      taxaCortExcStr,
+      horarios,
+    }),
+    [
+      nome,
+      bio,
+      capacidade,
+      fotoPerfil,
+      fotoCapa,
+      cep,
+      rua,
+      numero,
+      complemento,
+      bairro,
+      cidade,
+      estado,
+      cnpj,
+      razaoSocial,
+      telefone,
+      instagram,
+      whatsapp,
+      tiktok,
+      site,
+      taxaVantaStr,
+      taxaProcStr,
+      taxaPortaStr,
+      taxaMinimaStr,
+      cotaNomesStr,
+      taxaNomeExcStr,
+      cotaCortesiasStr,
+      taxaCortExcStr,
+      horarios,
+    ],
+  );
+
   const hasChanges = useMemo(() => {
     return !!(nome.trim() || bio.trim() || capacidade || taxaVantaStr || rua.trim() || fotoPerfil || fotoCapa);
   }, [nome, bio, capacidade, taxaVantaStr, rua, fotoPerfil, fotoCapa]);
+
+  // Auto-save draft quando dados mudam (só após carregar draft existente)
+  useEffect(() => {
+    if (!draftLoaded || !hasChanges) return;
+    saveDraft(allDraftData, step);
+  }, [draftLoaded, hasChanges, allDraftData, step, saveDraft]);
+
+  const handleRestoreDraft = () => {
+    if (!draftData) return;
+    const d = draftData.dados as typeof allDraftData;
+    setNome(d.nome || '');
+    setBio(d.bio || '');
+    setCapacidade(d.capacidade || '');
+    setFotoPerfil(d.fotoPerfil || '');
+    setFotoCapa(d.fotoCapa || '');
+    setCep(d.cep || '');
+    setRua(d.rua || '');
+    setNumero(d.numero || '');
+    setComplemento(d.complemento || '');
+    setBairro(d.bairro || '');
+    setCidade(d.cidade || '');
+    setEstado(d.estado || '');
+    setCnpj(d.cnpj || '');
+    setRazaoSocial(d.razaoSocial || '');
+    setTelefone(d.telefone || '');
+    setInstagram(d.instagram || '');
+    setWhatsapp(d.whatsapp || '');
+    setTiktok(d.tiktok || '');
+    setSite(d.site || '');
+    setTaxaVantaStr(d.taxaVantaStr || '');
+    setTaxaProcStr(d.taxaProcStr || '');
+    setTaxaPortaStr(d.taxaPortaStr || '');
+    setTaxaMinimaStr(d.taxaMinimaStr || '');
+    setCotaNomesStr(d.cotaNomesStr || '');
+    setTaxaNomeExcStr(d.taxaNomeExcStr || '');
+    setCotaCortesiasStr(d.cotaCortesiasStr || '');
+    setTaxaCortExcStr(d.taxaCortExcStr || '');
+    if (d.horarios) setHorarios(d.horarios as HorarioSemanal[]);
+    setStep(draftData.step_atual as 1 | 2 | 3 | 4);
+  };
 
   const safeBack = () => {
     if (hasChanges) setShowExitConfirm(true);
@@ -243,6 +350,7 @@ export const CriarComunidadeView: React.FC<{
       }
 
       toast({ title: 'Comunidade criada!', variant: 'success' });
+      await discardDraft();
       setCriado(true);
     } catch (err) {
       console.error('[CriarComunidade] erro:', err);
@@ -323,6 +431,43 @@ export const CriarComunidadeView: React.FC<{
 
       {/* Conteúdo */}
       <div ref={scrollRef} className="flex-1 overflow-y-auto no-scrollbar p-6 max-w-3xl mx-auto w-full">
+        {hasDraft && draftData && (
+          <div className="bg-[#FFD300]/10 border border-[#FFD300]/20 rounded-xl p-4 mb-4">
+            <div className="flex items-start gap-3">
+              <FileText size={20} className="text-[#FFD300] shrink-0 mt-0.5" />
+              <div className="flex-1 min-w-0">
+                <p className="text-white text-sm leading-snug">Você tem um rascunho não finalizado.</p>
+                {draftData.updated_at && (
+                  <p className="text-zinc-400 text-xs mt-0.5">
+                    Salvo em{' '}
+                    {new Date(draftData.updated_at).toLocaleString('pt-BR', {
+                      timeZone: 'America/Sao_Paulo',
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
+                  </p>
+                )}
+                <div className="flex items-center gap-2 mt-3">
+                  <button
+                    onClick={handleRestoreDraft}
+                    className="px-4 py-2 bg-[#FFD300] text-black text-[0.625rem] font-black uppercase tracking-widest rounded-lg active:scale-95 transition-all"
+                  >
+                    Continuar
+                  </button>
+                  <button
+                    onClick={() => void discardDraft()}
+                    className="px-4 py-2 text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest rounded-lg hover:text-zinc-300 active:scale-95 transition-all"
+                  >
+                    Descartar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
         {step === 1 && (
           <Step1Identidade
             nome={nome}

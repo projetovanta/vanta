@@ -18,16 +18,19 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.49.1';
 const RESEND_KEY = Deno.env.get('RESEND_API_KEY') ?? '';
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL') ?? '';
 const SUPABASE_ANON_KEY = Deno.env.get('SUPABASE_ANON_KEY') ?? '';
-const CORS = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
+function getCorsOrigin(req: Request): string {
+  const origin = req.headers.get('origin') ?? '';
+  if (origin === 'http://localhost:5173' || origin === 'http://localhost:5174') return origin;
+  return 'https://maisvanta.com';
+}
+let CORS = { 'Access-Control-Allow-Origin': 'https://maisvanta.com', 'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type' };
 
 function escapeHtml(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
 serve(async (req: Request) => {
+  CORS = { 'Access-Control-Allow-Origin': getCorsOrigin(req), 'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type' };
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: CORS });
   }

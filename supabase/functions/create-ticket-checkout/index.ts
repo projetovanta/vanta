@@ -30,10 +30,12 @@ const SUPABASE_URL = Deno.env.get('SUPABASE_URL') ?? '';
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
 const SITE_URL = 'https://maisvanta.com';
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
+function getCorsOrigin(req: Request): string {
+  const origin = req.headers.get('origin') ?? '';
+  if (origin === 'http://localhost:5173' || origin === 'http://localhost:5174') return origin;
+  return 'https://maisvanta.com';
+}
+let corsHeaders = { 'Access-Control-Allow-Origin': 'https://maisvanta.com', 'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type' };
 
 const jsonResponse = (body: Record<string, unknown>, status = 200) =>
   new Response(JSON.stringify(body), {
@@ -42,6 +44,7 @@ const jsonResponse = (body: Record<string, unknown>, status = 200) =>
   });
 
 serve(async (req: Request) => {
+  corsHeaders = { 'Access-Control-Allow-Origin': getCorsOrigin(req), 'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type' };
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders });
   }

@@ -21,10 +21,12 @@ const STRIPE_SECRET_KEY = Deno.env.get('STRIPE_SECRET_KEY') ?? '';
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL') ?? '';
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
+function getCorsOrigin(req: Request): string {
+  const origin = req.headers.get('origin') ?? '';
+  if (origin === 'http://localhost:5173' || origin === 'http://localhost:5174') return origin;
+  return 'https://maisvanta.com';
+}
+let corsHeaders = { 'Access-Control-Allow-Origin': 'https://maisvanta.com', 'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type' };
 
 const PLANO_PRICES: Record<string, number> = {
   BASICO: 19900,     // R$ 199,00 em centavos
@@ -33,6 +35,7 @@ const PLANO_PRICES: Record<string, number> = {
 };
 
 serve(async (req: Request) => {
+  corsHeaders = { 'Access-Control-Allow-Origin': getCorsOrigin(req), 'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type' };
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders });
   }

@@ -1,5 +1,45 @@
 @import "tailwindcss";
 
+/* ═══════════════════════════════════════════════════════════
+   VANTA Design Tokens — Tailwind v4 @theme
+   Paleta: preto não preto (profundidade) + dourado + estado
+   Usar: bg-void, bg-midnight, bg-card, bg-elevated, bg-input
+         text-gold, border-gold, etc.
+   ═══════════════════════════════════════════════════════════ */
+@theme {
+  /* ── Superfícies (profundidade) ── */
+  --color-void: #050505;
+  --color-midnight: #0A0A0A;
+  --color-card: #111111;
+  --color-elevated: #141414;
+  --color-input: #1A1A1A;
+  --color-surface: #1F1F1F;
+
+  /* ── Dourado (acento principal, máx 10% da tela) ── */
+  --color-gold: #FFD300;
+
+  /* ── Texto ── */
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #D4D4D8;
+  --color-text-muted: #A1A1AA;
+  --color-text-subtle: #71717A;
+
+  /* ── Estado ── */
+  --color-success: #34D399;
+  --color-warning: #F59E0B;
+  --color-error: #EF4444;
+  --color-info: #60A5FA;
+
+  /* ── Acento contextual ── */
+  --color-accent-purple: #A78BFA;
+  --color-accent-cyan: #22D3EE;
+}
+
+/* Hover real: só aplica em devices com mouse (não mobile touch)
+   Uso: hover-real:bg-white/10 — só ativa em desktop com mouse */
+@custom-variant hover-real (@media (hover: hover) and (pointer: fine));
+
+
 /* Performance: desativar backdrop-blur e animações em dispositivos fracos */
 @media (prefers-reduced-motion: reduce) {
   * {

@@ -3,6 +3,7 @@
  */
 import React, { useState, useEffect, useMemo } from 'react';
 import { Save, Loader2, Search, Plus, Trash2 } from 'lucide-react';
+import { VantaDropdown } from '../../../components/VantaDropdown';
 import { AdminViewHeader } from '../components/AdminViewHeader';
 import { useToast, ToastContainer } from '../../../components/Toast';
 import { siteContentService, type SiteContentItem } from '../services/siteContentService';
@@ -147,18 +148,12 @@ export const SiteContentView: React.FC<{
               className="w-full bg-zinc-800/60 border border-white/5 rounded-xl pl-8 pr-3 py-2.5 text-white text-xs"
             />
           </div>
-          <select
+          <VantaDropdown
             value={catFiltro}
-            onChange={e => setCatFiltro(e.target.value)}
-            className="bg-zinc-800 border border-white/5 rounded-xl px-3 py-2.5 text-white text-xs"
-          >
-            <option value="">Todas</option>
-            {categorias.map(c => (
-              <option key={c} value={c}>
-                {c}
-              </option>
-            ))}
-          </select>
+            onChange={setCatFiltro}
+            placeholder="Todas"
+            options={[{ value: '', label: 'Todas' }, ...categorias.map(c => ({ value: c, label: c }))]}
+          />
         </div>
 
         {loading ? (

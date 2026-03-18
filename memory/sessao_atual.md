@@ -125,10 +125,30 @@ Ver detalhes em `memory/plano_blocos_melhorias.md`
 - 7.3 Remover convidado da lista (removerConvidado, só quem adicionou)
 
 ### Bloco 8 — Auditoria e Controle (COMPLETO — sessão 5)
-- 8.1 Audit RBAC (getAllAtribuicoes + atribuidoPor/atribuidoEm já existiam)
-- 8.2 Extrato financeiro completo (ExtratoFinanceiro.tsx com filtros vendas/saques/reembolsos)
-- 8.3 Validar CNPJ (cnpjValidator.ts — dígito offline + BrasilAPI Receita Federal)
-- 8.4 Histórico edições comunidade (COMUNIDADE_EDITADA no audit log)
+- 8.1 Audit RBAC, 8.2 Extrato financeiro, 8.3 Validar CNPJ, 8.4 Histórico edições
+
+## Pendências da Auditoria (full-audit 18/mar)
+
+### Urgente — RESOLVIDO
+- [x] 2 `<select>` nativos corrigidos → VantaDropdown (DashboardV2Gateway + SiteContentView)
+- [ ] 2 fontFamily inline: masterDashboard/index.tsx:158 + EventCard.tsx:167
+
+### Código morto — RESOLVIDO
+- [x] 5 arquivos movidos pra `_deprecated/` (2 backups + 3 Home não usados)
+- [x] 6 views legadas sinalizadas com @deprecated (AdminDashboardView, AdminGateway, CaixaDash, PortariaListaDash, PortariaQRDash, SocioDash)
+- [x] `_deprecated/` excluída do tsconfig.json
+
+### Componentes criados mas não integrados
+- [ ] BatchActionBar.tsx — criar UI que use (ex: MembrosGlobais, Convites)
+- [ ] FilterBar.tsx — criar UI que use (ex: Pendências, Eventos)
+- [ ] cnpjValidator.ts — integrar no form de comunidade
+- [ ] brandProfilesService.ts — aguardando IA visual (Lux futura)
+- [ ] ProfileSkeleton, ChatItemSkeleton, HighlightCardSkeleton — aplicar nas telas
+- [ ] CARGO_DESCRICOES — exibir na UI de cargos
+
+### Menor prioridade
+- [ ] 3 fontSize em px hardcoded
+- [ ] api/og.ts, api/robots.ts, api/sitemap.xml.ts — SEO futuro (manter)
 
 ## Pendencias externas (sem mudança)
 - Conta Apple Developer ($99/ano)

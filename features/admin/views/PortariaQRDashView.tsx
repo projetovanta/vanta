@@ -1,3 +1,4 @@
+/** @deprecated LEGADO — substituído pelo DashboardV2. Mantido como referência (18/mar/2026). */
 import React, { useState, useEffect, useMemo } from 'react';
 import { QrCode, UserCheck, Users, TrendingUp, ChevronDown, ArrowRight } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';

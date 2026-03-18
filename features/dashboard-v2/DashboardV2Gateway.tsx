@@ -34,6 +34,7 @@ import { SIDEBAR_SECTIONS, COMMUNITY_SIDEBAR_SECTIONS, type AdminSubView } from 
 import { useAuthStore } from '../../stores/authStore';
 import { supabase } from '../../services/supabaseClient';
 import { useSessionTimeout } from '../../hooks/useSessionTimeout';
+import { VantaDropdown } from '../../components/VantaDropdown';
 
 // Home V2
 import { DashboardV2Home } from './DashboardV2Home';
@@ -890,20 +891,15 @@ export const DashboardV2Gateway: React.FC<{
 
             {/* Role tabs (dev tool — desktop only) */}
             {isMasterReal && (
-              <div className="hidden md:flex items-center gap-1 shrink-0">
-                <Eye size="0.625rem" className="text-zinc-700" />
-                <select
+              <div className="hidden md:flex items-center gap-1 shrink-0 min-w-[7rem]">
+                <Eye size="0.625rem" className="text-zinc-700 shrink-0" />
+                <VantaDropdown
                   value={simulatedRole ?? ''}
-                  onChange={e => setSimulatedRole(e.target.value ? (e.target.value as ContaVantaLegacy) : null)}
-                  className="bg-zinc-900 border border-white/10 rounded-lg text-[0.5rem] text-zinc-400 px-1.5 py-1 font-bold uppercase tracking-wider appearance-none cursor-pointer"
-                >
-                  <option value="">Real</option>
-                  {ROLE_TABS.map(t => (
-                    <option key={t.role} value={t.role}>
-                      {t.label}
-                    </option>
-                  ))}
-                </select>
+                  onChange={v => setSimulatedRole(v ? (v as ContaVantaLegacy) : null)}
+                  placeholder="Real"
+                  options={[{ value: '', label: 'Real' }, ...ROLE_TABS.map(t => ({ value: t.role, label: t.label }))]}
+                  className="text-[0.5rem]"
+                />
               </div>
             )}
 

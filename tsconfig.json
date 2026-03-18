@@ -34,6 +34,7 @@
     "api",
     "ios",
     "android",
-    "resources"
+    "resources",
+    "_deprecated"
   ]
 }

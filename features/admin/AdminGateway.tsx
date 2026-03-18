@@ -1,3 +1,4 @@
+/** @deprecated LEGADO — substituído por DashboardV2Gateway. Mantido como referência por decisão do Dan (18/mar/2026). */
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Shield, Check, Globe, Building2, ChevronDown } from 'lucide-react';
 import { TYPOGRAPHY } from '../../constants';

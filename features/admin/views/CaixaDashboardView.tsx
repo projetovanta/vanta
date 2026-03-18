@@ -1,3 +1,4 @@
+/** @deprecated LEGADO — substituído por CaixaHome no DashboardV2. Mantido como referência (18/mar/2026). */
 import React, { useState, useEffect, useMemo } from 'react';
 import { ShoppingCart, DollarSign, Package, TrendingUp, ChevronDown, ArrowRight } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';

@@ -1,3 +1,4 @@
+/** @deprecated LEGADO — substituído por DashboardV2Gateway. Mantido como referência por decisão do Dan (18/mar/2026). */
 import React, { useState, useMemo, useEffect, Suspense, lazy } from 'react';
 import { ArrowLeft, ChevronRight, Loader2 } from 'lucide-react';
 import { eventosAdminService, SolicitacaoSaque } from './services/eventosAdminService';

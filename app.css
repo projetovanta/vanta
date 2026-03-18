@@ -68,6 +68,11 @@
   75%, 100% { transform: scale(2); opacity: 0; }
 }
 
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 12px rgba(74, 222, 128, 0.06); }
+  50% { box-shadow: 0 0 20px rgba(74, 222, 128, 0.15); }
+}
+
 /* VantaSlider — estilização do range input */
 .vanta-slider {
   -webkit-appearance: none;

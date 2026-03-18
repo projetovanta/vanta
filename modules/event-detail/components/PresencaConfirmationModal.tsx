@@ -38,7 +38,7 @@ export const PresencaConfirmationModal: React.FC<PresencaConfirmationModalProps>
           <Check size="2rem" className="text-[#FFD300] drop-shadow-[0_0_10px_#FFD300]" />
         </div>
 
-        <h2 style={TYPOGRAPHY.screenTitle} className="text-2xl text-white mb-3 italic">
+        <h2 style={TYPOGRAPHY.screenTitle} className="text-2xl text-white mb-3">
           Eu vou!
         </h2>
         <p className="text-zinc-400 text-xs leading-relaxed mb-8 px-2">

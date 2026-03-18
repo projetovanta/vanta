@@ -115,7 +115,7 @@ export const SuccessScreen: React.FC<Props> = ({ tickets, titulo, data }) => {
         <div className="w-20 h-20 rounded-full bg-[#FFD300]/10 border border-[#FFD300]/20 flex items-center justify-center mb-5">
           <Sparkles size="2rem" className="text-[#FFD300]" />
         </div>
-        <p className="font-serif italic text-2xl text-white mb-2">Presença garantida!</p>
+        <p className="font-serif text-2xl text-white mb-2">Presença garantida!</p>
         <p className="text-zinc-400 text-sm">
           {titulo} · {data}
         </p>

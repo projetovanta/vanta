@@ -25,7 +25,7 @@ export const CapacidadeModal: React.FC<Props> = ({ total, cap, tipo, onConfirmar
         <p className="text-[#FFD300] text-[0.625rem] font-black uppercase tracking-widest mb-2">
           Atenção · Capacidade do Local
         </p>
-        <h2 style={TYPOGRAPHY.screenTitle} className="text-lg italic mb-3">
+        <h2 style={TYPOGRAPHY.screenTitle} className="text-lg mb-3">
           Limite Excedido
         </h2>
         <p className="text-zinc-400 text-sm leading-relaxed">

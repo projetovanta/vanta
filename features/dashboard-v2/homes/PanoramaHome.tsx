@@ -271,7 +271,7 @@ export const PanoramaHome: React.FC<Props> = ({
               {isMaster ? 'Master Admin' : 'Painel'}
             </p>
           </div>
-          <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic leading-none text-white">
+          <h1 style={TYPOGRAPHY.screenTitle} className="text-xl leading-none text-white">
             Olá, {adminNome?.split(' ')[0]}
           </h1>
           {negocioCards.length > 0 && (

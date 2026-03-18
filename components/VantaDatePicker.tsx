@@ -168,7 +168,7 @@ const CalendarModal: React.FC<CalendarModalProps> = ({ value, min, max, onSelect
           <button
             type="button"
             onClick={() => setShowYearPicker(!showYearPicker)}
-            className="text-[#FFD300] font-serif italic text-lg hover-real:opacity-80 transition-opacity"
+            className="text-[#FFD300] font-serif text-lg hover-real:opacity-80 transition-opacity"
           >
             {showYearPicker ? 'Voltar' : `${MONTH_NAMES[viewDate.getMonth()]} ${viewDate.getFullYear()}`}
           </button>

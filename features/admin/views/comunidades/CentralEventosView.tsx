@@ -41,7 +41,7 @@ export const CentralEventosView: React.FC<{
             <p style={TYPOGRAPHY.sectionKicker} className="mb-1">
               Central de Eventos
             </p>
-            <h1 style={TYPOGRAPHY.screenTitle} className="text-lg italic truncate">
+            <h1 style={TYPOGRAPHY.screenTitle} className="text-lg truncate">
               {comunidade.nome}
             </h1>
           </div>

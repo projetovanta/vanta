@@ -55,7 +55,7 @@ export const ListaEventoView: React.FC<{
             <p style={TYPOGRAPHY.sectionKicker} className="mb-1">
               Lista de Convidados
             </p>
-            <h1 style={TYPOGRAPHY.screenTitle} className="text-lg italic leading-snug line-clamp-2">
+            <h1 style={TYPOGRAPHY.screenTitle} className="text-lg leading-snug line-clamp-2">
               {lista.eventoNome}
             </h1>
             <p className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest mt-1 truncate">

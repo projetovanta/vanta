@@ -17,9 +17,8 @@ export default function SectionTitle({ title, subtitle, icon: Icon, action, clas
           <h3
             className="text-white text-lg leading-tight truncate"
             style={{
-              fontFamily: "'Playfair Display SC', serif",
+              fontFamily: "'Playfair Display', serif",
               fontWeight: 700,
-              fontStyle: 'italic',
             }}
           >
             {title}

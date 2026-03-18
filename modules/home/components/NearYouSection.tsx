@@ -79,7 +79,7 @@ export const NearYouSection: React.FC<{
       <div className="px-5 mb-4">
         <div className="flex items-center gap-2 mb-0.5">
           <Navigation size="0.875rem" className="text-[#FFD300]" />
-          <h3 className="text-base text-white font-semibold">Perto de Você</h3>
+          <h3 className="text-base text-white font-semibold font-serif">Perto de Você</h3>
         </div>
         <p className="text-[0.7rem] text-zinc-500 ml-6">Eventos mais próximos de onde você está</p>
       </div>

@@ -162,7 +162,7 @@ export const SidebarV2: React.FC<Props> = ({
           {tenantFoto ? (
             <img src={tenantFoto} alt="" className="w-6 h-6 rounded-full object-cover shrink-0" />
           ) : (
-            <span className="font-serif italic font-bold text-xl text-[#FFD300]">V</span>
+            <span className="font-serif font-bold text-xl text-[#FFD300]">V</span>
           )}
           <span className="text-[0.5rem] font-black uppercase tracking-widest text-zinc-500 truncate">
             {tenantNome || 'Admin'}

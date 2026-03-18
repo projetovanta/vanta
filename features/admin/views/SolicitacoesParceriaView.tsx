@@ -148,7 +148,7 @@ export const SolicitacoesParceriaView: React.FC<{
             <p style={TYPOGRAPHY.sectionKicker} className="mb-1.5">
               Dossiê
             </p>
-            <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic truncate">
+            <h1 style={TYPOGRAPHY.screenTitle} className="text-xl truncate">
               {detalhe.nome}
             </h1>
             <p className="text-zinc-400 text-[0.625rem] mt-1">

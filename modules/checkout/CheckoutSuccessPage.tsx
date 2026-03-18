@@ -128,7 +128,7 @@ export const CheckoutSuccessPage: React.FC = () => {
       {status === 'polling' && (
         <div className="flex flex-col items-center gap-4 text-center">
           <Loader2 size="2.5rem" className="text-[#FFD300] animate-spin" />
-          <p className="font-serif italic text-xl text-white">Confirmando pagamento...</p>
+          <p className="font-serif text-xl text-white">Confirmando pagamento...</p>
           <p className="text-zinc-400 text-xs">Aguarde enquanto processamos seu pagamento.</p>
         </div>
       )}
@@ -138,7 +138,7 @@ export const CheckoutSuccessPage: React.FC = () => {
           <div className="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
             <Check size="1.75rem" className="text-emerald-400" />
           </div>
-          <p className="font-serif italic text-2xl text-white">
+          <p className="font-serif text-2xl text-white">
             {qtdIngressos === 1 ? 'Ingresso Confirmado!' : `${qtdIngressos} Ingressos Confirmados!`}
           </p>
           {eventoNome && <p className="text-zinc-400 text-xs">{eventoNome}</p>}
@@ -167,7 +167,7 @@ export const CheckoutSuccessPage: React.FC = () => {
           <div className="w-16 h-16 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
             <AlertTriangle size="1.75rem" className="text-amber-400" />
           </div>
-          <p className="font-serif italic text-xl text-white">
+          <p className="font-serif text-xl text-white">
             {status === 'timeout' ? 'Processamento demorado' : 'Erro no pagamento'}
           </p>
           <p className="text-zinc-400 text-xs max-w-xs">

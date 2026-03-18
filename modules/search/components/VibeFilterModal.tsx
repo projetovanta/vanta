@@ -103,7 +103,7 @@ export const VibeFilterModal: React.FC<{
           <div className="p-6">
             <div className="flex justify-between items-center mb-4">
               <div>
-                <h2 style={TYPOGRAPHY.screenTitle} className="text-xl italic text-white">
+                <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white">
                   Filtros
                 </h2>
                 {totalSelected > 0 && (

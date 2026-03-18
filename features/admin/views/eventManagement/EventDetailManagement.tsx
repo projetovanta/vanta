@@ -97,7 +97,7 @@ export const EventDetailManagement: React.FC<{
             <p style={TYPOGRAPHY.sectionKicker} className="mb-1">
               Gestão do Evento
             </p>
-            <h1 style={TYPOGRAPHY.screenTitle} className="text-lg italic truncate">
+            <h1 style={TYPOGRAPHY.screenTitle} className="text-lg truncate">
               {lista?.eventoNome ?? eventoAdmin?.nome ?? 'Evento'}
             </h1>
           </div>

@@ -873,7 +873,7 @@ const CardModal: React.FC<{
             <p style={TYPOGRAPHY.sectionKicker} className="mb-1.5">
               Vanta Indica
             </p>
-            <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic">
+            <h1 style={TYPOGRAPHY.screenTitle} className="text-xl">
               {initial.id ? 'Editar Card' : 'Novo Card'}
             </h1>
           </div>
@@ -1505,7 +1505,6 @@ const CardModal: React.FC<{
                       ...TYPOGRAPHY.screenTitle,
                       fontSize: `${tituloFontSize}cqw`,
                       lineHeight: 1.2,
-                      fontStyle: 'italic',
                     }}
                     className="drop-shadow-lg"
                   >

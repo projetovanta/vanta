@@ -368,7 +368,7 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
               <div className="w-16 h-16 rounded-full bg-[#FFD300]/10 border border-[#FFD300]/20 flex items-center justify-center mb-5">
                 <Lock size="1.5rem" className="text-[#FFD300]" />
               </div>
-              <h3 className="font-serif italic text-xl text-white mb-2">Lugares pra você</h3>
+              <h3 className="font-serif text-xl text-white mb-2">Lugares pra você</h3>
               <p className="text-zinc-400 text-sm mb-6 max-w-[16rem]">
                 Benefícios exclusivos em bares, restaurantes e eventos. Só pra membros.
               </p>

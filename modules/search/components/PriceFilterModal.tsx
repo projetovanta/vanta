@@ -55,7 +55,7 @@ export const PriceFilterModal: React.FC<PriceFilterModalProps> = ({ isOpen, onCl
           <div className="p-6">
             <div className="flex justify-between items-center mb-6">
               <div>
-                <h2 style={TYPOGRAPHY.screenTitle} className="text-xl italic text-white">
+                <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white">
                   Investimento
                 </h2>
                 <p className="text-[0.5625rem] text-[#FFD300] font-black uppercase tracking-widest mt-1">

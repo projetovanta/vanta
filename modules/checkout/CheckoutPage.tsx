@@ -627,7 +627,7 @@ export const CheckoutPage: React.FC = () => {
         {/* Info */}
         <div>
           <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1">{evento.formato}</p>
-          <h1 className="font-serif italic text-2xl text-white leading-tight truncate">{evento.titulo}</h1>
+          <h1 className="font-serif text-2xl text-white leading-tight truncate">{evento.titulo}</h1>
           <p className="text-zinc-400 text-xs mt-1">
             {evento.data} · {evento.horario} · {evento.local}
           </p>

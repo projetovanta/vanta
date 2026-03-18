@@ -83,7 +83,7 @@ const FuncaoModal: React.FC<FuncaoModalProps> = ({ onClose, onSave }) => {
           <div className="w-10 h-1 rounded-full bg-zinc-700" />
         </div>
         <div className="px-6 pt-3 pb-4 border-b border-white/5">
-          <h2 style={TYPOGRAPHY.screenTitle} className="text-base italic">
+          <h2 style={TYPOGRAPHY.screenTitle} className="text-base">
             Nova Função
           </h2>
         </div>

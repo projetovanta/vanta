@@ -125,7 +125,7 @@ export const Highlights: React.FC<HighlightsProps> = React.memo(
 
     return (
       /* px-5 individual — carrossel com edge-bleed, não usar px global */
-      <div className="relative w-full pt-6 mb-2 overflow-x-hidden select-none">
+      <div className="relative w-full pt-2 mb-2 overflow-x-hidden select-none">
         <div className="px-5 mb-4 text-center">
           <h2 style={TYPOGRAPHY.sectionKicker} className="opacity-50">
             Vanta Indica
@@ -228,7 +228,6 @@ export const Highlights: React.FC<HighlightsProps> = React.memo(
                           ...TYPOGRAPHY.screenTitle,
                           fontSize: `${item.layoutConfig?.tituloFontSize ?? 5.3}cqw`,
                           lineHeight: 1.2,
-                          fontStyle: 'italic',
                         }}
                         className="drop-shadow-lg truncate"
                       >

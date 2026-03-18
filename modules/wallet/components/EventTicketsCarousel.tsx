@@ -503,7 +503,7 @@ export const EventTicketsCarousel: React.FC<Props> = ({
             <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-0.5">
               {tickets.length === 1 ? '1 ingresso' : `${tickets.length} ingressos`}
             </p>
-            <h1 style={TYPOGRAPHY.screenTitle} className="text-base italic truncate leading-none">
+            <h1 style={TYPOGRAPHY.screenTitle} className="text-base truncate leading-none">
               {titulo}
             </h1>
             <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest mt-0.5">{data}</p>

@@ -132,7 +132,7 @@ export const EditarListaSubView: React.FC<Props> = ({ eventoId, onBack }) => {
             <p style={TYPOGRAPHY.sectionKicker} className="mb-1">
               {ev?.nome ?? 'Evento'}
             </p>
-            <h1 style={TYPOGRAPHY.screenTitle} className="text-lg italic">
+            <h1 style={TYPOGRAPHY.screenTitle} className="text-lg">
               Ativar Lista
             </h1>
           </div>

@@ -530,7 +530,7 @@ export const DashboardV2Home: React.FC<Props> = ({
             <div className="w-1.5 h-1.5 rounded-full bg-[#FFD300] animate-pulse" />
             <p className="text-[#FFD300]/60 text-[0.5625rem] font-black uppercase tracking-[0.25em]">{roleLabel}</p>
           </div>
-          <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic leading-none text-white">
+          <h1 style={TYPOGRAPHY.screenTitle} className="text-xl leading-none text-white">
             Bem-vindo, {adminNome}
           </h1>
           {tenantNome && (

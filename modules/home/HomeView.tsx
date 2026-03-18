@@ -1,13 +1,13 @@
 import React, { useMemo, useCallback, useState } from 'react';
 import { Evento } from '../../types';
-import { EventFeed } from './components/EventFeed';
+// EventFeed — removido, será recriado
 import { Highlights } from './components/Highlights';
 import { EventCardSkeleton } from '../../components/Skeleton';
-import { LiveNowSection } from './components/LiveNowSection';
+// LiveNowSection — removido, será recriado
 import { NearYouSection } from './components/NearYouSection';
-import { ThisWeekSection } from './components/ThisWeekSection';
-import { ForYouSection } from './components/ForYouSection';
-import { FriendsGoingSection } from './components/FriendsGoingSection';
+// ThisWeekSection — removido, será recriado
+// ForYouSection — removido, será recriado
+// FriendsGoingSection — removido, será recriado
 import { LazySection } from './components/LazySection';
 import { isEventHappeningNow, sortEvents } from '../../utils';
 import { TYPOGRAPHY } from '../../constants';
@@ -74,17 +74,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
     [eventos, selectedCity],
   );
 
-  // Esta semana: próximos 7 dias (excluindo "ao vivo" pra não duplicar)
-  const thisWeekEventos = useMemo(() => {
-    const todayISO = new Date().toLocaleDateString('sv-SE', { timeZone: 'America/Sao_Paulo' });
-    const weekEnd = new Date(todayISO + 'T00:00:00-03:00');
-    weekEnd.setDate(weekEnd.getDate() + 7);
-    const weekEndISO = weekEnd.toLocaleDateString('sv-SE', { timeZone: 'America/Sao_Paulo' });
-    const liveIds = new Set(liveEventos.map(e => e.id));
-    return sortEvents(
-      cityEventos.filter(e => e.dataReal >= todayISO && e.dataReal <= weekEndISO && !liveIds.has(e.id)),
-    ).slice(0, 15);
-  }, [cityEventos, liveEventos]);
+  // thisWeekEventos — será restaurado quando recriar ThisWeekSection
 
   // Pull-to-refresh
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
@@ -148,17 +138,17 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </div>
       )}
 
-      {/* Saudação — compacta */}
-      <div className="px-5 pt-5 pb-2 flex items-center justify-between">
-        <div className="flex items-center gap-1.5">
-          <p className="text-sm text-zinc-400">
-            {getGreeting()}
-            {firstName ? `, ` : ''}
-          </p>
-          {firstName && <p className="text-sm text-white font-semibold">{firstName}</p>}
-          {isMembroMV && <Crown size="0.7rem" className="text-[#FFD300] ml-0.5" />}
-        </div>
-        {!firstName && <p className="text-xs text-zinc-500">Descubra a noite</p>}
+      {/* Saudação */}
+      <div className="px-5 pt-5 pb-2">
+        <p className="text-sm text-zinc-400">
+          {getGreeting()}
+          {firstName ? `, ` : ''}
+          {firstName && <span className="text-white font-semibold">{firstName}</span>}
+          {isMembroMV && <Crown size="0.7rem" className="text-[#FFD300] ml-1 inline" />}
+        </p>
+        <p className="text-[0.65rem] text-[#FFD300]/50 font-black uppercase tracking-[0.2em] mt-1">
+          Bem-vindo ao VANTA
+        </p>
       </div>
 
       {/* Seus Benefícios — só membros MV */}
@@ -190,16 +180,8 @@ export const HomeView: React.FC<HomeViewProps> = ({
         onNavigateToProfile={onNavigateToProfile}
       />
 
-      {/* Acontecendo Agora */}
-      <LiveNowSection eventos={liveEventos} onEventClick={onEventClick} showCityInsteadOfLocal={!selectedCity} />
-
-      {/* Amigos vão — só aparece se logado e tem amigos com ingresso */}
-      <FriendsGoingSection
-        eventos={eventos}
-        onEventClick={onEventClick}
-        onComunidadeClick={onComunidadeClick}
-        showCityInsteadOfLocal={!selectedCity}
-      />
+      {/* Acontecendo Agora — será recriado */}
+      {/* Amigos vão — será recriado */}
 
       {/* Perto de você */}
       <LazySection>
@@ -212,38 +194,11 @@ export const HomeView: React.FC<HomeViewProps> = ({
         />
       </LazySection>
 
-      {/* Esta semana */}
-      <LazySection>
-        <ThisWeekSection
-          eventos={thisWeekEventos}
-          onEventClick={onEventClick}
-          onComunidadeClick={onComunidadeClick}
-          showCityInsteadOfLocal={!selectedCity}
-        />
-      </LazySection>
+      {/* Esta semana — será recriado */}
 
-      {/* Pra Você */}
-      <LazySection>
-        <ForYouSection
-          eventos={eventos}
-          tickets={tickets}
-          presencaIds={presencaIds}
-          onEventClick={onEventClick}
-          onComunidadeClick={onComunidadeClick}
-          showCityInsteadOfLocal={!selectedCity}
-        />
-      </LazySection>
+      {/* Pra Você — será recriado */}
 
-      {/* Feed principal */}
-      <LazySection>
-        <EventFeed
-          currentCity={selectedCity}
-          eventos={eventos}
-          onEventClick={onEventClick}
-          onViewAll={onNavigateToSearch}
-          onComunidadeClick={onComunidadeClick}
-        />
-      </LazySection>
+      {/* Feed por categoria — será recriado */}
 
       {/* Loading skeleton durante carregamento inicial */}
       {!hasAnyContent && eventos.length === 0 && eventsLoading && (

@@ -34,7 +34,7 @@ export const RestrictedModal: React.FC<RestrictedModalProps> = ({
         <div className="w-16 h-16 bg-zinc-900/60 rounded-full flex items-center justify-center mx-auto mb-6 border border-[#FFD300]/20 shadow-xl">
           <Sparkles size="1.5rem" className="text-[#FFD300]" />
         </div>
-        <h3 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-3 italic">
+        <h3 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-3">
           Crie sua conta
         </h3>
         <p className="text-zinc-400 text-sm leading-relaxed mb-8 px-2">{mensagem}</p>

@@ -268,7 +268,7 @@ export const WalletLockScreen: React.FC<WalletLockScreenProps> = ({ onUnlock, on
         >
           <Icon size="2rem" className={iconColor} />
         </div>
-        <h2 style={TYPOGRAPHY.screenTitle} className="text-2xl text-white mb-2 italic">
+        <h2 style={TYPOGRAPHY.screenTitle} className="text-2xl text-white mb-2">
           {title}
         </h2>
         <p className="text-zinc-400 text-[0.5625rem] uppercase tracking-[0.3em] font-black">{subtitle}</p>
@@ -297,7 +297,7 @@ export const WalletLockScreen: React.FC<WalletLockScreenProps> = ({ onUnlock, on
               <AlertTriangle size="1.75rem" className="text-red-500 drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]" />
             </div>
 
-            <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-3 italic">
+            <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-3">
               PIN Incorreto
             </h2>
 

@@ -68,7 +68,13 @@
 | Backlog limpo: CARGO_DESCRICOES já integrado, fontSize px normal (Recharts SVG) | Verificado 18/mar |
 | VantaConfirmModal: zero alert/confirm nativo (VantaAlertModal exportado mas não usado ainda) | `components/VantaConfirmModal.tsx` |
 | VANTA Indica: fontSize editável, snap centro, apagar card, subtítulo sem clamp | `features/admin/views/VantaIndicaView.tsx` |
-| Mobile-first: zero hover, EventCard footer h-[5.5rem] fixo | `components/EventCard.tsx` |
+| EventCard: aspect 4/5, footer h-[3.25rem], badges h-[1.375rem], sem social proof, badge verde "Acontecendo Agora" | `components/EventCard.tsx` |
+| Fonte: Playfair Display Bold 700 (sem SC, sem italic) em TODO o app | `index.html` + `constants.ts` |
+| Wizards integrados com FormWizard + DraftBanner + StepIndicator | `components/wizard/` |
+| Home: seções removidas pra reconstruir com EventCarousel | `modules/home/HomeView.tsx` |
+| EventCarousel: componente único de carrossel (paddingInline 20px) | `modules/home/components/EventCarousel.tsx` |
+| 28 testes novos (financeiro, auth, RBAC) | `tests/unit/` |
+| Luna demitida — Iris assume visual | — |
 | Direção visual: profundidade "preto não preto", contraste entre camadas | `memory/feedback_visual_profundidade.md` |
 | RTK instalado + TTL markers 30min + markers reutilizáveis (velocidade 3-4x) | `memory/sessao_atual.md` |
 | Auditoria limpeza: selects, deprecated, fontFamily, cnpjValidator | `memory/sessao_atual.md` |

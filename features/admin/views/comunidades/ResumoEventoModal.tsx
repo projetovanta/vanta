@@ -374,7 +374,7 @@ export const ResumoEventoView: React.FC<{
           </button>
           <div className="flex-1 min-w-0">
             <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest mb-0.5">Resumo do Evento</p>
-            <h2 style={TYPOGRAPHY.screenTitle} className="text-base italic truncate">
+            <h2 style={TYPOGRAPHY.screenTitle} className="text-base truncate">
               {evento.nome}
             </h2>
             <p className="text-zinc-400 text-[0.625rem] font-bold mt-0.5">{dataLabel}</p>

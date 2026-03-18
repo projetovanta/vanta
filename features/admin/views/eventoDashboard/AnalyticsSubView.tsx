@@ -149,7 +149,7 @@ export const AnalyticsSubView: React.FC<{
           </button>
           <div className="flex-1 min-w-0">
             <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-0.5">Análise</p>
-            <h1 className="font-serif italic text-xl text-white">Analytics de Público</h1>
+            <h1 className="font-serif text-xl text-white">Analytics de Público</h1>
           </div>
         </div>
         {totalTickets > 0 && (

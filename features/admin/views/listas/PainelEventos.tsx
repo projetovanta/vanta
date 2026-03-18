@@ -92,7 +92,7 @@ export const PainelEventos: React.FC<{
             <p style={TYPOGRAPHY.sectionKicker} className="mb-1.5">
               Portal Admin
             </p>
-            <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic">
+            <h1 style={TYPOGRAPHY.screenTitle} className="text-xl">
               Listas
             </h1>
           </div>

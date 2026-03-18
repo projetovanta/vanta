@@ -153,7 +153,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
         <div className="w-14 h-14 rounded-full bg-[#FFD300]/10 border border-[#FFD300]/20 flex items-center justify-center mx-auto mb-4">
           <Sparkles size="1.5rem" className="text-[#FFD300]" />
         </div>
-        <h1 style={TYPOGRAPHY.screenTitle} className="text-2xl italic text-white mb-2">
+        <h1 style={TYPOGRAPHY.screenTitle} className="text-2xl text-white mb-2">
           Criar Conta
         </h1>
         <p className="text-zinc-400 text-sm">A noite da sua cidade num só lugar</p>

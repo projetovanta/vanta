@@ -59,12 +59,6 @@ export const EventFeed: React.FC<{
       result.push({ categoria: label, eventos: matching });
     });
 
-    // Eventos sem formato mapeado
-    const remaining = filtered.filter(e => !usedIds.has(e.id));
-    if (remaining.length > 0) {
-      result.push({ categoria: 'Outros', eventos: remaining });
-    }
-
     return result;
   }, [allEventos, currentCity, formatoRows]);
 
@@ -156,7 +150,7 @@ const CategoryRow: React.FC<{
   return (
     <div>
       <div className="flex items-center justify-between px-5 mb-4">
-        <h3 className="text-base text-white font-semibold">{categoria}</h3>
+        <h3 className="text-base text-white font-semibold font-serif">{categoria}</h3>
         {eventos.length > 3 && (
           <button
             onClick={() => onViewAll(categoria)}

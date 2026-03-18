@@ -226,7 +226,7 @@ export const DefinirCargosView: React.FC<DefinirCargosProps> = ({
               <ArrowLeft size="1.125rem" className="text-zinc-400" />
             </button>
             <div>
-              <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic leading-none text-white">
+              <h1 style={TYPOGRAPHY.screenTitle} className="text-xl leading-none text-white">
                 Definir Cargos
               </h1>
               <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest mt-1">

@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Crown, Users } from 'lucide-react';
+import { MapPin, Crown, Radio } from 'lucide-react';
 import { Evento } from '../types';
 import { TYPOGRAPHY } from '../constants';
 import { getMinPrice, isEventHappeningNow, isEventStartingSoon, isEventEndingSoon } from '../utils';
@@ -39,12 +39,11 @@ interface EventCardProps {
   onComunidadeClick?: (comunidadeId: string) => void;
   showCityInsteadOfLocal?: boolean;
   distLabel?: string;
-  confirmados?: number;
   percentVendido?: number;
 }
 
 export const EventCard: React.FC<EventCardProps> = React.memo(
-  ({ evento, onClick, onComunidadeClick, showCityInsteadOfLocal, distLabel, confirmados, percentVendido }) => {
+  ({ evento, onClick, onComunidadeClick, showCityInsteadOfLocal, distLabel, percentVendido }) => {
     const minPrice = getMinPrice(evento);
     const isHappening = isEventHappeningNow(evento);
     const isStartingSoon = isEventStartingSoon(evento);
@@ -73,7 +72,11 @@ export const EventCard: React.FC<EventCardProps> = React.memo(
     const getBadgeConfig = () => {
       if (isEndingSoon) return { text: 'ACABA EM BREVE', className: 'bg-red-500/80 text-white' };
       if (isStartingSoon) return { text: 'COMEÇA EM BREVE', className: 'bg-amber-500/80 text-white' };
-      if (isHappening) return { text: 'ACONTECENDO AGORA', className: 'bg-emerald-400/80 text-black' };
+      if (isHappening)
+        return {
+          text: 'ACONTECENDO AGORA',
+          className: 'bg-green-400 text-black shadow-[0_0_12px_rgba(74,222,128,0.4)] animate-pulse',
+        };
       return {
         text: `${formatDateLabel(evento.data).toUpperCase()} • ${evento.horario}`,
         className: 'bg-black/80 text-white/90',
@@ -99,7 +102,7 @@ export const EventCard: React.FC<EventCardProps> = React.memo(
       >
         {/* Linha colorida no topo baseada no estilo */}
         <div className={`h-0.5 w-full ${estiloCor ? estiloCor.bg.replace('/15', '/40') : 'bg-[#FFD300]/30'}`} />
-        <div className="relative aspect-[3/4] overflow-hidden bg-black">
+        <div className="relative aspect-[4/5] overflow-hidden bg-black">
           <OptimizedImage
             src={evento.imagem}
             alt={evento.titulo}
@@ -111,16 +114,17 @@ export const EventCard: React.FC<EventCardProps> = React.memo(
               </div>
             }
           />
-          {/* Badge de data/status */}
+          {/* Badge de data/status — com ícone ao vivo quando acontecendo */}
           <div
-            className={`absolute top-2.5 left-2.5 z-30 px-2 py-1 rounded-lg font-bold text-[0.55rem] tracking-wider leading-none backdrop-blur-md ${badge.className}`}
+            className={`absolute top-2.5 left-2.5 z-30 px-2 h-[1.375rem] rounded-lg font-bold text-[0.55rem] tracking-wider leading-none backdrop-blur-md flex items-center gap-1 ${badge.className}`}
           >
+            {isHappening && <Radio size="0.625rem" className="text-black shrink-0" />}
             {badge.text}
           </div>
           {/* MV badge */}
           {evento.temBeneficioMaisVanta && (
-            <div className="absolute top-2.5 right-2.5 z-30 flex items-center px-1.5 py-1 rounded-lg bg-black/40 backdrop-blur-md">
-              <Crown size="0.6rem" className="text-[#FFD300]" />
+            <div className="absolute top-2.5 right-2.5 z-30 flex items-center px-2 py-1 rounded-lg bg-black/40 backdrop-blur-md leading-none">
+              <Crown size="0.55rem" className="text-[#FFD300]" />
             </div>
           )}
           {/* Overlay gradiente — mais suave, mostra mais foto */}
@@ -128,14 +132,14 @@ export const EventCard: React.FC<EventCardProps> = React.memo(
           <div className="absolute inset-x-0 bottom-0 p-3">
             <div className="flex items-center gap-1.5 flex-wrap mb-1.5">
               <span
-                className={`inline-block px-2 py-0.5 rounded-md text-[0.5rem] font-bold uppercase tracking-wider backdrop-blur-sm ${
+                className={`inline-block px-2 py-1 rounded-lg text-[0.55rem] font-bold uppercase tracking-wider leading-none backdrop-blur-md ${
                   estiloCor ? `${estiloCor.bg} ${estiloCor.text}` : 'bg-[#FFD300]/20 text-[#FFD300]'
                 }`}
               >
                 {evento.estilos?.[0] || evento.formato || evento.categoria}
               </span>
               {percentVendido != null && percentVendido > 80 && (
-                <span className="inline-block px-2 py-0.5 rounded-md text-[0.5rem] font-bold uppercase tracking-wider backdrop-blur-sm bg-red-500/15 border border-red-500/30 text-red-400">
+                <span className="inline-block px-2 py-1 rounded-lg text-[0.55rem] font-bold uppercase tracking-wider leading-none backdrop-blur-md bg-red-500/15 border border-red-500/30 text-red-400">
                   Ultimos ingressos
                 </span>
               )}
@@ -145,17 +149,8 @@ export const EventCard: React.FC<EventCardProps> = React.memo(
             </h3>
           </div>
         </div>
-        {/* Footer do card — altura fixa pra alinhar cards */}
-        <div className="px-3 py-2.5 space-y-1.5 h-[5.5rem] flex flex-col justify-between">
-          {/* Social proof */}
-          {confirmados != null && confirmados > 0 && (
-            <div className="flex items-center gap-1">
-              <Users size={12} className="text-zinc-400 shrink-0" />
-              <span className="text-[0.625rem] text-zinc-400">
-                {confirmados} {confirmados === 1 ? 'pessoa vai' : 'pessoas vao'}
-              </span>
-            </div>
-          )}
+        {/* Footer do card — altura fixa pra todos os cards ficarem iguais */}
+        <div className="px-3 pt-1.5 pb-2.5 h-[3.25rem] flex flex-col justify-center gap-0.5">
           {/* Local + Distância */}
           <div className="flex items-center gap-1.5 min-w-0">
             <MapPin size="0.6rem" className="text-[#FFD300]/60 shrink-0" />
@@ -177,15 +172,16 @@ export const EventCard: React.FC<EventCardProps> = React.memo(
             )}
           </div>
           {/* Preço */}
-          {!evento.ocultarValor && minPrice > 0 && (
+          {!evento.ocultarValor && minPrice > 0 ? (
             <div className="flex items-center gap-1.5">
               <span className="text-[0.55rem] text-zinc-600 uppercase tracking-wider font-medium">A partir de</span>
               <p className="text-sm text-[#FFD300] leading-tight" style={TYPOGRAPHY.cardTitle}>
                 R$ {minPrice.toFixed(2).replace('.', ',')}
               </p>
             </div>
-          )}
-          {evento.ocultarValor && <span className="text-xs font-serif italic text-[#FFD300]">Consulta</span>}
+          ) : evento.ocultarValor ? (
+            <span className="text-xs font-serif text-[#FFD300]">Consulta</span>
+          ) : null}
         </div>
       </div>
     );

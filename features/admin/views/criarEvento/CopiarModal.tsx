@@ -113,7 +113,7 @@ export const CopiarModal: React.FC<Props> = ({ onCopiar, onClose }) => {
           <div className="w-10 h-1 rounded-full bg-zinc-700" />
         </div>
         <div className="px-6 pt-3 pb-4 border-b border-white/5 shrink-0">
-          <h2 style={TYPOGRAPHY.screenTitle} className="text-lg italic">
+          <h2 style={TYPOGRAPHY.screenTitle} className="text-lg">
             Importar de Evento
           </h2>
           <p className="text-zinc-400 text-[0.625rem] mt-1">Selecione um evento e o que deseja copiar.</p>

@@ -120,7 +120,7 @@ export const HistoricoView: React.FC<HistoricoViewProps> = ({
         >
           <ArrowLeft size="1.125rem" />
         </button>
-        <h1 style={TYPOGRAPHY.screenTitle} className="text-lg italic">
+        <h1 style={TYPOGRAPHY.screenTitle} className="text-lg">
           Meu Histórico
         </h1>
         <div className="w-10" />

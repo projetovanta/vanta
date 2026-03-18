@@ -41,7 +41,7 @@ export const BloqueadosView: React.FC<Props> = ({ onBack }) => {
         <button onClick={onBack} className="p-2 -ml-2 active:bg-white/10 rounded-xl transition-colors">
           <ArrowLeft size="1.125rem" className="text-white" />
         </button>
-        <h1 style={TYPOGRAPHY.screenTitle} className="text-lg italic">
+        <h1 style={TYPOGRAPHY.screenTitle} className="text-lg">
           Bloqueados
         </h1>
       </div>

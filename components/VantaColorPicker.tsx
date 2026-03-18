@@ -85,7 +85,7 @@ const ColorPickerModal: React.FC<{
         onClick={e => e.stopPropagation()}
       >
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-[#FFD300] font-serif italic text-lg">Escolha a Cor</h2>
+          <h2 className="text-[#FFD300] font-serif text-lg">Escolha a Cor</h2>
           <button
             type="button"
             onClick={onClose}

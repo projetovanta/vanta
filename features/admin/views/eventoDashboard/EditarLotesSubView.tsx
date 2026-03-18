@@ -200,7 +200,7 @@ export const EditarLotesSubView: React.FC<Props> = ({ eventoId, onBack, currentU
             <p style={TYPOGRAPHY.sectionKicker} className="mb-1">
               Editar · {ev?.nome ?? 'Evento'}
             </p>
-            <h1 style={TYPOGRAPHY.screenTitle} className="text-lg italic">
+            <h1 style={TYPOGRAPHY.screenTitle} className="text-lg">
               Lotes e Cortesias
             </h1>
           </div>

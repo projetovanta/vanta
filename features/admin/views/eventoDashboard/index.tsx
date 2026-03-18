@@ -558,7 +558,7 @@ export const EventoDashboard: React.FC<{
         </div>
 
         <div className="absolute bottom-0 left-0 right-0 px-6 pb-5">
-          <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic leading-tight text-white mb-2 line-clamp-2">
+          <h1 style={TYPOGRAPHY.screenTitle} className="text-xl leading-tight text-white mb-2 line-clamp-2">
             {evento.nome}
           </h1>
           <div className="flex items-center gap-3 flex-wrap">

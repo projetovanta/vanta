@@ -78,7 +78,7 @@ export const PremiumCalendar: React.FC<PremiumCalendarProps> = ({ onSelectDate, 
     <div className="absolute inset-0 z-[2000] flex items-center justify-center p-6 bg-black/80 backdrop-blur-md animate-in fade-in duration-300">
       <div className="w-full max-w-sm bg-[#121212] border border-[#FFD300]/20 rounded-[2rem] p-6 shadow-2xl animate-in zoom-in-95 duration-300">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-[#FFD300] font-serif italic text-xl">Escolha a Data</h2>
+          <h2 className="text-[#FFD300] font-serif text-xl">Escolha a Data</h2>
           <button
             onClick={onClose}
             className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center bg-zinc-900 rounded-full text-zinc-400 hover-real:text-white active:opacity-70 transition-opacity -mr-2"

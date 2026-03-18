@@ -38,7 +38,7 @@ export const VantaConfirmModal: React.FC<VantaConfirmModalProps> = ({
         </div>
       )}
 
-      <h3 style={TYPOGRAPHY.screenTitle} className="text-lg text-white italic mb-2 text-center">
+      <h3 style={TYPOGRAPHY.screenTitle} className="text-lg text-white mb-2 text-center">
         {title}
       </h3>
       <p className="text-zinc-400 text-sm text-center leading-relaxed mb-6">{message}</p>
@@ -77,7 +77,7 @@ export const VantaAlertModal: React.FC<{
       style={{ paddingBottom: 'max(2.5rem, env(safe-area-inset-bottom, 2.5rem))' }}
     >
       <div className="w-8 h-1 bg-zinc-700 rounded-full mx-auto mb-6" />
-      <h3 style={TYPOGRAPHY.screenTitle} className="text-lg text-white italic mb-2 text-center">
+      <h3 style={TYPOGRAPHY.screenTitle} className="text-lg text-white mb-2 text-center">
         {title}
       </h3>
       <p className="text-zinc-400 text-sm text-center leading-relaxed mb-6">{message}</p>

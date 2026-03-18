@@ -51,7 +51,7 @@ export const TosAcceptModal: React.FC<TosAcceptModalProps> = ({ userId, userName
           <div className="w-14 h-14 bg-[#FFD300]/10 rounded-full flex items-center justify-center mx-auto mb-3">
             <Shield size="1.5rem" className="text-[#FFD300]" />
           </div>
-          <h2 style={TYPOGRAPHY.screenTitle} className="text-lg italic mb-1">
+          <h2 style={TYPOGRAPHY.screenTitle} className="text-lg mb-1">
             Termos de Serviço
           </h2>
           <p className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest">

@@ -42,7 +42,7 @@ const GuestAreaModal = ({
       <div className="w-20 h-20 bg-zinc-900/60 rounded-full flex items-center justify-center mx-auto mb-6 border border-[#FFD300]/20 shadow-xl">
         <Sparkles size="1.75rem" className="text-[#FFD300]" />
       </div>
-      <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-3 italic">
+      <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-3">
         Crie sua conta
       </h2>
       <p className="text-zinc-400 text-sm leading-relaxed mb-8 px-2">
@@ -85,7 +85,7 @@ const SuccessFeedbackModal = ({ message, onClose }: { message: string; onClose: 
       <div className="w-20 h-20 bg-zinc-900 rounded-full flex items-center justify-center mx-auto mb-6 border border-[#FFD300]/20 shadow-xl">
         <Check size="2rem" className="text-[#FFD300] drop-shadow-[0_0_10px_#FFD300]" />
       </div>
-      <h2 style={TYPOGRAPHY.screenTitle} className="text-2xl text-white mb-3 italic">
+      <h2 style={TYPOGRAPHY.screenTitle} className="text-2xl text-white mb-3">
         Sucesso!
       </h2>
       <p className="text-zinc-400 text-xs leading-relaxed mb-8 px-4">{message}</p>

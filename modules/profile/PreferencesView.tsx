@@ -44,7 +44,7 @@ export const PreferencesView: React.FC<{ onBack: () => void; onSave: (d: any) =>
         >
           <ArrowLeft size="1.125rem" />
         </button>
-        <h1 style={TYPOGRAPHY.screenTitle} className="text-lg italic">
+        <h1 style={TYPOGRAPHY.screenTitle} className="text-lg">
           Preferências
         </h1>
         <div className="w-10" />

@@ -374,7 +374,7 @@ export const SupabaseDiagnosticView: React.FC<{ onBack: () => void }> = ({ onBac
             <p style={TYPOGRAPHY.sectionKicker} className="mb-1">
               Master
             </p>
-            <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic">
+            <h1 style={TYPOGRAPHY.screenTitle} className="text-xl">
               Diagnóstico Supabase
             </h1>
           </div>

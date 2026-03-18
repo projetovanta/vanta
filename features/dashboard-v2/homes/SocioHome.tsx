@@ -97,7 +97,7 @@ export const SocioHome: React.FC<Props> = ({ adminNome, comunidadeId, onNavigate
             <div className="w-1.5 h-1.5 rounded-full bg-[#a78bfa] animate-pulse" />
             <p className="text-[#a78bfa]/60 text-[0.5625rem] font-black uppercase tracking-[0.25em]">Sócio</p>
           </div>
-          <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic leading-none text-white">
+          <h1 style={TYPOGRAPHY.screenTitle} className="text-xl leading-none text-white">
             Olá, {adminNome?.split(' ')[0]}
           </h1>
           <p className="text-zinc-500 text-[0.625rem] font-black uppercase tracking-widest mt-1.5">

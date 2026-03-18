@@ -91,7 +91,7 @@ export const AdminViewHeader: React.FC<Props> = ({
           </p>
         )}
         <div className="flex items-center gap-2">
-          <h1 style={TYPOGRAPHY.screenTitle} className="text-lg italic leading-tight truncate">
+          <h1 style={TYPOGRAPHY.screenTitle} className="text-lg leading-tight truncate">
             {title}
           </h1>
           {badge != null && badge > 0 && (

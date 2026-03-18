@@ -439,7 +439,7 @@ export const LegalView: React.FC<{
         >
           <ArrowLeft size="1.125rem" />
         </button>
-        <h1 style={TYPOGRAPHY.screenTitle} className="text-lg italic">
+        <h1 style={TYPOGRAPHY.screenTitle} className="text-lg">
           {titulo}
         </h1>
         <div className="w-10" />

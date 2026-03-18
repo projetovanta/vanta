@@ -16,7 +16,7 @@ export const TipoEventoScreen: React.FC<Props> = ({ onSelect }) => {
       <div className="flex-1 flex flex-col items-center justify-center p-6 gap-6">
         <div className="text-center mb-4">
           <p className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest mb-2">Novo Evento</p>
-          <h1 style={TYPOGRAPHY.screenTitle} className="text-2xl italic">
+          <h1 style={TYPOGRAPHY.screenTitle} className="text-2xl">
             Tipo de Venda
           </h1>
           <p className="text-zinc-400 text-xs mt-2 leading-relaxed">Como os ingressos deste evento serão vendidos?</p>
@@ -93,7 +93,7 @@ export const TipoEventoScreen: React.FC<Props> = ({ onSelect }) => {
         <p className="text-[0.625rem] text-zinc-400 font-black uppercase tracking-widest mb-2">
           {vendaVanta ? 'Com Venda no VANTA' : 'Sem Venda no VANTA'}
         </p>
-        <h1 style={TYPOGRAPHY.screenTitle} className="text-2xl italic">
+        <h1 style={TYPOGRAPHY.screenTitle} className="text-2xl">
           Tipo de Produção
         </h1>
         <p className="text-zinc-400 text-xs mt-2 leading-relaxed">Como este evento será produzido?</p>

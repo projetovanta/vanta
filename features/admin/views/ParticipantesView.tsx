@@ -124,7 +124,7 @@ export const ParticipantesView: React.FC<{
             <p style={TYPOGRAPHY.sectionKicker} className="mb-1.5">
               Operacional
             </p>
-            <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic truncate">
+            <h1 style={TYPOGRAPHY.screenTitle} className="text-xl truncate">
               Participantes
             </h1>
             <p className="text-zinc-400 text-[0.5625rem] truncate mt-0.5">{eventoNome}</p>

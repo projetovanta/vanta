@@ -113,7 +113,7 @@ const TransferirCortesiaModal: React.FC<{
         ) : (
           <>
             <div className="px-6 pt-3 pb-4 border-b border-white/5 shrink-0">
-              <h2 style={TYPOGRAPHY.screenTitle} className="text-lg italic">
+              <h2 style={TYPOGRAPHY.screenTitle} className="text-lg">
                 Transferir Cortesia
               </h2>
               <p className="text-zinc-400 text-[0.625rem] mt-1">

@@ -294,7 +294,7 @@ export const TabEquipePromoter: React.FC<{
               <div className="w-10 h-1 rounded-full bg-zinc-700" />
             </div>
             <div className="px-6 pt-3 pb-4 border-b border-white/5">
-              <h2 style={TYPOGRAPHY.screenTitle} className="text-base italic">
+              <h2 style={TYPOGRAPHY.screenTitle} className="text-base">
                 Distribuir Cota
               </h2>
             </div>
@@ -363,7 +363,7 @@ export const TabEquipePromoter: React.FC<{
               <div className="w-10 h-1 rounded-full bg-zinc-700" />
             </div>
             <div className="px-6 pt-3 pb-4 border-b border-white/5">
-              <h2 style={TYPOGRAPHY.screenTitle} className="text-base italic">
+              <h2 style={TYPOGRAPHY.screenTitle} className="text-base">
                 Registrar Pagamento
               </h2>
               <p className="text-zinc-400 text-[0.625rem] mt-1">

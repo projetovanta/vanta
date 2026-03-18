@@ -309,7 +309,7 @@ export const DatabaseHealthView: React.FC<Props> = ({ onBack }) => {
                 Master · Diagnóstico
               </p>
             </div>
-            <h1 style={TYPOGRAPHY.screenTitle} className="text-lg italic leading-none text-white truncate">
+            <h1 style={TYPOGRAPHY.screenTitle} className="text-lg leading-none text-white truncate">
               Health Check
             </h1>
           </div>

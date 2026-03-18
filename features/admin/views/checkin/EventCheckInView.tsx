@@ -147,7 +147,7 @@ export const EventCheckInView: React.FC<{
             <p style={TYPOGRAPHY.sectionKicker} className="mb-0.5">
               Portaria · Check-in
             </p>
-            <h1 style={TYPOGRAPHY.screenTitle} className="text-base italic truncate leading-none">
+            <h1 style={TYPOGRAPHY.screenTitle} className="text-base truncate leading-none">
               {eventoNome}
             </h1>
           </div>

@@ -249,7 +249,7 @@ export const PublicProfilePreviewView: React.FC<{
           </div>
 
           <div className="flex items-center justify-center gap-2 mb-1">
-            <h2 style={TYPOGRAPHY.screenTitle} className="text-3xl italic">
+            <h2 style={TYPOGRAPHY.screenTitle} className="text-3xl">
               {profile.nome}
             </h2>
             {clubeService.isMembro(profile.id) && <Crown size="1.125rem" className="text-[#FFD300]" />}
@@ -525,7 +525,7 @@ export const PublicProfilePreviewView: React.FC<{
             <div className="w-20 h-20 bg-zinc-900 rounded-full flex items-center justify-center mx-auto mb-6 border border-[#FFD300]/20 shadow-xl">
               <UserMinus size="1.75rem" className="text-[#FFD300]" />
             </div>
-            <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-3 italic">
+            <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-3">
               Cancelar pedido?
             </h2>
             <p className="text-zinc-400 text-xs leading-relaxed mb-8 px-4">
@@ -564,7 +564,7 @@ export const PublicProfilePreviewView: React.FC<{
             <div className="w-20 h-20 bg-zinc-900 rounded-full flex items-center justify-center mx-auto mb-6 border border-red-500/20 shadow-xl">
               <UserMinus size="1.75rem" className="text-red-400" />
             </div>
-            <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-3 italic">
+            <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-3">
               Remover amigo?
             </h2>
             <p className="text-zinc-400 text-xs leading-relaxed mb-8 px-4">
@@ -602,7 +602,7 @@ export const PublicProfilePreviewView: React.FC<{
             <div className="w-20 h-20 bg-zinc-900 rounded-full flex items-center justify-center mx-auto mb-6 border border-emerald-500/20 shadow-xl">
               <UserCheck size="1.75rem" className="text-emerald-400" />
             </div>
-            <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-3 italic">
+            <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-3">
               Conexão Confirmada!
             </h2>
             <p className="text-zinc-400 text-xs leading-relaxed mb-8 px-4">
@@ -629,7 +629,7 @@ export const PublicProfilePreviewView: React.FC<{
             <div className="w-20 h-20 bg-zinc-900 rounded-full flex items-center justify-center mx-auto mb-6 border border-[#FFD300]/20 shadow-xl">
               <UserMinus size="1.75rem" className="text-zinc-400" />
             </div>
-            <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-3 italic">
+            <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-3">
               Pedido Recusado
             </h2>
             <p className="text-zinc-400 text-xs leading-relaxed mb-8 px-4">

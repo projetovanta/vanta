@@ -332,7 +332,7 @@ export const AdminDashboardHome: React.FC<{
             {roleLabel} · Painel Administrativo
           </p>
         </div>
-        <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic leading-none text-white">
+        <h1 style={TYPOGRAPHY.screenTitle} className="text-xl leading-none text-white">
           Bem-vindo, {adminNome}
         </h1>
         {tenantNome && (

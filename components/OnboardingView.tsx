@@ -168,7 +168,7 @@ export const OnboardingView: React.FC<{ onComplete: () => void }> = ({ onComplet
           <div className="w-16 h-16 rounded-full bg-[#FFD300]/10 border border-[#FFD300]/20 flex items-center justify-center mx-auto mb-6">
             <MapPin size="1.75rem" className="text-[#FFD300]" />
           </div>
-          <h2 style={TYPOGRAPHY.screenTitle} className="text-2xl text-white mb-2 italic">
+          <h2 style={TYPOGRAPHY.screenTitle} className="text-2xl text-white mb-2">
             Onde você curte a noite?
           </h2>
           <p className="text-zinc-400 text-sm">Pra mostrar o que tá rolando perto de você</p>
@@ -265,7 +265,7 @@ export const OnboardingView: React.FC<{ onComplete: () => void }> = ({ onComplet
           <div className="w-16 h-16 rounded-full bg-[#FFD300]/10 border border-[#FFD300]/20 flex items-center justify-center mx-auto mb-6">
             <Music size="1.75rem" className="text-[#FFD300]" />
           </div>
-          <h2 style={TYPOGRAPHY.screenTitle} className="text-2xl text-white mb-2 italic">
+          <h2 style={TYPOGRAPHY.screenTitle} className="text-2xl text-white mb-2">
             O que te move?
           </h2>
           <p className="text-zinc-400 text-sm">Quanto mais a gente sabe, melhor fica</p>
@@ -333,7 +333,7 @@ export const OnboardingView: React.FC<{ onComplete: () => void }> = ({ onComplet
           <Sparkles size="2rem" className="text-[#FFD300]" />
         </div>
 
-        <h2 style={TYPOGRAPHY.screenTitle} className="text-3xl text-white mb-3 italic">
+        <h2 style={TYPOGRAPHY.screenTitle} className="text-3xl text-white mb-3">
           {firstName ? `Pronto, ${firstName}.` : 'Pronto.'}
         </h2>
         <p className="text-zinc-400 text-base leading-relaxed mb-12">Sua noite começa aqui.</p>

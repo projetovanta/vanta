@@ -228,7 +228,7 @@ export const SolicitarParceriaView: React.FC<{
         <p style={TYPOGRAPHY.sectionKicker} className="mb-1">
           Parceria VANTA
         </p>
-        <h1 style={TYPOGRAPHY.screenTitle} className="text-lg italic">
+        <h1 style={TYPOGRAPHY.screenTitle} className="text-lg">
           {stepTitles[step - 1]}
         </h1>
         {/* Progress bar */}

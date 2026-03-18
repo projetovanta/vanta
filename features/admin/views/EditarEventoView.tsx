@@ -635,7 +635,7 @@ export const EditarEventoView: React.FC<{
           <Check size="2.25rem" className="text-emerald-400" />
         </div>
         <div className="text-center">
-          <h2 style={TYPOGRAPHY.screenTitle} className="text-2xl italic mb-2">
+          <h2 style={TYPOGRAPHY.screenTitle} className="text-2xl mb-2">
             {nome}
           </h2>
           <p className="text-zinc-400 text-sm leading-relaxed">{salvoMsg}</p>
@@ -675,7 +675,7 @@ export const EditarEventoView: React.FC<{
                 {tipoFluxo === 'COM_SOCIO' ? '(Com Sócio)' : '(Festa da Casa)'}
               </span>
             </p>
-            <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic">
+            <h1 style={TYPOGRAPHY.screenTitle} className="text-xl">
               {stepTitle}
             </h1>
           </div>

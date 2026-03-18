@@ -32,7 +32,7 @@ export const SessionExpiredModal: React.FC<{ onLogin: () => void }> = ({ onLogin
           <AlertTriangle size="1.5rem" className="text-amber-400" />
         </div>
         <div className="text-center">
-          <h2 style={TYPOGRAPHY.screenTitle} className="text-base italic text-white mb-1">
+          <h2 style={TYPOGRAPHY.screenTitle} className="text-base text-white mb-1">
             Sessão expirada
           </h2>
           <p className="text-zinc-400 text-xs leading-relaxed">

@@ -919,7 +919,7 @@ export const CriarEventoView: React.FC<{
               <p style={TYPOGRAPHY.sectionKicker} className="mb-1">
                 Criar Evento · {comunidade.nome}
               </p>
-              <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic">
+              <h1 style={TYPOGRAPHY.screenTitle} className="text-xl">
                 Tipo de Evento
               </h1>
             </div>
@@ -1011,7 +1011,7 @@ export const CriarEventoView: React.FC<{
                 {!vendaVanta ? ' · Sem Venda' : ''}
               </span>
             </p>
-            <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic">
+            <h1 style={TYPOGRAPHY.screenTitle} className="text-xl">
               {stepTitle}
             </h1>
           </div>
@@ -1246,7 +1246,7 @@ export const CriarEventoView: React.FC<{
               <div className="p-4 space-y-2">
                 <h3
                   className="text-white font-bold text-lg italic truncate"
-                  style={{ fontFamily: "'Playfair Display SC', serif" }}
+                  style={{ fontFamily: "'Playfair Display', serif" }}
                 >
                   {nome || 'Nome do evento'}
                 </h3>

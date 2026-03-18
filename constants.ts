@@ -1,5 +1,5 @@
 const FONTS = {
-  serif: "'Playfair Display SC', ui-serif, Georgia, serif",
+  serif: "'Playfair Display', ui-serif, Georgia, serif",
   sans: "'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif",
 };
 const COLORS = {

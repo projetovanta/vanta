@@ -726,7 +726,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
             <div className="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-red-500/20">
               <AlertTriangle size="1.75rem" className="text-red-500" />
             </div>
-            <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-3 italic">
+            <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-3">
               Excluir Conta
             </h2>
             <p className="text-zinc-400 text-xs leading-relaxed mb-2">

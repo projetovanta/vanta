@@ -330,7 +330,7 @@ export const EditProfileView: React.FC<{
         >
           <ArrowLeft size="1.125rem" />
         </button>
-        <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic">
+        <h1 style={TYPOGRAPHY.screenTitle} className="text-xl">
           Editar Perfil
         </h1>
         <div className="w-10" />
@@ -658,7 +658,7 @@ export const EditProfileView: React.FC<{
             <div className="w-20 h-20 bg-zinc-900 rounded-full flex items-center justify-center mx-auto mb-6 border border-[#FFD300]/20 shadow-xl">
               <AlertTriangle size="1.75rem" className="text-[#FFD300]" />
             </div>
-            <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-3 italic">
+            <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-3">
               Sair sem salvar?
             </h2>
             <p className="text-zinc-400 text-xs leading-relaxed mb-8 px-4">

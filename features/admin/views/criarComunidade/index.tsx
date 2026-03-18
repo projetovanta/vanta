@@ -369,7 +369,7 @@ export const CriarComunidadeView: React.FC<{
             <p style={TYPOGRAPHY.sectionKicker} className="mb-1">
               Nova Comunidade
             </p>
-            <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic">
+            <h1 style={TYPOGRAPHY.screenTitle} className="text-xl">
               {STEP_LABELS[step - 1]}
             </h1>
           </div>

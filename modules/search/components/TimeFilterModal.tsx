@@ -216,7 +216,7 @@ export const TimeFilterModal: React.FC<{
           <div className="p-6">
             <div className="flex justify-between items-center mb-5">
               <div>
-                <h2 style={TYPOGRAPHY.screenTitle} className="text-xl italic text-white">
+                <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white">
                   Período
                 </h2>
                 <p className="text-[0.5625rem] text-[#FFD300] font-black uppercase tracking-widest mt-1">

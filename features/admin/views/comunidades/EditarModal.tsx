@@ -255,7 +255,7 @@ export const EditarModal: React.FC<{
         </div>
 
         <div className="px-6 pt-3 pb-4 border-b border-white/5 flex items-center justify-between shrink-0">
-          <h2 style={TYPOGRAPHY.screenTitle} className="text-base italic">
+          <h2 style={TYPOGRAPHY.screenTitle} className="text-base">
             Editar Comunidade
           </h2>
           <button

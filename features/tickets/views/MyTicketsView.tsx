@@ -320,7 +320,7 @@ export const MyTicketsView: React.FC<{
           <p style={TYPOGRAPHY.sectionKicker} className="mb-1.5">
             Carteira
           </p>
-          <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic">
+          <h1 style={TYPOGRAPHY.screenTitle} className="text-xl">
             Meus Ingressos
           </h1>
         </div>

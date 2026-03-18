@@ -110,7 +110,7 @@ export default function CelebrationScreen({
       <h1
         className="mt-6 text-white text-center font-bold italic text-[1.75rem] leading-tight"
         style={{
-          fontFamily: "'Playfair Display SC', serif",
+          fontFamily: "'Playfair Display', serif",
           fontWeight: 700,
           animation: 'celebSlideUp 500ms ease-out 200ms both',
         }}

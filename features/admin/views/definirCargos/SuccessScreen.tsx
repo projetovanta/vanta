@@ -31,7 +31,7 @@ export const SuccessScreen: React.FC<SuccessScreenProps> = ({
       <div className="w-20 h-20 bg-emerald-500/10 rounded-full flex items-center justify-center mb-6 border border-emerald-500/20">
         <CheckCircle size="2.25rem" className="text-emerald-400" />
       </div>
-      <h2 style={TYPOGRAPHY.screenTitle} className="text-2xl text-white italic mb-2">
+      <h2 style={TYPOGRAPHY.screenTitle} className="text-2xl text-white mb-2">
         Cargo Atribuído
       </h2>
       <p className="text-zinc-400 text-xs leading-relaxed mb-8 max-w-xs text-center">

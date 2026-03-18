@@ -79,7 +79,7 @@ export const ImageCropperModal: React.FC<{ image: string; onConfirm: (img: strin
           style={{ paddingTop: '1.5rem' }}
         >
           <div>
-            <h2 style={TYPOGRAPHY.screenTitle} className="text-xl italic">
+            <h2 style={TYPOGRAPHY.screenTitle} className="text-xl">
               Ajustar Foto
             </h2>
             <p className="text-[0.5625rem] text-[#FFD300] font-black uppercase mt-1">Curadoria</p>

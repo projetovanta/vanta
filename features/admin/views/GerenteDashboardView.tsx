@@ -346,7 +346,7 @@ export const GerenteDashboardView: React.FC<{
             <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-[0.2em] mb-1">
               Painel da Comunidade
             </p>
-            <h1 style={TYPOGRAPHY.screenTitle} className="text-xl italic leading-none text-white truncate">
+            <h1 style={TYPOGRAPHY.screenTitle} className="text-xl leading-none text-white truncate">
               {comunidadeNome}
             </h1>
           </div>

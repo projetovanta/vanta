@@ -44,8 +44,8 @@
     <!-- Fontes — preload pra eliminar flash de fonte -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Playfair+Display+SC:wght@700&display=swap">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Playfair+Display+SC:wght@700&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Playfair+Display:wght@700&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 
     <!-- Leaflet CSS — defer pra não bloquear render (só usado no Radar) -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" media="print" onload="this.media='all'" />
@@ -92,7 +92,7 @@
         align-items: center;
       }
 
-      .font-serif { font-family: 'Playfair Display SC', serif; }
+      .font-serif { font-family: 'Playfair Display', serif; font-weight: 700; }
 
       .glass-premium { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
       .no-scrollbar::-webkit-scrollbar { display: none; }

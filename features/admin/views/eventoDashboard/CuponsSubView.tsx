@@ -93,7 +93,7 @@ export const CuponsSubView: React.FC<{
           </button>
         </div>
         <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-1">Gestão</p>
-        <h1 className="font-serif italic text-xl text-white">Cupons</h1>
+        <h1 className="font-serif text-xl text-white">Cupons</h1>
       </div>
 
       <div className="flex-1 overflow-y-auto no-scrollbar p-6 max-w-3xl mx-auto w-full space-y-3">

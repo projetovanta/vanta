@@ -73,7 +73,7 @@ export const PriceFilterModal: React.FC<PriceFilterModalProps> = ({ isOpen, onCl
             <div className="space-y-6">
               <div className="flex justify-between items-end">
                 <span className="text-[0.625rem] text-zinc-400 uppercase font-black tracking-widest">Valor Máximo</span>
-                <span className="text-xl font-serif font-bold text-white">
+                <span className="text-xl font-serif text-white">
                   {tempPrice >= 5000 ? 'R$ 5000+' : `R$ ${tempPrice}`}
                 </span>
               </div>

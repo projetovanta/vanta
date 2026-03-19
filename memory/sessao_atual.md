@@ -1,58 +1,51 @@
 # Sessao Atual — Estado para Continuidade
 
 ## Branch: visual-redesign
-## Ultimo commit: 895408c (docs: fix referências)
-## Mudancas locais: ~90 arquivos modificados (visual + wizards + testes + fontes)
+## Ultimo commit: (pendente — commit desta sessão 5)
+## Mudancas locais: 19 arquivos (padronização tipográfica + headers)
 ## TSC: 0 erros
 
-## O que foi feito na sessao 4 (18 mar 2026)
+## O que foi feito na sessao 5 (18 mar 2026)
 
-### Bloco A — C9 Schema Reference
-- supabase/SCHEMA-REFERENCE.md criado (94 tabelas/views, 50 RPCs, 219 migrations)
+### Limpeza tipográfica — font-serif (9 edits)
+- Removido font-bold redundante de 6 componentes (CSS .font-serif já aplica weight 700)
+- Removido font-semibold incorreto de 3 componentes (Playfair só carrega 700)
+- Arquivos: CompletarPerfilSocial, LoginView, EventFooter, SidebarV2, SearchResults, PriceFilterModal, EventFeed, NearYouSection, LiveNowSection
 
-### Bloco B — Wizards integrados
-- FormWizard: X→ArrowLeft, safe-area, topSlot, scrollRef via ref
-- StepIndicator: barra linear→bolinhas numeradas com check
-- DraftBanner: localStorage→props puras (savedAt, onRestore, onDiscard)
-- CriarComunidade e CriarEvento: integrados com FormWizard+DraftBanner
+### Padronização headers tabs principais (2 edits)
+- Radar: top-3 px-4 → top-6 px-6 (alinhado posição com Mensagens)
+- SearchHeader (Buscar): pt-0 pb-6 → pt-6 pb-4 (alinhado padding com Mensagens)
+- Radar: text-2xl → text-3xl (alinhado tamanho com Mensagens/Buscar)
+- Mensagens: já era o padrão (text-3xl dourado, pt-6 px-6 pb-4)
 
-### Bloco C — Testes (28 novos)
-- tests/unit/financeiro.test.ts (10 testes: CDC, reembolso, exports)
-- tests/unit/auth.test.ts (8 testes: profileToMembro, login)
-- tests/unit/rbac-permissoes.test.ts (10 testes: permissoes, cargos)
+### Padronização headers sub-views (11 edits)
+Padrão aplicado: shrink-0 bg-[#0A0A0A] border-b border-white/5 px-6 pt-6 pb-4 + text-xl
+- EditProfileView: removido style inline paddingTop, removido backdrop-blur
+- HistoricoView: removido style inline paddingTop, text-lg → text-xl
+- PreferencesView: removido style inline paddingTop, text-lg → text-xl
+- BloqueadosView: px-5 py-4 → px-6 pt-6 pb-4, text-lg → text-xl
+- MinhasPendenciasView: px-4 py-3 → px-6 pt-6 pb-4, text-base → text-xl
+- MinhasSolicitacoesView: px-4 pt-safe pb-3 → px-6 pt-6 pb-4, text-base → text-xl
+- MyTicketsView: pt-8 pb-5 → pt-6 pb-4, removido backdrop-blur
+- SolicitarParceriaView: pt-8 → pt-6, removido backdrop-blur, text-lg → text-xl
 
-### EventCard
-- Social proof removido (so na pagina do evento)
-- Aspect ratio: 4/5
-- Footer fixo: h-[3.25rem]
-- Badges padronizados: mesma altura h-[1.375rem], px-2 py-1 rounded-lg
-- Badge "ACONTECENDO AGORA": fundo verde pulsante + icone Radio preto
-- Keyframe glowPulse adicionado em app.css
+### Luna recontratada
+- Regras rígidas adicionadas no topo de engenheiro-frontend.md (expertise preservada)
+- Hook enforce-luna-scope.sh criado e registrado no settings.json
+- Escopo fechado: só faz o que foi pedido, zero invenção
 
-### Fonte Playfair
-- Playfair Display SC→Playfair Display Bold 700 em TODO o app
-- Google Fonts (index.html): Playfair+Display:wght@700
-- CSS .font-serif: Playfair Display, font-weight 700
-- constants.ts: FONTS.serif atualizado
-- Italic removido de TODOS os Playfair (~90 arquivos)
-- Italic Inter preservado (subtitulos, textos auxiliares)
+### UI UX Pro Max instalado
+- Skill principal + 6 extras: brand, design, design-system, slides, ui-styling, banner-design
+- Busca: python3 .claude/skills/ui-ux-pro-max/scripts/search.py "query" --domain style
+- Já reconhece Playfair+Inter como #1 "Classic Elegant" (luxury/premium)
 
-### Home — Estado atual
-- Saudacao: "Boa noite, DANIEL" + "BEM-VINDO AO VANTA" dourado caps
-- VANTA Indica (Highlights): pt-6→pt-2 (subiu)
-- Perto de Voce (NearYouSection): ativa, usando EventCarousel
-- EventFeed (categorias): ativo, usando EventCarousel, sem "Outros"
-- ThisWeekSection: arquivo vazio, removida da HomeView — reconstruir
-- LiveNowSection: removida da HomeView (arquivo existe)
-- FriendsGoingSection: removida da HomeView (arquivo existe)
-- ForYouSection: removida da HomeView (arquivo existe)
-- EventCarousel.tsx: componente unico de carrossel criado
+### Monitor de contexto criado
+- Hook context-monitor.sh: conta interações, avisa em 4 zonas (verde/amarela/laranja/vermelha)
+- Alerta com 60% (51+ interações) por pedido do Dan
 
-### 4 eventos de teste no banco
-- TESTE Badge — Acontecendo Agora (Mansion Club)
-- TESTE Badge — Comeca em Breve (Mansion Club)
-- TESTE Badge — Acaba em Breve (Mansion Club)
-- TESTE Badge — Data Normal (Mansion Club)
+### Memória identidade visual atualizada
+- Playfair Display SC → Playfair Display Bold 700 em projeto_identidade_visual.md
+- 700 = peso (weight), não tamanho
 
 ## Decisoes do Dan ativas
 - Refund automatico ate R$100, manual acima
@@ -61,19 +54,25 @@
 - EventCard: sem social proof, aspect 4/5, badges mesma altura
 - Acontecendo Agora: badge discreto no card (sem secao separada)
 - Ordem Home: Perto→Esta Semana→Categorias
-- Fonte: Playfair Display Bold 700 (sem SC, sem italic) — SEMPRE
+- Fonte: Playfair Display Bold 700 (sem SC, sem italic) — SEMPRE. 700=peso, não tamanho
 - Padrao: titulos=Playfair, corpo=Inter, labels=caps tracking
-- Luna demitida — Iris assume visual
+- Luna recontratada (18/mar s5) — regras rígidas, hook enforce-luna-scope, escopo fechado
+- Iris continua como Especialista Visual
 - "Outros" removido do EventFeed
+- Header padrão tabs: text-3xl dourado, pt-6 px-6 pb-4
+- Header padrão sub-views: text-xl branco, pt-6 px-6 pb-4
+- Responsividade: mínimo 320px, padrão 375px, máximo 500px. Zero scroll horizontal.
+- UI UX Pro Max: usar em decisões visuais/tipográficas
 
 ## Proxima sessao — prioridades
-1. Resolver alinhamento dos carrosseis (paddingInline no mobile)
-2. Reconstruir ThisWeekSection com EventCarousel
-3. Padronizar estilos de texto restantes (Iris)
-4. Reconectar FriendsGoingSection e ForYouSection
-5. Apagar eventos de teste do banco
-6. C21/C22 — Testes (continuar cobertura)
-7. C17-C20 — Mobile (depende contas Apple/Google)
+1. Criar typography.ts centralizado (cardápio de tokens tipográficos)
+2. Criar memory/tipografia.md (índice de estilos)
+3. Auditoria visual completa do painel administrativo (headers + paddings)
+4. Resolver responsividade 320px (MinhasPendenciasView tabs cortando)
+5. Reconstruir ThisWeekSection com EventCarousel
+6. Reconectar FriendsGoingSection e ForYouSection
+7. Apagar eventos de teste do banco
+8. C21/C22 — Testes (continuar cobertura)
 
 ## Pendencias externas (sem mudanca)
 - Conta Apple Developer ($99/ano)

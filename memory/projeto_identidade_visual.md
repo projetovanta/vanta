@@ -43,15 +43,20 @@ Cores contextuais (SÓ em contextos específicos):
 
 ## 2. Tipografia — 2 Fontes, 5 Níveis
 
+**Fonte oficial de títulos: Playfair Display Bold 700** (NÃO é "SC", NÃO é Regular/400)
+- Hastes grossas + traços finos delicados = contraste forte, impactante, autoridade
+- Uso: manchetes, títulos de página/seção/card, logotipo
+- NUNCA italic em Playfair. NUNCA peso diferente de 700.
+
 | Nível | Fonte | Peso | Tamanho | Quando |
 |-------|-------|------|---------|--------|
-| **Display** | Playfair Display SC | Bold 700 | 24-32px | Nome do app, títulos de seção |
-| **Headline** | Playfair Display SC | Bold 700 | 18-22px | Nome de evento, títulos de card |
+| **Display** | Playfair Display | Bold 700 | 24-32px | Nome do app, títulos de seção |
+| **Headline** | Playfair Display | Bold 700 | 18-22px | Nome de evento, títulos de card |
 | **Title** | Inter | Semibold 600 | 16px | Subtítulos, labels de seção |
 | **Body** | Inter | Regular 400 | 14px | Texto corrido, descrições |
 | **Caption** | Inter | Medium 500 | 10-12px | Badges, timestamps, labels menores |
 
-Regra: Playfair = identidade (títulos). Inter = funcional (tudo que se lê). Nunca misturar.
+Regra: Playfair Display Bold 700 = identidade (títulos). Inter = funcional (tudo que se lê). Nunca misturar. Nunca italic em Playfair.
 
 ## 3. Espaçamento
 

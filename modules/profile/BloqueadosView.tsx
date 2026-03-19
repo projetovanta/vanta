@@ -37,11 +37,11 @@ export const BloqueadosView: React.FC<Props> = ({ onBack }) => {
   return (
     <div className="absolute inset-0 flex flex-col overflow-hidden bg-[#0A0A0A]">
       {/* Header */}
-      <div className="flex items-center gap-3 px-5 py-4 border-b border-white/5">
+      <div className="shrink-0 bg-[#0A0A0A] border-b border-white/5 px-6 pt-6 pb-4 flex items-center gap-3">
         <button onClick={onBack} className="p-2 -ml-2 active:bg-white/10 rounded-xl transition-colors">
           <ArrowLeft size="1.125rem" className="text-white" />
         </button>
-        <h1 style={TYPOGRAPHY.screenTitle} className="text-lg">
+        <h1 style={TYPOGRAPHY.screenTitle} className="text-xl">
           Bloqueados
         </h1>
       </div>

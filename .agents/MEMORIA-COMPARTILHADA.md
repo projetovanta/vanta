@@ -8,8 +8,8 @@
 ## Estado Atual
 
 **Fase:** Produção e testes finais + Visual Redesign
-**Última sessão:** 2026-03-18 (sessão 2)
-**Atualizado por:** Memo
+**Última sessão:** 2026-03-18 (sessão 5)
+**Atualizado por:** Rafa
 
 ---
 
@@ -74,7 +74,8 @@
 | Home: seções removidas pra reconstruir com EventCarousel | `modules/home/HomeView.tsx` |
 | EventCarousel: componente único de carrossel (paddingInline 20px) | `modules/home/components/EventCarousel.tsx` |
 | 28 testes novos (financeiro, auth, RBAC) | `tests/unit/` |
-| Luna demitida — Iris assume visual | — |
+| Luna recontratada (18/mar s5) — regras rígidas + hook enforce-luna-scope. Escopo fechado, zero invenção | `.claude/agents/engenheiro-frontend.md` |
+| Iris continua como Especialista Visual (cores, fontes, composição) | `.claude/agents/especialista-visual.md` |
 | Direção visual: profundidade "preto não preto", contraste entre camadas | `memory/feedback_visual_profundidade.md` |
 | RTK instalado + TTL markers 30min + markers reutilizáveis (velocidade 3-4x) | `memory/sessao_atual.md` |
 | Auditoria limpeza: selects, deprecated, fontFamily, cnpjValidator | `memory/sessao_atual.md` |
@@ -100,6 +101,12 @@
 | BottomSheet componente reutilizável criado | `memory/componentes_compartilhados.md` |
 | Audit scripts corrigidos (apontam pra memory/ do repo) | Scripts `memory-audit*.mjs` |
 | 20 divergências de memória corrigidas | Auditoria 17/mar |
+| Limpeza font-serif: font-bold redundante (6x) + font-semibold incorreto (3x) removidos | 9 componentes (.tsx) |
+| Padrão header tabs principais: text-3xl dourado, pt-6 px-6 pb-4 (Radar+Buscar alinhados com Mensagens) | `RadarView.tsx` + `SearchHeader.tsx` |
+| Padrão header sub-views perfil: text-xl branco, pt-6 px-6 pb-4 (8 views alinhadas) | `modules/profile/` + `MyTicketsView` + `SolicitarParceriaView` |
+| UI UX Pro Max instalado (skill de design intelligence + 6 extras) | `.claude/skills/ui-ux-pro-max/` |
+| Hook context-monitor.sh criado (alerta com 60% do contexto) | `.claude/hooks/context-monitor.sh` |
+| Responsividade 320px: MinhasPendenciasView tabs e SearchHeader grid-cols-4 identificados como risco | Próxima sessão |
 
 ---
 

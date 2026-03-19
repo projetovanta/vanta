@@ -14,7 +14,7 @@ export const LiveNowSection: React.FC<{
     <div className="py-2 w-full">
       <div className="flex items-center gap-2 px-5 mb-3">
         <Radio size="0.875rem" className="text-red-500 animate-pulse" />
-        <h3 className="text-base text-white font-semibold font-serif">Acontecendo Agora</h3>
+        <h3 className="text-base text-white font-serif">Acontecendo Agora</h3>
       </div>
       <div className="flex gap-3 overflow-x-auto no-scrollbar px-5 snap-x snap-mandatory">
         {eventos.map(e => {

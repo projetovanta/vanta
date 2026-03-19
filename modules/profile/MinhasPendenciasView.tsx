@@ -185,11 +185,11 @@ export const MinhasPendenciasView: React.FC<Props> = ({ onBack }) => {
   return (
     <div className="absolute inset-0 flex flex-col overflow-hidden bg-[#0A0A0A]">
       {/* Header */}
-      <div className="flex items-center gap-3 px-4 py-3 border-b border-white/5 shrink-0">
+      <div className="shrink-0 bg-[#0A0A0A] border-b border-white/5 px-6 pt-6 pb-4 flex items-center gap-3">
         <button onClick={onBack} className="p-1 -ml-1 active:scale-90 transition-transform">
           <ArrowLeft size="1.25rem" className="text-zinc-400" />
         </button>
-        <h1 style={TYPOGRAPHY.screenTitle} className="text-base text-white">
+        <h1 style={TYPOGRAPHY.screenTitle} className="text-xl text-white">
           Minhas Pendências
         </h1>
       </div>

@@ -215,7 +215,7 @@ export const SolicitarParceriaView: React.FC<{
   return (
     <div className="absolute inset-0 bg-[#0A0A0A] flex flex-col overflow-hidden">
       {/* Header */}
-      <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-6 pt-8 pb-4 shrink-0">
+      <div className="shrink-0 bg-[#0A0A0A] border-b border-white/5 px-6 pt-6 pb-4">
         <div className="flex items-center justify-between mb-3">
           <button
             onClick={step > 1 ? () => setStep(s => s - 1) : onBack}
@@ -228,7 +228,7 @@ export const SolicitarParceriaView: React.FC<{
         <p style={TYPOGRAPHY.sectionKicker} className="mb-1">
           Parceria VANTA
         </p>
-        <h1 style={TYPOGRAPHY.screenTitle} className="text-lg">
+        <h1 style={TYPOGRAPHY.screenTitle} className="text-xl">
           {stepTitles[step - 1]}
         </h1>
         {/* Progress bar */}

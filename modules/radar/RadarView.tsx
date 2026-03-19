@@ -107,13 +107,13 @@ export const RadarView: React.FC<RadarViewProps> = ({ onEventSelect }) => {
       </div>
 
       {/* Header unificado — título + filtros lint-layout-ok */}
-      <div className="absolute top-3 left-0 right-0 z-[1000] pointer-events-none flex flex-col items-center gap-2 px-4">
+      <div className="absolute top-6 left-0 right-0 z-[1000] pointer-events-none flex flex-col items-center gap-2 px-6">
         {/* Título + indicador */}
         <div className="w-full flex items-center justify-between">
           <div className="flex items-center gap-2">
             <h1
               style={TYPOGRAPHY.screenTitle}
-              className="text-2xl text-[#FFD300] drop-shadow-[0_4px_4px_rgba(0,0,0,0.5)]"
+              className="text-3xl text-[#FFD300] drop-shadow-[0_4px_4px_rgba(0,0,0,0.5)]"
             >
               Radar
             </h1>

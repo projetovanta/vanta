@@ -162,7 +162,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onRegister, onC
         {/* Logo — centro absoluto da tela */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <div className="flex flex-col items-center">
-            <h1 className="font-serif text-white text-5xl mb-2 tracking-[0.12em] font-bold">VANTA</h1>
+            <h1 className="font-serif text-white text-5xl mb-2 tracking-[0.12em]">VANTA</h1>
             <p className="text-[#FFD300] text-xs font-black uppercase tracking-[0.35em]">lifestyle é acesso</p>
           </div>
         </div>

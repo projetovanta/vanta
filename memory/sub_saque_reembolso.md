@@ -74,7 +74,7 @@ Admin abre ModalReembolsoManual -> seleciona ticket -> motivo
 - `podeReembolsoAutomatico(ticketId)` — elegibilidade (usa criado_em do ticket, CDC Art. 49)
 - `solicitarReembolsoAutomatico(ticketId, eventoId, userId)` — INSERT + refund Stripe via EF process-stripe-refund (auto até R$100)
 - `solicitarReembolsoManual(ticketId, eventoId, motivo)` — INSERT manual
-- `aprovarEtapaReembolso(reembolsoId, aprovadorId)` — cadeia hierárquica + refund Stripe quando APROVADO
+- `aprovarReembolsoEtapa(reembolsoId, aprovadorId)` — cadeia hierárquica + refund Stripe quando APROVADO
 - `rejeitarReembolsoManual(id, motivo)` — rejeita
 - `getReembolsosPorEvento(eventoId)` — lista
 - `getReembolsosPendentes()` — pendentes

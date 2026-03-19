@@ -80,7 +80,7 @@ export const SearchResults: React.FC<{
                       <span className="text-[0.5rem] font-bold text-[#FFD300] uppercase tracking-wider mb-0.5">
                         {evento.formato || evento.categoria}
                       </span>
-                      <h3 className="font-serif font-bold text-sm text-white truncate mb-0.5">{evento.titulo}</h3>
+                      <h3 className="font-serif text-sm text-white truncate mb-0.5">{evento.titulo}</h3>
                       <div className="text-zinc-400 text-[0.5625rem] truncate">
                         <MapPin size="0.5625rem" className="inline mr-1" />
                         {evento.local}

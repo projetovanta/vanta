@@ -482,7 +482,7 @@ export const MinhasSolicitacoesView: React.FC<Props> = ({ onBack }) => {
   return (
     <div className="absolute inset-0 flex flex-col bg-[#050505] overflow-hidden">
       {/* Header */}
-      <div className="shrink-0 flex items-center gap-3 px-4 pt-[calc(env(safe-area-inset-top)+12px)] pb-3 border-b border-white/5">
+      <div className="shrink-0 bg-[#0A0A0A] border-b border-white/5 px-6 pt-6 pb-4 flex items-center gap-3">
         <button
           aria-label="Voltar"
           onClick={onBack}
@@ -490,7 +490,7 @@ export const MinhasSolicitacoesView: React.FC<Props> = ({ onBack }) => {
         >
           <ArrowLeft size="1.125rem" className="text-zinc-400" />
         </button>
-        <h1 style={TYPOGRAPHY.screenTitle} className="text-base text-white">
+        <h1 style={TYPOGRAPHY.screenTitle} className="text-xl text-white">
           Minhas Solicitações
         </h1>
       </div>

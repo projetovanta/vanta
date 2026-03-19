@@ -150,7 +150,7 @@ const CategoryRow: React.FC<{
   return (
     <div>
       <div className="flex items-center justify-between px-5 mb-4">
-        <h3 className="text-base text-white font-semibold font-serif">{categoria}</h3>
+        <h3 className="text-base text-white font-serif">{categoria}</h3>
         {eventos.length > 3 && (
           <button
             onClick={() => onViewAll(categoria)}

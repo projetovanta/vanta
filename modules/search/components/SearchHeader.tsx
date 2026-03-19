@@ -60,7 +60,7 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
   );
   const timeLabel = useMemo(() => getTimeLabel(selectedTimeFilter), [selectedTimeFilter]);
   return (
-    <div className="shrink-0 bg-[#0a0a0a] border-b border-white/5 px-6 pb-6 pt-0">
+    <div className="shrink-0 bg-[#0a0a0a] border-b border-white/5 px-6 pb-4 pt-6">
       <h1 style={TYPOGRAPHY.screenTitle} className="text-3xl text-[#FFD300] mb-6">
         Explorar
       </h1>

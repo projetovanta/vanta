@@ -320,10 +320,7 @@ export const EditProfileView: React.FC<{
   return (
     <div className="absolute inset-0 bg-[#0a0a0a] flex flex-col overflow-hidden animate-in slide-in-from-right duration-300">
       <ToastContainer toasts={toasts} onDismiss={dismiss} />
-      <div
-        className="shrink-0 bg-[#0a0a0a]/90 backdrop-blur-xl border-b border-white/5 px-6 pb-4 flex items-center justify-between"
-        style={{ paddingTop: '1rem' }}
-      >
+      <div className="shrink-0 bg-[#0A0A0A] border-b border-white/5 px-6 pt-6 pb-4 flex items-center justify-between">
         <button
           onClick={() => (hasChanges ? setShowExitConfirm(true) : onBack())}
           className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/10"

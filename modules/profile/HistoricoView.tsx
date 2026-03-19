@@ -109,10 +109,7 @@ export const HistoricoView: React.FC<HistoricoViewProps> = ({
   return (
     <div className="absolute inset-0 bg-[#0a0a0a] flex flex-col overflow-hidden animate-in slide-in-from-right duration-300">
       {/* Header */}
-      <div
-        className="shrink-0 bg-[#0a0a0a] border-b border-white/5 px-6 pb-4 flex items-center justify-between"
-        style={{ paddingTop: '1rem' }}
-      >
+      <div className="shrink-0 bg-[#0A0A0A] border-b border-white/5 px-6 pt-6 pb-4 flex items-center justify-between">
         <button
           aria-label="Voltar"
           onClick={onBack}
@@ -120,7 +117,7 @@ export const HistoricoView: React.FC<HistoricoViewProps> = ({
         >
           <ArrowLeft size="1.125rem" />
         </button>
-        <h1 style={TYPOGRAPHY.screenTitle} className="text-lg">
+        <h1 style={TYPOGRAPHY.screenTitle} className="text-xl">
           Meu Histórico
         </h1>
         <div className="w-10" />

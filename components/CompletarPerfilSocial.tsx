@@ -66,7 +66,7 @@ export const CompletarPerfilSocial: React.FC<Props> = ({ userId, userName, onCom
       <div className="w-full max-w-sm space-y-6">
         {/* Header */}
         <div className="text-center space-y-2">
-          <h1 className="font-serif text-white text-2xl font-bold">Bem-vindo, {userName?.split(' ')[0] ?? 'você'}!</h1>
+          <h1 className="font-serif text-white text-2xl">Bem-vindo, {userName?.split(' ')[0] ?? 'você'}!</h1>
           <p className="text-zinc-400 text-sm">Só precisamos de mais uma informação pra completar seu perfil.</p>
         </div>
 

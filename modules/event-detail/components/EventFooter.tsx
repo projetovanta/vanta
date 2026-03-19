@@ -34,7 +34,7 @@ export const EventFooter: React.FC<EventFooterProps> = ({
       <div className="flex gap-3 items-center">
         <div className="flex-1">
           <p className="text-[0.625rem] text-zinc-400 uppercase font-bold tracking-wider">A partir de</p>
-          <p className="text-xl font-serif font-bold text-[#FFD300] leading-tight">
+          <p className="text-xl font-serif text-[#FFD300] leading-tight">
             {evento.ocultarValor
               ? 'Sob Consulta'
               : minPrice > 0

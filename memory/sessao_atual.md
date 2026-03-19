@@ -1,44 +1,28 @@
 # Sessao Atual — Estado para Continuidade
 
 ## Branch: visual-redesign
-## Ultimo commit: 30b9163 (sessão 7, pushado) + mudanças locais sessão 8
-## Mudancas locais: ~20 arquivos (novas seções Home)
+## Ultimo commit: 30b9163 (sessão 7, pushado) + mudanças locais sessão 8 + auditoria sessão 9
+## Mudancas locais: ~25 arquivos (Home + auditoria memórias + organização docs)
 ## TSC: 0 erros
 ## Preflight: 8/8
 
-## O que foi feito na sessao 8 (19 mar 2026)
+## O que foi feito na sessao 9 (19 mar 2026)
 
-### Home — Novas seções implementadas (escalável 1000+ eventos)
-- 4 RPCs server-side: top_vendidos_24h, cidades_com_eventos, parceiros_por_cidade, eventos_por_cidade_paginado
-- 3 índices: vendas_log(ts), eventos_admin(cidade), comunidades(cidade, ativa)
-- Migration 20260319100000 aplicada + tipos gerados
-- 5 métodos novos no supabaseVantaService + IVantaService
-- Tipos: Parceiro, CidadeResumo em tipos/eventos.ts
+### Auditoria de memórias — CONCLUÍDA
+- 5 decisões do Dan resolvidas:
+  1. modulo_financeiro.md (legacy) → _deprecated/ (unificado no completo)
+  2. clube_influencia.md → absorvido no modulo_clube.md + _deprecated/
+  3. PENDENCIAS-18-MARCO-2026.md → _deprecated/ (pendências ativas abaixo)
+  4. sub_negociacao_socio.md → _deprecated/ (feature removida)
+  5. checklist_entrega.md → _deprecated/ (congelado, checklist já no CLAUDE.md)
+- modulo_clube.md atualizado: seção Services adicionada (sub-services com linhas)
+- MEMORY.md limpo: referências obsoletas removidas
+- Skill vanta-design criado (.claude/skills/) — sessão anterior
 
-### Home — Nova ordem de seções
-1. Highlights (VANTA Indica) — mantido
-2. ProximosEventosSection — 9 cards + "Ver todos" → AllEventsView
-3. MaisVendidosSection — top 10 vendidos 24h (some se 0 vendas)
-4. LocaisParceiroSection — comunidades ativas + "Ver todos" → AllPartnersView
-5. DescubraCidadesSection — cidades com eventos (exceto atual) → CityView
-6. IndicaPraVoceSection — por interesses (só logado)
-
-### Novos componentes
-- ViewAllCard, PartnerCard, CityCard (3 cards novos)
-- EventCarousel atualizado: onViewAll + maxCards + ViewAllCard automático
-
-### Novas views overlay
-- AllEventsView (z-160) — infinite scroll, tabs futuros/passados
-- AllPartnersView (z-160) — lista paginada de parceiros
-- CityView (z-170) — mini-Home por cidade (hero + próximos + parceiros + passados)
-
-### Navegação (useNavigation)
-- 3 estados: selectedAllEventsCity, selectedCityView, selectedAllPartnersCity
-- 6 funções: openAllEvents/closeAllEvents, openCityView/closeCityView, openAllPartners/closeAllPartners
-
-### Seções antigas removidas
-- ThisWeekSection, ComingSoonSection, FriendsGoingSection, ForYouSection → movidos pra _deprecated/
-- Infinite scroll global removido (cada seção busca via RPC)
+### Organização de arquivos (sessão anterior, não commitado)
+- 22 .md da raiz movidos para docs/ e _deprecated/
+- .gitignore: *.code-workspace e .claude/skills/ adicionados
+- plataformas.md: path docs/setup/ corrigido
 
 ## Decisoes do Dan ativas
 - Refund automatico ate R$100, manual acima
@@ -73,6 +57,16 @@
 - **DELETAR**: `SELECT cron.unschedule('atualizar-eventos-teste'); DROP FUNCTION atualizar_eventos_teste();` + deletar os 31 eventos de teste
 - Mais 17 eventos estáticos de teste (IDs b1000001 a b1000017)
 
+## Pendências técnicas ativas (ex-PENDENCIAS-18-MARCO)
+- C5/C6/C7 — credenciais .env (verificar Vercel, rotacionar)
+- C9 — schema base (dump inicial não versionado)
+- C17-C20 — mobile (depende contas Apple/Google)
+- C21/C22 — testes (cobertura ~2-3%)
+- A2 — CORS * em Edge Functions
+- A5 — N+1 queries financeiro
+- A22 — 160 hover: em views mobile
+- A27 — lazy load ExcelJS/jsPDF
+
 ## Blocos futuros (quando sobrar tempo)
 - Desktop Experience: layout responsivo adaptativo pra desktop web (768px+)
 
@@ -80,6 +74,7 @@
 1. MinhasPendenciasView — reorganizar (Dan pediu juntar solicitações + amizades)
 2. C21/C22 — Testes (continuar cobertura)
 3. Revisar visual das novas seções com Iris (cores, espaçamento, polish)
+4. Commit + push de todas as mudanças locais
 
 ## Pendencias externas (sem mudanca)
 - Conta Apple Developer ($99/ano)

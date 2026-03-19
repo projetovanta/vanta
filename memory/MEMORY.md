@@ -47,11 +47,7 @@
 
 - [sub_comemoracao.md](sub_comemoracao.md) — Comemoração (aniversário/despedida VIP)
 - [sub_taxas_modelo.md](sub_taxas_modelo.md) — Taxas VANTA (modelo negociável)
-- [sub_negociacao_socio.md](sub_negociacao_socio.md) — REMOVIDO (negociação agora fora do app)
-
 ## Módulos Auxiliares
-
-- [modulo_financeiro.md](modulo_financeiro.md) — Financeiro (legacy, ver completo acima)
 - [modulo_inteligencia.md](modulo_inteligencia.md) — Inteligência VANTA (motor de valor)
 
 ## Views & Componentes
@@ -90,7 +86,6 @@
 - [categorias.md](categorias.md) — Categorias de evento
 - [checkin_caixa.md](checkin_caixa.md) — Check-in / Caixa / QR
 - [checkin_offline.md](checkin_offline.md) — Check-in offline (IndexedDB)
-- [clube_influencia.md](clube_influencia.md) — MAIS VANTA (services)
 - [regras_reembolso.md](regras_reembolso.md) — Regras de reembolso
 - [reviews.md](reviews.md) — Reviews
 - [relatorios.md](relatorios.md) — Relatórios (service)
@@ -111,7 +106,6 @@
 
 ## Checklists (9)
 
-- [checklist_entrega.md](checklist_entrega.md) — Checklist entrega (CONGELADO)
 - [checklist_fluxos.md](checklist_fluxos.md) — Checklist fluxos interativo
 - [checklist_m1_fluxo_principal.md](checklist_m1_fluxo_principal.md) — M1: Fluxo principal
 - [checklist_m2_mais_vanta.md](checklist_m2_mais_vanta.md) — M2: MAIS VANTA

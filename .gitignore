@@ -35,3 +35,7 @@ audit-scripts/
 *.png
 *.xlsx
 !public/**/*.png
+
+# Editor / tools locais
+*.code-workspace
+.claude/skills/

@@ -49,7 +49,7 @@
 - `npm run cap:ios` / `cap:android` — abrir IDE nativa
 
 ## Checklist de loja
-- `STORE_CHECKLIST.md` na raiz — Google Play + Apple App Store completo
+- `docs/setup/STORE_CHECKLIST.md` — Google Play + Apple App Store completo
 
 ## Pendências para publicação
 1. Conta Apple Developer ($99/ano)

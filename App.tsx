@@ -120,9 +120,9 @@ export default function App() {
     const update = () => {
       cancelAnimationFrame(rafId);
       rafId = requestAnimationFrame(() => {
-        // Scaling fluido: 320-500px. Admin e app usam a mesma regra.
+        // Scaling fluido: 360-500px. Admin e app usam a mesma regra.
         // No admin desktop, o conteúdo é max-w-[500px] então escala = 16px normal.
-        const w = Math.max(320, Math.min(el.offsetWidth, 500));
+        const w = Math.max(360, Math.min(el.offsetWidth, 500));
         const fs = w <= 375 ? (w / 375) * 16 : 16 * (1 + ((w - 375) / 375) * 0.2);
         document.documentElement.style.fontSize = fs + 'px';
       });
@@ -445,7 +445,7 @@ export default function App() {
       import('./components/CompletarPerfilSocial').then(m => ({ default: m.CompletarPerfilSocial })),
     );
     return (
-      <div className="fixed inset-0 bg-[#050505]">
+      <div className="fixed inset-0 bg-[#050505] vanta-min-w">
         <Suspense fallback={null}>
           <CompletarPerfilSocial
             userId={currentAccountId}
@@ -463,7 +463,7 @@ export default function App() {
   // ── Loading state ─────────────────────────────────────────────────────────
   if (authLoading) {
     return (
-      <div className="fixed inset-0 bg-[#050505] flex flex-col items-center justify-center">
+      <div className="fixed inset-0 bg-[#050505] vanta-min-w flex flex-col items-center justify-center">
         <div className="w-full max-w-[500px] flex flex-col items-center gap-6">
           <img
             src="/icon-192.png"
@@ -493,8 +493,12 @@ export default function App() {
 
   return (
     <div
-      className="fixed inset-0 bg-[#050505] flex flex-col items-center text-white selection:bg-[#FFD300] selection:text-black overflow-hidden"
-      style={{ paddingTop: 'env(safe-area-inset-top, 0px)', paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
+      className="fixed inset-0 flex flex-col items-center text-white selection:bg-[#FFD300] selection:text-black overflow-hidden vanta-min-w"
+      style={{
+        paddingTop: 'env(safe-area-inset-top, 0px)',
+        paddingBottom: 'env(safe-area-inset-bottom, 0px)',
+        background: 'radial-gradient(ellipse at center, #1a1a1a 0%, #0a0a0a 35%, #020202 100%)',
+      }}
     >
       <div
         id="vanta-app"

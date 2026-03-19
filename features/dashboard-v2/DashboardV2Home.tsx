@@ -649,7 +649,7 @@ export const DashboardV2Home: React.FC<Props> = ({
         {isMaster && kpis && !isInCommunity && (
           <div>
             <p className="text-zinc-700 text-[0.5625rem] font-black uppercase tracking-[0.2em] mb-2.5">Resumo Total</p>
-            <div className="grid grid-cols-1 min-[400px]:grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 min-[448px]:grid-cols-2 gap-2">
               <KpiPieCard
                 label="Comunidades Ativas"
                 value={kpis.comunidadesAtivas}

@@ -867,7 +867,7 @@ const CardModal: React.FC<{
 
   return (
     <div className="absolute inset-0 z-[50] bg-[#0A0A0A] flex flex-col overflow-hidden">
-      <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-6 pt-8 pb-5 shrink-0">
+      <div className="shrink-0 bg-[#0A0A0A] border-b border-white/5 px-6 pt-6 pb-4">
         <div className="flex items-center justify-between">
           <div>
             <p style={TYPOGRAPHY.sectionKicker} className="mb-1.5">

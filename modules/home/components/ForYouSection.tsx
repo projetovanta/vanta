@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { Zap } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
 import { Evento, Ingresso } from '../../../types';
-import { EventCard } from '../../../components/EventCard';
+import { EventCarousel } from './EventCarousel';
 import { sortEvents } from '../../../utils';
 
 export const ForYouSection: React.FC<{
@@ -49,7 +49,6 @@ export const ForYouSection: React.FC<{
   if (recommended.length === 0) return null;
 
   return (
-    /* px-5 individual — carrossel com edge-bleed, não usar px global */
     <div className="py-4 w-full">
       <div className="flex items-center gap-2 px-5 mb-3">
         <Zap size="0.875rem" className="text-[#FFD300]" />
@@ -57,18 +56,12 @@ export const ForYouSection: React.FC<{
           Para Você
         </h3>
       </div>
-      <div className="flex gap-3 overflow-x-auto no-scrollbar px-5 snap-x snap-mandatory">
-        {recommended.map(e => (
-          <div key={e.id} className="shrink-0 w-[42vw] max-w-[11.25rem] snap-start">
-            <EventCard
-              evento={e}
-              onClick={onEventClick}
-              onComunidadeClick={onComunidadeClick}
-              showCityInsteadOfLocal={showCityInsteadOfLocal}
-            />
-          </div>
-        ))}
-      </div>
+      <EventCarousel
+        eventos={recommended}
+        onEventClick={onEventClick}
+        onComunidadeClick={onComunidadeClick}
+        showCityInsteadOfLocal={showCityInsteadOfLocal}
+      />
     </div>
   );
 });

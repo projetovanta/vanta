@@ -44,6 +44,7 @@ export const Highlights: React.FC<HighlightsProps> = React.memo(
     const [isDragging, setIsDragging] = useState(false);
     const dragStartX = useRef(0);
     const autoPlayTimer = useRef<number | null>(null);
+    const carouselRef = useRef<HTMLDivElement>(null);
 
     const nextSlide = useCallback(() => {
       setActiveIndex(prev => (prev + 1) % slides.length);
@@ -62,24 +63,51 @@ export const Highlights: React.FC<HighlightsProps> = React.memo(
       };
     }, [nextSlide, isPaused, isDragging, slides.length]);
 
-    const handleStart = (clientX: number) => {
+    // handleStart/handleMove/handleEnd definidos abaixo com useCallback + passive listeners
+    const handleEnd = useCallback(() => {
+      if (!isDraggingRef.current) return;
+      const threshold = 60;
+      if (dragOffsetRef.current > threshold) prevSlide();
+      else if (dragOffsetRef.current < -threshold) nextSlide();
+      setIsDragging(false);
+      isDraggingRef.current = false;
+      setDragOffset(0);
+      dragOffsetRef.current = 0;
+      setTimeout(() => setIsPaused(false), 3000);
+    }, [prevSlide, nextSlide]);
+
+    const isDraggingRef = useRef(false);
+    const dragOffsetRef = useRef(0);
+
+    const handleStart = useCallback((clientX: number) => {
       dragStartX.current = clientX;
       setIsDragging(true);
+      isDraggingRef.current = true;
       setIsPaused(true);
-    };
-    const handleMove = (clientX: number) => {
-      if (!isDragging) return;
-      setDragOffset(clientX - dragStartX.current);
-    };
-    const handleEnd = () => {
-      if (!isDragging) return;
-      const threshold = 60;
-      if (dragOffset > threshold) prevSlide();
-      else if (dragOffset < -threshold) nextSlide();
-      setIsDragging(false);
-      setDragOffset(0);
-      setTimeout(() => setIsPaused(false), 3000);
-    };
+    }, []);
+    const handleMove = useCallback((clientX: number) => {
+      if (!isDraggingRef.current) return;
+      const offset = clientX - dragStartX.current;
+      setDragOffset(offset);
+      dragOffsetRef.current = offset;
+    }, []);
+
+    // Passive touch listeners — não bloqueia scroll vertical
+    useEffect(() => {
+      const el = carouselRef.current;
+      if (!el) return;
+      const onTouchStart = (e: TouchEvent) => handleStart(e.touches[0].clientX);
+      const onTouchMove = (e: TouchEvent) => handleMove(e.touches[0].clientX);
+      const onTouchEnd = () => handleEnd();
+      el.addEventListener('touchstart', onTouchStart, { passive: true });
+      el.addEventListener('touchmove', onTouchMove, { passive: true });
+      el.addEventListener('touchend', onTouchEnd, { passive: true });
+      return () => {
+        el.removeEventListener('touchstart', onTouchStart);
+        el.removeEventListener('touchmove', onTouchMove);
+        el.removeEventListener('touchend', onTouchEnd);
+      };
+    }, [handleStart, handleMove, handleEnd]);
 
     const handleCardClick = (item: (typeof slides)[0]) => {
       const acao = item.acao;
@@ -132,14 +160,12 @@ export const Highlights: React.FC<HighlightsProps> = React.memo(
           </h2>
         </div>
         <div
+          ref={carouselRef}
           className="relative w-full overflow-hidden touch-pan-y"
           onMouseDown={e => handleStart(e.clientX)}
           onMouseMove={e => handleMove(e.clientX)}
           onMouseUp={handleEnd}
           onMouseLeave={handleEnd}
-          onTouchStart={e => handleStart(e.touches[0].clientX)}
-          onTouchMove={e => handleMove(e.touches[0].clientX)}
-          onTouchEnd={handleEnd}
         >
           <div
             className={`flex w-full ${!isDragging ? 'transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)]' : ''}`}
@@ -229,7 +255,7 @@ export const Highlights: React.FC<HighlightsProps> = React.memo(
                           fontSize: `${item.layoutConfig?.tituloFontSize ?? 5.3}cqw`,
                           lineHeight: 1.2,
                         }}
-                        className="drop-shadow-lg truncate"
+                        className="drop-shadow-lg"
                       >
                         {item.titulo}
                       </h2>

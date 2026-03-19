@@ -86,7 +86,7 @@ export const PainelEventos: React.FC<{
 
   return (
     <div className="absolute inset-0 flex flex-col bg-[#0A0A0A]">
-      <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-6 pt-8 pb-5 shrink-0">
+      <div className="shrink-0 bg-[#0A0A0A] border-b border-white/5 px-6 pt-6 pb-4">
         <div className="flex justify-between items-start">
           <div>
             <p style={TYPOGRAPHY.sectionKicker} className="mb-1.5">

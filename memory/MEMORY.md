@@ -67,6 +67,7 @@
 - [onboarding.md](onboarding.md) — Onboarding
 - [comunidade_public.md](comunidade_public.md) — Comunidade pública (view)
 - [componentes_compartilhados.md](componentes_compartilhados.md) — Componentes compartilhados
+- [tipografia.md](tipografia.md) — Tipografia (tokens, padrões, regras)
 - [graficos_componentes.md](graficos_componentes.md) — Gráficos / KPIs
 - [admin_dashboard_home.md](admin_dashboard_home.md) — Admin Dashboard Home
 

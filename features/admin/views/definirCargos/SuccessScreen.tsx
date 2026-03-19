@@ -18,7 +18,7 @@ export const SuccessScreen: React.FC<SuccessScreenProps> = ({
   labelCargo,
 }) => (
   <div className="absolute inset-0 bg-[#0A0A0A] flex flex-col overflow-hidden">
-    <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-6 pt-10 pb-6 shrink-0">
+    <div className="shrink-0 bg-[#0A0A0A] border-b border-white/5 px-6 pt-6 pb-4">
       <button
         aria-label="Voltar"
         onClick={onBack}

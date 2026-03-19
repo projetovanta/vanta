@@ -3,8 +3,8 @@
 
 ## Scaling Fluido Proporcional (CRÍTICO)
 - **ResizeObserver** em App.tsx (useEffect com `[authLoading]`) ajusta `html font-size`
-- Fórmula: `fs = (Math.max(320, Math.min(el.offsetWidth, 500)) / 375) * 16`
-- 375px = 16px (referência design). 320px = 13.65px (mínimo). 500px = 21.33px (máximo)
+- Fórmula: `fs = (Math.max(360, Math.min(el.offsetWidth, 500)) / 375) * 16`
+- 375px = 16px (referência design). 360px = 15.36px (mínimo). 500px = 21.33px (máximo)
 - **Admin panel mobile**: scaling fluido igual ao app (320-500px). Admin desktop: font-size 16px (conteúdo 500px + sidebar)
 - **Tudo em rem**: 2546 `text-[Npx]` convertidos, 1635 `size={N}` (Lucide icons) convertidos
 - Container app: `max-w-[500px]` em px literal (NÃO escala com rem — intencional)
@@ -29,8 +29,8 @@
 - Inner (id="vanta-app"): w-full flex-1 overflow-hidden flex flex-col bg-[#0A0A0A]
 - App normal: max-w-[500px]
 - Admin: conteúdo max-w-[500px] (igual app) + sidebar ao lado no desktop
-- Desktop ≥768px: sidebar fixa + conteúdo 500px. Mobile: sidebar fechada, conteúdo 320-500px
-- Regra universal: TUDO cabe em 320px sem cortar. Escala proporcionalmente até 500px
+- Desktop ≥768px: sidebar fixa + conteúdo 500px. Mobile: sidebar fechada, conteúdo 360-500px
+- Regra universal: TUDO cabe em 360px sem cortar. Escala proporcionalmente até 500px
 
 ## FocusView (scroll)
 ```

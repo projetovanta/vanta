@@ -154,7 +154,7 @@ export const MasterDashboard: React.FC<Props> = ({ onSelectComunidade, onSelectE
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2 min-w-0">
             <Crown size={20} className="text-[#FFD300] shrink-0" />
-            <h1 className="text-white font-bold text-lg truncate" style={TYPOGRAPHY.screenTitle}>
+            <h1 className="text-white font-bold text-xl truncate" style={TYPOGRAPHY.screenTitle}>
               Painel Master
             </h1>
           </div>

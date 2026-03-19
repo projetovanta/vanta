@@ -293,7 +293,7 @@ export const DatabaseHealthView: React.FC<Props> = ({ onBack }) => {
   return (
     <div className="absolute inset-0 bg-[#0A0A0A] flex flex-col overflow-hidden">
       {/* Header */}
-      <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-4 pt-8 pb-4 shrink-0">
+      <div className="shrink-0 bg-[#0A0A0A] border-b border-white/5 px-6 pt-6 pb-4">
         <div className="flex items-center gap-3">
           <button
             aria-label="Voltar"
@@ -309,7 +309,7 @@ export const DatabaseHealthView: React.FC<Props> = ({ onBack }) => {
                 Master · Diagnóstico
               </p>
             </div>
-            <h1 style={TYPOGRAPHY.screenTitle} className="text-lg leading-none text-white truncate">
+            <h1 style={TYPOGRAPHY.screenTitle} className="text-xl leading-none text-white truncate">
               Health Check
             </h1>
           </div>

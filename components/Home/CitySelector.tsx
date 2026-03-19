@@ -12,6 +12,14 @@ export const CitySelector: React.FC<{
   const onSelectCity = useAuthStore(s => s.setSelectedCity);
   const eventos = useExtrasStore(s => s.allEvents);
   const cidades = Array.from(new Set(eventos.map(e => e.cidade).filter(Boolean))).sort();
+
+  // Auto-selecionar primeira cidade se nenhuma selecionada
+  React.useEffect(() => {
+    if (!selectedCity && cidades.length > 0) {
+      onSelectCity(cidades[0]);
+    }
+  }, [selectedCity, cidades, onSelectCity]);
+
   if (!isOpen) return null;
   return (
     <div className="absolute inset-0 z-[100] animate-in fade-in duration-300">
@@ -28,19 +36,6 @@ export const CitySelector: React.FC<{
             Selecionar Localidade
           </h4>
           <div className="space-y-0.5">
-            <button
-              onClick={() => {
-                onSelectCity('');
-                onClose();
-              }}
-              className={`w-full flex items-center justify-between py-2.5 px-3 rounded-xl ${!selectedCity ? 'bg-[#FFD300]/10 text-[#FFD300]' : 'text-zinc-400'}`}
-            >
-              <div className="flex items-center">
-                <MapPin size="0.75rem" className="mr-2.5" />
-                <span className="text-[0.6875rem] font-bold uppercase">Todas as cidades</span>
-              </div>
-              {!selectedCity && <Check size="0.75rem" />}
-            </button>
             {cidades.map(city => (
               <button
                 key={city}

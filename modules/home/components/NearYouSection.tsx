@@ -85,7 +85,7 @@ export const NearYouSection: React.FC<{
       </div>
       <div className="flex gap-3 overflow-x-auto no-scrollbar px-5 snap-x snap-mandatory">
         {nearbyEvents.map(({ evento, distKm }) => (
-          <div key={evento.id} className="shrink-0 w-[44vw] max-w-[12rem] snap-start">
+          <div key={evento.id} className="shrink-0 w-[10.3rem] snap-start">
             <EventCard
               evento={evento}
               onClick={onEventClick}

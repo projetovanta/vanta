@@ -23,7 +23,7 @@ export const LiveNowSection: React.FC<{
             <div
               key={e.id}
               onClick={() => onEventClick(e)}
-              className="shrink-0 w-[80vw] max-w-[22rem] snap-start bg-[#111] border border-red-500/15 rounded-2xl overflow-hidden flex gap-3.5 p-3 cursor-pointer active:scale-[0.98] transition-transform"
+              className="shrink-0 w-[18.75rem] snap-start bg-[#111] border border-red-500/15 rounded-2xl overflow-hidden flex gap-3.5 p-3 cursor-pointer active:scale-[0.98] transition-transform"
             >
               <div className="w-20 h-20 rounded-xl overflow-hidden shrink-0 relative">
                 <OptimizedImage src={e.imagem} alt={e.titulo} width={80} className="w-full h-full object-cover" />

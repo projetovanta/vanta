@@ -87,7 +87,7 @@ export const EventFeed: React.FC<{
             </div>
             <div className="flex gap-3 px-5">
               {[1, 2, 3].map(j => (
-                <div key={j} className="shrink-0 w-[44vw] max-w-[12rem]">
+                <div key={j} className="shrink-0 w-[10.3rem]">
                   <div className="rounded-2xl overflow-hidden bg-[#111] border border-white/[0.06]">
                     <div className="aspect-[3/4] bg-zinc-800/20 animate-pulse" />
                     <div className="p-3 space-y-2">
@@ -164,7 +164,7 @@ const CategoryRow: React.FC<{
       {/* Carrossel horizontal */}
       <div ref={scrollRef} className="flex gap-3 overflow-x-auto no-scrollbar px-5 snap-x snap-mandatory">
         {visibleEvents.map(e => (
-          <div key={e.id} className="shrink-0 w-[44vw] max-w-[12rem] snap-start">
+          <div key={e.id} className="shrink-0 w-[10.3rem] snap-start">
             <EventCard
               evento={e}
               onClick={onEventClick}
@@ -176,7 +176,7 @@ const CategoryRow: React.FC<{
         {hasMore && (
           <button
             onClick={() => onViewAll(categoria)}
-            className="shrink-0 w-[44vw] max-w-[12rem] snap-start flex flex-col items-center justify-center gap-3 rounded-2xl border border-white/[0.06] bg-[#111] aspect-[3/4] active:scale-95 transition-all"
+            className="shrink-0 w-[10.3rem] snap-start flex flex-col items-center justify-center gap-3 rounded-2xl border border-white/[0.06] bg-[#111] aspect-[3/4] active:scale-95 transition-all"
           >
             <div className="w-10 h-10 rounded-xl bg-[#FFD300]/10 flex items-center justify-center">
               <ChevronRight size="1.25rem" className="text-[#FFD300]" />

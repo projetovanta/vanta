@@ -75,8 +75,11 @@ test.describe('Erros Globais e Estabilidade', () => {
     expect(body.trim().length).toBeGreaterThan(0);
   });
 
-  test('app funciona em iPhone SE (menor tela)', async ({ browser }) => {
-    const context = await browser.newContext({ ...devices['iPhone SE'] });
+  test('app funciona em tela mínima (360px)', async ({ browser }) => {
+    const context = await browser.newContext({
+      viewport: { width: 360, height: 640 },
+      userAgent: devices['iPhone SE'].userAgent,
+    });
     const page = await context.newPage();
     const errors: string[] = [];
     page.on('pageerror', err => errors.push(err.message));

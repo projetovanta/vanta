@@ -1,13 +1,11 @@
 import React, { useMemo, useCallback, useState } from 'react';
 import { Evento } from '../../types';
-// EventFeed — removido, será recriado
 import { Highlights } from './components/Highlights';
 import { EventCardSkeleton } from '../../components/Skeleton';
-// LiveNowSection — removido, será recriado
-import { NearYouSection } from './components/NearYouSection';
-// ThisWeekSection — removido, será recriado
-// ForYouSection — removido, será recriado
-// FriendsGoingSection — removido, será recriado
+import { ThisWeekSection } from './components/ThisWeekSection';
+import { ComingSoonSection } from './components/ComingSoonSection';
+import { ForYouSection } from './components/ForYouSection';
+import { FriendsGoingSection } from './components/FriendsGoingSection';
 import { LazySection } from './components/LazySection';
 import { isEventHappeningNow, sortEvents } from '../../utils';
 import { TYPOGRAPHY } from '../../constants';
@@ -74,7 +72,32 @@ export const HomeView: React.FC<HomeViewProps> = ({
     [eventos, selectedCity],
   );
 
-  // thisWeekEventos — será restaurado quando recriar ThisWeekSection
+  const thisWeekEventos = useMemo(() => {
+    const now = new Date();
+    const endOfWeek = new Date(now);
+    endOfWeek.setDate(now.getDate() + (7 - now.getDay()));
+    endOfWeek.setHours(23, 59, 59, 999);
+    const todayISO = now.toLocaleDateString('sv-SE', { timeZone: 'America/Sao_Paulo' });
+    const endISO = endOfWeek.toLocaleDateString('sv-SE', { timeZone: 'America/Sao_Paulo' });
+    return sortEvents(cityEventos.filter(e => e.dataReal >= todayISO && e.dataReal <= endISO && !liveIds.has(e.id)));
+  }, [cityEventos, liveIds]);
+
+  const thisWeekIds = useMemo(() => new Set(thisWeekEventos.map(e => e.id)), [thisWeekEventos]);
+
+  const comingSoonEventos = useMemo(() => {
+    const now = new Date();
+    const endOfWeek = new Date(now);
+    endOfWeek.setDate(now.getDate() + (7 - now.getDay()));
+    const startISO = endOfWeek.toLocaleDateString('sv-SE', { timeZone: 'America/Sao_Paulo' });
+    const endDate = new Date(now);
+    endDate.setDate(now.getDate() + 21);
+    const endISO = endDate.toLocaleDateString('sv-SE', { timeZone: 'America/Sao_Paulo' });
+    return sortEvents(
+      cityEventos.filter(
+        e => e.dataReal > startISO && e.dataReal <= endISO && !liveIds.has(e.id) && !thisWeekIds.has(e.id),
+      ),
+    );
+  }, [cityEventos, liveIds, thisWeekIds]);
 
   // Pull-to-refresh
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
@@ -180,25 +203,43 @@ export const HomeView: React.FC<HomeViewProps> = ({
         onNavigateToProfile={onNavigateToProfile}
       />
 
-      {/* Acontecendo Agora — será recriado */}
-      {/* Amigos vão — será recriado */}
-
-      {/* Perto de você */}
+      {/* Esta semana */}
       <LazySection>
-        <NearYouSection
-          eventos={cityEventos}
+        <ThisWeekSection eventos={thisWeekEventos} onEventClick={onEventClick} onComunidadeClick={onComunidadeClick} />
+      </LazySection>
+
+      {/* Em breve */}
+      <LazySection>
+        <ComingSoonSection
+          eventos={comingSoonEventos}
           onEventClick={onEventClick}
           onComunidadeClick={onComunidadeClick}
-          showCityInsteadOfLocal={!selectedCity}
-          excludeIds={liveIds}
         />
       </LazySection>
 
-      {/* Esta semana — será recriado */}
+      {/* Amigos vão */}
+      {!isGuest && (
+        <LazySection>
+          <FriendsGoingSection
+            eventos={cityEventos}
+            onEventClick={onEventClick}
+            onComunidadeClick={onComunidadeClick}
+          />
+        </LazySection>
+      )}
 
-      {/* Pra Você — será recriado */}
-
-      {/* Feed por categoria — será recriado */}
+      {/* Pra Você */}
+      {!isGuest && (
+        <LazySection>
+          <ForYouSection
+            eventos={cityEventos}
+            tickets={tickets}
+            presencaIds={presencaIds}
+            onEventClick={onEventClick}
+            onComunidadeClick={onComunidadeClick}
+          />
+        </LazySection>
+      )}
 
       {/* Loading skeleton durante carregamento inicial */}
       {!hasAnyContent && eventos.length === 0 && eventsLoading && (

@@ -20,21 +20,20 @@ export const EventCarousel: React.FC<EventCarouselProps> = React.memo(
     if (eventos.length === 0) return null;
 
     return (
-      <div
-        className="flex overflow-x-auto no-scrollbar snap-x snap-mandatory"
-        style={{ gap: '12px', paddingInlineStart: '20px', paddingInlineEnd: '20px' }}
-      >
-        {eventos.map(e => (
-          <div key={e.id} className="shrink-0 snap-start" style={{ width: 'min(44vw, 12rem)' }}>
-            <EventCard
-              evento={e}
-              onClick={onEventClick}
-              onComunidadeClick={onComunidadeClick}
-              showCityInsteadOfLocal={showCityInsteadOfLocal}
-              distLabel={distLabels?.get(e.id)}
-            />
-          </div>
-        ))}
+      <div className="overflow-x-auto no-scrollbar">
+        <div className="flex gap-3 w-max px-5">
+          {eventos.map(e => (
+            <div key={e.id} className="shrink-0 snap-start w-[9.5rem]">
+              <EventCard
+                evento={e}
+                onClick={onEventClick}
+                onComunidadeClick={onComunidadeClick}
+                showCityInsteadOfLocal={showCityInsteadOfLocal}
+                distLabel={distLabels?.get(e.id)}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     );
   },

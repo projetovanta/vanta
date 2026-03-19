@@ -1,6 +1,18 @@
 @import "tailwindcss";
 
 /* ═══════════════════════════════════════════════════════════
+   LIMITES DO APP — Mín 360px, Máx 500px (conteúdo)
+   NUNCA comprimir abaixo de 360px. NUNCA esticar acima de 500px.
+   Única exceção: painel admin desktop (500px conteúdo + sidebar).
+   ═══════════════════════════════════════════════════════════ */
+html, body, #root {
+  min-width: 360px;
+}
+.vanta-min-w {
+  min-width: 360px;
+}
+
+/* ═══════════════════════════════════════════════════════════
    VANTA Design Tokens — Tailwind v4 @theme
    Paleta: preto não preto (profundidade) + dourado + estado
    Usar: bg-void, bg-midnight, bg-card, bg-elevated, bg-input

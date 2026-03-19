@@ -157,12 +157,12 @@ export const EventCard: React.FC<EventCardProps> = React.memo(
             {evento.comunidade && onComunidadeClick ? (
               <button
                 onClick={handleLocalClick}
-                className="text-[0.65rem] text-zinc-400 font-medium truncate text-left active:opacity-70"
+                className="text-[0.65rem] text-zinc-400 font-medium text-left active:opacity-70"
               >
                 {localLabel}
               </button>
             ) : (
-              <span className="text-[0.65rem] text-zinc-500 font-medium truncate">{localLabel}</span>
+              <span className="text-[0.65rem] text-zinc-500 font-medium">{localLabel}</span>
             )}
             {distLabel && (
               <>

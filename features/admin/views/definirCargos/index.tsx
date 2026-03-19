@@ -213,9 +213,7 @@ export const DefinirCargosView: React.FC<DefinirCargosProps> = ({
       }
     >
       {/* Header */}
-      <div
-        className={`bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-6 ${embedded ? 'pt-4' : 'pt-10'} pb-4 shrink-0`}
-      >
+      <div className={`shrink-0 bg-[#0A0A0A] border-b border-white/5 px-6 ${embedded ? 'pt-4' : 'pt-6'} pb-4`}>
         {!embedded && (
           <div className="flex items-center gap-4 mb-4">
             <button

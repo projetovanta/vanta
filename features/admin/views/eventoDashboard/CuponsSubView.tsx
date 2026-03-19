@@ -76,7 +76,7 @@ export const CuponsSubView: React.FC<{
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden">
-      <div className="bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-white/5 px-6 pt-8 pb-4 shrink-0">
+      <div className="shrink-0 bg-[#0A0A0A] border-b border-white/5 px-6 pt-6 pb-4">
         <div className="flex items-center justify-between mb-2">
           <button
             aria-label="Voltar"

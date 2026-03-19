@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Users } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
 import { Evento } from '../../../types';
-import { EventCard } from '../../../components/EventCard';
+import { EventCarousel } from './EventCarousel';
 import { supabase } from '../../../services/supabaseClient';
 import { useAuthStore } from '../../../stores/authStore';
 import { useSocialStore } from '../../../stores/socialStore';
@@ -84,26 +84,12 @@ export const FriendsGoingSection: React.FC<{
           Amigos vão
         </h3>
       </div>
-      <div className="flex gap-3 overflow-x-auto no-scrollbar px-5 snap-x snap-mandatory">
-        {friendEvents.map(evento => (
-          <div key={evento.id} className="shrink-0 w-[42vw] max-w-[11.25rem] snap-start relative">
-            <EventCard
-              evento={evento}
-              onClick={onEventClick}
-              onComunidadeClick={onComunidadeClick}
-              showCityInsteadOfLocal={showCityInsteadOfLocal}
-            />
-            {(friendCountByEvent[evento.id] || 0) > 0 && (
-              <div className="absolute top-2 left-2 z-40 flex items-center gap-1 bg-black/70 backdrop-blur-md px-1.5 py-0.5 rounded-full">
-                <Users size="0.4375rem" className="text-[#FFD300]" />
-                <span className="text-[0.4375rem] font-black text-white tracking-wider">
-                  {friendCountByEvent[evento.id]} amigo{(friendCountByEvent[evento.id] || 0) > 1 ? 's' : ''}
-                </span>
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
+      <EventCarousel
+        eventos={friendEvents}
+        onEventClick={onEventClick}
+        onComunidadeClick={onComunidadeClick}
+        showCityInsteadOfLocal={showCityInsteadOfLocal}
+      />
     </div>
   );
 });

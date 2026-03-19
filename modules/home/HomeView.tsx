@@ -1,17 +1,15 @@
 import React, { useMemo, useCallback, useState } from 'react';
 import { Evento } from '../../types';
 import { Highlights } from './components/Highlights';
-import { EventCardSkeleton } from '../../components/Skeleton';
-import { ThisWeekSection } from './components/ThisWeekSection';
-import { ComingSoonSection } from './components/ComingSoonSection';
-import { ForYouSection } from './components/ForYouSection';
-import { FriendsGoingSection } from './components/FriendsGoingSection';
 import { LazySection } from './components/LazySection';
-import { isEventHappeningNow, sortEvents } from '../../utils';
+import { ProximosEventosSection } from './components/ProximosEventosSection';
+import { MaisVendidosSection } from './components/MaisVendidosSection';
+import { LocaisParceiroSection } from './components/LocaisParceiroSection';
+import { DescubraCidadesSection } from './components/DescubraCidadesSection';
+import { IndicaPraVoceSection } from './components/IndicaPraVoceSection';
 import { TYPOGRAPHY } from '../../constants';
 import { MapPin, Search, Crown } from 'lucide-react';
 import { useAuthStore } from '../../stores/authStore';
-import { useTicketsStore } from '../../stores/ticketsStore';
 import { useExtrasStore } from '../../stores/extrasStore';
 import { clubeService } from '../../features/admin/services/clubeService';
 
@@ -24,6 +22,9 @@ interface HomeViewProps {
   onEventoIndicaClick?: (eventoId: string) => void;
   onComunidadeClick?: (id: string) => void;
   onComemorarClick?: (comunidadeId?: string) => void;
+  onOpenAllEvents?: (cidade: string) => void;
+  onOpenAllPartners?: (cidade: string) => void;
+  onOpenCityView?: (cidade: string) => void;
 }
 
 const getGreeting = (): string => {
@@ -43,61 +44,19 @@ export const HomeView: React.FC<HomeViewProps> = ({
   onEventoIndicaClick,
   onComunidadeClick,
   onComemorarClick,
+  onOpenAllEvents,
+  onOpenAllPartners,
+  onOpenCityView,
 }) => {
   const selectedCity = useAuthStore(s => s.selectedCity);
   const userName = useAuthStore(s => s.currentAccount.nome);
   const isGuest = useAuthStore(s => s.currentAccount.role) === 'vanta_guest';
   const userId = useAuthStore(s => s.currentAccount.id);
   const isMembroMV = useMemo(() => (!isGuest && userId ? clubeService.isMembro(userId) : false), [isGuest, userId]);
-  const tickets = useTicketsStore(s => s.myTickets);
-  const presencaIds = useTicketsStore(s => s.myPresencas);
-  const eventos = useExtrasStore(s => s.allEvents);
   const onRefresh = useExtrasStore(s => s.refreshEvents);
-  const loadMoreEvents = useExtrasStore(s => s.loadMoreEvents);
-  const hasMoreEvents = useExtrasStore(s => s.hasMoreEvents);
-  const eventsLoading = useExtrasStore(s => s.eventsLoading);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [pullDistance, setPullDistance] = useState(0);
   const [touchStartY, setTouchStartY] = useState(0);
-
-  const liveEventos = useMemo(
-    () => eventos.filter(e => isEventHappeningNow(e) && (!selectedCity || e.cidade === selectedCity)),
-    [eventos, selectedCity],
-  );
-
-  const liveIds = useMemo(() => new Set(liveEventos.map(e => e.id)), [liveEventos]);
-
-  const cityEventos = useMemo(
-    () => eventos.filter(e => !selectedCity || e.cidade === selectedCity),
-    [eventos, selectedCity],
-  );
-
-  const thisWeekEventos = useMemo(() => {
-    const now = new Date();
-    const endOfWeek = new Date(now);
-    endOfWeek.setDate(now.getDate() + (7 - now.getDay()));
-    endOfWeek.setHours(23, 59, 59, 999);
-    const todayISO = now.toLocaleDateString('sv-SE', { timeZone: 'America/Sao_Paulo' });
-    const endISO = endOfWeek.toLocaleDateString('sv-SE', { timeZone: 'America/Sao_Paulo' });
-    return sortEvents(cityEventos.filter(e => e.dataReal >= todayISO && e.dataReal <= endISO && !liveIds.has(e.id)));
-  }, [cityEventos, liveIds]);
-
-  const thisWeekIds = useMemo(() => new Set(thisWeekEventos.map(e => e.id)), [thisWeekEventos]);
-
-  const comingSoonEventos = useMemo(() => {
-    const now = new Date();
-    const endOfWeek = new Date(now);
-    endOfWeek.setDate(now.getDate() + (7 - now.getDay()));
-    const startISO = endOfWeek.toLocaleDateString('sv-SE', { timeZone: 'America/Sao_Paulo' });
-    const endDate = new Date(now);
-    endDate.setDate(now.getDate() + 21);
-    const endISO = endDate.toLocaleDateString('sv-SE', { timeZone: 'America/Sao_Paulo' });
-    return sortEvents(
-      cityEventos.filter(
-        e => e.dataReal > startISO && e.dataReal <= endISO && !liveIds.has(e.id) && !thisWeekIds.has(e.id),
-      ),
-    );
-  }, [cityEventos, liveIds, thisWeekIds]);
 
   // Pull-to-refresh
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
@@ -128,25 +87,12 @@ export const HomeView: React.FC<HomeViewProps> = ({
     }
   }, [pullDistance, onRefresh]);
 
-  const handleScroll = useCallback(
-    (e: React.UIEvent<HTMLDivElement>) => {
-      if (!hasMoreEvents) return;
-      const el = e.currentTarget;
-      if (el.scrollHeight - el.scrollTop - el.clientHeight < 400) {
-        loadMoreEvents();
-      }
-    },
-    [hasMoreEvents, loadMoreEvents],
-  );
-
-  const hasAnyContent = cityEventos.length > 0;
   const firstName = isGuest ? undefined : userName?.split(' ')[0];
 
   return (
     <div
       className="animate-in fade-in duration-500 overflow-y-auto no-scrollbar"
       style={{ paddingBottom: 'calc(44px + env(safe-area-inset-bottom, 0px) * 0.5)' }}
-      onScroll={handleScroll}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
@@ -203,83 +149,78 @@ export const HomeView: React.FC<HomeViewProps> = ({
         onNavigateToProfile={onNavigateToProfile}
       />
 
-      {/* Esta semana */}
-      <LazySection>
-        <ThisWeekSection eventos={thisWeekEventos} onEventClick={onEventClick} onComunidadeClick={onComunidadeClick} />
-      </LazySection>
-
-      {/* Em breve */}
-      <LazySection>
-        <ComingSoonSection
-          eventos={comingSoonEventos}
-          onEventClick={onEventClick}
-          onComunidadeClick={onComunidadeClick}
-        />
-      </LazySection>
-
-      {/* Amigos vão */}
-      {!isGuest && (
+      {/* Próximos Eventos */}
+      {selectedCity && (
         <LazySection>
-          <FriendsGoingSection
-            eventos={cityEventos}
+          <ProximosEventosSection
+            cidade={selectedCity}
+            onEventClick={onEventClick}
+            onComunidadeClick={onComunidadeClick}
+            onViewAll={() => onOpenAllEvents?.(selectedCity)}
+          />
+        </LazySection>
+      )}
+
+      {/* Mais Vendidos 24h */}
+      {selectedCity && (
+        <LazySection>
+          <MaisVendidosSection
+            cidade={selectedCity}
             onEventClick={onEventClick}
             onComunidadeClick={onComunidadeClick}
           />
         </LazySection>
       )}
 
-      {/* Pra Você */}
-      {!isGuest && (
+      {/* Locais Parceiros */}
+      {selectedCity && onComunidadeClick && (
         <LazySection>
-          <ForYouSection
-            eventos={cityEventos}
-            tickets={tickets}
-            presencaIds={presencaIds}
-            onEventClick={onEventClick}
+          <LocaisParceiroSection
+            cidade={selectedCity}
             onComunidadeClick={onComunidadeClick}
+            onViewAll={() => onOpenAllPartners?.(selectedCity)}
           />
         </LazySection>
       )}
 
-      {/* Loading skeleton durante carregamento inicial */}
-      {!hasAnyContent && eventos.length === 0 && eventsLoading && (
-        <div className="px-5 space-y-3 py-6">
-          <EventCardSkeleton />
-          <EventCardSkeleton />
-          <EventCardSkeleton />
-        </div>
+      {/* Descubra Cidades */}
+      {selectedCity && (
+        <LazySection>
+          <DescubraCidadesSection cidadeAtual={selectedCity} onCidadeClick={cidade => onOpenCityView?.(cidade)} />
+        </LazySection>
       )}
 
-      {/* Loading indicator durante infinite scroll */}
-      {hasMoreEvents && eventsLoading && eventos.length > 0 && (
-        <div className="flex justify-center py-4">
-          <div className="w-6 h-6 border-2 border-[#FFD300] border-t-transparent rounded-full animate-spin" />
-        </div>
+      {/* VANTA Indica pra Você */}
+      {selectedCity && (
+        <LazySection>
+          <IndicaPraVoceSection
+            cidade={selectedCity}
+            onEventClick={onEventClick}
+            onComunidadeClick={onComunidadeClick}
+            onViewAll={onNavigateToSearch}
+          />
+        </LazySection>
       )}
 
-      {/* Empty State */}
-      {!hasAnyContent && !eventsLoading && (
+      {/* Empty State — quando não tem cidade selecionada */}
+      {!selectedCity && (
         <div className="flex flex-col items-center justify-center px-8 py-24 text-center">
           <div className="w-16 h-16 rounded-2xl bg-[#FFD300]/5 border border-[#FFD300]/10 flex items-center justify-center mb-5">
             <MapPin size="1.5rem" className="text-[#FFD300]" />
           </div>
           <h3 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-2">
-            Nenhum evento{selectedCity ? ` em ${selectedCity}` : ''}
+            Selecione uma cidade
           </h3>
           <p className="text-zinc-500 text-sm mb-8 max-w-[16rem] mx-auto leading-relaxed">
-            {selectedCity
-              ? 'Explore outras cidades ou volte depois — novos eventos aparecem toda semana.'
-              : 'Novos eventos aparecem toda semana. Fique de olho!'}
+            Toque no seletor de cidade acima para explorar eventos perto de você.
           </p>
-          {selectedCity && (
-            <button
-              onClick={onNavigateToSearch}
-              className="flex items-center gap-2 bg-[#FFD300] text-black px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-widest active:scale-95 transition-all shadow-[0_0_20px_rgba(255,211,0,0.2)]"
-            >
-              <Search size="0.875rem" />
-              Explorar
-            </button>
-          )}
+          <button
+            onClick={onNavigateToSearch}
+            className="flex items-center gap-2 bg-[#FFD300] text-black px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-widest active:scale-95 transition-all shadow-[0_0_20px_rgba(255,211,0,0.2)]"
+          >
+            <Search size="0.875rem" />
+            Explorar
+          </button>
         </div>
       )}
     </div>

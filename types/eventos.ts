@@ -443,3 +443,20 @@ export interface CondicaoComercial {
   motivoRecusa: string | null;
   observacoes: string | null;
 }
+
+// ── Home Sections ─────────────────────────────────────────────────────────────
+
+export interface Parceiro {
+  id: string;
+  nome: string;
+  foto: string;
+  tipo_comunidade?: string;
+  endereco?: string;
+  cidade: string;
+}
+
+export interface CidadeResumo {
+  cidade: string;
+  totalEventos: number;
+  fotoDestaque?: string;
+}

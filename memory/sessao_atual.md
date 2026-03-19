@@ -1,95 +1,44 @@
 # Sessao Atual — Estado para Continuidade
 
 ## Branch: visual-redesign
-## Ultimo commit: (pendente — commit desta sessão 5)
-## Mudancas locais: 19 arquivos (padronização tipográfica + headers)
+## Ultimo commit: 30b9163 (sessão 7, pushado) + mudanças locais sessão 8
+## Mudancas locais: ~20 arquivos (novas seções Home)
 ## TSC: 0 erros
+## Preflight: 8/8
 
-## O que foi feito na sessao 6 (19 mar 2026)
+## O que foi feito na sessao 8 (19 mar 2026)
 
-### Responsividade
-- Piso 320px → 360px (App.tsx scaling + CSS global min-width: 360px)
-- vanta-min-w class em todos containers fixed inset-0
-- Todos vw removidos dos componentes Home (44vw → 9.5rem)
-- Resumo Total admin: breakpoint min-[400px] → min-[448px]
+### Home — Novas seções implementadas (escalável 1000+ eventos)
+- 4 RPCs server-side: top_vendidos_24h, cidades_com_eventos, parceiros_por_cidade, eventos_por_cidade_paginado
+- 3 índices: vendas_log(ts), eventos_admin(cidade), comunidades(cidade, ativa)
+- Migration 20260319100000 aplicada + tipos gerados
+- 5 métodos novos no supabaseVantaService + IVantaService
+- Tipos: Parceiro, CidadeResumo em tipos/eventos.ts
 
-### Home — Seções reconectadas
-- ThisWeekSection migrada pro EventCarousel
-- FriendsGoingSection migrada pro EventCarousel
-- ForYouSection migrada pro EventCarousel
-- ComingSoonSection criada (Em Breve)
-- NearYouSection removida da Home (fica no Radar)
-- "Todas as cidades" removido do seletor — auto-seleciona primeira cidade
+### Home — Nova ordem de seções
+1. Highlights (VANTA Indica) — mantido
+2. ProximosEventosSection — 9 cards + "Ver todos" → AllEventsView
+3. MaisVendidosSection — top 10 vendidos 24h (some se 0 vendas)
+4. LocaisParceiroSection — comunidades ativas + "Ver todos" → AllPartnersView
+5. DescubraCidadesSection — cidades com eventos (exceto atual) → CityView
+6. IndicaPraVoceSection — por interesses (só logado)
 
-### EventCarousel — corrigido alinhamento
-- paddingInlineStart → inner div w-max px-5 (resolve bug scroll engolir padding)
-- Cards 9.5rem (cabe 2 + pedacinho do 3º em 360px)
+### Novos componentes
+- ViewAllCard, PartnerCard, CityCard (3 cards novos)
+- EventCarousel atualizado: onViewAll + maxCards + ViewAllCard automático
 
-### Headers admin padronizados (19 views)
-- pt-8 → pt-6, backdrop-blur removido, pb-5 → pb-4, text-lg → text-xl
-- Padrão: shrink-0 bg-[#0A0A0A] border-b border-white/5 px-6 pt-6 pb-4
+### Novas views overlay
+- AllEventsView (z-160) — infinite scroll, tabs futuros/passados
+- AllPartnersView (z-160) — lista paginada de parceiros
+- CityView (z-170) — mini-Home por cidade (hero + próximos + parceiros + passados)
 
-### Highlights (VANTA Indica)
-- truncate removido do título (idêntico ao preview admin)
-- Touch handlers → passive: true (resolve [Violation] touchmove delayed)
+### Navegação (useNavigation)
+- 3 estados: selectedAllEventsCity, selectedCityView, selectedAllPartnersCity
+- 6 funções: openAllEvents/closeAllEvents, openCityView/closeCityView, openAllPartners/closeAllPartners
 
-### EventCard
-- truncate removido do nome do local
-
-### Fundo externo
-- radial-gradient chumbo pra diferenciar app do fundo
-
-### Tipografia documentada
-- memory/tipografia.md criado com todos os tokens e padrões
-
-### Dados de teste
-- 17 eventos novos criados no Supabase (31 total)
-- 8 eventos antigos movidos pra datas futuras
-- 6 eventos com datas auto-atualizadas (pg_cron a cada 6h)
-- Lotes + preços criados pra todos os 31 eventos
-- Fotos Unsplash adicionadas a todos os eventos sem foto
-
-## O que foi feito na sessao 5 (18 mar 2026)
-
-### Limpeza tipográfica — font-serif (9 edits)
-- Removido font-bold redundante de 6 componentes (CSS .font-serif já aplica weight 700)
-- Removido font-semibold incorreto de 3 componentes (Playfair só carrega 700)
-- Arquivos: CompletarPerfilSocial, LoginView, EventFooter, SidebarV2, SearchResults, PriceFilterModal, EventFeed, NearYouSection, LiveNowSection
-
-### Padronização headers tabs principais (2 edits)
-- Radar: top-3 px-4 → top-6 px-6 (alinhado posição com Mensagens)
-- SearchHeader (Buscar): pt-0 pb-6 → pt-6 pb-4 (alinhado padding com Mensagens)
-- Radar: text-2xl → text-3xl (alinhado tamanho com Mensagens/Buscar)
-- Mensagens: já era o padrão (text-3xl dourado, pt-6 px-6 pb-4)
-
-### Padronização headers sub-views (11 edits)
-Padrão aplicado: shrink-0 bg-[#0A0A0A] border-b border-white/5 px-6 pt-6 pb-4 + text-xl
-- EditProfileView: removido style inline paddingTop, removido backdrop-blur
-- HistoricoView: removido style inline paddingTop, text-lg → text-xl
-- PreferencesView: removido style inline paddingTop, text-lg → text-xl
-- BloqueadosView: px-5 py-4 → px-6 pt-6 pb-4, text-lg → text-xl
-- MinhasPendenciasView: px-4 py-3 → px-6 pt-6 pb-4, text-base → text-xl
-- MinhasSolicitacoesView: px-4 pt-safe pb-3 → px-6 pt-6 pb-4, text-base → text-xl
-- MyTicketsView: pt-8 pb-5 → pt-6 pb-4, removido backdrop-blur
-- SolicitarParceriaView: pt-8 → pt-6, removido backdrop-blur, text-lg → text-xl
-
-### Luna recontratada
-- Regras rígidas adicionadas no topo de engenheiro-frontend.md (expertise preservada)
-- Hook enforce-luna-scope.sh criado e registrado no settings.json
-- Escopo fechado: só faz o que foi pedido, zero invenção
-
-### UI UX Pro Max instalado
-- Skill principal + 6 extras: brand, design, design-system, slides, ui-styling, banner-design
-- Busca: python3 .claude/skills/ui-ux-pro-max/scripts/search.py "query" --domain style
-- Já reconhece Playfair+Inter como #1 "Classic Elegant" (luxury/premium)
-
-### Monitor de contexto criado
-- Hook context-monitor.sh: conta interações, avisa em 4 zonas (verde/amarela/laranja/vermelha)
-- Alerta com 60% (51+ interações) por pedido do Dan
-
-### Memória identidade visual atualizada
-- Playfair Display SC → Playfair Display Bold 700 em projeto_identidade_visual.md
-- 700 = peso (weight), não tamanho
+### Seções antigas removidas
+- ThisWeekSection, ComingSoonSection, FriendsGoingSection, ForYouSection → movidos pra _deprecated/
+- Infinite scroll global removido (cada seção busca via RPC)
 
 ## Decisoes do Dan ativas
 - Refund automatico ate R$100, manual acima
@@ -97,18 +46,15 @@ Padrão aplicado: shrink-0 bg-[#0A0A0A] border-b border-white/5 px-6 pt-6 pb-4 +
 - Componentes wizard/form: integrados nos wizards
 - EventCard: sem social proof, aspect 4/5, badges mesma altura
 - Acontecendo Agora: badge discreto no card (sem secao separada)
-- Ordem Home: Perto→Esta Semana→Categorias
+- Ordem Home: Indica → Próximos (9+ver todos) → Mais Vendidos 24h → Locais Parceiros → Descubra Cidades → VANTA Indica pra Você ✅ IMPLEMENTADO
 - Fonte: Playfair Display Bold 700 (sem SC, sem italic) — SEMPRE. 700=peso, não tamanho
 - Padrao: titulos=Playfair, corpo=Inter, labels=caps tracking
 - Luna recontratada (18/mar s5) — regras rígidas, hook enforce-luna-scope, escopo fechado
 - Iris continua como Especialista Visual
-- "Outros" removido do EventFeed
 - Header padrão tabs: text-3xl dourado, pt-6 px-6 pb-4
 - Header padrão sub-views: text-xl branco, pt-6 px-6 pb-4
 - Responsividade: mínimo 360px, máximo 500px. CSS global min-width: 360px. Zero vw nos componentes.
-- Home: Indica → Próximos Eventos (9+ver todos) → Mais Vendidos 24h (9+ver todos) → Locais Parceiros → Descubra Cidades → VANTA Indica pra Você
 - "Todas as cidades" removido — Home sempre baseada em UMA cidade
-- NearYouSection removida da Home (localização fica no Radar)
 - Foto obrigatória no cadastro de evento (card sem foto não existe)
 - EventCards: sem truncate, prontos, não mexer
 - Fundo externo: radial-gradient chumbo
@@ -128,14 +74,12 @@ Padrão aplicado: shrink-0 bg-[#0A0A0A] border-b border-white/5 px-6 pt-6 pb-4 +
 - Mais 17 eventos estáticos de teste (IDs b1000001 a b1000017)
 
 ## Blocos futuros (quando sobrar tempo)
-- Desktop Experience: layout responsivo adaptativo pra desktop web (768px+). App fica bonito em telas grandes, não só espremido em 500px. Planejar tela por tela com Luna + Iris. Painel admin também ganha mais espaço.
+- Desktop Experience: layout responsivo adaptativo pra desktop web (768px+)
 
 ## Proxima sessao — prioridades
-1. Implementar novas seções Home: Próximos Eventos (9+ver todos), Mais Vendidos 24h, Locais Parceiros, Descubra Cidades, VANTA Indica pra Você
-2. Card "Ver todos" no final de cada carrossel (10º card → leva pra Busca)
-3. Página de cidade (quando clicar no card de cidade)
-4. MinhasPendenciasView — reorganizar (Dan pediu juntar solicitações + amizades)
-5. C21/C22 — Testes (continuar cobertura)
+1. MinhasPendenciasView — reorganizar (Dan pediu juntar solicitações + amizades)
+2. C21/C22 — Testes (continuar cobertura)
+3. Revisar visual das novas seções com Iris (cores, espaçamento, polish)
 
 ## Pendencias externas (sem mudanca)
 - Conta Apple Developer ($99/ano)

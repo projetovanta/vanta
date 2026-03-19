@@ -265,9 +265,10 @@ friendships, mutualFriends
 - socialStore.ts, App.tsx
 - ChatRoomView.tsx, MessagesView.tsx, PublicProfilePreviewView.tsx
 
-### useExtrasStore (4 consumers)
-allEvents, savedEvents
-- extrasStore.ts, App.tsx, HomeView.tsx, EventDetailView.tsx
+### useExtrasStore (3 consumers)
+allEvents, savedEvents, refreshEvents
+- extrasStore.ts, App.tsx, EventDetailView.tsx
+- HomeView.tsx usa apenas refreshEvents (pull-to-refresh), não allEvents
 
 ## RPCs → Consumers
 
@@ -283,6 +284,10 @@ allEvents, savedEvents
 | sign_ticket_token | jwtService.ts | CA |
 | verify_ticket_token | jwtService.ts | OP |
 | get_eventos_por_regiao | supabaseVantaService.ts | DS |
+| top_vendidos_24h | supabaseVantaService.ts → MaisVendidosSection | HM |
+| cidades_com_eventos | supabaseVantaService.ts → DescubraCidadesSection, CityView | HM |
+| parceiros_por_cidade | supabaseVantaService.ts → LocaisParceiroSection, AllPartnersView | HM |
+| eventos_por_cidade_paginado | supabaseVantaService.ts → ProximosEventosSection, AllEventsView, CityView | HM |
 | buscar_membros | authService.ts | ID |
 | get_admin_access | DashboardV2Gateway.tsx | IN |
 | get_convite_socio | REMOVIDO (negociação fora do app) | AE |

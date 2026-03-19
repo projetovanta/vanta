@@ -16,19 +16,21 @@ Radar = mapa de eventos por geolocalizacao.
 
 ## Arquivos
 
-### Home / Feed (modules/home/, 1024L total)
-| Arquivo | Linhas | Funcao |
-|---|---|---|
-| HomeView.tsx | 263 | Tela principal do feed |
-| components/EventFeed.tsx | 196 | Feed de eventos com infinite scroll |
-| components/Highlights.tsx | 277 | Destaques (Vanta Indica) — gradiente reforçado, badge backdrop-blur, 6 handlers (evento/comemorar/comunidade/rota/cupom/link), props onComunidadeClick/onNavigateToTab/onNavigateToProfile |
-| components/LiveNowSection.tsx | 52 | Eventos ao vivo agora (label cidade, card 80vw) |
-| components/NearYouSection.tsx | 101 | Eventos perto de voce (distância via prop distLabel no EventCard, sem overlay) |
-| components/ThisWeekSection.tsx | 39 | Eventos esta semana |
-| components/ForYouSection.tsx | 69 | Eventos pra voce (personalizado) |
-| components/NewOnPlatformSection.tsx | 37 | Novos na plataforma |
-| components/SavedEventsSection.tsx | 35 | Eventos salvos |
-| components/MaisVantaBanner.tsx | ~45 | Banner MAIS VANTA (3 estados: nao-membro, pendente, membro) |
+### Home / Feed (modules/home/)
+| Arquivo | Funcao |
+|---|---|
+| HomeView.tsx | Tela principal — 6 seções com queries independentes |
+| AllEventsView.tsx | Overlay: listagem paginada (tabs futuros/passados) |
+| CityView.tsx | Overlay: mini-Home filtrada por cidade |
+| AllPartnersView.tsx | Overlay: lista paginada de parceiros |
+| components/Highlights.tsx | Destaques (VANTA Indica) — carrossel curado, 6 handlers |
+| components/EventCarousel.tsx | Carrossel horizontal com onViewAll + maxCards |
+| components/ProximosEventosSection.tsx | Próximos eventos da cidade (RPC server-side) |
+| components/MaisVendidosSection.tsx | Top 10 mais vendidos 24h |
+| components/LocaisParceiroSection.tsx | Comunidades ativas na cidade |
+| components/DescubraCidadesSection.tsx | Cidades com eventos (exceto atual) |
+| components/IndicaPraVoceSection.tsx | Eventos por interesses do usuário (só logado) |
+| components/LazySection.tsx | Renderização lazy (IntersectionObserver) |
 
 ### Busca (modules/search/, 1355L total)
 | Arquivo | Linhas | Funcao |
@@ -80,13 +82,14 @@ Radar = mapa de eventos por geolocalizacao.
 ## Fluxos
 
 ### FEED HOME
-**Quem**: Usuario logado
+**Quem**: Usuario logado ou guest
 **Navegacao**: Bottom nav "Home" -> HomeView
 **O que acontece**:
-1. useExtrasStore.allEvents → eventos publicados da cidade selecionada
-2. Secoes renderizadas: Highlights (Vanta Indica), LiveNow, NearYou, ThisWeek, ForYou, NewOnPlatform, Saved
-3. Infinite scroll (getEventosPaginated server-side)
-4. Cada secao limitada a 8 eventos + card "Ver Mais"
+1. Cada seção faz query independente ao Supabase (RPCs server-side)
+2. Seções: Highlights → Próximos Eventos → Mais Vendidos 24h → Locais Parceiros → Descubra Cidades → VANTA Indica pra Você
+3. "Ver todos" no final do carrossel → abre overlay (AllEventsView, AllPartnersView)
+4. Card de cidade → abre CityView (mini-Home por cidade)
+5. Seção some quando 0 resultados
 
 ### BUSCA
 **Quem**: Usuario
@@ -137,9 +140,9 @@ Radar = mapa de eventos por geolocalizacao.
 ## Checklist de status
 | # | Item | Status | Detalhe |
 |---|---|---|---|
-| 1 | Feed com secoes | OK | 8 secoes na HomeView |
-| 2 | Infinite scroll | OK | getEventosPaginated server-side |
-| 3 | Limite 8 por secao | OK | Card "Ver Mais" |
+| 1 | Feed com secoes | OK | 6 seções com queries independentes (RPCs) |
+| 2 | Paginação server-side | OK | Cada seção busca via RPC, AllEventsView com infinite scroll |
+| 3 | Ver todos + overlays | OK | ViewAllCard no carrossel → AllEventsView/AllPartnersView/CityView |
 | 4 | Highlights (Vanta Indica) | OK | Highlights 221L |
 | 5 | Busca eventos | OK | SearchView 409L |
 | 6 | Busca pessoas | OK | PeopleResults 41L |

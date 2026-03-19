@@ -14,7 +14,7 @@
  */
 
 import { TicketCaixa, ValidacaoIngresso, SolicitacaoSaque, SaldoFinanceiro, VendaLog } from './eventosAdminService';
-import { Evento, ListaEvento } from '../../../types';
+import { Evento, ListaEvento, Parceiro } from '../../../types';
 
 // ── I/O types ────────────────────────────────────────────────────────────────
 
@@ -162,6 +162,21 @@ export interface IVantaService {
 
   /** Busca server-side de eventos por nome/local/cidade. */
   searchEventos(query: string, limit?: number): Promise<Evento[]>;
+
+  /** Busca eventos por IDs (batch). */
+  getEventosByIds(ids: string[]): Promise<Evento[]>;
+
+  /** Top vendidos nas últimas 24h por cidade. */
+  getTopVendidos24h(cidade: string, limit?: number): Promise<Evento[]>;
+
+  /** Cidades com eventos futuros publicados. */
+  getCidadesComEventos(excluir?: string): Promise<{ cidade: string; totalEventos: number; fotoDestaque?: string }[]>;
+
+  /** Parceiros (comunidades ativas) por cidade, paginado. */
+  getParceirosPorCidade(cidade: string, limit?: number, offset?: number): Promise<Parceiro[]>;
+
+  /** Eventos por cidade, paginado (futuros ou passados). */
+  getEventosPorCidade(cidade: string, futuros?: boolean, limit?: number, offset?: number): Promise<Evento[]>;
 
   /**
    * Processa compra de ingressos no checkout público.

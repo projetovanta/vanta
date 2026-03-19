@@ -66,6 +66,9 @@ export const useNavigation = () => {
   const [selectedEvent, setSelectedEvent] = useState<Evento | null>(null);
   const [selectedComunidadeId, setSelectedComunidadeId] = useState<string | null>(null);
   const [clubeConviteId, setClubeConviteId] = useState<string | null>(null);
+  const [selectedAllEventsCity, setSelectedAllEventsCity] = useState<string | null>(null);
+  const [selectedCityView, setSelectedCityView] = useState<string | null>(null);
+  const [selectedAllPartnersCity, setSelectedAllPartnersCity] = useState<string | null>(null);
   const eventBeforeComunidadeRef = useRef<Evento | null>(null);
   const returnTabRef = useRef<TabState | null>(null);
 
@@ -186,6 +189,18 @@ export const useNavigation = () => {
     }
   }, [navigate, saveScrollPosition, setProfileSubView, mainScrollRef]);
 
+  const openAllEvents = useCallback((cidade: string) => {
+    setSelectedAllEventsCity(cidade);
+  }, []);
+
+  const openCityView = useCallback((cidade: string) => {
+    setSelectedCityView(cidade);
+  }, []);
+
+  const openAllPartners = useCallback((cidade: string) => {
+    setSelectedAllPartnersCity(cidade);
+  }, []);
+
   return {
     activeTab,
     selectedEvent,
@@ -194,6 +209,9 @@ export const useNavigation = () => {
     profileSubView,
     isCityModalOpen,
     isNotificationModalOpen,
+    selectedAllEventsCity,
+    selectedCityView,
+    selectedAllPartnersCity,
     setProfileSubView,
     setIsCityModalOpen,
     setIsNotificationModalOpen,
@@ -203,6 +221,12 @@ export const useNavigation = () => {
     closeMemberProfile,
     openComunidade,
     closeComunidade,
+    openAllEvents,
+    openCityView,
+    openAllPartners,
+    closeAllEvents: useCallback(() => setSelectedAllEventsCity(null), []),
+    closeCityView: useCallback(() => setSelectedCityView(null), []),
+    closeAllPartners: useCallback(() => setSelectedAllPartnersCity(null), []),
     navigateToTab,
     navigateToProfileFrom,
     returnFromSubView,
@@ -211,6 +235,9 @@ export const useNavigation = () => {
       scrollPositions.current.clear();
       returnTabRef.current = null;
       _setProfileSubView('MAIN');
+      setSelectedAllEventsCity(null);
+      setSelectedCityView(null);
+      setSelectedAllPartnersCity(null);
       if (mainScrollRef.current) mainScrollRef.current.scrollTop = 0;
     }, []),
     clubeConviteId,

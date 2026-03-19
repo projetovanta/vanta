@@ -30,7 +30,7 @@ import {
   VANTA_FEE,
 } from '../features/admin/services/eventosAdminService';
 import { eventosAdminService } from '../features/admin/services/eventosAdminService';
-import { Evento, Categoria, ListaEvento } from '../types';
+import { Evento, Categoria, ListaEvento, Parceiro } from '../types';
 import { tsBR } from '../utils';
 import { clubeService } from '../features/admin/services/clubeService';
 
@@ -307,6 +307,110 @@ export class SupabaseVantaService implements IVantaService {
 
       if (error || !data || data.length === 0) return [];
       return this._mapEventos(data);
+    } catch {
+      return [];
+    }
+  }
+
+  // ── getEventosByIds ──────────────────────────────────────────────────────────
+  async getEventosByIds(ids: string[]): Promise<Evento[]> {
+    if (ids.length === 0) return [];
+    try {
+      const { data, error } = await supabase
+        .from('eventos_admin')
+        .select(
+          'id, slug, nome, descricao, data_inicio, data_fim, local, endereco, cidade, foto, formato, estilos, experiencias, categoria, subcategorias, coords, comunidade_id, venda_vanta, link_externo, classificacao_etaria, comunidades(id, nome, foto, cidade, endereco), lotes(id, nome, ativo, variacoes_ingresso(valor))',
+        )
+        .in('id', ids);
+
+      if (error || !data || data.length === 0) return [];
+      return this._mapEventos(data);
+    } catch {
+      return [];
+    }
+  }
+
+  // ── getTopVendidos24h ─────────────────────────────────────────────────────
+  async getTopVendidos24h(cidade: string, limit = 10): Promise<Evento[]> {
+    try {
+      const { data, error } = await supabase.rpc('top_vendidos_24h', {
+        p_cidade: cidade,
+        p_limit: limit,
+      });
+
+      if (error || !data || data.length === 0) return [];
+      const ids = data.map((r: { evento_id: string }) => r.evento_id);
+      return this.getEventosByIds(ids);
+    } catch {
+      return [];
+    }
+  }
+
+  // ── getCidadesComEventos ──────────────────────────────────────────────────
+  async getCidadesComEventos(
+    excluir?: string,
+  ): Promise<{ cidade: string; totalEventos: number; fotoDestaque?: string }[]> {
+    try {
+      const { data, error } = await supabase.rpc('cidades_com_eventos', {
+        p_excluir: excluir ?? null,
+      });
+
+      if (error || !data) return [];
+      return data.map((r: { cidade: string; total_eventos: number; foto_destaque: string | null }) => ({
+        cidade: r.cidade,
+        totalEventos: Number(r.total_eventos),
+        fotoDestaque: r.foto_destaque ?? undefined,
+      }));
+    } catch {
+      return [];
+    }
+  }
+
+  // ── getParceirosPorCidade ─────────────────────────────────────────────────
+  async getParceirosPorCidade(cidade: string, limit = 9, offset = 0): Promise<Parceiro[]> {
+    try {
+      const { data, error } = await supabase.rpc('parceiros_por_cidade', {
+        p_cidade: cidade,
+        p_limit: limit,
+        p_offset: offset,
+      });
+
+      if (error || !data) return [];
+      return data.map(
+        (r: {
+          id: string;
+          nome: string;
+          foto: string;
+          tipo_comunidade: string | null;
+          endereco: string | null;
+          cidade: string;
+        }) => ({
+          id: r.id,
+          nome: r.nome,
+          foto: r.foto ?? '',
+          tipo_comunidade: r.tipo_comunidade ?? undefined,
+          endereco: r.endereco ?? undefined,
+          cidade: r.cidade,
+        }),
+      );
+    } catch {
+      return [];
+    }
+  }
+
+  // ── getEventosPorCidade ───────────────────────────────────────────────────
+  async getEventosPorCidade(cidade: string, futuros = true, limit = 20, offset = 0): Promise<Evento[]> {
+    try {
+      const { data, error } = await supabase.rpc('eventos_por_cidade_paginado', {
+        p_cidade: cidade,
+        p_futuros: futuros,
+        p_limit: limit,
+        p_offset: offset,
+      });
+
+      if (error || !data || data.length === 0) return [];
+      const ids = data.map((r: { evento_id: string }) => r.evento_id);
+      return this.getEventosByIds(ids);
     } catch {
       return [];
     }

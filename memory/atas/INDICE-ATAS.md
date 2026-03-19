@@ -33,6 +33,7 @@
 | 2026-03-16 | 1 | Hooks, gates, auditoria, markers | Gate Duplo obrigatório, markers com hash | — | #hooks #gates #markers |
 | 2026-03-17 | 5 | Sprint 1+2, Stripe, Login Social, iOS, Visual Redesign, 4 Blocos Melhorias, Contratações, IA Visual | 4 blocos completos, 20 decisões features, 4 novos agentes, Skill analisar-marca, brand_profiles | — | #blocos #visual #indica #financeiro #operacoes #agentes #ia #lux |
 | 2026-03-18 | 3 | Auditoria total (10 agentes), Blocos 1-5 (28 pendências), FKs auth.users, design tokens, refund Stripe | FOR UPDATE, FALHA_PROCESSAMENTO, refund auto R$100, 44 FKs, @theme tokens, hover-real | A2 CORS, C9 schema, A22 hover | #auditoria #dinheiro #seguranca #visual #banco #tokens |
+| 2026-03-19 | 3 | Responsividade 360px, Home reconectada, Headers admin, EventCarousel fix, Auditoria visual, **Novas seções Home implementadas** (4 RPCs, 5 seções, 3 overlays, 3 cards) | Piso 360px, foto obrigatória, Home final (6 seções) IMPLEMENTADA, deletar seções antigas | MinhasPendências, Testes, Visual polish | #responsividade #home #headers #carousel #visual #rpcs #overlay |
 
 ---
 
@@ -46,10 +47,10 @@
 
 | Métrica | Valor |
 |---------|-------|
-| Total de atas | 3 |
-| Total de sessões registradas | 8 |
-| Total de decisões registradas | ~70 |
-| Ações pendentes acumuladas | ~10 (CORS, schema base, hover, testes) |
+| Total de atas | 4 |
+| Total de sessões registradas | 12 |
+| Total de decisões registradas | ~87 |
+| Ações pendentes acumuladas | ~3 (MinhasPendências, testes, visual polish) |
 
 ---
 

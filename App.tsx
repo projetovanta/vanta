@@ -54,6 +54,11 @@ const WalletView = lazy(() => import('./modules/wallet/WalletView').then(m => ({
 const ComunidadePublicView = lazy(() =>
   import('./modules/community/ComunidadePublicView').then(m => ({ default: m.ComunidadePublicView })),
 );
+const AllEventsView = lazy(() => import('./modules/home/AllEventsView').then(m => ({ default: m.AllEventsView })));
+const CityView = lazy(() => import('./modules/home/CityView').then(m => ({ default: m.CityView })));
+const AllPartnersView = lazy(() =>
+  import('./modules/home/AllPartnersView').then(m => ({ default: m.AllPartnersView })),
+);
 const MyTicketsView = lazy(() =>
   import('./features/tickets/views/MyTicketsView').then(m => ({ default: m.MyTicketsView })),
 );
@@ -360,6 +365,9 @@ export default function App() {
                 }
                 setComemorarComunidadeId(comId || null);
               }}
+              onOpenAllEvents={nav.openAllEvents}
+              onOpenAllPartners={nav.openAllPartners}
+              onOpenCityView={nav.openCityView}
             />
           </ModuleErrorBoundary>
         );
@@ -717,6 +725,44 @@ function AppShell({
             onRequestFriendOverride={h.handleRequestFriendshipComposite}
             onOpenChat={h.openChatRoom}
           />
+        </div>
+      )}
+      {/* Overlays: AllEventsView, CityView, AllPartnersView */}
+      {nav.selectedAllEventsCity && (
+        <div className="absolute inset-0 z-[160] animate-in slide-in-from-right duration-300 overflow-hidden">
+          <Suspense fallback={null}>
+            <AllEventsView
+              cidade={nav.selectedAllEventsCity}
+              onBack={nav.closeAllEvents}
+              onEventClick={nav.openEventDetail}
+              onComunidadeClick={nav.openComunidade}
+            />
+          </Suspense>
+        </div>
+      )}
+      {nav.selectedAllPartnersCity && (
+        <div className="absolute inset-0 z-[160] animate-in slide-in-from-right duration-300 overflow-hidden">
+          <Suspense fallback={null}>
+            <AllPartnersView
+              cidade={nav.selectedAllPartnersCity}
+              onBack={nav.closeAllPartners}
+              onComunidadeClick={nav.openComunidade}
+            />
+          </Suspense>
+        </div>
+      )}
+      {nav.selectedCityView && (
+        <div className="absolute inset-0 z-[170] animate-in slide-in-from-right duration-300 overflow-hidden">
+          <Suspense fallback={null}>
+            <CityView
+              cidade={nav.selectedCityView}
+              onBack={nav.closeCityView}
+              onEventClick={nav.openEventDetail}
+              onComunidadeClick={nav.openComunidade}
+              onOpenAllEvents={nav.openAllEvents}
+              onOpenAllPartners={nav.openAllPartners}
+            />
+          </Suspense>
         </div>
       )}
       {nav.selectedComunidadeId && (

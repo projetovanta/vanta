@@ -5637,6 +5637,7 @@ export type Database = {
       aceitar_convite_mv: { Args: { p_token: string }; Returns: Json };
       aceitar_cortesia_rpc: { Args: { p_cortesia_id: string }; Returns: Json };
       anonimizar_conta: { Args: never; Returns: undefined };
+      atualizar_eventos_teste: { Args: never; Returns: undefined };
       buscar_membros: {
         Args: { max_results?: number; search_query: string };
         Returns: {
@@ -5654,6 +5655,14 @@ export type Database = {
         Args: { p_evento_origem_id: string };
         Returns: number;
       };
+      cidades_com_eventos: {
+        Args: { p_excluir?: string };
+        Returns: {
+          cidade: string;
+          foto_destaque: string;
+          total_eventos: number;
+        }[];
+      };
       criar_comunidade_completa: {
         Args: { p_comunidade: Json; p_produtores?: string[] };
         Returns: Json;
@@ -5666,6 +5675,17 @@ export type Database = {
           p_socios?: Json;
         };
         Returns: Json;
+      };
+      eventos_por_cidade_paginado: {
+        Args: {
+          p_cidade: string;
+          p_futuros?: boolean;
+          p_limit?: number;
+          p_offset?: number;
+        };
+        Returns: {
+          evento_id: string;
+        }[];
       };
       expirar_pedidos_checkout_pendentes: { Args: never; Returns: undefined };
       exportar_dados_usuario: { Args: never; Returns: Json };
@@ -5815,6 +5835,17 @@ export type Database = {
         Returns: boolean;
       };
       notificar_lembrete_reserva_mv: { Args: never; Returns: undefined };
+      parceiros_por_cidade: {
+        Args: { p_cidade: string; p_limit?: number; p_offset?: number };
+        Returns: {
+          cidade: string;
+          endereco: string;
+          foto: string;
+          id: string;
+          nome: string;
+          tipo_comunidade: string;
+        }[];
+      };
       processar_compra_checkout: {
         Args: {
           p_comprador_id?: string;
@@ -5862,6 +5893,13 @@ export type Database = {
         }[];
       };
       sign_ticket_token: { Args: { p_ticket_id: string }; Returns: string };
+      top_vendidos_24h: {
+        Args: { p_cidade?: string; p_limit?: number };
+        Returns: {
+          evento_id: string;
+          total_vendas: number;
+        }[];
+      };
       user_shares_tenant: {
         Args: { p_tenant_id: string; p_tenant_type: string; p_user_id: string };
         Returns: boolean;

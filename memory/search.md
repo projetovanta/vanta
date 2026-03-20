@@ -12,10 +12,17 @@
 - `modules/search/components/TimeFilterModal.tsx` — filtro data/hora
 - `modules/search/components/PriceFilterModal.tsx` — filtro preço máximo
 
-## 3 Tabs (redesign)
-- **Eventos** — busca texto + filtros (cidade, estilo, período, preço)
-- **Pessoas** — busca por nome
-- **Pra Você** (ex-Benefícios) — visível pra TODOS. Membros MV: veem benefícios. Não-membros: tela lock com CTA "Saiba mais" (FOMO)
+## 4 Tabs + controle de acesso
+| Tab | Visitante | Membro (sem MV) | Membro MV |
+|-----|-----------|-----------------|-----------|
+| **Eventos** | Aberto | Aberto | Aberto |
+| **Pessoas** | Lock + CTA cadastro | Aberto | Aberto |
+| **Lugares** | Lock + CTA cadastro | Lock MV + CTA saiba mais | Aberto |
+| **Pra Você** | Lock + CTA cadastro | Lock MV + CTA saiba mais | Aberto |
+
+- Guards no useEffect impedem queries de rodar pra visitante/não-MV
+- Lock screens com ícone cadeado + mensagem + botão CTA
+- `PlacesResults` — resultados de comunidades (tab Lugares)
 
 ## Funcionalidades
 - Busca texto + filtros combinados

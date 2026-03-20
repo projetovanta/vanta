@@ -14,7 +14,8 @@
 5. **MaisVendidosSection** — top 10 mais vendidos 24h (RPC `top_vendidos_24h`, some se 0 vendas)
 6. **LocaisParceiroSection** — comunidades ativas na cidade (RPC `parceiros_por_cidade`, 9 + "Ver todos" → AllPartnersView)
 7. **DescubraCidadesSection** — cidades com eventos exceto a atual (RPC `cidades_com_eventos`, click → CityView)
-8. **IndicaPraVoceSection** — eventos recomendados via behavior + interesses (RPC `eventos_recomendados_behavior`, fallback pra filtro local por interesses). Só logado + com interesses
+8. **GuestSignupBanner** — banner CTA "Sua noite começa aqui" com 3 benefícios + botão "Criar minha conta". Só visitante (isGuest). Entre ProximosEventos e IndicaPraVoce
+9. **IndicaPraVoceSection** — eventos recomendados via behavior + interesses (RPC `eventos_recomendados_behavior`, fallback pra filtro local por interesses). Só logado + com interesses
 
 ## Componentes de card
 - `EventCarousel` — carrossel horizontal com `onViewAll` + `maxCards` (default 9) + ViewAllCard automático

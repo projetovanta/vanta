@@ -274,7 +274,8 @@ Sem cascata: membro recebe APENAS benefício do SEU tier exato (`===`), não dos
 **O que acontece**:
 1. Usuario preenche instagram_handle
 2. INSERT solicitacoes_clube (status PENDENTE)
-3. Admin ve em SolicitacoesClubeView
+3. Notificação IN_APP + PUSH enviada pra todos os masters (tipo MAIS_VANTA, link ADMIN_HUB)
+4. Admin ve em SolicitacoesClubeView
 
 ### APROVAR MEMBRO
 **Quem**: Admin/master

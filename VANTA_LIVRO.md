@@ -3304,7 +3304,7 @@ export const createUserIcon = (photoUrl?: string) => L.DivIcon
 
 ### 11.1 SearchView.tsx
 - **Linhas:** 530
-- **O que faz:** View principal de busca. 4 tabs: EVENTS, PEOPLE, LUGARES, BENEFICIOS. Busca server-side para eventos (debounced), busca de membros via `authService`, busca de comunidades via Supabase. Filtros: cidade, estilo/vibe, periodo, preco. Historico de buscas em localStorage. Paginacao client-side. Tab BENEFICIOS so para membros MAIS VANTA.
+- **O que faz:** View principal de busca. 4 tabs: EVENTS, PEOPLE, LUGARES, BENEFICIOS. Controle de acesso por tab: visitante so ve Eventos (outras 3 com lock screen); membro sem MV ve Eventos+Pessoas (Lugares+PraVoce com lock MV); membro MV ve tudo. Guards nos useEffects impedem queries de rodar. Busca server-side para eventos (debounced), busca de membros via `authService`, busca de comunidades via Supabase. Filtros: cidade, estilo/vibe, periodo, preco. Historico de buscas em localStorage. Paginacao client-side.
 - **Props/Interface:**
 ```ts
 interface SearchViewProps {
@@ -5003,7 +5003,7 @@ interface WalletLockScreenProps {
 | **Exports** | `clubeResgatesService` |
 
 ### 7.19 `clubeSolicitacoesService.ts`
-| **Linhas** | 311 | **O que faz** | Solicitacoes de entrada no clube. Get pendentes/todas, solicitar entrada, convidar amigo, aprovar (com notificacao e criacao de membro), adiar. |
+| **Linhas** | 325 | **O que faz** | Solicitacoes de entrada no clube. Get pendentes/todas, solicitar entrada (notifica masters via notifyMany), convidar amigo, aprovar (com notificacao ao membro e criacao de membro), adiar. |
 | **Exports** | `getSolicitacoesPendentes`, `getSolicitacoes`, `getAllSolicitacoes`, `getSolicitacaoByUserId`, `solicitarEntrada`, `convidarAmigo`, `aprovarSolicitacao`, `adiarSolicitacao` |
 
 ### 7.20 `clubeTiersService.ts`

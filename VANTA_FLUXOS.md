@@ -606,6 +606,25 @@ Cada fluxo neste livro segue a mesma estrutura:
 
 ---
 
+## 10. Controle de Acesso — Busca (SearchView)
+
+As 4 tabs da Busca tem niveis de acesso diferentes:
+
+| Tab | Visitante | Membro (sem MV) | Membro MV |
+|-----|-----------|-----------------|-----------|
+| Eventos | Aberto | Aberto | Aberto |
+| Pessoas | Lock + CTA cadastro | Aberto | Aberto |
+| Lugares | Lock + CTA cadastro | Lock MV + CTA saiba mais | Aberto |
+| Pra Voce | Lock + CTA cadastro | Lock MV + CTA saiba mais | Aberto |
+
+Quando tab esta travada:
+- Icone cadeado + mensagem + botao CTA
+- Queries nao rodam (guard no useEffect)
+- Botao "Criar conta" abre modal de auth (via guardedOpenMemberProfile)
+- Botao "Saiba mais" abre perfil do usuario (acesso ao MAIS VANTA)
+
+---
+
 ## Mapa de Navegacao Resumido
 
 ```

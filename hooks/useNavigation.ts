@@ -69,6 +69,7 @@ export const useNavigation = () => {
   const [selectedAllEventsCity, setSelectedAllEventsCity] = useState<string | null>(null);
   const [selectedCityView, setSelectedCityView] = useState<string | null>(null);
   const [selectedAllPartnersCity, setSelectedAllPartnersCity] = useState<string | null>(null);
+  const [selectedAllBeneficiosCity, setSelectedAllBeneficiosCity] = useState<string | null>(null);
   const eventBeforeComunidadeRef = useRef<Evento | null>(null);
   const returnTabRef = useRef<TabState | null>(null);
 
@@ -201,6 +202,10 @@ export const useNavigation = () => {
     setSelectedAllPartnersCity(cidade);
   }, []);
 
+  const openAllBeneficios = useCallback((cidade: string) => {
+    setSelectedAllBeneficiosCity(cidade);
+  }, []);
+
   return {
     activeTab,
     selectedEvent,
@@ -212,6 +217,7 @@ export const useNavigation = () => {
     selectedAllEventsCity,
     selectedCityView,
     selectedAllPartnersCity,
+    selectedAllBeneficiosCity,
     setProfileSubView,
     setIsCityModalOpen,
     setIsNotificationModalOpen,
@@ -224,9 +230,11 @@ export const useNavigation = () => {
     openAllEvents,
     openCityView,
     openAllPartners,
+    openAllBeneficios,
     closeAllEvents: useCallback(() => setSelectedAllEventsCity(null), []),
     closeCityView: useCallback(() => setSelectedCityView(null), []),
     closeAllPartners: useCallback(() => setSelectedAllPartnersCity(null), []),
+    closeAllBeneficios: useCallback(() => setSelectedAllBeneficiosCity(null), []),
     navigateToTab,
     navigateToProfileFrom,
     returnFromSubView,
@@ -238,6 +246,7 @@ export const useNavigation = () => {
       setSelectedAllEventsCity(null);
       setSelectedCityView(null);
       setSelectedAllPartnersCity(null);
+      setSelectedAllBeneficiosCity(null);
       if (mainScrollRef.current) mainScrollRef.current.scrollTop = 0;
     }, []),
     clubeConviteId,

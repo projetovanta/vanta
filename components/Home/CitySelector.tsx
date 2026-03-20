@@ -2,7 +2,7 @@ import React from 'react';
 import { MapPin, Check, X } from 'lucide-react';
 import { TYPOGRAPHY } from '../../constants';
 import { useAuthStore } from '../../stores/authStore';
-import { useExtrasStore } from '../../stores/extrasStore';
+import { vantaService } from '../../services/vantaService';
 
 export const CitySelector: React.FC<{
   isOpen: boolean;
@@ -10,8 +10,20 @@ export const CitySelector: React.FC<{
 }> = ({ isOpen, onClose }) => {
   const selectedCity = useAuthStore(s => s.selectedCity);
   const onSelectCity = useAuthStore(s => s.setSelectedCity);
-  const eventos = useExtrasStore(s => s.allEvents);
-  const cidades = Array.from(new Set(eventos.map(e => e.cidade).filter(Boolean))).sort();
+  const [cidades, setCidades] = React.useState<string[]>([]);
+
+  // Buscar cidades com eventos via RPC (server-side, escala com 1000+ eventos)
+  React.useEffect(() => {
+    let cancelled = false;
+    vantaService.getCidadesComEventos().then(result => {
+      if (cancelled) return;
+      const nomes = result.map(c => c.cidade).sort();
+      setCidades(nomes);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   // Auto-selecionar primeira cidade se nenhuma selecionada
   React.useEffect(() => {

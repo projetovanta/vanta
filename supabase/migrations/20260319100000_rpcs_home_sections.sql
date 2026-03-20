@@ -38,22 +38,22 @@ $$;
 -- 2. cidades_com_eventos — cidades que têm eventos futuros publicados
 -- ══════════════════════════════════════════════════════════════════════════════
 
-CREATE OR REPLACE FUNCTION cidades_com_eventos(p_excluir TEXT DEFAULT NULL)
+CREATE OR REPLACE FUNCTION cidades_com_eventos(p_excluir TEXT DEFAULT '')
 RETURNS TABLE(cidade TEXT, total_eventos BIGINT, foto_destaque TEXT)
 LANGUAGE sql STABLE SECURITY DEFINER SET search_path = public
 AS $$
   SELECT
-    COALESCE(e.cidade, c.cidade) AS cidade,
+    COALESCE(e.cidade, c.cidade, 'Sem cidade') AS cidade,
     COUNT(*) AS total_eventos,
-    (array_agg(e.foto ORDER BY e.data_inicio ASC) FILTER (WHERE e.foto IS NOT NULL))[1] AS foto_destaque
+    MIN(e.foto) AS foto_destaque
   FROM eventos_admin e
   LEFT JOIN comunidades c ON c.id = e.comunidade_id
   WHERE e.publicado = true
+    AND e.status_evento = 'ATIVO'
     AND (e.data_fim IS NULL OR e.data_fim >= now())
-    AND COALESCE(e.cidade, c.cidade, '') != ''
-    AND (p_excluir IS NULL OR COALESCE(e.cidade, c.cidade) != p_excluir)
-  GROUP BY COALESCE(e.cidade, c.cidade)
-  ORDER BY total_eventos DESC;
+    AND COALESCE(e.cidade, c.cidade, '') != COALESCE(p_excluir, '')
+  GROUP BY COALESCE(e.cidade, c.cidade, 'Sem cidade')
+  ORDER BY COUNT(*) DESC;
 $$;
 
 -- ══════════════════════════════════════════════════════════════════════════════

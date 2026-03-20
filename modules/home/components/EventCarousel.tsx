@@ -45,6 +45,7 @@ export const EventCarousel: React.FC<EventCarouselProps> = React.memo(
                 onComunidadeClick={onComunidadeClick}
                 showCityInsteadOfLocal={showCityInsteadOfLocal}
                 distLabel={distLabels?.get(e.id)}
+                percentVendido={e.percentVendido}
               />
             </div>
           ))}

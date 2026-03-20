@@ -59,6 +59,9 @@ const CityView = lazy(() => import('./modules/home/CityView').then(m => ({ defau
 const AllPartnersView = lazy(() =>
   import('./modules/home/AllPartnersView').then(m => ({ default: m.AllPartnersView })),
 );
+const AllBeneficiosView = lazy(() =>
+  import('./modules/home/AllBeneficiosView').then(m => ({ default: m.AllBeneficiosView })),
+);
 const MyTicketsView = lazy(() =>
   import('./features/tickets/views/MyTicketsView').then(m => ({ default: m.MyTicketsView })),
 );
@@ -367,6 +370,7 @@ export default function App() {
               }}
               onOpenAllEvents={nav.openAllEvents}
               onOpenAllPartners={nav.openAllPartners}
+              onOpenAllBeneficios={nav.openAllBeneficios}
               onOpenCityView={nav.openCityView}
             />
           </ModuleErrorBoundary>
@@ -746,6 +750,18 @@ function AppShell({
             <AllPartnersView
               cidade={nav.selectedAllPartnersCity}
               onBack={nav.closeAllPartners}
+              onComunidadeClick={nav.openComunidade}
+            />
+          </Suspense>
+        </div>
+      )}
+      {nav.selectedAllBeneficiosCity && (
+        <div className="absolute inset-0 z-[160] animate-in slide-in-from-right duration-300 overflow-hidden">
+          <Suspense fallback={null}>
+            <AllBeneficiosView
+              cidade={nav.selectedAllBeneficiosCity}
+              onBack={nav.closeAllBeneficios}
+              onEventClick={nav.openEventDetail}
               onComunidadeClick={nav.openComunidade}
             />
           </Suspense>

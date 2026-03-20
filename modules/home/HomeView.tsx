@@ -7,6 +7,7 @@ import { MaisVendidosSection } from './components/MaisVendidosSection';
 import { LocaisParceiroSection } from './components/LocaisParceiroSection';
 import { DescubraCidadesSection } from './components/DescubraCidadesSection';
 import { IndicaPraVoceSection } from './components/IndicaPraVoceSection';
+import { BeneficiosMVSection } from './components/BeneficiosMVSection';
 import { TYPOGRAPHY } from '../../constants';
 import { MapPin, Search, Crown } from 'lucide-react';
 import { useAuthStore } from '../../stores/authStore';
@@ -24,6 +25,7 @@ interface HomeViewProps {
   onComemorarClick?: (comunidadeId?: string) => void;
   onOpenAllEvents?: (cidade: string) => void;
   onOpenAllPartners?: (cidade: string) => void;
+  onOpenAllBeneficios?: (cidade: string) => void;
   onOpenCityView?: (cidade: string) => void;
 }
 
@@ -46,6 +48,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
   onComemorarClick,
   onOpenAllEvents,
   onOpenAllPartners,
+  onOpenAllBeneficios,
   onOpenCityView,
 }) => {
   const selectedCity = useAuthStore(s => s.selectedCity);
@@ -187,6 +190,18 @@ export const HomeView: React.FC<HomeViewProps> = ({
       {selectedCity && (
         <LazySection>
           <DescubraCidadesSection cidadeAtual={selectedCity} onCidadeClick={cidade => onOpenCityView?.(cidade)} />
+        </LazySection>
+      )}
+
+      {/* Benefícios MAIS VANTA */}
+      {selectedCity && (
+        <LazySection>
+          <BeneficiosMVSection
+            cidade={selectedCity}
+            onEventClick={onEventClick}
+            onComunidadeClick={onComunidadeClick}
+            onViewAll={() => onOpenAllBeneficios?.(selectedCity)}
+          />
         </LazySection>
       )}
 

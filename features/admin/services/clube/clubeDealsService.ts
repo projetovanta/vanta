@@ -70,6 +70,24 @@ export const clubeDealsService = {
     return (data ?? []).map(r => rowWithJoinToDeal(r as Record<string, unknown>));
   },
 
+  async listarAtivosPorNomeCidade(nomeCidade: string): Promise<DealMaisVanta[]> {
+    const { data: cidadeRow } = await supabase
+      .from('cidades_mais_vanta')
+      .select('id')
+      .eq('nome', nomeCidade)
+      .eq('ativo', true)
+      .maybeSingle();
+    if (!cidadeRow) return [];
+    const { data } = await supabase
+      .from('deals_mais_vanta')
+      .select('*, parceiros_mais_vanta(nome, foto_url, tipo), cidades_mais_vanta(nome)')
+      .eq('cidade_id', cidadeRow.id)
+      .eq('status', 'ATIVO')
+      .order('criado_em', { ascending: false })
+      .limit(20);
+    return (data ?? []).map(r => rowWithJoinToDeal(r as Record<string, unknown>));
+  },
+
   async listarPorParceiro(parceiroId: string): Promise<DealMaisVanta[]> {
     const { data } = await supabase
       .from('deals_mais_vanta')

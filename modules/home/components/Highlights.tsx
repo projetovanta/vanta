@@ -14,13 +14,13 @@ interface HighlightsProps {
 }
 
 const BADGE_COLORS: Record<string, string> = {
-  EVENTO: 'bg-emerald-500/80 text-white border border-emerald-400/30',
-  DESTAQUE_EVENTO: 'bg-emerald-500/80 text-white border border-emerald-400/30',
-  PARCEIRO: 'bg-amber-500/80 text-black border border-amber-400/30',
-  MAIS_VANTA: 'bg-[#FFD300]/90 text-black border border-[#FFD300]/40',
-  PUBLICIDADE: 'bg-[#FFD300]/80 text-black border border-[#FFD300]/30',
-  EXPERIENCIA: 'bg-purple-500/80 text-white border border-purple-400/30',
-  INFORMATIVO: 'bg-zinc-700/80 text-white border border-white/10',
+  EVENTO: 'bg-emerald-400/50 text-emerald-100',
+  DESTAQUE_EVENTO: 'bg-emerald-400/50 text-emerald-100',
+  PARCEIRO: 'bg-amber-400/50 text-amber-100',
+  MAIS_VANTA: 'bg-[#FFD300]/50 text-yellow-100',
+  PUBLICIDADE: 'bg-[#FFD300]/50 text-yellow-100',
+  EXPERIENCIA: 'bg-purple-400/50 text-purple-100',
+  INFORMATIVO: 'bg-zinc-500/50 text-zinc-100',
 };
 
 export const Highlights: React.FC<HighlightsProps> = React.memo(
@@ -223,7 +223,7 @@ export const Highlights: React.FC<HighlightsProps> = React.memo(
                               }
                             : {}),
                         }}
-                        className={`${item.layoutConfig?.badgeColor ? 'text-black border' : (BADGE_COLORS[item.tipo] ?? 'bg-[#FFD300]/80 text-black border border-[#FFD300]/30')} font-black px-2.5 py-1 rounded-lg uppercase tracking-widest shadow-lg backdrop-blur-md`}
+                        className={`${item.layoutConfig?.badgeColor ? 'text-black border' : (BADGE_COLORS[item.tipo] ?? 'bg-[#FFD300]/50 text-yellow-100')} font-bold px-2 py-0.5 rounded-lg uppercase tracking-widest shadow-[0_2px_8px_rgba(0,0,0,0.5)]`}
                       >
                         {item.badge}
                       </span>

@@ -1,80 +1,84 @@
 # Sessao Atual — Estado para Continuidade
 
 ## Branch: visual-redesign
-## Ultimo commit: 30b9163 (sessão 7, pushado) + mudanças locais sessão 8 + auditoria sessão 9
-## Mudancas locais: ~25 arquivos (Home + auditoria memórias + organização docs)
+## Ultimo commit: (sessão 12 — commit pendente)
 ## TSC: 0 erros
-## Preflight: 8/8
+## Diff-check: OK
 
-## O que foi feito na sessao 9 (19 mar 2026)
+## O que foi feito na sessao 12 (19 mar 2026)
 
-### Auditoria de memórias — CONCLUÍDA
-- 5 decisões do Dan resolvidas:
-  1. modulo_financeiro.md (legacy) → _deprecated/ (unificado no completo)
-  2. clube_influencia.md → absorvido no modulo_clube.md + _deprecated/
-  3. PENDENCIAS-18-MARCO-2026.md → _deprecated/ (pendências ativas abaixo)
-  4. sub_negociacao_socio.md → _deprecated/ (feature removida)
-  5. checklist_entrega.md → _deprecated/ (congelado, checklist já no CLAUDE.md)
-- modulo_clube.md atualizado: seção Services adicionada (sub-services com linhas)
-- MEMORY.md limpo: referências obsoletas removidas
-- Skill vanta-design criado (.claude/skills/) — sessão anterior
+### EventCard — Preço
+- Fonte do preço: Inter Bold (era Playfair/TYPOGRAPHY.cardTitle)
+- Tamanho: "A partir de" e valor ambos `text-[0.6rem]`, centralizado (`justify-center`)
+- Lógica: filtra variações gratuitas (valor=0) — pega só menor valor **pago**
+- Se minPrice === 0 → "Sob consulta"
 
-### Organização de arquivos (sessão anterior, não commitado)
-- 22 .md da raiz movidos para docs/ e _deprecated/
-- .gitignore: *.code-workspace e .claude/skills/ adicionados
-- plataformas.md: path docs/setup/ corrigido
+### EventCard — Badges de estilo musical
+- Cores: fundo `400/50` + texto `100` da mesma cor
+- Sombra: `shadow-[0_2px_8px_rgba(0,0,0,0.5)]`
+- Sem backdrop-blur (badge dentro do gradient, blur ineficaz)
+- Padding: `px-2 py-0.5`, fonte `text-[0.55rem]`
+- Gradient local: apenas na área badge+título (`pt-10 from-black/80 via-black/40`)
 
-## Decisoes do Dan ativas
+### EventCard — Badges de status
+- Opacidade `/90` (era `/70`) — Acontecendo, Começa em Breve, Acaba em Breve
+- ÚLTIMAS VAGAS: laranja `bg-orange-500/90` (era dourado #FFD300)
+
+### Highlights (VANTA Indica) — badges padronizados
+- BADGE_COLORS atualizado: mesmo padrão 400/50 + texto 100
+- Sombra, padding, font-weight alinhados com EventCard
+
+### Filtros — estilo principal
+- 4 seções: ProximosEventos, MaisVendidos, IndicaPraVoce, BeneficiosMV
+- Sub-carrosséis filtram só por `estilos[0]` (sem duplicação)
+
+### Regra de categorização (decisão do Dan)
+- Formato (tipo): 1 obrigatório (Show, Beach Club, Boate, Festival...)
+- Estilo principal: 1 obrigatório = `estilos[0]`
+- Estilos secundários: 0+ opcionais
+- Cards/filtros usam apenas estilo principal
+
+## Decisoes do Dan ativas (sessão 12)
+- Preço: Inter Bold, mesmo tamanho label+valor, centralizado
+- Variações grátis: ignoradas no cálculo; "Sob consulta" quando tudo grátis
+- ÚLTIMAS VAGAS: faixa laranja (orange-500)
+- Badges estilo: fundo 400/50 + texto 100 + sombra (padrão app inteiro)
+- Categorização: formato=1, estilo principal=1 (estilos[0]), secundários=opcionais
+- Filtros Home: só estilo principal nos sub-carrosséis
+- Feature futura: filtro personalizado por preferência do usuário na Home
+
+## Decisoes do Dan ativas (anteriores)
+- Badges de status: pill, topo-direito, opacidade /90
+- ESGOTADO: faixa diagonal vermelha
+- Coroa MV: ao lado do badge de estilo
 - Refund automatico ate R$100, manual acima
 - Saques: preparar automatico
-- Componentes wizard/form: integrados nos wizards
-- EventCard: sem social proof, aspect 4/5, badges mesma altura
-- Acontecendo Agora: badge discreto no card (sem secao separada)
-- Ordem Home: Indica → Próximos (9+ver todos) → Mais Vendidos 24h → Locais Parceiros → Descubra Cidades → VANTA Indica pra Você ✅ IMPLEMENTADO
-- Fonte: Playfair Display Bold 700 (sem SC, sem italic) — SEMPRE. 700=peso, não tamanho
-- Padrao: titulos=Playfair, corpo=Inter, labels=caps tracking
-- Luna recontratada (18/mar s5) — regras rígidas, hook enforce-luna-scope, escopo fechado
-- Iris continua como Especialista Visual
-- Header padrão tabs: text-3xl dourado, pt-6 px-6 pb-4
-- Header padrão sub-views: text-xl branco, pt-6 px-6 pb-4
-- Responsividade: mínimo 360px, máximo 500px. CSS global min-width: 360px. Zero vw nos componentes.
-- "Todas as cidades" removido — Home sempre baseada em UMA cidade
-- Foto obrigatória no cadastro de evento (card sem foto não existe)
-- EventCards: sem truncate, prontos, não mexer
-- Fundo externo: radial-gradient chumbo
-- UI UX Pro Max: usar em decisões visuais/tipográficas
+- EventCard: sem social proof, aspect 4/5
+- Ordem Home: Indica → Próximos → Mais Vendidos 24h → Locais Parceiros → Descubra Cidades → Benefícios MV → VANTA Indica pra Você
+- Fonte: Playfair Display Bold 700
+- Responsividade: mínimo 360px, máximo 500px
 
 ## 🔴 DELETAR ANTES DO LANÇAMENTO — Eventos de teste
-- Função `atualizar_eventos_teste()` no Supabase — atualiza datas de 6 eventos automaticamente
-- pg_cron job `atualizar-eventos-teste` — roda a cada 6h
-- IDs dos eventos auto-atualizados:
-  - `101c9086...` — Acontecendo Agora (auto)
-  - `4f7215b7...` — Acaba em Breve (auto)
-  - `1fad4f03...` — Começa em Breve (auto)
-  - `f6fb4b70...` — Amanhã (auto)
-  - `e5555555...` — Daqui 2 dias (auto)
-  - `e6666666...` — Daqui 3 dias (auto)
-- **DELETAR**: `SELECT cron.unschedule('atualizar-eventos-teste'); DROP FUNCTION atualizar_eventos_teste();` + deletar os 31 eventos de teste
-- Mais 17 eventos estáticos de teste (IDs b1000001 a b1000017)
+- Função `atualizar_eventos_teste()` + pg_cron `atualizar-eventos-teste` (6h)
+- Função `seed_eventos_home_vitrine()` + pg_cron `seed-vitrine-home` (6h)
+- Eventos: IDs 101c9086, 4f7215b7, 1fad4f03, f6fb4b70, e5555555, e6666666
+- Eventos seed: IDs b1000001-b1000017, c2*
+- 8 registros em mais_vanta_config_evento (teste MV)
+- Lotes seed criados para RJ e BH
 
-## Pendências técnicas ativas (ex-PENDENCIAS-18-MARCO)
-- C5/C6/C7 — credenciais .env (verificar Vercel, rotacionar)
-- C9 — schema base (dump inicial não versionado)
-- C17-C20 — mobile (depende contas Apple/Google)
-- C21/C22 — testes (cobertura ~2-3%)
-- A2 — CORS * em Edge Functions
+## Pendências técnicas ativas
+- C5/C6/C7 — credenciais .env
+- C9 — schema base
+- C17-C20 — mobile (Apple/Google)
+- C21/C22 — testes
+- A2 — CORS *
 - A5 — N+1 queries financeiro
 - A22 — 160 hover: em views mobile
 - A27 — lazy load ExcelJS/jsPDF
 
-## Blocos futuros (quando sobrar tempo)
-- Desktop Experience: layout responsivo adaptativo pra desktop web (768px+)
-
 ## Proxima sessao — prioridades
-1. MinhasPendenciasView — reorganizar (Dan pediu juntar solicitações + amizades)
-2. C21/C22 — Testes (continuar cobertura)
-3. Revisar visual das novas seções com Iris (cores, espaçamento, polish)
-4. Commit + push de todas as mudanças locais
+1. Feature: filtro personalizado por preferência do usuário na Home
+2. MinhasPendenciasView — reorganizar
 
 ## Pendencias externas (sem mudanca)
 - Conta Apple Developer ($99/ano)

@@ -5676,6 +5676,26 @@ export type Database = {
         };
         Returns: Json;
       };
+      estilos_por_cidade: {
+        Args: { p_cidade: string };
+        Returns: {
+          estilo: string;
+        }[];
+      };
+      eventos_com_beneficio_mv: {
+        Args: {
+          p_cidade: string;
+          p_creator_sublevel?: string;
+          p_limit?: number;
+          p_offset?: number;
+          p_tier: string;
+        };
+        Returns: {
+          desconto_percentual: number;
+          evento_id: string;
+          tipo_beneficio: string;
+        }[];
+      };
       eventos_por_cidade_paginado: {
         Args: {
           p_cidade: string;

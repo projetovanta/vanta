@@ -165,10 +165,28 @@ export const clubeService = {
   confirmarPost: async (_reservaId: string, _postUrl: string): Promise<void> => {},
   /** @deprecated Use verificarPostResgate */
   verificarPost: async (_resgateId: string, _masterId: string): Promise<void> => {},
-  /** @deprecated */
-  getEventosComBeneficio: (): string[] => [],
-  /** @deprecated */
-  temBeneficio: (_id: string): boolean => false,
+  // ── Benefícios MV por evento (cache local) ─────────────────────────────
+  _beneficioEventoIds: null as Set<string> | null,
+  _beneficioLoaded: false,
+
+  async _loadBeneficios(): Promise<void> {
+    if (this._beneficioLoaded) return;
+    try {
+      const { data } = await supabase.from('mais_vanta_config_evento').select('evento_id').eq('ativo', true);
+      this._beneficioEventoIds = new Set((data ?? []).map((r: { evento_id: string }) => r.evento_id));
+    } catch {
+      this._beneficioEventoIds = new Set();
+    }
+    this._beneficioLoaded = true;
+  },
+
+  getEventosComBeneficio(): string[] {
+    return this._beneficioEventoIds ? Array.from(this._beneficioEventoIds) : [];
+  },
+
+  temBeneficio(id: string): boolean {
+    return this._beneficioEventoIds?.has(id) ?? false;
+  },
 
   // ── Infrações ───────────────────────────────────────────────────────────
   estaBloqueado: infracoes.estaBloqueado,

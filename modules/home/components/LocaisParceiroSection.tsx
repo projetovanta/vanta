@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { MapPin } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
 import { Parceiro } from '../../../types';
 import { PartnerCard } from '../../../components/PartnerCard';
 import { ViewAllCard } from '../../../components/ViewAllCard';
 import { vantaService } from '../../../services/vantaService';
+import { SectionFilterChips } from '../../../components/SectionFilterChips';
 
 interface LocaisParceiroSectionProps {
   cidade: string;
@@ -15,11 +16,13 @@ interface LocaisParceiroSectionProps {
 export const LocaisParceiroSection: React.FC<LocaisParceiroSectionProps> = React.memo(
   ({ cidade, onComunidadeClick, onViewAll }) => {
     const [parceiros, setParceiros] = useState<Parceiro[]>([]);
+    const [selectedChip, setSelectedChip] = useState('Todos');
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
       let cancelled = false;
       setLoading(true);
+      setSelectedChip('Todos');
       vantaService.getParceirosPorCidade(cidade, 9, 0).then(data => {
         if (!cancelled) {
           setParceiros(data);
@@ -31,6 +34,20 @@ export const LocaisParceiroSection: React.FC<LocaisParceiroSectionProps> = React
       };
     }, [cidade]);
 
+    const chips = useMemo(() => {
+      const tipos = new Set<string>();
+      parceiros.forEach(p => {
+        if (p.tipo_comunidade) tipos.add(p.tipo_comunidade);
+      });
+      if (tipos.size === 0) return [];
+      return ['Todos', ...Array.from(tipos).sort()];
+    }, [parceiros]);
+
+    const filtered = useMemo(() => {
+      if (selectedChip === 'Todos') return parceiros;
+      return parceiros.filter(p => p.tipo_comunidade === selectedChip);
+    }, [parceiros, selectedChip]);
+
     if (!loading && parceiros.length === 0) return null;
 
     return (
@@ -41,6 +58,7 @@ export const LocaisParceiroSection: React.FC<LocaisParceiroSectionProps> = React
             Locais Parceiros
           </h3>
         </div>
+        <SectionFilterChips chips={chips} selected={selectedChip} onSelect={setSelectedChip} />
         {loading ? (
           <div className="px-5 flex gap-3">
             <div className="w-[9.5rem] aspect-square rounded-2xl bg-zinc-900 animate-pulse shrink-0" />
@@ -49,7 +67,7 @@ export const LocaisParceiroSection: React.FC<LocaisParceiroSectionProps> = React
         ) : (
           <div className="overflow-x-auto no-scrollbar">
             <div className="flex gap-3 w-max px-5">
-              {parceiros.map(p => (
+              {filtered.map(p => (
                 <PartnerCard key={p.id} parceiro={p} onClick={onComunidadeClick} />
               ))}
               {parceiros.length >= 9 && <ViewAllCard onClick={onViewAll} />}

@@ -168,6 +168,7 @@ export interface Evento {
   dataInicioISO?: string; // ISO 8601 completo — usado para janela de validade do ingresso
   dataFimISO?: string; // ISO 8601 completo — usado para janela de validade do ingresso
   temBeneficioMaisVanta?: boolean; // true = tem lote MAIS VANTA com vagas disponíveis
+  percentVendido?: number; // 0-100, calculado a partir das variações de ingresso
   slug?: string; // URL slug para compartilhamento
   classificacaoEtaria?: 'LIVRE' | '16+' | '18+'; // classificação etária do evento
 }

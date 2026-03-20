@@ -178,6 +178,18 @@ export interface IVantaService {
   /** Eventos por cidade, paginado (futuros ou passados). */
   getEventosPorCidade(cidade: string, futuros?: boolean, limit?: number, offset?: number): Promise<Evento[]>;
 
+  /** Estilos disponíveis na cidade (para chips de filtro). */
+  getEstilosPorCidade(cidade: string): Promise<string[]>;
+
+  /** Eventos com benefício MV ativo pro tier na cidade. */
+  getEventosComBeneficioMV(
+    cidade: string,
+    tier: string,
+    creatorSublevel?: string,
+    limit?: number,
+    offset?: number,
+  ): Promise<{ eventos: Evento[]; beneficios: Map<string, { tipo: string; desconto: number | null }> }>;
+
   /**
    * Processa compra de ingressos no checkout público.
    * Ação atômica: INSERT transactions + INSERT tickets_caixa (owner_id = compradorId).

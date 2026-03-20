@@ -125,9 +125,10 @@ export class SupabaseVantaService implements IVantaService {
       const { data, error } = await supabase
         .from('eventos_admin')
         .select(
-          'id, slug, nome, descricao, data_inicio, data_fim, local, endereco, cidade, foto, formato, estilos, experiencias, categoria, subcategorias, coords, comunidade_id, venda_vanta, link_externo, classificacao_etaria, comunidades(id, nome, foto, cidade, endereco), lotes(id, nome, ativo, variacoes_ingresso(valor))',
+          'id, slug, nome, descricao, data_inicio, data_fim, local, endereco, cidade, foto, formato, estilos, experiencias, categoria, subcategorias, coords, comunidade_id, venda_vanta, link_externo, classificacao_etaria, comunidades(id, nome, foto, cidade, endereco), lotes(id, nome, ativo, variacoes_ingresso(valor, vendidos, limite))',
         )
         .eq('publicado', true)
+        .eq('status_evento', 'ATIVO')
         .gte('data_fim', now)
         .order('data_inicio', { ascending: true })
         .limit(1000);
@@ -136,6 +137,7 @@ export class SupabaseVantaService implements IVantaService {
         return [];
       }
 
+      await clubeService._loadBeneficios();
       return this._mapEventos(data);
     } catch {
       return [];
@@ -159,10 +161,18 @@ export class SupabaseVantaService implements IVantaService {
       else if (eventDay.getTime() === tomorrow.getTime()) dataLabel = 'Amanhã';
       else dataLabel = eventDay.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }).replace('.', '');
 
-      const dataReal = dataInicio.toISOString().split('T')[0];
-      const horario = dataInicio.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+      const dataReal = dataInicio.toLocaleDateString('sv-SE', { timeZone: 'America/Sao_Paulo' });
+      const horario = dataInicio.toLocaleTimeString('pt-BR', {
+        hour: '2-digit',
+        minute: '2-digit',
+        timeZone: 'America/Sao_Paulo',
+      });
       const horarioFim = row.data_fim
-        ? new Date(row.data_fim).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+        ? new Date(row.data_fim).toLocaleTimeString('pt-BR', {
+            hour: '2-digit',
+            minute: '2-digit',
+            timeZone: 'America/Sao_Paulo',
+          })
         : undefined;
 
       const id = row.id;
@@ -199,7 +209,9 @@ export class SupabaseVantaService implements IVantaService {
           .flatMap((l: any) => {
             const vars = l.variacoes_ingresso ?? [];
             if (vars.length === 0) return [];
-            const minVal = Math.min(...vars.map((v: any) => Number(v.valor) || 0));
+            const valores = vars.map((v: any) => Number(v.valor) || 0);
+            const valoresPagos = valores.filter((v: number) => v > 0);
+            const minVal = valoresPagos.length > 0 ? Math.min(...valoresPagos) : 0;
             return [{ nome: l.nome, preco: minVal }];
           }),
         imagem: foto ?? '/icon-192.png',
@@ -215,6 +227,17 @@ export class SupabaseVantaService implements IVantaService {
         dataInicioISO: row.data_inicio ?? undefined,
         dataFimISO: row.data_fim ?? undefined,
         temBeneficioMaisVanta: clubeService.temBeneficio(id),
+        percentVendido: (() => {
+          let totalVendidos = 0;
+          let totalLimite = 0;
+          (row.lotes ?? []).forEach((l: any) => {
+            (l.variacoes_ingresso ?? []).forEach((v: any) => {
+              totalVendidos += Number(v.vendidos) || 0;
+              totalLimite += Number(v.limite) || 0;
+            });
+          });
+          return totalLimite > 0 ? Math.round((totalVendidos / totalLimite) * 100) : undefined;
+        })(),
         slug: row.slug ?? undefined,
         ocultarValor: row.venda_vanta === false ? true : undefined,
         urlIngressos: row.venda_vanta === false ? (row.link_externo ?? undefined) : undefined,
@@ -233,14 +256,16 @@ export class SupabaseVantaService implements IVantaService {
       const { data, error } = await supabase
         .from('eventos_admin')
         .select(
-          'id, slug, nome, descricao, data_inicio, data_fim, local, endereco, cidade, foto, formato, estilos, experiencias, categoria, subcategorias, coords, comunidade_id, venda_vanta, link_externo, classificacao_etaria, comunidades(id, nome, foto, cidade, endereco), lotes(id, nome, ativo, variacoes_ingresso(valor))',
+          'id, slug, nome, descricao, data_inicio, data_fim, local, endereco, cidade, foto, formato, estilos, experiencias, categoria, subcategorias, coords, comunidade_id, venda_vanta, link_externo, classificacao_etaria, comunidades(id, nome, foto, cidade, endereco), lotes(id, nome, ativo, variacoes_ingresso(valor, vendidos, limite))',
         )
         .eq('publicado', true)
+        .eq('status_evento', 'ATIVO')
         .gte('data_fim', now)
         .order('data_inicio', { ascending: true })
         .range(from, to);
 
       if (error || !data || data.length === 0) return [];
+      await clubeService._loadBeneficios();
       return this._mapEventos(data);
     } catch {
       return [];
@@ -257,12 +282,13 @@ export class SupabaseVantaService implements IVantaService {
       const { data, error } = await supabase
         .from('eventos_admin')
         .select(
-          'id, slug, nome, descricao, data_inicio, data_fim, local, endereco, cidade, foto, formato, estilos, experiencias, categoria, subcategorias, coords, comunidade_id, venda_vanta, link_externo, classificacao_etaria, comunidades(id, nome, foto, cidade, endereco), lotes(id, nome, ativo, variacoes_ingresso(valor))',
+          'id, slug, nome, descricao, data_inicio, data_fim, local, endereco, cidade, foto, formato, estilos, experiencias, categoria, subcategorias, coords, comunidade_id, venda_vanta, link_externo, classificacao_etaria, comunidades(id, nome, foto, cidade, endereco), lotes(id, nome, ativo, variacoes_ingresso(valor, vendidos, limite))',
         )
         .eq('id', id)
         .maybeSingle();
 
       if (error || !data) return null;
+      await clubeService._loadBeneficios();
       const mapped = this._mapEventos([data]);
       return mapped[0] ?? null;
     } catch {
@@ -281,15 +307,17 @@ export class SupabaseVantaService implements IVantaService {
       const { data, error } = await supabase
         .from('eventos_admin')
         .select(
-          'id, slug, nome, descricao, data_inicio, data_fim, local, endereco, cidade, foto, formato, estilos, experiencias, categoria, subcategorias, coords, comunidade_id, venda_vanta, link_externo, classificacao_etaria, comunidades(id, nome, foto, cidade, endereco), lotes(id, nome, ativo, variacoes_ingresso(valor))',
+          'id, slug, nome, descricao, data_inicio, data_fim, local, endereco, cidade, foto, formato, estilos, experiencias, categoria, subcategorias, coords, comunidade_id, venda_vanta, link_externo, classificacao_etaria, comunidades(id, nome, foto, cidade, endereco), lotes(id, nome, ativo, variacoes_ingresso(valor, vendidos, limite))',
         )
         .eq('publicado', true)
+        .eq('status_evento', 'ATIVO')
         .gte('data_fim', now)
         .or(`nome.ilike.${pattern},local.ilike.${pattern},cidade.ilike.${pattern}`)
         .order('data_inicio', { ascending: true })
         .limit(limit);
 
       if (error || !data || data.length === 0) return [];
+      await clubeService._loadBeneficios();
       return this._mapEventos(data);
     } catch {
       return [];
@@ -306,6 +334,7 @@ export class SupabaseVantaService implements IVantaService {
       });
 
       if (error || !data || data.length === 0) return [];
+      await clubeService._loadBeneficios();
       return this._mapEventos(data);
     } catch {
       return [];
@@ -319,11 +348,12 @@ export class SupabaseVantaService implements IVantaService {
       const { data, error } = await supabase
         .from('eventos_admin')
         .select(
-          'id, slug, nome, descricao, data_inicio, data_fim, local, endereco, cidade, foto, formato, estilos, experiencias, categoria, subcategorias, coords, comunidade_id, venda_vanta, link_externo, classificacao_etaria, comunidades(id, nome, foto, cidade, endereco), lotes(id, nome, ativo, variacoes_ingresso(valor))',
+          'id, slug, nome, descricao, data_inicio, data_fim, local, endereco, cidade, foto, formato, estilos, experiencias, categoria, subcategorias, coords, comunidade_id, venda_vanta, link_externo, classificacao_etaria, comunidades(id, nome, foto, cidade, endereco), lotes(id, nome, ativo, variacoes_ingresso(valor, vendidos, limite))',
         )
         .in('id', ids);
 
       if (error || !data || data.length === 0) return [];
+      await clubeService._loadBeneficios();
       return this._mapEventos(data);
     } catch {
       return [];
@@ -413,6 +443,46 @@ export class SupabaseVantaService implements IVantaService {
       return this.getEventosByIds(ids);
     } catch {
       return [];
+    }
+  }
+
+  // ── getEstilosPorCidade ──────────────────────────────────────────────────
+  async getEstilosPorCidade(cidade: string): Promise<string[]> {
+    try {
+      const { data, error } = await supabase.rpc('estilos_por_cidade', { p_cidade: cidade });
+      if (error || !data) return [];
+      return data.map(r => r.estilo);
+    } catch {
+      return [];
+    }
+  }
+
+  // ── getEventosComBeneficioMV ────────────────────────────────────────────
+  async getEventosComBeneficioMV(
+    cidade: string,
+    tier: string,
+    creatorSublevel?: string,
+    limit = 9,
+    offset = 0,
+  ): Promise<{ eventos: Evento[]; beneficios: Map<string, { tipo: string; desconto: number | null }> }> {
+    try {
+      const { data, error } = await supabase.rpc('eventos_com_beneficio_mv', {
+        p_cidade: cidade,
+        p_tier: tier,
+        p_creator_sublevel: creatorSublevel ?? null,
+        p_limit: limit,
+        p_offset: offset,
+      });
+      if (error || !data || data.length === 0) return { eventos: [], beneficios: new Map() };
+
+      const beneficioMap = new Map<string, { tipo: string; desconto: number | null }>();
+      data.forEach(r => beneficioMap.set(r.evento_id, { tipo: r.tipo_beneficio, desconto: r.desconto_percentual }));
+
+      const ids = data.map(r => r.evento_id);
+      const eventos = await this.getEventosByIds(ids);
+      return { eventos, beneficios: beneficioMap };
+    } catch {
+      return { eventos: [], beneficios: new Map() };
     }
   }
 

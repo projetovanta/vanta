@@ -230,7 +230,7 @@ export const FinanceiroView: React.FC<Props> = ({
           totalEventos++;
           detalhe.push({ nome: ev.nome, liquido: evResumo.receitaLiquida });
         }
-        totalBruto += resumo.receitaBruta;
+        totalBruto += resumo.receitaBruta + (resumo.receitaListas ?? 0);
         totalLiquido += resumo.receitaLiquida;
       }
       if (!cancelled) setSaldoConsolidado({ totalBruto, totalLiquido, totalEventos, detalhe });

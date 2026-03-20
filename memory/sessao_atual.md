@@ -68,11 +68,11 @@
 ## Pendências técnicas ativas
 - C5/C6/C7 — credenciais .env
 - C17-C20 — mobile (Apple/Google)
-- A2 — CORS *
-- A5 — N+1 queries financeiro (waitlist resolvido sessão 18)
-- A22 — 160 hover: em views mobile
-- Google OAuth branding — trocar nome "daldttuibmxwkpbqtebm.supabase.co" por "VANTA" no Google Cloud Console (APIs > OAuth Consent Screen > Editar App > Nome: VANTA + logo)
-- Verificar filtros da Search visualmente (5 modais podem precisar de ModalPortal)
+- A5 — N+1 queries financeiro (waitlist resolvido sessão 18) — Dan quer visão planilha, equipe investiga
+- LGPD hard delete — decisões tomadas, implementar na próxima sessão
+- Push web — config OK, precisa HTTPS (deploy produção)
+- Verificar filtros da Search visualmente (5 modais — provavelmente OK)
+- Google OAuth branding — trocar nome no Google Cloud Console
 
 ## Pendencias externas
 - Conta Apple Developer ($99/ano)

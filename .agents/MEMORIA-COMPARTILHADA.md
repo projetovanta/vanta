@@ -8,7 +8,7 @@
 ## Estado Atual
 
 **Fase:** Produção e testes finais + Visual Redesign
-**Última sessão:** 2026-03-18 (sessão 5)
+**Última sessão:** 2026-03-20 (sessão 21)
 **Atualizado por:** Rafa
 
 ---
@@ -107,6 +107,9 @@
 | UI UX Pro Max instalado (skill de design intelligence + 6 extras) | `.claude/skills/ui-ux-pro-max/` |
 | Hook context-monitor.sh criado (alerta com 60% do contexto) | `.claude/hooks/context-monitor.sh` |
 | Responsividade 360px: SearchHeader grid-cols-4 corrigido (tracking-wider), MinhasPendenciasView não existe mais | Resolvido sessão 21 |
+| Auditoria completa admin: 197 views, 73 services, 93 tabelas, 21 EFs, 60 RPCs, 10 buckets — ZERO órfãos, ZERO mocks | Sessão 21 |
+| 21 `as any` removidos em 11 services admin (2 legítimos mantidos: tabela dinâmica + globalThis) | Sessão 21 |
+| Página pública Promoter/RP: plano desenhado (1 view + 1 rota, backend existe) — pendência futura | Sessão 21 |
 
 ---
 

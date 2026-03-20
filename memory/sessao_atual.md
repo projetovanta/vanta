@@ -1,33 +1,29 @@
 # Sessao Atual — Estado para Continuidade
 
 ## Branch: visual-redesign
-## Ultimo commit: 1f235c5 — sessão 16 (pendente commit sessões 17-19)
+## Ultimo commit: 11b227b — sessão 21
 ## TSC: OK
 ## Diff-check: OK
+## Preflight: 8/8
 
-## Sessão 19 — Fechamento pendências sessão 18
+## Sessão 21 — Auditoria completa painel admin
 
 ### Concluído
-- Migration fix_search_path_and_policies APLICADA via MCP (5 RPCs + 2 policies)
-- Migration drop_profiles_legacy_columns já estava aplicada (7 colunas já removidas)
-- types/supabase.ts REGENERADO (190K chars, sem colunas legadas)
-- 3 tabelas verificadas: brand_profiles, cargos_plataforma, atribuicoes_plataforma já documentadas
-- 59 RPCs verificadas: todas com pelo menos 1 menção em memórias
-- EDGES.md atualizado com 3 tabelas que faltavam
-- Tracking duplo (analytics_events + user_behavior) mantido separado por decisão do Dan
+- Auditoria completa do painel admin: 197 views, 73 services, 43 componentes, 11 dashboard-v2
+- 93 tabelas Supabase verificadas — TODAS com RLS habilitado (mín 1, máx 7 policies)
+- 10 buckets de storage verificados — sensíveis privados, exibição públicos
+- 21 Edge Functions verificadas — todas ACTIVE
+- 60 RPCs verificadas
+- 225 migrations
+- ZERO arquivos órfãos no admin
+- ZERO mocks — todos dashboards consultam Supabase direto
+- 21 `as any` removidos em 11 services admin (de 23, 2 legítimos mantidos)
+- SearchHeader tracking-widest→tracking-wider (responsividade 360px)
+- Policies RLS de push_templates, push_agendados, chat_settings verificadas — OK
+- Página pública Promoter/RP investigada e plano desenhado (pendência futura)
 
-### Decisões do Dan — sessão 19
-- Tracking duplo: MANTER separado (analytics + recomendações = mais seguro)
-- Migrations: aplicar ambas imediatamente
-
-### Decisões do Dan — sessão 17
-- Skeletons (3): MANTER
-- VantaAlertModal: MANTER
-- trackEventView: RECONECTADO no ProximosEventosSection
-- consultarCnpj: MANTER
-- Todos 11 types: MANTER
-- BatchActionBar + BottomSheet: RESTAURADOS
-- VANTA_LIVRO.md + VANTA_FLUXOS.md: criados como documentação definitiva
+### Decisões do Dan — sessão 21
+- Página pública Promoter/RP: anotar como pendência, pensar depois
 
 ## Decisoes do Dan ativas (sessão 16)
 - Chips NÃO aparecem por padrão — só com filtros ativos pelo ⚙
@@ -61,19 +57,20 @@
 - Responsividade: mínimo 360px, máximo 500px
 
 ## 🔴 DELETAR ANTES DO LANÇAMENTO — Eventos de teste
-- Função `atualizar_eventos_teste()` + pg_cron
+- Função `atualizar_eventos_teste()` + pg_cron + `seed_eventos_home_vitrine()`
 - Eventos TESTE: IDs 101c9086, 4f7215b7, 1fad4f03, f6fb4b70
 - Eventos seed: IDs b1000001-b1000009, c2000001-c2000018
 
 ## Pendências técnicas ativas
 - C5/C6/C7 — credenciais .env
 - C17-C20 — mobile (Apple/Google)
-- A5 — N+1 queries financeiro (waitlist resolvido sessão 18) — Dan quer visão planilha, equipe investiga
-- LGPD hard delete — decisões tomadas, implementar na próxima sessão
+- A5 — N+1 queries financeiro — Dan quer visão planilha
+- LGPD hard delete — decisões tomadas, implementar
 - Push web — config OK, precisa HTTPS (deploy produção)
-- Verificar filtros da Search visualmente (5 modais — provavelmente OK)
+- Verificar filtros da Search visualmente (5 modais)
 - Google OAuth branding — trocar nome no Google Cloud Console
-- Página pública do Promoter/RP — link compartilhável com eventos, cupons e listas do promoter (1 view nova + 1 rota, backend já existe)
+- Página pública Promoter/RP — plano desenhado, backend existe, 1 view + 1 rota
+- 2 `as any` legítimos restantes (dashboardAnalytics tabela dinâmica + eventosAdminCore globalThis)
 
 ## Pendencias externas
 - Conta Apple Developer ($99/ano)

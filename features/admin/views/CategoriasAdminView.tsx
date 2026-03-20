@@ -1,10 +1,10 @@
 /**
- * CategoriasAdminView — CRUD de Formatos, Estilos e Experiências (masteradm).
- * 3 abas independentes, cada uma opera na sua tabela Supabase.
+ * CategoriasAdminView — Configurações da Plataforma (masteradm).
+ * Página única com 4 seções colapsáveis + etiquetas de onde cada config é usada.
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { ArrowLeft, Plus, Trash2, Check, X, Loader2, Pencil } from 'lucide-react';
+import { ArrowLeft, Plus, Trash2, Check, X, Loader2, Pencil, ChevronDown, ChevronUp } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
 import { AdminViewHeader } from '../components/AdminViewHeader';
 import { supabase } from '../../../services/supabaseClient';
@@ -17,57 +17,106 @@ interface Item {
   ordem: number;
 }
 
-type TabType = 'formatos' | 'estilos' | 'experiencias' | 'outros';
+type SectionKey = 'formatos' | 'estilos' | 'experiencias' | 'interesses';
 
-const TAB_CONFIG: Record<
-  TabType,
-  { table: string; emoji: string; label: string; color: string; colorBg: string; colorBorder: string }
-> = {
-  formatos: {
+interface SectionConfig {
+  key: SectionKey;
+  table: string;
+  emoji: string;
+  title: string;
+  singular: string;
+  color: string;
+  colorBg: string;
+  colorBorder: string;
+  tags: { label: string; color: string }[];
+  placeholder: string;
+}
+
+const SECTIONS: SectionConfig[] = [
+  {
+    key: 'formatos',
     table: 'formatos',
     emoji: '🧱',
-    label: 'Formatos',
+    title: 'Formatos de Evento',
+    singular: 'formato',
     color: 'text-[#FFD300]',
     colorBg: 'bg-[#FFD300]',
     colorBorder: 'border-[#FFD300]',
+    tags: [
+      { label: 'Criação de Evento', color: 'bg-blue-500/15 text-blue-400 border-blue-500/20' },
+      { label: 'Filtros da Home', color: 'bg-purple-500/15 text-purple-400 border-purple-500/20' },
+      { label: 'Feed', color: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/20' },
+      { label: 'Comunidades', color: 'bg-amber-500/15 text-amber-400 border-amber-500/20' },
+    ],
+    placeholder: 'Ex: Boate, Iate, Rooftop...',
   },
-  estilos: {
+  {
+    key: 'estilos',
     table: 'estilos',
     emoji: '🎵',
-    label: 'Estilos',
+    title: 'Estilos Musicais',
+    singular: 'estilo',
     color: 'text-purple-400',
     colorBg: 'bg-purple-500',
     colorBorder: 'border-purple-500',
+    tags: [
+      { label: 'Criação de Evento', color: 'bg-blue-500/15 text-blue-400 border-blue-500/20' },
+      { label: 'Chips de Filtro', color: 'bg-purple-500/15 text-purple-400 border-purple-500/20' },
+      { label: 'Badges nos Cards', color: 'bg-pink-500/15 text-pink-400 border-pink-500/20' },
+      { label: 'Busca', color: 'bg-cyan-500/15 text-cyan-400 border-cyan-500/20' },
+    ],
+    placeholder: 'Ex: Techno, Funk, Sertanejo...',
   },
-  experiencias: {
+  {
+    key: 'experiencias',
     table: 'experiencias',
     emoji: '✨',
-    label: 'Experiências',
+    title: 'Experiências',
+    singular: 'experiência',
     color: 'text-emerald-400',
     colorBg: 'bg-emerald-500',
     colorBorder: 'border-emerald-500',
+    tags: [
+      { label: 'Criação de Evento', color: 'bg-blue-500/15 text-blue-400 border-blue-500/20' },
+      { label: 'Busca', color: 'bg-cyan-500/15 text-cyan-400 border-cyan-500/20' },
+    ],
+    placeholder: 'Ex: Open Bar, VIP Area, Sunset...',
   },
-  outros: {
+  {
+    key: 'interesses',
     table: 'interesses',
-    emoji: '⚡',
-    label: 'Outros',
+    emoji: '💡',
+    title: 'Interesses do Perfil',
+    singular: 'interesse',
     color: 'text-amber-400',
     colorBg: 'bg-amber-500',
     colorBorder: 'border-amber-500',
+    tags: [
+      { label: 'Onboarding', color: 'bg-[#FFD300]/15 text-[#FFD300] border-[#FFD300]/20' },
+      { label: 'Indica pra Você', color: 'bg-orange-500/15 text-orange-400 border-orange-500/20' },
+      { label: 'MAIS VANTA', color: 'bg-violet-500/15 text-violet-400 border-violet-500/20' },
+    ],
+    placeholder: 'Ex: Gastronomia, Esportes, Games...',
   },
-};
+];
 
 export const CategoriasAdminView: React.FC<{ onBack: () => void }> = ({ onBack }) => {
-  const [items, setItems] = useState<Record<TabType, Item[]>>({
+  const [items, setItems] = useState<Record<SectionKey, Item[]>>({
     formatos: [],
     estilos: [],
     experiencias: [],
-    outros: [],
+    interesses: [],
   });
   const [loading, setLoading] = useState(true);
   const [editItem, setEditItem] = useState<Partial<Item> | null>(null);
+  const [editSection, setEditSection] = useState<SectionConfig | null>(null);
   const [saving, setSaving] = useState(false);
-  const [tab, setTab] = useState<TabType>('formatos');
+  const [collapsed, setCollapsed] = useState<Record<SectionKey, boolean>>({
+    formatos: false,
+    estilos: false,
+    experiencias: true,
+    interesses: false,
+  });
   const { toasts, dismiss, toast } = useToast();
 
   const load = useCallback(async () => {
@@ -81,7 +130,7 @@ export const CategoriasAdminView: React.FC<{ onBack: () => void }> = ({ onBack }
       formatos: (f.data ?? []) as Item[],
       estilos: (e.data ?? []) as Item[],
       experiencias: (x.data ?? []) as Item[],
-      outros: (o.data ?? []) as Item[],
+      interesses: (o.data ?? []) as Item[],
     });
     setLoading(false);
   }, []);
@@ -90,28 +139,30 @@ export const CategoriasAdminView: React.FC<{ onBack: () => void }> = ({ onBack }
     void load();
   }, [load]);
 
-  const cfg = TAB_CONFIG[tab];
-  const currentItems = items[tab];
-
   const handleSave = async () => {
-    if (!editItem?.label?.trim()) return;
+    if (!editItem?.label?.trim() || !editSection) return;
     setSaving(true);
     try {
+      const sectionItems = items[editSection.key];
       const payload = {
         label: editItem.label.trim(),
         ativo: editItem.ativo ?? true,
-        ordem: editItem.ordem ?? currentItems.length,
+        ordem: editItem.ordem ?? sectionItems.length,
       };
       if (editItem.id) {
-        const { error } = await supabase.from(cfg.table).update(payload).eq('id', editItem.id);
+        const { error } = await supabase
+          .from(editSection.table as 'formatos')
+          .update(payload)
+          .eq('id', editItem.id);
         if (error) throw error;
         toast('sucesso', 'Atualizado com sucesso');
       } else {
-        const { error } = await supabase.from(cfg.table).insert(payload);
+        const { error } = await supabase.from(editSection.table as 'formatos').insert(payload);
         if (error) throw error;
-        toast('sucesso', `${cfg.label.slice(0, -1)} criado`);
+        toast('sucesso', `${editSection.singular} criado`);
       }
       setEditItem(null);
+      setEditSection(null);
       void load();
     } catch {
       toast('erro', 'Erro ao salvar');
@@ -119,9 +170,12 @@ export const CategoriasAdminView: React.FC<{ onBack: () => void }> = ({ onBack }
     setSaving(false);
   };
 
-  const handleDelete = async (item: Item) => {
+  const handleDelete = async (section: SectionConfig, item: Item) => {
     try {
-      const { error } = await supabase.from(cfg.table).delete().eq('id', item.id);
+      const { error } = await supabase
+        .from(section.table as 'formatos')
+        .delete()
+        .eq('id', item.id);
       if (error) throw error;
       toast('sucesso', 'Removido com sucesso');
       void load();
@@ -130,124 +184,170 @@ export const CategoriasAdminView: React.FC<{ onBack: () => void }> = ({ onBack }
     }
   };
 
-  const handleToggle = async (item: Item) => {
+  const handleToggle = async (section: SectionConfig, item: Item) => {
     try {
-      const { error } = await supabase.from(cfg.table).update({ ativo: !item.ativo }).eq('id', item.id);
+      const { error } = await supabase
+        .from(section.table as 'formatos')
+        .update({ ativo: !item.ativo })
+        .eq('id', item.id);
       if (error) throw error;
-      setItems(prev => ({ ...prev, [tab]: prev[tab].map(i => (i.id === item.id ? { ...i, ativo: !i.ativo } : i)) }));
+      setItems(prev => ({
+        ...prev,
+        [section.key]: prev[section.key].map(i => (i.id === item.id ? { ...i, ativo: !i.ativo } : i)),
+      }));
       toast('sucesso', item.ativo ? 'Desativado' : 'Ativado');
     } catch {
       toast('erro', 'Erro ao alterar status');
     }
   };
 
-  const renderRow = (item: Item) => (
+  const toggleCollapse = (key: SectionKey) => {
+    setCollapsed(prev => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  const renderRow = (section: SectionConfig, item: Item) => (
     <div
       key={item.id}
-      className={`flex items-center gap-3 p-4 rounded-2xl border transition-all ${
+      className={`flex items-center gap-3 p-3 rounded-xl border transition-all ${
         item.ativo ? 'bg-zinc-900/40 border-white/5' : 'bg-zinc-900/20 border-white/3 opacity-50'
       }`}
     >
-      <div
-        className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
-          item.ativo ? `${cfg.colorBg}/10 border ${cfg.colorBorder}/20` : 'bg-zinc-800 border border-white/5'
-        }`}
-      >
-        <span className="text-base">{cfg.emoji}</span>
-      </div>
       <div className="flex-1 min-w-0">
         <p className="text-white font-bold text-sm truncate">{item.label}</p>
-        <p className="text-zinc-400 text-[0.5625rem] font-black uppercase tracking-widest">
+        <p className="text-zinc-500 text-[0.5rem] font-bold uppercase tracking-widest">
           {item.ativo ? 'Ativo' : 'Desativado'}
         </p>
       </div>
-      <div className="flex items-center gap-1.5 shrink-0">
+      <div className="flex items-center gap-1 shrink-0">
         <button
-          onClick={() => handleToggle(item)}
-          className={`w-8 h-8 rounded-lg flex items-center justify-center border transition-all active:scale-90 ${
+          onClick={() => handleToggle(section, item)}
+          className={`w-7 h-7 rounded-lg flex items-center justify-center border transition-all active:scale-90 ${
             item.ativo
               ? 'bg-emerald-500/15 border-emerald-500/25 text-emerald-400'
               : 'bg-zinc-800 border-white/5 text-zinc-400'
           }`}
         >
-          <Check size="0.75rem" />
+          <Check size="0.625rem" />
         </button>
         <button
-          onClick={() => setEditItem(item)}
-          className="w-8 h-8 rounded-lg flex items-center justify-center border border-white/5 bg-zinc-800 text-zinc-400 active:scale-90 transition-all"
+          onClick={() => {
+            setEditSection(section);
+            setEditItem(item);
+          }}
+          className="w-7 h-7 rounded-lg flex items-center justify-center border border-white/5 bg-zinc-800 text-zinc-400 active:scale-90 transition-all"
         >
-          <Pencil size="0.75rem" />
+          <Pencil size="0.625rem" />
         </button>
         <button
-          onClick={() => handleDelete(item)}
-          className="w-8 h-8 rounded-lg flex items-center justify-center border border-red-500/20 bg-red-950/30 text-red-400 active:scale-90 transition-all"
+          onClick={() => handleDelete(section, item)}
+          className="w-7 h-7 rounded-lg flex items-center justify-center border border-red-500/20 bg-red-950/30 text-red-400 active:scale-90 transition-all"
         >
-          <Trash2 size="0.75rem" />
+          <Trash2 size="0.625rem" />
         </button>
       </div>
     </div>
   );
 
+  const renderSection = (section: SectionConfig) => {
+    const sectionItems = items[section.key];
+    const activeCount = sectionItems.filter(i => i.ativo).length;
+    const isCollapsed = collapsed[section.key];
+
+    return (
+      <div key={section.key} className="border border-white/5 rounded-2xl overflow-hidden">
+        {/* Header da seção */}
+        <button
+          onClick={() => toggleCollapse(section.key)}
+          className="w-full flex items-center gap-3 p-4 active:bg-white/3 transition-colors"
+        >
+          <span className="text-xl">{section.emoji}</span>
+          <div className="flex-1 min-w-0 text-left">
+            <div className="flex items-center gap-2">
+              <h3 className="text-white font-bold text-sm">{section.title}</h3>
+              <span className={`text-[0.5rem] font-black uppercase tracking-widest ${section.color}`}>
+                {activeCount} ativos
+              </span>
+              {sectionItems.length - activeCount > 0 && (
+                <span className="text-[0.5rem] font-bold text-zinc-600">
+                  +{sectionItems.length - activeCount} inativos
+                </span>
+              )}
+            </div>
+            {/* Etiquetas de uso */}
+            <div className="flex flex-wrap gap-1 mt-1.5">
+              {section.tags.map(tag => (
+                <span
+                  key={tag.label}
+                  className={`px-2 py-0.5 rounded-md text-[0.4375rem] font-bold uppercase tracking-wider border ${tag.color}`}
+                >
+                  {tag.label}
+                </span>
+              ))}
+            </div>
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              onClick={e => {
+                e.stopPropagation();
+                setEditSection(section);
+                setEditItem({ label: '', ativo: true, ordem: sectionItems.length });
+                if (isCollapsed) toggleCollapse(section.key);
+              }}
+              className={`w-7 h-7 rounded-lg flex items-center justify-center border ${section.colorBorder}/20 ${section.colorBg}/10 ${section.color} active:scale-90 transition-all`}
+            >
+              <Plus size="0.75rem" />
+            </button>
+            {isCollapsed ? (
+              <ChevronDown size="0.875rem" className="text-zinc-500" />
+            ) : (
+              <ChevronUp size="0.875rem" className="text-zinc-500" />
+            )}
+          </div>
+        </button>
+
+        {/* Lista de itens */}
+        {!isCollapsed && (
+          <div className="px-4 pb-4 space-y-1.5">
+            {sectionItems.length === 0 ? (
+              <div className="flex flex-col items-center py-6 gap-2">
+                <span className="text-2xl opacity-30">{section.emoji}</span>
+                <p className="text-zinc-600 text-[0.5625rem] font-bold uppercase tracking-widest">
+                  Nenhum {section.singular} cadastrado
+                </p>
+              </div>
+            ) : (
+              sectionItems.map(item => renderRow(section, item))
+            )}
+          </div>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div className="flex-1 bg-[#0A0A0A] flex flex-col overflow-hidden">
       <ToastContainer toasts={toasts} onDismiss={dismiss} />
-      <AdminViewHeader
-        title="Categorias"
-        kicker="Master"
-        onBack={onBack}
-        actions={[
-          {
-            icon: Plus,
-            label: 'Nova categoria',
-            onClick: () => setEditItem({ label: '', ativo: true, ordem: currentItems.length }),
-          },
-        ]}
-      />
+      <AdminViewHeader title="Configurações da Plataforma" kicker="Master" onBack={onBack} />
 
-      {/* Tabs — 3 abas */}
-      <div className="shrink-0 px-5 pt-4 pb-2 flex flex-wrap gap-2">
-        {(Object.keys(TAB_CONFIG) as TabType[]).map(t => {
-          const c = TAB_CONFIG[t];
-          const isActive = tab === t;
-          return (
-            <button
-              key={t}
-              onClick={() => setTab(t)}
-              className={`px-4 py-3 rounded-2xl text-[0.5625rem] font-black uppercase tracking-wider border transition-all ${
-                isActive
-                  ? `${c.colorBg} ${c.colorBorder} ${t === 'formatos' || t === 'outros' ? 'text-black' : 'text-white'} shadow-lg`
-                  : 'bg-zinc-900/50 border-white/5 text-zinc-400'
-              }`}
-            >
-              {c.emoji} {c.label} ({items[t].length})
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Lista */}
-      <div className="flex-1 overflow-y-auto no-scrollbar p-5 space-y-2 max-w-3xl mx-auto w-full">
+      {/* Seções */}
+      <div className="flex-1 overflow-y-auto no-scrollbar p-5 space-y-3 max-w-3xl mx-auto w-full">
         {loading ? (
           <div className="flex items-center justify-center py-20">
             <Loader2 size="1.5rem" className="text-zinc-700 animate-spin" />
           </div>
-        ) : currentItems.length === 0 ? (
-          <div className="flex flex-col items-center py-20 gap-3">
-            <span className="text-3xl">{cfg.emoji}</span>
-            <p className="text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest">
-              Nenhum {cfg.label.toLowerCase().slice(0, -1)} cadastrado
-            </p>
-          </div>
         ) : (
-          currentItems.map(item => renderRow(item))
+          SECTIONS.map(section => renderSection(section))
         )}
       </div>
 
       {/* Modal Criar/Editar */}
-      {editItem && (
+      {editItem && editSection && (
         <div
           className="absolute inset-0 z-50 flex items-end bg-black/80 backdrop-blur-sm"
-          onClick={() => setEditItem(null)}
+          onClick={() => {
+            setEditItem(null);
+            setEditSection(null);
+          }}
         >
           <div
             className="w-full bg-[#111] border-t border-white/10 rounded-t-3xl p-6 space-y-5 animate-in slide-in-from-bottom duration-300"
@@ -256,10 +356,28 @@ export const CategoriasAdminView: React.FC<{ onBack: () => void }> = ({ onBack }
           >
             <div className="w-10 h-1 bg-zinc-700 rounded-full mx-auto" />
             <div className="flex items-start justify-between">
-              <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest">
-                {editItem.id ? 'Editar' : 'Novo'} {cfg.emoji} {cfg.label.slice(0, -1)}
-              </p>
-              <button onClick={() => setEditItem(null)} className="p-1.5 text-zinc-400 active:text-white">
+              <div>
+                <p className="text-zinc-400 text-[0.5rem] font-black uppercase tracking-widest">
+                  {editItem.id ? 'Editar' : 'Novo'} {editSection.emoji} {editSection.singular}
+                </p>
+                <div className="flex flex-wrap gap-1 mt-1">
+                  {editSection.tags.map(tag => (
+                    <span
+                      key={tag.label}
+                      className={`px-1.5 py-0.5 rounded text-[0.375rem] font-bold uppercase tracking-wider border ${tag.color}`}
+                    >
+                      {tag.label}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <button
+                onClick={() => {
+                  setEditItem(null);
+                  setEditSection(null);
+                }}
+                className="p-1.5 text-zinc-400 active:text-white"
+              >
                 <X size="0.875rem" />
               </button>
             </div>
@@ -270,7 +388,7 @@ export const CategoriasAdminView: React.FC<{ onBack: () => void }> = ({ onBack }
                 type="text"
                 value={editItem.label ?? ''}
                 onChange={e => setEditItem(p => ({ ...p!, label: e.target.value }))}
-                placeholder={`Ex: ${tab === 'formatos' ? 'Boate, Iate, Rooftop...' : tab === 'estilos' ? 'Techno, Funk, Sertanejo...' : tab === 'experiencias' ? 'Open Bar, VIP Area, Sunset...' : 'Gastronomia, Fitness, Games...'}`}
+                placeholder={editSection.placeholder}
                 className="w-full bg-zinc-900/60 border border-white/5 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-[#FFD300]/30 placeholder-zinc-700"
                 autoFocus
               />
@@ -282,7 +400,7 @@ export const CategoriasAdminView: React.FC<{ onBack: () => void }> = ({ onBack }
               className="w-full py-4 bg-[#FFD300] text-black font-black text-[0.625rem] uppercase tracking-[0.2em] rounded-xl flex items-center justify-center gap-2 active:scale-[0.97] transition-all disabled:opacity-30"
             >
               {saving ? <Loader2 size="0.875rem" className="animate-spin" /> : <Check size="0.875rem" />}
-              {editItem.id ? 'Salvar' : `Criar ${cfg.label.slice(0, -1)}`}
+              {editItem.id ? 'Salvar' : `Criar ${editSection.singular}`}
             </button>
           </div>
         </div>

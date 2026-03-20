@@ -3,7 +3,7 @@ import { UnsavedChangesModal } from '../../../components/UnsavedChangesModal';
 import { useToast, ToastContainer } from '../../../components/Toast';
 import { ArrowLeft, Check, MapPin, Calendar, Users, ListChecks, Ticket, Search, Loader2, FileText } from 'lucide-react';
 import { useDraft } from '../../../hooks/useDraft';
-import { TYPOGRAPHY } from '../../../constants';
+import { TYPOGRAPHY, FORMATOS_POR_TIPO_COMUNIDADE } from '../../../constants';
 import type { Comunidade, LoteAdmin, MembroEquipeEvento } from '../../../types';
 import { eventosAdminService } from '../services/eventosAdminService';
 import { listasService } from '../services/listasService';
@@ -46,7 +46,8 @@ const ClassificacaoInline: React.FC<{
   setEstilos: (v: string[]) => void;
   experiencias: string[];
   setExperiencias: (v: string[]) => void;
-}> = ({ formato, setFormato, estilos, setEstilos, experiencias, setExperiencias }) => {
+  tipoComunidade?: string | null;
+}> = ({ formato, setFormato, estilos, setEstilos, experiencias, setExperiencias, tipoComunidade }) => {
   const [dbFormatos, setDbFormatos] = React.useState<string[]>([]);
   const [dbEstilos, setDbEstilos] = React.useState<string[]>([]);
   const [dbExperiencias, setDbExperiencias] = React.useState<string[]>([]);
@@ -62,7 +63,13 @@ const ClassificacaoInline: React.FC<{
         supabase.from('estilos').select('label').eq('ativo', true).order('ordem', { ascending: true }),
         supabase.from('experiencias').select('label').eq('ativo', true).order('ordem', { ascending: true }),
       ]);
-      setDbFormatos((f.data ?? []).map((d: { label: string }) => d.label));
+      let fmts = (f.data ?? []).map((d: { label: string }) => d.label);
+      // Filtrar formatos pelo tipo da comunidade
+      if (tipoComunidade && tipoComunidade !== 'PRODUTORA') {
+        const permitidos = FORMATOS_POR_TIPO_COMUNIDADE[tipoComunidade];
+        if (permitidos) fmts = fmts.filter(fmt => permitidos.includes(fmt));
+      }
+      setDbFormatos(fmts);
       setDbEstilos((e.data ?? []).map((d: { label: string }) => d.label));
       setDbExperiencias((x.data ?? []).map((d: { label: string }) => d.label));
       setLoading(false);
@@ -1166,6 +1173,7 @@ export const CriarEventoView: React.FC<{
                 setEstilos={setEstilos}
                 experiencias={experiencias}
                 setExperiencias={setExperiencias}
+                tipoComunidade={comunidade.tipo_comunidade}
               />
 
               {/* ── Classificação Etária ── */}

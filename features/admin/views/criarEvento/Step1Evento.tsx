@@ -5,6 +5,7 @@ import type { Comunidade } from '../../../../types';
 import { supabase } from '../../../../services/supabaseClient';
 import { todayBR } from '../../../../utils';
 import { inputCls, inputDateCls, labelCls } from './constants';
+import { FORMATOS_POR_TIPO_COMUNIDADE } from '../../../../constants';
 import { VantaDropdown } from '../../../../components/VantaDropdown';
 import { VantaDatePicker } from '../../../../components/VantaDatePicker';
 import { globalToast } from '../../../../components/Toast';
@@ -76,7 +77,14 @@ export const Step1Evento: React.FC<Props> = props => {
         supabase.from('estilos').select('label').eq('ativo', true).order('ordem', { ascending: true }),
         supabase.from('experiencias').select('label').eq('ativo', true).order('ordem', { ascending: true }),
       ]);
-      setDbFormatos((f.data ?? []).map((d: { label: string }) => d.label));
+      let fmts = (f.data ?? []).map((d: { label: string }) => d.label);
+      // Filtrar formatos pelo tipo da comunidade
+      const tipo = p.comunidade?.tipo_comunidade;
+      if (tipo && tipo !== 'PRODUTORA') {
+        const permitidos = FORMATOS_POR_TIPO_COMUNIDADE[tipo];
+        if (permitidos) fmts = fmts.filter(fmt => permitidos.includes(fmt));
+      }
+      setDbFormatos(fmts);
       setDbEstilos((e.data ?? []).map((d: { label: string }) => d.label));
       setDbExperiencias((x.data ?? []).map((d: { label: string }) => d.label));
       setLoading(false);

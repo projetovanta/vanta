@@ -2,6 +2,7 @@ import React from 'react';
 import {
   LayoutDashboard,
   AlertCircle,
+  Lightbulb,
   Crown,
   Banknote,
   BarChart3,
@@ -20,31 +21,44 @@ import {
   LogOut,
   Scale,
   Users,
+  ShieldPlus,
+  ClipboardList,
+  Tag,
+  Activity,
 } from 'lucide-react';
 import type { ContaVantaLegacy } from '../../../types';
 
 export type NavItem =
+  // VISÃO GERAL
   | 'DASHBOARD'
   | 'PENDENCIAS'
-  | 'MAIS_VANTA'
-  | 'FINANCEIRO'
-  | 'ANALYTICS'
-  | 'RELATORIOS'
+  | 'INTELIGENCIA'
+  // COMUNIDADES
   | 'COMUNIDADES'
+  | 'PARCERIAS'
+  | 'CARGOS'
+  | 'AUDIT_LOG'
+  // EVENTOS
   | 'EVENTOS'
+  | 'PENDENTES'
   | 'PORTARIA'
   | 'CAIXA'
   | 'LISTAS'
+  // FINANCEIRO
+  | 'FINANCEIRO'
+  | 'COMPROVANTES'
+  | 'RELATORIOS'
+  // MAIS VANTA
+  | 'MAIS_VANTA'
+  // PLATAFORMA
+  | 'GESTAO_USUARIOS'
+  | 'CATEGORIAS'
+  | 'CONFIG_PLATAFORMA'
   | 'NOTIFICACOES'
   | 'INDICA'
-  | 'COMPROVANTES'
-  | 'PARCERIAS'
-  | 'SISTEMA'
-  | 'PENDENCIAS_APP'
-  | 'CONFIG_PLATAFORMA'
   | 'SITE_CONTENT'
   | 'LEGAL_EDITOR'
-  | 'GESTAO_USUARIOS';
+  | 'DIAGNOSTICO';
 
 interface SidebarItemDef {
   id: NavItem;
@@ -60,28 +74,20 @@ interface SidebarSectionDef {
 
 const SECTIONS: SidebarSectionDef[] = [
   {
-    label: 'INÍCIO',
+    label: 'VISÃO GERAL',
     items: [
-      { id: 'DASHBOARD', label: 'Dashboard', icon: LayoutDashboard },
+      { id: 'DASHBOARD', label: 'Início', icon: LayoutDashboard },
       { id: 'PENDENCIAS', label: 'Pendências', icon: AlertCircle },
-      { id: 'MAIS_VANTA', label: 'MAIS VANTA', icon: Crown, roles: ['vanta_masteradm', 'vanta_gerente'] },
-    ],
-  },
-  {
-    label: 'NÚMEROS',
-    items: [
       {
-        id: 'FINANCEIRO',
-        label: 'Financeiro',
-        icon: Banknote,
-        roles: ['vanta_masteradm', 'vanta_socio', 'vanta_gerente'],
+        id: 'INTELIGENCIA',
+        label: 'Inteligência',
+        icon: Lightbulb,
+        roles: ['vanta_masteradm', 'vanta_gerente', 'vanta_socio'],
       },
-      { id: 'ANALYTICS', label: 'Analytics', icon: BarChart3, roles: ['vanta_masteradm'] },
-      { id: 'RELATORIOS', label: 'Relatórios', icon: FileText, roles: ['vanta_masteradm', 'vanta_gerente'] },
     ],
   },
   {
-    label: 'OPERAR',
+    label: 'COMUNIDADES',
     items: [
       {
         id: 'COMUNIDADES',
@@ -89,25 +95,49 @@ const SECTIONS: SidebarSectionDef[] = [
         icon: Building2,
         roles: ['vanta_masteradm', 'vanta_socio', 'vanta_gerente'],
       },
-      { id: 'EVENTOS', label: 'Eventos', icon: Calendar },
-      { id: 'PORTARIA', label: 'Portaria', icon: Shield },
-      { id: 'CAIXA', label: 'Caixa', icon: ShoppingCart },
-      { id: 'LISTAS', label: 'Listas', icon: ListChecks },
-      { id: 'NOTIFICACOES', label: 'Notificações', icon: Bell, roles: ['vanta_masteradm'] },
-      { id: 'INDICA', label: 'Vanta Indica', icon: Compass, roles: ['vanta_masteradm'] },
+      { id: 'PARCERIAS', label: 'Parcerias', icon: Handshake, roles: ['vanta_masteradm'] },
+      { id: 'CARGOS', label: 'Cargos', icon: ShieldPlus, roles: ['vanta_masteradm'] },
+      { id: 'AUDIT_LOG', label: 'Audit Log', icon: ClipboardList, roles: ['vanta_masteradm'] },
     ],
   },
   {
-    label: 'SISTEMA',
+    label: 'EVENTOS',
     items: [
+      { id: 'EVENTOS', label: 'Meus Eventos', icon: Calendar },
+      { id: 'PENDENTES', label: 'Pendentes', icon: ClipboardList, roles: ['vanta_masteradm'] },
+      { id: 'PORTARIA', label: 'Portaria', icon: Shield },
+      { id: 'CAIXA', label: 'Caixa', icon: ShoppingCart },
+      { id: 'LISTAS', label: 'Listas', icon: ListChecks },
+    ],
+  },
+  {
+    label: 'FINANCEIRO',
+    items: [
+      {
+        id: 'FINANCEIRO',
+        label: 'Financeiro',
+        icon: Banknote,
+        roles: ['vanta_masteradm', 'vanta_socio', 'vanta_gerente'],
+      },
       { id: 'COMPROVANTES', label: 'Comprovantes', icon: FileCheck, roles: ['vanta_masteradm'] },
-      { id: 'PARCERIAS', label: 'Parcerias', icon: Handshake, roles: ['vanta_masteradm'] },
-      { id: 'SISTEMA', label: 'Sistema', icon: Settings, roles: ['vanta_masteradm'] },
-      { id: 'SITE_CONTENT', label: 'Textos do App', icon: FileText, roles: ['vanta_masteradm'] },
-      { id: 'LEGAL_EDITOR', label: 'Termos e Privacidade', icon: Scale, roles: ['vanta_masteradm'] },
+      { id: 'RELATORIOS', label: 'Relatórios', icon: BarChart3, roles: ['vanta_masteradm', 'vanta_gerente'] },
+    ],
+  },
+  {
+    label: 'MAIS VANTA',
+    items: [{ id: 'MAIS_VANTA', label: 'MAIS VANTA', icon: Crown, roles: ['vanta_masteradm', 'vanta_gerente'] }],
+  },
+  {
+    label: 'PLATAFORMA',
+    items: [
       { id: 'GESTAO_USUARIOS', label: 'Usuários', icon: Users, roles: ['vanta_masteradm'] },
-      { id: 'CONFIG_PLATAFORMA', label: 'Config Plataforma', icon: Settings, roles: ['vanta_masteradm'] },
-      { id: 'PENDENCIAS_APP', label: 'Pendências App', icon: AlertCircle, roles: ['vanta_masteradm'] },
+      { id: 'CATEGORIAS', label: 'Categorias', icon: Tag, roles: ['vanta_masteradm'] },
+      { id: 'CONFIG_PLATAFORMA', label: 'Taxas e Splits', icon: Settings, roles: ['vanta_masteradm'] },
+      { id: 'NOTIFICACOES', label: 'Notificações', icon: Bell, roles: ['vanta_masteradm'] },
+      { id: 'INDICA', label: 'Vanta Indica', icon: Compass, roles: ['vanta_masteradm'] },
+      { id: 'SITE_CONTENT', label: 'Textos do App', icon: FileText, roles: ['vanta_masteradm'] },
+      { id: 'LEGAL_EDITOR', label: 'Legal', icon: Scale, roles: ['vanta_masteradm'] },
+      { id: 'DIAGNOSTICO', label: 'Diagnóstico', icon: Activity, roles: ['vanta_masteradm'] },
     ],
   },
 ];

@@ -57,7 +57,7 @@ const rowToComunidade = (r: ComunidadeRow): Comunidade => ({
   evento_privado_formatos: (r.evento_privado_formatos as unknown as string[]) ?? [],
   evento_privado_atracoes: (r.evento_privado_atracoes as unknown as string[]) ?? [],
   evento_privado_faixas_capacidade: (r.evento_privado_faixas_capacidade as unknown as string[]) ?? [],
-  tipo_comunidade: (r.tipo_comunidade as 'ESPACO_FIXO' | 'PRODUTORA') ?? null,
+  tipo_comunidade: (r.tipo_comunidade as string) ?? null,
   onboarding_completo: r.onboarding_completo ?? false,
   instagram: r.instagram ?? undefined,
   whatsapp: r.whatsapp ?? undefined,
@@ -116,7 +116,7 @@ export const comunidadesService = {
     cnpj?: string;
     razaoSocial?: string;
     telefone?: string;
-    tipo_comunidade?: 'ESPACO_FIXO' | 'PRODUTORA';
+    tipo_comunidade?: string;
     instagram?: string;
     whatsapp?: string;
     tiktok?: string;
@@ -180,7 +180,7 @@ export const comunidadesService = {
       cnpj: string;
       razaoSocial: string;
       telefone: string;
-      tipo_comunidade: 'ESPACO_FIXO' | 'PRODUTORA';
+      tipo_comunidade: string;
       instagram: string;
       whatsapp: string;
       tiktok: string;
@@ -267,7 +267,7 @@ export const comunidadesService = {
       evento_privado_atracoes: string[];
       evento_privado_faixas_capacidade: string[];
       onboarding_completo: boolean;
-      tipo_comunidade: 'ESPACO_FIXO' | 'PRODUTORA';
+      tipo_comunidade: string;
       instagram: string;
       whatsapp: string;
       tiktok: string;

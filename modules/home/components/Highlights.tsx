@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { Sparkles } from 'lucide-react';
 import { TYPOGRAPHY } from '../../../constants';
 import { adminService } from '../../../features/admin/services/adminService';
 import { VantaIndicaCard } from '../../../types';
@@ -153,11 +154,15 @@ export const Highlights: React.FC<HighlightsProps> = React.memo(
 
     return (
       /* px-5 individual — carrossel com edge-bleed, não usar px global */
-      <div className="relative w-full pt-2 mb-2 overflow-x-hidden select-none">
-        <div className="px-5 mb-4 text-center">
-          <h2 style={TYPOGRAPHY.sectionKicker} className="opacity-50">
+      <div className="relative w-full pt-0 mb-1 overflow-x-hidden select-none">
+        <div className="flex items-center gap-3 px-5 mb-3">
+          <div className="flex-1 border-t border-white/10" />
+          <Sparkles size="0.625rem" className="text-[#FFD300] shrink-0" />
+          <h2 style={TYPOGRAPHY.sectionKicker} className="text-sm shrink-0">
             Vanta Indica
           </h2>
+          <Sparkles size="0.625rem" className="text-[#FFD300] shrink-0" />
+          <div className="flex-1 border-t border-white/10" />
         </div>
         <div
           ref={carouselRef}

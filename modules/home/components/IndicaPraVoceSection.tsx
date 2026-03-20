@@ -9,7 +9,6 @@ import { clubeDealsService } from '../../../features/admin/services/clube/clubeD
 import { useAuthStore } from '../../../stores/authStore';
 import { EventCardSkeleton } from '../../../components/Skeleton';
 import { SectionFilterChips } from '../../../components/SectionFilterChips';
-import { filterTopGroups } from '../utils/filterSubCarousels';
 
 interface IndicaPraVoceSectionProps {
   cidade: string;
@@ -115,30 +114,6 @@ export const IndicaPraVoceSection: React.FC<IndicaPraVoceSectionProps> = React.m
       return c.length <= 1 ? [] : c;
     }, [eventos, deals]);
 
-    // Sub-carrosséis de eventos por formato (filtrados por relevância)
-    const formatoGroups = useMemo(() => {
-      const fmts = new Set<string>();
-      eventos.forEach(e => {
-        if (e.formato) fmts.add(e.formato);
-      });
-      const groups = Array.from(fmts)
-        .sort()
-        .map(f => ({ label: f, items: eventos.filter(e => e.formato === f) }))
-        .filter(g => g.items.length > 0);
-      return filterTopGroups(groups, eventos.length);
-    }, [eventos]);
-
-    // Sub-carrosséis de eventos por estilo (filtrados por relevância)
-    const estiloGroups = useMemo(() => {
-      const set = new Set<string>();
-      eventos.forEach(e => e.estilos?.forEach(s => set.add(s)));
-      const groups = Array.from(set)
-        .sort()
-        .map(s => ({ label: s, items: eventos.filter(e => e.estilos?.[0] === s) }))
-        .filter(g => g.items.length > 0);
-      return filterTopGroups(groups, eventos.length);
-    }, [eventos]);
-
     // Deals agrupados por tipo de parceiro
     const dealGroups = useMemo(() => {
       const byTipo = new Map<string, DealMaisVanta[]>();
@@ -184,32 +159,6 @@ export const IndicaPraVoceSection: React.FC<IndicaPraVoceSectionProps> = React.m
                   onViewAll={onViewAll}
                   maxCards={9}
                 />
-                {formatoGroups.map(g => (
-                  <div key={`fmt-${g.label}`}>
-                    <p className="text-[0.625rem] font-bold uppercase tracking-widest text-zinc-500 px-5 mb-2">
-                      {g.label}
-                    </p>
-                    <EventCarousel
-                      eventos={g.items.slice(0, 9)}
-                      onEventClick={onEventClick}
-                      onComunidadeClick={onComunidadeClick}
-                      maxCards={9}
-                    />
-                  </div>
-                ))}
-                {estiloGroups.map(g => (
-                  <div key={`sty-${g.label}`}>
-                    <p className="text-[0.625rem] font-bold uppercase tracking-widest text-zinc-500 px-5 mb-2">
-                      {g.label}
-                    </p>
-                    <EventCarousel
-                      eventos={g.items.slice(0, 9)}
-                      onEventClick={onEventClick}
-                      onComunidadeClick={onComunidadeClick}
-                      maxCards={9}
-                    />
-                  </div>
-                ))}
               </>
             )}
 

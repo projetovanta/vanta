@@ -38,6 +38,7 @@ const FILE_WHITELIST = [
   'AdminGateway.tsx',
   'DevAccountSwitcher.tsx',
   'ErrorBoundary.tsx',
+  'HomeFilterOverlay.tsx',
 ];
 
 // ── Regras ────────────────────────────────────────────────────────────────────

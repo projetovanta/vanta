@@ -110,16 +110,13 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </div>
       )}
 
-      {/* Saudação */}
-      <div className="px-5 pt-5 pb-2">
+      {/* Saudação — compacta, 1 linha */}
+      <div className="px-5 pt-3 pb-1">
         <p className="text-sm text-zinc-400">
           {getGreeting()}
           {firstName ? `, ` : ''}
           {firstName && <span className="text-white font-semibold">{firstName}</span>}
           {isMembroMV && <Crown size="0.7rem" className="text-[#FFD300] ml-1 inline" />}
-        </p>
-        <p className="text-[0.65rem] text-[#FFD300]/50 font-black uppercase tracking-[0.2em] mt-1">
-          Bem-vindo ao VANTA
         </p>
       </div>
 
@@ -164,6 +161,18 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </LazySection>
       )}
 
+      {/* VANTA Indica pra Você */}
+      {selectedCity && (
+        <LazySection>
+          <IndicaPraVoceSection
+            cidade={selectedCity}
+            onEventClick={onEventClick}
+            onComunidadeClick={onComunidadeClick}
+            onViewAll={onNavigateToSearch}
+          />
+        </LazySection>
+      )}
+
       {/* Mais Vendidos 24h */}
       {selectedCity && (
         <LazySection>
@@ -201,18 +210,6 @@ export const HomeView: React.FC<HomeViewProps> = ({
             onEventClick={onEventClick}
             onComunidadeClick={onComunidadeClick}
             onViewAll={() => onOpenAllBeneficios?.(selectedCity)}
-          />
-        </LazySection>
-      )}
-
-      {/* VANTA Indica pra Você */}
-      {selectedCity && (
-        <LazySection>
-          <IndicaPraVoceSection
-            cidade={selectedCity}
-            onEventClick={onEventClick}
-            onComunidadeClick={onComunidadeClick}
-            onViewAll={onNavigateToSearch}
           />
         </LazySection>
       )}

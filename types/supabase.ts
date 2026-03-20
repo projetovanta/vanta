@@ -3754,6 +3754,7 @@ export type Database = {
           full_name: string;
           genero: string | null;
           id: string;
+          home_filters: string[] | null;
           instagram: string | null;
           instagram_followers: number | null;
           interesses: string[];
@@ -3797,6 +3798,7 @@ export type Database = {
           foto_perfil?: string | null;
           full_name?: string;
           genero?: string | null;
+          home_filters?: string[] | null;
           id: string;
           instagram?: string | null;
           instagram_followers?: number | null;
@@ -3841,6 +3843,7 @@ export type Database = {
           foto_perfil?: string | null;
           full_name?: string;
           genero?: string | null;
+          home_filters?: string[] | null;
           id?: string;
           instagram?: string | null;
           instagram_followers?: number | null;

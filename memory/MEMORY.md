@@ -136,6 +136,9 @@
 - [feedback_nunca_burlar_marker.md](feedback_nunca_burlar_marker.md) — NUNCA rodar vanta-marker.sh sem ter feito o trabalho real — última chance
 - [feedback_padrao_sprint_sessao.md](feedback_padrao_sprint_sessao.md) — Padrão sprint: blocos temáticos → investigar → plano com equipe → Dan aprova → executar → memórias
 - [feedback_visual_profundidade.md](feedback_visual_profundidade.md) — Visual: profundidade entre camadas, "preto não preto", contraste sutil, zero hover mobile
+- [feedback_atas_resumo_conversa.md](feedback_atas_resumo_conversa.md) — Atas = resumos de conversa (contexto, raciocínio, tentativas), não formato corporativo
+- [feedback_supabase_project_id.md](feedback_supabase_project_id.md) — Supabase MCP: project_id correto = daldttuibmxwkpbqtebm (não jbmqjbatpqbxajkndixx)
+- [feedback_tasks_checklist.md](feedback_tasks_checklist.md) — SEMPRE criar Tasks como checklist visual antes de executar planos
 
 ## Meta
 

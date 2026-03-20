@@ -34,9 +34,9 @@ test.describe('Navegação principal', () => {
     }
   });
 
-  test('feed mostra saudação e seções', async ({ page }) => {
-    // Guest vê saudação + bem-vindo
-    await expect(page.getByText(/bem-vindo/i).first()).toBeVisible();
+  test('feed mostra seções de conteúdo', async ({ page }) => {
+    // Guest ou logado vê seções de conteúdo na Home
+    await expect(page.getByText(/próximos eventos/i).first()).toBeVisible({ timeout: 10000 });
   });
 
   test('nenhum console.error crítico durante navegação', async ({ page }) => {

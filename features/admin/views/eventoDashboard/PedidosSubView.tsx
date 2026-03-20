@@ -226,7 +226,7 @@ export const PedidosSubView: React.FC<{
                     setStatusFilter(o.value);
                     setShowStatusDrop(false);
                   }}
-                  className={`w-full text-left px-3 py-2 text-xs hover:bg-white/5 ${statusFilter === o.value ? 'text-[#FFD300]' : 'text-zinc-400'}`}
+                  className={`w-full text-left px-3 py-2 text-xs hover-real:bg-white/5 ${statusFilter === o.value ? 'text-[#FFD300]' : 'text-zinc-400'}`}
                 >
                   {o.label}
                 </button>
@@ -255,7 +255,7 @@ export const PedidosSubView: React.FC<{
                     setVariacaoFilter('TODOS');
                     setShowVarDrop(false);
                   }}
-                  className={`w-full text-left px-3 py-2 text-xs hover:bg-white/5 ${variacaoFilter === 'TODOS' ? 'text-[#FFD300]' : 'text-zinc-400'}`}
+                  className={`w-full text-left px-3 py-2 text-xs hover-real:bg-white/5 ${variacaoFilter === 'TODOS' ? 'text-[#FFD300]' : 'text-zinc-400'}`}
                 >
                   Todas
                 </button>
@@ -266,7 +266,7 @@ export const PedidosSubView: React.FC<{
                       setVariacaoFilter(v);
                       setShowVarDrop(false);
                     }}
-                    className={`w-full text-left px-3 py-2 text-xs hover:bg-white/5 truncate ${variacaoFilter === v ? 'text-[#FFD300]' : 'text-zinc-400'}`}
+                    className={`w-full text-left px-3 py-2 text-xs hover-real:bg-white/5 truncate ${variacaoFilter === v ? 'text-[#FFD300]' : 'text-zinc-400'}`}
                   >
                     {v}
                   </button>
@@ -326,7 +326,7 @@ export const PedidosSubView: React.FC<{
                 <div className="flex items-center gap-2 mt-2 pt-2 border-t border-white/5">
                   <button
                     onClick={() => setDetalheTicket(t)}
-                    className="flex items-center gap-1 text-[0.5625rem] text-zinc-400 hover:text-white transition-colors"
+                    className="flex items-center gap-1 text-[0.5625rem] text-zinc-400 hover-real:text-white transition-colors"
                   >
                     <Eye size="0.6875rem" /> Detalhes
                   </button>
@@ -335,7 +335,7 @@ export const PedidosSubView: React.FC<{
                       <button
                         onClick={() => handleReenviar(t.id)}
                         disabled={actionLoading === t.id}
-                        className="flex items-center gap-1 text-[0.5625rem] text-zinc-400 hover:text-blue-400 transition-colors disabled:opacity-50"
+                        className="flex items-center gap-1 text-[0.5625rem] text-zinc-400 hover-real:text-blue-400 transition-colors disabled:opacity-50"
                       >
                         {actionLoading === t.id ? (
                           <Loader2 size="0.6875rem" className="animate-spin" />
@@ -347,7 +347,7 @@ export const PedidosSubView: React.FC<{
                       <button
                         onClick={() => setConfirmarCancelarId(t.id)}
                         disabled={actionLoading === t.id}
-                        className="flex items-center gap-1 text-[0.5625rem] text-zinc-400 hover:text-red-400 transition-colors disabled:opacity-50"
+                        className="flex items-center gap-1 text-[0.5625rem] text-zinc-400 hover-real:text-red-400 transition-colors disabled:opacity-50"
                       >
                         {actionLoading === t.id ? (
                           <Loader2 size="0.6875rem" className="animate-spin" />

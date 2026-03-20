@@ -89,7 +89,7 @@ export const PendenciasHubView: React.FC<Props> = ({ userId, role, comunidadeIds
               <button
                 key={item.id}
                 onClick={() => onNavigate(item.destino as AdminSubView)}
-                className="w-full flex items-center gap-3 p-3 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-600 transition-colors text-left"
+                className="w-full flex items-center gap-3 p-3 rounded-xl bg-zinc-900 border border-zinc-800 hover-real:border-zinc-600 transition-colors text-left"
               >
                 <div
                   className="shrink-0 w-10 h-10 rounded-lg flex items-center justify-center"

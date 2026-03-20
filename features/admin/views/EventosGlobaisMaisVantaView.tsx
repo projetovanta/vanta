@@ -245,7 +245,7 @@ export const EventosGlobaisMaisVantaView: React.FC<{
             <button
               key={e.id}
               onClick={() => setSelectedEventId(e.id)}
-              className="w-full text-left bg-zinc-900/40 border border-white/5 rounded-2xl p-4 hover:border-[#FFD300]/20 transition-colors"
+              className="w-full text-left bg-zinc-900/40 border border-white/5 rounded-2xl p-4 hover-real:border-[#FFD300]/20 transition-colors"
             >
               <div className="flex items-start justify-between mb-2">
                 <div className="flex-1 min-w-0">

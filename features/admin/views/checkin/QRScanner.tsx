@@ -304,7 +304,7 @@ export const QRScanner: React.FC<{
       {!manualMode && camState !== 'denied' && (
         <button
           onClick={() => setManualMode(true)}
-          className="text-zinc-700 text-[0.5625rem] font-black uppercase tracking-widest hover:text-zinc-400 transition-colors"
+          className="text-zinc-700 text-[0.5625rem] font-black uppercase tracking-widest hover-real:text-zinc-400 transition-colors"
         >
           Sem câmera? Digitar código manualmente
         </button>

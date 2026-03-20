@@ -73,7 +73,7 @@ const CampoEditavel: React.FC<{
       <button type="button" onClick={() => onToggle(campoKey)} className="w-full text-left flex items-start gap-2">
         <span
           className={`w-4 h-4 rounded border-2 flex items-center justify-center shrink-0 mt-0.5 transition-all ${
-            ativo ? 'border-red-500 bg-red-500' : 'border-zinc-700 hover:border-zinc-500'
+            ativo ? 'border-red-500 bg-red-500' : 'border-zinc-700 hover-real:border-zinc-500'
           }`}
         >
           {ativo && <Check size="0.5rem" className="text-white" />}

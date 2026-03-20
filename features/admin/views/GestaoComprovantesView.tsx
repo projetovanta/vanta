@@ -155,7 +155,7 @@ export const GestaoComprovantesView: React.FC<Props> = ({ onBack, masterId }) =>
               key={t.id}
               onClick={() => setTab(t.id)}
               className={`px-3 py-1.5 rounded-lg text-[0.625rem] font-bold uppercase tracking-wider transition-all ${
-                tab === t.id ? 'bg-white/10 text-white' : 'text-zinc-400 hover:text-zinc-300'
+                tab === t.id ? 'bg-white/10 text-white' : 'text-zinc-400 hover-real:text-zinc-300'
               }`}
             >
               {t.label} {t.count > 0 && <span className="ml-1 text-[0.5625rem] opacity-60">({t.count})</span>}
@@ -218,7 +218,7 @@ export const GestaoComprovantesView: React.FC<Props> = ({ onBack, masterId }) =>
                 <div className="flex items-center gap-1.5 shrink-0">
                   <button
                     onClick={() => handleVerFoto(c.userId)}
-                    className="p-2 bg-zinc-800 rounded-lg hover:bg-zinc-700 transition-colors"
+                    className="p-2 bg-zinc-800 rounded-lg hover-real:bg-zinc-700 transition-colors"
                     title="Ver documento"
                   >
                     <Eye size="0.875rem" className="text-zinc-400" />
@@ -232,14 +232,14 @@ export const GestaoComprovantesView: React.FC<Props> = ({ onBack, masterId }) =>
                             TIPOS_COMPROVANTE_MEIA.find(t => t.id === c.tipo)?.validadePadrao ?? 6,
                           );
                         }}
-                        className="p-2 bg-emerald-500/20 rounded-lg hover:bg-emerald-500/30 transition-colors"
+                        className="p-2 bg-emerald-500/20 rounded-lg hover-real:bg-emerald-500/30 transition-colors"
                         title="Aprovar"
                       >
                         <CheckCircle size="0.875rem" className="text-emerald-400" />
                       </button>
                       <button
                         onClick={() => setRejeitarModal(c)}
-                        className="p-2 bg-red-500/20 rounded-lg hover:bg-red-500/30 transition-colors"
+                        className="p-2 bg-red-500/20 rounded-lg hover-real:bg-red-500/30 transition-colors"
                         title="Rejeitar"
                       >
                         <XCircle size="0.875rem" className="text-red-400" />
@@ -264,7 +264,7 @@ export const GestaoComprovantesView: React.FC<Props> = ({ onBack, masterId }) =>
           <div className="relative w-full max-w-sm bg-zinc-900 rounded-2xl border border-white/10 overflow-hidden animate-in zoom-in-95 duration-300">
             <div className="p-4 border-b border-white/5 flex items-center justify-between">
               <h3 className="text-sm font-bold text-white">Aprovar Comprovante</h3>
-              <button onClick={() => setAprovarModal(null)} className="p-1 hover:bg-white/10 rounded-lg">
+              <button onClick={() => setAprovarModal(null)} className="p-1 hover-real:bg-white/10 rounded-lg">
                 <X size="1rem" className="text-zinc-400" />
               </button>
             </div>
@@ -285,7 +285,7 @@ export const GestaoComprovantesView: React.FC<Props> = ({ onBack, masterId }) =>
                       className={`py-2 rounded-lg text-xs font-bold transition-all ${
                         validadeSelecionada === v.value
                           ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                          : 'bg-zinc-800 text-zinc-400 border border-white/5 hover:border-white/10'
+                          : 'bg-zinc-800 text-zinc-400 border border-white/5 hover-real:border-white/10'
                       }`}
                     >
                       {v.label}
@@ -321,7 +321,7 @@ export const GestaoComprovantesView: React.FC<Props> = ({ onBack, masterId }) =>
                   setRejeitarModal(null);
                   setMotivoRejeicao('');
                 }}
-                className="p-1 hover:bg-white/10 rounded-lg"
+                className="p-1 hover-real:bg-white/10 rounded-lg"
               >
                 <X size="1rem" className="text-zinc-400" />
               </button>

@@ -134,7 +134,7 @@ export const OnboardingChecklist: React.FC<Props> = ({ comunidade, onNavigate, o
             key={item.id}
             onClick={item.done ? undefined : item.action}
             className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-colors ${
-              item.done ? 'bg-emerald-500/5 cursor-default' : 'bg-zinc-800/50 hover:bg-zinc-800 cursor-pointer'
+              item.done ? 'bg-emerald-500/5 cursor-default' : 'bg-zinc-800/50 hover-real:bg-zinc-800 cursor-pointer'
             }`}
           >
             <div

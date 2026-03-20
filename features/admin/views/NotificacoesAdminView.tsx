@@ -874,7 +874,7 @@ export const NotificacoesAdminView: React.FC<{ onBack: () => void }> = ({ onBack
                       <button
                         key={t.id}
                         onClick={() => loadTemplate(t)}
-                        className="shrink-0 px-3 py-2 bg-zinc-900/60 border border-white/5 rounded-lg text-xs text-zinc-300 font-medium active:scale-95 transition-all hover:border-[#FFD300]/20"
+                        className="shrink-0 px-3 py-2 bg-zinc-900/60 border border-white/5 rounded-lg text-xs text-zinc-300 font-medium active:scale-95 transition-all hover-real:border-[#FFD300]/20"
                       >
                         {t.nome}
                       </button>

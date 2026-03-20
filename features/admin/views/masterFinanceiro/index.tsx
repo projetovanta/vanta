@@ -711,7 +711,7 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification,
               <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest">Histórico</p>
               <button
                 onClick={handleExportSaquesCSV}
-                className="flex items-center gap-1 text-[0.5rem] text-zinc-400 font-bold uppercase tracking-wider hover:text-white transition-colors"
+                className="flex items-center gap-1 text-[0.5rem] text-zinc-400 font-bold uppercase tracking-wider hover-real:text-white transition-colors"
               >
                 <Download className="w-3 h-3" />
                 CSV
@@ -774,7 +774,7 @@ export const MasterFinanceiroView: React.FC<Props> = ({ onBack, addNotification,
             <p className="text-zinc-400 text-xs text-center">Anexe o comprovante PIX (opcional).</p>
 
             {/* Upload comprovante */}
-            <label className="flex items-center justify-center gap-2 w-full min-h-[2.75rem] border border-dashed border-zinc-600 rounded-xl text-zinc-400 text-xs font-bold cursor-pointer hover:border-zinc-400 transition-colors">
+            <label className="flex items-center justify-center gap-2 w-full min-h-[2.75rem] border border-dashed border-zinc-600 rounded-xl text-zinc-400 text-xs font-bold cursor-pointer hover-real:border-zinc-400 transition-colors">
               <FileText className="w-4 h-4" />
               {comprovanteFile ? comprovanteFile.name : 'Selecionar comprovante'}
               <input

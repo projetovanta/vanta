@@ -46,7 +46,7 @@ export const HistoricoSaques: React.FC<Props> = ({ historico }) => {
         {historico.length > 0 && (
           <button
             onClick={handleExportCSV}
-            className="flex items-center gap-1 text-[0.5rem] text-zinc-400 font-bold uppercase tracking-wider hover:text-white transition-colors"
+            className="flex items-center gap-1 text-[0.5rem] text-zinc-400 font-bold uppercase tracking-wider hover-real:text-white transition-colors"
           >
             <Download className="w-3 h-3" />
             CSV

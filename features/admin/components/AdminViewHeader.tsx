@@ -60,7 +60,7 @@ export const AdminViewHeader: React.FC<Props> = ({
               <button
                 type="button"
                 onClick={crumb.onClick}
-                className="shrink-0 text-[0.5rem] uppercase tracking-widest text-zinc-500 hover:text-white transition-colors"
+                className="shrink-0 text-[0.5rem] uppercase tracking-widest text-zinc-500 hover-real:text-white transition-colors"
               >
                 {crumb.label}
               </button>

@@ -293,7 +293,7 @@ export function DevQuickLogin() {
           if (!dragState.current.moved) setOpen(o => !o);
         }}
         style={{ left: pos.x, top: pos.y }}
-        className="fixed z-[9999] w-10 h-10 rounded-full bg-yellow-500/20 border border-yellow-500/40 flex items-center justify-center text-lg hover:bg-yellow-500/30 transition-colors shadow-lg cursor-grab active:cursor-grabbing select-none touch-none"
+        className="fixed z-[9999] w-10 h-10 rounded-full bg-yellow-500/20 border border-yellow-500/40 flex items-center justify-center text-lg hover-real:bg-yellow-500/30 transition-colors shadow-lg cursor-grab active:cursor-grabbing select-none touch-none"
         title="Dev Quick Login (arraste para mover)"
       >
         ⚡
@@ -312,7 +312,7 @@ export function DevQuickLogin() {
         >
           <div className="px-3 py-2 border-b border-[#333] flex items-center justify-between">
             <span className="text-xs font-bold text-yellow-400 uppercase tracking-wider">Dev Quick Login</span>
-            <button onClick={() => setOpen(false)} className="text-gray-500 hover:text-white text-sm">
+            <button onClick={() => setOpen(false)} className="text-gray-500 hover-real:text-white text-sm">
               ✕
             </button>
           </div>
@@ -336,7 +336,7 @@ export function DevQuickLogin() {
                     className={`w-full px-3 py-2.5 flex items-center gap-2.5 text-left transition-colors ${
                       isCurrent
                         ? 'bg-yellow-500/10 border-l-2 border-yellow-400'
-                        : 'hover:bg-white/5 border-l-2 border-transparent'
+                        : 'hover-real:bg-white/5 border-l-2 border-transparent'
                     } ${switching && !isSwitching ? 'opacity-40' : ''}`}
                   >
                     {/* Avatar */}

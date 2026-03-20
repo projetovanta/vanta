@@ -447,7 +447,7 @@ export const CriarComunidadeView: React.FC<{
                   </button>
                   <button
                     onClick={() => void discardDraft()}
-                    className="px-4 py-2 text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest rounded-lg hover:text-zinc-300 active:scale-95 transition-all"
+                    className="px-4 py-2 text-zinc-400 text-[0.625rem] font-black uppercase tracking-widest rounded-lg hover-real:text-zinc-300 active:scale-95 transition-all"
                   >
                     Descartar
                   </button>

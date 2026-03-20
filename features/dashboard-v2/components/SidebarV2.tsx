@@ -198,7 +198,7 @@ export const SidebarV2: React.FC<Props> = ({
             {tenantNome || 'Admin'}
           </span>
         </div>
-        <button onClick={onClose} className="p-2 text-zinc-600 hover:text-zinc-400 transition-colors">
+        <button onClick={onClose} className="p-2 text-zinc-600 hover-real:text-zinc-400 transition-colors">
           {isDesktop ? <LogOut size="0.875rem" /> : <X size="0.875rem" />}
         </button>
       </div>
@@ -220,7 +220,9 @@ export const SidebarV2: React.FC<Props> = ({
                     key={item.id}
                     onClick={() => onSelect(item.id)}
                     className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-all duration-200 ${
-                      isActive ? 'bg-[#FFD300]/10 text-[#FFD300]' : 'text-zinc-400 hover:bg-white/5 hover:text-zinc-200'
+                      isActive
+                        ? 'bg-[#FFD300]/10 text-[#FFD300]'
+                        : 'text-zinc-400 hover-real:bg-white/5 hover-real:text-zinc-200'
                     }`}
                   >
                     <Icon size="0.875rem" className={isActive ? 'text-[#FFD300]' : 'text-zinc-600'} />

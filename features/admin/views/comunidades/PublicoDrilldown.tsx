@@ -786,7 +786,7 @@ export const PublicoDrilldown: React.FC<{
               <button
                 key={i}
                 onClick={() => handleSliceClick(s.name)}
-                className="w-full flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-zinc-800/40 active:bg-zinc-800/60 transition-all text-left"
+                className="w-full flex items-center gap-2 px-2 py-1.5 rounded-lg hover-real:bg-zinc-800/40 active:bg-zinc-800/60 transition-all text-left"
               >
                 <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: s.color }} />
                 <span className="text-white text-[0.625rem] font-bold flex-1 min-w-0 truncate">{s.name}</span>

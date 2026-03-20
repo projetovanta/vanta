@@ -380,7 +380,7 @@ export const TabLista: React.FC<{
               ) : (
                 <button
                   onClick={() => handleCheckin(c.id)}
-                  className="shrink-0 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-[0.5625rem] font-black uppercase tracking-wider text-zinc-400 hover:bg-[#FFD300]/10 hover:text-[#FFD300] hover:border-[#FFD300]/20 active:scale-95 transition-all"
+                  className="shrink-0 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-[0.5625rem] font-black uppercase tracking-wider text-zinc-400 hover-real:bg-[#FFD300]/10 hover-real:text-[#FFD300] hover-real:border-[#FFD300]/20 active:scale-95 transition-all"
                 >
                   Check-in
                 </button>

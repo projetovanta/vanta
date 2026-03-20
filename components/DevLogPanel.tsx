@@ -49,7 +49,7 @@ const LogEntry: React.FC<{ entry: DevLogEntry }> = ({ entry }) => {
   const [expanded, setExpanded] = useState(false);
   return (
     <div
-      className={`px-2 py-1 text-[0.6875rem] font-mono cursor-pointer hover:bg-white/5 ${LEVEL_BG[entry.level] || ''}`}
+      className={`px-2 py-1 text-[0.6875rem] font-mono cursor-pointer hover-real:bg-white/5 ${LEVEL_BG[entry.level] || ''}`}
       onClick={() => setExpanded(!expanded)}
     >
       <span className="text-gray-500">{formatTime(entry.timestamp)}</span> <span>{entry.emoji}</span>{' '}
@@ -145,19 +145,23 @@ export function DevLogPanel() {
           {(errorCount > 0 || warnCount > 0) && (
             <button
               onClick={handleExportReport}
-              className="bg-red-600 text-white rounded px-1.5 py-0.5 text-[0.625rem] hover:bg-red-500"
+              className="bg-red-600 text-white rounded px-1.5 py-0.5 text-[0.625rem] hover-real:bg-red-500"
               title="Copiar só erros (pra colar no Claude)"
             >
               📋 Erros
             </button>
           )}
-          <button onClick={handleExport} className="text-gray-400 hover:text-white px-1" title="Copiar log completo">
+          <button
+            onClick={handleExport}
+            className="text-gray-400 hover-real:text-white px-1"
+            title="Copiar log completo"
+          >
             📋
           </button>
-          <button onClick={() => devLogger.clear()} className="text-gray-400 hover:text-white px-1" title="Limpar">
+          <button onClick={() => devLogger.clear()} className="text-gray-400 hover-real:text-white px-1" title="Limpar">
             🗑
           </button>
-          <button onClick={() => setIsOpen(false)} className="text-gray-400 hover:text-white px-1" title="Fechar">
+          <button onClick={() => setIsOpen(false)} className="text-gray-400 hover-real:text-white px-1" title="Fechar">
             ✕
           </button>
         </div>
@@ -170,7 +174,7 @@ export function DevLogPanel() {
             key={f}
             onClick={() => setFilter(f)}
             className={`px-2 py-0.5 rounded text-[0.625rem] shrink-0 ${
-              filter === f ? 'bg-purple-600 text-white' : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
+              filter === f ? 'bg-purple-600 text-white' : 'bg-gray-800 text-gray-400 hover-real:bg-gray-700'
             }`}
           >
             {f || 'Todos'}

@@ -135,7 +135,7 @@ export const InsightsDashboardView: React.FC<Props> = ({ onBack, comunidadeId, o
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                  active ? 'bg-white/10 text-white' : 'text-zinc-500 hover:text-zinc-300'
+                  active ? 'bg-white/10 text-white' : 'text-zinc-500 hover-real:text-zinc-300'
                 }`}
               >
                 <Icon className="w-3.5 h-3.5" />

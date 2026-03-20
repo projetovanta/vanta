@@ -95,7 +95,7 @@ const SmartTipsCard: React.FC<Props> = ({ comunidadeId, eventoId, getTips, onAct
             {/* Dismiss */}
             <button
               onClick={() => dismiss(tip.id)}
-              className="absolute top-1 right-1 min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center text-white/20 hover:text-white/50 active:text-white/70 transition-colors"
+              className="absolute top-1 right-1 min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center text-white/20 hover-real:text-white/50 active:text-white/70 transition-colors"
             >
               <X className="w-4 h-4" />
             </button>

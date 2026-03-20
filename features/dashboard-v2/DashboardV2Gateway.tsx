@@ -898,7 +898,7 @@ export const DashboardV2Gateway: React.FC<{
             {!sidebarOpen && activeContext && (
               <button
                 onClick={() => setSidebarOpen(true)}
-                className="p-2 text-zinc-500 hover:text-white"
+                className="p-2 text-zinc-500 hover-real:text-white"
                 aria-label="Abrir menu"
               >
                 <Menu size="1rem" />
@@ -906,7 +906,7 @@ export const DashboardV2Gateway: React.FC<{
             )}
             <button
               onClick={() => setShowPalette(true)}
-              className="flex-1 flex items-center gap-3 bg-white/3 border border-white/5 rounded-xl px-4 py-2.5 text-left hover:bg-white/5 transition-colors"
+              className="flex-1 flex items-center gap-3 bg-white/3 border border-white/5 rounded-xl px-4 py-2.5 text-left hover-real:bg-white/5 transition-colors"
             >
               <Search size="0.875rem" className="text-zinc-500" />
               <span className="text-sm text-zinc-500">Buscar...</span>

@@ -726,7 +726,7 @@ export const EditarModal: React.FC<{
                         {f}
                         <button
                           onClick={() => setEpFormatos(epFormatos.filter((_, idx) => idx !== i))}
-                          className="text-purple-400/50 hover:text-purple-300"
+                          className="text-purple-400/50 hover-real:text-purple-300"
                         >
                           <X size="0.625rem" />
                         </button>
@@ -775,7 +775,7 @@ export const EditarModal: React.FC<{
                         {a}
                         <button
                           onClick={() => setEpAtracoes(epAtracoes.filter((_, idx) => idx !== i))}
-                          className="text-blue-400/50 hover:text-blue-300"
+                          className="text-blue-400/50 hover-real:text-blue-300"
                         >
                           <X size="0.625rem" />
                         </button>
@@ -824,7 +824,7 @@ export const EditarModal: React.FC<{
                         {f}
                         <button
                           onClick={() => setEpFaixas(epFaixas.filter((_, idx) => idx !== i))}
-                          className="text-emerald-400/50 hover:text-emerald-300"
+                          className="text-emerald-400/50 hover-real:text-emerald-300"
                         >
                           <X size="0.625rem" />
                         </button>

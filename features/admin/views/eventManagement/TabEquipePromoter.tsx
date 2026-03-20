@@ -258,7 +258,7 @@ export const TabEquipePromoter: React.FC<{
             <div className="px-3 pb-3 flex items-center gap-2">
               <button
                 onClick={() => copyTrackingLink(pid)}
-                className="flex items-center gap-1 px-3 py-1.5 bg-zinc-900 border border-white/5 rounded-lg text-[0.5625rem] text-zinc-400 hover:text-[#FFD300] transition-colors active:scale-95"
+                className="flex items-center gap-1 px-3 py-1.5 bg-zinc-900 border border-white/5 rounded-lg text-[0.5625rem] text-zinc-400 hover-real:text-[#FFD300] transition-colors active:scale-95"
               >
                 {copiedId === pid ? (
                   <Check size="0.6875rem" className="text-emerald-400" />
@@ -269,7 +269,7 @@ export const TabEquipePromoter: React.FC<{
               </button>
               <button
                 onClick={() => setPagModal(pid)}
-                className="flex items-center gap-1 px-3 py-1.5 bg-zinc-900 border border-white/5 rounded-lg text-[0.5625rem] text-zinc-400 hover:text-emerald-400 transition-colors active:scale-95"
+                className="flex items-center gap-1 px-3 py-1.5 bg-zinc-900 border border-white/5 rounded-lg text-[0.5625rem] text-zinc-400 hover-real:text-emerald-400 transition-colors active:scale-95"
               >
                 <DollarSign size="0.6875rem" /> Pagamento
               </button>

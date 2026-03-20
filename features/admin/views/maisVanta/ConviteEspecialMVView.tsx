@@ -206,7 +206,7 @@ export const ConviteEspecialMVView: React.FC = () => {
           <button
             onClick={buscarMembros}
             disabled={buscando}
-            className="w-full flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-[#FFD300]/10 border border-[#FFD300]/20 text-[#FFD300] text-[0.625rem] font-black uppercase tracking-wider hover:bg-[#FFD300]/20 active:scale-95 transition-all disabled:opacity-50"
+            className="w-full flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-[#FFD300]/10 border border-[#FFD300]/20 text-[#FFD300] text-[0.625rem] font-black uppercase tracking-wider hover-real:bg-[#FFD300]/20 active:scale-95 transition-all disabled:opacity-50"
           >
             {buscando ? <RefreshCw size="0.75rem" className="animate-spin" /> : <Search size="0.75rem" />}
             Buscar membros

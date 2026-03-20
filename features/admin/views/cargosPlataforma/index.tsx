@@ -209,13 +209,13 @@ export const CargosPlataformaView: React.FC<Props> = ({ currentUserId, onBack, e
                   <div className="flex gap-2">
                     <button
                       onClick={() => handleEdit(cargo)}
-                      className="p-2 text-white/40 hover:text-white min-w-11 min-h-11 flex items-center justify-center"
+                      className="p-2 text-white/40 hover-real:text-white min-w-11 min-h-11 flex items-center justify-center"
                     >
                       <Shield size={16} />
                     </button>
                     <button
                       onClick={() => handleDesativar(cargo.id)}
-                      className="p-2 text-red-400/60 hover:text-red-400 min-w-11 min-h-11 flex items-center justify-center"
+                      className="p-2 text-red-400/60 hover-real:text-red-400 min-w-11 min-h-11 flex items-center justify-center"
                     >
                       <Trash2 size={16} />
                     </button>
@@ -256,7 +256,7 @@ export const CargosPlataformaView: React.FC<Props> = ({ currentUserId, onBack, e
                 </div>
                 <button
                   onClick={() => handleRevogar(a.id)}
-                  className="p-2 text-red-400/60 hover:text-red-400 min-w-11 min-h-11 flex items-center justify-center"
+                  className="p-2 text-red-400/60 hover-real:text-red-400 min-w-11 min-h-11 flex items-center justify-center"
                 >
                   <Trash2 size={16} />
                 </button>

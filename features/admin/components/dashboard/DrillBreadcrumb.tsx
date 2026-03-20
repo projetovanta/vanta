@@ -27,7 +27,7 @@ export function DrillBreadcrumb({ items }: Props) {
                 <button
                   type="button"
                   onClick={item.onClick}
-                  className="shrink-0 text-[0.625rem] uppercase tracking-widest text-zinc-500 hover:text-white transition-colors cursor-pointer"
+                  className="shrink-0 text-[0.625rem] uppercase tracking-widest text-zinc-500 hover-real:text-white transition-colors cursor-pointer"
                 >
                   {item.label}
                 </button>

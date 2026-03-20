@@ -64,7 +64,7 @@ export const ReembolsosSection: React.FC<Props> = ({
           {reembolsos.length > 0 && (
             <button
               onClick={handleExportCSV}
-              className="flex items-center gap-1 text-[0.5rem] text-zinc-400 font-bold uppercase tracking-wider hover:text-white transition-colors"
+              className="flex items-center gap-1 text-[0.5rem] text-zinc-400 font-bold uppercase tracking-wider hover-real:text-white transition-colors"
             >
               <Download size="0.75rem" />
               CSV

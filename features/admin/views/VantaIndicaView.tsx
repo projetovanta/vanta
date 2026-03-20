@@ -485,7 +485,7 @@ const VantaSelect: React.FC<{
                 onChange(o.value);
                 setOpen(false);
               }}
-              className={`w-full flex items-center gap-2 px-4 py-3 text-left text-sm transition-colors border-b border-white/5 last:border-0 ${o.value === value ? 'bg-zinc-800 text-white' : 'text-zinc-400 hover:bg-zinc-800 active:bg-zinc-800'}`}
+              className={`w-full flex items-center gap-2 px-4 py-3 text-left text-sm transition-colors border-b border-white/5 last:border-0 ${o.value === value ? 'bg-zinc-800 text-white' : 'text-zinc-400 hover-real:bg-zinc-800 active:bg-zinc-800'}`}
             >
               {o.dot && <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: o.dot }} />}
               {o.label}
@@ -579,7 +579,7 @@ const CidadeSelector: React.FC<{
                     key={c}
                     type="button"
                     onClick={() => addCidade(c)}
-                    className="w-full px-4 py-3 text-left text-sm text-zinc-300 hover:bg-zinc-800 active:bg-zinc-800 transition-colors border-b border-white/5 last:border-0"
+                    className="w-full px-4 py-3 text-left text-sm text-zinc-300 hover-real:bg-zinc-800 active:bg-zinc-800 transition-colors border-b border-white/5 last:border-0"
                   >
                     {c}
                   </button>
@@ -908,7 +908,7 @@ const CardModal: React.FC<{
                     setTituloPos({ x: 5, y: 82 });
                     setSubtituloPos({ x: 5, y: 90 });
                   }}
-                  className="shrink-0 px-3 py-2 bg-zinc-900 border border-white/10 rounded-xl text-left active:scale-[0.97] transition-all hover:border-[#FFD300]/30"
+                  className="shrink-0 px-3 py-2 bg-zinc-900 border border-white/10 rounded-xl text-left active:scale-[0.97] transition-all hover-real:border-[#FFD300]/30"
                 >
                   <span className="text-[0.65rem] text-white font-bold block">{tpl.label}</span>
                   <span className="text-[0.5rem] text-zinc-500 block mt-0.5">{tpl.descricao}</span>
@@ -925,7 +925,7 @@ const CardModal: React.FC<{
                     setTituloPos({ x: 5, y: 82 });
                     setSubtituloPos({ x: 5, y: 90 });
                   }}
-                  className="shrink-0 px-3 py-2 bg-[#FFD300]/5 border border-[#FFD300]/20 rounded-xl text-left active:scale-[0.97] transition-all hover:border-[#FFD300]/40"
+                  className="shrink-0 px-3 py-2 bg-[#FFD300]/5 border border-[#FFD300]/20 rounded-xl text-left active:scale-[0.97] transition-all hover-real:border-[#FFD300]/40"
                 >
                   <span className="text-[0.65rem] text-[#FFD300] font-bold block">{tpl.label}</span>
                   <span className="text-[0.5rem] text-zinc-500 block mt-0.5">{tpl.descricao}</span>
@@ -1003,7 +1003,7 @@ const CardModal: React.FC<{
                           key={ev.id}
                           type="button"
                           onClick={() => selectEvento(ev)}
-                          className="w-full flex items-center gap-3 px-4 py-3 hover:bg-zinc-800 active:bg-zinc-800 transition-colors text-left border-b border-white/5 last:border-0"
+                          className="w-full flex items-center gap-3 px-4 py-3 hover-real:bg-zinc-800 active:bg-zinc-800 transition-colors text-left border-b border-white/5 last:border-0"
                         >
                           <div className="w-10 h-10 rounded-lg bg-zinc-800 overflow-hidden shrink-0">
                             {ev.foto ? (
@@ -1050,7 +1050,7 @@ const CardModal: React.FC<{
                       key={e}
                       type="button"
                       onClick={() => set('badge', form.badge + e)}
-                      className="w-8 h-8 rounded-lg bg-zinc-900/60 border border-white/5 flex items-center justify-center text-base hover:border-[#FFD300]/30 active:scale-90 transition-all"
+                      className="w-8 h-8 rounded-lg bg-zinc-900/60 border border-white/5 flex items-center justify-center text-base hover-real:border-[#FFD300]/30 active:scale-90 transition-all"
                     >
                       {e}
                     </button>
@@ -1067,7 +1067,7 @@ const CardModal: React.FC<{
                       className={`w-7 h-7 rounded-full border-2 transition-all active:scale-90 ${
                         form.badgeColor === c.color
                           ? 'border-white scale-110'
-                          : 'border-transparent hover:border-white/30'
+                          : 'border-transparent hover-real:border-white/30'
                       }`}
                       style={{ backgroundColor: c.color }}
                       title={c.label}
@@ -1239,7 +1239,7 @@ const CardModal: React.FC<{
                           key={ev.id}
                           type="button"
                           onClick={() => selectEventoAsDestino(ev)}
-                          className="w-full flex items-center gap-3 px-3 py-2.5 text-left hover:bg-white/5 active:bg-white/10 transition-colors"
+                          className="w-full flex items-center gap-3 px-3 py-2.5 text-left hover-real:bg-white/5 active:bg-white/10 transition-colors"
                         >
                           {ev.foto && <img src={ev.foto} className="w-8 h-8 rounded-lg object-cover shrink-0" alt="" />}
                           <div className="min-w-0">
@@ -1283,7 +1283,7 @@ const CardModal: React.FC<{
                           key={c.id}
                           type="button"
                           onClick={() => selectComunidade(c)}
-                          className="w-full flex items-center gap-3 px-3 py-2.5 text-left hover:bg-white/5 active:bg-white/10 transition-colors"
+                          className="w-full flex items-center gap-3 px-3 py-2.5 text-left hover-real:bg-white/5 active:bg-white/10 transition-colors"
                         >
                           {c.foto && <img src={c.foto} className="w-8 h-8 rounded-full object-cover shrink-0" alt="" />}
                           <div className="min-w-0">
@@ -1339,7 +1339,7 @@ const CardModal: React.FC<{
                           key={c.id}
                           type="button"
                           onClick={() => selectComunidade(c)}
-                          className="w-full flex items-center gap-3 px-3 py-2.5 text-left hover:bg-white/5 active:bg-white/10 transition-colors"
+                          className="w-full flex items-center gap-3 px-3 py-2.5 text-left hover-real:bg-white/5 active:bg-white/10 transition-colors"
                         >
                           {c.foto && <img src={c.foto} className="w-8 h-8 rounded-full object-cover shrink-0" alt="" />}
                           <div className="min-w-0">

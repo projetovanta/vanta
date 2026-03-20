@@ -116,7 +116,10 @@ const ChipsField: React.FC<{
             className="flex items-center gap-1 px-2.5 py-1 bg-[#FFD300]/10 border border-[#FFD300]/20 rounded-lg text-[#FFD300] text-[0.625rem] font-bold"
           >
             {v}
-            <button onClick={() => onChange(values.filter((_, j) => j !== i))} className="opacity-60 hover:opacity-100">
+            <button
+              onClick={() => onChange(values.filter((_, j) => j !== i))}
+              className="opacity-60 hover-real:opacity-100"
+            >
               <X size="0.625rem" />
             </button>
           </span>
@@ -180,18 +183,18 @@ const VantagensEditor: React.FC<{ values: VantagemTexto[]; onChange: (v: Vantage
               <button
                 onClick={() => move(i, -1)}
                 disabled={i === 0}
-                className="p-1 text-zinc-400 hover:text-zinc-400 disabled:opacity-20"
+                className="p-1 text-zinc-400 hover-real:text-zinc-400 disabled:opacity-20"
               >
                 <ChevronUp size="0.75rem" />
               </button>
               <button
                 onClick={() => move(i, 1)}
                 disabled={i === values.length - 1}
-                className="p-1 text-zinc-400 hover:text-zinc-400 disabled:opacity-20"
+                className="p-1 text-zinc-400 hover-real:text-zinc-400 disabled:opacity-20"
               >
                 <ChevronDown size="0.75rem" />
               </button>
-              <button onClick={() => remove(i)} className="p-1 text-red-500/60 hover:text-red-400">
+              <button onClick={() => remove(i)} className="p-1 text-red-500/60 hover-real:text-red-400">
                 <X size="0.75rem" />
               </button>
             </div>
@@ -256,7 +259,7 @@ const BeneficiosEditor: React.FC<{ values: BeneficioConfig[]; onChange: (v: Bene
               placeholder="Nome exibido"
               className="flex-1 bg-transparent border-b border-white/10 px-1 py-1 text-white text-xs font-bold focus:border-[#FFD300]/40 focus:outline-none"
             />
-            <button onClick={() => remove(i)} className="p-1 text-red-500/60 hover:text-red-400 shrink-0">
+            <button onClick={() => remove(i)} className="p-1 text-red-500/60 hover-real:text-red-400 shrink-0">
               <X size="0.75rem" />
             </button>
           </div>

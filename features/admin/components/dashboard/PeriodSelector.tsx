@@ -31,7 +31,7 @@ export function PeriodSelector({ value, onChange }: Props) {
                 ${
                   isSelected
                     ? 'bg-[#FFD300]/10 text-[#FFD300] border-[#FFD300]/20'
-                    : 'bg-zinc-900/40 text-zinc-500 border-white/5 hover:text-zinc-300'
+                    : 'bg-zinc-900/40 text-zinc-500 border-white/5 hover-real:text-zinc-300'
                 }
               `}
             >

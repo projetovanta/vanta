@@ -472,7 +472,7 @@ export const GerenteDashboardView: React.FC<{
                       setFiltroEventoId(null);
                       setShowFiltroDropdown(false);
                     }}
-                    className="w-full text-left px-4 py-3 text-sm text-white hover:bg-zinc-800 border-b border-white/5"
+                    className="w-full text-left px-4 py-3 text-sm text-white hover-real:bg-zinc-800 border-b border-white/5"
                   >
                     Todos os eventos
                   </button>
@@ -483,7 +483,7 @@ export const GerenteDashboardView: React.FC<{
                         setFiltroEventoId(ev.eventoId);
                         setShowFiltroDropdown(false);
                       }}
-                      className="w-full text-left px-4 py-3 text-sm text-white hover:bg-zinc-800 border-b border-white/5 last:border-0"
+                      className="w-full text-left px-4 py-3 text-sm text-white hover-real:bg-zinc-800 border-b border-white/5 last:border-0"
                     >
                       {ev.eventoNome}
                     </button>

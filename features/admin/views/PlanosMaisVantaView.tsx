@@ -87,7 +87,7 @@ const PlanoModal: React.FC<{
         <button
           aria-label="Voltar"
           onClick={onClose}
-          className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center -ml-2 rounded-lg hover:bg-white/5"
+          className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center -ml-2 rounded-lg hover-real:bg-white/5"
         >
           <ArrowLeft size="1.125rem" className="text-zinc-400" />
         </button>
@@ -323,7 +323,7 @@ const TierModal: React.FC<{
         <button
           aria-label="Voltar"
           onClick={onClose}
-          className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center -ml-2 rounded-lg hover:bg-white/5"
+          className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center -ml-2 rounded-lg hover-real:bg-white/5"
         >
           <ArrowLeft size="1.125rem" className="text-zinc-400" />
         </button>
@@ -508,7 +508,7 @@ export const PlanosMaisVantaView: React.FC<{
         <button
           aria-label="Voltar"
           onClick={onBack}
-          className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center -ml-2 rounded-lg hover:bg-white/5"
+          className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center -ml-2 rounded-lg hover-real:bg-white/5"
         >
           <ArrowLeft size="1.125rem" className="text-zinc-400" />
         </button>
@@ -550,7 +550,7 @@ export const PlanosMaisVantaView: React.FC<{
             {/* Botão criar */}
             <button
               onClick={() => setModal({ tipo: 'plano' })}
-              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-dashed border-zinc-700 text-zinc-400 hover:border-[#FFD300]/40 hover:text-[#FFD300] transition-colors text-sm"
+              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-dashed border-zinc-700 text-zinc-400 hover-real:border-[#FFD300]/40 hover-real:text-[#FFD300] transition-colors text-sm"
             >
               <Plus size="1rem" /> Criar Plano
             </button>
@@ -613,7 +613,7 @@ export const PlanosMaisVantaView: React.FC<{
                   <div className="flex gap-2 mt-3">
                     <button
                       onClick={() => setModal({ tipo: 'plano', plano: p })}
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 text-zinc-300 text-xs hover:bg-white/10"
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 text-zinc-300 text-xs hover-real:bg-white/10"
                     >
                       <Pencil size="0.75rem" /> Editar
                     </button>
@@ -621,7 +621,7 @@ export const PlanosMaisVantaView: React.FC<{
                       <button
                         onClick={() => setConfirmarDesativar(p.id)}
                         disabled={loading}
-                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-500/10 text-red-400 text-xs hover:bg-red-500/20 disabled:opacity-40"
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-500/10 text-red-400 text-xs hover-real:bg-red-500/20 disabled:opacity-40"
                       >
                         <ToggleLeft size="0.75rem" /> Desativar
                       </button>
@@ -640,7 +640,7 @@ export const PlanosMaisVantaView: React.FC<{
                           }
                         }}
                         disabled={loading}
-                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 text-xs hover:bg-emerald-500/20 disabled:opacity-40"
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 text-xs hover-real:bg-emerald-500/20 disabled:opacity-40"
                       >
                         <ToggleRight size="0.75rem" /> Reativar
                       </button>
@@ -657,7 +657,7 @@ export const PlanosMaisVantaView: React.FC<{
             {/* Botão criar tier */}
             <button
               onClick={() => setModal({ tipo: 'tier' })}
-              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-dashed border-zinc-700 text-zinc-400 hover:border-[#FFD300]/40 hover:text-[#FFD300] transition-colors text-sm"
+              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-dashed border-zinc-700 text-zinc-400 hover-real:border-[#FFD300]/40 hover-real:text-[#FFD300] transition-colors text-sm"
             >
               <Plus size="1rem" /> Criar Nível
             </button>
@@ -687,7 +687,7 @@ export const PlanosMaisVantaView: React.FC<{
                           await clubeService.editarTier(prev.id, { ordem: t.ordem });
                           setTick(x => x + 1);
                         }}
-                        className="p-1 rounded hover:bg-white/5"
+                        className="p-1 rounded hover-real:bg-white/5"
                       >
                         <ChevronUp size="0.875rem" className="text-zinc-400" />
                       </button>
@@ -700,7 +700,7 @@ export const PlanosMaisVantaView: React.FC<{
                           await clubeService.editarTier(next.id, { ordem: t.ordem });
                           setTick(x => x + 1);
                         }}
-                        className="p-1 rounded hover:bg-white/5"
+                        className="p-1 rounded hover-real:bg-white/5"
                       >
                         <ChevronDown size="0.875rem" className="text-zinc-400" />
                       </button>
@@ -726,7 +726,7 @@ export const PlanosMaisVantaView: React.FC<{
                 <div className="flex gap-2 mt-2">
                   <button
                     onClick={() => setModal({ tipo: 'tier', tier: t })}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 text-zinc-300 text-xs hover:bg-white/10"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 text-zinc-300 text-xs hover-real:bg-white/10"
                   >
                     <Pencil size="0.75rem" /> Editar
                   </button>
@@ -745,7 +745,7 @@ export const PlanosMaisVantaView: React.FC<{
                         }
                       }}
                       disabled={loading}
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-500/10 text-red-400 text-xs hover:bg-red-500/20 disabled:opacity-40"
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-500/10 text-red-400 text-xs hover-real:bg-red-500/20 disabled:opacity-40"
                     >
                       <ToggleLeft size="0.75rem" /> Desativar
                     </button>
@@ -764,7 +764,7 @@ export const PlanosMaisVantaView: React.FC<{
                         }
                       }}
                       disabled={loading}
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 text-xs hover:bg-emerald-500/20 disabled:opacity-40"
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 text-xs hover-real:bg-emerald-500/20 disabled:opacity-40"
                     >
                       <ToggleRight size="0.75rem" /> Reativar
                     </button>

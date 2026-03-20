@@ -41,7 +41,7 @@ export function ExportButton({ data, filename, label = 'Exportar' }: Props) {
       type="button"
       onClick={handleExport}
       disabled={data.length === 0}
-      className="flex items-center gap-1.5 bg-zinc-900/40 border border-white/5 text-zinc-400 rounded-xl px-3 py-2 text-[0.625rem] font-bold uppercase tracking-widest hover:text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+      className="flex items-center gap-1.5 bg-zinc-900/40 border border-white/5 text-zinc-400 rounded-xl px-3 py-2 text-[0.625rem] font-bold uppercase tracking-widest hover-real:text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
     >
       <Download size={12} />
       {label}

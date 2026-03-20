@@ -143,7 +143,7 @@ export const NotifMVPendentesView: React.FC = () => {
               <button
                 disabled={actionId === sol.id}
                 onClick={() => aprovar(sol)}
-                className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[0.625rem] font-black uppercase tracking-wider hover:bg-emerald-500/20 active:scale-95 transition-all disabled:opacity-50"
+                className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[0.625rem] font-black uppercase tracking-wider hover-real:bg-emerald-500/20 active:scale-95 transition-all disabled:opacity-50"
               >
                 <CheckCircle size="0.75rem" />
                 Aprovar e enviar
@@ -151,7 +151,7 @@ export const NotifMVPendentesView: React.FC = () => {
               <button
                 disabled={actionId === sol.id}
                 onClick={() => rejeitar(sol.id)}
-                className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-[0.625rem] font-black uppercase tracking-wider hover:bg-red-500/20 active:scale-95 transition-all disabled:opacity-50"
+                className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-[0.625rem] font-black uppercase tracking-wider hover-real:bg-red-500/20 active:scale-95 transition-all disabled:opacity-50"
               >
                 <XCircle size="0.75rem" />
                 Rejeitar

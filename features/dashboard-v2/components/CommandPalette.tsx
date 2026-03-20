@@ -320,7 +320,7 @@ export const CommandPalette: React.FC<Props> = ({ isOpen, onClose, onSelect, onD
                     onClose();
                   }}
                   className={`w-full flex items-center gap-3 px-5 py-3 text-left transition-colors ${
-                    idx === selectedIdx ? 'bg-[#FFD300]/10' : 'hover:bg-white/5'
+                    idx === selectedIdx ? 'bg-[#FFD300]/10' : 'hover-real:bg-white/5'
                   }`}
                 >
                   <Icon size="1rem" className={idx === selectedIdx ? 'text-[#FFD300]' : 'text-zinc-500'} />

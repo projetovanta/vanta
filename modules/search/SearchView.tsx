@@ -60,7 +60,11 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
   const [serverSearchResults, setServerSearchResults] = useState<Evento[] | null>(null);
   const [activeTab, setActiveTab] = useState<'EVENTS' | 'PEOPLE' | 'LUGARES' | 'BENEFICIOS'>('EVENTS');
   const currentUserId = useAuthStore(s => s.currentAccount?.id ?? '');
-  const isMembroMV = useMemo(() => clubeService.isMembro(currentUserId), [currentUserId]);
+  const isGuest = useAuthStore(s => s.currentAccount.role) === 'vanta_guest';
+  const isMembroMV = useMemo(
+    () => (!isGuest && currentUserId ? clubeService.isMembro(currentUserId) : false),
+    [isGuest, currentUserId],
+  );
   const [selectedCities, setSelectedCities] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedTimeFilter, setSelectedTimeFilter] = useState<string | null>(null);
@@ -210,7 +214,7 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
   const [peopleResults, setPeopleResults] = useState<Membro[]>([]);
   const [peopleLoading, setPeopleLoading] = useState(false);
   useEffect(() => {
-    if (activeTab !== 'PEOPLE' || debouncedQuery.length < 2) {
+    if (activeTab !== 'PEOPLE' || debouncedQuery.length < 2 || isGuest) {
       setPeopleResults([]);
       setPeopleLoading(false);
       return;
@@ -231,7 +235,7 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
     return () => {
       cancelled = true;
     };
-  }, [debouncedQuery, activeTab, bloqueados]);
+  }, [debouncedQuery, activeTab, bloqueados, isGuest]);
 
   // ── Busca de lugares (comunidades) ──────────────────────────────────────
   const [placesResults, setPlacesResults] = useState<
@@ -239,7 +243,7 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
   >([]);
   const [placesLoading, setPlacesLoading] = useState(false);
   useEffect(() => {
-    if (activeTab !== 'LUGARES' || debouncedQuery.length < 2) {
+    if (activeTab !== 'LUGARES' || debouncedQuery.length < 2 || isGuest || !isMembroMV) {
       setPlacesResults([]);
       setPlacesLoading(false);
       return;
@@ -263,7 +267,7 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
     return () => {
       cancelled = true;
     };
-  }, [debouncedQuery, activeTab]);
+  }, [debouncedQuery, activeTab, isGuest, isMembroMV]);
 
   // ── Spotlight de comunidade na busca de eventos (query direta Supabase) ───
   const [comunidadeSpotlight, setComunidadeSpotlight] = useState<{
@@ -356,7 +360,23 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
         )}
 
         {activeTab === 'BENEFICIOS' ? (
-          isMembroMV ? (
+          isGuest ? (
+            <div className="flex flex-col items-center justify-center py-16 text-center px-4">
+              <div className="w-16 h-16 rounded-full bg-zinc-800 border border-white/10 flex items-center justify-center mb-5">
+                <Lock size="1.5rem" className="text-zinc-400" />
+              </div>
+              <h3 className="font-serif text-xl text-white mb-2">Área para membros</h3>
+              <p className="text-zinc-400 text-sm mb-6 max-w-[16rem]">
+                Crie sua conta pra acessar benefícios exclusivos em eventos e parceiros.
+              </p>
+              <button
+                onClick={() => onMemberClick?.({ id: '' } as Membro)}
+                className="px-6 py-3 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all"
+              >
+                Criar conta
+              </button>
+            </div>
+          ) : isMembroMV ? (
             <BeneficiosMVTab
               userId={currentUserId}
               filteredEvents={visibleEvents}
@@ -473,7 +493,39 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
             )}
           </>
         ) : activeTab === 'LUGARES' ? (
-          placesLoading ? (
+          isGuest ? (
+            <div className="flex flex-col items-center justify-center py-16 text-center px-4">
+              <div className="w-16 h-16 rounded-full bg-zinc-800 border border-white/10 flex items-center justify-center mb-5">
+                <Lock size="1.5rem" className="text-zinc-400" />
+              </div>
+              <h3 className="font-serif text-xl text-white mb-2">Área para membros</h3>
+              <p className="text-zinc-400 text-sm mb-6 max-w-[16rem]">
+                Crie sua conta pra descobrir os melhores lugares da sua cidade.
+              </p>
+              <button
+                onClick={() => onMemberClick?.({ id: '' } as Membro)}
+                className="px-6 py-3 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all"
+              >
+                Criar conta
+              </button>
+            </div>
+          ) : !isMembroMV ? (
+            <div className="flex flex-col items-center justify-center py-16 text-center px-4">
+              <div className="w-16 h-16 rounded-full bg-[#FFD300]/10 border border-[#FFD300]/20 flex items-center justify-center mb-5">
+                <Lock size="1.5rem" className="text-[#FFD300]" />
+              </div>
+              <h3 className="font-serif text-xl text-white mb-2">Área exclusiva MAIS VANTA</h3>
+              <p className="text-zinc-400 text-sm mb-6 max-w-[16rem]">
+                Benefícios exclusivos em bares, restaurantes e eventos. Só pra membros do clube.
+              </p>
+              <button
+                onClick={() => onMemberClick?.({ id: currentUserId } as Membro)}
+                className="px-6 py-3 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all"
+              >
+                Saiba mais
+              </button>
+            </div>
+          ) : placesLoading ? (
             <div className="space-y-1 px-2">
               {[1, 2, 3, 4].map(i => (
                 <PersonCardSkeleton key={i} />
@@ -482,6 +534,22 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
           ) : (
             <PlacesResults results={placesResults} onPlaceClick={onComunidadeClick} />
           )
+        ) : isGuest ? (
+          <div className="flex flex-col items-center justify-center py-16 text-center px-4">
+            <div className="w-16 h-16 rounded-full bg-zinc-800 border border-white/10 flex items-center justify-center mb-5">
+              <Lock size="1.5rem" className="text-zinc-400" />
+            </div>
+            <h3 className="font-serif text-xl text-white mb-2">Área para membros</h3>
+            <p className="text-zinc-400 text-sm mb-6 max-w-[16rem]">
+              Crie sua conta pra buscar pessoas e conectar com quem curte a mesma vibe.
+            </p>
+            <button
+              onClick={() => onMemberClick?.({ id: '' } as Membro)}
+              className="px-6 py-3 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all"
+            >
+              Criar conta
+            </button>
+          </div>
         ) : peopleLoading ? (
           <div className="space-y-1 px-2">
             {[1, 2, 3, 4].map(i => (

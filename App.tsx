@@ -585,7 +585,7 @@ export default function App() {
                 <div className="relative bg-gradient-to-br from-[#FFD300]/20 via-zinc-900 to-zinc-900 p-6 pb-4 text-center">
                   <button
                     onClick={() => setComemorarComunidadeId(null)}
-                    className="absolute top-4 right-4 text-zinc-500 hover:text-white transition-colors"
+                    className="absolute top-4 right-4 text-zinc-500 hover-real:text-white transition-colors"
                   >
                     <X size="1.25rem" />
                   </button>

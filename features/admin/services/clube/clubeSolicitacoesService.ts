@@ -2,6 +2,7 @@ import type { TierMaisVanta, SolicitacaoClube } from '../../../../types';
 import { supabase } from '../../../../services/supabaseClient';
 import { comunidadesService } from '../comunidadesService';
 import { notificationsService } from '../notificationsService';
+import { notifyMany } from '../../../../services/notifyService';
 import { tsBR } from '../../../../utils';
 import { TIER_ORDER, _membros, _solicitacoes, _passports, bump, rowToSolicitacao } from './clubeCache';
 import { _fetchAndUpdateFollowers } from './clubeInstagramService';
@@ -102,6 +103,23 @@ export async function solicitarEntrada(
   const sol = rowToSolicitacao(data);
   _solicitacoes.unshift(sol);
   bump();
+
+  // Notificar masters sobre nova solicitação MV
+  try {
+    const { data: masters } = await supabase.from('profiles').select('id').eq('role', 'vanta_masteradm');
+    const masterIds = (masters ?? []).map((m: { id: string }) => m.id);
+    if (masterIds.length > 0) {
+      void notifyMany(masterIds, {
+        titulo: 'Nova solicitação MAIS VANTA',
+        mensagem: `@${instagramHandle} quer entrar no MAIS VANTA.`,
+        tipo: 'MAIS_VANTA',
+        link: 'ADMIN_HUB',
+      });
+    }
+  } catch {
+    /* silencioso */
+  }
+
   return sol;
 }
 

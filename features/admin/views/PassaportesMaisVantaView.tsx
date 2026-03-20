@@ -214,7 +214,7 @@ export const PassaportesMaisVantaView: React.FC<{
                 ) : p.status === 'APROVADO' ? (
                   <button
                     onClick={() => setConfirmar({ id: p.id, nome: perfil?.nome || p.userId.slice(0, 8) })}
-                    className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-[0.5rem] font-black uppercase tracking-wider hover:bg-red-500/20 transition-all"
+                    className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-[0.5rem] font-black uppercase tracking-wider hover-real:bg-red-500/20 transition-all"
                   >
                     <Trash2 size="0.625rem" /> Revogar
                   </button>

@@ -178,7 +178,7 @@ export async function verificarLimiteEventos(
   const now = new Date();
   const inicioMes = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`;
   // Buscar IDs dos eventos do produtor
-  const { data: evts } = (await (supabase as any).from('eventos_admin').select('id').eq('criado_por', produtorId)) as {
+  const { data: evts } = (await (supabase as any).from('eventos_admin').select('id').eq('created_by', produtorId)) as {
     data: { id: string }[] | null;
   };
   const evtIds = (evts ?? []).map(e => e.id);

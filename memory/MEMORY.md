@@ -141,6 +141,11 @@
 - [feedback_supabase_project_id.md](feedback_supabase_project_id.md) — Supabase MCP: project_id correto = daldttuibmxwkpbqtebm (não jbmqjbatpqbxajkndixx)
 - [feedback_tasks_checklist.md](feedback_tasks_checklist.md) — SEMPRE criar Tasks como checklist visual antes de executar planos
 
+## Documentação Definitiva (raiz do projeto)
+
+- [VANTA_LIVRO.md](../VANTA_LIVRO.md) — Livro Técnico Definitivo (598 arquivos, 223 migrations, 168 testes)
+- [VANTA_FLUXOS.md](../VANTA_FLUXOS.md) — Livro de Fluxos do Usuário (todos os caminhos de navegação)
+
 ## Meta
 
 - [regras_usuario.md](regras_usuario.md) — Regras do usuário (comunicação, preferências)

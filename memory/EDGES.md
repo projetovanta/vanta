@@ -12,6 +12,9 @@ Mapa: tabela/store/RPC → arquivos que consomem. Consultar ANTES de mudar schem
 | legal_documents | LegalEditorView |
 | user_consents | legalService |
 | comunidades.instagram/whatsapp/tiktok/site | EditarModal, ComunidadePublicView, SolicitacoesParceriaView |
+| brand_profiles | infraestrutura.md (IA visual, 1 row) — sem consumer .ts/.tsx |
+| cargos_plataforma | cargosPlataformaService.ts, rbacService.ts |
+| atribuicoes_plataforma | cargosPlataformaService.ts, rbacService.ts |
 
 ## TABELAS → Consumers
 

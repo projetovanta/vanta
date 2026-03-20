@@ -127,7 +127,7 @@ export const adminService = {
   async refreshIndicaCards(force = false): Promise<void> {
     if (!force && _indicaCards.length > 0 && Date.now() - _indicaLastFetch < INDICA_CACHE_TTL) return;
     // force = admin precisa ver tudo; normal = só ativos (Home)
-    let query = supabase.from('vanta_indica').select('*').order('criado_em', { ascending: false });
+    let query = supabase.from('vanta_indica').select('*').order('criado_em', { ascending: false }).limit(200);
     if (!force) query = query.eq('ativo', true);
     const { data, error } = await query;
     if (error) {

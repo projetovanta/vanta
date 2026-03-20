@@ -67,8 +67,8 @@ export const ConviteEspecialMVView: React.FC = () => {
       const { data } = await supabase
         .from('eventos_admin')
         .select('id, nome')
-        .gte('data_hora', now)
-        .order('data_hora')
+        .gte('data_inicio', now)
+        .order('data_inicio')
         .limit(50);
       if (data && mounted.current) {
         setEventos(data.map(e => ({ id: e.id, nome: ((e as Record<string, unknown>).nome as string) ?? '' })));

@@ -68,7 +68,6 @@ class WaitlistService {
     const eventoNome = (evRow?.nome as string) ?? '';
 
     const { notificationsService } = await import('../features/admin/services/notificationsService');
-    let notificados = 0;
 
     for (const row of data) {
       const userId = row.user_id as string | null;
@@ -85,15 +84,14 @@ class WaitlistService {
           userId,
         );
       }
-
-      // Marca como notificado
-      const { error: errWl } = await supabase.from('waitlist').update({ notificado_em: tsBR() }).eq('id', row.id);
-      if (errWl) console.error('[waitlistService] notificar update:', errWl);
-
-      notificados++;
     }
 
-    return notificados;
+    // Batch update — elimina N+1
+    const ids = data.map(r => r.id);
+    const { error: errWl } = await supabase.from('waitlist').update({ notificado_em: tsBR() }).in('id', ids);
+    if (errWl) console.error('[waitlistService] notificar batch update:', errWl);
+
+    return data.length;
   }
 
   /** Remove da fila (quando comprou) */

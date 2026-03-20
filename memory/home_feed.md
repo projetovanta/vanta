@@ -32,12 +32,14 @@
 - `openCityView(cidade)` / `closeCityView()` → CityView
 - `openAllPartners(cidade)` / `closeAllPartners()` → AllPartnersView
 
-## RPCs Supabase (migration 20260319100000 + 20260320200000)
+## RPCs Supabase (migration 20260319100000 + 20260319150000 + 20260320200000)
 - `top_vendidos_24h(p_cidade, p_limit)` → ranking vendas 24h
 - `cidades_com_eventos(p_excluir)` → cidades com eventos futuros
 - `parceiros_por_cidade(p_cidade, p_limit, p_offset)` → comunidades ativas
 - `eventos_por_cidade_paginado(p_cidade, p_futuros, p_limit, p_offset)` → paginação server-side
 - `eventos_recomendados_behavior(p_user_id, p_cidade, p_limit)` → recomendação por behavior + interesses
+- `estilos_por_cidade(p_cidade)` → estilos musicais com eventos ativos na cidade (filtros Home)
+- `eventos_com_beneficio_mv(p_cidade, p_tier, p_limit)` → eventos com benefício MAIS VANTA
 
 ## User Behavior (migration 20260320200000)
 - Tabela: `user_behavior` (user_id, event_id, action_type, metadata, created_at)

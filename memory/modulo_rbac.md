@@ -34,8 +34,44 @@ Cada cargo tem permissoes granulares. Atribuicoes sao por COMUNIDADE ou por EVEN
 | updated_at | TIMESTAMPTZ | auto |
 | UNIQUE | (user_id, tenant_type, tenant_id, cargo) | |
 
+### cargos_plataforma (cargos dinâmicos de plataforma)
+| Coluna | Tipo | Descricao |
+|---|---|---|
+| id | UUID PK | auto |
+| nome | TEXT NOT NULL | Nome do cargo |
+| descricao | TEXT | Descricao opcional |
+| permissoes | TEXT[] | Array de permissoes (default []) |
+| criado_por | UUID FK auth.users | Quem criou |
+| criado_em | TIMESTAMPTZ | auto |
+| updated_at | TIMESTAMPTZ | auto |
+| ativo | BOOLEAN | Default true |
+
+### atribuicoes_plataforma (vincula usuarios a cargos de plataforma)
+| Coluna | Tipo | Descricao |
+|---|---|---|
+| id | UUID PK | auto |
+| user_id | UUID FK auth.users NOT NULL | Usuario |
+| cargo_id | UUID FK cargos_plataforma NOT NULL | Cargo |
+| atribuido_por | UUID FK auth.users NOT NULL | Quem atribuiu |
+| atribuido_em | TIMESTAMPTZ | auto |
+| ativo | BOOLEAN | Default true |
+
 ### equipe_evento (ja documentada em modulo_evento.md)
 Membros da equipe por evento com papel e liberar_lista.
+
+## RPCs e Helpers de RBAC
+- `has_comunidade_access(p_user_id, p_comunidade_id)` — verifica se usuario tem qualquer cargo na comunidade
+- `has_comunidade_write_access(p_user_id, p_comunidade_id)` — verifica se usuario pode escrever (GERENTE)
+- `has_evento_access(p_user_id, p_evento_id)` — verifica se usuario tem cargo no evento
+- `has_plataforma_permission(p_user_id, p_permission)` — verifica permissao de plataforma
+- `is_event_manager_or_admin(p_user_id, p_evento_id)` — gerente ou master
+- `is_membro_clube(p_user_id)` — verifica se é membro MAIS VANTA
+- `is_produtor_evento(p_evento_id)` — verifica se é socio/promoter do evento
+- `is_tenant_member(p_user_id, p_tenant_type, p_tenant_id)` — membro de qualquer tenant
+- `is_masteradm()` — verifica role vanta_masteradm (SECURITY DEFINER)
+- `user_shares_tenant(p_user_id, p_target_user_id)` — verifica se dois usuarios compartilham tenant (SECURITY DEFINER, resolve recursao RLS)
+- `is_event_team_member(p_user_id, p_evento_id)` — membro da equipe do evento
+- `get_admin_access(p_user_id)` — fonte de verdade do gate admin (role + comunidades + eventos)
 
 ## Servico
 

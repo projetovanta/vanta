@@ -8,6 +8,7 @@
 # DESATIVADO por padrão — só ativar com marker dan_authorized
 # if [ -f "/tmp/vanta_dan_authorized_edit" ] || [ -f "/tmp/vanta_dan_authorized_bash" ]; then exit 0; fi
 
+
 INPUT=$(cat /dev/stdin)
 TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name // empty')
 

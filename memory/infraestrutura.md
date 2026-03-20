@@ -41,6 +41,15 @@ React Router v6 funciona nos dois. Ver `memory/plataformas.md` para regra comple
 - **Edge functions**: entry/result logging em stripe-webhook e send-push (console.log/warn)
 - **Edge Functions novas**: weekly-report (cron domingo 10h BRT), send-buyer-notification (push segmentado). stripe-webhook atualizado com handler para ingressos + notifica comprador (in-app + push + email)
 - **Cron jobs**: weekly-report-domingo-10h, expirar-pedidos-checkout-30min (cada 5min, PENDENTE→EXPIRADO após 30min)
+- **RPCs de cron/infra no banco:**
+  - `finalizar_eventos_expirados()` — cron: marca eventos com data_fim passada como FINALIZADO
+  - `expirar_pedidos_checkout_pendentes()` — cron cada 5min: PENDENTE→EXPIRADO após 30min
+  - `seed_eventos_home_vitrine()` — seed/teste: gera eventos demo pra vitrine
+  - `atualizar_eventos_teste()` — seed/teste: atualiza datas dos eventos de teste (DELETAR antes do lançamento)
+  - `search_users(p_query)` — busca full-text em profiles (nome, email) bypass RLS
+  - `handle_new_user()` — trigger: cria profile automaticamente no signup (auth.users → profiles)
+  - `set_updated_at()` — trigger genérico: atualiza updated_at em qualquer tabela
+- **Tabela brand_profiles** (1 row): perfis de marca para geração de arte. Colunas: comunidade_id, nome, perfil_visual (JSONB), referencias (TEXT[]), ideogram_style_code, flux_lora_id, validado, criado_por/em
 - **Sourcemaps**: `hidden` (não expostos ao browser, disponíveis para Sentry)
 
 ## Imagens (OptimizedImage)

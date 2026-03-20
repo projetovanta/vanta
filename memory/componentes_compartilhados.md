@@ -32,7 +32,6 @@
 | `EmptyState.tsx` | 48 | Empty state reutilizável — ícone dourado + título + subtexto + CTA + variante compact |
 | `Skeleton.tsx` | 84 | Shimmer: base + EventCard + TicketCard + Profile + PersonCard + ChatItem + HighlightCard |
 | `BatchActionBar.tsx` | 65 | Barra de ações em lote — count + botões de ação + clear |
-| `FilterBar.tsx` | 90 | Filtros avançados reutilizáveis — pills dropdown + badge count + limpar |
 | `ErrorBoundary.tsx` | 57 | Error boundary React |
 | `LegalView.tsx` | — | Termos de uso |
 | `PushPermissionBanner.tsx` | — | Banner permissão push |

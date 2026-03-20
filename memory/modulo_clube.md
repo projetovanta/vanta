@@ -408,3 +408,12 @@ Sem cascata: membro recebe APENAS benefício do SEU tier exato (`===`), não dos
 | 32 | Notificacoes MV v2 | OK | 13 tipos novos (MV_APROVADO ate MV_RESGATE_PARCEIRO) |
 | 33 | Gerente por cidade | OK | Sidebar + guards expandidos para vanta_gerente |
 | 34 | QR VIP dourado | OK | BeneficiosMVTab modal QR + ParceiroDashboardPage tab QR Scan + checkin com joins |
+
+## RPCs e Triggers Supabase (MAIS VANTA)
+- `aceitar_convite_mv(p_token, p_user_id)` — aceita convite MV (cria membro + notifica)
+- `notificar_deal_sugerido()` — trigger: quando parceiro sugere deal, notifica master
+- `notificar_lembrete_reserva_mv()` — trigger: lembrete pré-evento pra membros com resgate
+- `registrar_noshow_evento_finalizado()` — trigger: ao finalizar evento, registra NO_SHOW em resgates não usados
+- `check_deal_ativo_unico()` — trigger: garante 1 deal ativo por parceiro
+- `update_vagas_deal()` — trigger: atualiza vagas_preenchidas ao resgatar/cancelar
+- `update_resgates_parceiro()` — trigger: atualiza resgates_mes_usados do parceiro

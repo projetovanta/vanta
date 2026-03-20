@@ -94,7 +94,6 @@ E o segundo bloco fundamental — depende de comunidade, alimenta todo o resto.
 | rodada_negociacao | INTEGER | Contador (max 3) |
 | mensagem_negociacao | TEXT | Ultima mensagem |
 | motivo_rejeicao | TEXT | Motivo se recusou |
-| ultimo_turno | TEXT | 'produtor' ou 'socio' — quem fez a ultima proposta |
 | prazo_resposta | TIMESTAMPTZ | Data limite pra responder (48h) |
 | historico_propostas | JSONB | Array: [{rodada, de, acao, percentual, mensagem, created_at}] |
 | UNIQUE | (evento_id, socio_id) | 1 registro por socio/evento |

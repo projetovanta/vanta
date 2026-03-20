@@ -154,6 +154,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
         <LazySection>
           <ProximosEventosSection
             cidade={selectedCity}
+            userId={userId}
             onEventClick={onEventClick}
             onComunidadeClick={onComunidadeClick}
             onViewAll={() => onOpenAllEvents?.(selectedCity)}

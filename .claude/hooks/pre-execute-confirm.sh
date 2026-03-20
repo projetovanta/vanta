@@ -52,8 +52,8 @@ elif echo "$COMMAND" | grep -qEi 'vercel\s+--prod|vercel\s+deploy'; then
 elif echo "$COMMAND" | grep -qEi 'rm\s+-rf\s+/|rm\s+-rf\s+\.\s|rm\s+-r\s+/'; then
   DANGEROUS="rm -rf em diretorio raiz — potencialmente catastrofico"
 
-# rm de arquivos do projeto (.ts, .tsx, .md, diretorios src/)
-elif echo "$COMMAND" | grep -qEi 'rm\s+.*\.(ts|tsx|md|json)\b|rm\s+-r\s+src|rm\s+-r\s+features|rm\s+-r\s+memory'; then
+# rm de arquivos do projeto (.ts, .tsx, .md, diretorios src/) — exclui "git rm" (reversivel)
+elif echo "$COMMAND" | grep -qEi 'rm\s+.*\.(ts|tsx|md|json)\b|rm\s+-r\s+src|rm\s+-r\s+features|rm\s+-r\s+memory' && ! echo "$COMMAND" | grep -qEi 'git\s+rm'; then
   DANGEROUS="rm de arquivo/diretorio do projeto — requer autorizacao do Dan"
 
 # npm publish

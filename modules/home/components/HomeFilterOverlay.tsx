@@ -80,9 +80,14 @@ export const HomeFilterOverlay: React.FC<HomeFilterOverlayProps> = ({ onClose, c
   const totalSelected = selected.size;
 
   return (
-    <div className="fixed inset-0 z-[200] animate-in fade-in duration-300">
-      <div className="fixed inset-0" role="presentation" onClick={onClose} style={{ background: 'rgba(0,0,0,0.4)' }} />
-      <div className="fixed inset-0 flex items-center justify-center px-6 pointer-events-none">
+    <div className="absolute inset-0 z-[200] animate-in fade-in duration-300">
+      <div
+        className="absolute inset-0"
+        role="presentation"
+        onClick={onClose}
+        style={{ background: 'rgba(0,0,0,0.4)' }}
+      />
+      <div className="absolute inset-0 flex items-center justify-center px-6 pointer-events-none">
         <div
           className="w-full max-w-[20rem] rounded-[2rem] overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] pointer-events-auto"
           onClick={e => e.stopPropagation()}

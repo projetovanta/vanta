@@ -198,7 +198,8 @@ export const parceriaService = {
     let query = supabase
       .from('solicitacoes_parceria')
       .select('*, profiles!solicitacoes_parceria_user_id_fkey(nome, avatar_url, instagram)')
-      .order('criado_em', { ascending: false });
+      .order('criado_em', { ascending: false })
+      .limit(500);
 
     if (status) query = query.eq('status', status);
 

@@ -5,18 +5,20 @@ import { Evento } from '../../../types';
 import { EventCarousel } from './EventCarousel';
 import { vantaService } from '../../../services/vantaService';
 import { EventCardSkeleton } from '../../../components/Skeleton';
+import { trackEventView } from '../../../services/analyticsService';
 import { filterTopGroups } from '../utils/filterSubCarousels';
 import { HomeFilterOverlay } from './HomeFilterOverlay';
 
 interface ProximosEventosSectionProps {
   cidade: string;
+  userId?: string;
   onEventClick: (e: Evento) => void;
   onComunidadeClick?: (id: string) => void;
   onViewAll: () => void;
 }
 
 export const ProximosEventosSection: React.FC<ProximosEventosSectionProps> = React.memo(
-  ({ cidade, onEventClick, onComunidadeClick, onViewAll }) => {
+  ({ cidade, userId, onEventClick, onComunidadeClick, onViewAll }) => {
     const [eventos, setEventos] = useState<Evento[]>([]);
     const [estilos, setEstilos] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
@@ -39,6 +41,9 @@ export const ProximosEventosSection: React.FC<ProximosEventosSectionProps> = Rea
           setEventos(data);
           setEstilos(chips);
           setLoading(false);
+          if (userId) {
+            data.forEach(e => trackEventView(userId, e.id));
+          }
         }
       });
 

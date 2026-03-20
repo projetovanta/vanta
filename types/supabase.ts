@@ -3737,9 +3737,7 @@ export type Database = {
           album_urls: string[];
           avatar_url: string | null;
           biografia: string;
-          birth_date: string | null;
           cidade: string | null;
-          city: string | null;
           cpf: string | null;
           created_at: string | null;
           curadoria_concluida: boolean;
@@ -3749,12 +3747,8 @@ export type Database = {
           estado: string | null;
           excluido: boolean | null;
           excluido_em: string | null;
-          foto: string | null;
-          foto_perfil: string | null;
-          full_name: string;
           genero: string | null;
           id: string;
-          home_filters: string[] | null;
           instagram: string | null;
           instagram_followers: number | null;
           interesses: string[];
@@ -3762,14 +3756,12 @@ export type Database = {
           mood_emoji: string | null;
           mood_expires_at: string | null;
           mood_text: string | null;
-          nascimento: string | null;
           nome: string | null;
           notas_admin: string | null;
           pix_chave: string | null;
           pix_tipo: string | null;
           privacidade: Json;
           role: string | null;
-          state: string | null;
           telefone_ddd: string;
           telefone_numero: string;
           tos_accepted_at: string | null;
@@ -3782,9 +3774,7 @@ export type Database = {
           album_urls?: string[];
           avatar_url?: string | null;
           biografia?: string;
-          birth_date?: string | null;
           cidade?: string | null;
-          city?: string | null;
           cpf?: string | null;
           created_at?: string | null;
           curadoria_concluida?: boolean;
@@ -3794,11 +3784,7 @@ export type Database = {
           estado?: string | null;
           excluido?: boolean | null;
           excluido_em?: string | null;
-          foto?: string | null;
-          foto_perfil?: string | null;
-          full_name?: string;
           genero?: string | null;
-          home_filters?: string[] | null;
           id: string;
           instagram?: string | null;
           instagram_followers?: number | null;
@@ -3807,14 +3793,12 @@ export type Database = {
           mood_emoji?: string | null;
           mood_expires_at?: string | null;
           mood_text?: string | null;
-          nascimento?: string | null;
           nome?: string | null;
           notas_admin?: string | null;
           pix_chave?: string | null;
           pix_tipo?: string | null;
           privacidade?: Json;
           role?: string | null;
-          state?: string | null;
           telefone_ddd?: string;
           telefone_numero?: string;
           tos_accepted_at?: string | null;
@@ -3827,9 +3811,7 @@ export type Database = {
           album_urls?: string[];
           avatar_url?: string | null;
           biografia?: string;
-          birth_date?: string | null;
           cidade?: string | null;
-          city?: string | null;
           cpf?: string | null;
           created_at?: string | null;
           curadoria_concluida?: boolean;
@@ -3839,11 +3821,7 @@ export type Database = {
           estado?: string | null;
           excluido?: boolean | null;
           excluido_em?: string | null;
-          foto?: string | null;
-          foto_perfil?: string | null;
-          full_name?: string;
           genero?: string | null;
-          home_filters?: string[] | null;
           id?: string;
           instagram?: string | null;
           instagram_followers?: number | null;
@@ -3852,14 +3830,12 @@ export type Database = {
           mood_emoji?: string | null;
           mood_expires_at?: string | null;
           mood_text?: string | null;
-          nascimento?: string | null;
           nome?: string | null;
           notas_admin?: string | null;
           pix_chave?: string | null;
           pix_tipo?: string | null;
           privacidade?: Json;
           role?: string | null;
-          state?: string | null;
           telefone_ddd?: string;
           telefone_numero?: string;
           tos_accepted_at?: string | null;
@@ -5682,7 +5658,6 @@ export type Database = {
           cidade: string;
           email: string;
           foto: string;
-          full_name: string;
           id: string;
           instagram: string;
           nome: string;
@@ -5734,14 +5709,6 @@ export type Database = {
           tipo_beneficio: string;
         }[];
       };
-      eventos_recomendados_behavior: {
-        Args: {
-          p_user_id: string;
-          p_cidade: string;
-          p_limit?: number;
-        };
-        Returns: Database['public']['Tables']['eventos_admin']['Row'][];
-      };
       eventos_por_cidade_paginado: {
         Args: {
           p_cidade: string;
@@ -5752,6 +5719,87 @@ export type Database = {
         Returns: {
           evento_id: string;
         }[];
+      };
+      eventos_recomendados_behavior: {
+        Args: { p_cidade: string; p_limit?: number; p_user_id: string };
+        Returns: {
+          caixa_ativo: boolean;
+          cancelamento_etapa: string | null;
+          cancelamento_motivo: string | null;
+          cancelamento_solicitado_por: string | null;
+          categoria: string | null;
+          cidade: string | null;
+          classificacao_etaria: string;
+          codigo_afiliado: string | null;
+          comissao_vanta: number | null;
+          comunidade_id: string | null;
+          coords: Json | null;
+          cota_cortesias: number | null;
+          cota_nomes_lista: number | null;
+          created_at: string;
+          created_by: string | null;
+          custos_fixos: number | null;
+          data_fim: string | null;
+          data_inicio: string;
+          descricao: string;
+          edicao_motivo: string | null;
+          edicao_pendente: Json | null;
+          edicao_status: string | null;
+          endereco: string | null;
+          estilos: string[] | null;
+          evento_origem_id: string | null;
+          experiencias: string[] | null;
+          formato: string | null;
+          foto: string | null;
+          gateway_fee_mode: string;
+          id: string;
+          link_externo: string | null;
+          local: string;
+          mesas_ativo: boolean | null;
+          motivo_rejeicao: string | null;
+          mv_avaliacao: string | null;
+          nome: string;
+          permissoes_produtor: string[] | null;
+          planta_mesas: string | null;
+          plataforma_externa: string | null;
+          politica_reembolso: string | null;
+          prazo_pagamento_dias: number | null;
+          prazo_reembolso_dias: number | null;
+          proposta_mensagem: string | null;
+          proposta_rodada: number | null;
+          proposta_status: string | null;
+          publicado: boolean;
+          quem_paga_servico: string | null;
+          recorrencia: string;
+          recorrencia_ate: string | null;
+          rejeicao_campos: Json | null;
+          rodada_negociacao: number | null;
+          rodada_rejeicao: number | null;
+          slug: string | null;
+          socio_convidado_id: string | null;
+          split_produtor: number | null;
+          split_socio: number | null;
+          status_evento: string | null;
+          subcategorias: string[] | null;
+          taxa_cortesia_excedente_pct: number | null;
+          taxa_fixa_evento: number | null;
+          taxa_minima: number | null;
+          taxa_nome_excedente: number | null;
+          taxa_override: number | null;
+          taxa_porta_percent: number | null;
+          taxa_processamento_percent: number | null;
+          tipo_fluxo: string | null;
+          updated_at: string;
+          vanta_fee_fixed: number;
+          vanta_fee_percent: number | null;
+          venda_vanta: boolean | null;
+        }[];
+        SetofOptions: {
+          from: '*';
+          to: 'eventos_admin';
+          isOneToOne: false;
+          isSetofReturn: true;
+        };
       };
       expirar_pedidos_checkout_pendentes: { Args: never; Returns: undefined };
       exportar_dados_usuario: { Args: never; Returns: Json };
@@ -5958,9 +6006,10 @@ export type Database = {
           ultimo_acesso: string;
         }[];
       };
+      seed_eventos_home_vitrine: { Args: never; Returns: undefined };
       sign_ticket_token: { Args: { p_ticket_id: string }; Returns: string };
       top_vendidos_24h: {
-        Args: { p_cidade?: string; p_limit?: number };
+        Args: { p_cidade: string; p_limit?: number };
         Returns: {
           evento_id: string;
           total_vendas: number;

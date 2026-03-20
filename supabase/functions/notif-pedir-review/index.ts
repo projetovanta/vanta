@@ -112,7 +112,7 @@ serve(async (req: Request) => {
       const { data: tickets, error: errTk } = await supabase
         .from('tickets_caixa')
         .select('user_id')
-        .eq('evento_admin_id', eventoId)
+        .eq('evento_id', eventoId)
         .eq('status', 'USADO');
       if (errTk) console.error('[edge/notif-pedir-review] tickets:', errTk.message);
 
@@ -120,7 +120,7 @@ serve(async (req: Request) => {
       const { data: listas, error: errListas } = await supabase
         .from('listas_evento')
         .select('id')
-        .eq('evento_admin_id', eventoId);
+        .eq('evento_id', eventoId);
       if (errListas) console.error('[edge/notif-pedir-review] listas:', errListas.message);
 
       const listaIds = (listas ?? []).map((l: { id: string }) => l.id);

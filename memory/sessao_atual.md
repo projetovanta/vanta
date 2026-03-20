@@ -1,57 +1,56 @@
 # Sessao Atual — Estado para Continuidade
 
 ## Branch: visual-redesign
-## Ultimo commit: sessão 15 — sidebar admin reorganizada
-## TSC: OK (diff-check passou)
+## Ultimo commit: 1f235c5 — sessão 16 (pendente commit sessões 17-19)
+## TSC: OK
 ## Diff-check: OK
 
-## Sessão 16 — Concluída (20 mar 2026)
+## Sessão 19 — Fechamento pendências sessão 18
 
-### O que foi feito
-- **Parte A — Limpeza chips (ProximosEventosSection)**
-  - Removido: import SectionFilterChips, state selectedChip, memo chips
-  - Simplificado: visibleFormatoGroups, visibleEstiloGroups (direto filterTopGroups)
-  - Removido memo todosEventos → usa filteredEventos direto
-  - Componente de ~303L → ~270L
+### Concluído
+- Migration fix_search_path_and_policies APLICADA via MCP (5 RPCs + 2 policies)
+- Migration drop_profiles_legacy_columns já estava aplicada (7 colunas já removidas)
+- types/supabase.ts REGENERADO (190K chars, sem colunas legadas)
+- 3 tabelas verificadas: brand_profiles, cargos_plataforma, atribuicoes_plataforma já documentadas
+- 59 RPCs verificadas: todas com pelo menos 1 menção em memórias
+- EDGES.md atualizado com 3 tabelas que faltavam
+- Tracking duplo (analytics_events + user_behavior) mantido separado por decisão do Dan
 
-- **Parte B — User Behavior**
-  - Migration `20260320200000_user_behavior.sql` — tabela user_behavior (action_type: VIEW/PURCHASE/FAVORITE/DWELL)
-  - RPC `eventos_recomendados_behavior` — behavior (peso 2x) + interesses onboarding (peso 1x), 90 dias
-  - Service `behaviorService.ts` — trackView, trackPurchase, trackFavorite, trackDwell, getRecomendados
-  - EventDetailView: VIEW no mount + DWELL no unmount (mínimo 3s)
-  - CheckoutSuccessPage: PURCHASE após confirmação de pagamento
-  - extrasStore: FAVORITE no toggle (só quando adiciona)
-  - IndicaPraVoceSection: usa getRecomendados com fallback pra filtro local por interesses
+### Decisões do Dan — sessão 19
+- Tracking duplo: MANTER separado (analytics + recomendações = mais seguro)
+- Migrations: aplicar ambas imediatamente
 
-### Decisões do Dan — CMS Master (IDEIA, não aprovado)
-- Painel CMS interno pra master editar tudo sem código
-- Salvo em `memory/projeto_cms_master.md` — retomar quando Dan quiser
-- NÃO iniciar sem aprovação explícita
-
-### Pendente
-- Commit da sessão 16
-- Preflight final (quando Dan pedir)
+### Decisões do Dan — sessão 17
+- Skeletons (3): MANTER
+- VantaAlertModal: MANTER
+- trackEventView: RECONECTADO no ProximosEventosSection
+- consultarCnpj: MANTER
+- Todos 11 types: MANTER
+- BatchActionBar + BottomSheet: RESTAURADOS
+- VANTA_LIVRO.md + VANTA_FLUXOS.md: criados como documentação definitiva
 
 ## Decisoes do Dan ativas (sessão 16)
 - Chips NÃO aparecem por padrão — só com filtros ativos pelo ⚙
 - User behavior: VIEW, PURCHASE, FAVORITE, DWELL → alimenta IndicaPraVoce
 - Indica combina interesses do onboarding + behavior (behavior pesa mais)
+- Form/Wizard components: manter + migração gradual
+- Badge "Acontecendo Agora" vive no EventCard
+- APIs Vercel (og, robots, sitemap) ativas — nunca deletar
 
 ## Decisoes do Dan ativas (sessão 14)
 - Filtro ⚙ = VOLÁTIL (estado local, reseta ao sair)
-- Próximos Eventos mostra TUDO sempre (sem filtro persistente)
-- Indica pra Você = posição 2 (logo após Próximos Eventos)
-- Filtros ativos: chips com X aparecem, sem filtro = sem chips
-- Tags removíveis com X + botão (+N filtros)
+- Próximos Eventos mostra TUDO sempre
+- Indica pra Você = posição 2
+- Filtros ativos: chips com X, sem filtro = sem chips
 - Admin: página única com seções + etiquetas de uso
-- Interesses = só genuínos (sem duplicar formatos/estilos)
+- Interesses = só genuínos
 
 ## Decisoes do Dan ativas (sessão 13)
 - 26 tipos de espaço como formatos únicos
 - 39 estilos musicais ativos
 - Cada comunidade só cria evento do seu próprio tipo
 - PRODUTORA = todos os formatos
-- IndicaPraVoce = inteligência automática (não filtro manual)
+- IndicaPraVoce = inteligência automática
 - Tasks: SEMPRE montar checklist visual
 
 ## Decisoes do Dan ativas (anteriores)
@@ -70,9 +69,8 @@
 - C5/C6/C7 — credenciais .env
 - C17-C20 — mobile (Apple/Google)
 - A2 — CORS *
-- A5 — N+1 queries financeiro
+- A5 — N+1 queries financeiro (waitlist resolvido sessão 18)
 - A22 — 160 hover: em views mobile
-- A27 — lazy load ExcelJS/jsPDF
 
 ## Pendencias externas
 - Conta Apple Developer ($99/ano)

@@ -264,7 +264,7 @@ export const listasService = {
       if (userIds.size > 0) {
         const { data: profiles } = await supabase
           .from('profiles')
-          .select('id, nome, foto')
+          .select('id, nome, avatar_url')
           .in('id', [...userIds]);
         for (const p of profiles ?? []) {
           nomesLookup.set(p.id, p.nome ?? '');
@@ -272,7 +272,7 @@ export const listasService = {
         // Popular PROMOTERS_CACHE
         PROMOTERS_CACHE.length = 0;
         for (const p of profiles ?? []) {
-          PROMOTERS_CACHE.push({ id: p.id, nome: p.nome ?? '', foto: p.foto ?? '' });
+          PROMOTERS_CACHE.push({ id: p.id, nome: p.nome ?? '', foto: p.avatar_url ?? '' });
         }
       }
 

@@ -90,6 +90,7 @@ export const SearchView: React.FC<SearchViewProps> = ({ onEventClick, onMemberCl
     return () => {
       cancelled = true;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- saveToHistory depende de searchHistory, incluir causaria loop infinito
   }, [debouncedQuery, searchEventsServerSide]);
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {

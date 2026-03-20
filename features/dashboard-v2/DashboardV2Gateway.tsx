@@ -478,7 +478,7 @@ export const DashboardV2Gateway: React.FC<{
       }
       if (!isDesktop) setSidebarOpen(false);
     },
-    [effectiveRole, isDesktop],
+    [effectiveRole, isDesktop, setSubView],
   );
 
   const handleNavigate = useCallback(
@@ -491,7 +491,7 @@ export const DashboardV2Gateway: React.FC<{
       }
       setSubView(view as AdminSubView);
     },
-    [handleNavSelect],
+    [handleNavSelect, setSubView],
   );
 
   const back = () => {

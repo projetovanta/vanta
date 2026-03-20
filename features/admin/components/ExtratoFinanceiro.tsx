@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { ArrowDownRight, ArrowUpRight, Filter, Loader2 } from 'lucide-react';
 import { supabase } from '../../../services/supabaseClient';
 import { fmtBRL } from '../../../utils';
@@ -23,6 +23,8 @@ export const ExtratoFinanceiro: React.FC<Props> = ({ eventoIds, comunidadeId }) 
   const [transacoes, setTransacoes] = useState<Transacao[]>([]);
   const [loading, setLoading] = useState(true);
   const [filtro, setFiltro] = useState<FiltroTipo>('TODOS');
+
+  const eventoIdsKey = useMemo(() => eventoIds?.join(','), [eventoIds]);
 
   useEffect(() => {
     let cancelled = false;
@@ -109,7 +111,7 @@ export const ExtratoFinanceiro: React.FC<Props> = ({ eventoIds, comunidadeId }) 
     return () => {
       cancelled = true;
     };
-  }, [eventoIds?.join(','), comunidadeId]);
+  }, [eventoIds, eventoIdsKey, comunidadeId]);
 
   const filtered =
     filtro === 'TODOS'

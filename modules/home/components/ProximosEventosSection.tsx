@@ -50,7 +50,7 @@ export const ProximosEventosSection: React.FC<ProximosEventosSectionProps> = Rea
       return () => {
         cancelled = true;
       };
-    }, [cidade]);
+    }, [cidade, userId]);
 
     // Formatos disponíveis (tipos de evento)
     const formatos = useMemo(() => {

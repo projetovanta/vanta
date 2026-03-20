@@ -89,7 +89,7 @@ export const Step1Evento: React.FC<Props> = props => {
       setDbExperiencias((x.data ?? []).map((d: { label: string }) => d.label));
       setLoading(false);
     })().catch(() => setLoading(false));
-  }, []);
+  }, [p.comunidade?.tipo_comunidade]);
 
   const handleFotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

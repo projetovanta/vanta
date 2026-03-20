@@ -159,16 +159,14 @@ export const LoginView: React.FC<LoginViewProps> = ({ onSuccess, onRegister, onC
           </button>
         )}
 
-        {/* Logo — centro absoluto da tela */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="flex flex-col items-center">
-            <h1 className="font-serif text-white text-5xl mb-2 tracking-[0.12em]">VANTA</h1>
-            <p className="text-[#FFD300] text-xs font-black uppercase tracking-[0.35em]">lifestyle é acesso</p>
-          </div>
-        </div>
-
-        {/* Spacer para empurrar o form pro fundo */}
+        {/* Spacer para empurrar logo + form pro fundo */}
         <div className="flex-1" />
+
+        {/* Logo — acima do card */}
+        <div className="shrink-0 flex flex-col items-center mb-6">
+          <h1 className="font-serif text-white text-5xl mb-2 tracking-[0.12em]">VANTA</h1>
+          <p className="text-[#FFD300] text-xs font-black uppercase tracking-[0.35em]">lifestyle é acesso</p>
+        </div>
 
         {/* Card de login — glass morphism */}
         <div className="shrink-0 mx-5 mb-8 p-6 bg-[#0A0A0A]/80 backdrop-blur-2xl border border-[#FFD300]/10 rounded-2xl space-y-4">

@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useModalBack } from '../../../hooks/useModalStack';
+import { ModalPortal } from '../../../components/ModalPortal';
 
 interface PremiumCalendarProps {
   onSelectDate: (date: Date) => void;
@@ -75,43 +76,45 @@ export const PremiumCalendar: React.FC<PremiumCalendarProps> = ({ onSelectDate, 
 
   return (
     // lint-layout-ok — modal above Leaflet map
-    <div className="absolute inset-0 z-[2000] flex items-center justify-center p-6 bg-black/80 backdrop-blur-md animate-in fade-in duration-300">
-      <div className="w-full max-w-sm bg-[#121212] border border-[#FFD300]/20 rounded-[2rem] p-6 shadow-2xl animate-in zoom-in-95 duration-300">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-[#FFD300] font-serif text-xl">Escolha a Data</h2>
-          <button
-            onClick={onClose}
-            className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center bg-zinc-900 rounded-full text-zinc-400 hover-real:text-white active:opacity-70 transition-opacity -mr-2"
-          >
-            <X size="1.125rem" />
-          </button>
-        </div>
-        <div className="flex justify-between items-center mb-4 px-2">
-          <button
-            onClick={() => changeMonth(-1)}
-            className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center text-zinc-400 hover-real:text-white active:opacity-70 transition-opacity -ml-2"
-          >
-            <ChevronLeft />
-          </button>
-          <span className="text-white font-bold uppercase tracking-widest text-sm">
-            {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
-          </span>
-          <button
-            onClick={() => changeMonth(1)}
-            className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center text-zinc-400 hover-real:text-white active:opacity-70 transition-opacity -mr-2"
-          >
-            <ChevronRight />
-          </button>
-        </div>
-        <div className="grid grid-cols-7 gap-1 mb-2 text-center">
-          {['D', 'S', 'T', 'Q', 'Q', 'S', 'S'].map((d, idx) => (
-            <span key={idx} className="text-[0.625rem] text-zinc-400 font-bold">
-              {d}
+    <ModalPortal>
+      <div className="absolute inset-0 z-[2000] flex items-center justify-center p-6 bg-black/80 backdrop-blur-md animate-in fade-in duration-300">
+        <div className="w-full max-w-sm bg-[#121212] border border-[#FFD300]/20 rounded-[2rem] p-6 shadow-2xl animate-in zoom-in-95 duration-300">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-[#FFD300] font-serif text-xl">Escolha a Data</h2>
+            <button
+              onClick={onClose}
+              className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center bg-zinc-900 rounded-full text-zinc-400 hover-real:text-white active:opacity-70 transition-opacity -mr-2"
+            >
+              <X size="1.125rem" />
+            </button>
+          </div>
+          <div className="flex justify-between items-center mb-4 px-2">
+            <button
+              onClick={() => changeMonth(-1)}
+              className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center text-zinc-400 hover-real:text-white active:opacity-70 transition-opacity -ml-2"
+            >
+              <ChevronLeft />
+            </button>
+            <span className="text-white font-bold uppercase tracking-widest text-sm">
+              {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
             </span>
-          ))}
+            <button
+              onClick={() => changeMonth(1)}
+              className="min-w-[2.75rem] min-h-[2.75rem] flex items-center justify-center text-zinc-400 hover-real:text-white active:opacity-70 transition-opacity -mr-2"
+            >
+              <ChevronRight />
+            </button>
+          </div>
+          <div className="grid grid-cols-7 gap-1 mb-2 text-center">
+            {['D', 'S', 'T', 'Q', 'Q', 'S', 'S'].map((d, idx) => (
+              <span key={idx} className="text-[0.625rem] text-zinc-400 font-bold">
+                {d}
+              </span>
+            ))}
+          </div>
+          <div className="grid grid-cols-7 gap-1 place-items-center">{days}</div>
         </div>
-        <div className="grid grid-cols-7 gap-1 place-items-center">{days}</div>
       </div>
-    </div>
+    </ModalPortal>
   );
 };

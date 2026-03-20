@@ -42,6 +42,7 @@ import { useTicketsStore } from '../../stores/ticketsStore';
 import { useExtrasStore } from '../../stores/extrasStore';
 import { moodService } from '../../services/moodService';
 import { MoodPicker } from '../../components/MoodPicker';
+import { ModalPortal } from '../../components/ModalPortal';
 
 // ── PIN helpers (same keys as WalletLockScreen) ─────────────────────────
 const PIN_STORAGE_KEY = 'vanta_wallet_pin';
@@ -602,168 +603,174 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
 
       {/* ── Modal: Redefinir PIN ── */}
       {showPinReset && (
-        <div
-          className="absolute inset-0 z-[60] flex items-end"
-          role="presentation"
-          onClick={() => setShowPinReset(false)}
-        >
-          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+        <ModalPortal>
           <div
-            className="relative w-full bg-[#111111] border-t border-white/10 rounded-t-3xl p-6 animate-in slide-in-from-bottom duration-300"
-            style={{ paddingBottom: 'max(2.5rem, env(safe-area-inset-bottom, 2.5rem))' }}
-            onClick={e => e.stopPropagation()}
+            className="absolute inset-0 z-[60] flex items-end"
+            role="presentation"
+            onClick={() => setShowPinReset(false)}
           >
-            <button
-              onClick={() => setShowPinReset(false)}
-              className="absolute top-5 right-5 p-1.5 text-zinc-400 active:text-white"
+            <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+            <div
+              className="relative w-full bg-[#111111] border-t border-white/10 rounded-t-3xl p-6 animate-in slide-in-from-bottom duration-300"
+              style={{ paddingBottom: 'max(2.5rem, env(safe-area-inset-bottom, 2.5rem))' }}
+              onClick={e => e.stopPropagation()}
             >
-              <X size="1rem" />
-            </button>
-            <div className="w-10 h-1 bg-zinc-700 rounded-full mx-auto mb-5" />
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-[#FFD300]/10 border border-[#FFD300]/20 rounded-xl flex items-center justify-center">
-                <KeyRound size="1.125rem" className="text-[#FFD300]" />
-              </div>
-              <p className="text-white font-bold text-sm">PIN da Carteira</p>
-            </div>
-            <p className="text-zinc-400 text-xs leading-relaxed mb-6">
-              {hasWalletPin(profile.id)
-                ? 'Ao redefinir, seu PIN atual será removido e você criará um novo na próxima vez que abrir a Carteira.'
-                : 'Você ainda não criou um PIN. Abra a Carteira para criar seu PIN de segurança.'}
-            </p>
-            {hasWalletPin(profile.id) && (
               <button
-                onClick={() => {
-                  removeWalletPin(profile.id);
-                  onSuccess?.('PIN removido. Crie um novo ao abrir a Carteira.');
-                  setShowPinReset(false);
-                }}
-                className="w-full py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-[0.2em] rounded-xl shadow-xl active:scale-95 transition-all"
+                onClick={() => setShowPinReset(false)}
+                className="absolute top-5 right-5 p-1.5 text-zinc-400 active:text-white"
               >
-                Redefinir PIN
+                <X size="1rem" />
               </button>
-            )}
+              <div className="w-10 h-1 bg-zinc-700 rounded-full mx-auto mb-5" />
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-[#FFD300]/10 border border-[#FFD300]/20 rounded-xl flex items-center justify-center">
+                  <KeyRound size="1.125rem" className="text-[#FFD300]" />
+                </div>
+                <p className="text-white font-bold text-sm">PIN da Carteira</p>
+              </div>
+              <p className="text-zinc-400 text-xs leading-relaxed mb-6">
+                {hasWalletPin(profile.id)
+                  ? 'Ao redefinir, seu PIN atual será removido e você criará um novo na próxima vez que abrir a Carteira.'
+                  : 'Você ainda não criou um PIN. Abra a Carteira para criar seu PIN de segurança.'}
+              </p>
+              {hasWalletPin(profile.id) && (
+                <button
+                  onClick={() => {
+                    removeWalletPin(profile.id);
+                    onSuccess?.('PIN removido. Crie um novo ao abrir a Carteira.');
+                    setShowPinReset(false);
+                  }}
+                  className="w-full py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-[0.2em] rounded-xl shadow-xl active:scale-95 transition-all"
+                >
+                  Redefinir PIN
+                </button>
+              )}
+            </div>
           </div>
-        </div>
+        </ModalPortal>
       )}
 
       {/* ── Modal: Alterar Senha ── */}
       {showChangePassword && (
-        <div
-          className="absolute inset-0 z-[60] flex items-end"
-          role="presentation"
-          onClick={() => setShowChangePassword(false)}
-        >
-          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+        <ModalPortal>
           <div
-            className="relative w-full bg-[#111111] border-t border-white/10 rounded-t-3xl p-6 animate-in slide-in-from-bottom duration-300"
-            style={{ paddingBottom: 'max(2.5rem, env(safe-area-inset-bottom, 2.5rem))' }}
-            onClick={e => e.stopPropagation()}
+            className="absolute inset-0 z-[60] flex items-end"
+            role="presentation"
+            onClick={() => setShowChangePassword(false)}
           >
-            <button
-              onClick={() => {
-                setShowChangePassword(false);
-                setPasswordError('');
-              }}
-              className="absolute top-5 right-5 p-1.5 text-zinc-400 active:text-white"
+            <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+            <div
+              className="relative w-full bg-[#111111] border-t border-white/10 rounded-t-3xl p-6 animate-in slide-in-from-bottom duration-300"
+              style={{ paddingBottom: 'max(2.5rem, env(safe-area-inset-bottom, 2.5rem))' }}
+              onClick={e => e.stopPropagation()}
             >
-              <X size="1rem" />
-            </button>
-            <div className="w-10 h-1 bg-zinc-700 rounded-full mx-auto mb-5" />
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 bg-[#FFD300]/10 border border-[#FFD300]/20 rounded-xl flex items-center justify-center">
-                <Lock size="1.125rem" className="text-[#FFD300]" />
+              <button
+                onClick={() => {
+                  setShowChangePassword(false);
+                  setPasswordError('');
+                }}
+                className="absolute top-5 right-5 p-1.5 text-zinc-400 active:text-white"
+              >
+                <X size="1rem" />
+              </button>
+              <div className="w-10 h-1 bg-zinc-700 rounded-full mx-auto mb-5" />
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 bg-[#FFD300]/10 border border-[#FFD300]/20 rounded-xl flex items-center justify-center">
+                  <Lock size="1.125rem" className="text-[#FFD300]" />
+                </div>
+                <p className="text-white font-bold text-sm">Alterar Senha</p>
               </div>
-              <p className="text-white font-bold text-sm">Alterar Senha</p>
+              <div className="space-y-4 mb-6">
+                <input
+                  type="password"
+                  placeholder="Senha atual"
+                  value={passwordForm.current}
+                  onChange={e => setPasswordForm(p => ({ ...p, current: e.target.value }))}
+                  className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/30"
+                />
+                <input
+                  type="password"
+                  placeholder="Nova senha (mín. 6 caracteres)"
+                  value={passwordForm.next}
+                  onChange={e => setPasswordForm(p => ({ ...p, next: e.target.value }))}
+                  className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/30"
+                />
+                <input
+                  type="password"
+                  placeholder="Confirmar nova senha"
+                  value={passwordForm.confirm}
+                  onChange={e => setPasswordForm(p => ({ ...p, confirm: e.target.value }))}
+                  className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/30"
+                />
+                {passwordError && <p className="text-red-400 text-[0.6875rem] font-medium">{passwordError}</p>}
+              </div>
+              <button
+                aria-label="Carregando"
+                onClick={handleChangePassword}
+                disabled={passwordLoading || !passwordForm.current || !passwordForm.next}
+                className="w-full py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-[0.2em] rounded-xl shadow-xl active:scale-95 transition-all disabled:opacity-40 flex items-center justify-center gap-2"
+              >
+                {passwordLoading ? <Loader2 size="0.875rem" className="animate-spin" /> : 'Salvar Nova Senha'}
+              </button>
             </div>
-            <div className="space-y-4 mb-6">
-              <input
-                type="password"
-                placeholder="Senha atual"
-                value={passwordForm.current}
-                onChange={e => setPasswordForm(p => ({ ...p, current: e.target.value }))}
-                className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/30"
-              />
-              <input
-                type="password"
-                placeholder="Nova senha (mín. 6 caracteres)"
-                value={passwordForm.next}
-                onChange={e => setPasswordForm(p => ({ ...p, next: e.target.value }))}
-                className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/30"
-              />
-              <input
-                type="password"
-                placeholder="Confirmar nova senha"
-                value={passwordForm.confirm}
-                onChange={e => setPasswordForm(p => ({ ...p, confirm: e.target.value }))}
-                className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-zinc-400 focus:outline-none focus:border-[#FFD300]/30"
-              />
-              {passwordError && <p className="text-red-400 text-[0.6875rem] font-medium">{passwordError}</p>}
-            </div>
-            <button
-              aria-label="Carregando"
-              onClick={handleChangePassword}
-              disabled={passwordLoading || !passwordForm.current || !passwordForm.next}
-              className="w-full py-4 bg-[#FFD300] text-black font-bold text-[0.625rem] uppercase tracking-[0.2em] rounded-xl shadow-xl active:scale-95 transition-all disabled:opacity-40 flex items-center justify-center gap-2"
-            >
-              {passwordLoading ? <Loader2 size="0.875rem" className="animate-spin" /> : 'Salvar Nova Senha'}
-            </button>
           </div>
-        </div>
+        </ModalPortal>
       )}
 
       {/* ── Modal: Excluir Conta ── */}
       {showDeleteAccount && (
-        <div
-          className="absolute inset-0 z-[60] flex items-center justify-center p-6"
-          onClick={() => setShowDeleteAccount(false)}
-        >
-          <div className="absolute inset-0 bg-black/80 backdrop-blur-xl" />
+        <ModalPortal>
           <div
-            className="relative w-full max-w-sm bg-[#0A0A0A] border border-red-500/20 rounded-3xl p-8 text-center animate-in zoom-in-95 duration-500"
-            onClick={e => e.stopPropagation()}
+            className="absolute inset-0 z-[60] flex items-center justify-center p-6"
+            onClick={() => setShowDeleteAccount(false)}
           >
-            <div className="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-red-500/20">
-              <AlertTriangle size="1.75rem" className="text-red-500" />
-            </div>
-            <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-3">
-              Excluir Conta
-            </h2>
-            <p className="text-zinc-400 text-xs leading-relaxed mb-2">
-              Esta ação é <strong className="text-red-400">permanente e irreversível</strong>. Todos os seus dados,
-              ingressos, histórico e benefícios serão perdidos.
-            </p>
-            <p className="text-zinc-400 text-[0.6875rem] mb-6">
-              Digite <strong className="text-white">EXCLUIR</strong> para confirmar.
-            </p>
-            <input
-              type="text"
-              value={deleteConfirmText}
-              onChange={e => setDeleteConfirmText(e.target.value.toUpperCase())}
-              placeholder="Digite EXCLUIR"
-              className="w-full bg-zinc-900 border border-red-500/20 rounded-xl px-4 py-3 text-white text-sm text-center placeholder:text-zinc-700 focus:outline-none focus:border-red-500/40 mb-6"
-            />
-            <div className="space-y-3">
-              <button
-                aria-label="Carregando"
-                onClick={handleDeleteAccount}
-                disabled={deleteConfirmText !== 'EXCLUIR' || isDeleting}
-                className="w-full py-4 bg-red-600 text-white font-bold text-[0.625rem] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all disabled:opacity-30 flex items-center justify-center gap-2"
-              >
-                {isDeleting ? <Loader2 size="0.875rem" className="animate-spin" /> : 'Excluir Permanentemente'}
-              </button>
-              <button
-                onClick={() => {
-                  setShowDeleteAccount(false);
-                  setDeleteConfirmText('');
-                }}
-                className="w-full py-4 bg-transparent text-zinc-400 font-bold text-[0.625rem] uppercase tracking-[0.2em] border border-white/5 rounded-xl active:bg-white/5 transition-all"
-              >
-                Cancelar
-              </button>
+            <div className="absolute inset-0 bg-black/80 backdrop-blur-xl" />
+            <div
+              className="relative w-full max-w-sm bg-[#0A0A0A] border border-red-500/20 rounded-3xl p-8 text-center animate-in zoom-in-95 duration-500"
+              onClick={e => e.stopPropagation()}
+            >
+              <div className="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-red-500/20">
+                <AlertTriangle size="1.75rem" className="text-red-500" />
+              </div>
+              <h2 style={TYPOGRAPHY.screenTitle} className="text-xl text-white mb-3">
+                Excluir Conta
+              </h2>
+              <p className="text-zinc-400 text-xs leading-relaxed mb-2">
+                Esta ação é <strong className="text-red-400">permanente e irreversível</strong>. Todos os seus dados,
+                ingressos, histórico e benefícios serão perdidos.
+              </p>
+              <p className="text-zinc-400 text-[0.6875rem] mb-6">
+                Digite <strong className="text-white">EXCLUIR</strong> para confirmar.
+              </p>
+              <input
+                type="text"
+                value={deleteConfirmText}
+                onChange={e => setDeleteConfirmText(e.target.value.toUpperCase())}
+                placeholder="Digite EXCLUIR"
+                className="w-full bg-zinc-900 border border-red-500/20 rounded-xl px-4 py-3 text-white text-sm text-center placeholder:text-zinc-700 focus:outline-none focus:border-red-500/40 mb-6"
+              />
+              <div className="space-y-3">
+                <button
+                  aria-label="Carregando"
+                  onClick={handleDeleteAccount}
+                  disabled={deleteConfirmText !== 'EXCLUIR' || isDeleting}
+                  className="w-full py-4 bg-red-600 text-white font-bold text-[0.625rem] uppercase tracking-[0.2em] rounded-xl active:scale-95 transition-all disabled:opacity-30 flex items-center justify-center gap-2"
+                >
+                  {isDeleting ? <Loader2 size="0.875rem" className="animate-spin" /> : 'Excluir Permanentemente'}
+                </button>
+                <button
+                  onClick={() => {
+                    setShowDeleteAccount(false);
+                    setDeleteConfirmText('');
+                  }}
+                  className="w-full py-4 bg-transparent text-zinc-400 font-bold text-[0.625rem] uppercase tracking-[0.2em] border border-white/5 rounded-xl active:bg-white/5 transition-all"
+                >
+                  Cancelar
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        </ModalPortal>
       )}
 
       {/* Mood Picker */}

@@ -71,8 +71,11 @@
 - A2 — CORS *
 - A5 — N+1 queries financeiro (waitlist resolvido sessão 18)
 - A22 — 160 hover: em views mobile
+- Google OAuth branding — trocar nome "daldttuibmxwkpbqtebm.supabase.co" por "VANTA" no Google Cloud Console (APIs > OAuth Consent Screen > Editar App > Nome: VANTA + logo)
+- Verificar filtros da Search visualmente (5 modais podem precisar de ModalPortal)
 
 ## Pendencias externas
 - Conta Apple Developer ($99/ano)
 - Conta Google Play Console ($25)
 - CNPJ + emails legais
+- Google Cloud Console: configurar OAuth Consent Screen com nome "VANTA" + logo (conta projetovanta@gmail.com)

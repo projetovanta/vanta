@@ -50,13 +50,20 @@ Sempre responder em português do Brasil.
 - **Zero valores fixos de largura** — usar %, flex, `w-full`, `min-w-0`, `truncate`.
 - **Mobile-first** (iOS, Android, browser mobile). Desktop: `max-w` proporcional.
 - Textos longos: sempre `truncate` ou `line-clamp-N`.
-- Modais: `absolute inset-0` (nunca `fixed inset-0` ou `w-screen`).
-- Exceção: páginas standalone podem usar `h-screen` e `fixed inset-0`.
+### Modais & Overlays — Regra de Posicionamento
+- Modais SEMPRE `absolute inset-0` (nunca `fixed inset-0` ou `w-screen`)
+- Modais devem cobrir a TELA INTEIRA. Onde renderizar:
+  - ✅ Dentro de FocusViews (que já são `absolute inset-0`)
+  - ✅ Dentro de standalone pages (`h-[100dvh]`)
+  - ✅ Fora do `<main>`, diretamente no `#vanta-app`
+  - ❌ NUNCA dentro de seções roláveis (`overflow-y-auto`)
+- Componente dentro de scroll que precisa abrir modal → usar `<ModalPortal>` de `components/ModalPortal.tsx`
+- Exceção: páginas standalone podem usar `h-[100dvh]` e `fixed inset-0`. NUNCA `h-screen`.
 
 ### Contêiner Master (App.tsx)
-- **Outer**: `fixed inset-0 flex flex-col items-center overflow-hidden bg-[#050505]`
-- **Inner**: `w-full flex-1 overflow-hidden flex flex-col bg-[#0A0A0A]`
-  - App normal: `max-w-[500px]`. Painel Admin: `max-w-4xl` sempre
+- **Outer**: `fixed inset-0` flex flex-col items-center overflow-hidden, bg: `radial-gradient(ellipse at center, #1a1a1a 0%, #0a0a0a 35%, #020202 100%)`
+- **Inner** (`#vanta-app`): `w-full flex-1 bg-[#0A0A0A] relative overflow-hidden flex flex-col`
+  - App normal: `max-w-[500px]`. Painel Admin: conteúdo `max-w-[500px]` + sidebar ao lado
   - Desktop ≥768px: sidebar `w-56` fixa. Mobile: sidebar colapsável `w-14`/`w-48`
 
 ### Regra de Scroll — FocusViews (CRÍTICA)
@@ -73,7 +80,7 @@ App.tsx aplica `overflow-hidden` quando `isFocusView = true`. Todo componente DE
 - TODA ação deve mostrar toast/modal de feedback. ZERO ações silenciosas
 - Ações destrutivas: modal "Tem certeza?" antes
 - Scroll horizontal de tabs: `overflow-x-auto snap-x no-scrollbar` + `shrink-0`
-- Safe area PWA: `pt-[env(safe-area-inset-top)]` header, `pb-[env(safe-area-inset-bottom)]` footer
+- Safe area PWA: `style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}` header, `style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}` footer (inline com fallback)
 - Tipografia: Playfair Display SC Bold 700, clamp responsivo
 
 ## ✅ CHECKLIST — Auditoria Pré-Entrega (14 itens)

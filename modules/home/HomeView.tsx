@@ -8,6 +8,7 @@ import { LocaisParceiroSection } from './components/LocaisParceiroSection';
 import { DescubraCidadesSection } from './components/DescubraCidadesSection';
 import { IndicaPraVoceSection } from './components/IndicaPraVoceSection';
 import { BeneficiosMVSection } from './components/BeneficiosMVSection';
+import { GuestSignupBanner } from './components/GuestSignupBanner';
 import { TYPOGRAPHY } from '../../constants';
 import { MapPin, Search, Crown } from 'lucide-react';
 import { useAuthStore } from '../../stores/authStore';
@@ -161,6 +162,9 @@ export const HomeView: React.FC<HomeViewProps> = ({
           />
         </LazySection>
       )}
+
+      {/* Banner cadastro — só visitante */}
+      {isGuest && <GuestSignupBanner onSignup={() => onNavigateToTab?.('PERFIL')} />}
 
       {/* VANTA Indica pra Você */}
       {selectedCity && (

@@ -37,9 +37,10 @@
 | `PushPermissionBanner.tsx` | — | Banner permissão push |
 | `HorarioPublicDisplay.tsx` | — | Horário funcionamento (leitura) |
 | `HorarioFuncionamentoEditor.tsx` | 82 | Editor horário funcionamento |
+| `ModalPortal.tsx` | 17 | Portal para renderizar modais no `#vanta-app` — usar quando modal está dentro de scroll container |
 
 ## Regras de UI (CLAUDE.md)
 - NUNCA `<select>` nativo → VantaPickerModal ou VantaDropdown
-- Modais: `absolute inset-0` (nunca `fixed inset-0`)
+- Modais: `absolute inset-0` (nunca `fixed inset-0`). Se dentro de scroll → envolver em `<ModalPortal>`
 - Toast/modal de feedback obrigatório para toda ação
 - Ações destrutivas: modal confirmação antes

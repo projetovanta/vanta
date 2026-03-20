@@ -37,9 +37,9 @@
 | `VantaPickerModal.tsx` | — | Picker modal customizado |
 
 ## Contêiner Master (App.tsx)
-- Outer: `fixed inset-0 flex flex-col items-center overflow-hidden bg-[#050505]`
-- Inner: `w-full flex-1 overflow-hidden flex flex-col bg-[#0A0A0A]`
-- App normal: `max-w-[500px]`. Admin: `max-w-4xl` sempre
+- Outer: `fixed inset-0` flex flex-col items-center overflow-hidden, bg: radial-gradient chumbo
+- Inner (`#vanta-app`): `w-full flex-1 bg-[#0A0A0A] relative overflow-hidden flex flex-col`
+- App normal: `max-w-[500px]`. Admin: conteúdo `max-w-[500px]` + sidebar ao lado
 
 ## Services Raiz
 | Service | Linhas | Função |

@@ -572,6 +572,8 @@ Cada fluxo neste livro segue a mesma estrutura:
 
 **Ponto de partida:** Botao de engrenagem no titulo da secao "Proximos Eventos".
 
+**Nota tecnica:** HomeFilterOverlay usa `<ModalPortal>` para renderizar no `#vanta-app` via React Portal. Isso garante que o overlay aparece centralizado na tela mesmo quando a Home esta scrollada.
+
 **Caminho completo:**
 1. Toca na engrenagem (Settings) ao lado de "Proximos Eventos"
 2. Overlay centralizado abre com backdrop blur
@@ -667,7 +669,9 @@ As views de detalhe empilham sobre a Home usando z-index crescente:
 | Overlay 3 | 160 | AllEventsView / AllPartnersView / AllBeneficiosView |
 | Overlay 4 | 170 | CityView |
 | Overlay 5 | 180 | ComunidadePublicView |
-| Overlay 6 | 200 | HomeFilterOverlay / Perfil publico de membro |
+| Overlay 6 | 200 | HomeFilterOverlay (via ModalPortal) / Perfil publico de membro |
+
+HomeFilterOverlay usa `<ModalPortal>` para renderizar no `#vanta-app` em vez de dentro do scroll da Home.
 
 Todas as views overlay deslizam da direita com animacao (`slide-in-from-right`). O botao voltar em cada view fecha apenas aquela camada e retorna a camada anterior.
 
@@ -3338,7 +3342,7 @@ VANTA App
 ### Guest (nao logado)
 
 **Acessa livremente:**
-- Home completa (todas as secoes)
+- Home (secoes publicas: Proximos Eventos, Locais Parceiros, Descubra Cidades + Banner "Crie sua conta" com CTA)
 - Selecionar cidade
 - Ver todos os eventos (AllEventsView)
 - Ver cidade especifica (CityView)

@@ -2639,8 +2639,8 @@ interface HighlightsProps {
 ---
 
 ### 5.7 components/HomeFilterOverlay.tsx
-- **Linhas:** 186
-- **O que faz:** Overlay de filtros da secao ProximosEventos. Duas tabs: Tipo de Evento (formato) e Estilo Musical. Carrega formatos e estilos que existem em eventos da cidade via Supabase. Permite selecao multipla com reset.
+- **Linhas:** 194
+- **O que faz:** Overlay de filtros da secao ProximosEventos. Duas tabs: Tipo de Evento (formato) e Estilo Musical. Carrega formatos e estilos que existem em eventos da cidade via Supabase. Permite selecao multipla com reset. Usa `<ModalPortal>` para renderizar no `#vanta-app` (evita posicionamento errado dentro de scroll).
 - **Props/Interface:**
 ```ts
 interface HomeFilterOverlayProps {
@@ -2649,7 +2649,7 @@ interface HomeFilterOverlayProps {
 }
 type TabType = 'FORMATO' | 'ESTILO';
 ```
-- **Imports:** `react`, `lucide-react`, `TYPOGRAPHY`, `supabaseClient`
+- **Imports:** `react`, `lucide-react`, `TYPOGRAPHY`, `supabaseClient`, `ModalPortal`
 - **Quem importa:** `ProximosEventosSection.tsx`
 
 ---
@@ -2761,7 +2761,25 @@ interface DescubraCidadesSectionProps {
 
 ---
 
-### 5.15 components/LazySection.tsx
+### 5.15 components/GuestSignupBanner.tsx
+- **Linhas:** 53
+- **O que faz:** Banner CTA para visitantes nao cadastrados na Home. Mostra 3 beneficios (favoritos, indicacoes, notificacoes) e botao "Criar minha conta" que abre modal de auth.
+- **Props/Interface:** `{ onSignup: () => void }`
+- **Imports:** `react`, `lucide-react`, `TYPOGRAPHY`
+- **Quem importa:** `HomeView.tsx` (renderizado entre ProximosEventos e IndicaPraVoce, so quando `isGuest`)
+
+---
+
+### 5.16 components/ModalPortal.tsx
+- **Linhas:** 17
+- **O que faz:** Portal React que renderiza children no `#vanta-app` via `createPortal`. Usar quando modal com `absolute inset-0` esta dentro de scroll container e precisa cobrir a tela inteira.
+- **Props/Interface:** `{ children: React.ReactNode }`
+- **Imports:** `react`, `react-dom`
+- **Quem importa:** `HomeFilterOverlay.tsx`, `PremiumCalendar.tsx`, `ProfileView.tsx`
+
+---
+
+### 5.17 components/LazySection.tsx
 - **Linhas:** 26
 - **O que faz:** Wrapper que renderiza children somente quando o elemento entra no viewport (margin 200px). Usa IntersectionObserver.
 - **Props/Interface:** `{ children: ReactNode }`

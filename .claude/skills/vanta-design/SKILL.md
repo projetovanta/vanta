@@ -105,7 +105,8 @@ Tom: caloroso, confiavel e conectado — mas com estilo. NAO e um clube exclusiv
 
 ### Modais
 - SEMPRE `absolute inset-0` (nunca `fixed inset-0` ou `w-screen`)
-- Excecao: paginas standalone
+- Se dentro de scroll container → envolver em `<ModalPortal>` de `components/ModalPortal.tsx`
+- Excecao: paginas standalone (`h-[100dvh]`, NUNCA `h-screen`)
 
 ### Formularios (constants.ts)
 - **inputCls**: `w-full bg-zinc-900/60 border border-white/5 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-[#FFD300]/30 placeholder-zinc-700`
@@ -127,8 +128,8 @@ Tom: caloroso, confiavel e conectado — mas com estilo. NAO e um clube exclusiv
 - ZERO larguras fixas — usar %, flex, w-full, min-w-0
 
 ### Safe Areas (PWA/Nativo)
-- Header: `pt-[env(safe-area-inset-top)]`
-- Footer/TabBar: `pb-[env(safe-area-inset-bottom)]`
+- Header: `style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}` (inline com fallback)
+- Footer/TabBar: `style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}` (inline com fallback)
 - Obrigatorio em todo componente que toca topo ou fundo da tela
 
 ### Container Master (App.tsx)

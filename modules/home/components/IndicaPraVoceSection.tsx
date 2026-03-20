@@ -6,6 +6,7 @@ import type { DealMaisVanta } from '../../../types';
 import { EventCarousel } from './EventCarousel';
 import { vantaService } from '../../../services/vantaService';
 import { clubeDealsService } from '../../../features/admin/services/clube/clubeDealsService';
+import { behaviorService } from '../../../services/behaviorService';
 import { useAuthStore } from '../../../stores/authStore';
 import { EventCardSkeleton } from '../../../components/Skeleton';
 import { SectionFilterChips } from '../../../components/SectionFilterChips';
@@ -67,6 +68,7 @@ const DealCarousel: React.FC<{ deals: DealMaisVanta[] }> = ({ deals }) => (
 export const IndicaPraVoceSection: React.FC<IndicaPraVoceSectionProps> = React.memo(
   ({ cidade, onEventClick, onComunidadeClick, onViewAll }) => {
     const isGuest = useAuthStore(s => s.currentAccount.role) === 'vanta_guest';
+    const userId = useAuthStore(s => s.currentAccount.id);
     const interesses = useAuthStore(s => s.currentAccount.interesses);
     const [eventos, setEventos] = useState<Evento[]>([]);
     const [deals, setDeals] = useState<DealMaisVanta[]>([]);
@@ -82,30 +84,54 @@ export const IndicaPraVoceSection: React.FC<IndicaPraVoceSectionProps> = React.m
       setLoading(true);
       setSelectedChip('Todos');
 
-      Promise.all([
-        vantaService.getEventosPorCidade(cidade, true, 30, 0),
-        clubeDealsService.listarAtivosPorNomeCidade(cidade),
-      ]).then(([eventosData, dealsData]) => {
-        if (cancelled) return;
-        const interesseSet = new Set(interesses.map(i => i.toLowerCase()));
-        const filtered = eventosData.filter(e => {
-          const tags = [
-            e.formato?.toLowerCase(),
-            ...(e.estilos ?? []).map((s: string) => s.toLowerCase()),
-            ...(e.experiencias ?? []).map((x: string) => x.toLowerCase()),
-            e.categoria?.toLowerCase(),
-            ...(e.subcategorias ?? []).map((s: string) => s.toLowerCase()),
-          ].filter(Boolean);
-          return tags.some(t => t && interesseSet.has(t));
-        });
-        setEventos(filtered.slice(0, 20));
-        setDeals(dealsData);
-        setLoading(false);
-      });
+      const fetchEventos = userId
+        ? behaviorService.getRecomendados(userId, cidade, 20).then(recomendados => {
+            // Se behavior retornou resultados, usar. Senão fallback pra interesses.
+            if (recomendados.length > 0) return recomendados;
+            return vantaService.getEventosPorCidade(cidade, true, 30, 0).then(eventosData => {
+              const interesseSet = new Set(interesses.map(i => i.toLowerCase()));
+              return eventosData
+                .filter(e => {
+                  const tags = [
+                    e.formato?.toLowerCase(),
+                    ...(e.estilos ?? []).map((s: string) => s.toLowerCase()),
+                    ...(e.experiencias ?? []).map((x: string) => x.toLowerCase()),
+                    e.categoria?.toLowerCase(),
+                    ...(e.subcategorias ?? []).map((s: string) => s.toLowerCase()),
+                  ].filter(Boolean);
+                  return tags.some(t => t && interesseSet.has(t));
+                })
+                .slice(0, 20);
+            });
+          })
+        : vantaService.getEventosPorCidade(cidade, true, 30, 0).then(eventosData => {
+            const interesseSet = new Set(interesses.map(i => i.toLowerCase()));
+            return eventosData
+              .filter(e => {
+                const tags = [
+                  e.formato?.toLowerCase(),
+                  ...(e.estilos ?? []).map((s: string) => s.toLowerCase()),
+                  ...(e.experiencias ?? []).map((x: string) => x.toLowerCase()),
+                  e.categoria?.toLowerCase(),
+                  ...(e.subcategorias ?? []).map((s: string) => s.toLowerCase()),
+                ].filter(Boolean);
+                return tags.some(t => t && interesseSet.has(t));
+              })
+              .slice(0, 20);
+          });
+
+      Promise.all([fetchEventos, clubeDealsService.listarAtivosPorNomeCidade(cidade)]).then(
+        ([eventosData, dealsData]) => {
+          if (cancelled) return;
+          setEventos(eventosData);
+          setDeals(dealsData);
+          setLoading(false);
+        },
+      );
       return () => {
         cancelled = true;
       };
-    }, [cidade, isGuest, interesses]);
+    }, [cidade, isGuest, userId, interesses]);
 
     const chips = useMemo(() => {
       const c = ['Todos'];

@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { Check, Loader2, AlertTriangle, Share2 } from 'lucide-react';
 import { supabase } from '../../services/supabaseClient';
 import { logger } from '../../services/logger';
+import { behaviorService } from '../../services/behaviorService';
 
 type Status = 'polling' | 'confirmed' | 'failed' | 'timeout';
 
@@ -65,6 +66,13 @@ export const CheckoutSuccessPage: React.FC = () => {
           }
 
           setStatus('confirmed');
+
+          // Behavior tracking: PURCHASE
+          supabase.auth.getUser().then(({ data }) => {
+            if (data?.user?.id && pedido.evento_id) {
+              behaviorService.trackPurchase(data.user.id, pedido.evento_id as string);
+            }
+          });
           return;
         }
 

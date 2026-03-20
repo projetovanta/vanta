@@ -5149,6 +5149,41 @@ export type Database = {
           },
         ];
       };
+      user_behavior: {
+        Row: {
+          action_type: string;
+          created_at: string;
+          event_id: string;
+          id: string;
+          metadata: Json | null;
+          user_id: string;
+        };
+        Insert: {
+          action_type: string;
+          created_at?: string;
+          event_id: string;
+          id?: string;
+          metadata?: Json | null;
+          user_id: string;
+        };
+        Update: {
+          action_type?: string;
+          created_at?: string;
+          event_id?: string;
+          id?: string;
+          metadata?: Json | null;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'user_behavior_event_id_fkey';
+            columns: ['event_id'];
+            isOneToOne: false;
+            referencedRelation: 'eventos_admin';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
       user_consents: {
         Row: {
           aceito_em: string;
@@ -5698,6 +5733,14 @@ export type Database = {
           evento_id: string;
           tipo_beneficio: string;
         }[];
+      };
+      eventos_recomendados_behavior: {
+        Args: {
+          p_user_id: string;
+          p_cidade: string;
+          p_limit?: number;
+        };
+        Returns: Database['public']['Tables']['eventos_admin']['Row'][];
       };
       eventos_por_cidade_paginado: {
         Args: {

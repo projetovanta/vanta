@@ -22,6 +22,7 @@ import { MaisVantaBeneficioModal } from './components/MaisVantaBeneficioModal';
 import ReviewModal from '../../components/ReviewModal';
 import { ComemoracaoFormView } from '../community/ComemoracaoFormView';
 import { trackEventOpen } from '../../services/analyticsService';
+import { behaviorService } from '../../services/behaviorService';
 import type { BeneficioMV } from '../../features/admin/services/clube/clubeLotesService';
 import { getConfig as getMvConfig } from '../../features/admin/services/clube/clubeConfigService';
 import { ReportModal } from '../../components/ReportModal';
@@ -153,11 +154,24 @@ export const EventDetailView: React.FC<EventDetailViewProps> = ({
   const beneficioDesconto =
     isDescontoOnly && beneficioElegivel?.descontoPercentual ? beneficioElegivel.descontoPercentual : null;
 
-  // Analytics: track event open
+  // Analytics: track event open + behavior (VIEW on mount, DWELL on unmount)
   const currentUserId = useAuthStore(s => s.currentAccount.id);
+  const isGuest = useAuthStore(s => s.currentAccount.role) === 'vanta_guest';
   useEffect(() => {
     trackEventOpen(currentUserId, evento.id);
-  }, [currentUserId, evento.id]);
+    if (!isGuest && currentUserId) {
+      behaviorService.trackView(currentUserId, evento.id);
+    }
+    const openedAt = Date.now();
+    return () => {
+      if (!isGuest && currentUserId) {
+        const seconds = Math.round((Date.now() - openedAt) / 1000);
+        if (seconds >= 3) {
+          behaviorService.trackDwell(currentUserId, evento.id, seconds);
+        }
+      }
+    };
+  }, [currentUserId, evento.id, isGuest]);
 
   // Carrega reviews do evento
   const isPast = new Date(evento.dataReal + 'T23:59:59-03:00') < new Date();

@@ -10,6 +10,7 @@
 - [projeto_redesign_app.md](projeto_redesign_app.md) — Redesign completo do app (3 camadas, tiers, onboarding, tabs)
 - [projeto_identidade_visual.md](projeto_identidade_visual.md) — Paleta, tipografia, fotografia, animações, 3 palavras-guia
 - [mais_vanta_v2_modelo.md](mais_vanta_v2_modelo.md) — Modelo MAIS VANTA v2 (inspiração Secret Society Dubai)
+- [projeto_cms_master.md](projeto_cms_master.md) — CMS Master: ideia de painel pra editar tudo sem código (IDEIA, não aprovado)
 
 ## Módulos Principais (10)
 

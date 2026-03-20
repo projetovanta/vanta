@@ -2,34 +2,46 @@
 
 ## Branch: visual-redesign
 ## Ultimo commit: sessão 15 — sidebar admin reorganizada
-## TSC: 0 erros
+## TSC: OK (diff-check passou)
 ## Diff-check: OK
 
-## O que foi feito na sessao 15 (20 mar 2026)
+## Sessão 16 — Concluída (20 mar 2026)
 
-### Feature: Reorganização da Sidebar do Painel Admin
-- Sidebar reescrita de 6 seções técnicas → 6 seções por contexto de uso
-- Antes: GERAL, GESTÃO, FINANCEIRO, MAIS VANTA, MARKETING, SISTEMA
-- Agora: VISÃO GERAL, COMUNIDADES, EVENTOS, FINANCEIRO, MAIS VANTA, PLATAFORMA
-- Seções MARKETING e GESTÃO eliminadas (itens redistribuídos por contexto)
-- Config Plataforma renomeado → "Taxas e Splits"
-- Termos e Privacidade renomeado → "Legal"
-- DiagnosticoView: hub com 4 abas (Saúde, Analytics, FAQ, Ferramentas)
-- Itens absorvidos pelo Diagnóstico: Product Analytics, FAQ, Links Úteis, Pendências App
-- Painel Master removido da sidebar (Dashboard já mostra KPIs)
-- SidebarV2 + AdminSidebar + DashboardV2Gateway + DiagnosticoView alterados
-- Community sidebar NÃO foi alterada
+### O que foi feito
+- **Parte A — Limpeza chips (ProximosEventosSection)**
+  - Removido: import SectionFilterChips, state selectedChip, memo chips
+  - Simplificado: visibleFormatoGroups, visibleEstiloGroups (direto filterTopGroups)
+  - Removido memo todosEventos → usa filteredEventos direto
+  - Componente de ~303L → ~270L
 
-### Pendência da sessão 15
-- Dan quer mais do que reorganização da sidebar — quer páginas-hub contextuais
-- Na próxima sessão: Dan vai explicar exatamente o que quer
+- **Parte B — User Behavior**
+  - Migration `20260320200000_user_behavior.sql` — tabela user_behavior (action_type: VIEW/PURCHASE/FAVORITE/DWELL)
+  - RPC `eventos_recomendados_behavior` — behavior (peso 2x) + interesses onboarding (peso 1x), 90 dias
+  - Service `behaviorService.ts` — trackView, trackPurchase, trackFavorite, trackDwell, getRecomendados
+  - EventDetailView: VIEW no mount + DWELL no unmount (mínimo 3s)
+  - CheckoutSuccessPage: PURCHASE após confirmação de pagamento
+  - extrasStore: FAVORITE no toggle (só quando adiciona)
+  - IndicaPraVoceSection: usa getRecomendados com fallback pra filtro local por interesses
+
+### Decisões do Dan — CMS Master (IDEIA, não aprovado)
+- Painel CMS interno pra master editar tudo sem código
+- Salvo em `memory/projeto_cms_master.md` — retomar quando Dan quiser
+- NÃO iniciar sem aprovação explícita
+
+### Pendente
+- Commit da sessão 16
+- Preflight final (quando Dan pedir)
+
+## Decisoes do Dan ativas (sessão 16)
+- Chips NÃO aparecem por padrão — só com filtros ativos pelo ⚙
+- User behavior: VIEW, PURCHASE, FAVORITE, DWELL → alimenta IndicaPraVoce
+- Indica combina interesses do onboarding + behavior (behavior pesa mais)
 
 ## Decisoes do Dan ativas (sessão 14)
 - Filtro ⚙ = VOLÁTIL (estado local, reseta ao sair)
 - Próximos Eventos mostra TUDO sempre (sem filtro persistente)
 - Indica pra Você = posição 2 (logo após Próximos Eventos)
-- Indica usa interesses do perfil (onboarding), NÃO o filtro ⚙
-- Filtros ativos substituem chips (não coexistem)
+- Filtros ativos: chips com X aparecem, sem filtro = sem chips
 - Tags removíveis com X + botão (+N filtros)
 - Admin: página única com seções + etiquetas de uso
 - Interesses = só genuínos (sem duplicar formatos/estilos)
@@ -61,8 +73,6 @@
 - A5 — N+1 queries financeiro
 - A22 — 160 hover: em views mobile
 - A27 — lazy load ExcelJS/jsPDF
-- Integrar user_behavior com Indica pra Você (registrar cliques, alimentar recomendações)
-- Visual dos chips: Dan quer mais contexto/provas de uso antes de decidir
 
 ## Pendencias externas
 - Conta Apple Developer ($99/ano)

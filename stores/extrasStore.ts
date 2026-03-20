@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { Evento, Ingresso } from '../types';
 import { vantaService } from '../services/vantaService';
 import { favoritosService } from '../services/favoritosService';
+import { behaviorService } from '../services/behaviorService';
 import { clubeService } from '../features/admin/services/clubeService';
 import { assinaturaService } from '../features/admin/services/assinaturaService';
 import { maisVantaConfigService } from '../features/admin/services/maisVantaConfigService';
@@ -81,12 +82,16 @@ export const useExtrasStore = create<ExtrasState>((set, get) => ({
     const { currentAccount } = useAuthStore.getState();
     const userId = currentAccount.id;
     if (!userId || userId === GUEST_PLACEHOLDER.id) return;
+    const isFavoriting = !get().savedEvents.includes(eventoId);
     set(s => ({
       savedEvents: s.savedEvents.includes(eventoId)
         ? s.savedEvents.filter(id => id !== eventoId)
         : [...s.savedEvents, eventoId],
     }));
     void favoritosService.toggle(userId, eventoId);
+    if (isFavoriting) {
+      void behaviorService.trackFavorite(userId, eventoId);
+    }
   },
 
   confirmarPresenca: evento => {

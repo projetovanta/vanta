@@ -5,7 +5,6 @@ import { Evento } from '../../../types';
 import { EventCarousel } from './EventCarousel';
 import { vantaService } from '../../../services/vantaService';
 import { EventCardSkeleton } from '../../../components/Skeleton';
-import { SectionFilterChips } from '../../../components/SectionFilterChips';
 import { filterTopGroups } from '../utils/filterSubCarousels';
 import { HomeFilterOverlay } from './HomeFilterOverlay';
 
@@ -20,7 +19,6 @@ export const ProximosEventosSection: React.FC<ProximosEventosSectionProps> = Rea
   ({ cidade, onEventClick, onComunidadeClick, onViewAll }) => {
     const [eventos, setEventos] = useState<Evento[]>([]);
     const [estilos, setEstilos] = useState<string[]>([]);
-    const [selectedChip, setSelectedChip] = useState('Todos');
     const [loading, setLoading] = useState(true);
     const [showFilterOverlay, setShowFilterOverlay] = useState(false);
     const [localFilters, setLocalFilters] = useState<string[] | null>(null);
@@ -31,7 +29,6 @@ export const ProximosEventosSection: React.FC<ProximosEventosSectionProps> = Rea
     useEffect(() => {
       let cancelled = false;
       setLoading(true);
-      setSelectedChip('Todos');
       setLocalFilters(null);
 
       Promise.all([
@@ -82,18 +79,6 @@ export const ProximosEventosSection: React.FC<ProximosEventosSectionProps> = Rea
       });
     }, [eventos, localFilters, selectedFormatos, selectedEstilos]);
 
-    // Chips: Todos + estilos da cidade (sem formatos — formato é fixo pelo tipo de espaço)
-    const chips = useMemo(() => {
-      const c = ['Todos'];
-      estilos.forEach(s => {
-        if (!c.includes(s)) c.push(s);
-      });
-      if (localFilters && localFilters.length > 0) {
-        return c.filter(ch => ch === 'Todos' || localFilters.includes(ch));
-      }
-      return c;
-    }, [estilos, localFilters]);
-
     // Grupos por formato (usa filteredEventos)
     const formatoGroups = useMemo(() => {
       const fmts = selectedFormatos && selectedFormatos.length > 0 ? selectedFormatos : formatos;
@@ -112,40 +97,12 @@ export const ProximosEventosSection: React.FC<ProximosEventosSectionProps> = Rea
 
     // Filtrar por relevância (mínimo dinâmico + top 4)
     const visibleFormatoGroups = useMemo(() => {
-      let groups = formatoGroups;
-      if (selectedChip !== 'Todos') {
-        const match = groups.find(g => g.label === selectedChip);
-        if (match) return [match];
-        groups = groups
-          .map(g => ({ ...g, items: g.items.filter(e => e.estilos?.[0] === selectedChip) }))
-          .filter(g => g.items.length > 0);
-      }
-      return filterTopGroups(groups, filteredEventos.length);
-    }, [formatoGroups, selectedChip, filteredEventos.length]);
+      return filterTopGroups(formatoGroups, filteredEventos.length);
+    }, [formatoGroups, filteredEventos.length]);
 
     const visibleEstiloGroups = useMemo(() => {
-      let groups = estiloGroups;
-      if (selectedChip !== 'Todos') {
-        const match = groups.find(g => g.label === selectedChip);
-        if (match) return [match];
-        const fmtEventos = filteredEventos.filter(e => e.formato === selectedChip);
-        if (fmtEventos.length > 0) {
-          const stls = selectedEstilos && selectedEstilos.length > 0 ? selectedEstilos : estilos;
-          groups = stls
-            .map(s => ({ label: s, items: fmtEventos.filter(e => e.estilos?.[0] === s) }))
-            .filter(g => g.items.length > 0);
-        }
-      }
-      return filterTopGroups(groups, filteredEventos.length);
-    }, [estiloGroups, estilos, filteredEventos, selectedChip, selectedEstilos]);
-
-    // Carrossel "Todos" filtrado pelo chip (sobre filteredEventos)
-    const todosEventos = useMemo(() => {
-      if (selectedChip === 'Todos') return filteredEventos;
-      const byFormato = filteredEventos.filter(e => e.formato === selectedChip);
-      if (byFormato.length > 0) return byFormato;
-      return filteredEventos.filter(e => e.estilos?.[0] === selectedChip);
-    }, [filteredEventos, selectedChip]);
+      return filterTopGroups(estiloGroups, filteredEventos.length);
+    }, [estiloGroups, filteredEventos.length]);
 
     const handleResetFilters = useCallback(() => {
       setLocalFilters(null);
@@ -181,7 +138,7 @@ export const ProximosEventosSection: React.FC<ProximosEventosSectionProps> = Rea
             />
           </button>
         </div>
-        {hasActiveFilters ? (
+        {hasActiveFilters && (
           <div className="px-5 pb-2">
             <p className="text-[0.5rem] font-black uppercase tracking-[0.2em] text-zinc-500 mb-1.5">Filtros ativos</p>
             <div className="overflow-x-auto no-scrollbar">
@@ -207,8 +164,6 @@ export const ProximosEventosSection: React.FC<ProximosEventosSectionProps> = Rea
               </div>
             </div>
           </div>
-        ) : (
-          <SectionFilterChips chips={chips} selected={selectedChip} onSelect={setSelectedChip} />
         )}
         {loading ? (
           <div className="px-5">
@@ -242,7 +197,7 @@ export const ProximosEventosSection: React.FC<ProximosEventosSectionProps> = Rea
           <div className="space-y-4">
             {/* Carrossel principal — Todos */}
             <EventCarousel
-              eventos={todosEventos.slice(0, 9)}
+              eventos={filteredEventos.slice(0, 9)}
               onEventClick={onEventClick}
               onComunidadeClick={onComunidadeClick}
               onViewAll={onViewAll}

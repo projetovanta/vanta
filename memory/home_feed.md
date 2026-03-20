@@ -1,4 +1,4 @@
-# Criado: 2026-03-04 13:17 | Ultima edicao: 2026-03-19
+# Criado: 2026-03-04 13:17 | Ultima edicao: 2026-03-20
 # Memória — Home / Feed
 
 ## Arquivos
@@ -14,7 +14,7 @@
 5. **MaisVendidosSection** — top 10 mais vendidos 24h (RPC `top_vendidos_24h`, some se 0 vendas)
 6. **LocaisParceiroSection** — comunidades ativas na cidade (RPC `parceiros_por_cidade`, 9 + "Ver todos" → AllPartnersView)
 7. **DescubraCidadesSection** — cidades com eventos exceto a atual (RPC `cidades_com_eventos`, click → CityView)
-8. **IndicaPraVoceSection** — eventos que combinam com interesses do usuário (só logado + com interesses)
+8. **IndicaPraVoceSection** — eventos recomendados via behavior + interesses (RPC `eventos_recomendados_behavior`, fallback pra filtro local por interesses). Só logado + com interesses
 
 ## Componentes de card
 - `EventCarousel` — carrossel horizontal com `onViewAll` + `maxCards` (default 9) + ViewAllCard automático
@@ -32,11 +32,19 @@
 - `openCityView(cidade)` / `closeCityView()` → CityView
 - `openAllPartners(cidade)` / `closeAllPartners()` → AllPartnersView
 
-## RPCs Supabase (migration 20260319100000)
+## RPCs Supabase (migration 20260319100000 + 20260320200000)
 - `top_vendidos_24h(p_cidade, p_limit)` → ranking vendas 24h
 - `cidades_com_eventos(p_excluir)` → cidades com eventos futuros
 - `parceiros_por_cidade(p_cidade, p_limit, p_offset)` → comunidades ativas
 - `eventos_por_cidade_paginado(p_cidade, p_futuros, p_limit, p_offset)` → paginação server-side
+- `eventos_recomendados_behavior(p_user_id, p_cidade, p_limit)` → recomendação por behavior + interesses
+
+## User Behavior (migration 20260320200000)
+- Tabela: `user_behavior` (user_id, event_id, action_type, metadata, created_at)
+- Ações: VIEW, PURCHASE, FAVORITE, DWELL
+- Service: `services/behaviorService.ts` (trackView, trackPurchase, trackFavorite, trackDwell, getRecomendados)
+- Tracking: EventDetailView (VIEW+DWELL), CheckoutSuccessPage (PURCHASE), extrasStore (FAVORITE)
+- RPC combina behavior (peso 2x) + interesses onboarding (peso 1x), últimos 90 dias
 
 ## Removidos da Home
 - ThisWeekSection, ComingSoonSection, FriendsGoingSection, ForYouSection → movidos pra `_deprecated/`

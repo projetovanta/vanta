@@ -4,7 +4,10 @@
  */
 import { Ingresso, Notificacao, CortesiaEvento, TransferenciaCortesiaLog } from '../../../types';
 import { supabase } from '../../../services/supabaseClient';
+import type { Database } from '../../../types/supabase';
 import { eventosAdminService } from './eventosAdminService';
+
+type CortesiaInsert = Database['public']['Tables']['cortesias_config']['Insert'];
 
 type AddTicketCb = (ticket: Ingresso) => void;
 type RemoveTicketCb = (ticketId: string) => void;
@@ -153,7 +156,7 @@ export const cortesiasService = {
       variacoes: config.variacoes,
     };
     if (config.limitesPorTipo) row.limites_por_tipo = config.limitesPorTipo;
-    const { error } = await supabase.from('cortesias_config').insert(row as any);
+    const { error } = await supabase.from('cortesias_config').insert(row as CortesiaInsert);
     if (error) {
       console.error('[cortesiasService] initCortesia:', error);
       return;

@@ -1,5 +1,8 @@
 import type { ClubeConfig } from '../../../../types';
 import { supabase } from '../../../../services/supabaseClient';
+import type { Database } from '../../../../types/supabase';
+
+type ClubeConfigInsert = Database['public']['Tables']['clube_config']['Insert'];
 import { tsBR } from '../../../../utils';
 import { rowToConfig } from './clubeCache';
 
@@ -35,7 +38,7 @@ export async function saveConfig(
 
   const { data, error } = await supabase
     .from('clube_config')
-    .upsert(row as any, { onConflict: 'comunidade_id' })
+    .upsert(row as ClubeConfigInsert, { onConflict: 'comunidade_id' })
     .select()
     .single();
   if (error) throw error;

@@ -106,7 +106,7 @@
 | Padrão header sub-views perfil: text-xl branco, pt-6 px-6 pb-4 (8 views alinhadas) | `modules/profile/` + `MyTicketsView` + `SolicitarParceriaView` |
 | UI UX Pro Max instalado (skill de design intelligence + 6 extras) | `.claude/skills/ui-ux-pro-max/` |
 | Hook context-monitor.sh criado (alerta com 60% do contexto) | `.claude/hooks/context-monitor.sh` |
-| Responsividade 320px: MinhasPendenciasView tabs e SearchHeader grid-cols-4 identificados como risco | Próxima sessão |
+| Responsividade 360px: SearchHeader grid-cols-4 corrigido (tracking-wider), MinhasPendenciasView não existe mais | Resolvido sessão 21 |
 
 ---
 

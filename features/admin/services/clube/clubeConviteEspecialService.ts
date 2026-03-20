@@ -29,19 +29,24 @@ export interface FiltroMembros {
 export async function buscarMembrosPorFiltro(
   filtro: FiltroMembros,
 ): Promise<{ userId: string; nome: string; tier: string; cidade?: string }[]> {
-  let q = (supabase as any)
+  let q = supabase
     .from('membros_clube')
-    .select(
-      'user_id, tier, creator_sublevel, cidade_principal, cidades_ativas, profiles!membros_clube_user_id_fkey(nome)',
-    )
+    .select('user_id, tier, creator_sublevel, cidade_principal, cidades_ativas')
     .eq('ativo', true);
   if (filtro.tier) q = q.eq('tier', filtro.tier);
   if (filtro.cidade) q = q.contains('cidades_ativas', [filtro.cidade]);
   if (filtro.tags && filtro.tags.length > 0) q = q.contains('tags', filtro.tags);
-  const { data } = (await q) as { data: Record<string, unknown>[] | null };
+  const { data } = await q;
+  // Buscar nomes dos membros separadamente
+  const userIds = (data ?? []).map(r => r.user_id);
+  const { data: profiles } =
+    userIds.length > 0
+      ? await supabase.from('profiles').select('id, nome').in('id', userIds)
+      : { data: [] as { id: string; nome: string | null }[] };
+  const nomeMap = new Map((profiles ?? []).map(p => [p.id, p.nome]));
   const membros = (data ?? []).map(r => ({
-    userId: r.user_id as string,
-    nome: ((r.profiles as Record<string, unknown> | null)?.nome as string) ?? '',
+    userId: r.user_id,
+    nome: nomeMap.get(r.user_id) ?? '',
     tier: r.tier as string,
     cidade: r.cidade_principal as string | undefined,
     creatorSublevel: r.creator_sublevel as string | undefined,

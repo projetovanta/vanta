@@ -69,7 +69,7 @@ export const SearchHeader: React.FC<SearchHeaderProps> = ({
           <button
             key={t}
             onClick={() => onTabChange(t)}
-            className={`py-3.5 rounded-xl text-[0.5625rem] font-black uppercase tracking-widest transition-all ${activeTab === t ? 'bg-[#FFD300] text-black' : 'text-zinc-400'}`}
+            className={`py-3.5 rounded-xl text-[0.5625rem] font-black uppercase tracking-wider transition-all ${activeTab === t ? 'bg-[#FFD300] text-black' : 'text-zinc-400'}`}
           >
             {t === 'EVENTS' ? 'Eventos' : t === 'PEOPLE' ? 'Pessoas' : t === 'LUGARES' ? 'Lugares' : 'Pra Você'}
           </button>

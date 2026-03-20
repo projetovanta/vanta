@@ -28,7 +28,7 @@ const mapReembolsoFromDB = (row: any): Reembolso => ({
   aprovadoPor: row.aprovado_por,
   solicitadoEm: row.solicitado_em,
   processadoEm: row.processado_em,
-  eventoNome: row.evento_nome ?? (row.eventos_admin as any)?.nome,
+  eventoNome: row.evento_nome ?? (row as unknown as { eventos_admin?: { nome: string } }).eventos_admin?.nome,
   produtorNome: row.produtor_nome,
   etapa: row.etapa,
   rejeitadoPor: row.rejeitado_por,

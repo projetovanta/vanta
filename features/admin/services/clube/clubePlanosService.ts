@@ -178,16 +178,14 @@ export async function verificarLimiteEventos(
   const now = new Date();
   const inicioMes = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`;
   // Buscar IDs dos eventos do produtor
-  const { data: evts } = (await (supabase as any).from('eventos_admin').select('id').eq('created_by', produtorId)) as {
-    data: { id: string }[] | null;
-  };
+  const { data: evts } = await supabase.from('eventos_admin').select('id').eq('created_by', produtorId);
   const evtIds = (evts ?? []).map(e => e.id);
   if (evtIds.length === 0) return { ok: true, plano };
   // Contar configs MV criadas neste mês para eventos do produtor
-  const { data: configs } = (await (supabase as any)
+  const { data: configs } = await supabase
     .from('mais_vanta_config_evento')
     .select('evento_id')
-    .gte('created_at', inicioMes)) as { data: { evento_id: string }[] | null };
+    .gte('created_at', inicioMes);
   const eventosMvEsteMes = new Set((configs ?? []).map(c => c.evento_id as string));
   const count = evtIds.filter(id => eventosMvEsteMes.has(id)).length;
   if (count >= plano.limiteEventosMes) {

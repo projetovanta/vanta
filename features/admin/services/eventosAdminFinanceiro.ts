@@ -23,6 +23,9 @@ import { listasService } from './listasService';
 import { notify, notifyMany } from '../../../services/notifyService';
 import { logger } from '../../../services/logger';
 
+/** Helper: tipo para rows com join eventos_admin!inner(nome) */
+type WithEventoNome<T> = T & { eventos_admin: { nome: string } };
+
 // ── Contracted Fees ─────────────────────────────────────────────────────────
 
 export const getContractedFees = (eventoId: string): ContractedFees => {
@@ -338,7 +341,7 @@ export const getSolicitacoesSaque = async (eventoIds?: string[]): Promise<Solici
     produtorId: row.produtor_id,
     produtorNome: nomeMap.get(row.produtor_id) ?? '',
     eventoId: row.evento_id,
-    eventoNome: ((row.eventos_admin as any)?.nome as string) ?? '',
+    eventoNome: (row as WithEventoNome<typeof row>).eventos_admin?.nome ?? '',
     valor: Number(row.valor ?? 0),
     valorLiquido: Number(row.valor_liquido ?? 0),
     valorTaxa: Number(row.valor_taxa ?? 0),
@@ -416,7 +419,7 @@ export const confirmarSaque = async (saqueId: string, operadorId?: string, compr
 
   // Notifica produtor (3 canais)
   if (saqueRow?.produtor_id) {
-    const evNome = ((saqueRow as any).eventos_admin?.nome as string) ?? '';
+    const evNome = (saqueRow as WithEventoNome<typeof saqueRow>).eventos_admin?.nome ?? '';
     void notify({
       userId: saqueRow.produtor_id as string,
       tipo: 'SAQUE_APROVADO',
@@ -455,7 +458,7 @@ export const estornarSaque = async (saqueId: string, operadorId?: string): Promi
 
   // Notifica produtor (3 canais)
   if (saqueRow?.produtor_id) {
-    const evNome = ((saqueRow as any).eventos_admin?.nome as string) ?? '';
+    const evNome = (saqueRow as WithEventoNome<typeof saqueRow>).eventos_admin?.nome ?? '';
     void notify({
       userId: saqueRow.produtor_id as string,
       tipo: 'SAQUE_RECUSADO',
@@ -606,7 +609,7 @@ export const getReembolsos = async (eventoIds?: string[]): Promise<Reembolso[]> 
     aprovadoPor: row.aprovado_por ?? undefined,
     solicitadoEm: row.solicitado_em ?? '',
     processadoEm: row.processado_em ?? undefined,
-    eventoNome: ((row.eventos_admin as any)?.nome as string) ?? '',
+    eventoNome: (row as WithEventoNome<typeof row>).eventos_admin?.nome ?? '',
     produtorNome: nomeMap.get(row.solicitado_por ?? '') ?? '',
     status: (row.status as Reembolso['status']) ?? 'PENDENTE_APROVACAO',
     etapa: row.etapa ?? undefined,
@@ -699,7 +702,7 @@ export const getChargebacks = async (eventoIds?: string[]): Promise<Chargeback[]
   if (!data) return [];
   const { comunidadesService: comSvc } = await import('./comunidadesService');
   return data.map(row => {
-    const evData = (row as any).eventos_admin as { nome?: string; comunidade_id?: string } | undefined;
+    const evData = (row as WithEventoNome<typeof row> & { eventos_admin: { comunidade_id?: string } }).eventos_admin;
     const comId = evData?.comunidade_id;
     const com = comId ? comSvc.getAll().find(c => c.id === comId) : undefined;
     return {
@@ -825,7 +828,7 @@ export const autorizarSaqueGerente = async (saqueId: string, gerenteId: string):
   // Notificar masters
   const { data: masters } = await supabase.from('profiles').select('id').eq('role', 'vanta_masteradm');
   if (masters && masters.length > 0) {
-    const evNome = ((saqueRow as any)?.eventos_admin?.nome as string) ?? '';
+    const evNome = (saqueRow as WithEventoNome<NonNullable<typeof saqueRow>>).eventos_admin?.nome ?? '';
     void notifyMany(
       masters.map(m => m.id as string),
       {
@@ -865,7 +868,7 @@ export const recusarSaque = async (saqueId: string, recusadoPorId: string, motiv
 
   // Notificar solicitante
   if (saqueRow?.produtor_id) {
-    const evNome = ((saqueRow as any).eventos_admin?.nome as string) ?? '';
+    const evNome = (saqueRow as WithEventoNome<typeof saqueRow>).eventos_admin?.nome ?? '';
     void notify({
       userId: saqueRow.produtor_id as string,
       tipo: 'SAQUE_RECUSADO',

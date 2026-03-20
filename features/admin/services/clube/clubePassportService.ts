@@ -97,7 +97,7 @@ export async function aprovarPassport(
         {
           titulo: 'Passaporte aprovado!',
           mensagem: `Seu passaporte para ${cidadeLabel} foi aprovado. Você já pode participar de eventos exclusivos.`,
-          tipo: 'MAIS_VANTA' as any,
+          tipo: 'MAIS_VANTA',
           lida: false,
           link: 'CLUBE',
           timestamp: now,
@@ -142,7 +142,7 @@ export async function rejeitarPassport(passportId: string, masterId: string): Pr
         {
           titulo: 'Passaporte não aprovado',
           mensagem: `Seu passaporte para ${cidadeLabelR} não foi aprovado desta vez.`,
-          tipo: 'MAIS_VANTA' as any,
+          tipo: 'MAIS_VANTA',
           lida: false,
           link: 'CLUBE',
           timestamp: now,

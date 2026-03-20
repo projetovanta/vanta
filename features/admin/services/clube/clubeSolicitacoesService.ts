@@ -248,7 +248,7 @@ export async function aprovarSolicitacao(
       {
         titulo: 'Bem-vindo ao MAIS VANTA!',
         mensagem: 'Boas notícias! Você foi aprovado no MAIS VANTA e já pode aproveitar vantagens exclusivas.',
-        tipo: 'MAIS_VANTA' as any,
+        tipo: 'MAIS_VANTA',
         lida: false,
         link: 'CLUBE',
         timestamp: now,
@@ -300,7 +300,7 @@ export async function aprovarSolicitacao(
           {
             titulo: 'Sua indicação foi aprovada!',
             mensagem: 'Alguém que você indicou acabou de ser aprovado no MAIS VANTA!',
-            tipo: 'MAIS_VANTA' as any,
+            tipo: 'MAIS_VANTA',
             lida: false,
             link: 'CLUBE',
             timestamp: now,

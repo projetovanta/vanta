@@ -46,11 +46,11 @@ export async function solicitarNotificacao(
   // Contar notificações já solicitadas neste mês
   const now = new Date();
   const inicioMes = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`;
-  const { data: existentes } = (await (supabase as any)
+  const { data: existentes } = await supabase
     .from('mv_solicitacoes_notificacao')
     .select('id')
     .eq('produtor_id', produtorId)
-    .gte('criado_em', inicioMes)) as { data: { id: string }[] | null };
+    .gte('criado_em', inicioMes);
 
   const usadas = (existentes ?? []).length;
   if (usadas >= plano.limiteNotificacoesMes) {

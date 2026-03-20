@@ -73,6 +73,7 @@
 - Push web — config OK, precisa HTTPS (deploy produção)
 - Verificar filtros da Search visualmente (5 modais — provavelmente OK)
 - Google OAuth branding — trocar nome no Google Cloud Console
+- Página pública do Promoter/RP — link compartilhável com eventos, cupons e listas do promoter (1 view nova + 1 rota, backend já existe)
 
 ## Pendencias externas
 - Conta Apple Developer ($99/ano)

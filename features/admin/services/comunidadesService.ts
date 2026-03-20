@@ -11,6 +11,7 @@ import { notifyMany } from '../../../services/notifyService';
 import { auditService } from './auditService';
 
 type ComunidadeRow = Database['public']['Tables']['comunidades']['Row'];
+type ComunidadeAdminRow = Database['public']['Views']['comunidades_admin']['Row'];
 
 let _comunidades: Comunidade[] = [];
 let _ready = false;
@@ -74,11 +75,11 @@ export const comunidadesService = {
     try {
       // RBAC V2: usar view admin (banco filtra por acesso do usuário)
       // View retorna mesmas colunas que comunidades, com filtro RLS embutido
-      const { data, error } = await (supabase
-        .from('comunidades_admin' as any)
+      const { data, error } = (await supabase
+        .from('comunidades_admin')
         .select('*')
         .order('nome', { ascending: true })
-        .limit(1000) as unknown as Promise<{ data: ComunidadeRow[] | null; error: any }>);
+        .limit(1000)) as unknown as { data: ComunidadeRow[] | null; error: any };
 
       if (error) {
         console.error('[comunidadesService] refresh erro:', error);

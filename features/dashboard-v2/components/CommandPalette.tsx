@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import {
   Search,
   LayoutDashboard,
@@ -161,10 +161,10 @@ export const CommandPalette: React.FC<Props> = ({ isOpen, onClose, onSelect, onD
             c.keywords.toLowerCase().includes(query.toLowerCase()),
         );
 
-  const allResults = [
+  const allResults = useMemo(() => [
     ...filtered.map(f => ({ ...f, _isCommand: true as const })),
     ...dataResults.map(d => ({ ...d, _isCommand: false as const })),
-  ];
+  ], [filtered, dataResults]);
 
   // Busca dinâmica no Supabase
   useEffect(() => {

@@ -74,7 +74,7 @@ const ClassificacaoInline: React.FC<{
       setDbExperiencias((x.data ?? []).map((d: { label: string }) => d.label));
       setLoading(false);
     })().catch(() => setLoading(false));
-  }, []);
+  }, [tipoComunidade]);
 
   const filterItems = (items: string[], search: string) =>
     search ? items.filter(i => i.toLowerCase().includes(search.toLowerCase())) : items;

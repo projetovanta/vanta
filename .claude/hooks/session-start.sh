@@ -3,6 +3,19 @@
 # Carrega estado atual do projeto e injeta como contexto para o Claude.
 # Lê: MEMORY.md (estado jabuticaba), sessao_atual.md (continuidade), pendências.
 
+# 0. Git pull automático — sincronizar com o remote antes de tudo
+GIT_PULL_WARN=""
+BRANCH=$(git -C "${CLAUDE_PROJECT_DIR:-.}" branch --show-current 2>/dev/null)
+if [ -n "$BRANCH" ]; then
+  GIT_PULL_OUTPUT=$(git -C "${CLAUDE_PROJECT_DIR:-.}" pull origin "$BRANCH" --ff-only 2>&1)
+  GIT_PULL_EXIT=$?
+  if [ $GIT_PULL_EXIT -ne 0 ]; then
+    GIT_PULL_WARN="⚠️ GIT PULL FALHOU (branch: $BRANCH, exit: $GIT_PULL_EXIT): $GIT_PULL_OUTPUT"
+  fi
+else
+  GIT_PULL_WARN="⚠️ GIT PULL FALHOU: não foi possível detectar a branch atual"
+fi
+
 # Usar CLAUDE_PROJECT_DIR (definido pelo Claude Code) com fallback
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-/Users/vanta/prevanta}"
 MEMORY_DIR="$PROJECT_DIR/memory"
@@ -47,7 +60,16 @@ ${MISSING} — rodar 'npm run memory-audit' para detalhes.
   fi
 fi
 
-# 4. Lembrete de regras críticas
+# 4. Aviso de git pull (se falhou)
+if [ -n "$GIT_PULL_WARN" ]; then
+  CONTEXT="${CONTEXT}
+=== GIT PULL ===
+${GIT_PULL_WARN}
+AÇÃO: Avisar o Dan IMEDIATAMENTE que o git pull falhou. Pode ser conflito, sem rede, ou branch divergente.
+"
+fi
+
+# 5. Lembrete de regras críticas
 CONTEXT="${CONTEXT}
 === LEMBRETES ===
 - LER TODAS as memórias de feedback (feedback_*.md) ANTES de qualquer ação — sem exceção

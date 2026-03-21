@@ -12,7 +12,7 @@
 
 ## PWA (funcional)
 - `vite-plugin-pwa` com Workbox (generateSW)
-- `manifest.json`: 8 ícones (48→512, maskable), shortcuts, screenshots
+- `manifest.json`: 5 ícones no manifest (48, 72, 96, 192, 512) + maskable, shortcuts, screenshots
 - Meta tags iOS completas (apple-mobile-web-app-capable, theme-color, OG)
 - Service Worker Firebase para push
 - `public/.well-known/assetlinks.json` — placeholder (SHA-256 pendente)
@@ -23,8 +23,8 @@
 
 ## Capacitor (projetos nativos GERADOS)
 - `capacitor.config.ts` — appId `com.maisvanta.app`, webDir `dist`
-- Plugins: SplashScreen (#050505), StatusBar (DARK), PushNotifications, App (deep links)
-- `@capacitor/core`, `@capacitor/ios`, `@capacitor/android`, `@capacitor/app`, `@capacitor/push-notifications` em dependencies
+- Plugins: SplashScreen (#050505), StatusBar (DARK), PushNotifications, Browser (checkout externo)
+- `@capacitor/core`, `@capacitor/ios`, `@capacitor/android`, `@capacitor/app`, `@capacitor/push-notifications`, `@capacitor/browser` em dependencies
 - `@capacitor/cli` em devDependencies
 - Projetos gerados: `ios/App/App.xcodeproj` (android pendente — Android Studio não instalado)
 - Sincronizado: `npx cap sync` OK
@@ -35,12 +35,21 @@
 ## Playwright E2E (configurado, testes NÃO rodados)
 - `playwright.config.ts` — 3 projetos: Mobile Chrome (Pixel 7), Mobile Safari (iPhone 14), Desktop Chrome
 - baseURL: `http://localhost:5173`, webServer auto (`npm run dev`)
-- 5 specs em `tests/e2e/`:
-  - `auth.spec.ts` — login/logout
-  - `navigation.spec.ts` — tab bar, console.error check
+- 14 specs em `tests/e2e/`:
+  - `acessibilidade.spec.ts` — ARIA, contraste, navegação teclado
+  - `admin-flow.spec.ts` — fluxos completos admin
   - `admin.spec.ts` — painel admin, sidebar, busca membros
+  - `auth.spec.ts` — login/logout
+  - `busca.spec.ts` — busca de eventos, pessoas, lugares
+  - `erros-globais.spec.ts` — tratamento de erros, fallbacks
+  - `evento-detalhe.spec.ts` — página de detalhe do evento
+  - `feed.spec.ts` — feed e listagens
+  - `navigation.spec.ts` — tab bar, console.error check
+  - `performance.spec.ts` — métricas de performance
   - `pwa.spec.ts` — manifest, SW, ícones, meta tags
+  - `radar.spec.ts` — mapa, filtros, geolocalização
   - `responsive.spec.ts` — iPhone SE, iPhone 14, iPad, Desktop
+  - `seguranca.spec.ts` — XSS, CSRF, headers
 - Scripts: `npm run test:e2e`, `test:e2e:ui`, `test:e2e:headed`
 
 ## Scripts de loja

@@ -1,4 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { Capacitor } from '@capacitor/core';
+import { Browser } from '@capacitor/browser';
 import { Evento, Ingresso, Membro, Notificacao, TabState, ContaVantaLegacy, ProfileSubView } from '../types';
 import { useAuthStore } from '../stores/authStore';
 import { useTicketsStore } from '../stores/ticketsStore';
@@ -93,7 +95,11 @@ export const useAppHandlers = (nav: Nav, pwa: PWA) => {
 
   // ── Handlers compostos ───────────────────────────────────────────────────
   const handleBuyTicketComposite = requireAuth((e: Evento) => {
-    window.open(`/checkout/${e.id}`, '_blank');
+    if (Capacitor.isNativePlatform()) {
+      Browser.open({ url: `${window.location.origin}/checkout/${e.id}` });
+    } else {
+      window.open(`/checkout/${e.id}`, '_blank');
+    }
   });
 
   const handleDevolverCortesia = (ticket: Ingresso) => {

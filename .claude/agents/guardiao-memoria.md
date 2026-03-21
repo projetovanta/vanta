@@ -35,8 +35,8 @@ Para cada mudança feita, Lia verifica:
    [ ] Estado atual reflete as mudanças?
    [ ] Não ultrapassou 180 linhas?
 
-3. Módulos afetados (modulo_*.md / sub_*.md)
-   [ ] Cada módulo tocado teve sua memória atualizada?
+3. Fontes da verdade afetadas (VANTA_LIVRO.md / VANTA_PRODUTO.md / VANTA_FLUXOS.md)
+   [ ] Cada área tocada teve sua fonte da verdade atualizada?
    [ ] Novos fluxos documentados?
    [ ] Fluxos removidos/alterados refletidos?
 
@@ -57,7 +57,7 @@ Para cada mudança feita, Lia verifica:
 
 1. **Rodar `git diff --name-only HEAD~1`** — ver quais arquivos mudaram
 2. **Mapear áreas afetadas** — frontend? banco? mobile? pagamento?
-3. **Ler memórias correspondentes** — o modulo_*.md da área mudou?
+3. **Ler fontes da verdade** — LIVRO/PRODUTO/FLUXOS refletem a mudança?
 4. **Comparar** — a mudança no código tá refletida na memória?
 5. **Reportar** — o que tá ok e o que falta
 
@@ -72,10 +72,10 @@ Arquivos alterados: [X arquivos]
 
 ✅ MEMÓRIAS ATUALIZADAS:
 - MEMORIA-COMPARTILHADA.md → OK
-- modulo_checkout.md → OK
+- VANTA_LIVRO.md → OK
 
 ❌ MEMÓRIAS PENDENTES:
-- modulo_auth.md → FALTA: novo fluxo de login social não documentado
+- VANTA_PRODUTO.md → FALTA: novo fluxo de login social não documentado
 - MAPA_PROJETO.md → FALTA: tela de onboarding não está no mapa
 - EDGES.md → FALTA: conexão onboarding→home não registrada
 
@@ -133,7 +133,7 @@ Dan pede tarefa
 ## Gate Duplo (com Memo)
 
 Lia é metade do Gate Duplo. Antes de qualquer commit:
-- **Lia** verifica memórias (MEMORY.md, modulo_*.md, EDGES.md, MAPA_PROJETO.md, MEMORIA-COMPARTILHADA.md)
+- **Lia** verifica memórias (MEMORY.md, VANTA_LIVRO.md, VANTA_PRODUTO.md, VANTA_FLUXOS.md, EDGES.md, MEMORIA-COMPARTILHADA.md)
 - **Memo** verifica ata do dia (decisões, ações, pendências)
 - Sem ✅ de AMBOS → commit bloqueado
 
@@ -145,7 +145,9 @@ Lia é metade do Gate Duplo. Antes de qualquer commit:
 
 Arquivos verificados:
 - [ ] MEMORY.md
-- [ ] modulo_[relevante].md
+- [ ] VANTA_LIVRO.md (se mudou código)
+- [ ] VANTA_PRODUTO.md (se mudou produto/decisão)
+- [ ] VANTA_FLUXOS.md (se mudou navegação)
 - [ ] EDGES.md
 - [ ] MEMORIA-COMPARTILHADA.md
 

@@ -3969,288 +3969,1185 @@ interface WalletLockScreenProps {
 
 ## 2. SUBPASTAS
 
-### caixa/ (2 arquivos, 824L)
+### caixa/ (2 arquivos, 826L)
 
-| Arquivo | Linhas | O que faz | Props |
-|---------|--------|-----------|-------|
-| **index.tsx** | 88 | CaixaView - seletor de evento para abrir caixa. Lista eventos com filtro por comunidade | `{ onBack; eventoId?; comunidadeId? }` |
-| **EventoCaixaView.tsx** | 736 | Caixa de venda na porta. QR code do ingresso, selecao de variacao, venda com selfie do comprador. Offline support. Suporte a meia-entrada com comprovante. | `{ evento: EventoAdmin; onBack }` |
+#### index.tsx (CaixaView)
+- **Caminho**: `features/admin/views/caixa/index.tsx`
+- **Linhas**: 89
+- **O que faz**: Seletor de evento para abrir caixa de venda na porta. Filtra eventos com `caixaAtivo === true` e opcionalmente por `comunidadeId`. Ao selecionar, renderiza `EventoCaixaView`. Se recebe `eventoId` como prop, abre direto.
+- **Props/Interface**: `{ onBack: () => void; eventoId?: string; comunidadeId?: string }`
+- **Imports**: React, ArrowLeft/ShoppingCart (lucide), TYPOGRAPHY, AdminViewHeader, eventosAdminService, EventoCaixaView
+- **Quem importa**: DashboardV2Gateway (lazy via re-export `CaixaView.tsx`)
+- **Observacoes**: Empty state com instrucao "O criador do evento precisa ativar Venda na Porta". Cards de evento mostram foto, nome, data e contagem de lotes ativos. Dot verde indica caixa ativo.
 
-**Logica**: eventosAdminService.venderIngresso, signTicketToken (JWT), offlineEventService, supabase upload de selfie. Usa camera.
+#### EventoCaixaView.tsx
+- **Caminho**: `features/admin/views/caixa/EventoCaixaView.tsx`
+- **Linhas**: 737
+- **O que faz**: Caixa de venda presencial (na porta do evento). Fluxo de 5 steps: LOTES (selecao de variacao/lote) → CADASTRO (nome + CPF) → EMAIL (opcional) → SELFIE (foto do comprador via camera) → SUCESSO (QR code JWT do ingresso com relogio). Suporta modo offline via IndexedDB (offlineEventService). Gera QR token JWT renovavel a cada 14s.
+- **Props/Interface**: `{ evento: EventoAdmin; onBack: () => void }`
+- **State**: step (VendaStep), sel (SelVar), nome, cpf, email, selfiePreview, ticketId, qrToken, clockTime, ownerFound, cameraActive, camDenied, isOnline, pendingSyncCount, syncing
+- **Imports**: React, QRCodeSVG, Check/X/Sparkles/Clock/Camera/User/AlertTriangle/Mail/Tag/WifiOff/RefreshCw (lucide), EventoAdmin/LoteAdmin/VariacaoIngresso (types), eventosAdminService, offlineEventService, useConnectivity, signTicketToken (jwtService), supabase, dataURLtoBlob/fmtBRL (utils), useCameraPermission
+- **Quem importa**: caixa/index.tsx
+- **Logica de negocio**: offlineEventService.registrarVendaOffline (cria ingresso), signTicketToken (JWT anti-fraude), supabase.storage upload de selfie para bucket `selfies`, eventosAdminService.atualizarSelfieUrl, busca owner em profiles por email
+- **Helpers internos**: genLabel (variacao → "Masc."/"Fem."/"Unisex"), formatCPF (mascara XXX.XXX.XXX-XX)
+- **Observacoes**: Token QR renova a cada 14s no step SUCESSO (anti-screenshot). Camera usa `useCameraPermission` hook com fallback manual. Offline: cache IndexedDB carregado no mount, sync automatico quando volta online. Banner WifiOff quando offline com contagem de pendentes.
 
-### cargosPlataforma/ (1 arquivo, 423L)
+### cargosPlataforma/ (1 arquivo, 424L)
 
-| Arquivo | Linhas | O que faz |
-|---------|--------|-----------|
-| **index.tsx** | 423 | CargosPlataformaView - CRUD de cargos de plataforma (nao evento). Criar cargo com permissoes, atribuir a usuarios via busca. Lista cargos e atribuicoes. |
+#### index.tsx (CargosPlataformaView)
+- **Caminho**: `features/admin/views/cargosPlataforma/index.tsx`
+- **Linhas**: 424
+- **O que faz**: CRUD completo de cargos de plataforma (nao vinculados a evento/comunidade). 2 abas: CARGOS (criar/editar/deletar cargo com nome, descricao e permissoes granulares) e ATRIBUICOES (atribuir cargo a usuario via busca por nome/email, revogar). Usa VantaConfirmModal para acoes destrutivas.
+- **Props/Interface**: `{ currentUserId: string; onBack: () => void; embedded?: boolean }` — quando `embedded=true` esconde header proprio (usado dentro de CargosUnificadoView)
+- **State**: cargos (CargoPlataforma[]), atribuicoes (AtribuicaoPlataforma[]), loading, tab ('CARGOS'|'ATRIBUICOES'), pendingConfirm, showForm, editingId, formNome, formDescricao, formPermissoes (PermissaoPlataforma[]), showAtribuir
+- **Imports**: React, ArrowLeft/Plus/Shield/Trash2/UserPlus/Search/X/Check (lucide), cargosPlataformaService/PERMISSOES_PLATAFORMA/PERMISSAO_LABELS/CargoPlataforma/AtribuicaoPlataforma/PermissaoPlataforma, globalToast, VantaConfirmModal
+- **Quem importa**: CargosUnificadoView (lazy import)
+- **Logica de negocio**: cargosPlataformaService.listar/criar/atualizar/deletar (cargos), cargosPlataformaService.listarAtribuicoes/atribuir/revogar (atribuicoes). Permissoes selecionaveis via checkboxes de PERMISSOES_PLATAFORMA.
+- **Observacoes**: Formulario inline toggle (showForm). Confirmacao modal antes de deletar cargo ou revogar atribuicao. Busca de usuarios usa campo de texto livre (nome/email).
 
-**Logica**: cargosPlataformaService.listar/criar/deletar/atribuir/revogar
+### cargosUnificado/ (1 arquivo, 74L)
 
-### cargosUnificado/ (1 arquivo, 73L)
+#### index.tsx (CargosUnificadoView)
+- **Caminho**: `features/admin/views/cargosUnificado/index.tsx`
+- **Linhas**: 74
+- **O que faz**: Hub unificado de cargos com 2 abas: PLATAFORMA (cargos globais da plataforma) e CUSTOMIZADOS (cargos de comunidade/evento). Lazy-loads CargosPlataformaView e DefinirCargosView via React.lazy com Suspense e spinner Loader2.
+- **Props/Interface**: `{ onBack: () => void; currentUserId: string; addNotification: (n: Omit<Notificacao, 'id'>) => void }`
+- **State**: tab ('PLATAFORMA' | 'CUSTOMIZADOS')
+- **Imports**: React (useState, lazy, Suspense), ArrowLeft/Shield/ShieldPlus/Loader2 (lucide), Notificacao (types), AdminViewHeader. Lazy: CargosPlataformaView, DefinirCargosView
+- **Quem importa**: DashboardV2Gateway (lazy)
+- **Observacoes**: Passa `embedded=true` para sub-views (esconde header interno). Tabs com icones Shield (plataforma) e ShieldPlus (customizados). Breadcrumbs: Dashboard → Cargos.
 
-| Arquivo | Linhas | O que faz |
-|---------|--------|-----------|
-| **index.tsx** | 73 | CargosUnificadoView - Hub com 2 abas: Cargos Plataforma e Definir Cargos (evento). Lazy-loads sub-views. |
+### checkin/ (6 arquivos, 973L)
 
-### checkin/ (6 arquivos, 967L)
+#### index.tsx (CheckInView)
+- **Caminho**: `features/admin/views/checkin/index.tsx`
+- **Linhas**: 67
+- **O que faz**: Seletor de evento para check-in na portaria. Lista eventos carregados via eventosAdminService, filtra opcionalmente por `comunidadeId`. Aceita `modoFixo` ('LISTA' ou 'QR') que e propagado ao EventCheckInView. Polling de versao do service a cada 2s para detectar mudancas.
+- **Props/Interface**: `{ onBack: () => void; comunidadeId?: string; modoFixo?: 'LISTA' | 'QR' }`
+- **State**: selectedId, svcVersion
+- **Imports**: React, ArrowLeft/QrCode (lucide), TYPOGRAPHY, AdminViewHeader, eventosAdminService, EventCheckInView, EventoCheckInCard
+- **Quem importa**: DashboardV2Gateway (lazy via re-export `CheckInView`)
+- **Observacoes**: Empty state com icone QrCode. Titulo dinamico baseado em modoFixo ("Scanner QR" / "Check-in Lista" / "Check-in"). Kicker "Portaria".
 
-| Arquivo | Linhas | O que faz |
-|---------|--------|-----------|
-| **index.tsx** | 66 | CheckInView - seletor de evento para check-in. Modo fixo LISTA ou QR |
-| **EventCheckInView.tsx** | 398 | Check-in completo por evento. Modo LISTA (busca por nome) ou QR. Offline cache com IndexedDB. Sync automatico. |
-| **EventoCheckInCard.tsx** | 123 | Card de evento na lista de selecao de check-in. Stats de ingressos |
-| **FeedbackOverlay.tsx** | 57 | Overlay fullscreen de feedback (VERDE/AMARELO/VERMELHO) |
-| **QRScanner.tsx** | 321 | Scanner QR com camera. Verificacao JWT, burn de ingresso, comemoracoes. Toggle flash/manual input. |
-| **checkinTypes.ts** | 2 | Types: Modo, FeedbackTela |
+#### EventCheckInView.tsx
+- **Caminho**: `features/admin/views/checkin/EventCheckInView.tsx`
+- **Linhas**: 399
+- **O que faz**: Check-in completo por evento. Modo LISTA: busca por nome nos tickets com cache IndexedDB (offlineEventService.loadTickets), confirmacao de check-in com overlay de feedback (VERDE/AMARELO/VERMELHO). Modo QR: renderiza QRScanner. Realtime via Supabase channel (postgres_changes em tickets_caixa filtrado por evento_id). Banner offline com contagem de pendentes e botao sync manual.
+- **Props/Interface**: `{ eventoId: string; eventoNome: string; onBack: () => void; modoFixo?: 'LISTA' | 'QR' }`
+- **State**: search, modo (Modo), confirming (CachedTicket|null), feedbackTela, feedbackNome, tickets (CachedTicket[]), isOnline, pendingSyncCount, syncing
+- **Imports**: React, ArrowLeft/Search/Check/QrCode/X/List/HardDrive/Clock/WifiOff/RefreshCw (lucide), TYPOGRAPHY, supabase, offlineEventService, CachedTicket (offlineDB), useConnectivity, Modo/FeedbackTela (checkinTypes), FeedbackOverlay, QRScanner
+- **Quem importa**: checkin/index.tsx
+- **Observacoes**: Toggle LISTA/QR so aparece se modoFixo nao definido. Realtime channel com cleanup no unmount. Busca case-insensitive em ticket.nomeTitular. Stats no header: total tickets, usados, pendentes.
 
-**Logica**: supabase.from('tickets'), offlineEventService, verifyTicketToken, comemoracaoService
+#### EventoCheckInCard.tsx
+- **Caminho**: `features/admin/views/checkin/EventoCheckInCard.tsx`
+- **Linhas**: 124
+- **O que faz**: Card de evento na lista de selecao para check-in. Mostra foto, nome, data, stats (total ingressos, usados, pendentes) com barras de progresso. Badge "AO VIVO" para evento em andamento.
+- **Props/Interface**: `{ ev: EventoAdmin; svcVersion: number; onSelect: (id: string) => void; modoFixo?: 'LISTA' | 'QR' }`
+- **Imports**: eventosAdminService
+- **Quem importa**: checkin/index.tsx
+- **Observacoes**: Calcula stats via eventosAdminService.getTicketsByEvento. Barra de progresso visual (usados/total). Data formatada pt-BR.
 
-### comunidadeDashboard/ (6 arquivos, 770L)
+#### FeedbackOverlay.tsx
+- **Caminho**: `features/admin/views/checkin/FeedbackOverlay.tsx`
+- **Linhas**: 58
+- **O que faz**: Overlay fullscreen de feedback pos-check-in. VERDE (Check + "ENTRADA OK" + nome), AMARELO (AlertTriangle + "JA UTILIZADO"), VERMELHO (X + "INGRESSO INVALIDO"). Auto-dismiss apos 2.5s.
+- **Props/Interface**: `{ tipo: FeedbackTela; nome?: string; onDone: () => void }`
+- **Imports**: React, Check/AlertTriangle/X (lucide), FeedbackTela (checkinTypes)
+- **Quem importa**: EventCheckInView.tsx
+- **Observacoes**: Z-index 50 com inset-0. Cores de fundo: emerald-600 (verde), amber-500 (amarelo), red-600 (vermelho).
 
-| Arquivo | Linhas | O que faz |
-|---------|--------|-----------|
-| **index.tsx** | 136 | ComunidadeDashboard - analytics de comunidade com tabs e periodo selector |
-| **OverviewTab.tsx** | 120 | KPIs (eventos, tickets, receita), time series chart, leaderboard |
-| **EventosTab.tsx** | 152 | Ranking de eventos da comunidade com metricas |
-| **FinanceiroTab.tsx** | 184 | Breakdown financeiro, comparativo periodo, export |
-| **AudienciaTab.tsx** | 77 | Dados de audiencia: breakdown, heatmap, KPIs |
-| **EquipeTab.tsx** | 101 | Leaderboard de equipe, KPIs de staff |
+#### QRScanner.tsx
+- **Caminho**: `features/admin/views/checkin/QRScanner.tsx`
+- **Linhas**: 322
+- **O que faz**: Scanner QR com camera para check-in. Usa html5-qrcode library. Modo continuo (toggle) com inactivity timeout de 60s. Modo manual (input de codigo). Verifica JWT via verifyTicketToken, faz burn do ingresso, dispara comemoracoes. Toggle flash (torch).
+- **Props/Interface**: `{ eventoId: string; onFeedback: (f: FeedbackTela, nome?: string) => void; onValidated: () => void; onValidateAndBurn: (ticketId, eventoId) => Promise<{ resultado: string; nomeTitular?: string }> }`
+- **State**: cameraActive, continuous, processing, manualMode, manualCode, camState
+- **Imports**: React, Camera/CameraOff/ToggleLeft/ToggleRight/Keyboard (lucide), verifyTicketToken (jwtService), comemoracaoService, useCameraPermission, FeedbackTela (checkinTypes)
+- **Quem importa**: EventCheckInView.tsx
+- **Observacoes**: html5-qrcode via scannerRef. Inactivity timer: 60s sem scan = camera desliga (economia de bateria). Modo manual: input de texto como fallback quando camera nao funciona. comemoracaoService.triggerComemoracao apos check-in bem sucedido.
 
-**Logica**: getCommunityAnalytics (analytics service)
+#### checkinTypes.ts
+- **Caminho**: `features/admin/views/checkin/checkinTypes.ts`
+- **Linhas**: 3
+- **O que faz**: Define tipos compartilhados do modulo checkin.
+- **Exports**: `Modo = 'LISTA' | 'QR'`, `FeedbackTela = 'VERDE' | 'AMARELO' | 'VERMELHO'`
+- **Quem importa**: EventCheckInView, FeedbackOverlay, QRScanner
 
-### comunidades/ (19 arquivos, 4.684L)
+### comunidadeDashboard/ (6 arquivos, 776L)
 
-| Arquivo | Linhas | O que faz |
-|---------|--------|-----------|
-| **index.ts** | 1 | Re-export ComunidadesView |
-| **ComunidadesView.tsx** | 144 | Lista de comunidades do usuario. Card com foto, local, stats. Botao criar. |
-| **ComunidadeDetalheView.tsx** | 198 | Detalhe da comunidade com tabs (Eventos, Equipe, Logs, Caixa, Comercial, Privados, Cupons, Comemoracoes). Botao editar. |
-| **EditarModal.tsx** | 974 | Modal completo de edicao de comunidade (nome, foto, endereco, horarios, overrides, CNPJ, RBAC) |
-| **CentralEventosView.tsx** | 92 | Central de eventos da comunidade com tabs proximos/encerrados + botao criar |
-| **ProximosEventosTab.tsx** | 58 | Lista de proximos eventos da comunidade |
-| **EventosEncerradosTab.tsx** | 85 | Lista de eventos encerrados com resumo financeiro |
-| **EquipeTab.tsx** | 174 | Gestao de equipe da comunidade. CRUD de membros com cargos RBAC |
-| **LogsTab.tsx** | 117 | Timeline de logs de auditoria da comunidade |
-| **CaixaTab.tsx** | 152 | Resumo financeiro da comunidade com drilldown |
-| **CaixaDrilldownModal.tsx** | 203 | Modal detalhado de caixa com lotes, listas, promoters |
-| **ComercialTab.tsx** | 276 | Definicao de condicoes comerciais pelo master (taxas, prazos) |
-| **EventosPrivadosTab.tsx** | 392 | Gestao de eventos privados (aprovacao, busca, detalhes) |
-| **ComemoracoesTab.tsx** | 335 | Gestao de comemoracoes (aniversarios) em eventos |
-| **CuponsComunidadeTab.tsx** | 238 | CRUD de cupons que valem pra todos eventos da comunidade |
-| **AdicionarMembroModal.tsx** | 157 | Modal busca+adicionar membro a equipe com cargo |
-| **PublicoDrilldown.tsx** | 808 | Analise detalhada de publico da comunidade. Pie charts por origem, genero, idade. Drill-down por evento |
-| **ResumoEventoModal.tsx** | 907 | Modal com resumo completo de um evento (financeiro, lotacao, pie charts, comparativos) |
-| **types.ts** | 46 | Helpers e tipos (CARGO_LABEL, addLog, CaixaTipo) |
+#### index.tsx (ComunidadeDashboard)
+- **Caminho**: `features/admin/views/comunidadeDashboard/index.tsx`
+- **Linhas**: 137
+- **O que faz**: Dashboard analytics de uma comunidade com 5 tabs (Visao Geral, Eventos, Financeiro, Audiencia, Equipe) e seletor de periodo. Busca dados via getCommunityAnalytics(comunidadeId, periodo). Skeleton de loading.
+- **Props/Interface**: `{ comunidadeId: string; comunidadeNome: string; onBack: () => void; onSelectEvento: (eventoId: string) => void }`
+- **State**: periodo (Periodo), activeTab (TabKey), analytics (CommunityAnalytics|null), loading
+- **Imports**: React, ArrowLeft (lucide), getCommunityAnalytics, CommunityAnalytics/Periodo (types), PeriodSelector/DrillBreadcrumb (dashboard components), OverviewTab, EventosTab, FinanceiroTab, AudienciaTab, EquipeTab, AdminViewHeader
+- **Quem importa**: ComunidadeDetalheView (tab RELATORIO)
+- **Observacoes**: Re-fetch quando periodo muda. Tabs definidas como const array com `as const`.
 
-### criarComunidade/ (5 arquivos, 1.389L)
+#### OverviewTab.tsx
+- **Caminho**: `features/admin/views/comunidadeDashboard/OverviewTab.tsx`
+- **Linhas**: 121
+- **O que faz**: Visao geral da comunidade. Grid 2x2 de KPIs (Eventos, Ingressos, Receita, Ticket Medio). TimeSeriesChart de vendas. Leaderboard de top 5 eventos (receita, vendidos, % check-in). Clique em evento navega para drilldown.
+- **Props/Interface**: `{ analytics: CommunityAnalytics | null; onSelectEvento: (id: string) => void }`
+- **Imports**: React, CalendarDays/Ticket/DollarSign/TrendingUp/UserCheck/RefreshCw (lucide), CommunityAnalytics, TimeSeriesChart/LeaderboardCard (dashboard), KpiCard, fmtBRL
+- **Quem importa**: comunidadeDashboard/index.tsx
+- **Observacoes**: Leaderboard mostra badge de taxa check-in com semaforo (verde ≥70%, amarelo ≥40%, vermelho <40%).
 
-| Arquivo | Linhas | O que faz |
-|---------|--------|-----------|
-| **index.tsx** | 564 | Wizard de criacao de comunidade em 4 steps + celebration screen. Draft persistence. |
-| **Step1Identidade.tsx** | 164 | Nome, bio, foto (com crop), tipo de comunidade |
-| **Step2Localizacao.tsx** | 189 | CEP (busca automatica), rua, bairro, cidade, estado, geocode |
-| **Step3Operacao.tsx** | 137 | Horarios de funcionamento, CNPJ, website |
-| **Step4ProdutoresTaxas.tsx** | 335 | Busca e adicao de produtores, definicao de taxas por produtor |
+#### EventosTab.tsx
+- **Caminho**: `features/admin/views/comunidadeDashboard/EventosTab.tsx`
+- **Linhas**: 153
+- **O que faz**: Ranking de eventos da comunidade. Tabela ordenavel por receita/vendidos/data. Cada linha: nome, data, vendidos/capacidade, receita, badge check-in com semaforo. Clique navega para drilldown do evento.
+- **Props/Interface**: `{ analytics: CommunityAnalytics | null; onSelectEvento: (id: string) => void }`
+- **State**: sortBy ('receita'|'vendidos'|'data')
+- **Imports**: React, Calendar/Ticket/DollarSign/UserCheck (lucide), CommunityAnalytics/EventoRankingItem, fmtBRL
+- **Quem importa**: comunidadeDashboard/index.tsx
+- **Helpers internos**: formatDate (ISO → "DD mês"), checkinBadge (rate → label + cor semaforo), BADGE_COLORS
+- **Observacoes**: Ordenacao client-side via useMemo. Badge cores: emerald (≥70%), amber (≥40%), red (<40%).
 
-**Logica**: comunidadesService.criar, buscarCep, geocodeEndereco, authService.searchMembers
+#### FinanceiroTab.tsx
+- **Caminho**: `features/admin/views/comunidadeDashboard/FinanceiroTab.tsx`
+- **Linhas**: 185
+- **O que faz**: Breakdown financeiro da comunidade com P&L waterfall (receita bruta, taxa gateway, taxa VANTA, taxa casa, receita liquida), KPIs (receita, ticket medio, taxa conversao, saques), comparativo entre periodos com ComparisonCard, e botao de export CSV.
+- **Props/Interface**: `{ analytics: CommunityAnalytics | null }`
+- **Imports**: React, DollarSign/TrendingUp/CreditCard/Crown/Users/Wallet (lucide), CommunityAnalytics, BreakdownCard/ComparisonCard/ExportButton (dashboard), KpiCard, fmtBRL
+- **Quem importa**: comunidadeDashboard/index.tsx
+- **Helpers internos**: PLLine interface (label, value, type: revenue|cost|vanta|subtotal|neutral), TYPE_COLORS, TYPE_PREFIX
+- **Observacoes**: P&L waterfall com cores semanticas: verde receita, vermelho custos, dourado VANTA fee.
 
-### criarEvento/ (11 arquivos, 3.470L)
+#### AudienciaTab.tsx
+- **Caminho**: `features/admin/views/comunidadeDashboard/AudienciaTab.tsx`
+- **Linhas**: 78
+- **O que faz**: Dados de audiencia da comunidade. Grid 2x2 KPIs (Total Check-ins, Taxa Check-in %, Novos, Recorrentes). BreakdownCard novos vs recorrentes. ProgressRing de retencao (2+ eventos). HeatmapCard check-ins por dia/hora.
+- **Props/Interface**: `{ analytics: CommunityAnalytics | null }`
+- **Imports**: React, UserCheck/BarChart3/UserPlus/RefreshCw (lucide), CommunityAnalytics, BreakdownCard/ProgressRing/HeatmapCard (dashboard), KpiCard
+- **Quem importa**: comunidadeDashboard/index.tsx
+- **Observacoes**: Cores breakdown: cyan (#06B6D4) novos, purple (#8B5CF6) recorrentes. Heatmap escala preto→dourado.
 
-| Arquivo | Linhas | O que faz |
-|---------|--------|-----------|
-| **Step1Evento.tsx** | 588 | Dados basicos: foto (crop), nome, descricao, data/hora, local, classificacoes (formatos, estilos, experiencias) |
-| **Step2Ingressos.tsx** | 797 | Configuracao de lotes com variacoes (area, genero, valor, limite). Cortesias. MAIS VANTA benefits. Meia-entrada. |
-| **Step3Listas.tsx** | 513 | Configuracao de listas com variantes (nome, genero, cor, teto, horario, regras abobora) |
-| **Step4EquipeSocio.tsx** | 462 | Busca socio, permissoes toggle, equipe do socio |
-| **Step4EquipeCasa.tsx** | 487 | Busca gerente, permissoes, equipe da casa com cargos |
-| **Step5Financeiro.tsx** | 128 | Split de receita socio/produtor (slider) |
-| **TipoEventoScreen.tsx** | 161 | Selecao inicial: venda Vanta sim/nao, fluxo COM_SOCIO ou FESTA_DA_CASA |
-| **CopiarModal.tsx** | 180 | Modal para copiar dados de evento existente para novo |
-| **CargoModal.tsx** | 69 | Modal selecao de cargo para membro da equipe |
-| **CapacidadeModal.tsx** | 56 | Modal aviso quando capacidade excede limite |
-| **types.ts** | 77 | Types: VariacaoForm, LoteForm, VarListaForm, EquipeForm, SocioConviteForm, etc. |
-| **constants.ts** | 47 | Constantes: classes CSS, AREA_LABELS, PAPEIS_CASA, PERMISSOES_TOGGLE, COR_PALETTE |
-| **utils.ts** | 46 | Utils: uid, novaVar, novoLote, novaVarLista, buildLabel |
+#### EquipeTab.tsx
+- **Caminho**: `features/admin/views/comunidadeDashboard/EquipeTab.tsx`
+- **Linhas**: 102
+- **O que faz**: Leaderboard de equipe da comunidade. KPIs agregados (Total Nomes, Total Check-ins, Conversao Media). Leaderboard de top promoters com nomes inseridos e check-ins. Estado vazio quando sem promoters.
+- **Props/Interface**: `{ analytics: CommunityAnalytics | null }`
+- **Imports**: React, Users/UserCheck/BarChart3 (lucide), CommunityAnalytics, LeaderboardCard (dashboard), KpiCard
+- **Quem importa**: comunidadeDashboard/index.tsx
+- **Observacoes**: Calcula metricas agregadas via useMemo sobre analytics.topPromoters. EMPTY_PROMOTERS separado do EMPTY geral.
 
-### curadoria/ (12 arquivos, 2.225L)
+### comunidades/ (19 arquivos, 5.376L)
 
-| Arquivo | Linhas | O que faz |
-|---------|--------|-----------|
-| **types.ts** | 32 | Helpers: formatFollowers, formatDate |
-| **tabClube/index.tsx** | 360 | TabClube - aba de curadoria do clube MAIS VANTA. Coordena sub-tabs com dados de membros, solicitacoes, passaportes, reservas |
-| **tabClube/SubTabSolicitacoes.tsx** | 318 | Curadoria de solicitacoes de entrada no clube. Detalhes do perfil Instagram, aprovar/rejeitar |
-| **tabClube/SubTabMembros.tsx** | 163 | Lista de membros do clube com busca, filtro por tier, edicao de tier |
-| **tabClube/SubTabEventos.tsx** | 218 | Eventos com lote MV. Lista de check-ins e resgates por evento |
-| **tabClube/SubTabConfig.tsx** | 474 | Configuracao do clube por comunidade: tiers, beneficios, regras |
-| **tabClube/SubTabPassaportes.tsx** | 49 | Lista de passaportes pendentes com acoes aprovar/rejeitar |
-| **tabClube/SubTabPosts.tsx** | 63 | Lista de posts pendentes de verificacao (divida social) |
-| **tabClube/SubTabNotificacoes.tsx** | 41 | Info estatica sobre notificacoes automaticas do sistema |
-| **tabClube/PerfilMembroOverlay.tsx** | 198 | Overlay detalhado do perfil de um membro (foto, tier, instagram, historico) |
-| **tabClube/TagsPredefinidas.tsx** | 148 | Picker de tags predefinidas por categoria (influencia, persona, interesse, lifestyle) |
-| **tabClube/VantaDropdown.tsx** | 2 | Re-export de VantaDropdown compartilhado |
-| **tabClube/tierUtils.ts** | 82 | Utils de tier: labels, cores, opcoes, beneficios disponiveis |
+#### index.ts
+- **Linhas**: 2
+- **O que faz**: Re-export de ComunidadesView
+- **Quem importa**: DashboardV2Gateway (lazy)
 
-### definirCargos/ (7 arquivos, 1.193L)
+#### ComunidadesView.tsx
+- **Caminho**: `features/admin/views/comunidades/ComunidadesView.tsx`
+- **Linhas**: 145
+- **O que faz**: Lista de comunidades acessiveis ao usuario. Cards com foto (OptimizedImage), nome, local (MapPin), stats (membros, eventos). Botao "Criar Comunidade" que renderiza CriarComunidadeView inline. Auto-seleciona se `focusComunidadeId` fornecido.
+- **Props/Interface**: `{ onBack: () => void; memberId?: string; adminRole?: ContaVantaLegacy; adminNome?: string; focusComunidadeId?: string }`
+- **Imports**: React, ArrowLeft/MapPin/Users/Calendar/Plus/Building2 (lucide), TYPOGRAPHY, Comunidade/ContaVantaLegacy, getAcessoComunidades (permissoes), rbacService, CriarComunidadeView, ComunidadeDetalheView, OptimizedImage
+- **Quem importa**: comunidades/index.ts → DashboardV2Gateway
+- **Observacoes**: Usa getAcessoComunidades para filtrar por permissao RBAC. Master ve todas, outros veem apenas as atribuidas.
 
-| Arquivo | Linhas | O que faz |
-|---------|--------|-----------|
-| **index.tsx** | 553 | DefinirCargosView - atribuir cargos a membros em comunidades/eventos. Busca membro, seleciona destino, configura permissoes. |
-| **ImportarStaffPanel.tsx** | 249 | Painel para importar staff de eventos anteriores |
-| **PainelCargoCustom.tsx** | 158 | Painel de configuracao de cargo customizado com permissoes granulares |
-| **ConfirmacaoModal.tsx** | 76 | Modal de confirmacao antes de atribuir cargo |
-| **SuccessScreen.tsx** | 50 | Tela de sucesso apos atribuicao |
-| **QlCheckbox.tsx** | 28 | Checkbox estilizado reutilizavel |
-| **types.ts** | 79 | Types e constantes: DefinirCargosProps, CargoCustomState, DestinoOption, PERM_LABELS |
+#### ComunidadeDetalheView.tsx
+- **Caminho**: `features/admin/views/comunidades/ComunidadeDetalheView.tsx`
+- **Linhas**: 199
+- **O que faz**: Detalhe de uma comunidade com 9 tabs horizontais scrollaveis: EVENTOS, EQUIPE, LOGS, CAIXA, RELATORIO, PRIVADOS, COMEMORACOES, COMERCIAL, CUPONS. Header com foto e nome. Botao editar abre EditarModal. Toast container local.
+- **Props/Interface**: `{ comunidade: Comunidade; adminRole: ContaVantaLegacy; adminNome: string; adminId?: string; onBack: () => void }`
+- **State**: activeTab (DetalheTab), showEditModal, comunidade (atualizado via reload)
+- **Imports**: React, ArrowLeft/MapPin/Edit3/ChevronRight (lucide), Comunidade/ContaVantaLegacy, comunidadesService, useToast/ToastContainer, EditarModal, CentralEventosView, EquipeTab, LogsTab, CaixaTab, RelatorioComunidadeView (relatorios), EventosPrivadosTab, ComemoracoesTab, ComercialTab, CuponsComunidadeTab, addLog/DetalheTab (types), OptimizedImage
+- **Quem importa**: ComunidadesView.tsx
+- **Observacoes**: Tabs com `overflow-x-auto snap-x no-scrollbar shrink-0`. Re-fetch comunidade apos edicao no modal.
 
-**Logica**: rbacService.atribuir/revogar, authService.searchMembers, comunidadesService, eventosAdminService
+#### EditarModal.tsx
+- **Caminho**: `features/admin/views/comunidades/EditarModal.tsx`
+- **Linhas**: 975
+- **O que faz**: Modal fullscreen de edicao completa da comunidade. Secoes: Identidade (nome, bio, foto com ImageCropModal, tipos), Localizacao (CEP com busca automatica, endereco, geocode), Operacao (horarios HorarioFuncionamentoEditor + overrides HorarioOverridesEditor, CNPJ, website), RBAC (permissoes granulares via rbacService). UnsavedChangesModal ao fechar com alteracoes nao salvas.
+- **Props/Interface**: `{ comunidade: Comunidade; onClose: () => void; onSaved: (c: Comunidade) => void }`
+- **Imports**: React, TYPOGRAPHY, Comunidade, ImageCropModal, UnsavedChangesModal, HorarioFuncionamentoEditor, VantaDropdown, HorarioOverridesEditor, rbacService
+- **Quem importa**: ComunidadeDetalheView.tsx
+- **Observacoes**: Arquivo grande (975L) — candidato a split. Campos validados: nome obrigatorio, CEP formato, foto crop aspect 16:9. Draft tracking via dirty flag.
 
-### eventManagement/ (12 arquivos, 4.072L)
+#### CentralEventosView.tsx
+- **Caminho**: `features/admin/views/comunidades/CentralEventosView.tsx`
+- **Linhas**: 93
+- **O que faz**: Central de eventos da comunidade com 3 abas: CRIAR (abre CriarEventoView), PROXIMOS, ENCERRADOS. Conta eventos por categoria.
+- **Props/Interface**: `{ comunidadeId: string; comunidadeNome: string; adminRole: ContaVantaLegacy; onNavigateEvento?: (id: string) => void }`
+- **State**: tab (EventoTab)
+- **Imports**: TYPOGRAPHY, Comunidade/ContaVantaLegacy, CriarEventoView, ProximosEventosTab, EventosEncerradosTab, types
+- **Quem importa**: ComunidadeDetalheView.tsx
 
-| Arquivo | Linhas | O que faz |
-|---------|--------|-----------|
-| **EventDetailManagement.tsx** | 197 | Hub de gestao do evento com tabs (Lotacao, Equipe, Lista, Logs, Resumo, Cortesias, Cargos, Relatorio, Mesas) |
-| **TabLotacao.tsx** | 135 | Barra de lotacao (total/teto), alertas waitlist |
-| **TabEquipePromoter.tsx** | 445 | Gestao de promoters: cotas, links de indicacao, ranking, comissoes |
-| **TabEquipeSocio.tsx** | 378 | Gestao de equipe do socio: busca, adicao, cargos, recrutamento |
-| **TabLista.tsx** | 450 | Gestao da lista do evento: inserir nomes, check-in, offline sync |
-| **TabLogs.tsx** | 94 | Timeline de logs do evento (vendas, check-ins, etc) |
-| **TabResumoCaixa.tsx** | 623 | Resumo financeiro do evento: receita bruta, liquida, por variacao. Pie charts. Fechamento por pessoa. |
-| **TabCortesias.tsx** | 404 | Gestao de cortesias: distribuir, transferir, revogar |
-| **TabCargosPermissoes.tsx** | 232 | Gestao de cargos customizados e permissoes por evento |
-| **TabRelatorio.tsx** | 515 | Relatorio completo do evento: avaliacao, pie charts, notas, publicacao |
-| **TabMesas.tsx** | 317 | Gestao de mesas VIP: CRUD, upload de mapa, reservas |
-| **StaffRecrutamento.tsx** | 231 | Recrutamento de staff para evento: busca, atribuicao de cargos |
-| **types.ts** | 46 | Types: Tab, Periodo, PERIODOS, filtrarLog, CORES_PIZZA, etc. |
+#### ProximosEventosTab.tsx
+- **Caminho**: `features/admin/views/comunidades/ProximosEventosTab.tsx`
+- **Linhas**: 59
+- **O que faz**: Lista proximos eventos da comunidade. Filtra eventos futuros via eventosAdminService. Card simples com nome, data, local. Clique navega para evento.
+- **Props/Interface**: `{ comunidadeId: string; onSelectEvento?: (id: string) => void }`
+- **Imports**: eventosAdminService
+- **Quem importa**: CentralEventosView.tsx
 
-### eventoDashboard/ (13 arquivos, 3.823L)
+#### EventosEncerradosTab.tsx
+- **Caminho**: `features/admin/views/comunidades/EventosEncerradosTab.tsx`
+- **Linhas**: 86
+- **O que faz**: Lista eventos encerrados da comunidade com resumo financeiro por evento (receita, ingressos vendidos). Abre ResumoEventoModal ao clicar.
+- **Props/Interface**: `{ comunidadeId: string }`
+- **Imports**: EventoAdmin/ListaEvento (types), eventosAdminService, listasService, ResumoEventoModal
+- **Quem importa**: CentralEventosView.tsx
 
-| Arquivo | Linhas | O que faz |
-|---------|--------|-----------|
-| **index.tsx** | 1272 | EventoDashboard principal. Header com foto/dados do evento. Sub-views: editar, participantes, listas, financeiro, check-in, caixa, analytics, pedidos, cupons, comemoracoes, duplicar, serie. |
-| **PreEventoView.tsx** | 159 | Dashboard pre-evento: vendas, funnel, projecao, breakdown por variacao |
-| **OperacaoView.tsx** | 160 | Dashboard de operacao (durante evento): check-ins ao vivo, pulse, heatmap |
-| **PosEventoView.tsx** | 226 | Dashboard pos-evento: financeiro final, split, comparativo |
-| **AnalyticsSubView.tsx** | 203 | Analytics demograficas: pie charts genero, idade, cidade |
-| **PedidosSubView.tsx** | 450 | Gestao de pedidos/ingressos: busca, filtros, acoes (cancelar, reembolsar, reenviar) |
-| **EditarLotesSubView.tsx** | 244 | Edicao inline de lotes e cortesias |
-| **EditarListaSubView.tsx** | 171 | Edicao inline de listas |
-| **CuponsSubView.tsx** | 241 | CRUD de cupons do evento (codigo, desconto, validade, usos) |
-| **ComemoracaoConfigSubView.tsx** | 317 | Configuracao de comemoracoes (faixas de vendas, cortesias, beneficio consumo) |
-| **DuplicarModal.tsx** | 172 | Modal para duplicar evento com nova data |
-| **SerieChips.tsx** | 171 | Chips de selecao de ocorrencia em eventos recorrentes (serie) |
-| **eventoDashboardUtils.ts** | 147 | Utils: formatacao de data/hora, cores para pie charts, calculo de idade |
+#### EquipeTab.tsx
+- **Caminho**: `features/admin/views/comunidades/EquipeTab.tsx`
+- **Linhas**: 175
+- **O que faz**: Gestao de equipe da comunidade. Lista membros com cargo (CARGO_LABEL), avatar, nome. Botao adicionar abre AdicionarMembroModal. Acoes: remover membro (com confirmacao), alterar cargo.
+- **Props/Interface**: `{ comunidadeId: string; adminId?: string; onLog: (acao: string) => void }`
+- **Imports**: Comunidade/TipoCargo (types), rbacService, AdicionarMembroModal, types (CARGO_LABEL)
+- **Quem importa**: ComunidadeDetalheView.tsx
+- **Observacoes**: rbacService.getAtribuicoesComunidade/revogar para CRUD. Log de acoes via onLog callback.
 
-### financeiro/ (6 arquivos, 1.470L)
+#### LogsTab.tsx
+- **Caminho**: `features/admin/views/comunidades/LogsTab.tsx`
+- **Linhas**: 118
+- **O que faz**: Timeline de logs de auditoria da comunidade. Busca via auditService filtrado por comunidade. Mostra acao humanizada, ator, timestamp. Icone por tipo de acao.
+- **Props/Interface**: `{ comunidadeId: string }`
+- **Imports**: ComunidadeLog (types), auditService, eventosAdminService
+- **Quem importa**: ComunidadeDetalheView.tsx
 
-| Arquivo | Linhas | O que faz |
-|---------|--------|-----------|
-| **index.tsx** | 884 | FinanceiroView principal: resumo financeiro do evento, saques, reembolsos, fechamento. KPIs, split, taxas contratadas. |
-| **ModalSaque.tsx** | 121 | Modal de solicitacao de saque com PIX |
-| **ModalFechamento.tsx** | 80 | Modal de encerramento financeiro do evento |
-| **ModalReembolsoManual.tsx** | 82 | Modal de solicitacao de reembolso manual |
-| **HistoricoSaques.tsx** | 136 | Historico de saques com export CSV |
-| **ReembolsosSection.tsx** | 167 | Secao de reembolsos: lista, aprovar/rejeitar, export CSV |
+#### CaixaTab.tsx
+- **Caminho**: `features/admin/views/comunidades/CaixaTab.tsx`
+- **Linhas**: 153
+- **O que faz**: Resumo financeiro da comunidade. Usa getResumoFinanceiroComunidade (async) e ResumoFinanceiroCard para KPIs. Drilldown por tipo (INGRESSOS, LISTA, FREQUENCIA, LOTES) abre CaixaDrilldownModal.
+- **Props/Interface**: `{ comunidadeId: string }`
+- **State**: drilldown (CaixaTipo|null), resumoFin (ResumoFinanceiro|null), resumoLoading
+- **Imports**: BarChart2 (lucide), EventoAdmin/ListaEvento, eventosAdminService, listasService, getResumoFinanceiroComunidade/ResumoFinanceiro, ResumoFinanceiroCard, CaixaDrilldownModal, CaixaTipo
+- **Quem importa**: ComunidadeDetalheView.tsx
+- **Observacoes**: Cleanup via `cancelled` flag no useEffect.
 
-**Logica**: eventosAdminService (saques, reembolsos, fechamento), getContractedFees, getGatewayCostByEvento
+#### CaixaDrilldownModal.tsx
+- **Caminho**: `features/admin/views/comunidades/CaixaDrilldownModal.tsx`
+- **Linhas**: 204
+- **O que faz**: Modal detalhado de caixa por tipo. INGRESSOS: tabela por evento (vendidos, receita, cortesias). LISTA: nomes por evento/promoter. LOTES: ranking de lotes por receita. FREQUENCIA: frequencia de compra.
+- **Props/Interface**: `{ tipo: CaixaTipo; comunidadeId: string; onClose: () => void }`
+- **Imports**: TYPOGRAPHY, EventoAdmin/ListaEvento, types (CAIXA_TITLE)
+- **Quem importa**: CaixaTab.tsx
 
-### insightsDashboard/ (5 arquivos, 374L)
+#### ComercialTab.tsx
+- **Caminho**: `features/admin/views/comunidades/ComercialTab.tsx`
+- **Linhas**: 277
+- **O que faz**: Aba comercial onde master define condicoes comerciais para a comunidade. Formulario com taxas (servico %, processamento %, minimo/ingresso, taxa porta, nomes/lista, cortesias). Envia condicoes pendentes via condicoesService. Ve historico de condicoes aceitas/recusadas/expiradas. Status de aceite com prazo de 7 dias.
+- **Props/Interface**: `{ comunidadeId: string; comunidadeNome: string }`
+- **State**: condicaoPendente, historico, form fields (taxas), loading, enviando
+- **Imports**: Send/Check/Clock/X/AlertCircle/ChevronDown/ChevronUp/Banknote/Users/Star/Shield/ListChecks (lucide), condicoesService/DefinirCondicoesInput, CondicaoComercial/Comunidade, useAuthStore
+- **Quem importa**: ComunidadeDetalheView.tsx
+- **Observacoes**: Apenas master pode definir condicoes. Socio/gerente ve e aceita via CondicoesProducerView (view separada).
 
-| Arquivo | Linhas | O que faz |
-|---------|--------|-----------|
-| **index.tsx** | 160 | InsightsDashboard - hub de insights inteligentes com 4 tabs |
-| **InsightsTab.tsx** | 51 | VIP score, churn radar, trend alerts, no-show, previsao lotacao |
-| **FinanceiroTab.tsx** | 53 | Sugestoes de pricing, split preview, break even |
-| **OperacoesTab.tsx** | 46 | Channel attribution, buyer communication, loyalty, purchase time |
-| **ValorTab.tsx** | 64 | Weekly report, Vanta value panel, smart tips, benchmark |
+#### EventosPrivadosTab.tsx
+- **Caminho**: `features/admin/views/comunidades/EventosPrivadosTab.tsx`
+- **Linhas**: 393
+- **O que faz**: Gestao de eventos privados (corporativos). Busca solicitacoes via eventoPrivadoService. Card com detalhes (solicitante, data, tipo, orcamento). Acoes: aprovar, rejeitar, negociar. Formulario de resposta com proposta de valor. Filtros por status (PENDENTE, APROVADO, REJEITADO).
+- **Props/Interface**: `{ comunidadeId: string }`
+- **Imports**: TYPOGRAPHY, eventoPrivadoService, eventosAdminService
+- **Quem importa**: ComunidadeDetalheView.tsx
 
-**Logica**: Componentes de insights (cards inteligentes)
+#### ComemoracoesTab.tsx
+- **Caminho**: `features/admin/views/comunidades/ComemoracoesTab.tsx`
+- **Linhas**: 336
+- **O que faz**: Gestao de comemoracoes (aniversarios, despedidas) em eventos da comunidade. Lista solicitacoes com status. Aprovar/rejeitar com observacoes. Criar comemoracao manual. Configurar tipos disponiveis por comunidade via comemoracaoService.
+- **Props/Interface**: `{ comunidadeId: string; comunidadeNome: string }`
+- **Imports**: TYPOGRAPHY, comemoracaoService
+- **Quem importa**: ComunidadeDetalheView.tsx
 
-### listas/ (8 arquivos, 962L)
+#### CuponsComunidadeTab.tsx
+- **Caminho**: `features/admin/views/comunidades/CuponsComunidadeTab.tsx`
+- **Linhas**: 239
+- **O que faz**: CRUD de cupons que valem para todos os eventos da comunidade. Formulario: codigo, desconto (% ou fixo), limite de usos, validade. Lista cupons com status (ativo/expirado/esgotado). Toggle ativar/desativar. VantaDatePicker para data de validade.
+- **Props/Interface**: `{ comunidadeId: string }`
+- **Imports**: cuponsService, Cupom (types), globalToast, VantaDatePicker
+- **Quem importa**: ComunidadeDetalheView.tsx
 
-| Arquivo | Linhas | O que faz |
-|---------|--------|-----------|
-| **index.tsx** | 40 | ListasView - seletor de evento para gestao de listas |
-| **ListaEventoView.tsx** | 92 | View de lista por evento com tabs (Nomes, Equipe, Lotacao, Checkin) |
-| **PainelEventos.tsx** | 147 | Painel de selecao de eventos para lista |
-| **TabNomes.tsx** | 235 | Gestao de nomes na lista: busca, adicao individual/lote, regras abobora |
-| **TabEquipe.tsx** | 182 | Gestao de equipe da lista (promoters) |
-| **TabLotacao.tsx** | 69 | Barra de lotacao da lista |
-| **TabCheckin.tsx** | 222 | Check-in por lista: busca, confirmar entrada, status |
-| **ModalInserirLote.tsx** | 155 | Modal para inserir multiplos nomes de uma vez |
-| **listasUtils.ts** | 26 | Utils: TODAY_STR, formatData, isRegraAbobora, RoleListaNova |
+#### AdicionarMembroModal.tsx
+- **Caminho**: `features/admin/views/comunidades/AdicionarMembroModal.tsx`
+- **Linhas**: 158
+- **O que faz**: Modal para buscar e adicionar membro a equipe da comunidade. Busca por nome/email via authService.buscarMembros. Seleciona cargo (dropdown com CARGO_LABEL). Confirma atribuicao via rbacService.atribuir.
+- **Props/Interface**: `{ comunidadeId: string; onClose: () => void; onAdded: () => void }`
+- **Imports**: TYPOGRAPHY, Membro/TipoCargo (types), authService, rbacService, CARGO_LABEL (types locais)
+- **Quem importa**: EquipeTab.tsx
 
-**Logica**: listasService (CRUD convidados, check-in, cotas)
+#### PublicoDrilldown.tsx
+- **Caminho**: `features/admin/views/comunidades/PublicoDrilldown.tsx`
+- **Linhas**: 809
+- **O que faz**: Analise detalhada do publico da comunidade. Pie charts (VantaPieChart) por: origem do publico (organico, promoter, lista, cortesia), genero, faixa etaria, cidade. Leaderboard de compradores frequentes. Drill-down por evento com comparativo. Tabela de cortesias (CortesiaLogItem). Export CSV.
+- **Props/Interface**: `{ comunidadeId: string; eventos: EventoAdmin[] }`
+- **Imports**: VantaPieChart, EventoAdmin (types)
+- **Types internos**: `CortesiaLogItem { variacaoLabel, remetente, destinatario }`
+- **Quem importa**: ResumoEventoModal.tsx
+- **Observacoes**: Arquivo grande (809L). Calculos pesados client-side via useMemo. Cores padrao: emerald organico, violet promoter, amber lista, cyan cortesia.
 
-### maisVanta/ (2 arquivos, 483L)
+#### ResumoEventoModal.tsx
+- **Caminho**: `features/admin/views/comunidades/ResumoEventoModal.tsx`
+- **Linhas**: 908
+- **O que faz**: Modal com resumo completo de um evento encerrado. KPIs (receita, ingressos, check-in rate, no-show). Breakdown financeiro (lotes, taxas, liquido). Pie charts (genero, area, lote). Comparativo com evento anterior. Lotacao vs capacidade. Integra PublicoDrilldown. Busca dados via eventosAdminFinanceiro e eventosAdminTickets.
+- **Props/Interface**: `{ eventoId: string; onClose: () => void }`
+- **Imports**: TYPOGRAPHY, EventoAdmin (types), eventosAdminFinanceiro, eventosAdminTickets, eventosAdminTypes, PublicoDrilldown, supabase
+- **Quem importa**: EventosEncerradosTab.tsx
+- **Observacoes**: Arquivo grande (908L). Busca dados de 3 services distintos. Comparativo calcula delta % entre evento atual e anterior da mesma comunidade.
 
-| Arquivo | Linhas | O que faz |
-|---------|--------|-----------|
-| **ConviteEspecialMVView.tsx** | 318 | Admin envia convites especiais para membros em eventos. Filtro por tier, cidade, tags, sublevel creator. Selecao individual ou em massa. |
-| **NotifMVPendentesView.tsx** | 165 | Admin ve e resolve solicitacoes de notificacao do produtor |
+#### types.ts
+- **Caminho**: `features/admin/views/comunidades/types.ts`
+- **Linhas**: 47
+- **O que faz**: Helpers e tipos compartilhados do modulo comunidades.
+- **Exports**: `CARGO_LABEL` (Record TipoCargo→string), `addLog` (cria ComunidadeLog local), `CaixaTipo`, `DetalheTab` (9 abas), `EventoTab` (3 abas: CRIAR/PROXIMOS/ENCERRADOS), `CAIXA_TITLE` (Record CaixaTipo→string)
+- **Imports**: TipoCargo/ComunidadeLog (types), tsBR (utils)
+- **Quem importa**: ComunidadeDetalheView, CaixaTab, CaixaDrilldownModal, EquipeTab, CentralEventosView, AdicionarMembroModal
+- **Observacoes**: addLog cria logs locais (nao persistidos no Supabase por ora — void comunidadeId).
 
-**Logica**: clubeService.conviteEspecial, clubeService.notifProdutor, supabase
+### criarComunidade/ (5 arquivos, 1.394L)
 
-### maisVantaDashboard/ (7 arquivos, 716L)
+#### index.tsx (CriarComunidadeView)
+- **Caminho**: `features/admin/views/criarComunidade/index.tsx`
+- **Linhas**: 565
+- **O que faz**: Wizard de criacao de comunidade em 4 steps + celebration screen. Draft persistence via useDraft hook (salva rascunho automatico no Supabase). Steps: 1-Identidade, 2-Localizacao, 3-Operacao, 4-Produtores&Taxas. Ao finalizar, comunidadesService.criar e mostra CelebrationScreen. UnsavedChangesModal ao fechar com dados nao salvos.
+- **Props/Interface**: `{ onBack: () => void; onCreated?: (id: string) => void }`
+- **State**: step (1-4), formData (acumulado entre steps), draft (via useDraft), showCelebration, creating
+- **Imports**: TYPOGRAPHY, comunidadesService, UnsavedChangesModal, globalToast, Comunidade (types), HorarioFuncionamentoEditor, CelebrationScreen, useDraft, Step1-4
+- **Quem importa**: ComunidadesView, CentralEventosView
+- **Observacoes**: Draft persistence evita perda de dados ao sair acidentalmente. Validation por step antes de avancar.
 
-| Arquivo | Linhas | O que faz |
-|---------|--------|-----------|
-| **index.tsx** | 134 | Dashboard MAIS VANTA com tabs e periodo selector |
-| **OverviewTab.tsx** | 90 | KPIs globais MV: MRR, membros, churn, parceiros |
-| **TiersTab.tsx** | 136 | Distribuicao por tier, breakdown, bar chart |
-| **ResgatesTab.tsx** | 61 | KPIs de resgates (total, por tipo, inbox) |
-| **RetencaoTab.tsx** | 134 | Metricas de retencao: cohort, churn rate, LTV |
-| **ParceirosTab.tsx** | 58 | KPIs de parceiros (total, ativos, deals, clock) |
-| **FinanceiroTab.tsx** | 103 | Financeiro MV: MRR, ARPU, time series, breakdown por plano |
+#### Step1Identidade.tsx
+- **Linhas**: 165
+- **O que faz**: Step 1 do wizard — identidade da comunidade. Campos: nome, bio (textarea), foto (com ImageCropModal aspect 16:9), tipo de comunidade (dropdown). Validacao: nome obrigatorio.
+- **Props**: `{ data: FormData; onChange: (d: Partial<FormData>) => void }`
+- **Imports**: ImageCropModal, globalToast
+- **Quem importa**: criarComunidade/index.tsx
 
-**Logica**: getMaisVantaAnalytics (analytics service)
+#### Step2Localizacao.tsx
+- **Linhas**: 190
+- **O que faz**: Step 2 — localizacao. CEP com busca automatica via cepService (ViaCEP). Campos: CEP, rua, numero, complemento, bairro, cidade, estado. Geocode automatico (lat/lng) apos preencher endereco.
+- **Props**: `{ data: FormData; onChange: (d: Partial<FormData>) => void }`
+- **Imports**: cepService
+- **Quem importa**: criarComunidade/index.tsx
+- **Observacoes**: Auto-preenche rua/bairro/cidade/estado quando CEP valido retorna dados.
 
-### masterDashboard/ (6 arquivos, 1.017L)
+#### Step3Operacao.tsx
+- **Linhas**: 138
+- **O que faz**: Step 3 — operacao. Horarios de funcionamento via HorarioFuncionamentoEditor (7 dias da semana). CNPJ (com validacao cnpjValidator). Website opcional. SectionTitle compartilhado.
+- **Props**: `{ data: FormData; onChange: (d: Partial<FormData>) => void }`
+- **Imports**: Comunidade (types), HorarioFuncionamentoEditor, cnpjValidator, SectionTitle (form)
+- **Quem importa**: criarComunidade/index.tsx
 
-| Arquivo | Linhas | O que faz |
-|---------|--------|-----------|
-| **index.tsx** | 199 | MasterDashboard com tabs e periodo selector |
-| **OverviewTab.tsx** | 136 | KPIs master: GMV, receita plataforma, eventos, time series |
-| **ComunidadesTab.tsx** | 173 | Ranking de comunidades com bar chart, ordenacao |
-| **FinanceiroTab.tsx** | 142 | Financeiro master: breakdown, comparativo, export |
-| **OperacoesTab.tsx** | 129 | Operacoes: eventos ativos, tickets/dia, leaderboard |
-| **ProjecaoTab.tsx** | 238 | Projecoes financeiras: trend lines, metas, KPIs futuros |
+#### Step4ProdutoresTaxas.tsx
+- **Linhas**: 336
+- **O que faz**: Step 4 — busca e adicao de produtores (authService.buscarMembros) e definicao de taxas individuais por produtor. AccordionSection para cada produtor com campos de taxa (servico %, processamento %, minimo ingresso, porta, nomes/lista, cortesias). Produtores vinculados a comunidade na criacao.
+- **Props**: `{ data: FormData; onChange: (d: Partial<FormData>) => void }`
+- **Imports**: authService, AccordionSection (form), Comunidade/Membro (types)
+- **Quem importa**: criarComunidade/index.tsx
+- **Observacoes**: Busca debounced de membros. Cada produtor tem config de taxa independente.
 
-**Logica**: getMasterAnalytics (analytics service)
+### criarEvento/ (13 arquivos, 3.624L)
 
-### masterFinanceiro/ (4 arquivos, 1.131L)
+#### TipoEventoScreen.tsx
+- **Linhas**: 162
+- **O que faz**: Tela inicial de selecao do tipo de evento. Pergunta se vai vender pelo Vanta (sim/nao). Se sim, escolhe fluxo: COM_SOCIO (evento com parceiro/venue) ou FESTA_DA_CASA (evento proprio). Define TipoFluxoEvento que condiciona quais steps aparecem.
+- **Props**: `{ onSelect: (tipo: TipoFluxoEvento) => void; onBack: () => void }`
+- **Imports**: TYPOGRAPHY, TipoFluxoEvento (types)
+- **Quem importa**: CriarEventoView (index do modulo superior)
 
-| Arquivo | Linhas | O que faz |
-|---------|--------|-----------|
-| **index.tsx** | 861 | MasterFinanceiroView: gestao financeira global. Saques pendentes (aprovar/rejeitar com comprovante), reembolsos, visao por evento, config de taxas, export. |
-| **LucroPorComunidade.tsx** | 104 | Pie chart de lucro por comunidade |
-| **RaioXEvento.tsx** | 83 | Raio-X financeiro de um evento (taxas contratadas, receita, custos) |
-| **SimuladorGateway.tsx** | 83 | Simulador de custos gateway (credito vs PIX) |
+#### Step1Evento.tsx
+- **Linhas**: 589
+- **O que faz**: Step 1 — dados basicos do evento. Foto com ImageCropModal (aspect 4:5), nome, descricao (textarea), data/hora inicio e fim (VantaDatePicker + VantaTimePicker), local (auto-preenche da comunidade), classificacoes (formatos, estilos musicais, experiencias via checkboxes carregados do Supabase tabelas formatos/estilos/experiencias). Validacao de campos obrigatorios.
+- **Props**: `{ data: EventoFormData; onChange: (d: Partial<EventoFormData>) => void; comunidade: Comunidade }`
+- **Imports**: ImageCropModal, EventoAdmin (types), supabase, fmtBRL (utils), constants (inputSmCls), TYPOGRAPHY, VantaDropdown, VantaDatePicker, globalToast
+- **Quem importa**: CriarEventoView
+- **Observacoes**: Busca formatos/estilos/experiencias ativos do Supabase no mount. Chip selector para multiplas classificacoes.
 
-**Logica**: eventosAdminService, getContractedFees, calcGatewayCost, supabase (saques, reembolsos)
+#### Step2Ingressos.tsx
+- **Linhas**: 798
+- **O que faz**: Step 2 — configuracao de ingressos. CRUD de lotes (LoteForm) com variacoes (VariacaoForm: area, genero, valor, limite). Cortesias configuradas por lote. Beneficios MAIS VANTA (BeneficioMVForm: tipo ingresso/lista, tier, desconto, sublevel creator, vagas limite) via clubeService/assinaturaService. Meia-entrada com tipo de comprovante. VantaTimePicker para validade de lote.
+- **Props**: `{ data: EventoFormData; onChange: (d: Partial<EventoFormData>) => void; comunidadeId: string }`
+- **Types internos**: `BeneficioMVForm`, `MaisVantaEventoForm`
+- **Imports**: EventoAdmin/AreaIngresso/GeneroIngresso (types), clubeService, assinaturaService, types (VariacaoForm/LoteForm), constants, utils (novaVar/novoLote), VantaDropdown, VantaDatePicker, VantaTimePicker
+- **Quem importa**: CriarEventoView
+- **Observacoes**: Arquivo grande (798L). Logica complexa de tiers MV com sublevel creator. Auto-calcula capacidade total.
 
-### PlanosProdutor/ (1 arquivo, 433L)
+#### Step3Listas.tsx
+- **Linhas**: 514
+- **O que faz**: Step 3 — configuracao de listas (guestlists). CRUD de variantes (VarListaForm: tipo VIP/CONSUMO/ENTRADA/OUTRO, genero, cor, area, validade noite_toda/horario, regra abobora, limite, valor). Palete de cores (COR_PALETTE). VantaDropdown para area e tipo.
+- **Props**: `{ data: EventoFormData; onChange: (d: Partial<EventoFormData>) => void }`
+- **Imports**: types (VarListaForm), constants (COR_PALETTE), utils (novaVarLista), VantaDropdown
+- **Quem importa**: CriarEventoView
+- **Observacoes**: Regra "abobora" = nome some da lista apos horario especifico (validadeHora). ababoraAlvoId vincula a outra variante.
 
-| Arquivo | Linhas | O que faz |
-|---------|--------|-----------|
-| **PlanosProdutor.tsx** | 433 | CRUD de planos para produtores. Criar/editar planos com nome, preco, limites, tier minimo, beneficios. Atribuir planos a comunidades. |
+#### Step4EquipeSocio.tsx
+- **Linhas**: 463
+- **O que faz**: Step 4A (fluxo COM_SOCIO) — busca socio/parceiro via authService.buscarMembros, define permissoes toggle (VER_FINANCEIRO, GERIR_LISTAS, EMITIR_CORTESIAS), adiciona equipe do socio com cargos via CargoModal. Quotas de lista por membro.
+- **Props**: `{ data: EventoFormData; onChange: (d: Partial<EventoFormData>) => void; tipoFluxo: TipoFluxoEvento }`
+- **Imports**: authService, TipoCargo/PapelEquipeEvento (types), types (SocioConviteForm/EquipeForm/QuotaForm), constants (PERMISSOES_TOGGLE), utils, CargoModal
+- **Quem importa**: CriarEventoView
 
-**Logica**: clubeService.listarPlanosProdutor/criarPlanoProdutor/atualizarPlanoProdutor/atribuirPlano
+#### Step4EquipeCasa.tsx
+- **Linhas**: 488
+- **O que faz**: Step 4B (fluxo FESTA_DA_CASA) — busca gerente via authService.buscarMembros, define permissoes, adiciona equipe da casa (promoters, portaria, caixa) com cargos RBAC via CargoModal. Quotas de lista configuradas por membro.
+- **Props**: `{ data: EventoFormData; onChange: (d: Partial<EventoFormData>) => void }`
+- **Imports**: authService, TipoCargo/PapelEquipeEvento (types), types (EquipeForm/QuotaForm), constants (PAPEIS_CASA), utils, CargoModal
+- **Quem importa**: CriarEventoView
+- **Observacoes**: Similar ao Step4EquipeSocio mas para fluxo sem socio. PAPEIS_CASA define cargos disponiveis.
 
-### relatorios/ (8 arquivos, 1.525L)
+#### Step5Financeiro.tsx
+- **Linhas**: 129
+- **O que faz**: Step 5 — split de receita entre produtor e socio. VantaSlider para definir percentual (0-100%). Mostra preview da divisao em real time. So aparece no fluxo COM_SOCIO.
+- **Props**: `{ data: EventoFormData; onChange: (d: Partial<EventoFormData>) => void }`
+- **Imports**: types (SplitForm), constants, VantaSlider
+- **Quem importa**: CriarEventoView
 
-| Arquivo | Linhas | O que faz |
-|---------|--------|-----------|
-| **index.tsx** | 3 | Re-exports |
-| **RelatorioEventoView.tsx** | 127 | Relatorio de evento com tabs (Geral, Listas, Ingressos). Export Excel. |
-| **RelatorioComunidadeView.tsx** | 253 | Relatorio de comunidade com metricas agregadas. Export Excel. |
-| **RelatorioMasterView.tsx** | 324 | Relatorio master global com ranking comunidades. Export Excel. |
-| **TabGeral.tsx** | 254 | Tab geral: pie charts de origem publico, receita por tipo |
-| **TabIngressos.tsx** | 211 | Tab ingressos: metricas de vendas, ticket medio, breakdown |
-| **TabListas.tsx** | 305 | Tab listas: promoters, por lista, portaria, convidados |
-| **exportRelatorio.ts** | 173 | Gera export Excel para evento (multiplas sheets) |
-| **exportRelatorioComunidade.ts** | 75 | Gera export Excel para comunidade |
+#### CopiarModal.tsx
+- **Linhas**: 181
+- **O que faz**: Modal para copiar dados de evento existente como base para novo. Lista eventos da comunidade via eventosAdminService. Ao selecionar, carrega lotes/listas via listasService e preenche formulario do wizard com dados copiados (nome, descricao, classificacoes, lotes, variacoes, listas).
+- **Props**: `{ comunidadeId: string; onClose: () => void; onCopy: (data: Partial<EventoFormData>) => void }`
+- **Imports**: TYPOGRAPHY, useModalStack, eventosAdminService, listasService, types (VariacaoForm/LoteForm/VarListaForm), constants, utils
+- **Quem importa**: CriarEventoView
 
-**Logica**: eventosAdminService, listasService, exportExcel
+#### CargoModal.tsx
+- **Linhas**: 70
+- **O que faz**: Modal de selecao de cargo para membro da equipe. Lista cargos possiveis com icone e label. Usa PAPEIS_CASA ou cargos customizados conforme contexto.
+- **Props**: `{ onSelect: (cargo: PapelEquipeEvento) => void; onClose: () => void }`
+- **Imports**: TipoCargo (types), constants
+- **Quem importa**: Step4EquipeSocio, Step4EquipeCasa
+
+#### CapacidadeModal.tsx
+- **Linhas**: 57
+- **O que faz**: Modal de aviso quando capacidade total dos lotes excede limite da comunidade. Mostra comparativo e pede confirmacao para prosseguir.
+- **Props**: `{ capacidade: number; limite: number; onConfirm: () => void; onCancel: () => void }`
+- **Imports**: TYPOGRAPHY
+- **Quem importa**: CriarEventoView
+
+#### types.ts
+- **Linhas**: 78
+- **O que faz**: Tipos compartilhados do wizard de criacao de evento.
+- **Exports**: `VariacaoForm` (9 campos), `LoteForm` (6 campos), `TipoLista/GeneroLista/ValidadeTipo/AreaLista` (unions), `VarListaForm` (11 campos), `QuotaForm`, `EquipeForm` (8 campos), `TipoFluxoEvento`, `PermissaoToggle`, `SocioConviteForm`, `SplitForm`
+- **Imports**: AreaIngresso/GeneroIngresso/PapelEquipeEvento (types)
+- **Quem importa**: Step1-5, CopiarModal, TipoEventoScreen, constants, utils
+
+#### constants.ts
+- **Linhas**: 48
+- **O que faz**: Constantes do wizard de criacao de evento.
+- **Exports**: `inputSmCls/inputDateCls` (classes CSS), `COR_PALETTE` (15 cores hex), `AREA_LABELS` (Record AreaIngresso→string), `PAPEIS_CASA` (array de PapelEquipeEvento), `PERMISSOES_TOGGLE` (array de PermissaoToggle com label/desc)
+- **Imports**: AreaIngresso (types), PermissaoToggle (types locais)
+- **Quem importa**: Step1-5, CargoModal, CopiarModal
+
+#### utils.ts
+- **Linhas**: 47
+- **O que faz**: Funcoes utilitarias do wizard.
+- **Exports**: `uid()` (gera ID unico), `novaVar()` (cria VariacaoForm vazia), `novoLote()` (cria LoteForm com 1 variacao), `novaVarLista(count)` (cria VarListaForm), `buildLabel(v)` (monta label "Tipo Genero Area" para variante de lista)
+- **Imports**: types, constants
+- **Quem importa**: Step2, Step3, Step4EquipeSocio, Step4EquipeCasa, CopiarModal
+
+### curadoria/ (13 arquivos, 2.161L)
+
+#### types.ts
+- **Linhas**: 33
+- **O que faz**: Helpers compartilhados do modulo curadoria.
+- **Exports**: `formatFollowers` (numero → "1.2k"), `formatDate` (ISO → "DD/MM/YYYY")
+- **Quem importa**: tabClube/SubTabSolicitacoes, SubTabMembros, SubTabEventos, SubTabPassaportes, SubTabPosts, PerfilMembroOverlay
+
+#### tabClube/index.tsx (TabClube)
+- **Linhas**: 361
+- **O que faz**: Aba principal de curadoria do clube MAIS VANTA. Coordena 7 sub-tabs: SOLICITACOES, MEMBROS_CLUBE, EVENTOS, POSTS, PASSAPORTES, ASSINATURA, NOTIFICACOES. Carrega dados centralizados (membros clube, solicitacoes, passaportes, reservas, eventos com lote MV, assinaturas) e distribui para sub-tabs. Badge de contagem por tab.
+- **Props**: `{ comunidadeId: string; comunidadeNome: string; adminId: string }`
+- **State**: activeTab (SubTab), membros, solicitacoes, passaportes, reservas, eventos, assinatura, loading
+- **Imports**: clubeService, clubeReservasService, assinaturaService, supabase, eventosAdminService, tierUtils, PerfilMembroOverlay, SubTab* (7 sub-tabs)
+- **Quem importa**: ComunidadeDetalheView (tab CURADORIA nao visivel no DetalheTab — integrado via DashboardV2Gateway)
+- **Observacoes**: PerfilMembroOverlay abre ao clicar em qualquer membro. Re-fetch ao voltar de overlay.
+
+#### tabClube/SubTabSolicitacoes.tsx
+- **Linhas**: 319
+- **O que faz**: Curadoria de solicitacoes de entrada no clube MAIS VANTA. Lista com perfil Instagram (foto, followers, bio), tier solicitado. Acoes: aprovar (com tier), rejeitar (com motivo), pedir mais info. TagsPredefinidas para categorizar. VantaDropdown para selecao de tier.
+- **Props**: `{ solicitacoes: SolicitacaoClube[]; comunidadeId: string; onReload: () => void; onViewPerfil: (m: PerfilEnriquecido) => void }`
+- **Imports**: Membro (types), clubeService, types (formatFollowers/formatDate), tierUtils (TIER_LABELS/TIER_COLORS), VantaDropdown, TagsPredefinidas
+- **Quem importa**: tabClube/index.tsx
+
+#### tabClube/SubTabMembros.tsx
+- **Linhas**: 164
+- **O que faz**: Lista de membros ativos do clube com busca por nome, filtro por tier (VantaDropdown). Card com avatar, nome, tier badge colorido, data de entrada. Acao: alterar tier. Click abre PerfilMembroOverlay.
+- **Props**: `{ membros: MembroClube[]; comunidadeId: string; onReload: () => void; onViewPerfil: (m: PerfilEnriquecido) => void }`
+- **Imports**: Membro (types), clubeService, types (formatDate), tierUtils (TIER_LABELS/TIER_COLORS), VantaDropdown
+- **Quem importa**: tabClube/index.tsx
+
+#### tabClube/SubTabEventos.tsx
+- **Linhas**: 219
+- **O que faz**: Eventos da comunidade com lote MAIS VANTA. Lista de check-ins e resgates por evento. Detalhes de cada resgate (membro, tier, tipo beneficio). Stats por evento (total MV, check-ins MV, no-shows). VantaDropdown para filtro.
+- **Props**: `{ eventos: EventoMV[]; comunidadeId: string; reservas: ReservaClube[]; onViewPerfil: (m: PerfilEnriquecido) => void }`
+- **Imports**: Membro (types), clubeService, clubeReservasService, types (formatDate), tierUtils, VantaDropdown
+- **Quem importa**: tabClube/index.tsx
+
+#### tabClube/SubTabConfig.tsx
+- **Linhas**: 475
+- **O que faz**: Configuracao do clube por comunidade. Secoes: Tiers (habilitar/desabilitar cada tier, limites, beneficios), Regras (no-show penalty, divida social, frequencia minima), Beneficios por tier (ingresso, lista, desconto, prioridade). Salva via clubeService.
+- **Props**: `{ comunidadeId: string }`
+- **Imports**: TierMaisVanta (types), clubeService, tierUtils (getTierOptions/BENEFICIOS_DISPONIVEIS)
+- **Quem importa**: tabClube/index.tsx
+- **Observacoes**: Arquivo grande (475L). Formulario complexo com toggles, inputs numericos, checkboxes.
+
+#### tabClube/SubTabPassaportes.tsx
+- **Linhas**: 50
+- **O que faz**: Lista de passaportes pendentes (solicitacoes de acesso a outra cidade). Card com membro, cidade destino, data. Acoes: aprovar/rejeitar.
+- **Props**: `{ passaportes: PassaporteClube[]; onReload: () => void }`
+- **Imports**: Membro (types), tierUtils, types (formatDate)
+- **Quem importa**: tabClube/index.tsx
+
+#### tabClube/SubTabPosts.tsx
+- **Linhas**: 64
+- **O que faz**: Lista de posts pendentes de verificacao (divida social). Membro que reservou beneficio deve postar foto no evento. Card com membro, evento, status. Acoes: aprovar post, marcar no-show.
+- **Props**: `{ posts: PostClube[]; onReload: () => void }`
+- **Imports**: Membro (types), tierUtils, types (formatDate)
+- **Quem importa**: tabClube/index.tsx
+
+#### tabClube/SubTabNotificacoes.tsx
+- **Linhas**: 42
+- **O que faz**: Info estatica sobre notificacoes automaticas do sistema MAIS VANTA. Lista tipos (boas-vindas, lembrete check-in, no-show warning, upgrade tier). Sem logica dinamica.
+- **Props**: nenhum
+- **Quem importa**: tabClube/index.tsx
+
+#### tabClube/PerfilMembroOverlay.tsx
+- **Linhas**: 199
+- **O que faz**: Overlay detalhado do perfil de um membro do clube. Foto, nome, tier badge, Instagram (link + followers), cidade, email, telefone, data cadastro. Historico de eventos/resgates. Acoes: alterar tier, bloquear, desbloquear. clubeService para acoes.
+- **Props**: `{ membro: PerfilEnriquecido; comunidadeId: string; onClose: () => void; onReload: () => void }`
+- **Imports**: Membro (types), clubeService, types (formatFollowers/formatDate), tierUtils (TIER_LABELS/TIER_COLORS), VantaDropdown
+- **Quem importa**: tabClube/index.tsx
+
+#### tabClube/TagsPredefinidas.tsx
+- **Linhas**: 149
+- **O que faz**: Picker de tags predefinidas organizadas por 4 categorias: INFLUENCIA (micro, macro, celebrity), PERSONA (trendsetter, early-adopter, loyalist), INTERESSE (musica, gastronomia, arte, esportes), LIFESTYLE (urbano, premium, alternativo). Chips toggleaveis com cores por categoria.
+- **Props**: `{ selected: string[]; onChange: (tags: string[]) => void }`
+- **Quem importa**: SubTabSolicitacoes.tsx
+
+#### tabClube/VantaDropdown.tsx
+- **Linhas**: 3
+- **O que faz**: Re-export de VantaDropdown compartilhado (`components/VantaDropdown`).
+- **Quem importa**: SubTabSolicitacoes, SubTabMembros, SubTabEventos, PerfilMembroOverlay
+
+#### tabClube/tierUtils.ts
+- **Linhas**: 83
+- **O que faz**: Utilidades de tier MAIS VANTA. Labels, cores, opcoes, beneficios disponiveis por tier.
+- **Exports**: `getTierOptions()` (lista TierMaisVanta), `TIER_LABELS` (Record tier→string), `TIER_COLORS` (Record tier→cor), `BENEFICIOS_DISPONIVEIS` (array), `PerfilEnriquecido` (interface com 8 campos), `SubTab` (union type 7 abas)
+- **Imports**: TierMaisVanta (types), clubeService
+- **Quem importa**: todos os Sub-tabs + PerfilMembroOverlay + tabClube/index
+
+### definirCargos/ (7 arquivos, 1.200L)
+
+#### index.tsx (DefinirCargosView)
+- **Caminho**: `features/admin/views/definirCargos/index.tsx`
+- **Linhas**: 554
+- **O que faz**: Fluxo completo de atribuicao de cargos a membros. 3 passos: 1) Buscar membro (authService.buscarMembros), 2) Selecionar destino (comunidade ou evento, carregados via comunidadesService/eventosAdminService), 3) Configurar cargo (predefinido ou customizado via PainelCargoCustom). ConfirmacaoModal antes de salvar. SuccessScreen apos sucesso. ImportarStaffPanel para importar equipe de eventos anteriores.
+- **Props/Interface**: `DefinirCargosProps { onBack, currentUserId, addNotification, embedded? }`
+- **State**: step (1-3), searchQuery, membros, selectedMembro, destinos (DestinoOption[]), selectedDestino, cargo, usarCargoCustom, cargoCustom (CargoCustomState), showConfirmacao, showSuccess
+- **Imports**: Membro/Notificacao/TipoCargo (types), TYPOGRAPHY, authService, comunidadesService, eventosAdminService, rbacService, fmtBRL (utils), PainelCargoCustom, ImportarStaffPanel, SuccessScreen, ConfirmacaoModal
+- **Quem importa**: CargosUnificadoView (lazy)
+- **Observacoes**: CARGOS_PREDEFINIDOS define 7 cargos padrão. Busca debounced. rbacService.atribuir para salvar.
+
+#### ImportarStaffPanel.tsx
+- **Linhas**: 250
+- **O que faz**: Painel para importar staff de eventos anteriores para novo evento/comunidade. Lista eventos passados da comunidade, mostra equipe de cada um. Checkboxes para selecionar membros. Importa com cargos e permissoes originais via rbacService.
+- **Props**: `ImportarStaffPanelProps { currentUserId, destinoId, destinoNome, destinoTipo: 'COMUNIDADE'|'EVENTO', onImportado: (count) => void }`
+- **Imports**: Membro (types), eventosAdminService, comunidadesService, VantaDropdown, rbacService, types (MembroImportacao/DestinoOption), QlCheckbox
+- **Quem importa**: definirCargos/index.tsx
+
+#### PainelCargoCustom.tsx
+- **Linhas**: 159
+- **O que faz**: Painel de configuracao de cargo customizado com permissoes granulares. Campos: nome do cargo, permissoes de lista (ver/editar/cada variacao), portaria (boolean), financeiro (boolean), caixa (boolean). VantaDropdown para selecao de variacoes de lista disponiveis.
+- **Props**: `PainelCustomProps { estado: CargoCustomState, setEstado, variacoesDisponiveis: string[] }`
+- **Imports**: TipoCargo (types), types (CargoCustomState), VantaDropdown, QlCheckbox
+- **Quem importa**: definirCargos/index.tsx
+#### ConfirmacaoModal.tsx
+- **Linhas**: 77
+- **O que faz**: Modal de confirmacao antes de atribuir cargo. Mostra resumo: membro (nome+foto), destino (comunidade/evento), cargo (label). Botoes Confirmar/Cancelar.
+- **Props**: `ConfirmacaoModalProps { selectedMembro: Membro, selectedDestino: DestinoOption, usarCargoCustom: boolean, cargoCustom: CargoCustomState, labelCargo: string, onConfirmar, onCancelar }`
+- **Imports**: Membro (types), TYPOGRAPHY, types (DestinoOption/CargoCustomState)
+- **Quem importa**: definirCargos/index.tsx
+
+#### SuccessScreen.tsx
+- **Linhas**: 51
+- **O que faz**: Tela de sucesso apos atribuicao de cargo. Animacao de check. Mostra membro, destino e cargo atribuido. Botao "Voltar".
+- **Props**: `SuccessScreenProps { onBack, selectedMembro, selectedDestino, labelCargo }`
+- **Imports**: Membro (types), TYPOGRAPHY, types (DestinoOption)
+- **Quem importa**: definirCargos/index.tsx
+
+#### QlCheckbox.tsx
+- **Linhas**: 29
+- **O que faz**: Checkbox estilizado reutilizavel com label, descricao opcional e estado visual amber/zinc.
+- **Props**: `{ checked: boolean; onChange: (v: boolean) => void; label: string; description?: string }`
+- **Quem importa**: ImportarStaffPanel, PainelCargoCustom
+
+#### types.ts
+- **Linhas**: 80
+- **O que faz**: Types e constantes do modulo definirCargos.
+- **Exports**: `DefinirCargosProps`, `CargoCustomState` (nome+permissoes), `cargoCustomVazio()`, `MembroImportacao` (7 campos), `DestinoOption` (tipo+id+nome), `CARGOS_PREDEFINIDOS` (7 cargos), `VARIACOES_GENERICAS`, `PERM_LABELS`
+- **Imports**: TipoCargo/PermissaoVanta/CargoUnificado/Notificacao (types)
+- **Quem importa**: index, ImportarStaffPanel, PainelCargoCustom, ConfirmacaoModal, SuccessScreen
+
+### eventManagement/ (13 arquivos, 4.080L)
+
+#### EventDetailManagement.tsx
+- **Caminho**: `features/admin/views/eventManagement/EventDetailManagement.tsx`
+- **Linhas**: 198
+- **O que faz**: Hub de gestao operacional do evento com 9 tabs horizontais scrollaveis: Lotacao, Equipe Produtor, Equipe Socio, Lista, Logs, Resumo Caixa, Cortesias, Cargos & Permissoes, Relatorio, Mesas. Carrega dados centralizados (listas, cortesias, tickets) e distribui para tabs. Badge de contagem por tab. Toast container.
+- **Props**: `{ eventoId: string; eventoNome: string; comunidadeId: string; adminId: string; adminRole: ContaVantaLegacy; onBack: () => void }`
+- **State**: activeTab (Tab), listas, cortesias, tickets, loading
+- **Imports**: TYPOGRAPHY, EventoAdmin/ContaVantaLegacy (types), listasService, cortesiasService, eventosAdminService, rbacService, globalToast, types (Tab), Tab* (9 tabs)
+- **Quem importa**: eventoDashboard/index.tsx
+- **Observacoes**: Tabs filtradas por role (ex: TabMesas so se mesasAtivo, TabCortesias so se tem cortesias).
+
+#### TabLotacao.tsx
+- **Linhas**: 136
+- **O que faz**: Barra de lotacao do evento. Total ingressos vendidos / teto de capacidade. Alertas visuais: verde (< 70%), amarelo (70-90%), vermelho (> 90%). Waitlist: total na fila, botao abrir waitlist. KPIs: vendidos, usados, cortesias, lista.
+- **Props**: `{ eventoId: string; comunidadeId: string }`
+- **Imports**: EventoAdmin (types), listasService, cortesiasService, eventosAdminService, waitlistService
+- **Quem importa**: EventDetailManagement.tsx
+
+#### TabEquipePromoter.tsx
+- **Linhas**: 446
+- **O que faz**: Gestao de promoters do evento. Ranking por nomes inseridos e check-ins. Cotas de lista por promoter (limite configuravel). Links de indicacao unicos. Comissoes por promoter. Atribuir/revogar promoter via supabase profiles. VantaDropdown para selecao de variante de lista.
+- **Props**: `{ eventoId: string; listas: ListaEvento[] }`
+- **Imports**: TYPOGRAPHY, EventoAdmin/ListaEvento (types), listasService, fmtBRL (utils), supabase, types (Papel/PAPEIS/MEDALHAS/FechamentoPessoa), VantaDropdown
+- **Quem importa**: EventDetailManagement.tsx
+- **Observacoes**: Arquivo grande (446L). MEDALHAS para top 3 (ouro/prata/bronze). Calcula receita por promoter.
+
+#### TabEquipeSocio.tsx
+- **Linhas**: 379
+- **O que faz**: Gestao da equipe do socio do evento. Busca membros via authService. Adiciona com cargo (RBAC). Permissoes toggle por membro. Cortesias atribuidas por membro da equipe. StaffRecrutamento inline para importar staff de eventos anteriores.
+- **Props**: `{ eventoId: string; comunidadeId: string; adminId: string }`
+- **Imports**: Membro/TipoCargo (types), authService, cortesiasService, eventosAdminService, rbacService, supabase, StaffRecrutamento, types
+- **Quem importa**: EventDetailManagement.tsx
+
+#### TabLista.tsx
+- **Linhas**: 451
+- **O que faz**: Gestao da lista do evento (guestlist). Inserir nomes por variante, check-in manual (toggle), busca por nome, contagem por variante. Suporte offline via offlineEventService + useConnectivity. Sync automatico quando volta online. Lista com status (ATIVO, CHECKIN, REMOVIDO).
+- **Props**: `{ eventoId: string; listas: ListaEvento[] }`
+- **Imports**: EventoAdmin/ListaEvento (types), listasService, offlineEventService, useConnectivity, types
+- **Quem importa**: EventDetailManagement.tsx
+- **Observacoes**: Arquivo grande (451L). Offline: cache IndexedDB, sync ao reconectar. Cores por status: branco ativo, verde check-in, zinc removido.
+
+#### TabLogs.tsx
+- **Linhas**: 95
+- **O que faz**: Timeline de logs do evento. Busca via auditService filtrado por evento. Mostra acao, ator, timestamp. Icones por tipo (venda, check-in, cortesia, edicao). Ordenado por data descendente.
+- **Props**: `{ eventoId: string }`
+- **Imports**: auditService
+- **Quem importa**: EventDetailManagement.tsx
+
+#### TabResumoCaixa.tsx
+- **Linhas**: 624
+- **O que faz**: Resumo financeiro completo do evento. Receita bruta/liquida, por variacao (pie chart VantaPieChart), por lote. Fechamento por pessoa (FechamentoPessoa: nomes, check-ins, receita). Cortesias emitidas. Taxas (VANTA, gateway, casa). Filtro por periodo (PERIODOS). filtrarLog para vendas no periodo.
+- **Props**: `{ eventoId: string; comunidadeId: string }`
+- **Imports**: EventoAdmin (types), cortesiasService, eventosAdminService, eventosAdminFinanceiro, fmtBRL (utils), types (Periodo/PERIODOS/filtrarLog/CORES_PIZZA/FechamentoPessoa), VantaPieChart
+- **Quem importa**: EventDetailManagement.tsx
+- **Observacoes**: Arquivo grande (624L). Calculo pesado client-side. CORES_PIZZA array de 12 cores para pie charts.
+
+#### TabCortesias.tsx
+- **Linhas**: 405
+- **O que faz**: Gestao de cortesias do evento. Distribuir cortesia: busca destinatario (authService.buscarMembros), seleciona variacao, envia via cortesiasService. Lista cortesias emitidas com status (PENDENTE, ACEITA, RECUSADA, USADA). Acoes: revogar, reenviar. Transfer de cortesia entre membros.
+- **Props**: `{ eventoId: string; cortesias: CortesiaEvento[] }`
+- **Imports**: TYPOGRAPHY, Membro/CortesiaEvento (types), authService, cortesiasService, types
+- **Quem importa**: EventDetailManagement.tsx
+
+#### TabCargosPermissoes.tsx
+- **Linhas**: 233
+- **O que faz**: Gestao de cargos customizados e permissoes granulares por evento. Lista membros com cargo atual. Modal de edicao de funcao (FuncaoModal): nome customizado + checkboxes de permissoes. Criacao de funcao nova. comunidadesService para lookup de comunidade.
+- **Props**: `{ eventoId: string; comunidadeId: string }`
+- **Types internos**: `FuncaoModalProps { onClose, onSave: (nome, permissoes) => void }`
+- **Imports**: TYPOGRAPHY, TipoCargo/PermissaoVanta (types), comunidadesService, types (Tab)
+- **Quem importa**: EventDetailManagement.tsx
+
+#### TabRelatorio.tsx
+- **Linhas**: 516
+- **O que faz**: Relatorio completo pos-evento. Avaliacao por categoria (organizacao, som, seguranca, etc). Pie charts (VantaPieChart) por: genero, faixa etaria, origem, area. Notas e comentarios do admin. Publicacao do relatorio para stakeholders. Export CSV. Dados via relatorioService + supabase.
+- **Props**: `{ eventoId: string; comunidadeId: string }`
+- **Imports**: relatorioService, VantaPieChart, types (Periodo/PERIODOS/CORES_PIZZA), fmtBRL (utils), supabase, clubeService (clube), useAuthStore
+- **Quem importa**: EventDetailManagement.tsx
+- **Observacoes**: Arquivo grande (516L). Calcula idade a partir de data_nascimento do profile.
+
+#### TabMesas.tsx
+- **Linhas**: 318
+- **O que faz**: Gestao de mesas VIP do evento. CRUD de mesas (nome, capacidade, preco, status). Upload de planta/mapa via supabase storage. Reservas: associar ingresso a mesa. Toggle ativo/inativo. Drag-and-drop futuro (preparado mas nao implementado).
+- **Props**: `{ eventoId: string }`
+- **Imports**: Mesa (types), mesasService
+- **Quem importa**: EventDetailManagement.tsx
+- **Observacoes**: mesasAtivo deve ser true no evento para esta tab aparecer.
+
+#### StaffRecrutamento.tsx
+- **Linhas**: 232
+- **O que faz**: Recrutamento de staff para evento. Busca membros por nome/email via supabase profiles. Lista com avatar, nome, cargo atual (se tiver). Atribuicao de cargo via rbacService. Checkboxes para selecao multipla.
+- **Props**: `{ eventoId: string; comunidadeId: string; onRecrutado: () => void }`
+- **Imports**: Membro/TipoCargo (types), rbacService, supabase
+- **Quem importa**: TabEquipeSocio.tsx
+
+#### types.ts
+- **Linhas**: 47
+- **O que faz**: Types e constantes do modulo eventManagement.
+- **Exports**: `Tab` (union 9 abas), `Papel` (5 papeis), `PAPEIS` (array), `Periodo/PERIODOS` (filtros temporais), `filtrarLog(log, periodo)` (filtra VendaLog por periodo), `CORES_PIZZA` (12 cores hex), `MEDALHAS` (ouro/prata/bronze), `FechamentoPessoa` (tipo agregado)
+- **Imports**: eventosAdminService (VendaLog type)
+- **Quem importa**: EventDetailManagement, TabResumoCaixa, TabEquipePromoter, TabCortesias, TabRelatorio, TabCargosPermissoes
+
+### eventoDashboard/ (13 arquivos, 3.946L)
+
+#### index.tsx (EventoDashboard)
+- **Linhas**: 1273
+- **O que faz**: Dashboard principal do evento. Header com foto, nome, data, local, status (RASCUNHO/ATIVO/ENCERRADO). Navegacao para sub-views: Editar (EditarEventoView), Participantes (ParticipantesView), Listas/Equipe (EventDetailManagement), Financeiro (FinanceiroView), Check-in, Caixa, Analytics (AnalyticsSubView), Pedidos (PedidosSubView), Cupons (CuponsSubView), Comemoracoes (ComemoracaoConfigSubView), Duplicar (DuplicarModal), Serie (SerieChips). Dashboards temporais: PreEventoView (antes), OperacaoView (durante), PosEventoView (depois). ResumoFinanceiroCard com KPIs. VendasTimelineChart. Reviews via reviewsService.
+- **Props**: `{ eventoId: string; onBack: () => void; adminId: string; adminRole: ContaVantaLegacy }`
+- **State**: evento, activeView, listas, cortesias, tickets, resumoFinanceiro, analytics, loading, reviews
+- **Imports**: TYPOGRAPHY, OptimizedImage, EventoAdmin (types), eventosAdminService, supabase, listasService, cortesiasService, eventosAdminFinanceiro, ResumoFinanceiroCard, VantaPieChart, EditarEventoView, EventDetailManagement, ParticipantesView, permissoes, types (eventManagement), eventosAdminTypes, fmtBRL, DuplicarModal, AnalyticsSubView, CuponsSubView, RelatorioComunidadeView, PedidosSubView, EditarLotesSubView, EditarListaSubView, ComemoracaoConfigSubView, SerieChips, Pre/Operacao/PosEventoView, analytics service, reviewsService
+- **Quem importa**: DashboardV2Gateway (lazy), MeusEventosView
+- **Observacoes**: Arquivo muito grande (1273L) — principal candidato a refactor/split. Detecta fase do evento automaticamente (pre/durante/pos).
+
+#### PreEventoView.tsx
+- **Linhas**: 160
+- **O que faz**: Dashboard pre-evento. Vendas acumuladas (TimeSeriesChart), funnel de conversao (FunnelChart: visitas → add-to-cart → compra), projecao de lotacao (ProgressRing), breakdown por variacao (BreakdownCard), velocidade de vendas (MetricGrid).
+- **Props**: `{ analytics: EventAnalytics }`
+- **Imports**: EventoAdmin (types), EventAnalytics (analytics/types), fmtBRL, KpiCard, FunnelChart, TimeSeriesChart, BarChartCard, BreakdownCard, ProgressRing, MetricGrid
+- **Quem importa**: eventoDashboard/index.tsx
+
+#### OperacaoView.tsx
+- **Linhas**: 161
+- **O que faz**: Dashboard de operacao (evento ao vivo). Check-ins em tempo real (LivePulse), KPIs ao vivo (presentes, fila, capacidade), heatmap check-ins por hora (HeatmapCard), leaderboard portaria (LeaderboardCard), progresso lotacao (ProgressRing).
+- **Props**: `{ analytics: EventAnalytics }`
+- **Imports**: EventoAdmin (types), EventAnalytics, fmtBRL, KpiCard, MetricGrid, ProgressRing, TimeSeriesChart, HeatmapCard, LeaderboardCard, LivePulse
+- **Quem importa**: eventoDashboard/index.tsx
+
+#### PosEventoView.tsx
+- **Linhas**: 227
+- **O que faz**: Dashboard pos-evento. Financeiro final (receita bruta, taxas, liquido), split produtor/socio/VANTA (BreakdownCard), comparativo com evento anterior (ComparisonCard), timeline de vendas, leaderboard promoters, taxa de retencao (ProgressRing). Export CSV.
+- **Props**: `{ analytics: EventAnalytics }`
+- **Imports**: EventoAdmin (types), EventAnalytics, fmtBRL, KpiCard, MetricGrid, BreakdownCard, TimeSeriesChart, ProgressRing, LeaderboardCard, ComparisonCard, ExportButton
+- **Quem importa**: eventoDashboard/index.tsx
+
+#### AnalyticsSubView.tsx
+- **Linhas**: 204
+- **O que faz**: Analytics demograficas do evento. Pie charts (VantaPieChart) por: genero, faixa etaria, cidade de origem. Busca dados de tickets_caixa + profiles via supabase. Calcula idade via calcIdade (eventoDashboardUtils).
+- **Props**: `{ eventoId: string }`
+- **Imports**: supabase, VantaPieChart, eventoDashboardUtils (CORES_GENERO/CORES_IDADE/CORES_CIDADE, calcIdade, faixaEtaria)
+- **Quem importa**: eventoDashboard/index.tsx
+
+#### PedidosSubView.tsx
+- **Linhas**: 451
+- **O que faz**: Gestao de pedidos/ingressos do evento. Lista com busca, filtros por status (ATIVO, USADO, CANCELADO, REEMBOLSADO). Detalhes do pedido expandivel. Acoes: cancelar ingresso, solicitar reembolso, reenviar email, alterar titular. Export CSV. eventosAdminService para acoes.
+- **Props**: `{ eventoId: string; eventoNome: string }`
+- **Imports**: eventosAdminService, eventosAdminTypes (TicketCaixa/VendaLog), fmtBRL (utils)
+- **Quem importa**: eventoDashboard/index.tsx
+
+#### EditarLotesSubView.tsx
+- **Linhas**: 245
+- **O que faz**: Edicao inline de lotes e cortesias de evento ja criado. Reutiliza Step2Ingressos (criarEvento) em modo edicao. Converte dados do evento para formato formulario (LoteForm/VariacaoForm) e salva via eventosAdminService. Suporte a cortesiasService para cortesias do evento. clubeService para beneficios MV.
+- **Props**: `{ eventoId: string; onBack: () => void }`
+- **Imports**: TYPOGRAPHY, LoteForm/VariacaoForm (criarEvento/types), Step2Ingressos, novaVar/novoLote (utils), eventosAdminService, cortesiasService, clubeService, EventoAdmin (types), globalToast
+- **Quem importa**: eventoDashboard/index.tsx
+
+#### EditarListaSubView.tsx
+- **Linhas**: 172
+- **O que faz**: Edicao inline de listas de evento ja criado. Reutiliza Step3Listas (criarEvento) em modo edicao. Converte dados de listas existentes para VarListaForm e salva via eventosAdminService/listasService.
+- **Props**: `{ eventoId: string; onBack: () => void }`
+- **Imports**: TYPOGRAPHY, VarListaForm (criarEvento/types), Step3Listas, novaVarLista (utils), eventosAdminService, listasService, globalToast
+- **Quem importa**: eventoDashboard/index.tsx
+
+#### CuponsSubView.tsx
+- **Linhas**: 242
+- **O que faz**: CRUD de cupons do evento. Formulario: codigo, desconto (% ou valor fixo), limite de usos, data validade (VantaDatePicker). Lista cupons com uso atual/limite, status (ativo/expirado/esgotado). Toggle ativar/desativar. cuponsService para CRUD.
+- **Props**: `{ eventoId: string }`
+- **Imports**: Cupom (types), cuponsService, VantaDatePicker
+- **Quem importa**: eventoDashboard/index.tsx
+
+#### ComemoracaoConfigSubView.tsx
+- **Linhas**: 318
+- **O que faz**: Configuracao de comemoracoes por evento. Faixas de vendas (thresholds) que disparam comemoracao automatica. Cortesias vinculadas a comemoracoes. Beneficio consumo (drinks/items inclusos). VantaDatePicker e VantaTimePicker para datas. comemoracaoService para CRUD.
+- **Props**: `{ eventoId: string; comunidadeId: string }`
+- **Imports**: TYPOGRAPHY, comemoracaoService, eventosAdminService, VantaDatePicker, VantaTimePicker
+- **Quem importa**: eventoDashboard/index.tsx
+
+#### DuplicarModal.tsx
+- **Linhas**: 173
+- **O que faz**: Modal para duplicar evento existente com nova data. Selecao de nova data/hora via VantaDatePicker/VantaTimePicker. Copia todos os dados (lotes, variacoes, listas, equipe) via eventosAdminService.duplicarEvento. Mostra preview antes de confirmar.
+- **Props**: `{ evento: EventoAdmin; onClose: () => void; onDuplicado: (novoId: string) => void }`
+- **Imports**: EventoAdmin (types), eventosAdminService, VantaDatePicker, VantaTimePicker
+- **Quem importa**: eventoDashboard/index.tsx
+
+#### SerieChips.tsx
+- **Linhas**: 172
+- **O que faz**: Chips de selecao de ocorrencia em eventos recorrentes (serie). Busca ocorrencias no supabase (eventos_admin com mesmo evento_origem_id). Chips horizontais scrollaveis com data. Destaque da ocorrencia atual. Click navega para outro evento da serie.
+- **Props**: `SerieChipsProps { eventoId, eventoOrigemId, recorrencia, onSelectOcorrencia }`
+- **Imports**: supabase
+- **Quem importa**: eventoDashboard/index.tsx
+
+#### eventoDashboardUtils.ts
+- **Linhas**: 148
+- **O que faz**: Funcoes utilitarias do dashboard de evento.
+- **Exports**: `fmtData` (ISO→"DD/MM"), `fmtHora` (ISO→"HH:MM"), `CORES_GENERO/CORES_IDADE/CORES_CIDADE` (constantes cores), `calcIdade` (data nascimento→idade), `faixaEtaria` (idade→faixa string), `agruparPorDia` (VendaLog[]→VendaDia[]), `agruparPorOrigem`, `agruparPorVariacao`, `agruparAcumulado`, `calcPicoVendas`, `contarPorCanal`
+- **Imports**: VendaLog (eventosAdminTypes), PieSlice (VantaPieChart)
+- **Quem importa**: AnalyticsSubView, index.tsx
+
+### financeiro/ (6 arquivos, 1.476L)
+
+#### index.tsx (FinanceiroView)
+- **Linhas**: 885
+- **O que faz**: View financeira principal do evento. Resumo com KPIs (receita bruta, taxas, liquido, split produtor/socio/VANTA). Taxas contratadas (getContractedFees). Custo gateway (getGatewayCostByEvento). VendasTimelineChart. Pie chart por variacao (VantaPieChart). PeriodSelector temporal. Saque (ModalSaque), fechamento (ModalFechamento), reembolso manual (ModalReembolsoManual). Historico de saques (HistoricoSaques). Secao reembolsos (ReembolsosSection). ExtratoFinanceiro. Export CSV.
+- **Props**: `{ eventoId: string; eventoNome: string; comunidadeId: string; onBack: () => void }`
+- **State**: evento, resumo, saques, reembolsos, vendaTimeline, loading, modals (saque/fechamento/reembolso)
+- **Imports**: exportUtils, TYPOGRAPHY, AdminViewHeader, EventoAdmin (types), eventosAdminService, eventosAdminFinanceiro (getContractedFees/getResumoFinanceiro/getGatewayCostByEvento), rbacService, useAuthStore, supabase, VantaPieChart, reembolsoService, eventosAdminTypes, fmtBRL, PeriodSelector, Periodo, VendasTimelineChart, ExtratoFinanceiro, ModalReembolsoManual, ModalFechamento, useModalStack, ModalSaque, ReembolsosSection, HistoricoSaques, globalToast
+- **Quem importa**: eventoDashboard/index.tsx, DashboardV2Gateway (lazy)
+- **Observacoes**: Arquivo grande (885L). Guarda por role: so master/gerente veem tudo, socio ve split proprio. useModalStack para stack de modais.
+
+#### ModalSaque.tsx
+- **Linhas**: 122
+- **O que faz**: Modal de solicitacao de saque. Campos: valor (auto-preenche saldo disponivel), chave PIX (CPF/CNPJ/email/telefone/aleatoria), observacoes. Validacao de saldo >= valor. eventosAdminService.solicitarSaque.
+- **Props**: `{ saldoDisponivel: number; eventoId: string; comunidadeId: string; onClose: () => void; onSolicitado: () => void }`
+- **Imports**: fmtBRL (utils), eventosAdminService
+- **Quem importa**: financeiro/index.tsx
+
+#### ModalFechamento.tsx
+- **Linhas**: 81
+- **O que faz**: Modal de encerramento financeiro do evento. Confirmacao com resumo (receita, saques realizados, saldo restante). Acao irreversivel. useModalStack para controle.
+- **Props**: `{ eventoId: string; receita: number; sacado: number; onClose: () => void; onFechado: () => void }`
+- **Imports**: fmtBRL (utils), useModalStack
+- **Quem importa**: financeiro/index.tsx
+
+#### ModalReembolsoManual.tsx
+- **Linhas**: 83
+- **O que faz**: Modal de solicitacao de reembolso manual (fora do fluxo automatico CDC). Campos: motivo, valor, comprador. Envia solicitacao para fila de aprovacao do master.
+- **Props**: `{ eventoId: string; onClose: () => void; onSolicitado: () => void }`
+- **Quem importa**: financeiro/index.tsx
+
+#### HistoricoSaques.tsx
+- **Linhas**: 137
+- **O que faz**: Historico de saques do evento. Lista com status (PENDENTE, APROVADO, PAGO, REJEITADO), valor, data, chave PIX. Export CSV via exportUtils. eventosAdminService.getSaques.
+- **Props**: `{ eventoId: string }`
+- **Imports**: eventosAdminService, fmtBRL (utils), exportUtils
+- **Quem importa**: financeiro/index.tsx
+
+#### ReembolsosSection.tsx
+- **Linhas**: 168
+- **O que faz**: Secao de reembolsos do evento. Lista com status (PENDENTE, APROVADO, PROCESSADO, REJEITADO), comprador, valor, motivo. Acoes: aprovar, rejeitar (com motivo). Export CSV. Filtro por status.
+- **Props**: `{ eventoId: string; reembolsos: Reembolso[] }`
+- **Imports**: eventosAdminTypes (Reembolso), fmtBRL (utils), exportUtils
+- **Quem importa**: financeiro/index.tsx
+
+### insightsDashboard/ (5 arquivos, 379L)
+
+#### index.tsx (InsightsDashboardView)
+- **Linhas**: 161
+- **O que faz**: Hub de insights inteligentes do evento com 4 tabs: Insights (anomalias/previsoes), Financeiro (pricing/break-even), Operacoes (canais/fidelidade), Valor (benchmarks/tips). Carrega dados via eventosAdminCore (evento, tickets, logs) e dashboardAnalyticsService (metricas calculadas). Distribui analytics para tabs.
+- **Props**: `{ eventoId: string; onBack: () => void }`
+- **State**: analytics (calculadas), evento, loading
+- **Imports**: eventosAdminCore, dashboardAnalyticsService, InsightsTab, FinanceiroTab, OperacoesTab, ValorTab, AdminViewHeader
+- **Quem importa**: eventoDashboard/index.tsx, DashboardV2Gateway (lazy)
+
+#### InsightsTab.tsx
+- **Linhas**: 52
+- **O que faz**: Tab de insights preditivos e anomalias. Renderiza cards: VipScoreCard, ChurnRadarCard, TrendAlertCard, NoShowCard, NoShowTrendCard, LotacaoPrevisaoCard. Empty state se sem dados (InsightsEmptyState).
+- **Props**: `{ analytics: EventInsights }`
+- **Imports**: VipScoreCard, ChurnRadarCard, TrendAlertCard, NoShowCard, NoShowTrendCard, LotacaoPrevisaoCard, InsightsEmptyState, dashboardAnalyticsService
+- **Quem importa**: insightsDashboard/index.tsx
+
+#### FinanceiroTab.tsx
+- **Linhas**: 54
+- **O que faz**: Tab de insights financeiros. Cards: PricingSuggestionCard (sugestao de ajuste de preco), SplitPreviewCard (preview do split), BreakEvenCard (progresso ate ponto de equilibrio). Empty state.
+- **Props**: `{ analytics: EventInsights }`
+- **Imports**: PricingSuggestionCard, SplitPreviewCard, BreakEvenCard, InsightsEmptyState
+- **Quem importa**: insightsDashboard/index.tsx
+
+#### OperacoesTab.tsx
+- **Linhas**: 47
+- **O que faz**: Tab de insights operacionais. Cards: ChannelAttributionCard (atribuicao por canal), BuyerCommunicationCard (compradores unicos), LoyaltyProgramCard (fidelidade), PurchaseTimeCard (horarios de compra). Empty state.
+- **Props**: `{ analytics: EventInsights }`
+- **Imports**: ChannelAttributionCard, BuyerCommunicationCard, LoyaltyProgramCard, PurchaseTimeCard, InsightsEmptyState
+- **Quem importa**: insightsDashboard/index.tsx
+
+#### ValorTab.tsx
+- **Linhas**: 65
+- **O que faz**: Tab de valor e benchmarks. Cards: WeeklyReportCard (relatorio semanal), VantaValuePanel (valor gerado pela plataforma), SmartTipsCard (dicas personalizadas), BenchmarkCard (comparativo mercado). dashboardAnalyticsService para dados.
+- **Props**: `{ analytics: EventInsights; eventoId: string }`
+- **Imports**: WeeklyReportCard, VantaValuePanel, SmartTipsCard, BenchmarkCard, InsightsEmptyState, dashboardAnalyticsService
+- **Quem importa**: insightsDashboard/index.tsx
+
+### listas/ (9 arquivos, 1.177L)
+
+#### index.tsx (ListasView)
+- **Linhas**: 41
+- **O que faz**: Seletor de evento para gestao de listas. Renderiza PainelEventos para selecao, depois ListaEventoView para o evento selecionado.
+- **Props**: `{ onBack: () => void; comunidadeId?: string }`
+- **Imports**: EventoAdmin (types), ListaEventoView, PainelEventos
+- **Quem importa**: DashboardV2Gateway (lazy)
+
+#### ListaEventoView.tsx
+- **Linhas**: 93
+- **O que faz**: View de lista por evento com 4 tabs: Nomes, Equipe, Lotacao, Checkin. Carrega listas via listasService. Header com nome do evento.
+- **Props**: `{ eventoId: string; eventoNome: string; onBack: () => void }`
+- **State**: activeTab, listas (ListaEvento[]), loading
+- **Imports**: TYPOGRAPHY, EventoAdmin/ListaEvento (types), listasService, listasUtils, TabNomes, TabEquipe, TabLotacao, TabCheckin
+- **Quem importa**: listas/index.tsx
+
+#### PainelEventos.tsx
+- **Linhas**: 148
+- **O que faz**: Painel de selecao de eventos para gestao de listas. Filtra por comunidade. Card com nome, data, contagem de nomes na lista. Stats (total nomes, check-ins, lotacao %). listasService + eventosAdminService.
+- **Props**: `{ comunidadeId?: string; onSelectEvento: (id: string, nome: string) => void }`
+- **Imports**: TYPOGRAPHY, EventoAdmin/ListaEvento (types), listasService, eventosAdminService, listasUtils
+- **Quem importa**: listas/index.tsx
+
+#### TabNomes.tsx
+- **Linhas**: 236
+- **O que faz**: Gestao de nomes na lista. Busca por nome. Adicao individual (formulario inline: nome + genero + acompanhantes). Adicao em lote (ModalInserirLote). Check-in manual (toggle). Regra abobora visual (nome riscado apos horario). Status por cor. listasService para CRUD.
+- **Props**: `{ eventoId: string; listas: ListaEvento[] }`
+- **Imports**: EventoAdmin/ListaEvento (types), listasUtils (isRegraAbobora/formatData), ModalInserirLote, listasService
+- **Quem importa**: ListaEventoView.tsx
+
+#### TabEquipe.tsx
+- **Linhas**: 183
+- **O que faz**: Gestao de equipe (promoters) da lista. Ranking por nomes inseridos. Cotas por promoter (limite configuravel via VantaDropdown). Comissao por check-in. Stats individuais.
+- **Props**: `{ eventoId: string; listas: ListaEvento[] }`
+- **Imports**: TYPOGRAPHY, ListaEvento (types), listasService, listasUtils, VantaDropdown
+- **Quem importa**: ListaEventoView.tsx
+
+#### TabLotacao.tsx
+- **Linhas**: 70
+- **O que faz**: Barra de lotacao da lista. Total nomes / teto. Progresso visual com cores (verde/amarelo/vermelho). KPIs: nomes ativos, check-ins, ausentes.
+- **Props**: `{ eventoId: string; listas: ListaEvento[] }`
+- **Imports**: ListaEvento (types), listasService
+- **Quem importa**: ListaEventoView.tsx
+
+#### TabCheckin.tsx
+- **Linhas**: 223
+- **O que faz**: Check-in por lista. Busca por nome. Lista de nomes com status (ATIVO/CHECKIN/AUSENTE). Confirmar check-in individual com swipe ou botao. Stats em tempo real. listasService.confirmarCheckin.
+- **Props**: `{ eventoId: string; listas: ListaEvento[] }`
+- **Imports**: ListaEvento (types), listasService, listasUtils
+- **Quem importa**: ListaEventoView.tsx
+
+#### ModalInserirLote.tsx
+- **Linhas**: 156
+- **O que faz**: Modal para inserir multiplos nomes de uma vez. Textarea com parsing (1 nome por linha, formato "Nome - Genero - Acompanhantes"). Preview antes de inserir. listasService.inserirNomesLote. useModalStack.
+- **Props**: `{ eventoId: string; listaId: string; onInserido: () => void; onClose: () => void }`
+- **Imports**: TYPOGRAPHY, ListaEvento (types), listasService, listasUtils, useModalStack
+- **Quem importa**: TabNomes.tsx
+
+#### listasUtils.ts
+- **Linhas**: 27
+- **O que faz**: Utils compartilhados do modulo listas.
+- **Exports**: `TODAY_STR` (data atual ISO), `formatData` (ISO→"DD/MM"), `isRegraAbobora(hora, agora)` (verifica se nome "virou abobora"), `RoleListaNova` (type union)
+- **Quem importa**: todos os arquivos do modulo listas
+
+### maisVanta/ (2 arquivos, 485L)
+
+#### ConviteEspecialMVView.tsx
+- **Linhas**: 319
+- **O que faz**: Admin envia convites especiais MAIS VANTA para membros em eventos. Filtros: tier, cidade, tags, sublevel creator. Selecao individual ou em massa (checkboxes). Preview antes de enviar. clubeConviteEspecialService para envio. Lista convites enviados com status. VantaDropdown para filtros.
+- **Props**: nenhum (React.FC)
+- **State**: membros, filtros (tier/cidade/tags), selecionados, convitesEnviados, loading
+- **Imports**: clubeService (clube), clubeConviteEspecialService, supabase, useAuthStore, TYPOGRAPHY, fmtBRL (utils), VantaDropdown, Membro (types)
+- **Quem importa**: DashboardV2Gateway (lazy), eventoDashboard
+
+#### NotifMVPendentesView.tsx
+- **Linhas**: 166
+- **O que faz**: Admin ve e resolve solicitacoes de notificacao do produtor (quando produtor quer comunicar algo aos membros MV). Lista com remetente, mensagem, data. Acoes: aprovar (envia push), rejeitar. clubeNotifProdutorService.
+- **Props**: nenhum (React.FC)
+- **State**: pendentes, loading
+- **Imports**: clubeService (clube), clubeNotifProdutorService, supabase, useAuthStore, TYPOGRAPHY
+- **Quem importa**: MaisVantaHubView
+
+### maisVantaDashboard/ (7 arquivos, 723L)
+
+#### index.tsx (MaisVantaDashboard)
+- **Linhas**: 135
+- **O que faz**: Dashboard analytics MAIS VANTA com 6 tabs (Visao Geral, Tiers, Resgates, Retencao, Parceiros, Financeiro) e PeriodSelector. Carrega dados via getMaisVantaAnalytics. AdminViewHeader.
+- **Props**: `{ onBack: () => void }`
+- **State**: periodo (Periodo), activeTab, analytics (MaisVantaAnalytics|null), loading
+- **Imports**: getMaisVantaAnalytics, MaisVantaAnalytics/Periodo, PeriodSelector (dashboard), OverviewTab, TiersTab, ResgatesTab, RetencaoTab, ParceirosTab, AdminViewHeader, FinanceiroTab
+- **Quem importa**: DashboardV2Gateway (lazy)
+
+#### OverviewTab.tsx
+- **Linhas**: 91
+- **O que faz**: KPIs globais MAIS VANTA: MRR, total membros, churn rate, total parceiros. TimeSeriesChart de MRR. BreakdownCard membros por tier. MetricGrid.
+- **Props**: `{ analytics: MaisVantaAnalytics | null }`
+- **Imports**: MaisVantaAnalytics, KpiCard, MetricGrid, TimeSeriesChart, BreakdownCard, fmtBRL
+- **Quem importa**: maisVantaDashboard/index.tsx
+
+#### TiersTab.tsx
+- **Linhas**: 137
+- **O que faz**: Distribuicao de membros por tier. BreakdownCard com cores por tier. BarChartCard com historico de crescimento por tier. Metricas de conversao entre tiers.
+- **Props**: `{ analytics: MaisVantaAnalytics | null }`
+- **Imports**: MaisVantaAnalytics, BreakdownCard, BarChartCard, fmtBRL
+- **Quem importa**: maisVantaDashboard/index.tsx
+
+#### ResgatesTab.tsx
+- **Linhas**: 62
+- **O que faz**: KPIs de resgates: total, por tipo (ingresso/lista/desconto), media por membro. MetricGrid.
+- **Props**: `{ analytics: MaisVantaAnalytics | null }`
+- **Imports**: MaisVantaAnalytics, KpiCard, MetricGrid
+- **Quem importa**: maisVantaDashboard/index.tsx
+
+#### RetencaoTab.tsx
+- **Linhas**: 135
+- **O que faz**: Metricas de retencao MAIS VANTA. Churn rate (ProgressRing), cohort analysis, LTV estimado, renovacao vs cancelamento. TimeSeriesChart de churn ao longo do tempo. KPIs.
+- **Props**: `{ analytics: MaisVantaAnalytics | null }`
+- **Imports**: MaisVantaAnalytics, KpiCard, MetricGrid, ProgressRing, fmtBRL
+- **Quem importa**: maisVantaDashboard/index.tsx
+
+#### ParceirosTab.tsx
+- **Linhas**: 59
+- **O que faz**: KPIs de parceiros: total, ativos, deals publicados, resgates em parceiros. MetricGrid.
+- **Props**: `{ analytics: MaisVantaAnalytics | null }`
+- **Imports**: MaisVantaAnalytics, KpiCard, MetricGrid
+- **Quem importa**: maisVantaDashboard/index.tsx
+
+#### FinanceiroTab.tsx
+- **Linhas**: 104
+- **O que faz**: Financeiro MAIS VANTA: MRR, ARPU, LTV. TimeSeriesChart de receita. BreakdownCard por plano. Comparativo periodo (ComparisonCard). ExportButton.
+- **Props**: `{ analytics: MaisVantaAnalytics | null }`
+- **Imports**: MaisVantaAnalytics, KpiCard, MetricGrid, TimeSeriesChart, BreakdownCard, PeriodSelector (dashboard), fmtBRL
+- **Quem importa**: maisVantaDashboard/index.tsx
+
+### masterDashboard/ (6 arquivos, 1.023L)
+
+#### index.tsx (MasterDashboard)
+- **Linhas**: 200
+- **O que faz**: Dashboard analytics master (visao da plataforma inteira) com 5 tabs (Visao Geral, Comunidades, Financeiro, Operacoes, Projecao) e PeriodSelector. getMasterAnalytics para dados.
+- **Props**: `{ onBack: () => void }`
+- **State**: periodo, activeTab, analytics (MasterAnalytics|null), loading
+- **Imports**: getMasterAnalytics, MasterAnalytics/Periodo, PeriodSelector, TYPOGRAPHY, OverviewTab, ComunidadesTab, FinanceiroTab, OperacoesTab, ProjecaoTab
+- **Quem importa**: DashboardV2Gateway (lazy)
+
+#### OverviewTab.tsx
+- **Linhas**: 137
+- **O que faz**: KPIs master: GMV (gross merchandise value), receita plataforma, total eventos, total membros. TimeSeriesChart de GMV. LeaderboardCard top 5 comunidades. MetricGrid.
+- **Props**: `{ analytics: MasterAnalytics | null }`
+- **Imports**: MasterAnalytics, MetricGrid, TimeSeriesChart, LeaderboardCard, KpiCard, fmtBRL
+- **Quem importa**: masterDashboard/index.tsx
+
+#### ComunidadesTab.tsx
+- **Linhas**: 174
+- **O que faz**: Ranking de comunidades. BarChartCard com receita por comunidade. Tabela ordenavel (receita, eventos, membros). Click navega para drilldown.
+- **Props**: `{ analytics: MasterAnalytics | null; onSelectComunidade?: (id: string) => void }`
+- **Imports**: MasterAnalytics, BarChartCard, fmtBRL
+- **Quem importa**: masterDashboard/index.tsx
+
+#### FinanceiroTab.tsx
+- **Linhas**: 143
+- **O que faz**: Financeiro master: BreakdownCard (receita por fonte: VANTA fee, gateway fee, MV assinaturas). ComparisonCard (periodo atual vs anterior). KPIs (receita, ticket medio, saques). ExportButton.
+- **Props**: `{ analytics: MasterAnalytics | null }`
+- **Imports**: MasterAnalytics, MetricGrid, BreakdownCard, ComparisonCard, PeriodSelector, KpiCard, fmtBRL
+- **Quem importa**: masterDashboard/index.tsx
+
+#### OperacoesTab.tsx
+- **Linhas**: 130
+- **O que faz**: KPIs operacionais: eventos ativos, tickets vendidos/dia, check-in rate. LeaderboardCard porteiros. MetricGrid.
+- **Props**: `{ analytics: MasterAnalytics | null }`
+- **Imports**: MasterAnalytics, MetricGrid, LeaderboardCard, KpiCard, fmtBRL
+- **Quem importa**: masterDashboard/index.tsx
+
+#### ProjecaoTab.tsx
+- **Linhas**: 239
+- **O que faz**: Projecoes financeiras. Trend lines de receita (TimeSeriesChart com projecao). Metas vs realizadas. KPIs futuros estimados. Cenarios (otimista/realista/pessimista). MetricGrid.
+- **Props**: `{ analytics: MasterAnalytics | null }`
+- **Imports**: MasterAnalytics, MetricGrid, TimeSeriesChart, KpiCard, fmtBRL
+- **Quem importa**: masterDashboard/index.tsx
+
+### masterFinanceiro/ (4 arquivos, 1.135L)
+
+#### index.tsx (MasterFinanceiroView)
+- **Linhas**: 862
+- **O que faz**: Gestao financeira global do master. Saques pendentes de todas comunidades (aprovar com upload comprovante / rejeitar com motivo). Reembolsos pendentes. Visao por evento e por comunidade. Config de taxas globais (condicoesService). VendasTimelineChart. Export CSV. PeriodSelector temporal. Filtro por comunidade.
+- **Props**: `{ onBack: () => void; currentUserId: string }`
+- **State**: saques, reembolsos, comunidades, eventosPorCom, periodo, filtros, loading
+- **Imports**: exportUtils, TYPOGRAPHY, AdminViewHeader, PeriodSelector, Periodo, VendasTimelineChart, Comunidade (types), comunidadesService, fmtBRL, SimuladorGateway, RaioXEvento, LucroPorComunidade, condicoesService
+- **Quem importa**: DashboardV2Gateway (lazy)
+- **Observacoes**: Arquivo grande (862L). Aprovacao de saque requer upload de comprovante (supabase storage). Semaforo de prioridade: saques > 7 dias ficam vermelho.
+
+#### LucroPorComunidade.tsx
+- **Linhas**: 105
+- **O que faz**: Pie chart de lucro VANTA por comunidade. VantaPieChart com top 5 + "Outros". KPI total.
+- **Props**: `{ eventosPorCom: Map<string, EventoAdmin[]> }`
+- **Imports**: EventoAdmin (types), eventosAdminService, VantaPieChart, fmtBRL
+- **Quem importa**: masterFinanceiro/index.tsx
+
+#### RaioXEvento.tsx
+- **Linhas**: 84
+- **O que faz**: Raio-X financeiro detalhado de um evento. Taxas contratadas (servico, processamento, porta, cortesias). Receita bruta vs liquida. Custo gateway. Margem VANTA.
+- **Props**: `{ eventoId: string }`
+- **Imports**: EventoAdmin (types), eventosAdminService, fmtBRL
+- **Quem importa**: masterFinanceiro/index.tsx
+
+#### SimuladorGateway.tsx
+- **Linhas**: 84
+- **O que faz**: Simulador de custos gateway. Input: valor da transacao. Compara custo credito vs PIX vs boleto. Mostra taxa efetiva e economia por metodo. eventosAdminService para taxas reais.
+- **Props**: nenhum (React.FC)
+- **Imports**: eventosAdminService, fmtBRL
+- **Quem importa**: masterFinanceiro/index.tsx
+
+### PlanosProdutor/ (1 arquivo, 434L)
+
+#### PlanosProdutor.tsx
+- **Linhas**: 434
+- **O que faz**: CRUD completo de planos para produtores MAIS VANTA. Criar/editar plano com: nome, descricao, preco mensal, limites (eventos/mes, membros, cortesias), tier minimo, beneficios inclusos, trial days. Lista planos com status (ativo/inativo). Atribuir plano a comunidades. Toggle ativar/desativar. clubeService para CRUD.
+- **Props**: nenhum (React.FC)
+- **State**: planos, editingId, formData, comunidades, loading
+- **Imports**: Comunidade (types), clubeService, globalToast
+- **Quem importa**: MaisVantaHubView
+- **Observacoes**: Formulario complexo com validacao. Preview de plano antes de publicar.
+
+### relatorios/ (9 arquivos, 1.734L)
+
+#### index.tsx
+- **Linhas**: 3
+- **O que faz**: Re-exports de RelatorioEventoView, RelatorioComunidadeView, RelatorioMasterView.
+- **Quem importa**: DashboardV2Gateway (lazy), ComunidadeDetalheView, eventoDashboard
+
+#### RelatorioEventoView.tsx
+- **Linhas**: 128
+- **O que faz**: Relatorio de evento com 3 tabs (Geral, Listas, Ingressos). Carrega dados via eventosAdminService/listasService. Botao export Excel via exportRelatorio. Header com nome do evento.
+- **Props**: `{ eventoId: string; eventoNome: string; onBack: () => void }`
+- **State**: activeTab, evento, listas, tickets, loading
+- **Imports**: EventoAdmin (types), eventosAdminTypes (TicketCaixa), listasService, eventosAdminService, TabGeral, TabListas, TabIngressos, exportRelatorio
+- **Quem importa**: relatorios/index.tsx → DashboardV2Gateway, eventoDashboard
+
+#### RelatorioComunidadeView.tsx
+- **Linhas**: 254
+- **O que faz**: Relatorio de comunidade com metricas agregadas de todos os eventos. KPIs (eventos, receita total, ticket medio, check-in rate). Ranking de eventos por receita. Comparativo temporal. Export Excel via exportRelatorioComunidade. AdminViewHeader.
+- **Props**: `{ comunidadeId: string; comunidadeNome: string; onBack: () => void }`
+- **Imports**: EventoAdmin (types), eventosAdminService, listasService, fmtBRL, exportRelatorioComunidade, AdminViewHeader
+- **Quem importa**: ComunidadeDetalheView (tab RELATORIO), relatorios/index.tsx
+
+#### RelatorioMasterView.tsx
+- **Linhas**: 325
+- **O que faz**: Relatorio master global. Ranking de comunidades por receita. KPIs da plataforma. Export Excel com multiplas sheets (resumo, por comunidade, por evento). Filtro por periodo. AdminViewHeader.
+- **Props**: `{ onBack: () => void }`
+- **Imports**: AdminViewHeader, Comunidade (types), eventosAdminService, listasService, comunidadesService, fmtBRL, exportUtils
+- **Quem importa**: relatorios/index.tsx → DashboardV2Gateway
+
+#### TabGeral.tsx
+- **Linhas**: 255
+- **O que faz**: Tab geral do relatorio de evento. Pie charts (VantaPieChart) de: origem do publico (organico/promoter/lista/cortesia), receita por tipo de ingresso, genero. KPIs de lotacao e check-in. Comparativo com media da comunidade.
+- **Props**: `{ evento: EventoAdmin; tickets: TicketCaixa[]; listas: ListaEvento[] }`
+- **Imports**: EventoAdmin (types), VantaPieChart/PieSlice
+- **Quem importa**: RelatorioEventoView.tsx
+
+#### TabIngressos.tsx
+- **Linhas**: 212
+- **O que faz**: Tab ingressos do relatorio. Metricas de vendas: total vendidos, ticket medio, receita por lote, receita por variacao. Breakdown temporal (vendas por dia). Tabela detalhada de ingressos.
+- **Props**: `{ evento: EventoAdmin; tickets: TicketCaixa[] }`
+- **Imports**: EventoAdmin (types), eventosAdminTypes (TicketCaixa), fmtBRL
+- **Quem importa**: RelatorioEventoView.tsx
+
+#### TabListas.tsx
+- **Linhas**: 306
+- **O que faz**: Tab listas do relatorio. Ranking de promoters por nomes e check-ins. Breakdown por lista/variante. Stats de portaria. Lista de convidados com status. Tabela de cotas vs utilizado.
+- **Props**: `{ evento: EventoAdmin; listas: ListaEvento[] }`
+- **Imports**: EventoAdmin/ListaEvento (types)
+- **Quem importa**: RelatorioEventoView.tsx
+
+#### exportRelatorio.ts
+- **Linhas**: 174
+- **O que faz**: Gera export Excel para relatorio de evento. Multiplas sheets: Resumo (KPIs), Ingressos (lista detalhada), Listas (convidados), Financeiro (breakdown). Usa exportUtils (xlsx).
+- **Exports**: `exportRelatorioExcel(evento, tickets, listas)`
+- **Imports**: EventoAdmin (types), eventosAdminTypes, exportUtils (createWorkbook/addSheet/saveWorkbook)
+- **Quem importa**: RelatorioEventoView.tsx
+
+#### exportRelatorioComunidade.ts
+- **Linhas**: 76
+- **O que faz**: Gera export Excel para relatorio de comunidade. 2 sheets: Resumo (KPIs agregados) e Eventos (lista com metricas por evento). Usa exportUtils.
+- **Exports**: `exportRelatorioComunidadeExcel(comunidade, eventos, listas)`
+- **Imports**: Comunidade (types), exportUtils
+- **Quem importa**: RelatorioComunidadeView.tsx
 
 ---
 
@@ -5248,6 +6145,244 @@ interface WalletLockScreenProps {
 
 ---
 
+### 11. cepService.ts
+
+- **Caminho**: `/Users/vanta/prevanta/services/cepService.ts`
+- **Linhas**: 100
+- **O que faz**: Busca de CEP via API publica ViaCEP (`https://viacep.com.br/ws/{cep}/json/`) + geocodificacao de endereco via Nominatim (OpenStreetMap). Zero autenticacao necessaria.
+- **Exports**:
+  - `formatCep(v: string): string` — formata string para `XXXXX-XXX`
+  - `buscarCep(cep: string): Promise<CepResult | null>` — retorna logradouro, bairro, cidade, estado, estadoNome. Nunca lanca excecao (retorna null silenciosamente).
+  - `geocodeEndereco(endereco, cidade, estado): Promise<{lat, lng} | null>` — converte endereco em coordenadas GPS via Nominatim
+- **Interface `CepResult`**: logradouro, bairro, cidade, estado (UF), estadoNome (nome completo)
+- **Constante interna**: `UF_NOME` — mapa de 27 UFs brasileiras para nomes completos
+- **Quem importa**: `Step2Localizacao.tsx` (wizard criar comunidade)
+- **Observacoes**: API publica sem chave. Geocodificacao e um complemento — se falhar, coordenadas ficam null (sem bloqueio).
+
+### 12. offlineDB.ts
+
+- **Caminho**: `/Users/vanta/prevanta/services/offlineDB.ts`
+- **Linhas**: 288
+- **O que faz**: IndexedDB unificado para operacoes offline no dia do evento. Zero dependencias externas. Permite portaria e caixa funcionarem sem internet.
+- **DB**: `vanta_offline`, versao 2
+- **4 Stores**:
+  - `tickets` (keyPath: `id`, index: `eventoId`) — ingressos cacheados para validacao offline
+  - `convidados` (keyPath: `id`, index: `eventoId`) — lista de convidados cacheada
+  - `lotesCache` (keyPath: `id`, index: `eventoId`) — lotes e variacoes do evento
+  - `syncQueue` (keyPath: `id`, autoIncrement) — fila de operacoes pendentes para sync quando online
+- **Interfaces exportadas**: `CachedTicket` (id, eventoId, nomeTitular, email, variacaoLabel, status, usadoEm), `CachedConvidado` (id, listaId, eventoId, regraId, nome, telefone, checkedIn, checkedInEm, checkedInPorNome, regraLabel, regraCor), `CachedLoteVariacao` (id, eventoId, loteId, loteNome, area, areaCustom, genero, valor, limite, vendidosLocal)
+- **SyncQueue types**: `SyncType = 'CHECKIN_TICKET' | 'CHECKIN_LISTA' | 'VENDA_CAIXA' | 'CORTESIA'`
+- **Exports publicos**:
+  - `cacheTickets(eventoId, tickets)` / `getCachedTickets(eventoId)` / `markAsUsedLocally(ticketId, eventoId)`
+  - `cacheConvidados(eventoId, convidados)` / `getCachedConvidados(eventoId)` / `markConvidadoCheckedIn(convidadoId, eventoId, operadorNome)`
+  - `cacheLotesVariacoes(eventoId, lotes)` / `getCachedLotesVariacoes(eventoId)` / `incrementVendidoLocal(variacaoId)`
+  - `addToSyncQueue(item)` / `getSyncQueue()` / `removeSyncItem(id)` / `getSyncQueueCount()`
+- **Quem importa**: `offlineEventService.ts`, `EventoCaixaView.tsx`, `EventCheckInView.tsx`, `QRScanner.tsx`
+- **Observacoes**: Todas as operacoes sao async via Promises sobre a API nativa do IndexedDB. Nenhum framework (Dexie, localForage) — tudo manual por performance e zero-dependency.
+
+### 13. reminderService.ts
+
+- **Caminho**: `/Users/vanta/prevanta/services/reminderService.ts`
+- **Linhas**: 71
+- **O que faz**: Agenda notificacoes locais (via `Notification` API do browser) 24h e 2h antes de cada evento para o qual o usuario tem ingresso DISPONIVEL.
+- **Classe `ReminderService`** (singleton exportado como `reminderService`):
+  - `scheduleReminders(tickets: Ingresso[])` — filtra tickets DISPONIVEL com data, calcula diff para 24h e 2h antes, agenda `window.setTimeout` + `new Notification`. Persiste IDs ja agendados no `localStorage` (key `vanta_reminders`) para nao duplicar.
+  - `cancelAll()` — limpa todos os timers pendentes
+- **Dependencias**: `Ingresso` de `types`
+- **Quem importa**: `useAppHandlers.ts`
+- **Observacoes**: So funciona se `Notification.permission === 'granted'`. Se o browser nao suporta Notification API, retorna silenciosamente. Nao usa push server — e 100% client-side via setTimeout.
+
+### 14. storeLogger.ts
+
+- **Caminho**: `/Users/vanta/prevanta/services/storeLogger.ts`
+- **Linhas**: 76
+- **O que faz**: Observa mudancas nas stores Zustand e loga via `devLogger`. Ativo APENAS em modo DEV (`import.meta.env.DEV`). Zero alteracao nos stores — usa `subscribe()` nativo do Zustand.
+- **Export**: `observeStore(storeName: string, store): () => void` — inscreve observer que detecta quais keys mudaram por comparacao de referencia (Zustand imutavel). Retorna cleanup function.
+- **Filtros internos**: ignora keys de funcoes, keys em `IGNORED_KEYS` (init, authLoading, selectedCity), e mudancas triviais (array vazio→vazio, 0→0, objeto vazio→vazio).
+- **Dependencias**: `devLogger`
+- **Quem importa**: `App.tsx` (chamado no useEffect de inicializacao para cada store)
+- **Observacoes**: Funcao `summarize()` gera resumo compacto de valores para log (strings truncadas, arrays como "N items", objetos como "{N keys}" ou "{id, nome}").
+
+### 15. friendshipsService.ts
+
+- **Caminho**: `/Users/vanta/prevanta/services/friendshipsService.ts`
+- **Linhas**: 152
+- **O que faz**: CRUD de amizades 1:1 via Supabase. Modelo: PENDING = pedido enviado, ACCEPTED = amigos, DELETE row = cancelar/recusar/remover.
+- **Tabela**: `friendships` (id, requester_id, addressee_id, status 'PENDING'|'ACCEPTED', created_at, updated_at)
+- **Export**: `friendshipsService` (objeto com 4 metodos + 1 subscribe):
+  - `getAll(userId): Promise<Record<otherUserId, FriendshipStatus>>` — carrega mapa completo. FriendshipStatus = 'FRIENDS' | 'PENDING_SENT' | 'PENDING_RECEIVED'. Limit 2000.
+  - `request(requesterId, addresseeId): Promise<boolean>` — envia pedido (INSERT PENDING)
+  - `accept(userId, requesterId): Promise<boolean>` — aceita pedido (UPDATE → ACCEPTED, com timestamp tsBR)
+  - `remove(userId, otherId): Promise<boolean>` — remove/cancela/recusa (DELETE row em ambas as direcoes)
+  - `subscribe(userId, onChange): () => void` — Realtime via `realtimeManager`. Usa 2 channels (requester + addressee) porque Supabase nao suporta OR em filters. Retorna unsubscribe.
+- **Dependencias**: `supabaseClient`, `realtimeManager`, `tsBR` (utils), `FriendshipStatus` (types)
+- **Quem importa**: `socialStore.ts`
+- **Observacoes**: Todos os metodos retornam boolean (success/fail), nunca lancam excecao. O Realtime usa 2 channels separados por limitacao do Supabase.
+
+### 16. achievementsService.ts
+
+- **Caminho**: `/Users/vanta/prevanta/services/achievementsService.ts`
+- **Linhas**: 153
+- **O que faz**: Conquistas e badges baseados em participacao real. Calcula nivel de frequencia por comunidade (ESTREANTE, FREQUENTADOR, HABITUE, LENDA) a partir de check-ins reais.
+- **Tabela**: `tickets` (conta check-ins por comunidade), `profiles`
+- **Export**: funcoes e tipos (`Achievement`, `Badge`, `NivelFrequencia`)
+- **Quem importa**: `PublicProfilePreviewView.tsx`, `HistoricoView.tsx`
+
+### 17. comemoracaoService.ts
+
+- **Caminho**: `/Users/vanta/prevanta/services/comemoracaoService.ts`
+- **Linhas**: 423
+- **O que faz**: CRUD completo de comemoracoes (aniversario, despedida VIP). Solicitar, listar, aprovar/recusar, marcar como visualizada. Usa notifyService para disparar notificacoes.
+- **Tabela**: `comemoracoes`, `notifications`
+- **Export**: funcoes (`solicitar`, `listar`, `getById`, `aprovar`, `recusar`, `marcarVisualizada`, etc.) e tipos (`ComemoracaoForm`, `Comemoracao`)
+- **Quem importa**: `ComemoracaoFormView.tsx`, `ComemoracaoConfigSubView.tsx`, `MinhasSolicitacoesView.tsx`, `eventoDashboard/index.tsx`
+
+### 18. communityFollowService.ts
+
+- **Caminho**: `/Users/vanta/prevanta/services/communityFollowService.ts`
+- **Linhas**: 58
+- **O que faz**: Seguir/desseguir comunidades. Metodos: isFollowing, follow, unfollow, getFollowedIds, getFollowerCount.
+- **Tabela**: `community_follows`
+- **Export**: `communityFollowService` (objeto com 5 metodos)
+- **Quem importa**: `ComunidadePublicView.tsx`
+
+### 19. devLogInit.ts
+
+- **Caminho**: `/Users/vanta/prevanta/services/devLogInit.ts`
+- **Linhas**: 139
+- **O que faz**: Inicializa observers de logging em dev. Intercepta console.error, console.warn, unhandledrejection, erro uncaught. Configura observers de stores Zustand. NOOP em producao.
+- **Export**: `initDevLogging(): () => void`
+- **Quem importa**: `App.tsx` (chamado 1x no mount)
+
+### 20. devLogger.ts
+
+- **Caminho**: `/Users/vanta/prevanta/services/devLogger.ts`
+- **Linhas**: 208
+- **O que faz**: Sistema centralizado de debug logging. Categorias: NAV, MODAL, CLICK, FORM, API, STORE, ERRO, RT, LIFECYCLE. Ativo apenas em dev, zero impacto em producao. Mantém buffer circular de entries.
+- **Export**: `devLogger` (objeto com metodos log, getEntries, clear, subscribe, onError)
+- **Quem importa**: `DevLogPanel.tsx`, `devLogInit.ts`, `supabaseProxy.ts`, `storeLogger.ts`, `useDevNavLogger.ts`, `realtimeManager.ts`
+
+### 21. eventoPrivadoService.ts
+
+- **Caminho**: `/Users/vanta/prevanta/services/eventoPrivadoService.ts`
+- **Linhas**: 257
+- **O que faz**: CRUD de solicitacoes de evento privado/corporativo. Solicitar, listar, aprovar/recusar, converter em evento real. Usa notifyService.
+- **Tabela**: `eventos_privados`, `notifications`
+- **Export**: funcoes e tipos (`EventoPrivadoForm`, `EventoPrivado`)
+- **Quem importa**: `EventoPrivadoFormView.tsx`, `MinhasPendenciasView.tsx`, `MinhasSolicitacoesView.tsx`, `ComunidadePublicView.tsx`
+
+### 22. favoritosService.ts
+
+- **Caminho**: `/Users/vanta/prevanta/services/favoritosService.ts`
+- **Linhas**: 35
+- **O que faz**: Toggle de favoritos de eventos. getMyFavoritos retorna IDs, toggle adiciona/remove.
+- **Tabela**: `evento_favoritos`
+- **Export**: `favoritosService` (instancia de FavoritosService)
+- **Quem importa**: `extrasStore.ts`
+
+### 23. firebaseConfig.ts
+
+- **Caminho**: `/Users/vanta/prevanta/services/firebaseConfig.ts`
+- **Linhas**: 45
+- **O que faz**: Configuracao e inicializacao lazy do Firebase (SDK ~150KB). Dynamic import so quando necessario. Exporta getFirebaseApp e getFirebaseMessaging.
+- **Export**: `getFirebaseApp`, `getFirebaseMessaging`, `isFirebaseConfigured`
+- **Quem importa**: `pushService.ts`, `nativePushService.ts`
+
+### 24. logger.ts
+
+- **Caminho**: `/Users/vanta/prevanta/services/logger.ts`
+- **Linhas**: 35
+- **O que faz**: Wrapper sobre console + Sentry. Em producao, erros vao pro Sentry. Em dev, console normal. Metodos: error, warn, info.
+- **Export**: `logger` (objeto com error, warn, info)
+- **Quem importa**: `authStore.ts`, `transferenciaService.ts`, e varios outros
+
+### 25. moodService.ts
+
+- **Caminho**: `/Users/vanta/prevanta/services/moodService.ts`
+- **Linhas**: 67
+- **O que faz**: Define e limpa mood do usuario (emoji + texto opcional). Mood expira em 24h automaticamente.
+- **Tabela**: `profiles` (colunas mood_emoji, mood_text, mood_expires_at)
+- **Export**: `moodService` (set, clear, get) e `MOOD_EMOJIS` (12 emojis)
+- **Quem importa**: `MoodPicker.tsx`, `ChatListItem.tsx`, `ProfileView.tsx`, `PublicProfilePreviewView.tsx`
+
+### 26. notifyService.ts
+
+- **Caminho**: `/Users/vanta/prevanta/services/notifyService.ts`
+- **Linhas**: 102
+- **O que faz**: Ponto unico de notificacoes em 3 canais: in-app (tabela notifications), push FCM (Edge Function send-push), email (Edge Function send-notification-email via Resend). Fire-and-forget.
+- **Tabela**: `notifications`, `push_subscriptions`
+- **Export**: `notify(payload)`, `notifyMany(payloads)`
+- **Quem importa**: `comemoracaoService.ts`, `eventoPrivadoService.ts`, `eventoDashboard/index.tsx`
+
+### 27. photoService.ts
+
+- **Caminho**: `/Users/vanta/prevanta/services/photoService.ts`
+- **Linhas**: 150
+- **O que faz**: Upload e gerenciamento de fotos de perfil e album. Buckets: avatars (1 por usuario), profile-albums (max 6 por usuario). Deleta anterior ao trocar para economia de espaco.
+- **Buckets Supabase**: `avatars`, `profile-albums`
+- **Export**: `photoService` (uploadAvatar, uploadAlbumPhoto, removeAlbumPhoto, getAlbumPhotos)
+- **Quem importa**: `EditProfileView.tsx`
+
+### 28. realtimeManager.ts
+
+- **Caminho**: `/Users/vanta/prevanta/services/realtimeManager.ts`
+- **Linhas**: 192
+- **O que faz**: Gerencia subscriptions do Supabase Realtime. Max N subscriptions simultaneas (default 5), prioridade por recencia, unsubscribe automatico de channels inativos, cleanup global no logout, reconexao automatica com backoff exponencial (max 5 tentativas).
+- **Export**: `realtimeManager` (subscribe, unsubscribe, unsubscribeAll, getActiveCount)
+- **Quem importa**: `friendshipsService.ts`, `authStore.ts`, `chatStore.ts`
+
+### 29. reportBlockService.ts
+
+- **Caminho**: `/Users/vanta/prevanta/services/reportBlockService.ts`
+- **Linhas**: 136
+- **O que faz**: Denuncias e bloqueios. Criar denuncia (USUARIO/EVENTO/COMUNIDADE/CHAT), bloquear/desbloquear usuario, listar bloqueados.
+- **Tabela**: `denuncias`, `bloqueios`
+- **Export**: funcoes `criarDenuncia`, `bloquearUsuario`, `desbloquearUsuario`, `listarBloqueados`, `isBloqueado`
+- **Quem importa**: `ReportModal.tsx`, `BloqueadosView.tsx`, `useBloqueados.ts`
+
+### 30. supabaseProxy.ts
+
+- **Caminho**: `/Users/vanta/prevanta/services/supabaseProxy.ts`
+- **Linhas**: 114
+- **O que faz**: Interceptor transparente para chamadas Supabase. Loga automaticamente: tabela, operacao, tempo de resposta, contagem de rows, erros. Marca queries lentas (>3s). Ativo apenas em dev — em producao retorna cliente original sem proxy.
+- **Export**: `createSupabaseProxy(client)`
+- **Quem importa**: `supabaseClient.ts`
+
+### 31. transferenciaService.ts
+
+- **Caminho**: `/Users/vanta/prevanta/services/transferenciaService.ts`
+- **Linhas**: 230
+- **O que faz**: Transferencia de ingressos entre usuarios. Enviar, aceitar, recusar, cancelar. Gera novo QR code ao transferir. Lista pendentes enviadas/recebidas.
+- **Tabela**: `transferencias_ingresso`, `tickets`
+- **Export**: `transferenciaService` (enviar, aceitar, recusar, cancelar, getPendentesEnviadas, getPendentesRecebidas)
+- **Quem importa**: `WalletView.tsx`, `TicketList.tsx`
+
+### 32. waitlistService.ts
+
+- **Caminho**: `/Users/vanta/prevanta/services/waitlistService.ts`
+- **Linhas**: 108
+- **O que faz**: Lista de espera quando variacao de ingresso esgota. Entrar na fila, sair, verificar posicao, notificar quando vaga abrir.
+- **Tabela**: `waitlist`
+- **Export**: `waitlistService` (instancia de WaitlistService)
+- **Quem importa**: `WaitlistModal.tsx`
+
+### 33. insightsDashboard/index.tsx
+
+- **Caminho**: `/Users/vanta/prevanta/features/admin/views/insightsDashboard/index.tsx`
+- **Linhas**: 160
+- **O que faz**: View principal do dashboard de inteligencia ("Inteligencia VANTA"). Orquestra 4 sub-tabs e controles de filtro (evento + periodo).
+- **Export**: `InsightsDashboardView` (componente React)
+- **Props**: `onBack: () => void`, `comunidadeId?: string`, `onNavigate?: (subView: string) => void`
+- **4 Tabs**: Insights (`Brain`), Financeiro (`DollarSign`), Operacoes (`Settings2`), Valor (`Sparkles`)
+- **4 Periodos**: HOJE, SEMANA, MES, ANO (via `Periodo` de `dashboardAnalyticsService`)
+- **Filtros**: seletor de evento (chips scroll horizontal com "Todos" + eventos da comunidade), seletor de periodo, tabs
+- **Sub-componentes renderizados**: `InsightsTab`, `FinanceiroTab`, `OperacoesTab`, `ValorTab`
+- **Acao `handleTipAction`**: mapeia targets de tips (CUPONS, LOTES, LISTAS, COMUNICACAO, EVENTO_DASHBOARD) para subViews e chama `onNavigate`
+- **Dependencias**: `EVENTOS_ADMIN` (eventosAdminCore), `Periodo` (dashboardAnalyticsService), `AdminViewHeader`, 4 sub-tabs
+- **Quem importa**: `DashboardV2Home.tsx` (via lazy subView)
+
+---
+
 ### ARQUIVOS NAO ENCONTRADOS (services/)
 
 - **cacheService.ts** -- NAO EXISTE em `services/`. O codebase usa `services/cache.ts` (ver imports `getCached`, `invalidateCache`, `clearAllCache`).
@@ -5344,6 +6479,55 @@ interface WalletLockScreenProps {
   - `initFavoritos(userId): void` -- carrega favoritos do usuario
 - **Quem importa**: 8 arquivos incluindo `authStore.ts`, `HomeView.tsx`, `EventDetailView.tsx`, `useAppHandlers.ts`, `ProfileView.tsx`, etc.
 - **Observacoes**: Paginacao usa `EVENTS_PAGE_SIZE = 20`. Rate limiter key: `eventos-fetch`. Circuit breaker key: `supabase-eventos`. Cache keys: `eventos:p0`, `eventos:p1`, etc.
+
+---
+
+### 4. socialStore.ts
+
+- **Caminho**: `/Users/vanta/prevanta/stores/socialStore.ts`
+- **Linhas**: 158
+- **O que faz**: Store Zustand para amizades e social. Gerencia status de amizade (PENDING_SENT, PENDING_RECEIVED, FRIENDS, NONE), lista de amigos mutuos, e acoes de amizade (enviar pedido, aceitar, recusar, cancelar, remover). Inclui listener realtime via Supabase channel `friendships`.
+- **Imports principais**: `zustand`, `Membro`, `FriendshipStatus`, `friendshipsService`, `notificationsService`, `notify`, `supabase`, `getCached`, `invalidateCache`, `withCircuitBreaker`, `useAuthStore`
+- **STATE**:
+  - `friendships: Record<string, FriendshipStatus>` -- mapa memberId → status de amizade
+  - `mutualFriends: Membro[]` -- lista de amigos mutuos
+- **ACTIONS**:
+  - `requestFriendship(memberId): void` -- envia pedido de amizade + notifica destinatario (3 canais)
+  - `cancelFriendshipRequest(memberId): void` -- cancela pedido enviado
+  - `handleAcceptFriend(memberId): void` -- aceita pedido recebido
+  - `handleDeclineFriend(memberId): void` -- recusa pedido recebido
+  - `removeFriend(memberId): void` -- remove amizade existente
+  - `init(userId): () => void` -- carrega friendships + mutualFriends com cache 60s, assina canal realtime `friendships`, retorna cleanup
+- **Quem importa**: 8 arquivos (App.tsx, NotificationPanel.tsx, useAppHandlers.ts, EventSocialProof.tsx, EventDetailView.tsx, ChatRoomView.tsx, MessagesView.tsx, PublicProfilePreviewView.tsx)
+- **Observacoes**: Guard contra auto-amizade (memberId === currentAccount.id). Update otimista no state antes de persistir. Notificacao via notify() nos 3 canais (in-app + push + email). Realtime listener atualiza state em INSERT/UPDATE/DELETE.
+
+---
+
+### 5. ticketsStore.ts
+
+- **Caminho**: `/Users/vanta/prevanta/stores/ticketsStore.ts`
+- **Linhas**: 188
+- **O que faz**: Store Zustand para ingressos, presencas, cortesias pendentes e transferencias pendentes do usuario logado. Gerencia devolver cortesia, transferir ingresso, atualizar titular, aceitar/recusar cortesias e transferencias. Inclui listener realtime via Supabase channel `cortesias-pendentes`.
+- **Imports principais**: `zustand`, `Ingresso`, `Notificacao`, `TransferenciaPendente`, `vantaService`, `cortesiasService`, `CortesiaPendente`, `transferenciaService`, `reminderService`, `getCached`, `withCircuitBreaker`, `useAuthStore`
+- **STATE**:
+  - `myTickets: Ingresso[]` -- ingressos do usuario
+  - `myPresencas: string[]` -- IDs de eventos com presenca confirmada
+  - `cortesiasPendentes: CortesiaPendente[]` -- cortesias aguardando aceite
+  - `transferenciasPendentes: TransferenciaPendente[]` -- transferencias aguardando aceite
+- **ACTIONS**:
+  - `setMyTickets(fn): void` -- setter funcional para composicao externa
+  - `setMyPresencas(fn): void` -- setter funcional para composicao externa
+  - `devolverCortesia(ticket): void` -- devolve cortesia recebida
+  - `transferirIngresso(ticket, destinatarioId, destinatarioNome): Promise<boolean>` -- transfere ingresso + notifica
+  - `updateTicketTitular(ticketId, nomeTitular, cpf): Promise<boolean>` -- atualiza nome/CPF do titular
+  - `aceitarCortesiaPendente(cortesiaId): Promise<void>` -- aceita cortesia + agenda reminder
+  - `recusarCortesiaPendente(cortesiaId): Promise<void>` -- recusa cortesia
+  - `aceitarTransferencia(transferenciaId): Promise<void>` -- aceita transferencia + agenda reminder
+  - `recusarTransferencia(transferenciaId): Promise<void>` -- recusa transferencia
+  - `registerCortesiaCallbacks(onAddNotification): void` -- registra callback pra notificacao in-app
+  - `init(userId): () => void` -- carrega tickets + presencas + cortesias + transferencias com cache, assina canal realtime, retorna cleanup
+- **Quem importa**: 7 arquivos (App.tsx, NotificationPanel.tsx, useAppHandlers.ts, EventDetailView.tsx, ProfileView.tsx, WalletView.tsx, extrasStore.ts)
+- **Observacoes**: Cortesias realtime via canal `cortesias-pendentes` (INSERT → adiciona + notificacao in-app). reminderService agenda lembrete 2h antes do evento ao aceitar cortesia/transferencia. Cache keys: `my-tickets:{userId}`, `my-presencas:{userId}`.
 
 ---
 
@@ -6704,8 +7888,8 @@ Lista de todos os arquivos `.ts`/`.tsx` mencionados neste livro, em ordem alfabe
 | `CaixaTab.tsx` | Resumo financeiro da comunidade com drilldown |
 | `CapacidadeModal.tsx` | Modal aviso quando capacidade excede limite |
 | `CargoModal.tsx` | Modal selecao de cargo para membro da equipe |
-| `CargosPlataformaView.tsx` | CRUD de cargos de plataforma com permissoes |
-| `CargosUnificadoView.tsx` | Hub com abas Cargos Plataforma e Definir Cargos |
+| `cargosPlataforma/index.tsx` | CRUD de cargos de plataforma com permissoes (admin view) |
+| `cargosUnificado/index.tsx` | Hub com abas Cargos Plataforma e Definir Cargos (admin view) |
 | `CategoriasAdminView.tsx` | CRUD de categorias (Formatos, Estilos, Experiencias, Interesses) |
 | `CelebrationScreen.tsx` | Tela fullscreen de celebracao com particulas douradas |
 | `ChannelAttributionCard.tsx` | Atribuicao de vendas por canal |
@@ -6720,7 +7904,7 @@ Lista de todos os arquivos `.ts`/`.tsx` mencionados neste livro, em ordem alfabe
 | `CitySelector.tsx` | Dropdown de selecao de cidade com busca no Supabase |
 | `CityView.tsx` | View de cidade com eventos e parceiros em carroseis |
 | `ClubeOptInView.tsx` | View de adesao ao MAIS VANTA (formulario + dashboard membro) |
-| `ComandarPalette.tsx` | Command palette (Cmd+K) com busca hibrida |
+| `CommandPalette.tsx` | Command palette (Cmd+K) com busca hibrida (features/dashboard-v2/components/) |
 | `ComemoracaoConfigSubView.tsx` | Configuracao de comemoracoes por evento |
 | `ComemoracaoFormView.tsx` | Formulario para solicitar comemoracao numa comunidade |
 | `ComparisonCard.tsx` | Card comparativo lado a lado com delta percentual |
@@ -6773,7 +7957,7 @@ Lista de todos os arquivos `.ts`/`.tsx` mencionados neste livro, em ordem alfabe
 | `EventTicketsCarousel.tsx` | Carousel de ingressos com QR JWT rotativo |
 | `EventoCheckInCard.tsx` | Card de evento na lista de selecao de check-in |
 | `EventoCaixaView.tsx` | Caixa de venda na porta com QR e selfie |
-| `EventoDashboard.tsx` | Dashboard principal do evento com sub-views |
+| `eventoDashboard/index.tsx` | Dashboard principal do evento com sub-views (admin view) |
 | `EventosGlobaisMaisVantaView.tsx` | Visao global de eventos no contexto MAIS VANTA |
 | `EventosPendentesView.tsx` | Fila de aprovacao de eventos pelo master |
 | `EventoPrivadoFormView.tsx` | Formulario para solicitar evento privado |

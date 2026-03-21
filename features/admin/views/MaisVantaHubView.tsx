@@ -53,7 +53,7 @@ export const MaisVantaHubView: React.FC<{
     { id: 'PLANOS_PRODUTOR', label: 'Planos Produtor', icon: Briefcase },
     { id: 'CIDADES', label: 'Cidades', icon: MapPin },
     { id: 'PARCEIROS', label: 'Parceiros', icon: Store },
-    { id: 'DEALS', label: 'Deals', icon: Ticket },
+    { id: 'DEALS', label: 'Benefícios', icon: Ticket },
     { id: 'CONVITES_ESP', label: 'Convites', icon: Sparkles },
     { id: 'NOTIF_MV', label: 'Notif Produtor', icon: Bell },
     { id: 'ASSINATURAS', label: 'Assinaturas', icon: Crown },

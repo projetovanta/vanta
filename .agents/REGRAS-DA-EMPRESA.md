@@ -39,10 +39,10 @@ Todo funcionário deve seguir esta sequência antes de agir:
 
 1. Ler o CLAUDE.md do projeto
 2. Ler `.agents/MEMORIA-COMPARTILHADA.md` — quadro de avisos da equipe
-3. Identificar o módulo afetado pela tarefa
-4. Ler a memória do módulo (memory/modulo_*.md, sub_*.md)
-5. Conferir regras + checklist
-6. Só então executar
+3. Consultar a fonte da verdade correta:
+   - Código → `VANTA_LIVRO.md` | Fluxos → `VANTA_FLUXOS.md` | Produto → `VANTA_PRODUTO.md`
+4. Conferir regras + checklist
+5. Só então executar
 
 **Nunca pular etapas. Nunca assumir que já sabe.**
 
@@ -119,11 +119,11 @@ O que DEVE ser registrado na memória compartilhada:
 - Prioridades definidas pelo Dan
 
 O que NÃO vai na memória compartilhada:
-- Detalhes técnicos de implementação → vai no modulo_*.md
+- Detalhes técnicos de código → vai no `VANTA_LIVRO.md`
+- Decisões de produto → vai no `VANTA_PRODUTO.md`
 - Código → vai no código
-- Coisas que só afetam uma área → vai na memória do módulo
 
-**Conflito?** Memória compartilhada > modulo_*.md (decisão mais recente do Dan). Na dúvida → PARAR e perguntar.
+**Conflito?** Fontes da verdade (LIVRO/PRODUTO/FLUXOS) > memória compartilhada. Na dúvida → PARAR e perguntar ao Dan.
 
 ---
 
@@ -183,9 +183,10 @@ Fluxo obrigatório:
 
 Memórias que Lia verifica:
 - `.agents/MEMORIA-COMPARTILHADA.md` — quadro de avisos
-- `memory/MEMORY.md` — memória principal
-- `memory/modulo_*.md` e `memory/sub_*.md` — memória por módulo
-- `MAPA_PROJETO.md` — mapa de telas e fluxos
+- `memory/MEMORY.md` — índice de memórias
+- `VANTA_LIVRO.md` — código (arquivos, imports, props)
+- `VANTA_PRODUTO.md` — produto (decisões, modelo, identidade)
+- `VANTA_FLUXOS.md` — fluxos de tela
 - `memory/EDGES.md` — conexões entre módulos
 
 ---

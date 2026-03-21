@@ -8,8 +8,8 @@
 ## Estado Atual
 
 **Fase:** Produção e testes finais + Visual Redesign
-**Última sessão:** 2026-03-20 (sessão 21)
-**Atualizado por:** Rafa
+**Última sessão:** 2026-03-21 (sessão 27)
+**Atualizado por:** Lia
 
 ---
 
@@ -17,7 +17,7 @@
 
 | Decisão | Onde ler detalhes |
 |---------|-------------------|
-| Painel admin: sidebar completa, V2/V3 são protótipos | `memory/painel_administrativo.md` |
+| Painel admin: sidebar completa, V2/V3 são protótipos | `VANTA_LIVRO.md` (Cap. Admin) |
 | ZERO workarounds `as any` — migration primeiro | `memory/feedback_zero_workarounds_any.md` |
 | Consultar referências visuais do Dan antes de redesenhar | `memory/feedback_alex_demitido.md` |
 | Memo OBRIGATÓRIO em toda sessão | `.claude/agents/memo.md` |
@@ -25,91 +25,34 @@
 | Rafa NUNCA age sozinho — convoca especialistas | `memory/feedback_rafa_convoca_equipe.md` |
 | Rafa NÃO atualiza memória de módulo (delega) | `.claude/hooks/block-rafa-memory-update.sh` |
 | Rafa NÃO escreve atas (Memo faz) | `.claude/hooks/block-rafa-ata.sh` |
-| Posicionamento VANTA = descoberta + curadoria + benefícios | `memory/projeto_posicionamento.md` |
-| Identidade visual: Confiança, Curadoria, Estilo | `memory/projeto_identidade_visual.md` |
-| Modelo financeiro: taxa variável, D+15, Stripe Connect | `memory/projeto_modelo_financeiro.md` |
-| Stripe TEST MODE ativo (secrets + 3 EFs deployed) | `memory/modulo_compra_ingresso.md` |
-| Login Google ATIVO, Apple aguarda conta Developer | `memory/modulo_perfil_feed.md` |
+| Posicionamento VANTA = descoberta + curadoria + benefícios | `VANTA_PRODUTO.md` (Seção 1) |
+| Identidade visual: Confiança, Curadoria, Estilo | `VANTA_PRODUTO.md` (Seção 10) |
+| Modelo financeiro: taxa variável, D+15, Stripe Connect | `VANTA_PRODUTO.md` (Seção 2) |
+| Stripe TEST MODE ativo (secrets + 3 EFs deployed) | `VANTA_PRODUTO.md` (Seção 7) |
+| Login Google ATIVO, Apple aguarda conta Developer | `VANTA_PRODUTO.md` (Seção 8) |
 | Padrão sprint: blocos → investigar → plano → Dan aprova → executar | `memory/feedback_padrao_sprint_sessao.md` |
-| Negociação sócio REMOVIDA do app (fora do app) | `memory/sub_negociacao_socio.md` |
+| Negociação sócio REMOVIDA do app (fora do app) | `VANTA_PRODUTO.md` (Seção 6) |
 
 ---
 
-## Mudanças Recentes (resumo → detalhe na memória)
+## Estado Atual do Código (o que está implementado)
 
-| O que mudou | Onde ler |
-|-------------|----------|
-| **AUDITORIA TOTAL sessão 3**: 28 pendências resolvidas (4 commits) | `memory/PENDENCIAS-18-MARCO-2026.md` |
-| FOR UPDATE anti-overselling na RPC processar_compra_checkout | `supabase/migrations/20260319000100` |
-| Webhook FALHA_PROCESSAMENTO + idempotência retry Stripe | `stripe-webhook/index.ts` |
-| Edge Function process-stripe-refund deployed (auto R$100) | `supabase/functions/process-stripe-refund/` |
-| Reembolso: emitido_em→criado_em + refund Stripe integrado | `reembolsoService.ts` |
-| 44 FKs recriadas para auth.users(id) em 33 tabelas | `supabase/migrations/20260319000500` |
-| Policy socios_evento corrigida (cargos inexistentes) | `supabase/migrations/20260319000400` |
-| 2 RPCs versionadas: criar_comunidade_completa + criar_evento_completo | `supabase/migrations/20260319000600` |
-| Design tokens @theme (16 tokens) + hover-real @custom-variant | `app.css` |
-| Inter peso 900 carregado (font-black 1659 usos) | `index.html` |
-| font-light→font-normal (11 ocorrências, 8 arquivos) | Vários |
-| Cores neon→paleta + animate-pulse removido | `EventCard.tsx` |
-| DOMPurify no LegalEditorView | `LegalEditorView.tsx` |
-| npm 0 vulnerabilities (override serialize-javascript) | `package.json` |
-| Deep links comunidade/admin corrigidos + push cleanup | `App.tsx` + `DashboardV2Gateway.tsx` |
-| .nvmrc Node 20, buckets versionados, transferencias UUID+FK | Vários |
-| Plano Wizards v2: 6 FASES COMPLETAS (38 itens entregues em 1 sessão) | `memory/plano_wizards_v2.md` |
-| Fase 1-6: correções + design system + wizards 4 steps + drafts + índices/constraints + features | `memory/sessao_atual.md` |
-| 10 componentes novos: FormWizard, InputField, UploadArea, CelebrationScreen, AccordionSection, etc. | `components/wizard/` + `components/form/` |
-| Tabela drafts criada (rascunho auto-save 3s, expira 30 dias) | Migration Supabase |
-| 16 índices + 10 CHECK constraints + UNIQUE dedup evento | Migration Supabase |
-| classificacao_etaria (LIVRE/16+/18+) + limite_notificacoes_mes na comunidade | Migration Supabase |
-| Social proof, urgência "Últimos ingressos", benefício MV ao lado do botão, return-to-context | Fase 6 |
-| RPCs atômicas: criar_evento_completo + criar_comunidade_completa (transação única) | `memory/sub_criar_evento.md` + `memory/sub_comunidade_crud.md` |
-| Push 2h antes pra equipe (push_agendados) + deep link convite sócio + resumo promoter D+1 | `memory/sessao_atual.md` |
-| Storage RLS restritiva: bucket comunidades só gerente RBAC ou masteradm | Migration Supabase |
-| Backlog limpo: CARGO_DESCRICOES já integrado, fontSize px normal (Recharts SVG) | Verificado 18/mar |
-| VantaConfirmModal: zero alert/confirm nativo (VantaAlertModal exportado mas não usado ainda) | `components/VantaConfirmModal.tsx` |
-| VANTA Indica: fontSize editável, snap centro, apagar card, subtítulo sem clamp | `features/admin/views/VantaIndicaView.tsx` |
-| EventCard: aspect 4/5, footer h-[3.25rem], badges h-[1.375rem], sem social proof, badge verde "Acontecendo Agora" | `components/EventCard.tsx` |
-| Fonte: Playfair Display Bold 700 (sem SC, sem italic) em TODO o app | `index.html` + `constants.ts` |
-| Wizards integrados com FormWizard + DraftBanner + StepIndicator | `components/wizard/` |
-| Home: seções removidas pra reconstruir com EventCarousel | `modules/home/HomeView.tsx` |
-| EventCarousel: componente único de carrossel (paddingInline 20px) | `modules/home/components/EventCarousel.tsx` |
-| 28 testes novos (financeiro, auth, RBAC) | `tests/unit/` |
-| Luna recontratada (18/mar s5) — regras rígidas + hook enforce-luna-scope. Escopo fechado, zero invenção | `.claude/agents/engenheiro-frontend.md` |
-| Iris continua como Especialista Visual (cores, fontes, composição) | `.claude/agents/especialista-visual.md` |
-| Direção visual: profundidade "preto não preto", contraste entre camadas | `memory/feedback_visual_profundidade.md` |
-| RTK instalado + TTL markers 30min + markers reutilizáveis (velocidade 3-4x) | `memory/sessao_atual.md` |
-| Auditoria limpeza: selects, deprecated, fontFamily, cnpjValidator | `memory/sessao_atual.md` |
-| Bloco 8 Auditoria COMPLETO (sessão 5): audit RBAC, extrato, CNPJ, histórico edições | `memory/plano_blocos_melhorias.md` |
-| Blocos 6-7 COMPLETOS (sessão 5): PDF comprovante, histórico transf, realtime, remover lista | `memory/plano_blocos_melhorias.md` |
-| Bloco 5 Busca Inteligente COMPLETO (sessão 5): aba Lugares, histórico buscas | `memory/sub_busca_filtros.md` |
-| 3 novos agentes: Axel (Integrações), Maya (Produto), Pixel (Crescimento) | `.claude/agents/` |
-| 20 decisões features futuras (Dan, sessão 5) | `memory/decisoes_features_futuras.md` |
-| Projeto IA visual: agente com visão + análise de marca + geração de imagem | Em investigação |
-| Bloco 1 Polimento Visual COMPLETO (sessão 5): EmptyState, Skeleton, Indica editor | `memory/sessao_atual.md` |
-| Visual Redesign Home + EventCard + VANTA Indica (sessão 4) | `memory/sessao_atual.md` |
-| VANTA Indica: handlers rota completos (6 tipos) + 7 templates | `memory/sessao_atual.md` |
-| Admin: sem sessionStorage, sempre abre Dashboard | `memory/sessao_atual.md` |
-| Admin: max-w-[500px] contém absolute inset-0 (relative) | `memory/sessao_atual.md` |
-| Bloco C completo (C1 login social, C2 onboarding produtor, C3 CMS master) | `memory/sessao_atual.md` |
-| Sprint 2 completo (comprovante, CSV, encerrar/cancelar, LGPD) | `memory/sessao_atual.md` |
-| Stripe TEST MODE ativo (secrets + webhook 9 eventos + 3 EFs) | `memory/modulo_compra_ingresso.md` |
-| Login social Google + Apple (código pronto, Google ativo) | `memory/modulo_perfil_feed.md` |
-| Deep links Capacitor (deepLinkService + @capacitor/app) | `memory/plataformas.md` |
-| iOS gerado (npx cap add ios + sync) | `memory/plataformas.md` |
-| LGPD exportação dados (RPC exportar_dados_usuario) | `memory/modulo_perfil_feed.md` |
-| Encerrar/cancelar evento (UI + service) | `memory/modulo_evento.md` |
-| BottomSheet componente reutilizável criado | `memory/componentes_compartilhados.md` |
-| Audit scripts corrigidos (apontam pra memory/ do repo) | Scripts `memory-audit*.mjs` |
-| 20 divergências de memória corrigidas | Auditoria 17/mar |
-| Limpeza font-serif: font-bold redundante (6x) + font-semibold incorreto (3x) removidos | 9 componentes (.tsx) |
-| Padrão header tabs principais: text-3xl dourado, pt-6 px-6 pb-4 (Radar+Buscar alinhados com Mensagens) | `RadarView.tsx` + `SearchHeader.tsx` |
-| Padrão header sub-views perfil: text-xl branco, pt-6 px-6 pb-4 (8 views alinhadas) | `modules/profile/` + `MyTicketsView` + `SolicitarParceriaView` |
-| UI UX Pro Max instalado (skill de design intelligence + 6 extras) | `.claude/skills/ui-ux-pro-max/` |
-| Hook context-monitor.sh criado (alerta com 60% do contexto) | `.claude/hooks/context-monitor.sh` |
-| Responsividade 360px: SearchHeader grid-cols-4 corrigido (tracking-wider), MinhasPendenciasView não existe mais | Resolvido sessão 21 |
-| Auditoria completa admin: 197 views, 73 services, 93 tabelas, 21 EFs, 60 RPCs, 10 buckets — ZERO órfãos, ZERO mocks | Sessão 21 |
-| 21 `as any` removidos em 11 services admin (2 legítimos mantidos: tabela dinâmica + globalThis) | Sessão 21 |
-| Página pública Promoter/RP: plano desenhado (1 view + 1 rota, backend existe) — pendência futura | Sessão 21 |
+| Feature | Status | Onde ver detalhes |
+|---------|--------|-------------------|
+| VANTA_LIVRO 100% Nível A (8470L, ~410 seções) | ✅ | `VANTA_LIVRO.md` |
+| Reorganização memórias: 3 fontes da verdade | ✅ | `memory/MEMORY.md` |
+| Stripe TEST MODE (secrets + webhook + 3 EFs) | ✅ | `VANTA_PRODUTO.md` (Seção 7) |
+| Login social Google ativo, Apple pendente | ✅/⏳ | `VANTA_PRODUTO.md` (Seção 8) |
+| Deep links Capacitor + iOS gerado | ✅ | `memory/plataformas.md` |
+| RPCs atômicas (criar_evento + criar_comunidade) | ✅ | `VANTA_LIVRO.md` |
+| Wizards v2 (FormWizard + drafts + 4 steps) | ✅ | `VANTA_LIVRO.md` |
+| Design tokens @theme + Playfair Display Bold 700 | ✅ | `VANTA_LIVRO.md` |
+| EventCard + EventCarousel redesign | ✅ | `VANTA_LIVRO.md` |
+| 28 testes (financeiro, auth, RBAC) | ✅ | `tests/unit/` |
+| Auditoria admin: 197 views, 73 services, ZERO órfãos | ✅ | Sessão 21 |
+| 21 `as any` removidos (2 legítimos mantidos) | ✅ | Sessão 21 |
+| LGPD exportação dados (RPC) | ✅ | `VANTA_PRODUTO.md` |
+| 16 agentes especializados | ✅ | `.claude/agents/` |
 
 ---
 
@@ -128,11 +71,7 @@
 
 ## Próximas Prioridades
 
-### Plano 4 Blocos de Melhorias (aprovado 17/mar sessão 4)
-1. **Bloco 1 — Polimento Visual** ✅ COMPLETO
-2. **Bloco 2 — Navegação** ✅ COMPLETO
-3. **Bloco 3 — Financeiro** ✅ COMPLETO
-4. **Bloco 4 — Operações** ✅ COMPLETO — todos os 4 blocos entregues na sessão 5
+Ver `VANTA_PRODUTO.md` (Seções 7 e 8) para pendências técnicas e externas completas.
 
 ### Pendências externas
 - Conta Apple Developer ($99/ano) — login Apple + deep links iOS + App Store
@@ -157,8 +96,8 @@
 
 - **LER** antes de qualquer trabalho
 - **Detalhes** → seguir o link da coluna "Onde ler"
-- **Registrar mudança** → adicionar 1 linha na tabela "Mudanças Recentes" com link
+- **Registrar mudança** → adicionar 1 linha na tabela "Estado Atual do Código" com link
 - **NUNCA** escrever detalhes aqui — só ponteiros
-- **Conflito** com memória de módulo → este arquivo tem prioridade (decisão mais recente)
+- **Conflito** com fonte da verdade → LIVRO/PRODUTO/FLUXOS têm prioridade
 
-*Criado: 14/mar/2026. Atualizado: 17/mar/2026.*
+*Criado: 14/mar/2026. Atualizado: 21/mar/2026.*

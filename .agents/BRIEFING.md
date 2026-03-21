@@ -9,7 +9,7 @@
 
 App de **descoberta de vida noturna** no Brasil. NÃO é ticketeria. É o app que responde "o que tem de bom pra fazer hoje?". O VANTA é como um **amigo que sabe tudo** — sabe o que tá rolando, conhece todo mundo e te leva nos melhores lugares.
 
-## Posicionamento (→ `memory/projeto_posicionamento.md`)
+## Posicionamento (→ `VANTA_PRODUTO.md` Seção 1)
 
 - Membro NÃO paga pelo clube. Quem paga é o empresário (dono do evento/bar/restaurante)
 - Ativo real = dados comportamentais do público noturno
@@ -17,16 +17,16 @@ App de **descoberta de vida noturna** no Brasil. NÃO é ticketeria. É o app qu
 - Slogan: "A noite é sua. Se você faz parte."
 - BrandScript: herói = frequentador, vilão = fragmentação, guia = VANTA
 
-## Identidade Visual (→ `memory/projeto_identidade_visual.md`)
+## Identidade Visual (→ `VANTA_PRODUTO.md` Seção 10)
 
 - **3 palavras-guia:** Confiança • Curadoria • Estilo
 - Tom: amigo conectado (caloroso, confiável), NÃO clube frio/distante
 - Paleta: preto (#050505/#0A0A0A) + dourado (#FFD300, máx 10% da tela) + branco/cinza
-- Tipografia: Playfair Display SC (títulos) + Inter (corpo)
+- Tipografia: Playfair Display Bold 700 (títulos) + Inter (corpo)
 - Fotos: atmosféricas, com pessoas, escuras, sem flash
 - Animações: suaves, 300ms, nada piscando
 
-## Redesign do App (→ `memory/projeto_redesign_app.md`)
+## Redesign do App (→ `VANTA_PRODUTO.md` Seção 3)
 
 ### Camadas de acesso
 - **Sem conta (guest):** navega livremente (Home, Busca, Radar). Modal só ao interagir
@@ -87,16 +87,15 @@ App de **descoberta de vida noturna** no Brasil. NÃO é ticketeria. É o app qu
 
 | Tema | Arquivo |
 |------|---------|
-| Posicionamento completo | `memory/projeto_posicionamento.md` |
-| Redesign tela a tela | `memory/projeto_redesign_app.md` |
-| Identidade visual | `memory/projeto_identidade_visual.md` |
+| Produto completo (posicionamento, modelo, design, decisões) | `VANTA_PRODUTO.md` |
+| Código (arquivos, imports, props, dependências) | `VANTA_LIVRO.md` |
+| Fluxos de tela | `VANTA_FLUXOS.md` |
 | Decisões recentes | `.agents/MEMORIA-COMPARTILHADA.md` |
 | Regras de operação | `.agents/REGRAS-DA-EMPRESA.md` |
 | Briefing da empresa | `.agents/VANTA-EMPRESA.md` |
-| Módulos do app | `memory/modulo_*.md` e `memory/sub_*.md` |
 | Conexões entre módulos | `memory/EDGES.md` |
 | Estado da sessão | `memory/sessao_atual.md` |
 
 ---
 
-*Atualizado em 2026-03-17 por Rafa (Gerente Geral). Atualizar ao final de toda sessão.*
+*Atualizado em 2026-03-21 por Rafa (Gerente Geral). Atualizar ao final de toda sessão.*

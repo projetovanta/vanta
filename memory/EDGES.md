@@ -140,7 +140,7 @@ Mapa: tabela/store/RPC → arquivos que consomem. Consultar ANTES de mudar schem
 | clubeMembrosService.ts | MG |
 | clubeInstagramService.ts | MG |
 | clubeInfracoesService.ts | MG |
-| clubeIndex.ts | MG |
+| clube/index.ts | MG |
 | MembrosGlobaisMaisVantaView.tsx | MG |
 | InfracoesGlobaisMaisVantaView.tsx | MG |
 | Edge: update-instagram-followers | IN |
@@ -238,40 +238,100 @@ Mapa: tabela/store/RPC → arquivos que consomem. Consultar ANTES de mudar schem
 |---|---|
 | waitlistService.ts | CO |
 
+### audit_logs (3 consumers)
+| Arquivo | Dominio |
+|---|---|
+| auditService.ts | IN |
+| App.tsx (insert on login) | IN |
+| ProductAnalyticsView.tsx | RE |
+
+### vendas_log (6 consumers)
+| Arquivo | Dominio |
+|---|---|
+| eventosAdminFinanceiro.ts | FI |
+| eventosAdminTickets.ts | OP |
+| ExtratoFinanceiro.tsx | FI |
+| masterAnalyticsService.ts | RE |
+| eventAnalyticsService.ts | RE |
+| communityAnalyticsService.ts | RE |
+
+### chat_settings (1 consumer)
+| Arquivo | Dominio |
+|---|---|
+| chatSettingsService.ts | MS |
+
+### mais_vanta_config_evento (10 consumers)
+| Arquivo | Dominio |
+|---|---|
+| eventosAdminCore.ts | AE |
+| clube/index.ts | MG |
+| clube/clubePlanosService.ts | MG |
+| clube/clubeReservasService.ts | MG |
+| clube/clubeLotesService.ts | MG |
+| CriarEventoView.tsx | AE |
+| EditarEventoView.tsx | AE |
+| EditarLotesSubView.tsx | AE |
+| CheckoutPage.tsx | CO |
+| BeneficiosMVTab.tsx | DS |
+
+### solicitacoes_parceria (2 consumers)
+| Arquivo | Dominio |
+|---|---|
+| parceriaService.ts | CM |
+| MinhasPendenciasView.tsx | PR |
+
+### cupons (2 consumers)
+| Arquivo | Dominio |
+|---|---|
+| cuponsService.ts | AE |
+| Edge: create-ticket-checkout | CO |
+
+### mesas (3 consumers)
+| Arquivo | Dominio |
+|---|---|
+| mesasService.ts | AE |
+| CheckoutPage.tsx | CO |
+| Edge: create-ticket-checkout | CO |
+
 ## STORES → Consumers
 
-### useAuthStore (24 consumers — mais usado)
+### useAuthStore (47 consumers — mais usado)
 currentAccount, profile, authLoading, selectedCity, notifications, accessNodes
-- App.tsx, Layout.tsx, ProtectedRoute.tsx, DevQuickLogin.tsx
-- HomeView.tsx, CitySelector.tsx, NotificationPanel.tsx
-- EventDetailView.tsx, EventFeed.tsx
-- ProfileView.tsx, PublicProfilePreviewView.tsx
+- App.tsx, Layout.tsx, ProtectedRoute.tsx, DevQuickLogin.tsx, SessionExpiredModal.tsx, CompletarPerfilCPF.tsx, OnboardingView.tsx
+- HomeView.tsx, CitySelector.tsx, NotificationPanel.tsx, IndicaPraVoceSection.tsx, BeneficiosMVSection.tsx, AllBeneficiosView.tsx
+- EventDetailView.tsx, EventSocialProof.tsx
+- ProfileView.tsx, PublicProfilePreviewView.tsx, MinhasPendenciasView.tsx
 - SearchView.tsx, RadarView.tsx
 - WalletView.tsx
 - MessagesView.tsx, ChatRoomView.tsx
-- chatStore.ts, ticketsStore.ts, socialStore.ts, extrasStore.ts
-- ComunidadePublicView.tsx
-- DashboardV2Gateway.tsx
-- useAppHandlers.ts
+- chatStore.ts, ticketsStore.ts, socialStore.ts, extrasStore.ts, authStore.ts
+- ComunidadePublicView.tsx, ComemoracaoFormView.tsx, EventoPrivadoFormView.tsx
+- DashboardV2Gateway.tsx, useAppHandlers.ts, useBloqueados.ts, devLogInit.ts
+- NotifMVPendentesView.tsx, ConviteEspecialMVView.tsx, ParceirosMaisVantaView.tsx, DealsMaisVantaView.tsx
+- CidadesMaisVantaView.tsx, ConvitesMaisVantaView.tsx, CondicoesProducerView.tsx, ComercialTab.tsx
+- financeiro/index.tsx, TabRelatorio.tsx, SolicitacoesParceriaView.tsx, NotificacoesAdminView.tsx
+- ParceiroDashboardPage.tsx, AceitarConviteMVPage.tsx
 
-### useTicketsStore (4 consumers)
+### useTicketsStore (9 consumers)
 myTickets, myPresencas, cortesiasPendentes, transferenciasPendentes
-- WalletView.tsx, ticketsStore.ts, App.tsx, useAppHandlers.ts
+- App.tsx, useAppHandlers.ts, ticketsStore.ts, extrasStore.ts, devLogInit.ts
+- WalletView.tsx, ProfileView.tsx, EventDetailView.tsx, NotificationPanel.tsx
 
-### useChatStore (6 consumers)
+### useChatStore (8 consumers)
 chats, onlineUsers, totalUnreadMessages, activeChatParticipantId
-- App.tsx, Layout.tsx, useAppHandlers.ts
+- App.tsx, Layout.tsx, useAppHandlers.ts, chatStore.ts, devLogInit.ts
 - MessagesView.tsx, ChatRoomView.tsx, EventDetailView.tsx
 
-### useSocialStore (5 consumers)
+### useSocialStore (10 consumers)
 friendships, mutualFriends
-- socialStore.ts, App.tsx
+- App.tsx, useAppHandlers.ts, socialStore.ts, devLogInit.ts
 - ChatRoomView.tsx, MessagesView.tsx, PublicProfilePreviewView.tsx
+- EventDetailView.tsx, EventSocialProof.tsx, NotificationPanel.tsx
 
-### useExtrasStore (3 consumers)
+### useExtrasStore (10 consumers)
 allEvents, savedEvents, refreshEvents
-- extrasStore.ts, App.tsx, EventDetailView.tsx
-- HomeView.tsx usa apenas refreshEvents (pull-to-refresh), não allEvents
+- App.tsx, useAppHandlers.ts, extrasStore.ts, authStore.ts, devLogInit.ts
+- HomeView.tsx, EventDetailView.tsx, ProfileView.tsx, WalletView.tsx, SearchView.tsx
 
 ## RPCs → Consumers
 
@@ -302,7 +362,7 @@ allEvents, savedEvents, refreshEvents
 | cancelar_convite_produtor | REMOVIDO | AE |
 | reiniciar_negociacao | REMOVIDO | AE |
 | expirar_negociacoes_vencidas | pg_cron (hourly) | AE |
-| gerar_ocorrencias_recorrente | eventosAdminService.ts | AE |
+| gerar_ocorrencias_recorrente | CriarEventoView.tsx | AE |
 | cancelar_serie_recorrente | SerieChips.tsx | AE |
 | get_ocorrencias_serie | SerieChips.tsx | AE |
 | inserir_notificacao | notificationsService.ts | IN |

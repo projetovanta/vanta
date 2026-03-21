@@ -60,29 +60,32 @@ overflow-x-auto snap-x no-scrollbar + shrink-0
 - lint:layout bloqueia `pb-8/10/12` em `rounded-t-*` e avisa se falta `safe-area-inset-bottom`
 
 ## Tipografia
-Playfair Display SC Bold 700, clamp responsivo
+Playfair Display Bold 700, clamp responsivo
 
 ## Filter Modals (Busca)
 - Backdrop: bg-black/80 backdrop-blur-md (escuro)
 
 ## Mapa de Z-Index (faixas oficiais)
-| Faixa | Uso | Exemplos |
-|-------|-----|----------|
-| 0-50 | Conteúdo inline, badges, EventCard overlays | EventCard z-[35] |
-| 50-60 | Bottom-sheets e modais internos de views | ReviewModal z-[60], VantaDatePicker z-[60] |
-| 70-80 | Modais secundários dentro de views | MaisVantaBeneficioModal z-[70/80], CapacidadeModal z-[70] |
-| 100-120 | Sub-overlays, CitySelector, NotificationPanel | CitySelector z-[100], NotificationPanel z-[120] |
+| Faixa | Uso | Componentes |
+|-------|-----|-------------|
+| 0-35 | Conteúdo inline, badges, overlays | EventCard z-[35] |
+| 50-60 | Bottom-sheets e modais internos de views | InviteFriendsModal z-[50], VantaIndicaView editor z-[50], ReviewModal z-[60], VantaColorPicker z-[60], VantaDatePicker z-[60], VantaTimePicker z-[60], ProfileView sheets z-[60], EventDetailView sheet z-[60], PassaportesMVView z-[60], PlanosMVView z-[60], MembrosGlobaisMVView z-[60], InfracoesGlobaisMVView z-[60], DividaSocialMVView z-[60], AssinaturasMVView z-[60], EventosPendentesView z-[60], CopiarModal z-[60], CargoModal z-[60], TabCargosPermissoes z-[60], TabCortesias z-[60], VantaIndicaView modal z-[60] |
+| 70-80 | Modais secundários dentro de views | MaisVantaBeneficioModal z-[70/80], CapacidadeModal z-[70], ClubeOptInView confirm z-[80] |
+| 100-120 | Sub-overlays, nav, painéis | CitySelector z-[100], Layout nav z-[100], GestaoComprovantesView modais z-[100/110], ComunidadePublicView z-[100/110], EventSocialProof z-[100], DashboardV2Gateway z-[100], ModalInserirLote z-[100], Layout header z-[110], ComprovanteMeiaSection z-[110], EventDetailView zoom z-[110], NotificationPanel z-[120], MinhasSolicitacoesView z-[120] |
 | 150 | Admin blocked state | AdminHub blocked z-[150] |
-| 160-180 | Views overlay empilhadas (Home → detail) | AllEventsView z-[160], CityView z-[170], ComunidadePublicView z-[180] |
-| 200 | Modais globais, filtros, PublicProfile | SessionExpiredModal z-[200], HomeFilterOverlay z-[200], PublicProfilePreview z-[200] |
+| 160-180 | Views overlay empilhadas (Home → detail) | AllEventsView z-[160], AllPartnersView z-[160], AllBeneficiosView z-[160], SubTabConfig z-[160], CityView z-[170], ComunidadePublicView z-[180] |
+| 200 | Modais globais, filtros, busca | SessionExpiredModal z-[200], PushPermissionBanner z-[200], HomeFilterOverlay z-[200], PublicProfilePreview header z-[200], RestrictedModal z-[200], NewChatModal z-[200], MoodPicker z-[200], VibeFilterModal z-[200], TimeFilterModal z-[200], PriceFilterModal z-[200], CityFilterModal z-[200], BeneficiosMVTab z-[200], TicketQRModal z-[200], PlanosMVView editor z-[200], ParticipantesView sheets z-[200], TabNomes bar z-[200], DashboardV2Gateway tooltip z-[200], App.tsx confirmar z-[200] |
+| 210 | Sub-modal de QR | TicketQRModal share z-[210] |
 | 250 | Modais de confirmação acima de views | PresencaConfirmationModal z-[250] |
-| 300 | Modais de sucesso/resultado | AppModals success z-[300], WalletLockScreen z-[300], CheckoutPage modal z-[300] |
-| 340-350 | Fluxos de auth, guest modal | AuthModal z-[350], GuestModal z-[340] |
-| 400 | Modais críticos (legal, CPF, onboarding, crop) | CompletarPerfilCPF z-[400], OnboardingView z-[400], ImageCropperModal z-[400], ReportModal z-[400], LegalView z-[400] |
-| 500 | Modais acima de tudo (reset password, unsaved, picker, confirm) | ResetPassword z-[500], UnsavedChangesModal z-[500], VantaPickerModal z-[600] |
-| 600 | Toast | Toast z-[600] |
+| 300-310 | Modais de sucesso/resultado | AppModals success z-[300], WalletLockScreen z-[300], CheckoutPage modal z-[300], ChatRoomView fullscreen z-[300/310], ArchiveModal z-[300], MyTicketsView zoom z-[300] |
+| 340-350 | Fluxos de auth, guest modal | GuestModal z-[340], AuthModal z-[350] |
+| 400 | Modais críticos (legal, CPF, onboarding, crop) | CompletarPerfilCPF z-[400], OnboardingView z-[400], ImageCropperModal z-[400], ReportModal z-[400], LegalView z-[400], ClubeOptInView confirm z-[400], ChatRoomView delete z-[400], PublicProfilePreview fullscreen z-[400] |
+| 499-500 | Modais acima de tudo (reset, unsaved, confirm, paleta) | AppModals MV bar z-[499/500], ResetPassword z-[500], UnsavedChangesModal z-[500], CommandPalette z-[500], RadarView overlays z-[500], ImageCropModal z-[500], NotificationPanel confirm z-[500], EditProfileView confirm z-[500], SolicitacoesParceriaView zoom z-[500], PublicProfilePreview modais z-[500], EditarModal z-[500] |
+| 600 | Toast + Picker (⚠️ colisão) | Toast z-[600], VantaPickerModal z-[600] |
 | 2000 | Modais acima de mapas (Leaflet usa z-index altos) | PremiumCalendar z-[2000] |
 | 9999-10000 | DevTools (nunca em produção) | DevQuickLogin z-[9999], DevLogPanel z-[9999] |
+
+**⚠️ Colisão**: VantaPickerModal z-[600] e Toast z-[600] compartilham a mesma faixa. Se um picker estiver aberto e um toast aparecer, podem sobrepor.
 
 **Regra**: novo modal deve usar a faixa correspondente ao seu tipo. Nunca inventar z-index fora das faixas.
 

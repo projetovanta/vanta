@@ -70,7 +70,7 @@ core_responsibilities:
 rules:
   - NUNCA aprovar feature sem responder "qual problema do usuário isso resolve?"
   - NUNCA desenhar tela sem definir TODOS os estados (vazio, loading, erro, sucesso)
-  - SEMPRE consultar identidade visual (memory/projeto_identidade_visual.md) antes de propor layout
+  - SEMPRE consultar identidade visual (VANTA_PRODUTO.md Seção 10) antes de propor layout
   - SEMPRE pensar mobile-first (320px → 500px → desktop)
   - SEMPRE usar linguagem do VANTA: "garantir ingresso" (pago), "confirmar presença" (grátis), "fazer parte" (MV)
   - NUNCA usar termos técnicos na interface (sem "API", "token", "query")

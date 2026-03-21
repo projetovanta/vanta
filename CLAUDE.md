@@ -8,13 +8,15 @@ Sempre responder em português do Brasil.
 ```
 1. Ler este CLAUDE.md (já carregado)
 2. Identificar qual módulo/página será afetado
-3. Consultar MEMORY.md → achar o modulo_*.md ou sub_*.md correto
-4. Ler a memória modular → ver tabelas, services, fluxos, checklist
-5. Se mudar schema/store/RPC → consultar EDGES.md → identificar TODOS os consumers afetados
-6. Voltar aqui → conferir REGRAS DE EXECUÇÃO + CHECKLIST
-8. Só ENTÃO codificar
+3. Consultar a fonte da verdade correta:
+   - Código (arquivos, imports, props, dependências) → VANTA_LIVRO.md
+   - Fluxos de tela (navegação do usuário) → VANTA_FLUXOS.md
+   - Produto (decisões, modelo, identidade, pendências) → VANTA_PRODUTO.md
+4. Se mudar schema/store/RPC → consultar EDGES.md → identificar TODOS os consumers afetados
+5. Voltar aqui → conferir REGRAS DE EXECUÇÃO + CHECKLIST
+6. Só ENTÃO codificar
 ```
-**Se não leu a memória do módulo → NÃO COMEÇAR a codificar.**
+**Se não consultou a fonte da verdade relevante → NÃO COMEÇAR a codificar.**
 
 ## 🔴 REGRAS DE EXECUÇÃO
 
@@ -81,7 +83,7 @@ App.tsx aplica `overflow-hidden` quando `isFocusView = true`. Todo componente DE
 - Ações destrutivas: modal "Tem certeza?" antes
 - Scroll horizontal de tabs: `overflow-x-auto snap-x no-scrollbar` + `shrink-0`
 - Safe area PWA: `style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}` header, `style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}` footer (inline com fallback)
-- Tipografia: Playfair Display SC Bold 700, clamp responsivo
+- Tipografia: Playfair Display Bold 700, clamp responsivo
 
 ## ✅ CHECKLIST — Auditoria Pré-Entrega (14 itens)
 1. TSC: `npx tsc --noEmit` → 0 erros
@@ -143,13 +145,15 @@ Ver fluxo obrigatório no topo deste arquivo.
 - Zero mensagens de "vou fazer X agora" — só fazer e reportar.
 
 ### Princípio #4 — Onde anotar o quê
-- **CLAUDE.md** = SOMENTE regras de operação entre eu e o usuário (como trabalhar, fluxos, checklist). NUNCA anotar detalhes de arquivos/módulos aqui.
-- **memory/[modulo].md** = detalhes técnicos, schema, regras de negócio, arquivos. Cada módulo na sua memória.
-- Se uma regra é sobre "como eu devo agir" → CLAUDE.md. Se é sobre "como X funciona" → memória do módulo.
+- **CLAUDE.md** = SOMENTE regras de operação (como trabalhar, fluxos, checklist). NUNCA detalhes de código/produto aqui.
+- **VANTA_LIVRO.md** = código (arquivos, imports, props, dependências). Consultar antes de mexer em código.
+- **VANTA_PRODUTO.md** = produto (decisões, modelo, identidade, pendências). Consultar antes de decisão de negócio.
+- **VANTA_FLUXOS.md** = fluxos de tela (navegação do usuário). Consultar antes de mudar UX.
+- Se é sobre "como eu devo agir" → CLAUDE.md. Se é sobre "como X funciona" → livro correspondente.
 
 ### Princípio #5 — Economia real de tokens
 - Antes de ler um arquivo inteiro → Grep primeiro pra achar a linha/seção exata.
-- Antes de ler código → checar se a memória do módulo já tem a resposta.
+- Antes de ler código → checar se o LIVRO já tem a resposta.
 - Se a tarefa é simples (CSS, rename, 1 edit) → sugerir `/model haiku`.
 - Se a tarefa é pesada (feature nova, debug, arquitetura) → avisar que precisa de Opus.
 - Usar `/compact` quando a conversa ficar longa e mudar de assunto.
@@ -191,55 +195,34 @@ Ver fluxo obrigatório no topo deste arquivo.
 - **NUNCA ler arquivo inteiro quando um script dá a resposta.** Exemplos: `npm run props` em vez de ler e procurar interfaces; `npm run deps` em vez de grep manual; `npm run lines` em vez de contar.
 - **Explore Agents** são APENAS para buscas semânticas abertas (ex: "onde no codebase existe X?") quando scripts não resolvem. Nunca para ler conteúdo de arquivos conhecidos.
 
-## 🗂️ ÍNDICE — Documentação Modular (ler ANTES de mexer)
+## 🗂️ FONTES DA VERDADE (ler ANTES de mexer)
+
+### 3 Livros do Projeto
+| Livro | O que contém | Arquivo |
+|---|---|---|
+| **LIVRO** | Código: cada arquivo, imports, props, dependências, observações (~8470L) | `VANTA_LIVRO.md` |
+| **FLUXOS** | Fluxos de tela: como o usuário navega | `VANTA_FLUXOS.md` |
+| **PRODUTO** | Produto: posicionamento, modelo financeiro, design, decisões, identidade, pendências | `VANTA_PRODUTO.md` |
 
 ### Fluxo de consulta
-1. MEMORY.md (autoloaded) → achar `modulo_*.md` ou `sub_*.md` pelo domínio
-2. Ler memória modular → ver tabelas, services, fluxos, checklist
-3. Se mudar schema/store/RPC → consultar `EDGES.md` → saber TODOS os consumers afetados
+1. Identificar a fonte da verdade pelo tipo de informação (código → LIVRO, navegação → FLUXOS, negócio → PRODUTO)
+2. Grep cirúrgico no livro correto (nunca ler inteiro — usar offset/limit)
+3. Se mudar schema/store/RPC → consultar `memory/EDGES.md` → saber TODOS os consumers afetados
 
-### Módulos (10) — tabelas, services, fluxos, checklist
-| Domínio | Arquivo |
+### Referências técnicas complementares
+| Tópico | Arquivo |
 |---|---|
-| Comunidade | `modulo_comunidade.md` |
-| Evento | `modulo_evento.md` |
-| Compra & Ingresso | `modulo_compra_ingresso.md` |
-| Carteira | `modulo_carteira.md` |
-| Listas | `modulo_listas.md` |
-| Financeiro | `modulo_financeiro_completo.md` |
-| Social | `modulo_social.md` |
-| Perfil & Feed | `modulo_perfil_feed.md` |
-| RBAC | `modulo_rbac.md` |
-| MAIS VANTA | `modulo_clube.md` |
+| Propagação cross-domínio | `memory/EDGES.md` |
+| Responsividade & z-index | `memory/responsividade.md` |
+| Tipografia & tokens | `memory/tipografia.md` |
+| PWA & Capacitor | `memory/plataformas.md` |
 
-### Sub-Módulos (15) — detalhe de features específicas
-| Feature | Arquivo |
+### Estado & índice
+| Tópico | Arquivo |
 |---|---|
-| Criar Evento | `sub_criar_evento.md` |
-| Dashboard Evento | `sub_dashboard_evento.md` |
-| Transferência & Cortesia | `sub_transferencia_cortesia.md` |
-| Promoter | `sub_promoter.md` |
-| Saque & Reembolso | `sub_saque_reembolso.md` |
-| Portaria & Caixa | `sub_portaria_caixa.md` |
-| Aprovação & Negociação | `sub_aprovacao_negociacao.md` |
-| Notificações | `sub_notificacoes.md` |
-| Comunidade CRUD | `sub_comunidade_crud.md` |
-| MAIS VANTA Admin | `sub_clube_admin.md` |
-| Relatórios | `sub_relatorios.md` |
-| Offline | `sub_offline.md` |
-| Busca & Filtros | `sub_busca_filtros.md` |
-| Chat & Realtime | `sub_chat_realtime.md` |
-| Solicitação Parceria | `sub_solicitacao_parceria.md` |
-
-### Propagação cross-domínio
-- `EDGES.md` — mapa tabela/store/RPC → consumers afetados. **OBRIGATÓRIO consultar quando mudar schema ou store.**
-
-### Meta
-| Tópico | Memória |
-|---|---|
-| Estado atual + pendências | `memory/MEMORY.md` |
-| Regras de conduta | `memory/regras_usuario.md` |
-| Fluxos detalhados | `MAPA_PROJETO.md` (raiz) |
+| Estado atual + pendências | `memory/sessao_atual.md` |
+| Índice de memórias | `memory/MEMORY.md` (autoloaded) |
+| Atas de sessão | `memory/atas/INDICE-ATAS.md` |
 
 ## 📍 Utilitários
 - **Mapa Operacional Completo**: `VANTA_OPERATIONAL_MAP.md` na raiz
@@ -262,7 +245,7 @@ Quando o usuário chamar um agente pelo nome ou pelo comando, seguir este protoc
 6. Se precisar de detalhe sobre uma área → o BRIEFING aponta o arquivo certo
 7. Assumir a persona daquele agente (nome, tom, especialidade)
 8. **MANTER TODAS AS REGRAS DESTE CLAUDE.md** — agentes não sobrescrevem regras
-9. Usar o sistema de memória existente (MEMORY.md, modulo_*.md, EDGES.md)
+9. Usar o sistema de memória existente (MEMORY.md, VANTA_LIVRO.md, VANTA_PRODUTO.md, EDGES.md)
 10. Ao final do trabalho, **registrar mudanças relevantes** em `.agents/MEMORIA-COMPARTILHADA.md` e voltar a ser "neutro"
 11. **SEMPRE responder em português do Brasil**
 
@@ -309,7 +292,7 @@ Quando o usuário chamar um agente pelo nome ou pelo comando, seguir este protoc
 
 ### Regras dos agentes
 - Agentes SEGUEM todas as regras deste CLAUDE.md (memória, TSC, checklist, scripts, etc.)
-- Agentes usam o sistema de memória EXISTENTE (modulo_*.md) — não criam memória paralela
+- Agentes usam as FONTES DA VERDADE (LIVRO, FLUXOS, PRODUTO) — não criam memória paralela
 - Agentes NUNCA fazem ações autônomas — reportam ao Dan e esperam autorização
 - Agentes SEMPRE respondem em português do Brasil
 - Se o Dan não especificar agente, tratar como conversa normal (sem persona)

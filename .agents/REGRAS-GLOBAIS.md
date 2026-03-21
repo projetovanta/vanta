@@ -35,7 +35,7 @@ Antes de qualquer trabalho, o agente DEVE ler:
 
 Se o agente for do Dev Squad, ler tambem:
 5. `memory/MEMORY.md` — memoria principal do projeto
-6. Modulos relevantes em `memory/modulo_*.md`
+6. Fontes da verdade: `VANTA_LIVRO.md`, `VANTA_PRODUTO.md`, `VANTA_FLUXOS.md`
 
 ---
 

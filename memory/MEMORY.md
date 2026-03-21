@@ -1,152 +1,47 @@
-# MEMORY.md — Índice de Memórias do Projeto VANTA
+# MEMORY.md — Indice de Memorias do Projeto VANTA
 
-> Índice central. Cada link aponta pra uma memória específica. Máx 180 linhas.
+> Nova estrutura: 3 fontes da verdade + memorias de suporte. Max 180 linhas.
 
 ---
 
-## Projeto — Estratégia & Visão
+## Fontes da Verdade (raiz do projeto)
 
-- [projeto_posicionamento.md](projeto_posicionamento.md) — Posicionamento, BrandScript, modelo de negócio, slogan
-- [projeto_redesign_app.md](projeto_redesign_app.md) — Redesign completo do app (3 camadas, tiers, onboarding, tabs)
-- [projeto_identidade_visual.md](projeto_identidade_visual.md) — Paleta, tipografia, fotografia, animações, 3 palavras-guia
-- [mais_vanta_v2_modelo.md](mais_vanta_v2_modelo.md) — Modelo MAIS VANTA v2 (inspiração Secret Society Dubai)
-- [projeto_cms_master.md](projeto_cms_master.md) — CMS Master: ideia de painel pra editar tudo sem código (IDEIA, não aprovado)
+- [VANTA_LIVRO.md](../VANTA_LIVRO.md) — Codigo: cada arquivo, imports, props, quem depende de quem (8470L)
+- [VANTA_FLUXOS.md](../VANTA_FLUXOS.md) — Fluxos de tela: como o usuario navega
+- [VANTA_PRODUTO.md](../VANTA_PRODUTO.md) — Produto: posicionamento, modelo financeiro, design, decisoes do Dan, identidade visual, pendencias
 
-## Módulos Principais (10)
+## Estado da Sessao
 
-- [modulo_comunidade.md](modulo_comunidade.md) — Comunidade (casa noturna/bar/espaço)
-- [modulo_evento.md](modulo_evento.md) — Evento (admin, criação, dashboard)
-- [modulo_compra_ingresso.md](modulo_compra_ingresso.md) — Checkout e compra de ingresso
-- [modulo_carteira.md](modulo_carteira.md) — Carteira / Wallet
-- [modulo_listas.md](modulo_listas.md) — Listas de entrada & Promoter
-- [modulo_financeiro_completo.md](modulo_financeiro_completo.md) — Financeiro completo
-- [modulo_social.md](modulo_social.md) — Social (amizades + mensagens)
-- [modulo_perfil_feed.md](modulo_perfil_feed.md) — Perfil + Feed + Busca + Radar
-- [modulo_rbac.md](modulo_rbac.md) — RBAC (permissões + equipe)
-- [modulo_clube.md](modulo_clube.md) — MAIS VANTA (clube exclusivo)
+- [sessao_atual.md](sessao_atual.md) — Onde paramos, proximos passos
+- [plano_auditoria_correcoes.md](plano_auditoria_correcoes.md) — Checklist: 26 correções da auditoria profunda (temporário, remover ao concluir)
 
-## Sub-Módulos (16)
+## Referencias Tecnicas
 
-- [sub_criar_evento.md](sub_criar_evento.md) — Wizard criar evento (5 steps)
-- [sub_dashboard_evento.md](sub_dashboard_evento.md) — Dashboard do evento (9 sub-views)
-- [sub_transferencia_cortesia.md](sub_transferencia_cortesia.md) — Transferência + Cortesia
-- [sub_promoter.md](sub_promoter.md) — Promoter (dashboard + cotas)
-- [sub_saque_reembolso.md](sub_saque_reembolso.md) — Saque + Reembolso
-- [sub_portaria_caixa.md](sub_portaria_caixa.md) — Portaria (check-in) + Caixa
-- [sub_aprovacao_negociacao.md](sub_aprovacao_negociacao.md) — Aprovação + Negociação sócio
-- [sub_notificacoes.md](sub_notificacoes.md) — Notificações (3 canais)
-- [sub_comunidade_crud.md](sub_comunidade_crud.md) — Comunidade CRUD + Página pública
-- [sub_clube_admin.md](sub_clube_admin.md) — MAIS VANTA Admin (curadoria + gestão)
-- [sub_relatorios.md](sub_relatorios.md) — Relatórios & Analytics
-- [sub_offline.md](sub_offline.md) — Operações offline
-- [sub_busca_filtros.md](sub_busca_filtros.md) — Busca + Filtros + Radar
-- [sub_chat_realtime.md](sub_chat_realtime.md) — Chat + Realtime + Presence
-- [sub_solicitacao_parceria.md](sub_solicitacao_parceria.md) — Solicitação de parceria
-- [sub_evento_privado.md](sub_evento_privado.md) — Evento privado (corporativo)
+- [EDGES.md](EDGES.md) — Propagacao cross-dominio (tabela/store/RPC → consumers)
+- [responsividade.md](responsividade.md) — Scaling fluido, z-index, FocusViews, modais, safe areas
+- [tipografia.md](tipografia.md) — Tokens TYPOGRAPHY, fontes, padroes de uso
+- [plataformas.md](plataformas.md) — PWA, Capacitor, lojas, deep links
 
-## Sub-Módulos Especiais
+## Feedback (como trabalhar)
 
-- [sub_comemoracao.md](sub_comemoracao.md) — Comemoração (aniversário/despedida VIP)
-- [sub_taxas_modelo.md](sub_taxas_modelo.md) — Taxas VANTA (modelo negociável)
-## Módulos Auxiliares
-- [modulo_inteligencia.md](modulo_inteligencia.md) — Inteligência VANTA (motor de valor)
+- [feedback_aplicar_migration_imediato.md](feedback_aplicar_migration_imediato.md) — Migration antes de codigo
+- [feedback_zero_workarounds_any.md](feedback_zero_workarounds_any.md) — Zero `as any`
+- [feedback_plano_antes_execucao.md](feedback_plano_antes_execucao.md) — Plano antes de executar
+- [feedback_alex_demitido.md](feedback_alex_demitido.md) — Usar referencias do Dan
+- [feedback_rafa_convoca_equipe.md](feedback_rafa_convoca_equipe.md) — Rafa convoca especialistas
+- [feedback_ler_memorias_obrigatorio.md](feedback_ler_memorias_obrigatorio.md) — Ler feedbacks antes de agir
+- [feedback_sem_bypass_hooks.md](feedback_sem_bypass_hooks.md) — Nunca contornar hooks
+- [feedback_nunca_burlar_marker.md](feedback_nunca_burlar_marker.md) — Marker so com trabalho real
+- [feedback_padrao_sprint_sessao.md](feedback_padrao_sprint_sessao.md) — Padrao sprint por blocos
+- [feedback_visual_profundidade.md](feedback_visual_profundidade.md) — Profundidade visual entre camadas
+- [feedback_atas_resumo_conversa.md](feedback_atas_resumo_conversa.md) — Atas como resumos de conversa
+- [feedback_supabase_project_id.md](feedback_supabase_project_id.md) — project_id correto
+- [feedback_tasks_checklist.md](feedback_tasks_checklist.md) — Tasks como checklist visual
 
-## Views & Componentes
+## Atas
 
-- [home_feed.md](home_feed.md) — Home / Feed
-- [event_detail.md](event_detail.md) — Detalhe do evento
-- [checkout.md](checkout.md) — Checkout
-- [wallet.md](wallet.md) — Carteira (view)
-- [profile.md](profile.md) — Perfil (view)
-- [search.md](search.md) — Busca (view)
-- [radar.md](radar.md) — Radar (mapa)
-- [mensagens.md](mensagens.md) — Mensagens / Chat
-- [onboarding.md](onboarding.md) — Onboarding
-- [comunidade_public.md](comunidade_public.md) — Comunidade pública (view)
-- [componentes_compartilhados.md](componentes_compartilhados.md) — Componentes compartilhados
-- [tipografia.md](tipografia.md) — Tipografia (tokens, padrões, regras)
-- [graficos_componentes.md](graficos_componentes.md) — Gráficos / KPIs
-- [admin_dashboard_home.md](admin_dashboard_home.md) — Admin Dashboard Home
+- [atas/INDICE-ATAS.md](atas/INDICE-ATAS.md) — Indice de todas as atas
 
-## Infraestrutura & Config
+## Arquivo morto
 
-- [infraestrutura.md](infraestrutura.md) — Infra (Capacitor, Vite, Supabase, Vercel)
-- [plataformas.md](plataformas.md) — PWA, Lojas, E2E
-- [responsividade.md](responsividade.md) — Responsividade (scaling fluido)
-- [push_notificacoes.md](push_notificacoes.md) — Push / Notificações (FCM)
-
-## RBAC & Permissões
-
-- [rbac_definitivo.md](rbac_definitivo.md) — RBAC definitivo (roles/cargos)
-- [permissoes_rbac.md](permissoes_rbac.md) — Permissões RBAC (service)
-
-## Admin & Operações
-
-- [painel_administrativo.md](painel_administrativo.md) — Painel Admin
-- [services_admin.md](services_admin.md) — Services Admin (38 arquivos)
-- [categorias.md](categorias.md) — Categorias de evento
-- [checkin_caixa.md](checkin_caixa.md) — Check-in / Caixa / QR
-- [checkin_offline.md](checkin_offline.md) — Check-in offline (IndexedDB)
-- [regras_reembolso.md](regras_reembolso.md) — Regras de reembolso
-- [reviews.md](reviews.md) — Reviews
-- [relatorios.md](relatorios.md) — Relatórios (service)
-
-## Mapas & Grafos
-
-- [EDGES.md](EDGES.md) — Propagação cross-domínio (tabela/store/RPC → consumers)
-- [graph_admin_evento.md](graph_admin_evento.md) — Grafo admin evento
-- [graph_identidade.md](graph_identidade.md) — Grafo identidade & conta
-- [mapa_admin_painel.md](mapa_admin_painel.md) — Mapa painel admin
-- [mapa_features_extras.md](mapa_features_extras.md) — Mapa features extras
-- [mapa_financeiro.md](mapa_financeiro.md) — Mapa financeiro
-- [mapa_infraestrutura_ui.md](mapa_infraestrutura_ui.md) — Mapa infra / UI
-- [mapa_operacoes_evento.md](mapa_operacoes_evento.md) — Mapa operações evento
-- [mapa_rbac_permissoes.md](mapa_rbac_permissoes.md) — Mapa RBAC
-- [mapa_social_comunidade.md](mapa_social_comunidade.md) — Mapa social / comunidade
-- [mapa_usuario_app.md](mapa_usuario_app.md) — Mapa app do usuário
-
-## Checklists (9)
-
-- [checklist_fluxos.md](checklist_fluxos.md) — Checklist fluxos interativo
-- [checklist_m1_fluxo_principal.md](checklist_m1_fluxo_principal.md) — M1: Fluxo principal
-- [checklist_m2_mais_vanta.md](checklist_m2_mais_vanta.md) — M2: MAIS VANTA
-- [checklist_m3_auth_social.md](checklist_m3_auth_social.md) — M3: Auth + Perfil + Social
-- [checklist_m4_evento_compra.md](checklist_m4_evento_compra.md) — M4: Evento + Compra
-- [checklist_m5_admin_operacao.md](checklist_m5_admin_operacao.md) — M5: Admin + Operação
-- [checklist_m6_financeiro.md](checklist_m6_financeiro.md) — M6: Financeiro
-- [checklist_m7_master.md](checklist_m7_master.md) — M7: Master Tools
-- [checklist_m8_infra.md](checklist_m8_infra.md) — M8: Infra + Edge Functions
-- [checklist_m9_comunidade_rbac.md](checklist_m9_comunidade_rbac.md) — M9: Comunidade + RBAC
-
-## Auditoria & Progresso
-
-- [audit_mapeamento_progress.md](audit_mapeamento_progress.md) — Progresso mapeamento (132 fluxos)
-- [plano_blocos_melhorias.md](plano_blocos_melhorias.md) — 4 blocos de melhorias (visual, navegação, financeiro, operações) — COMPLETOS
-- [decisoes_features_futuras.md](decisoes_features_futuras.md) — 20 decisões de features futuras (Dan, 17/mar sessão 5)
-- [plano_wizards_v2.md](plano_wizards_v2.md) — Plano Wizards v2: 38 itens em 6 fases (aprovado 18/mar sessão 2)
-
-## Feedback
-
-- [feedback_aplicar_migration_imediato.md](feedback_aplicar_migration_imediato.md) — NUNCA deixar migration pendente — aplicar + gerar tipos + deploy = obrigatório
-- [feedback_zero_workarounds_any.md](feedback_zero_workarounds_any.md) — ZERO workarounds com `as any` no Supabase — migration primeiro, tipos depois, código por último
-- [feedback_plano_antes_execucao.md](feedback_plano_antes_execucao.md) — NUNCA executar sem plano aprovado
-- [feedback_alex_demitido.md](feedback_alex_demitido.md) — Alex demitido: NUNCA substituir admin sem teste, SEMPRE usar referências do Dan
-- [feedback_rafa_convoca_equipe.md](feedback_rafa_convoca_equipe.md) — Rafa NUNCA age sozinho — convoca especialistas, cada um assina, Rafa consolida e reporta ao Dan
-- [feedback_ler_memorias_obrigatorio.md](feedback_ler_memorias_obrigatorio.md) — OBRIGATÓRIO ler memórias de feedback antes de qualquer ação
-- [feedback_sem_bypass_hooks.md](feedback_sem_bypass_hooks.md) — NUNCA contornar hooks via Bash/node/python/sed — pedir autorização ao Dan via AskUserQuestion
-- [feedback_nunca_burlar_marker.md](feedback_nunca_burlar_marker.md) — NUNCA rodar vanta-marker.sh sem ter feito o trabalho real — última chance
-- [feedback_padrao_sprint_sessao.md](feedback_padrao_sprint_sessao.md) — Padrão sprint: blocos temáticos → investigar → plano com equipe → Dan aprova → executar → memórias
-- [feedback_visual_profundidade.md](feedback_visual_profundidade.md) — Visual: profundidade entre camadas, "preto não preto", contraste sutil, zero hover mobile
-- [feedback_atas_resumo_conversa.md](feedback_atas_resumo_conversa.md) — Atas = resumos de conversa (contexto, raciocínio, tentativas), não formato corporativo
-- [feedback_supabase_project_id.md](feedback_supabase_project_id.md) — Supabase MCP: project_id correto = daldttuibmxwkpbqtebm (não jbmqjbatpqbxajkndixx)
-- [feedback_tasks_checklist.md](feedback_tasks_checklist.md) — SEMPRE criar Tasks como checklist visual antes de executar planos
-
-## Documentação Definitiva (raiz do projeto)
-
-- [VANTA_LIVRO.md](../VANTA_LIVRO.md) — Livro Técnico Definitivo (598 arquivos, 223 migrations, 168 testes)
-- [VANTA_FLUXOS.md](../VANTA_FLUXOS.md) — Livro de Fluxos do Usuário (todos os caminhos de navegação)
-
-## Meta
-
-- [regras_usuario.md](regras_usuario.md) — Regras do usuário (comunicação, preferências)
-- [sessao_atual.md](sessao_atual.md) — Estado atual + pendências
+- [_deprecated/](_deprecated/) — 89 memorias antigas (backup, nao consultar)

@@ -36,7 +36,7 @@
 <!-- Exemplos:
 [2026-03-16] Alex — Sempre confirmar com Dan antes de envolver mais de 2 agentes
 [2026-03-16] Memo — Atas parciais a cada 30min evitam perda de contexto em sessoes longas
-[2026-03-16] Lia — Verificar modulo_*.md ANTES de comecar trabalho, nao so antes do commit
+[2026-03-16] Lia — Verificar fontes da verdade (LIVRO/PRODUTO/FLUXOS) ANTES de comecar trabalho, nao so antes do commit
 -->
 
 ---

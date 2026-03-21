@@ -220,7 +220,9 @@ export const AnalyticsMaisVantaView: React.FC<{
               </div>
               {(resgates?.topDeals?.length ?? 0) > 0 && (
                 <div className="bg-zinc-900/60 border border-white/5 rounded-2xl p-3">
-                  <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2">Top Deals</p>
+                  <p className="text-[0.5rem] text-zinc-400 font-black uppercase tracking-widest mb-2">
+                    Mais Resgatados
+                  </p>
                   {resgates?.topDeals.map((d, i) => (
                     <div
                       key={i}

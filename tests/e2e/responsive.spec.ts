@@ -32,7 +32,8 @@ test.describe('Responsividade', () => {
     });
     expect(hasHScroll).toBe(false);
 
-    await expect(page.getByText(/visitante/i).first()).toBeVisible();
+    // Saudação dinâmica (Bom dia / Boa tarde / Boa noite / Boa madrugada)
+    await expect(page.getByText(/bo(m dia|a tarde|a noite|a madrugada)/i).first()).toBeVisible({ timeout: 10_000 });
 
     await context.close();
   });

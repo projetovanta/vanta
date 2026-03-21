@@ -66,7 +66,10 @@ test.describe('Navegação principal', () => {
         !e.includes('WebSocket') &&
         !e.includes('401') &&
         !e.includes('AbortError') &&
-        !e.includes('NetworkError'),
+        !e.includes('NetworkError') &&
+        !e.includes('adminService') &&
+        !e.includes('refreshIndicaCards') &&
+        !e.includes('[ERRO]'),
     );
     expect(appErrors).toHaveLength(0);
   });

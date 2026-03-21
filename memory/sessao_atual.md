@@ -1,29 +1,29 @@
 # Sessao Atual — Estado para Continuidade
 
 ## Branch: visual-redesign
-## Ultimo commit: 11b227b — sessão 21
+## Ultimo commit: 955ae01 — sessão 22
 ## TSC: OK
 ## Diff-check: OK
 ## Preflight: 8/8
 
-## Sessão 21 — Auditoria completa painel admin
+## Sessão 22 — Merge visual-redesign→main + fix CI E2E
 
 ### Concluído
-- Auditoria completa do painel admin: 197 views, 73 services, 43 componentes, 11 dashboard-v2
-- 93 tabelas Supabase verificadas — TODAS com RLS habilitado (mín 1, máx 7 policies)
-- 10 buckets de storage verificados — sensíveis privados, exibição públicos
-- 21 Edge Functions verificadas — todas ACTIVE
-- 60 RPCs verificadas
-- 225 migrations
-- ZERO arquivos órfãos no admin
-- ZERO mocks — todos dashboards consultam Supabase direto
-- 21 `as any` removidos em 11 services admin (de 23, 2 legítimos mantidos)
-- SearchHeader tracking-widest→tracking-wider (responsividade 360px)
-- Policies RLS de push_templates, push_agendados, chat_settings verificadas — OK
-- Página pública Promoter/RP investigada e plano desenhado (pendência futura)
+- Merge visual-redesign → main (54 commits das sessões 8-21)
+- Pull + merge com 2 commits do remote (ESLint + hook git pull)
+- Push main + visual-redesign sincronizados (955ae01)
+- 11 testes E2E Playwright corrigidos (5 arquivos):
+  - auth.spec.ts: `/visitante/i` → saudação dinâmica + timeouts aumentados
+  - feed.spec.ts: idem + seções resilientes (não dependem de selectedCity)
+  - navigation.spec.ts: "próximos eventos" → saudação + filtros console.error ampliados
+  - responsive.spec.ts: `/visitante/i` → saudação dinâmica
+  - admin.spec.ts: "Vanta Indica" → saudação (seções dependem de dados)
+- Preflight 8/8, diff-check OK
+- CI local: 11/11 testes passando
 
-### Decisões do Dan — sessão 21
-- Página pública Promoter/RP: anotar como pendência, pensar depois
+### Decisões do Dan — sessão 22
+- Merge visual-redesign → main: aprovado
+- Corrigir 11 testes E2E: aprovado, commit e push direto
 
 ## Decisoes do Dan ativas (sessão 16)
 - Chips NÃO aparecem por padrão — só com filtros ativos pelo ⚙

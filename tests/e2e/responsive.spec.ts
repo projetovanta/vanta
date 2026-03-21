@@ -9,8 +9,11 @@ test.describe('Responsividade', () => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
 
+    // Verificar scroll horizontal no #vanta-app (container real com overflow-hidden)
     const hasHScroll = await page.evaluate(() => {
-      return document.documentElement.scrollWidth > document.documentElement.clientWidth;
+      const app = document.getElementById('vanta-app');
+      if (app) return app.scrollWidth > app.clientWidth;
+      return document.body.scrollWidth > document.body.clientWidth;
     });
     expect(hasHScroll).toBe(false);
 
@@ -28,7 +31,9 @@ test.describe('Responsividade', () => {
     await page.waitForLoadState('networkidle');
 
     const hasHScroll = await page.evaluate(() => {
-      return document.documentElement.scrollWidth > document.documentElement.clientWidth;
+      const app = document.getElementById('vanta-app');
+      if (app) return app.scrollWidth > app.clientWidth;
+      return document.body.scrollWidth > document.body.clientWidth;
     });
     expect(hasHScroll).toBe(false);
 
@@ -47,7 +52,9 @@ test.describe('Responsividade', () => {
     await page.waitForLoadState('networkidle');
 
     const hasHScroll = await page.evaluate(() => {
-      return document.documentElement.scrollWidth > document.documentElement.clientWidth;
+      const app = document.getElementById('vanta-app');
+      if (app) return app.scrollWidth > app.clientWidth;
+      return document.body.scrollWidth > document.body.clientWidth;
     });
     expect(hasHScroll).toBe(false);
 

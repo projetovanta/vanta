@@ -10,28 +10,28 @@ test.describe('Autenticação', () => {
     await expect(page.getByText('Início')).toBeVisible();
   });
 
-  test('clicar em Perfil como visitante abre modal Área Restrita', async ({ page }) => {
+  test('clicar em Perfil como visitante abre modal de conta', async ({ page }) => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
 
     await page.getByText('Perfil').click();
 
-    // Modal "Área Restrita" com opções de login/cadastro
-    await expect(page.getByText(/Área Restrita/i).first()).toBeVisible({ timeout: 15_000 });
+    // Modal "Crie sua conta" com opções de login/cadastro
+    await expect(page.getByText(/crie sua conta/i).first()).toBeVisible({ timeout: 15_000 });
 
-    await expect(page.getByText(/já sou cadastrado/i).first()).toBeVisible({ timeout: 5_000 });
+    await expect(page.getByText(/já tenho conta/i).first()).toBeVisible({ timeout: 5_000 });
 
-    await expect(page.getByText(/quero me cadastrar/i).first()).toBeVisible({ timeout: 5_000 });
+    await expect(page.getByText(/criar conta/i).first()).toBeVisible({ timeout: 5_000 });
   });
 
-  test('clicar "Já sou cadastrado" abre tela de login', async ({ page }) => {
+  test('clicar "Já tenho conta" abre tela de login', async ({ page }) => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
 
     await page.getByText('Perfil').click();
-    await expect(page.getByText(/já sou cadastrado/i).first()).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByText(/já tenho conta/i).first()).toBeVisible({ timeout: 15_000 });
     await page
-      .getByText(/já sou cadastrado/i)
+      .getByText(/já tenho conta/i)
       .first()
       .click();
 
@@ -44,9 +44,9 @@ test.describe('Autenticação', () => {
     await page.waitForLoadState('networkidle');
 
     await page.getByText('Perfil').click();
-    await expect(page.getByText(/já sou cadastrado/i).first()).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByText(/já tenho conta/i).first()).toBeVisible({ timeout: 15_000 });
     await page
-      .getByText(/já sou cadastrado/i)
+      .getByText(/já tenho conta/i)
       .first()
       .click();
 
